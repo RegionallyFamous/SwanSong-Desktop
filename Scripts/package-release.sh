@@ -45,7 +45,7 @@ ENGINE_SHA256=$(shasum -a 256 \
 TEAM_ID=$(codesign -dv --verbose=4 "$APP" 2>&1 \
   | awk -F= '$1 == "TeamIdentifier" { print $2; exit }')
 SDK_VERSION=$(xcrun --sdk macosx --show-sdk-version)
-SWIFT_VERSION=$(swift --version | sed -n '1p')
+SWIFT_VERSION=$(swift --version 2>/dev/null | sed -n '1p')
 ARCHIVE_NAME="SwanSong-$VERSION-macOS-$ARCHIVE_ARCH.zip"
 ARCHIVE="$DIST_DIR/$ARCHIVE_NAME"
 SOURCE_ARCHIVE_NAME="SwanSong-$VERSION-source.tar.xz"
@@ -111,7 +111,7 @@ cat >"$MANIFEST" <<EOF
 }
 EOF
 
-plutil -lint "$MANIFEST" >/dev/null
+plutil -convert binary1 -o /dev/null "$MANIFEST"
 echo "PASS packaged notarized release: $ARCHIVE"
 echo "$SOURCE_ARCHIVE"
 echo "$CHECKSUMS"
