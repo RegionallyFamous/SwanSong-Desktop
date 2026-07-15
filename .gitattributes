@@ -1,0 +1,4 @@
+# Preserve integration patches and vendored open test fixtures byte-for-byte.
+# Their upstream whitespace is significant provenance and is not normalized.
+Engine/*.patch -whitespace
+testroms/** -whitespace

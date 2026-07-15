@@ -1,0 +1,12 @@
+{
+  "game": {
+    "title": "SwanSong Translation Fixture",
+    "platform": "WonderSwan",
+    "sourceLanguage": "ja",
+    "targetLanguage": "en"
+  },
+  "rom": {
+    "original": "rom/original.ws",
+    "patched": "build/patched.ws"
+  }
+}

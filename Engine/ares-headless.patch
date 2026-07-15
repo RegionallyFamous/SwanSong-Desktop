@@ -1,0 +1,88 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 0c5247e..6cc4d77 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -4,6 +4,8 @@ include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/common/bootstrap.cmake" NO_POLICY_SCO
+ 
+ project(ares VERSION ${ARES_VERSION_CANONICAL})
+ 
++option(ARES_HEADLESS_CORE_ONLY "Build emulator cores without the ares desktop frontend" OFF)
++
+ include(compilerconfig)
+ include(defaults)
+ include(helpers)
+@@ -12,8 +14,10 @@ add_subdirectory(thirdparty)
+ 
+ add_subdirectory(nall/nall)
+ add_subdirectory(libco)
+-add_subdirectory(ruby)
+-add_subdirectory(hiro)
++if(NOT ARES_HEADLESS_CORE_ONLY)
++  add_subdirectory(ruby)
++  add_subdirectory(hiro)
++endif()
+ 
+ # gersemi: off
+ set(
+@@ -24,8 +28,10 @@ set(
+ # gersemi: on
+ 
+ add_subdirectory(ares)
+-add_subdirectory(mia)
+-add_subdirectory(desktop-ui)
++if(NOT ARES_HEADLESS_CORE_ONLY)
++  add_subdirectory(mia)
++  add_subdirectory(desktop-ui)
++endif()
+ 
+ option(ARES_BUILD_OPTIONAL_TARGETS "Include supplemental tools and tests" OFF)
+ 
+@@ -49,8 +55,12 @@ endif()
+ 
+ add_subdirectory(tools/sourcery)
+ 
+-message_configuration()
++if(NOT ARES_HEADLESS_CORE_ONLY)
++  message_configuration()
++endif()
+ 
+-add_subdirectory(.github)
++if(NOT ARES_HEADLESS_CORE_ONLY)
++  add_subdirectory(.github)
++endif()
+ add_subdirectory(cmake)
+ return()
+diff --git a/ares/ares/platform.hpp b/ares/ares/platform.hpp
+index 029c8de9..c87a3238 100644
+--- a/ares/ares/platform.hpp
++++ b/ares/ares/platform.hpp
+@@ -25,6 +25,7 @@ struct Platform {
+   virtual auto audio(Node::Audio::Stream) -> void {}
+   virtual auto input(Node::Input::Input) -> void {}
+   virtual auto cheat(u32 addr) -> maybe<u32> { return nothing; }
++  virtual auto rtcTime() -> u64 { return chrono::timestamp(); }
+ };
+ 
+ extern Platform* platform;
+diff --git a/ares/ws/cartridge/rtc.cpp b/ares/ws/cartridge/rtc.cpp
+index f4ca9df5..8944ac3e 100644
+--- a/ares/ws/cartridge/rtc.cpp
++++ b/ares/ws/cartridge/rtc.cpp
+@@ -11,7 +11,7 @@ auto Cartridge::RTC::load() -> void {
+     return;
+   }
+ 
+-  timestamp = time(0) - timestamp;
++  timestamp = (platform ? platform->rtcTime() : chrono::timestamp()) - timestamp;
+   // prevent insurmountable slowdown by limiting skips to 5 years
+   if(timestamp < 60*60*24*365*5) {
+     while(timestamp--) tickSecond();
+@@ -20,7 +20,7 @@ auto Cartridge::RTC::load() -> void {
+ 
+ //save time when game is unloaded
+ auto Cartridge::RTC::save() -> void {
+-  n64 timestamp = time(0);
++  n64 timestamp = platform ? platform->rtcTime() : chrono::timestamp();
+   for(auto n : range(8)) ram.write(8 + n, timestamp.byte(n));
+ }
+ 

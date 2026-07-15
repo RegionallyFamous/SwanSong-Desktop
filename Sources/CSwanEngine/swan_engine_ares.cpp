@@ -1,0 +1,718 @@
+#include "swan_engine_backend.hpp"
+
+#if defined(SWAN_ENABLE_ARES)
+
+#include <ares/ares.hpp>
+#include <ws/ws.hpp>
+
+#include <algorithm>
+#include <atomic>
+#include <chrono>
+#include <condition_variable>
+#include <ctime>
+#include <cstring>
+#include <map>
+#include <limits>
+#include <mutex>
+#include <span>
+#include <vector>
+
+namespace {
+
+constexpr auto kFrameTimeout = std::chrono::seconds(2);
+
+size_t save_size(uint8_t save_type) {
+  switch (save_type) {
+    case 0x01:
+    case 0x02: return 32u * 1024u;
+    case 0x03: return 128u * 1024u;
+    case 0x04: return 256u * 1024u;
+    case 0x05: return 512u * 1024u;
+    case 0x10: return 128u;
+    case 0x20: return 2048u;
+    case 0x50: return 1024u;
+    default: return 0;
+  }
+}
+
+bool save_is_eeprom(uint8_t save_type) {
+  return save_type == 0x10 || save_type == 0x20 || save_type == 0x50;
+}
+
+const char* model_name(swan_model_t configured, const swan_rom_info_t& info) {
+  switch (configured) {
+    case SWAN_MODEL_WONDERSWAN: return "[Bandai] WonderSwan";
+    case SWAN_MODEL_WONDERSWAN_COLOR: return "[Bandai] WonderSwan Color";
+    case SWAN_MODEL_SWANCRYSTAL: return "[Bandai] SwanCrystal";
+    case SWAN_MODEL_POCKET_CHALLENGE_V2:
+      return "[Benesse] Pocket Challenge V2";
+    case SWAN_MODEL_AUTOMATIC:
+      return info.color ? "[Bandai] WonderSwan Color" : "[Bandai] WonderSwan";
+  }
+  return "[Bandai] WonderSwan";
+}
+
+bool color_model(const char* model) {
+  return std::strcmp(model, "[Bandai] WonderSwan Color") == 0 ||
+         std::strcmp(model, "[Bandai] SwanCrystal") == 0;
+}
+
+std::vector<uint8_t> open_bootstrap(bool color, bool word_width) {
+  std::vector<uint8_t> boot(color ? 8192u : 4096u, 0x90);
+  const uint8_t bootstrap[] = {
+      0xb0, static_cast<uint8_t>(word_width ? 0x05 : 0x01),
+      0xe6, 0xa0, 0xea, 0x00, 0x00, 0xff, 0xff,
+  };
+  std::copy(std::begin(bootstrap), std::end(bootstrap), boot.end() - 16);
+  return boot;
+}
+
+std::vector<uint8_t> deterministic_rtc(uint64_t unix_seconds) {
+  const auto timestamp = static_cast<std::time_t>(unix_seconds);
+  std::tm utc{};
+  if (!gmtime_r(&timestamp, &utc)) return {};
+
+  const auto bcd = [](int value) {
+    return static_cast<uint8_t>(((value / 10) << 4) | (value % 10));
+  };
+  std::vector<uint8_t> rtc(18u, 0);
+  rtc[0] = bcd((utc.tm_year + 1900) % 100);
+  rtc[1] = bcd(utc.tm_mon + 1);
+  rtc[2] = bcd(utc.tm_mday);
+  rtc[3] = bcd(utc.tm_wday);
+  rtc[4] = bcd(utc.tm_hour);
+  rtc[5] = bcd(utc.tm_min);
+  rtc[6] = bcd(utc.tm_sec);
+  rtc[7] = 0x40;  // Valid status, 24-hour clock.
+  for (size_t index = 0; index < 8; ++index) {
+    rtc[8 + index] = static_cast<uint8_t>(unix_seconds >> (index * 8));
+  }
+  return rtc;
+}
+
+class AresBackend final : public SwanEngineBackend, private ares::Platform {
+ public:
+  explicit AresBackend(const swan_engine_config_t& config)
+      : config_(config) {}
+
+  ~AresBackend() override {
+    std::string ignored;
+    unload(ignored);
+  }
+
+  const char* name() const override { return "ares"; }
+
+  uint64_t capabilities() const override {
+    return SWAN_CAPABILITY_ROM_INSPECTION |
+           SWAN_CAPABILITY_EXECUTION |
+           SWAN_CAPABILITY_AUDIO |
+           SWAN_CAPABILITY_SAVE_STATES |
+           SWAN_CAPABILITY_PERSISTENCE |
+           SWAN_CAPABILITY_DEBUGGER |
+           SWAN_CAPABILITY_POCKET_CHALLENGE_V2;
+  }
+
+  swan_result_t load(std::span<const uint8_t> rom,
+                     const swan_rom_info_t& info,
+                     std::string& error) override {
+    unload(error);
+    error.clear();
+
+    {
+      std::lock_guard lock(active_mutex_);
+      if (active_ && active_ != this) {
+        error = "ares currently supports one live WonderSwan instance";
+        return SWAN_RESULT_UNSUPPORTED;
+      }
+      active_ = this;
+      ares::platform = this;
+    }
+
+    const char* selected_model = model_name(config_.preferred_model, info);
+    const bool is_pocket_challenge =
+        config_.preferred_model == SWAN_MODEL_POCKET_CHALLENGE_V2;
+    system_pak_ = std::make_shared<vfs::directory>();
+    game_pak_ = std::make_shared<vfs::directory>();
+
+    const bool expects_color_boot = color_model(selected_model);
+    const size_t expected_boot_size = expects_color_boot ? 8192u : 4096u;
+    if (!staged_boot_rom_.empty() && staged_boot_rom_.size() != expected_boot_size) {
+      error = expects_color_boot
+          ? "the selected WonderSwan Color model needs an 8 KiB boot ROM"
+          : is_pocket_challenge
+              ? "the selected Pocket Challenge V2 model needs a 4 KiB boot ROM"
+              : "the selected WonderSwan model needs a 4 KiB boot ROM";
+      release_active();
+      return SWAN_RESULT_INVALID_ARGUMENT;
+    }
+    const bool word_width = (rom[rom.size() - 4] & 4) != 0;
+    const auto boot = staged_boot_rom_.empty()
+        ? open_bootstrap(expects_color_boot, word_width)
+        : staged_boot_rom_;
+    system_pak_->append("boot.rom", std::span<const uint8_t>(boot));
+    if (!is_pocket_challenge) {
+      const size_t console_size = color_model(selected_model) ? 2048u : 128u;
+      if (!append_persistence(*system_pak_, "save.eeprom", console_size,
+                              SWAN_PERSISTENCE_CONSOLE_EEPROM, error)) {
+        release_active();
+        return SWAN_RESULT_INVALID_ARGUMENT;
+      }
+    }
+
+    game_pak_->setAttribute("title", "SwanSong");
+    const bool vertical = !is_pocket_challenge &&
+                          (rom[rom.size() - 4] & 1) != 0;
+    game_pak_->setAttribute("orientation", vertical ? "vertical" : "horizontal");
+    game_pak_->setAttribute(
+        "board", is_pocket_challenge ? "KARNAK"
+                                     : info.mapper ? "2003" : "2001");
+    game_pak_->setAttribute("width",
+                            word_width ? "16" : "8");
+    if (is_pocket_challenge) {
+      if (auto staged = staged_persistence_.find(SWAN_PERSISTENCE_CARTRIDGE_FLASH);
+          staged != staged_persistence_.end()) {
+        if (staged->second.size() != rom.size() &&
+            staged->second.size() != info.mapped_size) {
+          error = "Pocket Challenge V2 flash size does not match the cartridge";
+          release_active();
+          return SWAN_RESULT_INVALID_ARGUMENT;
+        }
+        game_pak_->append("program.flash",
+                          std::span<const uint8_t>(staged->second));
+      } else {
+        game_pak_->append("program.flash", rom);
+      }
+    } else {
+      game_pak_->append("program.rom", rom);
+    }
+
+    const size_t storage_size = save_size(info.save_type);
+    if (storage_size) {
+      const bool is_eeprom = save_is_eeprom(info.save_type);
+      if (!append_persistence(
+              *game_pak_, is_eeprom ? "save.eeprom" : "save.ram",
+              storage_size,
+              is_eeprom ? SWAN_PERSISTENCE_CARTRIDGE_EEPROM
+                         : SWAN_PERSISTENCE_CARTRIDGE_RAM,
+              error)) {
+        release_active();
+        return SWAN_RESULT_INVALID_ARGUMENT;
+      }
+    }
+    if (info.has_rtc &&
+        config_.rtc_mode == SWAN_RTC_MODE_DETERMINISTIC &&
+        !staged_persistence_.contains(SWAN_PERSISTENCE_RTC)) {
+      auto rtc = deterministic_rtc(config_.rtc_seed_unix_seconds);
+      if (rtc.empty()) {
+        error = "the deterministic RTC seed is not a valid UTC timestamp";
+        release_active();
+        return SWAN_RESULT_INVALID_ARGUMENT;
+      }
+      staged_persistence_[SWAN_PERSISTENCE_RTC] = std::move(rtc);
+    }
+    if (info.has_rtc &&
+        !append_persistence(*game_pak_, "time.rtc", 18u,
+                            SWAN_PERSISTENCE_RTC, error)) {
+      release_active();
+      return SWAN_RESULT_INVALID_ARGUMENT;
+    }
+
+    if (!ares::WonderSwan::load(root_, selected_model)) {
+      release_active();
+      error = "ares rejected the selected WonderSwan model";
+      return SWAN_RESULT_INTERNAL_ERROR;
+    }
+    if (auto port = root_->find<ares::Node::Port>("Cartridge Slot")) {
+      port->allocate();
+      port->connect();
+    } else {
+      root_->unload();
+      root_.reset();
+      release_active();
+      error = "ares did not expose a WonderSwan cartridge slot";
+      return SWAN_RESULT_INTERNAL_ERROR;
+    }
+
+    // The footer describes the cartridge's initial presentation. Keep that
+    // seed separately so ares can remain in Automatic mode and honor later
+    // LCD_ICON orientation changes made by the running game.
+    initial_vertical_ = vertical;
+
+    // The host applies its own optional LCD response profile. Keep the core
+    // output deterministic and pixel-exact so save-state replay and captures
+    // are not coupled to an unserialized frontend blending buffer.
+    if (auto blending = root_->find<ares::Node::Setting::Boolean>(
+            "PPU/Screen/Interframe Blending")) {
+      blending->setValue(false);
+    }
+
+    loaded_ = true;
+    staged_persistence_.clear();
+    root_->power();
+    initialize_frontend_presentation();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t unload(std::string& error) override {
+    if (root_) {
+      root_->save();
+      root_->unload();
+      root_.reset();
+    }
+    loaded_ = false;
+    initial_vertical_ = false;
+    system_pak_.reset();
+    game_pak_.reset();
+    input_mask_.store(0, std::memory_order_relaxed);
+    {
+      std::lock_guard lock(video_mutex_);
+      video_.clear();
+      video_width_ = video_height_ = video_stride_ = 0;
+      frame_number_ = 0;
+    }
+    {
+      std::lock_guard lock(audio_mutex_);
+      audio_.clear();
+    }
+    release_active();
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t reset(std::string& error) override {
+    if (!loaded_ || !root_) return SWAN_RESULT_NOT_LOADED;
+    input_mask_.store(0, std::memory_order_relaxed);
+    root_->power(true);
+    initialize_frontend_presentation();
+    {
+      std::lock_guard lock(video_mutex_);
+      video_.clear();
+      video_width_ = video_height_ = video_stride_ = 0;
+      frame_number_ = 0;
+    }
+    {
+      std::lock_guard lock(audio_mutex_);
+      audio_.clear();
+    }
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t set_input(uint32_t input_mask,
+                          std::string& error) override {
+    input_mask_.store(input_mask, std::memory_order_relaxed);
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t run_frame(std::string& error) override {
+    if (!loaded_ || !root_) return SWAN_RESULT_NOT_LOADED;
+
+    uint64_t expected_frame;
+    {
+      std::lock_guard lock(video_mutex_);
+      expected_frame = frame_number_ + 1;
+    }
+    {
+      std::lock_guard lock(audio_mutex_);
+      audio_.clear();
+    }
+
+    root_->run();
+
+    std::unique_lock lock(video_mutex_);
+    if (!video_ready_.wait_for(lock, kFrameTimeout, [&] {
+          return frame_number_ >= expected_frame;
+        })) {
+      error = "ares completed a frame without producing video";
+      return SWAN_RESULT_INTERNAL_ERROR;
+    }
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t video_frame(swan_video_frame_t& frame,
+                            std::string& error) const override {
+    if (!loaded_) return SWAN_RESULT_NOT_LOADED;
+    std::lock_guard lock(video_mutex_);
+    if (video_.empty()) {
+      error = "ares has not produced a video frame yet";
+      return SWAN_RESULT_INTERNAL_ERROR;
+    }
+    frame.pixels = video_.data();
+    frame.byte_count = video_.size();
+    frame.width = video_width_;
+    frame.height = video_height_;
+    frame.stride_bytes = video_stride_;
+    frame.pixel_format = SWAN_PIXEL_FORMAT_BGRA8888;
+    frame.orientation = video_height_ > video_width_
+                            ? SWAN_ORIENTATION_VERTICAL
+                            : SWAN_ORIENTATION_HORIZONTAL;
+    frame.frame_number = frame_number_;
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t audio_batch(swan_audio_batch_t& audio,
+                            std::string& error) const override {
+    if (!loaded_) return SWAN_RESULT_NOT_LOADED;
+    std::lock_guard lock(audio_mutex_);
+    audio.interleaved_samples = audio_.empty() ? nullptr : audio_.data();
+    audio.frame_count = audio_.size() / 2;
+    audio.channels = 2;
+    audio.sample_rate = output_sample_rate();
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t stage_persistence(swan_persistence_kind_t kind,
+                                  std::span<const uint8_t> bytes,
+                                  std::string& error) override {
+    if (loaded_) {
+      error = "persistent data must be staged before loading the ROM";
+      return SWAN_RESULT_UNSUPPORTED;
+    }
+    if (!valid_persistence_kind(kind) || bytes.empty()) {
+      error = "invalid persistent data region";
+      return SWAN_RESULT_INVALID_ARGUMENT;
+    }
+    try {
+      staged_persistence_[kind] = std::vector<uint8_t>(bytes.begin(), bytes.end());
+    } catch (...) {
+      error = "could not retain persistent data";
+      return SWAN_RESULT_INTERNAL_ERROR;
+    }
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t stage_boot_rom(std::span<const uint8_t> bytes,
+                               std::string& error) override {
+    if (loaded_) {
+      error = "boot ROM must be staged before loading a game";
+      return SWAN_RESULT_UNSUPPORTED;
+    }
+    if (bytes.size() != 4096u && bytes.size() != 8192u) {
+      error = "WonderSwan boot ROM must be 4 KiB or 8 KiB";
+      return SWAN_RESULT_INVALID_ARGUMENT;
+    }
+    try {
+      staged_boot_rom_.assign(bytes.begin(), bytes.end());
+    } catch (...) {
+      error = "could not retain boot ROM data";
+      return SWAN_RESULT_INTERNAL_ERROR;
+    }
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t persistence_size(swan_persistence_kind_t kind,
+                                 size_t& size,
+                                 std::string& error) override {
+    if (!loaded_ || !root_) return SWAN_RESULT_NOT_LOADED;
+    root_->save();
+    auto file = persistence_file(kind);
+    if (!file) {
+      error = "the loaded cartridge does not expose that persistence region";
+      return SWAN_RESULT_UNSUPPORTED;
+    }
+    size = static_cast<size_t>(file->size());
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t read_persistence(swan_persistence_kind_t kind,
+                                 std::span<uint8_t> bytes,
+                                 size_t& size,
+                                 std::string& error) override {
+    if (!loaded_ || !root_) return SWAN_RESULT_NOT_LOADED;
+    root_->save();
+    auto file = persistence_file(kind);
+    if (!file) {
+      error = "the loaded cartridge does not expose that persistence region";
+      return SWAN_RESULT_UNSUPPORTED;
+    }
+    size = static_cast<size_t>(file->size());
+    if (bytes.size() < size) {
+      error = "persistence output buffer is too small";
+      return SWAN_RESULT_INVALID_ARGUMENT;
+    }
+    file->seek(0);
+    file->read(bytes.data(), size);
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t memory_size(swan_memory_region_t region,
+                            size_t& size,
+                            std::string& error) override {
+    if (!loaded_ || !root_) return SWAN_RESULT_NOT_LOADED;
+    if (region != SWAN_MEMORY_INTERNAL_RAM) {
+      error = "the requested WonderSwan memory region is unsupported";
+      return SWAN_RESULT_UNSUPPORTED;
+    }
+    size = ares::WonderSwan::SoC::ASWAN() ? 16u * 1024u : 64u * 1024u;
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t read_memory(swan_memory_region_t region,
+                            std::span<uint8_t> bytes,
+                            size_t& size,
+                            std::string& error) override {
+    const auto size_result = memory_size(region, size, error);
+    if (size_result != SWAN_RESULT_OK) return size_result;
+    if (bytes.size() < size) {
+      error = "memory output buffer is too small";
+      return SWAN_RESULT_INVALID_ARGUMENT;
+    }
+    for (size_t address = 0; address < size; ++address) {
+      bytes[address] = ares::WonderSwan::iram.read(static_cast<uint16_t>(address));
+    }
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t capture_state(std::vector<uint8_t>& state,
+                              std::string& error) override {
+    if (!loaded_ || !root_) return SWAN_RESULT_NOT_LOADED;
+    auto serialized = root_->serialize(true);
+    if (!serialized || serialized.size() == 0) {
+      error = "ares could not synchronize a WonderSwan save state";
+      return SWAN_RESULT_INTERNAL_ERROR;
+    }
+    try {
+      state.assign(serialized.data(), serialized.data() + serialized.size());
+    } catch (...) {
+      error = "could not retain the serialized WonderSwan state";
+      return SWAN_RESULT_INTERNAL_ERROR;
+    }
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t restore_state(std::span<const uint8_t> state,
+                              std::string& error) override {
+    if (!loaded_ || !root_) return SWAN_RESULT_NOT_LOADED;
+    if (state.empty() || state.size() > std::numeric_limits<u32>::max()) {
+      error = "save-state data has an invalid size";
+      return SWAN_RESULT_INVALID_ARGUMENT;
+    }
+    serializer serialized(state.data(), static_cast<u32>(state.size()));
+    if (!root_->unserialize(serialized)) {
+      error = "save state is incompatible with this ares WonderSwan core";
+      return SWAN_RESULT_UNSUPPORTED;
+    }
+    // Node sprites and screen rotation are frontend presentation state rather
+    // than serialized pixels. Refresh them from the restored LCD/PPU state so
+    // loading a state can also restore a runtime orientation change.
+    ares::WonderSwan::ppu.updateIcons();
+    ares::WonderSwan::ppu.updateOrientation();
+    {
+      std::lock_guard lock(audio_mutex_);
+      audio_.clear();
+    }
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+ private:
+  void initialize_frontend_presentation() {
+    if (!root_) return;
+    // ares powers the PPU before the APU. The PPU's initial icon refresh
+    // therefore observes zeroed volume/headphone state even though the APU
+    // immediately establishes the model defaults afterward. Refresh the
+    // frontend-only sprites once all emulated components have powered.
+    ares::WonderSwan::ppu.updateIcons();
+    auto orientation = root_->find<ares::Node::Setting::String>(
+        "PPU/Screen/Orientation");
+    if (!orientation) return;
+
+    // PPU::power() resets the emulated orientation latch to horizontal. Seed
+    // that latch from the cartridge metadata before the first video frame,
+    // then leave the setting on Automatic so LCD_ICON writes rotate live.
+    ares::WonderSwan::ppu.io.orientation = initial_vertical_ ? 1 : 0;
+    orientation->setValue("Automatic");
+    ares::WonderSwan::ppu.updateOrientation();
+  }
+
+  uint32_t output_sample_rate() const {
+    return config_.output_sample_rate ? config_.output_sample_rate : 48'000u;
+  }
+
+  void release_active() {
+    std::lock_guard lock(active_mutex_);
+    if (active_ == this) {
+      active_ = nullptr;
+      if (ares::platform == this) ares::platform = nullptr;
+    }
+  }
+
+  static bool valid_persistence_kind(swan_persistence_kind_t kind) {
+    return kind >= SWAN_PERSISTENCE_CONSOLE_EEPROM &&
+           kind <= SWAN_PERSISTENCE_RTC;
+  }
+
+  bool append_persistence(vfs::directory& directory,
+                          const char* name,
+                          size_t expected_size,
+                          swan_persistence_kind_t kind,
+                          std::string& error) {
+    if (auto staged = staged_persistence_.find(kind);
+        staged != staged_persistence_.end()) {
+      if (staged->second.size() != expected_size) {
+        error = "persistent data size does not match the loaded cartridge";
+        return false;
+      }
+      if (!directory.append(name, std::span<const uint8_t>(staged->second))) {
+        return false;
+      }
+      if (auto file = directory.read(name)) file->setAttribute("loaded", true);
+      return true;
+    }
+    return directory.append(name, expected_size);
+  }
+
+  std::shared_ptr<vfs::file> persistence_file(swan_persistence_kind_t kind) {
+    switch (kind) {
+      case SWAN_PERSISTENCE_CONSOLE_EEPROM:
+        return system_pak_ ? system_pak_->read("save.eeprom") : nullptr;
+      case SWAN_PERSISTENCE_CARTRIDGE_RAM:
+        return game_pak_ ? game_pak_->read("save.ram") : nullptr;
+      case SWAN_PERSISTENCE_CARTRIDGE_EEPROM:
+        return game_pak_ ? game_pak_->read("save.eeprom") : nullptr;
+      case SWAN_PERSISTENCE_CARTRIDGE_FLASH:
+        return game_pak_ ? game_pak_->read("program.flash") : nullptr;
+      case SWAN_PERSISTENCE_RTC:
+        return game_pak_ ? game_pak_->read("time.rtc") : nullptr;
+    }
+    return nullptr;
+  }
+
+  std::shared_ptr<vfs::directory> pak(ares::Node::Object node) override {
+    if (root_ && node.get() == root_.get()) return system_pak_;
+    return game_pak_;
+  }
+
+  auto rtcTime() -> u64 override {
+    if (config_.rtc_mode == SWAN_RTC_MODE_DETERMINISTIC) {
+      return config_.rtc_seed_unix_seconds;
+    }
+    return chrono::timestamp();
+  }
+
+  void attach(ares::Node::Object node) override {
+    if (auto stream = node->cast<ares::Node::Audio::Stream>()) {
+      stream->setResamplerFrequency(output_sample_rate());
+    }
+  }
+
+  void video(ares::Node::Video::Screen,
+             const u32* data,
+             u32 pitch,
+             u32 width,
+             u32 height) override {
+    std::lock_guard lock(video_mutex_);
+    video_width_ = width;
+    video_height_ = height;
+    video_stride_ = width * sizeof(uint32_t);
+    video_.resize(static_cast<size_t>(video_stride_) * height);
+    for (uint32_t row = 0; row < height; ++row) {
+      std::memcpy(video_.data() + static_cast<size_t>(row) * video_stride_,
+                  reinterpret_cast<const uint8_t*>(data) +
+                      static_cast<size_t>(row) * pitch,
+                  video_stride_);
+    }
+    ++frame_number_;
+    video_ready_.notify_all();
+  }
+
+  void audio(ares::Node::Audio::Stream stream) override {
+    std::lock_guard lock(audio_mutex_);
+    while (stream->pending()) {
+      f64 samples[2] = {0.0, 0.0};
+      const u32 channels = stream->read(samples);
+      const float left = static_cast<float>(std::clamp(samples[0], -1.0, 1.0));
+      const float right = static_cast<float>(std::clamp(
+          channels > 1 ? samples[1] : samples[0], -1.0, 1.0));
+      audio_.push_back(left);
+      audio_.push_back(right);
+    }
+  }
+
+  void input(ares::Node::Input::Input node) override {
+    auto button = node->cast<ares::Node::Input::Button>();
+    if (!button) return;
+
+    const auto name = node->name();
+    uint32_t bits = 0;
+    if (name == "Y1") bits = SWAN_INPUT_Y1;
+    else if (name == "Y2") bits = SWAN_INPUT_Y2;
+    else if (name == "Y3") bits = SWAN_INPUT_Y3;
+    else if (name == "Y4") bits = SWAN_INPUT_Y4;
+    else if (name == "X1") bits = SWAN_INPUT_X1;
+    else if (name == "X2") bits = SWAN_INPUT_X2;
+    else if (name == "X3") bits = SWAN_INPUT_X3;
+    else if (name == "X4") bits = SWAN_INPUT_X4;
+    else if (name == "B") bits = SWAN_INPUT_B;
+    else if (name == "A") bits = SWAN_INPUT_A;
+    else if (name == "Start") bits = SWAN_INPUT_START;
+    else if (name == "Volume") bits = SWAN_INPUT_VOLUME;
+    else if (name == "Up") {
+      bits = SWAN_INPUT_POCKET_CHALLENGE_UP | SWAN_INPUT_X1;
+    } else if (name == "Right") {
+      bits = SWAN_INPUT_POCKET_CHALLENGE_RIGHT | SWAN_INPUT_X2;
+    } else if (name == "Down") {
+      bits = SWAN_INPUT_POCKET_CHALLENGE_DOWN | SWAN_INPUT_X3;
+    } else if (name == "Left") {
+      bits = SWAN_INPUT_POCKET_CHALLENGE_LEFT | SWAN_INPUT_X4;
+    } else if (name == "Pass") {
+      bits = SWAN_INPUT_POCKET_CHALLENGE_PASS | SWAN_INPUT_B;
+    } else if (name == "Circle") {
+      bits = SWAN_INPUT_POCKET_CHALLENGE_CIRCLE | SWAN_INPUT_A;
+    } else if (name == "Clear") {
+      bits = SWAN_INPUT_POCKET_CHALLENGE_CLEAR | SWAN_INPUT_START;
+    } else if (name == "View") {
+      bits = SWAN_INPUT_POCKET_CHALLENGE_VIEW | SWAN_INPUT_VOLUME;
+    } else if (name == "Escape") {
+      bits = SWAN_INPUT_POCKET_CHALLENGE_ESCAPE;
+    } else if (name == "Power") {
+      bits = SWAN_INPUT_POWER;
+    }
+
+    button->setValue((input_mask_.load(std::memory_order_relaxed) & bits) != 0);
+  }
+
+  inline static std::mutex active_mutex_;
+  inline static AresBackend* active_ = nullptr;
+
+  swan_engine_config_t config_{};
+  ares::Node::System root_;
+  std::shared_ptr<vfs::directory> system_pak_;
+  std::shared_ptr<vfs::directory> game_pak_;
+  std::map<swan_persistence_kind_t, std::vector<uint8_t>> staged_persistence_;
+  std::vector<uint8_t> staged_boot_rom_;
+  std::atomic<uint32_t> input_mask_{0};
+  bool loaded_ = false;
+  bool initial_vertical_ = false;
+
+  mutable std::mutex video_mutex_;
+  mutable std::condition_variable video_ready_;
+  std::vector<uint8_t> video_;
+  uint32_t video_width_ = 0;
+  uint32_t video_height_ = 0;
+  uint32_t video_stride_ = 0;
+  uint64_t frame_number_ = 0;
+
+  mutable std::mutex audio_mutex_;
+  std::vector<float> audio_;
+};
+
+}  // namespace
+
+std::unique_ptr<SwanEngineBackend> create_swan_engine_backend(
+    const swan_engine_config_t& config) {
+  return std::make_unique<AresBackend>(config);
+}
+
+#endif

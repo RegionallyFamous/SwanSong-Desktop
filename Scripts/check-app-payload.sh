@@ -1,0 +1,47 @@
+#!/bin/sh
+set -eu
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+MACOS_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
+APP=${1:-"$MACOS_DIR/.build/app/SwanSong.app"}
+
+if [ ! -d "$APP/Contents" ]; then
+  echo "app bundle not found: $APP" >&2
+  exit 1
+fi
+
+unexpected_file=$(find "$APP/Contents" -type f \
+  ! -path "$APP/Contents/Info.plist" \
+  ! -path "$APP/Contents/MacOS/SwanSong" \
+  ! -path "$APP/Contents/Frameworks/libSwanAresEngine.dylib" \
+  ! -path "$APP/Contents/Resources/AppIcon.icns" \
+  ! -path "$APP/Contents/Resources/AppIcon.png" \
+  ! -path "$APP/Contents/Resources/LICENSE" \
+  ! -path "$APP/Contents/Resources/THIRD_PARTY_NOTICES.md" \
+  ! -path "$APP/Contents/_CodeSignature/CodeResources" \
+  -print -quit)
+if [ -n "$unexpected_file" ]; then
+  echo "the app bundle contains an unexpected payload: $unexpected_file" >&2
+  exit 1
+fi
+
+unexpected_link=$(find "$APP/Contents" -type l -print -quit)
+if [ -n "$unexpected_link" ]; then
+  echo "the app bundle contains an unexpected symbolic link: $unexpected_link" >&2
+  exit 1
+fi
+
+if find "$APP/Contents" -type f \
+  \( -iname '*boot.rom' \
+     -o -iname '*firmware*' \
+     -o -iname '*bios*' \
+     -o -iname '*.ws' \
+     -o -iname '*.wsc' \
+     -o -iname '*.pc2' \
+     -o -iname '*.pcv2' \) \
+  -print -quit | grep -q .; then
+  echo "the app bundle contains a startup image or game payload" >&2
+  exit 1
+fi
+
+echo "PASS app bundle payload matches the firmware-free allowlist"

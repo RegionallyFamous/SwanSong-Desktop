@@ -1,0 +1,10 @@
+{
+  "name": "ares",
+  "repository": "https://github.com/ares-emulator/ares.git",
+  "commit": "449b93716fb162632de2fd43bf2eba2064fa43f2",
+  "cores": [
+    "ws"
+  ],
+  "license": "ISC with dependency-specific bundled notices",
+  "purpose": "Real-time WonderSwan, WonderSwan Color, SwanCrystal, and Pocket Challenge V2 execution engine"
+}
