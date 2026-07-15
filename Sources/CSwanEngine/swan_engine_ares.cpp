@@ -57,7 +57,12 @@ bool color_model(const char* model) {
          std::strcmp(model, "[Bandai] SwanCrystal") == 0;
 }
 
-std::vector<uint8_t> open_bootstrap(bool color, bool word_width) {
+// SwanSong's independently written IPL. The original console boot ROM is not
+// needed for the normal path: select the cartridge's bus width, irreversibly
+// enable cartridge mapping through HW_FLAGS, then transfer through the reset
+// vector now exposed at FFFF:0000. The NOP-filled 4/8 KiB shape matches the
+// address window expected by ares without containing third-party firmware.
+std::vector<uint8_t> swan_song_open_ipl(bool color, bool word_width) {
   std::vector<uint8_t> boot(color ? 8192u : 4096u, 0x90);
   const uint8_t bootstrap[] = {
       0xb0, static_cast<uint8_t>(word_width ? 0x05 : 0x01),
@@ -147,7 +152,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     }
     const bool word_width = (rom[rom.size() - 4] & 4) != 0;
     const auto boot = staged_boot_rom_.empty()
-        ? open_bootstrap(expects_color_boot, word_width)
+        ? swan_song_open_ipl(expects_color_boot, word_width)
         : staged_boot_rom_;
     system_pak_->append("boot.rom", std::span<const uint8_t>(boot));
     if (!is_pocket_challenge) {

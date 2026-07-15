@@ -73,7 +73,7 @@
   records route-v3 tests from a clean power-on with the recorder armed before
   frame one, empty isolated persistence, a fixed UTC RTC seed, and an explicit
   Save-at-Frame target.
-  Each route binds the source ROM, hardware model, installed firmware, engine
+  Each route binds the source ROM, hardware model, startup implementation, engine
   build, persistence and RTC policies, target frame, input changes, and native
   game-raster checkpoint. Replay pauses at the exact endpoint and captures the emulator
   framebuffer, game-raster fingerprint, internal RAM, synchronized ares state,
@@ -119,13 +119,12 @@ The checked-in app remains intentionally honest about incomplete features. A
 plain Swift build uses an inspection-only fallback; live execution is enabled
 only when the separately built pinned ares dylib is supplied.
 
-Live gameplay also requires user-installed original boot ROM firmware: an
-exact 4 KiB image for WonderSwan and an exact 8 KiB image for WonderSwan Color.
-The app provides targeted missing-firmware recovery plus a native Firmware
-settings desk, validates direct images or ZIPs containing exactly one boot ROM,
-and copies accepted bytes into a private per-user Application Support folder.
-No firmware is bundled, downloaded, discovered, uploaded, or included in app
-releases or source-free diagnostics.
+Live gameplay defaults to SwanSong Open IPL, an independently written minimal
+startup implementation with no original boot-ROM bytes. The native Startup
+settings desk can optionally install an authorized original 4 KiB WonderSwan
+or Pocket Challenge V2 image, or 8 KiB WonderSwan Color image, as a private
+compatibility override. No original firmware is bundled, downloaded,
+discovered, uploaded, or included in releases or source-free diagnostics.
 
 An app builder now embeds that dylib, registers `.ws`, `.wsc`, `.pc2`, and
 `.pcv2` document types, and supports deterministic ad-hoc, Apple Development, or hardened
@@ -135,12 +134,11 @@ M6 release action.
 
 Automated evidence currently includes deterministic mono and Color frame
 hashes, C/Swift ABI and persistence checks, pacing-policy checks, and a full-app
-runtime smoke that first proves the required-firmware gate and wrong-system
-rejection, then uses a synthetic test-only bootstrap to open, play, autosave,
-capture a three-entry timeline, restore a byte-lossless preview, and reset the
-presentation counter from an open fixture in an isolated profile. A separate
-clean-room PCV2 lane proves its distinct firmware gate, explicit install/resume,
-active changing video, PCV2 state identity, and automatic flash-only persistence
+runtime smoke that boots monochrome, Color, and Pocket Challenge V2 fixtures
+through the production Open IPL with no original firmware installed, then
+plays, autosaves, captures a three-entry timeline, restores a byte-lossless
+preview, and resets the presentation counter in an isolated profile. The
+clean-room PCV2 lane proves active changing video, PCV2 state identity, and automatic flash-only persistence
 without exposing Pocket-save, EEPROM, SRAM, RTC, or console-EEPROM behavior.
 The bundle smoke separately verifies portable dylib lookup, ad-hoc signing, Finder-style `.ws`
 opening through Launch Services, and the absence of firmware payloads.
@@ -158,8 +156,8 @@ silent. An authorized private GunPey run supplies the current
 portrait, meaningful-motion, and audible-audio evidence without copying either
 the game or startup file into the repository or app. An opt-in private
 app-code/bundle smoke now binds its debug runner to the checked app by Mach-O
-UUID, repeats the real archive import, required-BIOS install and pending launch
-resume in disposable storage, requires changing native frame pixels and
+UUID, repeats real archive import and optional original-BIOS override install
+in disposable storage, requires changing native frame pixels and
 isolated save/state persistence, then proves the signed bundle stayed
 byte-identical and firmware/ROM-free before deleting every private artifact.
 Native game-raster and audio replay settle by the second post-restore frame
@@ -237,8 +235,7 @@ V2.
 The product has two equally important modes:
 
 - **Play** is quiet, immediate, and approachable. Opening a game should be the
-  only action required after the one-time installation of authorized firmware
-  for that WonderSwan model.
+  only action required; SwanSong Open IPL is built in.
 - **Workbench** is optional. It exposes the accuracy and provenance tools that
   make SwanSong valuable to homebrew, preservation, and translation work.
 
@@ -309,8 +306,8 @@ C ABI rather than teaching Swift about the ares node graph.
 
 ## Experience principles
 
-1. After required firmware is installed, opening a game begins play; importing
-   into the library is optional.
+1. Opening a game begins play through SwanSong Open IPL; importing into the
+   library is optional.
 2. Orientation follows the game and window rotation is animated, never
    surprising.
 3. Settings use player language: Pure Pixels, WonderSwan LCD, Color LCD, and
@@ -348,7 +345,7 @@ Deliverables:
 
 Gates:
 
-- every supported model boots an open fixture with explicit test firmware;
+- every supported model boots an open fixture with the production Open IPL;
 - exact fixture frames and input replays are deterministic across two runs;
 - no file I/O occurs inside the emulation thread;
 - Address Sanitizer and Undefined Behavior Sanitizer smoke runs are clean.
@@ -388,9 +385,9 @@ Deliverables:
 - console-owner editor and per-model EEPROM;
 - Pocket-compatible save import/export with explicit format reporting.
 
-Gate: a new user can install authorized firmware with the keyboard or
-VoiceOver, then open, play, save, resume, rotate, and map a controller without
-entering a generic emulator-driver screen.
+Gate: a new user can open, play, save, resume, rotate, and map a controller
+without supplying firmware or entering a generic emulator-driver screen; an
+optional original override remains installable with keyboard or VoiceOver.
 
 ### M4 — accuracy convergence
 
@@ -470,8 +467,8 @@ matrix.
   No change is accepted merely to make differential output green.
 - **licensing:** the selected ares core is permissively licensed, but every
   linked dependency and every SwanSong-derived contribution still needs an
-  auditable origin and notice. Copyrighted boot ROM firmware is always
-  user-supplied, remains in private local storage, and is never redistributed
-  or included in diagnostics.
+  auditable origin and notice. SwanSong Open IPL contains no original firmware
+  bytes. Any copyrighted boot-ROM override is user-supplied, remains in private
+  local storage, and is never redistributed or included in diagnostics.
 - **toolchain:** Swift Package Manager supports current development, but signed
   application packaging requires a full Xcode installation and signing setup.

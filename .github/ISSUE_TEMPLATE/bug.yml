@@ -11,7 +11,8 @@ body:
     id: version
     attributes:
       label: SwanSong version and build
-      placeholder: "0.1.0 (1)"
+      description: Copy this from SwanSong Help → SwanSong Help → Copy Support Information.
+      placeholder: "Version (build)"
     validations:
       required: true
   - type: input

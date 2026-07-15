@@ -95,7 +95,7 @@ struct SwanSongWordmark: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("SwanSong, WonderSwan Studio")
+        .accessibilityLabel("SwanSong, for WonderSwan")
     }
 }
 

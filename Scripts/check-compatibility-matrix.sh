@@ -10,8 +10,6 @@ MATRIX_BUILD_DIR="$MACOS_DIR/.build/compatibility/swift"
 TEMP_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/swan-song-matrix.XXXXXX")
 INDEX="$TEMP_ROOT/reports.tsv"
 ROUTES="$TEMP_ROOT/routes.tsv"
-MONO_FIRMWARE="$TEMP_ROOT/public-mono-startup-fixture.rom"
-COLOR_FIRMWARE="$TEMP_ROOT/public-color-startup-fixture.rom"
 PCV2_ROM="$TEMP_ROOT/swan_song_pcv2_integration.pc2"
 
 cleanup() {
@@ -27,21 +25,6 @@ case "$FRAME_COUNT" in
 esac
 
 mkdir -p "$(dirname "$OUTPUT")"
-
-# Public synthetic startup fixtures enter repository-authored code at their
-# own mapped base, disable the startup overlay, then jump to the cartridge
-# reset mapping. They are generated in /tmp and are never shipped or described
-# as original firmware.
-dd if=/dev/zero of="$MONO_FIRMWARE" bs=4096 count=1 2>/dev/null
-printf '\260\005\346\240\352\000\000\377\377' \
-  | dd of="$MONO_FIRMWARE" bs=1 seek=0 conv=notrunc 2>/dev/null
-printf '\352\000\000\000\377' \
-  | dd of="$MONO_FIRMWARE" bs=1 seek=4080 conv=notrunc 2>/dev/null
-dd if=/dev/zero of="$COLOR_FIRMWARE" bs=8192 count=1 2>/dev/null
-printf '\260\005\346\240\352\000\000\377\377' \
-  | dd of="$COLOR_FIRMWARE" bs=1 seek=0 conv=notrunc 2>/dev/null
-printf '\352\000\000\000\376' \
-  | dd of="$COLOR_FIRMWARE" bs=1 seek=8176 conv=notrunc 2>/dev/null
 
 python3 "$SCRIPT_DIR/generate-pcv2-fixture.py" "$PCV2_ROM" >/dev/null
 
@@ -63,24 +46,19 @@ fi
 : >"$ROUTES"
 while IFS= read -r rom; do
   relative=${rom#"$MACOS_DIR/"}
-  case "$rom" in
-    *.wsc) startup=$COLOR_FIRMWARE ;;
-    *) startup=$MONO_FIRMWARE ;;
-  esac
-  printf '%s\t%s\t%s\t%s\t%s\n' \
-    "$relative" "$rom" "$startup" automatic standard >>"$ROUTES"
+  printf '%s\t%s\t%s\t%s\n' \
+    "$relative" "$rom" automatic standard >>"$ROUTES"
 done <"$TEMP_ROOT/roms.txt"
-printf '%s\t%s\t%s\t%s\t%s\n' \
-  "generated/swan_song_pcv2_integration.pc2" "$PCV2_ROM" "$MONO_FIRMWARE" \
+printf '%s\t%s\t%s\t%s\n' \
+  "generated/swan_song_pcv2_integration.pc2" "$PCV2_ROM" \
   pocket-challenge-v2 pcv2 >>"$ROUTES"
 
 : >"$INDEX"
-while IFS="$(printf '\t')" read -r relative rom startup model contract; do
+while IFS="$(printf '\t')" read -r relative rom model contract; do
   digest=$(printf '%s' "$relative" | shasum -a 256 | awk '{ print $1 }')
   report="$TEMP_ROOT/$digest.json"
   set -- "$MATRIX_BUILD_DIR/debug/SwanSongProbe" \
     --rom "$rom" \
-    --startup-file "$startup" \
     --hardware-model "$model" \
     --frames "$FRAME_COUNT" \
     --report "$report"
@@ -137,7 +115,7 @@ for line in index_path.read_text().splitlines():
     if report.get("activeHardwareModel") != expected_model:
         issues.append("live hardware model identity did not match the route")
     if report.get("system") != expected_system:
-        issues.append("startup-file system identity did not match the route")
+        issues.append("Open IPL system identity did not match the route")
 
     pcv2_exact = None
     if is_pcv2:

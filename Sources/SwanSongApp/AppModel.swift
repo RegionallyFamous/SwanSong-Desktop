@@ -155,7 +155,7 @@ final class AppModel {
         var errorDescription: String? {
             switch self {
             case let .wrongSystem(expected, actual):
-                "That is a \(actual.title) startup file. This game requires the \(expected.title) startup file."
+                "That is a \(actual.title) startup file. The selected optional override is for \(expected.title)."
             }
         }
     }
@@ -178,7 +178,7 @@ final class AppModel {
         var primaryActionTitle: String {
             switch self {
             case .game:
-                "Choose Startup File & Play…"
+                "Choose Original Startup File & Play…"
             case let .translation(continuation, _, _):
                 continuation.primaryActionTitle
             }
@@ -195,15 +195,15 @@ final class AppModel {
         var primaryActionTitle: String {
             switch self {
             case .play:
-                "Choose Startup File & Start Test…"
+                "Choose Original Startup File & Start Test…"
             case .replay:
-                "Choose Startup File & Replay Test…"
+                "Choose Original Startup File & Replay Test…"
             case .verifyRoute:
-                "Choose Startup File & Verify Route…"
+                "Choose Original Startup File & Verify Route…"
             case .verifySuite:
-                "Choose Startup File & Run Suite…"
+                "Choose Original Startup File & Run Suite…"
             case .locateVisualDivergence:
-                "Choose Startup File & Locate Change…"
+                "Choose Original Startup File & Locate Change…"
             }
         }
     }
@@ -461,9 +461,9 @@ final class AppModel {
 
     var firmwareInstallationPrimaryActionTitle: String {
         if firmwareInstallationIsReplacement {
-            return "Choose Another Startup File & Retry…"
+            return "Choose Another Original Startup File & Retry…"
         }
-        return pendingFirmwareIntent?.primaryActionTitle ?? "Choose Startup File"
+        return pendingFirmwareIntent?.primaryActionTitle ?? "Choose Original Startup File"
     }
 
     var firmwareInstallationWillResumeLaunch: Bool {
@@ -581,9 +581,9 @@ final class AppModel {
     private var nextPresentedFrameNumber: UInt64?
     private var didHandleInitialLaunchArguments = false
     #if SWAN_SONG_AUTOMATION
-    private let allowsSyntheticBootForAutomation: Bool = {
+    private let allowsAutomatedPCV2InputProbe: Bool = {
         let environment = ProcessInfo.processInfo.environment
-        return environment["SWAN_SONG_ALLOW_SYNTHETIC_BOOT"] == "1"
+        return environment["SWAN_SONG_ALLOW_AUTOMATED_PCV2_INPUT"] == "1"
             && environment["SWAN_SONG_HEADLESS"] == "1"
             && environment["SWAN_SONG_DATA_DIR"]?.isEmpty == false
     }()
@@ -594,7 +594,7 @@ final class AppModel {
             && environment["SWAN_SONG_DATA_DIR"]?.isEmpty == false
     }()
     #else
-    private let allowsSyntheticBootForAutomation = false
+    private let allowsAutomatedPCV2InputProbe = false
     private let allowsInitialFirmwareImportAutomation = false
     #endif
     private var pendingFirmwareIntent: PendingFirmwareIntent?
@@ -809,8 +809,7 @@ final class AppModel {
             if !engineCanExecute {
                 launchReadiness = .engineUnavailable
             } else {
-                let hasStartupFile = isFirmwareInstalled(firmwareKind(for: game))
-                launchReadiness = hasStartupFile ? .ready : .startupFileRequired
+                launchReadiness = .ready
             }
         }
 
@@ -1341,15 +1340,12 @@ final class AppModel {
         }
     }
 
-    var startupFileKindsRequiredByLibrary: Set<WonderSwanFirmwareKind> {
+    var startupFileKindsUsedByLibrary: Set<WonderSwanFirmwareKind> {
         Set(games.map { firmwareKind(for: $0) })
     }
 
     func missingFirmware(for game: GameRecord) -> WonderSwanFirmwareKind? {
-        let kind = firmwareKind(for: game)
-        return allowsSyntheticBootForAutomation || isFirmwareInstalled(kind)
-            ? nil
-            : kind
+        nil
     }
 
     func canPlayGame(_ game: GameRecord) -> Bool {
@@ -1361,18 +1357,17 @@ final class AppModel {
             && managedGameHealth[game.id] != .missing
             && managedGameHealth[game.id] != .changed
             && managedGameHealth[game.id] != .invalidReference
-            && missingFirmware(for: game) == nil
     }
 
     func requestFirmwareSetup(_ kind: WonderSwanFirmwareKind) {
         refreshFirmwareStatus()
         guard !firmwareImportIsBusy else {
-            presentedNotice = "Startup-file setup is already in progress."
+            presentedNotice = "Original startup-file setup is already in progress."
             return
         }
         guard !isFirmwareInstalled(kind) else {
             presentedError = nil
-            presentedNotice = "\(kind.title) is already ready."
+            presentedNotice = "An original \(kind.title) startup file is already installed."
             return
         }
         presentedNotice = nil
@@ -1381,7 +1376,7 @@ final class AppModel {
         firmwareInstallationError = nil
         firmwareInstallationIsReplacement = false
         pendingFirmwareIntent = nil
-        appDiagnostic("firmware requirement presented kind=\(kind.rawValue) target=library setup")
+        appDiagnostic("optional firmware setup presented kind=\(kind.rawValue) target=settings")
     }
 
     func chooseGame() {
@@ -1531,11 +1526,11 @@ final class AppModel {
     ) {
         guard !firmwareInstallationIsBusy, !firmwareSettingsIsBusy else { return }
         let panel = NSOpenPanel()
-        panel.title = requiredKind.map { "Choose the \($0.title) Startup File" }
-            ?? "Choose a WonderSwan Startup File"
+        panel.title = requiredKind.map { "Choose an Original \($0.title) Startup File" }
+            ?? "Choose an Original WonderSwan Startup File"
         panel.message = requiredKind.map {
-            "Choose a startup file copied from \($0.title) hardware you own, or a ZIP containing it. SwanSong will identify and check the file before storing a private local copy."
-        } ?? "Choose a WonderSwan startup file copied from hardware you own, or a ZIP containing one image. SwanSong will identify the system automatically."
+            "Optional: choose a startup file copied from \($0.title) hardware you own, or a ZIP containing it. SwanSong will identify and check the file before storing a private local copy."
+        } ?? "Optional: choose a WonderSwan startup file copied from hardware you own, or a ZIP containing one image. SwanSong will identify the system automatically."
         panel.prompt = "Choose File"
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
@@ -1624,7 +1619,7 @@ final class AppModel {
                 resumeFirmwareIntent(intent, installedKind: kind)
             } else {
                 firmwareSettingsError = nil
-                firmwareSettingsNotice = "\(kind.title) is ready. Games for this system can now start."
+                firmwareSettingsNotice = "The original \(kind.title) startup file is installed and will be used instead of SwanSong Open IPL."
             }
         }
     }
@@ -1660,7 +1655,7 @@ final class AppModel {
         installedKind: WonderSwanFirmwareKind
     ) {
         guard let intent else {
-            presentedNotice = "\(installedKind.title) is ready."
+            presentedNotice = "The original \(installedKind.title) startup file is installed."
             return
         }
         resumePlayerIntent(intent, diagnosticContext: "firmware intent resumed")
@@ -1739,7 +1734,7 @@ final class AppModel {
             try firmwareStore.remove(kind)
             refreshFirmwareStatus()
             firmwareSettingsError = nil
-            firmwareSettingsNotice = "Removed the \(kind.title) startup file. Games for this system now require setup again."
+            firmwareSettingsNotice = "Removed the original \(kind.title) startup file. Games for this system will use SwanSong Open IPL."
         } catch {
             firmwareSettingsNotice = nil
             firmwareSettingsError = "The \(kind.title) startup file could not be removed. \(error.localizedDescription)"
@@ -1749,7 +1744,7 @@ final class AppModel {
     func revealFirmwareFolder() {
         do {
             let url = try firmwareStore.prepareStorage()
-            NSWorkspace.shared.open(url)
+            NSWorkspace.shared.activateFileViewerSelecting([url])
         } catch {
             firmwareSettingsNotice = nil
             firmwareSettingsError = "The startup-file folder could not be opened. \(error.localizedDescription)"
@@ -2081,24 +2076,6 @@ final class AppModel {
             game.title = project.title
             guard engineCanExecute else {
                 presentedError = "The live ares engine is required to run a translation test."
-                return
-            }
-            let requiredFirmware = firmwareKind(for: game)
-            do {
-                _ = try requireFirmwareForLaunch(requiredFirmware)
-            } catch {
-                presentMissingFirmware(
-                    requiredFirmware,
-                    intent: .translation(
-                        continuation: .play(
-                            role: role,
-                            recordingFromCleanBoot: recordingFromCleanBoot
-                        ),
-                        projectPath: project.rootURL.standardizedFileURL.path,
-                        title: project.title
-                    ),
-                    validationError: error
-                )
                 return
             }
             games.append(game)
@@ -3107,9 +3084,36 @@ final class AppModel {
             if beginPlayingFirst,
                let gameID = result.importedGameIDs.first,
                result.successCount > 0 {
-                self.play(gameID)
+                if !self.installAutomatedInitialFirmwareOverrideIfRequested(
+                    beforePlaying: gameID
+                ) {
+                    self.play(gameID)
+                }
             }
         }
+    }
+
+    /// The private owned-ROM smoke can deliberately exercise the optional
+    /// original-firmware path. Production launches and ordinary automation do
+    /// not enter this branch, and therefore continue directly through Open IPL.
+    private func installAutomatedInitialFirmwareOverrideIfRequested(
+        beforePlaying gameID: GameRecord.ID
+    ) -> Bool {
+        #if SWAN_SONG_AUTOMATION
+        guard
+            allowsInitialFirmwareImportAutomation,
+            let path = ProcessInfo.processInfo.environment["SWAN_SONG_INITIAL_FIRMWARE"],
+            !path.isEmpty,
+            let game = games.first(where: { $0.id == gameID })
+        else { return false }
+        presentMissingFirmware(
+            firmwareKind(for: game),
+            intent: .game(id: game.id, title: game.title)
+        )
+        return true
+        #else
+        return false
+        #endif
     }
 
     private func rollbackManagedImports(
@@ -3368,17 +3372,12 @@ final class AppModel {
             return
         }
         let firmwareKind = firmwareKind(for: game)
-        let firmwareImage: Data?
-        do {
-            firmwareImage = try requireFirmwareForLaunch(firmwareKind)
-        } catch {
-            presentMissingFirmware(
-                firmwareKind,
-                intent: .game(id: game.id, title: game.title),
-                validationError: error
-            )
-            return
-        }
+        let firmwareImage = startupFileForLaunch(firmwareKind)
+        let startupIdentity = firmwareImage
+            ?? WonderSwanOpenIPL.identityData(for: firmwareKind)
+        appDiagnostic(
+            "startup selected kind=\(firmwareKind.rawValue) source=\(firmwareImage == nil ? "openIPL" : "installed")"
+        )
 
             stopPlaying()
             let previousEmulationSession = retiringEmulationSession
@@ -3392,7 +3391,6 @@ final class AppModel {
             let saveStore = saveStore
             let stateStore = stateStore
             let managedGameStore = managedGameStore
-            let allowsSyntheticBootForAutomation = allowsSyntheticBootForAutomation
             let pacingPolicy = pacingPolicy
             playingGameID = id
             currentFrame = nil
@@ -3473,7 +3471,7 @@ final class AppModel {
                     let stateSessionIdentity = GameStateSessionIdentity(
                         rom: data,
                         romChecksum: game.metadata.computedChecksum,
-                        firmware: firmwareImage ?? Data(),
+                        firmware: startupIdentity,
                         isColor: game.metadata.isColor,
                         hardwareModel: game.resolvedHardwareModel,
                         backend: self?.engineBackendName ?? "Unavailable",
@@ -3516,8 +3514,6 @@ final class AppModel {
                     self?.playerLaunchStage = .loadingStartupFile
                     if let firmwareImage {
                         try await runner.stageBootROM(firmwareImage)
-                    } else if !allowsSyntheticBootForAutomation {
-                        throw WonderSwanFirmwareError.missingImage(firmwareKind)
                     }
                     guard self?.emulationGeneration == generation,
                           !Task.isCancelled else {
@@ -3796,7 +3792,7 @@ final class AppModel {
             stopPlaying()
             translationComparisonIsTransitioning = false
             resetTranslationSuiteExecution()
-            presentedError = "SwanSong did not use the startup-file location because it is not a private folder owned by your account. Restore Application Support/SwanSong/Firmware to a regular private folder, then open Startup Files in Settings."
+            presentedError = "SwanSong did not use the optional original startup-file location because it is not a private folder owned by your account. The built-in Open IPL remains available; restore Application Support/SwanSong/Firmware to a regular private folder before using original firmware overrides."
             return
         }
         if error is WonderSwanFirmwareError, let failedGame {
@@ -5016,23 +5012,8 @@ final class AppModel {
         guard let project = translationProject else { return false }
         do {
             let url = try project.romURL(for: role)
-            let game = try translationGame(at: url, project: project)
-            let requiredFirmware = firmwareKind(for: game)
-            do {
-                _ = try requireFirmwareForLaunch(requiredFirmware)
-                return true
-            } catch {
-                presentMissingFirmware(
-                    requiredFirmware,
-                    intent: .translation(
-                        continuation: continuation,
-                        projectPath: project.rootURL.standardizedFileURL.path,
-                        title: project.title
-                    ),
-                    validationError: error
-                )
-                return false
-            }
+            _ = try translationGame(at: url, project: project)
+            return true
         } catch {
             presentedError = "The \(role.title.lowercased()) test ROM could not be inspected: \(error.localizedDescription)"
             return false
@@ -5085,7 +5066,7 @@ final class AppModel {
         }
         let kind = hardwareModel.firmwareKind
         let firmware: TranslationRouteFirmware
-        if let image = try firmwareStore.load(kind) {
+        if let image = startupFileForLaunch(kind) {
             firmware = TranslationRouteFirmware(
                 source: .installed,
                 image: TranslationArtifactDigest(
@@ -5093,13 +5074,11 @@ final class AppModel {
                     sha256: TranslationEvidenceStore.sha256(image)
                 )
             )
-        } else if allowsSyntheticBootForAutomation {
-            firmware = TranslationRouteFirmware(
-                source: .syntheticAutomation,
-                identifier: "open-bootstrap-v1"
-            )
         } else {
-            throw WonderSwanFirmwareError.missingImage(kind)
+            firmware = TranslationRouteFirmware(
+                source: .openIPL,
+                identifier: WonderSwanOpenIPL.identifier
+            )
         }
         return (
             sourceROM,
@@ -5138,9 +5117,11 @@ final class AppModel {
                 "the recorded hardware model changed; re-record the test"
             )
         }
-        guard recordedStart.firmware == current.start.firmware else {
+        guard recordedStart.firmware.isRuntimeEquivalent(
+            to: current.start.firmware
+        ) else {
             throw TranslationLabError.invalidRoute(
-                "the installed firmware changed after this route was recorded; reinstall the matching BIOS or re-record the test"
+                "the startup implementation changed after this route was recorded; restore the same Open IPL/original-firmware choice or re-record the test"
             )
         }
         guard recordedStart.engine == current.start.engine else {
@@ -5182,9 +5163,11 @@ final class AppModel {
                 "the Patched ROM targets different hardware than the recorded route"
             )
         }
-        guard patchedBinding.start.firmware == recordedStart.firmware else {
+        guard patchedBinding.start.firmware.isRuntimeEquivalent(
+            to: recordedStart.firmware
+        ) else {
             throw TranslationLabError.invalidRoute(
-                "the Patched ROM requires different firmware than the recorded route"
+                "the Patched ROM uses a different startup implementation than the recorded route"
             )
         }
         guard patchedBinding.start.rtc == recordedStart.rtc else {
@@ -6424,10 +6407,15 @@ final class AppModel {
                 )
             }
             let kind = start.firmwareKind
-            let startupFile = try firmwareStore.load(kind)
-            if route.start?.firmware.source == .installed, startupFile == nil {
+            let startupFile = start.firmware.source == .installed
+                ? try firmwareStore.load(kind)
+                : nil
+            if start.firmware.source == .installed, startupFile == nil {
                 throw WonderSwanFirmwareError.missingImage(kind)
             }
+            let selectedStartupFile = start.firmware.source == .installed
+                ? startupFile
+                : nil
             let originalURL = try project.romURL(for: .original)
             let patchedURL = try project.romURL(for: .patched)
             let generation = UUID()
@@ -6447,7 +6435,7 @@ final class AppModel {
                         route: route,
                         originalROM: originalROM,
                         patchedROM: patchedROM,
-                        startupFile: startupFile
+                        startupFile: selectedStartupFile
                     ) { [weak self] progress in
                         await MainActor.run {
                             guard self?.translationVisualDivergenceGeneration == generation,
@@ -6758,7 +6746,7 @@ final class AppModel {
         }
         #if SWAN_SONG_AUTOMATION
         if automatedTranslationPCV2InputProbe,
-           allowsSyntheticBootForAutomation,
+           allowsAutomatedPCV2InputProbe,
            translationRouteRecorder != nil,
            playingGame?.resolvedHardwareModel == .pocketChallengeV2 {
             // One independent semantic PCV2 control per frame, followed by a
@@ -6960,14 +6948,18 @@ final class AppModel {
         pocketChallengeV2FirmwareInstalled = firmwareStore.isInstalled(.pocketChallengeV2)
     }
 
-    private func requireFirmwareForLaunch(
+    private func startupFileForLaunch(
         _ kind: WonderSwanFirmwareKind
-    ) throws -> Data? {
-        guard !allowsSyntheticBootForAutomation else { return nil }
-        guard let firmware = try firmwareStore.load(kind) else {
-            throw WonderSwanFirmwareError.missingImage(kind)
+    ) -> Data? {
+        do {
+            return try firmwareStore.load(kind)
+        } catch {
+            appDiagnostic(
+                "optional firmware ignored kind=\(kind.rawValue) reason=\(error.localizedDescription)"
+            )
+            presentedNotice = "SwanSong could not use the optional original \(kind.title) startup file, so this launch will use SwanSong Open IPL. Review Original Startup Files in Settings when convenient."
+            return nil
         }
-        return firmware
     }
 
     private func presentMissingFirmware(
@@ -6978,7 +6970,7 @@ final class AppModel {
         refreshFirmwareStatus()
         guard !firmwareImportIsBusy else {
             appDiagnostic(
-                "firmware requirement ignored while import is busy target=\(intent.title)"
+                "optional firmware replacement ignored while import is busy target=\(intent.title)"
             )
             return
         }
@@ -6995,7 +6987,7 @@ final class AppModel {
         firmwareInstallationIsReplacement = false
         pendingFirmwareIntent = intent
         appDiagnostic(
-            "firmware requirement presented kind=\(kind.rawValue) target=\(intent.title)"
+            "optional firmware replacement presented kind=\(kind.rawValue) target=\(intent.title)"
         )
         #if SWAN_SONG_AUTOMATION
         Task { @MainActor [weak self] in

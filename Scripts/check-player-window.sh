@@ -42,7 +42,6 @@ swift -e '
 SWAN_SONG_DATA_DIR="$DATA_DIR" \
 SWAN_SONG_HEADLESS=1 \
 SWAN_SONG_APP_DIAGNOSTICS=1 \
-SWAN_SONG_ALLOW_SYNTHETIC_BOOT=1 \
 SWAN_SONG_INITIAL_ROM="$ROM" \
 SWAN_SONG_QUICK_STATE_FRAME=60 \
 SWAN_SONG_STOP_AT_FRAME=240 \
@@ -63,10 +62,11 @@ window_info() {
     for window in windows {
       let owner = (window[kCGWindowOwnerPID as String] as? NSNumber)?.int32Value ?? -1
       let layer = (window[kCGWindowLayer as String] as? NSNumber)?.intValue ?? -1
+      let isOnscreen = (window[kCGWindowIsOnscreen as String] as? NSNumber)?.boolValue ?? false
       let bounds = window[kCGWindowBounds as String] as? NSDictionary
       let width = (bounds?["Width"] as? NSNumber)?.intValue ?? 0
       let height = (bounds?["Height"] as? NSNumber)?.intValue ?? 0
-      if owner == pid && layer == 0 && height > 100 {
+      if owner == pid && layer == 0 && isOnscreen && height > 100 {
         let name = window[kCGWindowName as String] as? String ?? ""
         print("\(width)|\(height)|\(name)")
         break
@@ -85,7 +85,8 @@ window_id() {
     for window in windows {
       let owner = (window[kCGWindowOwnerPID as String] as? NSNumber)?.int32Value ?? -1
       let layer = (window[kCGWindowLayer as String] as? NSNumber)?.intValue ?? -1
-      if owner == pid, layer == 0,
+      let isOnscreen = (window[kCGWindowIsOnscreen as String] as? NSNumber)?.boolValue ?? false
+      if owner == pid, layer == 0, isOnscreen,
          let number = window[kCGWindowNumber as String] as? NSNumber {
         print(number.intValue)
         break

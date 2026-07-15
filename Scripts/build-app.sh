@@ -186,6 +186,8 @@ cp "$MACOS_DIR/PRIVACY.md" "$APP_DIR/Contents/Resources/PRIVACY.md"
 cp "$MACOS_DIR/SUPPORT.md" "$APP_DIR/Contents/Resources/SUPPORT.md"
 cp "$MACOS_DIR/Dependencies/THIRD_PARTY_NOTICES.md" \
   "$APP_DIR/Contents/Resources/THIRD_PARTY_NOTICES.md"
+cp "$MACOS_DIR/Dependencies/ares.lock.json" \
+  "$APP_DIR/Contents/Resources/ares.lock.json"
 
 list_rpaths() {
   otool -l "$1" | awk '

@@ -219,6 +219,34 @@ final class UISnapshotRegressionTests: XCTestCase {
         )
     }
 
+    func testLegalSupportOverviewRendersAtMinimumWindowSize() throws {
+        let preferenceKey = "legalSupportSelectedSection"
+        let preservedSelection = UserDefaults.standard.object(forKey: preferenceKey)
+        UserDefaults.standard.set(LegalSupportSection.overview.rawValue, forKey: preferenceKey)
+        defer { restoreUserDefault(preservedSelection, forKey: preferenceKey) }
+
+        let size = CGSize(width: 820, height: 640)
+        let rendered = try render(
+            AnyView(LegalSupportView()),
+            size: size,
+            scheme: .light
+        )
+        let signature = imageSignature(
+            name: "legal-support-overview",
+            scheme: .light,
+            bitmap: rendered.bitmap,
+            png: rendered.png
+        )
+
+        XCTAssertEqual(signature.width, Int(size.width))
+        XCTAssertEqual(signature.height, Int(size.height))
+        XCTAssertGreaterThan(signature.pngByteCount, 2_000)
+        XCTAssertGreaterThan(signature.sampledColorCount, 8)
+        XCTAssertGreaterThan(signature.opaqueSampleFraction, 0.98)
+        XCTAssertLessThan(signature.centralDominantColorFraction, 0.96)
+        XCTAssertLessThan(signature.yellowPlaceholderFraction, 0.08)
+    }
+
     func testCoreSurfaceAccessibilityContracts() throws {
         let root = try temporaryRoot()
         defer { try? FileManager.default.removeItem(at: root) }
@@ -269,11 +297,11 @@ final class UISnapshotRegressionTests: XCTestCase {
         let firmware = FirmwareRequirementView(model: firmwareModel, kind: .color)
         XCTAssertEqual(
             firmware.accessibilityContractHeadline,
-            "Different WonderSwan Color BIOS Required"
+            "Try Another Original WonderSwan Color BIOS"
         )
         XCTAssertEqual(
             firmware.accessibilityContractPrimaryActionTitle,
-            "Choose Another BIOS & Retry…"
+            "Choose Another Original BIOS & Retry…"
         )
         XCTAssertEqual(FirmwareRequirementView.accessibilityIdentifier, "firmware-required-sheet")
 
@@ -286,11 +314,11 @@ final class UISnapshotRegressionTests: XCTestCase {
         )
         XCTAssertEqual(
             missingFirmware.accessibilityContractHeadline,
-            "WonderSwan Color BIOS Required"
+            "Optional Original WonderSwan Color BIOS"
         )
         XCTAssertEqual(
             missingFirmware.accessibilityContractPrimaryActionTitle,
-            "Choose BIOS…"
+            "Choose Original BIOS…"
         )
 
         let stateStore = GameStateStore(
@@ -486,42 +514,42 @@ final class UISnapshotRegressionTests: XCTestCase {
         XCTAssertTrue(pocketChallengeHint.contains("Escape"))
 
         let optional = StartupFileLibraryReadiness(
-            requiredKinds: [],
+            libraryKinds: [],
             installedKinds: []
         )
-        XCTAssertEqual(optional.summary, "Add files as needed")
+        XCTAssertEqual(optional.summary, "Open IPL ready")
         XCTAssertFalse(optional.needsAttention)
-        XCTAssertEqual(optional.rowReadiness(for: .color), .notInstalled)
+        XCTAssertEqual(optional.rowReadiness(for: .color), .openIPL)
 
         let missingPocketChallenge = StartupFileLibraryReadiness(
-            requiredKinds: [.monochrome, .pocketChallengeV2],
+            libraryKinds: [.monochrome, .pocketChallengeV2],
             installedKinds: [.monochrome]
         )
-        XCTAssertEqual(missingPocketChallenge.summary, "1 needed for library")
-        XCTAssertTrue(missingPocketChallenge.needsAttention)
+        XCTAssertEqual(missingPocketChallenge.summary, "1 original override")
+        XCTAssertFalse(missingPocketChallenge.needsAttention)
         XCTAssertEqual(
             missingPocketChallenge.rowReadiness(for: .monochrome),
-            .ready
+            .originalInstalled
         )
         XCTAssertEqual(
             missingPocketChallenge.rowReadiness(for: .pocketChallengeV2),
-            .neededForLibrary
+            .openIPL
         )
         XCTAssertEqual(
             missingPocketChallenge.rowReadiness(for: .color),
-            .notInstalled
+            .openIPL
         )
 
         let ready = StartupFileLibraryReadiness(
-            requiredKinds: [.pocketChallengeV2],
+            libraryKinds: [.pocketChallengeV2],
             installedKinds: [.pocketChallengeV2]
         )
-        XCTAssertEqual(ready.summary, "Library systems ready")
+        XCTAssertEqual(ready.summary, "1 original override")
         XCTAssertTrue(ready.isReadyForLibrary)
         XCTAssertFalse(ready.needsAttention)
         XCTAssertEqual(
             GameLaunchReadiness.startupFileRequired.confidenceDetail,
-            "Add the matching system startup file once, then this game can launch."
+            "This legacy status is retained for older diagnostics; current games use SwanSong Open IPL."
         )
     }
 
@@ -537,16 +565,16 @@ final class UISnapshotRegressionTests: XCTestCase {
         XCTAssertEqual(fixture.game.sourceFileName, "Kana Quest Coach.pc2")
         XCTAssertEqual(fixture.model.firmwareKind(for: fixture.game), .pocketChallengeV2)
         XCTAssertEqual(
-            fixture.model.startupFileKindsRequiredByLibrary,
+            fixture.model.startupFileKindsUsedByLibrary,
             [.monochrome, .pocketChallengeV2]
         )
-        XCTAssertEqual(fixture.model.missingFirmware(for: fixture.game), .pocketChallengeV2)
+        XCTAssertNil(fixture.model.missingFirmware(for: fixture.game))
         XCTAssertFalse(fixture.model.isFirmwareInstalled(.pocketChallengeV2))
         XCTAssertTrue(fixture.model.isFirmwareInstalled(.monochrome))
         XCTAssertEqual(
             fixture.model.gameConfidence(for: fixture.game),
             GameConfidence(
-                launchReadiness: .startupFileRequired,
+                launchReadiness: .ready,
                 compatibility: .untested,
                 romIntegrity: .unmanaged
             )
@@ -596,7 +624,7 @@ final class UISnapshotRegressionTests: XCTestCase {
         XCTAssertEqual(
             fixture.model.gameConfidence(for: fixture.missingStartupFile),
             GameConfidence(
-                launchReadiness: .startupFileRequired,
+                launchReadiness: .ready,
                 compatibility: .untested,
                 romIntegrity: .unmanaged
             )

@@ -80,13 +80,12 @@ private struct SwanSongProbe {
 
     private static func run() throws {
         let options = try parseOptions()
-        guard let romURL = options.rom, let startupURL = options.startupFile else {
+        guard let romURL = options.rom else {
             throw ProbeError(message: usage)
         }
 
         let rom = try Data(contentsOf: romURL, options: [.mappedIfSafe])
         let metadata = try EngineSession.inspect(rom: rom)
-        let startup = try WonderSwanFirmwareImporter.data(from: startupURL)
         let startupKind: WonderSwanFirmwareKind
         switch options.hardwareModel {
         case .automatic:
@@ -98,12 +97,17 @@ private struct SwanSongProbe {
         case .pocketChallengeV2:
             startupKind = .pocketChallengeV2
         }
-        do {
-            try WonderSwanFirmwareStore.validate(startup, for: startupKind)
-        } catch {
-            throw ProbeError(
-                message: "The selected route requires a valid \(startupKind.title) startup file: \(error.localizedDescription)"
-            )
+        let startup = try options.startupFile.map {
+            try WonderSwanFirmwareImporter.data(from: $0)
+        }
+        if let startup {
+            do {
+                try WonderSwanFirmwareStore.validate(startup, for: startupKind)
+            } catch {
+                throw ProbeError(
+                    message: "The optional \(startupKind.title) original-firmware override is invalid: \(error.localizedDescription)"
+                )
+            }
         }
 
         if options.requirePocketChallengeV2FixtureContract {
@@ -127,7 +131,9 @@ private struct SwanSongProbe {
            !engine.capabilities.contains(.pocketChallengeV2) {
             throw ProbeError(message: "The live engine does not advertise Pocket Challenge V2 support.")
         }
-        try engine.stageBootROM(startup)
+        if let startup {
+            try engine.stageBootROM(startup)
+        }
         _ = try engine.load(rom: rom)
         let activeHardwareModel = engine.activeHardwareModel
         guard options.hardwareModel == .automatic || activeHardwareModel == options.hardwareModel else {
@@ -283,7 +289,9 @@ private struct SwanSongProbe {
             try engine.stagePersistence(
                 EnginePersistence(regions: [.cartridgeFlash: stagedFlash])
             )
-            try engine.stageBootROM(startup)
+            if let startup {
+                try engine.stageBootROM(startup)
+            }
             _ = try engine.load(rom: rom)
             guard engine.activeHardwareModel == .pocketChallengeV2 else {
                 throw ProbeError(message: "The staged-flash reload did not select Pocket Challenge V2.")
@@ -510,7 +518,9 @@ private struct SwanSongProbe {
     }
 
     private static let usage = """
-    Usage: SwanSongProbe --rom FILE --startup-file FILE_OR_ZIP [options]
+    Usage: SwanSongProbe --rom FILE [options]
+      --startup-file FILE_OR_ZIP
+                                Use optional original firmware instead of Open IPL
       --frames N                Run N frames (default 600)
       --report FILE             Write a deterministic JSON activity report
       --capture FILE.ppm        Write the final native game raster as PPM

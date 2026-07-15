@@ -71,9 +71,9 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.1.0</string>
-	<key>CFBundleVersion</key>
-	<string>1</string>
+    <string>0.1.1</string>
+    <key>CFBundleVersion</key>
+    <string>2</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2026 SwanSong contributors.</string>
     <key>LSApplicationCategoryType</key>

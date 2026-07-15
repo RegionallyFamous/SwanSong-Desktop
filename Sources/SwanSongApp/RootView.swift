@@ -45,64 +45,51 @@ enum PlayerControlCopy {
 }
 
 enum StartupFileRowReadiness: Equatable {
-    case ready
-    case neededForLibrary
-    case notInstalled
+    case originalInstalled
+    case openIPL
 
     var title: String {
         switch self {
-        case .ready: "Ready"
-        case .neededForLibrary: "Needed for library"
-        case .notInstalled: "Not installed"
+        case .originalInstalled: "Original IPL"
+        case .openIPL: "Open IPL"
         }
     }
 
     var symbol: String {
         switch self {
-        case .ready: "checkmark"
-        case .neededForLibrary: "exclamationmark.circle.fill"
-        case .notInstalled: "circle"
+        case .originalInstalled: "checkmark.seal.fill"
+        case .openIPL: "checkmark.shield.fill"
         }
     }
 }
 
 struct StartupFileLibraryReadiness: Equatable {
-    let requiredKinds: Set<WonderSwanFirmwareKind>
+    let libraryKinds: Set<WonderSwanFirmwareKind>
     let installedKinds: Set<WonderSwanFirmwareKind>
 
-    var missingRequiredKinds: Set<WonderSwanFirmwareKind> {
-        requiredKinds.subtracting(installedKinds)
+    var installedLibraryKinds: Set<WonderSwanFirmwareKind> {
+        libraryKinds.intersection(installedKinds)
     }
 
     var summary: String {
-        if requiredKinds.isEmpty {
-            return installedKinds.isEmpty
-                ? "Add files as needed"
-                : "\(installedKinds.count) installed"
-        }
-        return missingRequiredKinds.isEmpty
-            ? "Library systems ready"
-            : "\(missingRequiredKinds.count) needed for library"
+        guard !installedLibraryKinds.isEmpty else { return "Open IPL ready" }
+        return "\(installedLibraryKinds.count) original override\(installedLibraryKinds.count == 1 ? "" : "s")"
     }
 
     var summarySymbol: String {
-        if requiredKinds.isEmpty { return "internaldrive" }
-        return missingRequiredKinds.isEmpty
-            ? "checkmark.circle.fill"
-            : "exclamationmark.circle.fill"
+        "checkmark.shield.fill"
     }
 
     var needsAttention: Bool {
-        !missingRequiredKinds.isEmpty
+        false
     }
 
     var isReadyForLibrary: Bool {
-        !requiredKinds.isEmpty && missingRequiredKinds.isEmpty
+        true
     }
 
     func rowReadiness(for kind: WonderSwanFirmwareKind) -> StartupFileRowReadiness {
-        if installedKinds.contains(kind) { return .ready }
-        return requiredKinds.contains(kind) ? .neededForLibrary : .notInstalled
+        installedKinds.contains(kind) ? .originalInstalled : .openIPL
     }
 }
 
@@ -789,7 +776,7 @@ struct FirmwareRequirementView: View {
                     VStack(alignment: .leading, spacing: 12) {
                         requirementFact(
                             symbol: "gamecontroller.fill",
-                            title: "Required system BIOS",
+                            title: "Optional original BIOS",
                             detail: systemUseDescription
                         )
                         Divider()
@@ -811,9 +798,9 @@ struct FirmwareRequirementView: View {
                     .background(
                         .background.secondary, in: RoundedRectangle(cornerRadius: 15, style: .continuous))
 
-                    DisclosureGroup("Why SwanSong cannot provide this file") {
+                    DisclosureGroup("Why this file is optional") {
                         Text(
-                            "The startup file is separate system software. SwanSong never bundles, searches for, downloads, uploads, or shares it. Your selected file is validated locally and remains on this Mac."
+                            "SwanSong includes its independently written Open IPL for normal play. It never bundles, searches for, downloads, uploads, or shares original system firmware. Any original file you select is validated locally and remains on this Mac."
                         )
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -987,15 +974,15 @@ struct FirmwareRequirementView: View {
     private var firmwareContinuationStatus: some View {
         Label(
             model.firmwareInstallationIsReplacement
-                ? "Different BIOS required to retry"
+                ? "Optional compatibility override"
                 : model.firmwareInstallationWillResumeLaunch
-                ? "BIOS required before this action"
-                : "BIOS required before play",
+                ? "Original BIOS will be used for this retry"
+                : "Open IPL remains available",
             systemImage: model.firmwareInstallationIsReplacement
                 ? "arrow.clockwise.circle"
                 : model.firmwareInstallationWillResumeLaunch
                 ? "play.circle"
-                : "lock.fill"
+                : "checkmark.shield.fill"
         )
         .font(.caption.weight(.semibold))
         .foregroundStyle(model.firmwareInstallationIsReplacement ? Color.orange : SwanTheme.accent)
@@ -1030,18 +1017,18 @@ struct FirmwareRequirementView: View {
 
     private var requirementHeadline: String {
         if model.firmwareInstallationIsReplacement {
-            return "Choose a different local \(kind.title) BIOS. SwanSong will validate it privately and retry \(continuationDescription) automatically."
+            return "Choose a different original \(kind.title) BIOS. SwanSong will validate it privately and retry \(continuationDescription) automatically."
         }
         if let target = model.firmwareInstallationTargetTitle {
-            return "\(target) is ready. Choose a local \(kind.expectedByteCount / 1_024) KiB BIOS and SwanSong will continue automatically."
+            return "\(target) can use SwanSong Open IPL now. Optionally choose an original \(kind.expectedByteCount / 1_024) KiB BIOS and SwanSong will retry with it automatically."
         }
-        return "Choose a local \(kind.expectedByteCount / 1_024) KiB BIOS before playing \(kind.title) games."
+        return "SwanSong Open IPL already starts \(kind.title) games. Add an original \(kind.expectedByteCount / 1_024) KiB BIOS only when you want a compatibility override."
     }
 
     var accessibilityContractHeadline: String {
         model.firmwareInstallationIsReplacement
-            ? "Different \(kind.title) BIOS Required"
-            : "\(kind.title) BIOS Required"
+            ? "Try Another Original \(kind.title) BIOS"
+            : "Optional Original \(kind.title) BIOS"
     }
 
     var accessibilityContractPrimaryActionTitle: String {
@@ -1054,25 +1041,25 @@ struct FirmwareRequirementView: View {
 
     private var firmwareGateStatus: String {
         model.firmwareInstallationIsReplacement
-            ? "Startup check needs attention"
-            : "Required before play"
+            ? "Compatibility option"
+            : "Optional override"
     }
 
     private var firmwareRequirementIntroduction: String {
         if model.firmwareInstallationIsReplacement {
-            return "The emulator produced frames, but the current BIOS may not be the right dump for this game. A replacement must come from hardware you own or another source you are authorized to use."
+            return "The emulator produced frames, but the installed original BIOS may not suit this game. You can try another authorized dump or remove the override in Settings to return to SwanSong Open IPL."
         }
-        return "This one-time system BIOS—also called a boot ROM or startup file—must come from hardware you own or another source you are authorized to use."
+        return "This optional original system BIOS—also called a boot ROM or startup file—must come from hardware you own or another source you are authorized to use. It is not required for normal play."
     }
 
     private var systemUseDescription: String {
         switch kind {
         case .monochrome:
-            "The \(kind.expectedByteCount / 1_024) KiB BIOS starts original monochrome WonderSwan games."
+            "The \(kind.expectedByteCount / 1_024) KiB original BIOS can replace Open IPL for monochrome WonderSwan compatibility testing."
         case .color:
-            "The \(kind.expectedByteCount / 1_024) KiB BIOS starts WonderSwan Color and SwanCrystal games."
+            "The \(kind.expectedByteCount / 1_024) KiB original BIOS can replace Open IPL for WonderSwan Color and SwanCrystal compatibility testing."
         case .pocketChallengeV2:
-            "The \(kind.expectedByteCount / 1_024) KiB BIOS starts Pocket Challenge V2 software on its distinct Benesse hardware path."
+            "The \(kind.expectedByteCount / 1_024) KiB original BIOS can replace Open IPL on the distinct Pocket Challenge V2 hardware path."
         }
     }
 
@@ -1085,9 +1072,9 @@ struct FirmwareRequirementView: View {
             return "Choose and validate another BIOS. SwanSong will retry \(continuationDescription) after replacement."
         }
         if model.firmwareInstallationWillResumeLaunch {
-            return "Choose the required BIOS. SwanSong will continue \(continuationDescription) after setup."
+            return "Choose an original BIOS. SwanSong will retry \(continuationDescription) with that compatibility override."
         }
-        return "Choose and validate the required BIOS for private local storage."
+        return "Choose and validate an optional original BIOS for private local storage."
     }
 
     private func requirementFact(
@@ -1140,17 +1127,17 @@ private struct StartupFileGuideView: View {
                         .accessibilityHidden(true)
 
                         VStack(alignment: .leading, spacing: 5) {
-                            Text("About Startup Files")
+                            Text("Open IPL & Original Startup Files")
                                 .font(.title2.weight(.semibold))
                                 .accessibilityAddTraits(.isHeader)
-                            Text("A small system program—also called a boot ROM or BIOS—that runs before the game starts.")
+                            Text("SwanSong includes an independent startup implementation, with optional support for original boot ROMs.")
                                 .font(.callout)
                                 .foregroundStyle(.secondary)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
                     }
 
-                    Text("SwanSong needs the matching startup file to start games, but it isn’t part of SwanSong. You add it once; the app validates it locally and keeps a private copy in Application Support.")
+                    Text("Games start with SwanSong Open IPL and require no separate BIOS. For compatibility comparisons, you may install an original startup file; SwanSong validates it locally and keeps a private copy in Application Support.")
                         .font(.body)
                         .fixedSize(horizontal: false, vertical: true)
 
@@ -1178,17 +1165,17 @@ private struct StartupFileGuideView: View {
                     }
 
                     VStack(alignment: .leading, spacing: 14) {
-                        Text("How setup works")
+                        Text("Using an original startup file")
                             .font(.headline)
                         guideStep(
                             number: 1,
-                            title: "Make an authorized local copy",
-                            detail: "Use a file copied from hardware you own or another source you are authorized to use. Rules vary by location."
+                            title: "Only if you want the override",
+                            detail: "Normal play already uses SwanSong Open IPL. Install original firmware only for compatibility testing or original startup behavior."
                         )
                         guideStep(
                             number: 2,
-                            title: "Choose or drop the file",
-                            detail: "SwanSong accepts .rom, .bin, or a ZIP containing exactly one startup file."
+                            title: "Choose an authorized local copy",
+                            detail: "SwanSong accepts .rom, .bin, or a ZIP containing exactly one startup file copied from hardware you own or another authorized source."
                         )
                         guideStep(
                             number: 3,
@@ -1205,9 +1192,9 @@ private struct StartupFileGuideView: View {
                             .foregroundStyle(SwanTheme.cyan)
                             .accessibilityHidden(true)
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Why there is no download button")
+                            Text("Independent startup, no firmware download")
                                 .font(.callout.weight(.semibold))
-                            Text("Public availability does not grant redistribution permission. SwanSong does not bundle, search for, download, or upload startup files.")
+                            Text("SwanSong Open IPL contains no Bandai boot-ROM bytes. Public availability does not grant redistribution permission, so SwanSong does not bundle, search for, download, or upload original startup files.")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                                 .fixedSize(horizontal: false, vertical: true)
@@ -1226,7 +1213,7 @@ private struct StartupFileGuideView: View {
             Divider()
 
             HStack {
-                Label("Local-only validation", systemImage: "checkmark.shield.fill")
+                Label("Open IPL included · original files optional", systemImage: "checkmark.shield.fill")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Spacer()
@@ -1468,112 +1455,6 @@ private extension GameLibrarySortOrder {
     }
 }
 
-private struct LibraryFirmwareRequirement: Identifiable {
-    let kind: WonderSwanFirmwareKind
-    let gameCount: Int
-
-    var id: WonderSwanFirmwareKind { kind }
-}
-
-private struct LibraryFirmwareBanner: View {
-    let requirements: [LibraryFirmwareRequirement]
-    let onSetup: (WonderSwanFirmwareKind) -> Void
-
-    var body: some View {
-        ViewThatFits(in: .horizontal) {
-            HStack(spacing: 16) {
-                bannerIdentity
-                Spacer(minLength: 12)
-                setupActions
-            }
-
-            VStack(alignment: .leading, spacing: 14) {
-                bannerIdentity
-                setupActions
-            }
-        }
-        .padding(18)
-        .background(
-            LinearGradient(
-                colors: [SwanTheme.violet.opacity(0.14), SwanTheme.cyan.opacity(0.08)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            ),
-            in: RoundedRectangle(cornerRadius: 18, style: .continuous)
-        )
-        .overlay {
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(SwanTheme.accent.opacity(0.24))
-        }
-        .accessibilityIdentifier("library-firmware-setup-banner")
-    }
-
-    private var bannerIdentity: some View {
-        HStack(alignment: .top, spacing: 13) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [SwanTheme.violet, SwanTheme.cyan.opacity(0.9)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                Image(systemName: "cpu.fill")
-                    .font(.title3)
-                    .foregroundStyle(.white)
-            }
-            .frame(width: 44, height: 44)
-            .accessibilityHidden(true)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(requirements.count == 1 ? "System startup file required" : "System startup files required")
-                    .font(.headline)
-                    .accessibilityAddTraits(.isHeader)
-                Text(requirementSummary)
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-                Label("User supplied · checked locally · never downloaded", systemImage: "lock.shield.fill")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-        }
-    }
-
-    private var setupActions: some View {
-        HStack(spacing: 9) {
-            ForEach(requirements) { requirement in
-                Button {
-                    onSetup(requirement.kind)
-                } label: {
-                    Label(
-                        "Add \(requirement.kind.title)…",
-                        systemImage: requirement.kind == .color
-                            ? "circle.hexagongrid.fill"
-                            : "circle.grid.cross"
-                    )
-                }
-                .buttonStyle(.bordered)
-                .tint(requirement.id == requirements.first?.id ? SwanTheme.accent : Color.gray)
-                .help(
-                    "Add the \(requirement.kind.expectedByteCount / 1_024) KiB \(requirement.kind.title) startup file"
-                )
-                .accessibilityIdentifier("library-add-\(requirement.kind.rawValue)-firmware")
-            }
-        }
-        .fixedSize(horizontal: true, vertical: false)
-    }
-
-    private var requirementSummary: String {
-        requirements.map { requirement in
-            "\(requirement.gameCount) \(requirement.kind.title) game\(requirement.gameCount == 1 ? "" : "s")"
-        }
-        .joined(separator: " and ")
-        + " cannot start until the matching local file is added once."
-    }
-}
-
 private struct LibraryView: View {
     @Bindable var model: AppModel
     var gameConfidenceGeometryProbe: GameConfidenceGeometryProbe? = nil
@@ -1646,13 +1527,6 @@ private struct LibraryView: View {
         } else {
             ScrollView {
                 VStack(spacing: 18) {
-                    if !firmwareRequirements.isEmpty {
-                        LibraryFirmwareBanner(
-                            requirements: firmwareRequirements,
-                            onSetup: model.requestFirmwareSetup
-                        )
-                    }
-
                     LazyVGrid(columns: columns, spacing: 18) {
                         ForEach(displayedGames) { game in
                             gameCard(game)
@@ -1801,18 +1675,6 @@ private struct LibraryView: View {
             matching: searchText,
             sortedBy: sortOption
         )
-    }
-
-    private var firmwareRequirements: [LibraryFirmwareRequirement] {
-        guard model.section == .library else { return [] }
-        return WonderSwanFirmwareKind.allCases.compactMap { kind in
-            let gameCount = model.games.count { game in
-                model.firmwareKind(for: game) == kind
-                    && model.missingFirmware(for: game) == kind
-            }
-            guard gameCount > 0 else { return nil }
-            return LibraryFirmwareRequirement(kind: kind, gameCount: gameCount)
-        }
     }
 
     private var libraryFilter: GameLibraryFilter {
@@ -7100,7 +6962,7 @@ extension GameLaunchReadiness {
         case .ready: "Ready to launch"
         case .checkingGame: "Checking game copy"
         case .gameUnavailable: "Game copy unavailable"
-        case .startupFileRequired: "Startup file required"
+        case .startupFileRequired: "Original startup override unavailable"
         case .engineUnavailable: "Playback engine unavailable"
         }
     }
@@ -7108,13 +6970,13 @@ extension GameLaunchReadiness {
     var confidenceDetail: String {
         switch self {
         case .ready:
-            "The native engine, matching startup file, and local game bytes are available."
+            "The native engine, SwanSong Open IPL, and local game bytes are available."
         case .checkingGame:
             "SwanSong is checking the private game copy before allowing play."
         case .gameUnavailable:
             "Repair or re-add the exact game before trying to play."
         case .startupFileRequired:
-            "Add the matching system startup file once, then this game can launch."
+            "This legacy status is retained for older diagnostics; current games use SwanSong Open IPL."
         case .engineUnavailable:
             "The native SwanSong playback engine is not currently available."
         }
@@ -8842,7 +8704,7 @@ private struct PlayerView: View {
         if model.playerLaunchNeedsAttention {
             switch model.playerLaunchStage ?? .verifyingGame {
             case .loadingStartupFile:
-                return "Startup file is taking longer to load"
+                return "Startup is taking longer to prepare"
             case .startingSystem, .waitingForFirstFrame:
                 return "Still waiting for the first frame"
             case .closingPreviousSession, .verifyingGame, .startingEngine, .restoringSave:
@@ -8862,13 +8724,13 @@ private struct PlayerView: View {
             case .startingEngine:
                 return "The native emulation engine is taking longer than expected to start. Try again, or return to the Library."
             case .loadingStartupFile:
-                return "The installed system startup file is taking longer than expected to load. Try again or review that file in Settings."
+                return "The startup path is taking longer than expected to prepare. Try again or review the optional original-file override in Settings."
             case .restoringSave:
                 return "The local cartridge save is taking longer than expected to restore. Try again, or return to the Library without changing it."
             case .startingSystem:
-                return "The emulated system has not finished powering on. Try again; if this continues, review the matching startup file."
+                return "The emulated system has not finished powering on. Try again; if this continues, review Startup settings."
             case .waitingForFirstFrame:
-                return "The engine is running, but no game frame has arrived. Try again; if this continues, review the matching startup file."
+                return "The engine is running, but no game frame has arrived. Try again; if this continues, review Startup settings."
             }
         }
         switch model.playerLaunchStage ?? .verifyingGame {
@@ -8879,7 +8741,7 @@ private struct PlayerView: View {
         case .startingEngine:
             return "Preparing the native ares emulation engine."
         case .loadingStartupFile:
-            return "Loading the matching system startup file from private local storage."
+            return "Selecting SwanSong Open IPL or an installed original compatibility override."
         case .restoringSave:
             return "Restoring this game’s local cartridge save data."
         case .startingSystem:
@@ -8894,7 +8756,7 @@ private struct PlayerView: View {
         case .closingPreviousSession: "Closing previous game"
         case .verifyingGame: "Verifying game"
         case .startingEngine: "Starting engine"
-        case .loadingStartupFile: "Loading startup file"
+        case .loadingStartupFile: "Preparing startup"
         case .restoringSave: "Restoring save data"
         case .startingSystem: "Starting system"
         case .waitingForFirstFrame: "Waiting for video"
@@ -8927,21 +8789,21 @@ private struct PlayerView: View {
             return "The previous game is taking longer than expected to close safely. Keep waiting or return to the Library."
         }
         if launchShowsStartupFileRecovery {
-            return "Still waiting for the first game frame while \(launchStageTitle.lowercased()). Try again or review the matching startup file."
+            return "Still waiting for the first game frame while \(launchStageTitle.lowercased()). Try again or review Startup settings."
         }
         return "Game startup is taking longer than expected while \(launchStageTitle.lowercased()). Try again or return to the Library."
     }
 
     private var startupFileReplacementTitle: String {
         guard let game = model.playingGame else {
-            return "Stop & Try Another Startup File…"
+            return "Stop & Try an Original Startup File…"
         }
-        return "Stop & Try Another \(model.firmwareKind(for: game).title) Startup File…"
+        return "Stop & Try an Original \(model.firmwareKind(for: game).title) Startup File…"
     }
 
     private var playerVideoActivityDetail: String {
         let startupFile = model.playingGame.map {
-            " or review the \(model.firmwareKind(for: $0).title) startup file"
+            " or try the optional original \(model.firmwareKind(for: $0).title) startup mode"
         } ?? ""
         switch model.playerVideoActivityIssue {
         case .lowMotion:
@@ -8990,7 +8852,7 @@ private struct PlayerView: View {
             return "SwanSong is saving and unloading the failed emulation session"
         }
         if model.playerVideoActivityIsDegraded {
-            return "Game controls remain available. Use Recovery to review restart and BIOS options."
+            return "Game controls remain available. Use Recovery to review restart and optional original-BIOS choices."
         }
         return "Click the game display to enable keyboard controls"
     }
@@ -9420,7 +9282,7 @@ struct PlayerVideoActivityRecoveryCard: View {
 
     private var startupFileButton: some View {
         Button(
-            "Try Another Startup File…",
+            "Try an Original Startup File…",
             systemImage: "cpu",
             action: onReplaceStartupFile
         )
@@ -9428,9 +9290,9 @@ struct PlayerVideoActivityRecoveryCard: View {
         .frame(minHeight: Self.minimumInteractiveDimension)
         .contentShape(Rectangle())
         .disabled(startupFileActionIsDisabled)
-        .help("Stop the game, choose another startup file, and retry automatically")
+        .help("Stop the game, choose an optional original startup file, and retry automatically")
         .accessibilityLabel(startupFileAccessibilityTitle)
-        .accessibilityHint("Stops the current game, then retries automatically after the replacement is validated")
+        .accessibilityHint("Stops the current game, then retries automatically after the optional original file is validated")
     }
 
     private var dismissButton: some View {
@@ -10320,7 +10182,7 @@ struct StateTimelineCard: View {
         }
         return switch state.compatibility {
         case .ready:
-            "Compatible with this game, startup file, and emulation engine."
+            "Compatible with this game, startup implementation, and emulation engine."
         case .legacyNeedsConfirmation:
             "Created by an earlier SwanSong version and missing full compatibility information."
         case let .wrongROM(reason),
@@ -10433,7 +10295,7 @@ struct SettingsView: View {
 
             FirmwareSettingsView(model: model)
                 .tabItem {
-                    Label("Startup Files", systemImage: "cpu")
+                    Label("Startup", systemImage: "cpu")
                 }
                 .tag(2)
 
@@ -10494,10 +10356,10 @@ private struct FirmwareSettingsView: View {
                     .accessibilityHidden(true)
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Startup Files")
+                        Text("WonderSwan Startup")
                             .font(.title2.weight(.semibold))
                             .accessibilityAddTraits(.isHeader)
-                        Text("Add your own startup file once for each system in your library.")
+                        Text("SwanSong Open IPL is included. Original hardware startup files are optional compatibility overrides.")
                             .font(.callout)
                             .foregroundStyle(.secondary)
                     }
@@ -10536,10 +10398,10 @@ private struct FirmwareSettingsView: View {
             }
 
             Section("Help") {
-                Button("About Startup Files…", systemImage: "questionmark.circle") {
+                Button("About Open IPL & Original Startup Files…", systemImage: "questionmark.circle") {
                     showsStartupFileGuide = true
                 }
-                Text("Validation and storage stay on this Mac. SwanSong never downloads or shares these files.")
+                Text("Games start without extra system files. If you install an original startup file, validation and storage stay on this Mac.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -10553,7 +10415,7 @@ private struct FirmwareSettingsView: View {
 
                         Divider()
 
-                        Text("Files are checked before SwanSong stores private local copies in Application Support. ZIP archives must contain exactly one valid startup file.")
+                        Text("Optional original files are checked before SwanSong stores private local copies in Application Support. ZIP archives must contain exactly one valid startup file.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
@@ -10565,7 +10427,7 @@ private struct FirmwareSettingsView: View {
                     }
                 }
             } footer: {
-                Text("Use startup files copied from hardware you own or another source you are authorized to use. SwanSong never includes or downloads them.")
+                Text("SwanSong includes its own independently written Open IPL, not Bandai firmware. Optional original files must come from hardware you own or another source you are authorized to use.")
             }
         }
         .formStyle(.grouped)
@@ -10600,7 +10462,7 @@ private struct FirmwareSettingsView: View {
             }
         } message: {
             if let kind = removalCandidate {
-                Text("Games for \(kind.title) will stop launching until this startup file is added again. The original file outside SwanSong is not changed.")
+                Text("Games for \(kind.title) will return to SwanSong Open IPL. The original file outside SwanSong is not changed.")
             }
         }
         .onChange(of: model.firmwareSettingsNotice) { _, notice in
@@ -10629,7 +10491,7 @@ private struct FirmwareSettingsView: View {
         let rowColor = readinessColor(for: rowReadiness)
         return VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .top, spacing: 12) {
-                Image(systemName: rowReadiness == .ready ? "checkmark.seal.fill" : rowReadiness.symbol)
+                Image(systemName: rowReadiness.symbol)
                     .font(.title3)
                     .foregroundStyle(rowColor)
                     .accessibilityHidden(true)
@@ -10730,13 +10592,8 @@ private struct FirmwareSettingsView: View {
         readiness: StartupFileRowReadiness
     ) -> some View {
         HStack(spacing: 8) {
-            if !installed && readiness == .neededForLibrary {
-                firmwareChooseButton(kind, installed: installed)
-                    .buttonStyle(.borderedProminent)
-            } else {
-                firmwareChooseButton(kind, installed: installed)
-                    .buttonStyle(.bordered)
-            }
+            firmwareChooseButton(kind, installed: installed)
+                .buttonStyle(.bordered)
 
             if installed {
                 Menu {
@@ -10844,7 +10701,7 @@ private struct FirmwareSettingsView: View {
 
     private var libraryReadiness: StartupFileLibraryReadiness {
         StartupFileLibraryReadiness(
-            requiredKinds: model.startupFileKindsRequiredByLibrary,
+            libraryKinds: model.startupFileKindsUsedByLibrary,
             installedKinds: Set(
                 WonderSwanFirmwareKind.allCases.filter {
                     model.isFirmwareInstalled($0)
@@ -10854,16 +10711,13 @@ private struct FirmwareSettingsView: View {
     }
 
     private var readinessSummaryColor: Color {
-        if libraryReadiness.needsAttention { return .orange }
-        if libraryReadiness.isReadyForLibrary { return .green }
-        return .secondary
+        .green
     }
 
     private func readinessColor(for readiness: StartupFileRowReadiness) -> Color {
         switch readiness {
-        case .ready: .green
-        case .neededForLibrary: .orange
-        case .notInstalled: .secondary
+        case .originalInstalled: .green
+        case .openIPL: SwanTheme.cyan
         }
     }
 
@@ -10882,11 +10736,11 @@ private struct FirmwareSettingsView: View {
     private func systemDescription(for kind: WonderSwanFirmwareKind) -> String {
         switch kind {
         case .monochrome:
-            "Starts original monochrome WonderSwan games."
+            "SwanSong Open IPL starts monochrome WonderSwan games; an installed original file overrides it."
         case .color:
-            "Starts WonderSwan Color and SwanCrystal games."
+            "SwanSong Open IPL starts WonderSwan Color and SwanCrystal games; an installed original file overrides it."
         case .pocketChallengeV2:
-            "Starts Pocket Challenge V2 software with its Benesse keypad and KARNAK cartridge hardware."
+            "SwanSong Open IPL starts Pocket Challenge V2 software on its distinct Benesse hardware path; an installed original file overrides it."
         }
     }
 }

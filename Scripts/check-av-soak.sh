@@ -15,7 +15,6 @@ INJECT_HOST_GAP_AFTER_FRAMES=${SWAN_AV_SOAK_INJECT_HOST_GAP_AFTER_FRAMES:-120}
 DISABLE_DISCONTINUITY_RECOVERY=${SWAN_AV_SOAK_DISABLE_DISCONTINUITY_RECOVERY:-0}
 EXPECTED_STATUS=${SWAN_AV_SOAK_EXPECT_STATUS:-pass}
 TEMP_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/swan-song-av-soak.XXXXXX")
-STARTUP_STUB="$TEMP_ROOT/public-mono-startup-fixture.rom"
 STDOUT_FILE="$TEMP_ROOT/soak.stdout"
 FIXTURE_RELATIVE_PATH="testroms/ws-test-suite/80186_quirks/80186_quirks.ws"
 if [ -f "$MACOS_DIR/$FIXTURE_RELATIVE_PATH" ]; then
@@ -103,12 +102,6 @@ fi
 
 mkdir -p "$(dirname "$OUTPUT")"
 
-# This generated far-jump stub is test bootstrap code, not dumped Bandai
-# firmware. It exists only in the temporary directory and is never packaged.
-dd if=/dev/zero of="$STARTUP_STUB" bs=4096 count=1 2>/dev/null
-printf '\352\000\000\377\377' \
-  | dd of="$STARTUP_STUB" bs=1 seek=4080 conv=notrunc 2>/dev/null
-
 "$SCRIPT_DIR/build-engine.sh" >/dev/null
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
   "$SCRIPT_DIR/swift-package.sh" build \
@@ -118,7 +111,6 @@ SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
 
 set -- "$SOAK_BUILD_DIR/debug/SwanSongSoak" \
   --rom "$ROM" \
-  --startup-file "$STARTUP_STUB" \
   --fixture-id "checked-in-open-80186-quirks" \
   --duration-ms "$DURATION_MS" \
   --stall-threshold-ms "$STALL_THRESHOLD_MS" \

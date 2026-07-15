@@ -715,7 +715,7 @@ public enum GameStateCompatibility: LocalizedError, Equatable, Sendable {
     public var reason: String {
         switch self {
         case .ready:
-            "This saved moment exactly matches the current game, startup file, hardware, and engine build."
+            "This saved moment exactly matches the current game, startup implementation, hardware, and engine build."
         case let .legacyNeedsConfirmation(reason),
              let .wrongROM(reason),
              let .wrongFirmware(reason),
@@ -1287,7 +1287,7 @@ public struct GameStateStore: Sendable {
                 return .wrongROM("This legacy state belongs to a different game checksum.")
             }
             return .legacyNeedsConfirmation(
-                "This legacy state predates exact ROM, startup-file, and engine-build identity. Confirm compatibility before loading it."
+                "This legacy state predates exact ROM, startup-implementation, and engine-build identity. Confirm compatibility before loading it."
             )
         }
 
@@ -1333,7 +1333,7 @@ public struct GameStateStore: Sendable {
         guard firmwareByteCount == expectedSessionIdentity.firmwareByteCount,
               firmwareSHA256 == expectedSessionIdentity.firmwareSHA256 else {
             return .wrongFirmware(
-                "This saved moment was created with a different WonderSwan startup file."
+                "This saved moment was created with a different WonderSwan startup implementation or original firmware override."
             )
         }
         guard manifest.backend == expectedSessionIdentity.backend else {

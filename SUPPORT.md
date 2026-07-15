@@ -5,12 +5,12 @@ an issue, check the latest release notes and try the newest published build.
 
 ## Common setup questions
 
-### Why does SwanSong ask for a System Startup File?
+### Do I need a System Startup File or BIOS?
 
-Normal gameplay requires the startup image for the matching system. SwanSong
-cannot legally or safely bundle or download it. Choose a local copy that you
-are authorized to use in **Settings > System Startup Files**. WonderSwan and
-Pocket Challenge V2 files are 4 KiB; WonderSwan Color files are 8 KiB.
+No. Normal gameplay uses the independently written SwanSong Open IPL included
+with the app. **Settings > Startup** accepts an authorized original BIOS only
+as an optional compatibility override. WonderSwan and Pocket Challenge V2
+originals are 4 KiB; WonderSwan Color originals are 8 KiB.
 
 ### Where is my data?
 

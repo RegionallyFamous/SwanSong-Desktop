@@ -1,7 +1,8 @@
 # Install SwanSong Desktop
 
 SwanSong requires macOS 14 or newer and supports Apple silicon and Intel Macs.
-No games or system startup files are included.
+No games or original system firmware are included. SwanSong Open IPL provides
+the built-in startup path.
 
 ## Official release
 
@@ -23,10 +24,9 @@ controls, stop. Development artifacts are not official public releases.
 ## First game
 
 Choose **File > Open Game…** or drag a supported `.ws`, `.wsc`, `.pc2`,
-`.pcv2`, or single-game ZIP into SwanSong. On first launch for a system,
-SwanSong asks for its matching System Startup File. Select only a local copy
-you are authorized to use. SwanSong validates it, stores a private local copy,
-and resumes the pending game.
+`.pcv2`, or single-game ZIP into SwanSong. It launches through SwanSong Open
+IPL without asking for a BIOS. You may add an authorized original firmware
+override later in **Settings > Startup** for compatibility testing.
 
 ## Build from source
 

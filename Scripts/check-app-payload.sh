@@ -20,6 +20,7 @@ unexpected_file=$(find "$APP/Contents" -type f \
   ! -path "$APP/Contents/Resources/PRIVACY.md" \
   ! -path "$APP/Contents/Resources/SUPPORT.md" \
   ! -path "$APP/Contents/Resources/THIRD_PARTY_NOTICES.md" \
+  ! -path "$APP/Contents/Resources/ares.lock.json" \
   ! -path "$APP/Contents/_CodeSignature/CodeResources" \
   -print -quit)
 if [ -n "$unexpected_file" ]; then

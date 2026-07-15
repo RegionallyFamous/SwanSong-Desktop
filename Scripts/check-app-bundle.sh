@@ -31,6 +31,19 @@ CONFIGURATION=debug "$SCRIPT_DIR/build-app.sh" >/dev/null
 ditto "$MACOS_DIR/.build/app/SwanSong.app" "$APP"
 cp "$MACOS_DIR/testroms/ws-test-suite/80186_quirks/80186_quirks.ws" "$ROM"
 cp "$ROM" "$COLOR_ROM"
+# Keep the open fixture valid while giving the .wsc routing check a distinct
+# content identity. The library deliberately deduplicates byte-identical games.
+swift -e '
+  import Foundation
+  let url = URL(fileURLWithPath: CommandLine.arguments[1])
+  var data = try Data(contentsOf: url)
+  data[data.count - 8] ^= 0x01
+  var checksum: UInt16 = 0
+  for byte in data.dropLast(2) { checksum &+= UInt16(byte) }
+  data[data.count - 2] = UInt8(truncatingIfNeeded: checksum)
+  data[data.count - 1] = UInt8(truncatingIfNeeded: checksum >> 8)
+  try data.write(to: url, options: .atomic)
+' "$COLOR_ROM"
 
 icon_name=$(plutil -extract CFBundleIconFile raw "$APP/Contents/Info.plist")
 if [ "$icon_name" != "AppIcon" ] \
@@ -47,12 +60,24 @@ if [ ! -s "$TEMP_ROOT/AppIcon.iconset/icon_16x16.png" ] \
   exit 1
 fi
 if [ ! -s "$APP/Contents/Resources/LICENSE" ] \
+  || [ ! -s "$APP/Contents/Resources/PRIVACY.md" ] \
+  || [ ! -s "$APP/Contents/Resources/SUPPORT.md" ] \
   || [ ! -s "$APP/Contents/Resources/THIRD_PARTY_NOTICES.md" ] \
+  || [ ! -s "$APP/Contents/Resources/ares.lock.json" ] \
   || ! cmp -s "$MACOS_DIR/LICENSE" "$APP/Contents/Resources/LICENSE" \
   || ! cmp -s \
+    "$MACOS_DIR/PRIVACY.md" \
+    "$APP/Contents/Resources/PRIVACY.md" \
+  || ! cmp -s \
+    "$MACOS_DIR/SUPPORT.md" \
+    "$APP/Contents/Resources/SUPPORT.md" \
+  || ! cmp -s \
     "$MACOS_DIR/Dependencies/THIRD_PARTY_NOTICES.md" \
-    "$APP/Contents/Resources/THIRD_PARTY_NOTICES.md"; then
-  echo "the app bundle is missing its exact license or third-party notices" >&2
+    "$APP/Contents/Resources/THIRD_PARTY_NOTICES.md" \
+  || ! cmp -s \
+    "$MACOS_DIR/Dependencies/ares.lock.json" \
+    "$APP/Contents/Resources/ares.lock.json"; then
+  echo "the app bundle is missing its exact legal or engine metadata" >&2
   exit 1
 fi
 
@@ -72,7 +97,6 @@ fi
 open -n -F -g \
   --env "SWAN_SONG_DATA_DIR=$DATA_DIR" \
   --env "SWAN_SONG_HEADLESS=1" \
-  --env "SWAN_SONG_ALLOW_SYNTHETIC_BOOT=1" \
   "$APP"
 
 attempt=0
@@ -111,9 +135,10 @@ window_name=$(swift -e '
   for window in windows {
     let owner = (window[kCGWindowOwnerPID as String] as? NSNumber)?.int32Value ?? -1
     let layer = (window[kCGWindowLayer as String] as? NSNumber)?.intValue ?? -1
+    let isOnscreen = (window[kCGWindowIsOnscreen as String] as? NSNumber)?.boolValue ?? false
     let bounds = window[kCGWindowBounds as String] as? NSDictionary
     let height = (bounds?["Height"] as? NSNumber)?.intValue ?? 0
-    if owner == pid && layer == 0 && height > 100 {
+    if owner == pid && layer == 0 && isOnscreen && height > 100 {
       print(window[kCGWindowName as String] as? String ?? "")
       break
     }
@@ -124,7 +149,7 @@ if [ ! -f "$DATA_DIR/Library.json" ] || [ -z "$save_file" ]; then
   echo "the bundled app did not import, play, and autosave the opened ROM" >&2
   exit 1
 fi
-if [ "$window_name" != "timingtest" ]; then
+if [ "$window_name" != "80186-quirks" ]; then
   echo "the bundled app did not present the opened game window" >&2
   exit 1
 fi
@@ -139,7 +164,7 @@ color_save_count=0
 while [ "$attempt" -lt 20 ]; do
   color_save_count=$(find "$DATA_DIR/Saves" -name console.eeprom -size 128c \
     -print 2>/dev/null | wc -l | tr -d ' ')
-  if grep -Fq 'timingtest-color.wsc' "$DATA_DIR/Library.json" 2>/dev/null \
+  if grep -Fq '80186-quirks-color.wsc' "$DATA_DIR/Library.json" 2>/dev/null \
     && [ "$color_save_count" -ge 2 ]; then
     break
   fi
@@ -156,21 +181,22 @@ color_window_name=$(swift -e '
   for window in windows {
     let owner = (window[kCGWindowOwnerPID as String] as? NSNumber)?.int32Value ?? -1
     let layer = (window[kCGWindowLayer as String] as? NSNumber)?.intValue ?? -1
+    let isOnscreen = (window[kCGWindowIsOnscreen as String] as? NSNumber)?.boolValue ?? false
     let bounds = window[kCGWindowBounds as String] as? NSDictionary
     let height = (bounds?["Height"] as? NSNumber)?.intValue ?? 0
-    if owner == pid && layer == 0 && height > 100 {
+    if owner == pid && layer == 0 && isOnscreen && height > 100 {
       print(window[kCGWindowName as String] as? String ?? "")
       break
     }
   }
 ' "$PID")
 
-if ! grep -Fq 'timingtest-color.wsc' "$DATA_DIR/Library.json" \
+if ! grep -Fq '80186-quirks-color.wsc' "$DATA_DIR/Library.json" \
   || [ "$color_save_count" -lt 2 ]; then
   echo "the bundled app did not import, play, and autosave the opened .wsc ROM" >&2
   exit 1
 fi
-if [ "$color_window_name" != "timingtest-color" ]; then
+if [ "$color_window_name" != "80186-quirks-color" ]; then
   echo "the bundled app did not present the opened .wsc game window" >&2
   exit 1
 fi

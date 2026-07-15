@@ -65,7 +65,7 @@ SWAN_SONG_DATA_DIR="$DATA_DIR" \
 SWAN_SONG_HEADLESS=1 \
 SWAN_SONG_APP_DIAGNOSTICS=1 \
 SWAN_SONG_TRANSLATION_PROJECT="$PROJECT" \
-SWAN_SONG_ALLOW_SYNTHETIC_BOOT=1 \
+SWAN_SONG_ALLOW_AUTOMATED_PCV2_INPUT=1 \
 SWAN_SONG_TRANSLATION_ROLE=original \
 SWAN_SONG_TRANSLATION_ROUTE_END_FRAME=24 \
 SWAN_SONG_TRANSLATION_COMPARE_AFTER_RECORDING=1 \
@@ -123,8 +123,8 @@ if route.get("schema") != "swan-song-input-route-v3":
 start = route.get("start", {})
 if start.get("hardwareModel") != "pocket-challenge-v2":
     raise SystemExit("PCV2 route lost its exact hardware model")
-if start.get("firmware", {}).get("source") != "synthetic-automation":
-    raise SystemExit("PCV2 route did not bind its source-free startup fixture")
+if start.get("firmware", {}).get("source") != "open-ipl":
+    raise SystemExit("PCV2 route did not bind SwanSong Open IPL")
 if route.get("totalFrames") != 24 or route.get("checkpoint", {}).get("frameIndex") != 23:
     raise SystemExit("PCV2 route lost its exact endpoint")
 
@@ -172,7 +172,7 @@ SWAN_SONG_DATA_DIR="$FIRST_CHANGE_DATA_DIR" \
 SWAN_SONG_HEADLESS=1 \
 SWAN_SONG_APP_DIAGNOSTICS=1 \
 SWAN_SONG_TRANSLATION_PROJECT="$PROJECT" \
-SWAN_SONG_ALLOW_SYNTHETIC_BOOT=1 \
+SWAN_SONG_ALLOW_AUTOMATED_PCV2_INPUT=1 \
 SWAN_SONG_TRANSLATION_LOCATE_FIRST_CHANGE=1 \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
 "$APP_BUILD_DIR/debug/SwanSong" >"$FIRST_CHANGE_LOG_FILE" 2>&1 &

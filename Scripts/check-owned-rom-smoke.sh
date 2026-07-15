@@ -1,7 +1,8 @@
 #!/bin/sh
 set -eu
 
-# Privacy-safe, opt-in smoke for a personally owned WonderSwan dump and BIOS.
+# Privacy-safe, opt-in smoke for a personally owned WonderSwan dump and an
+# optional original-BIOS compatibility override.
 # This script never builds SwanSong and never prints private paths, names,
 # hashes, diagnostics, screenshots, or ROM-derived metadata.
 
@@ -345,4 +346,4 @@ rm -rf "$TEMP_ROOT" >/dev/null 2>&1 \
 TEMP_ROOT=
 trap - EXIT INT TERM HUP
 
-echo "PASS private owned-ROM app smoke: real archive import, validated BIOS launch, visible frame activity, isolated Saves/States, immutable firmware-free app, and cleanup"
+echo "PASS private owned-ROM app smoke: real archive import, validated optional original-BIOS override, visible frame activity, isolated Saves/States, immutable firmware-free app, and cleanup"

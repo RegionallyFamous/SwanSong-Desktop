@@ -733,8 +733,10 @@ public enum TranslationRouteHardwareModel: String, CaseIterable, Codable, Sendab
     }
 }
 
-public enum TranslationRouteFirmwareSource: String, Codable, Sendable {
+public enum TranslationRouteFirmwareSource: String, Codable, Hashable, Sendable {
     case installed
+    case openIPL = "open-ipl"
+    /// Legacy spelling retained so existing automation routes remain readable.
     case syntheticAutomation = "synthetic-automation"
 }
 
@@ -763,11 +765,25 @@ public struct TranslationRouteFirmware: Codable, Equatable, Sendable {
             guard identifier == nil else {
                 throw TranslationLabError.invalidRoute("installed firmware has an unexpected identifier")
             }
-        case .syntheticAutomation:
-            guard image == nil, identifier == "open-bootstrap-v1" else {
-                throw TranslationLabError.invalidRoute("synthetic firmware identity is invalid")
+        case .openIPL, .syntheticAutomation:
+            guard image == nil, identifier == WonderSwanOpenIPL.identifier else {
+                throw TranslationLabError.invalidRoute("open IPL identity is invalid")
             }
         }
+    }
+
+    public func isRuntimeEquivalent(to other: Self) -> Bool {
+        if self == other { return true }
+        let openSources: Set<TranslationRouteFirmwareSource> = [
+            .openIPL,
+            .syntheticAutomation,
+        ]
+        return openSources.contains(source)
+            && openSources.contains(other.source)
+            && image == nil
+            && other.image == nil
+            && identifier == WonderSwanOpenIPL.identifier
+            && other.identifier == WonderSwanOpenIPL.identifier
     }
 }
 

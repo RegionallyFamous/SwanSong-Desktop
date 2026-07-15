@@ -2,8 +2,13 @@
 
 SwanSong Desktop is the standalone source repository for the native macOS
 application whose product name and app label are **SwanSong**. It deliberately
-contains no commercial game ROM, user-provided System Startup File (BIOS),
+contains no commercial game ROM, original System Startup File (BIOS),
 cartridge persistence, save state, or private translation evidence.
+
+SwanSong Open IPL is independently written project source. At runtime the
+engine constructs a minimal 4 KiB or 8 KiB startup image that enables the
+cartridge mapping and transfers execution to the cartridge reset vector. It
+contains no bytes copied from Bandai firmware.
 
 ## Project license
 
@@ -34,13 +39,13 @@ are reproducible emulator tests, not commercial games or firmware:
 The WonderWitch/Athena example is source-only and retains its AthenaOS notice;
 building it requires a separately installed Wonderful toolchain.
 [`Scripts/generate-pcv2-fixture.py`](Scripts/generate-pcv2-fixture.py) generates
-the clean-room 128 KiB PCV2 cartridge used by app checks. The runtime scripts
-create their separate 4 KiB source-free startup bytes at test time. Neither
-generated input is committed as a game or firmware artifact.
+the clean-room 128 KiB PCV2 cartridge used by app checks. Runtime checks boot
+it with the same SwanSong Open IPL used by production. The generated cartridge
+is not committed as a game artifact.
 
 ## Private and external inputs
 
-Games and a System Startup File are selected by the user at runtime and remain
+Games and any optional original System Startup File selected by the user remain
 outside this repository. Linked translation projects keep ROM-derived output
 and evidence in their own private `analysis/swan-song-lab/` directory. The
 optional `SwanSongDifferential` RTL frame directory is likewise an external

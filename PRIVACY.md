@@ -7,7 +7,7 @@ accounts, telemetry, update checker, or network client.
 
 ## What stays on your Mac
 
-Games, system startup files, saves, save states, screenshots, controller
+Games, optional original system startup files, saves, save states, screenshots, controller
 settings, library metadata, compatibility notes, and Translation Lab evidence
 are stored locally. SwanSong does not upload or share them. Apple Vision text
 recognition used by Capture & Draft Translation runs on-device, and recognized
@@ -19,8 +19,9 @@ ROM, startup-file, RAM, save-state, and persistence bytes.
 
 ## Files you provide
 
-SwanSong never bundles, downloads, discovers, or shares game ROMs or system
-startup files. You must choose authorized local copies. Imported files are
+SwanSong never bundles, downloads, discovers, or shares game ROMs or original
+system startup files. SwanSong Open IPL is built-in project code. Any imported
+game or optional original firmware must be an authorized local copy; files are
 validated and copied into SwanSong's private Application Support directory so
 the library does not depend on the original location.
 

@@ -6,10 +6,12 @@ Yes. SwanSong Desktop is a native macOS player for WonderSwan, WonderSwan
 Color, SwanCrystal, and Pocket Challenge V2 software, built on a pinned ares
 WonderSwan engine. It also includes an optional local Translation Lab.
 
-## Does it include games or system startup files?
+## Does it include games or require a BIOS?
 
-No. SwanSong never bundles, searches for, or downloads them. Add only local
-copies you own or are authorized to use.
+It includes no games and no original system firmware. Normal play uses the
+independently written SwanSong Open IPL, so a BIOS is not required. SwanSong
+never searches for or downloads original firmware; an authorized local copy
+can be installed only as an optional compatibility override.
 
 ## Does it collect anything?
 

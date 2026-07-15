@@ -257,26 +257,32 @@ private struct SwanSongSoak {
     }
 
     private static func run(_ options: Options) throws -> SoakReport {
-        guard let romURL = options.rom, let startupURL = options.startupFile else {
+        guard let romURL = options.rom else {
             throw SoakError(message: usage)
         }
 
         let rom = try Data(contentsOf: romURL, options: [.mappedIfSafe])
         let metadata = try EngineSession.inspect(rom: rom)
-        let startup = try WonderSwanFirmwareImporter.data(from: startupURL)
-        let startupKind = try WonderSwanFirmwareStore.kind(for: startup)
         let expectedKind: WonderSwanFirmwareKind = metadata.isColor ? .color : .monochrome
-        guard startupKind == expectedKind else {
-            throw SoakError(
-                message: "The fixture needs the \(expectedKind.title) startup stub, but the supplied file is for \(startupKind.title)."
-            )
+        let startup = try options.startupFile.map {
+            try WonderSwanFirmwareImporter.data(from: $0)
+        }
+        if let startup {
+            let startupKind = try WonderSwanFirmwareStore.kind(for: startup)
+            guard startupKind == expectedKind else {
+                throw SoakError(
+                    message: "The optional original firmware is for \(startupKind.title), not \(expectedKind.title)."
+                )
+            }
         }
 
         let engine = try EngineSession(rtcMode: .deterministic(seedUnixSeconds: 1))
         guard engine.capabilities.contains(.execution), engine.capabilities.contains(.audio) else {
             throw SoakError(message: "SwanSongSoak requires the live ares execution and audio backend.")
         }
-        try engine.stageBootROM(startup)
+        if let startup {
+            try engine.stageBootROM(startup)
+        }
         _ = try engine.load(rom: rom)
 
         let durationSeconds = Double(options.requestedDurationMilliseconds) / 1_000
@@ -597,7 +603,8 @@ private struct SwanSongSoak {
     }
 
     private static let usage = """
-    Usage: SwanSongSoak --rom OPEN_FIXTURE --startup-file SYNTHETIC_STUB [options]
+    Usage: SwanSongSoak --rom OPEN_FIXTURE [options]
+      --startup-file FILE         Use optional original firmware instead of Open IPL
       --fixture-id ID             Source-free fixture label for the report
       --duration-ms N             Exact requested wall duration (default 1800000)
       --stall-threshold-ms N      Fail on a frame gap above N (default 250)

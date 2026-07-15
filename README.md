@@ -24,11 +24,11 @@ for WonderSwan's unusual control layout.
 ## Built for trust
 
 - **Private by default.** No analytics, ads, accounts, telemetry, update
-  checker, or network client. Games, startup files, saves, screenshots, and
+  checker, or network client. Games, optional original firmware, saves, screenshots, and
   translation evidence stay on your Mac unless you explicitly export them.
-- **Bring your own files.** SwanSong never bundles or downloads commercial
-  games or system startup files. It validates authorized local copies and
-  stores them privately in Application Support.
+- **No BIOS hunt.** SwanSong includes an independently written Open IPL for
+  normal play. It never bundles or downloads commercial games or original
+  system firmware; optional authorized firmware overrides stay private.
 - **Inspectable releases.** Public builds are universal for Apple silicon and
   Intel, Developer ID signed, hardened, notarized, and paired with SHA-256
   checksums and the exact source tag.
@@ -37,8 +37,8 @@ for WonderSwan's unusual control layout.
   into an accuracy claim.
 
 SwanSong requires **macOS 14 or newer**. It opens `.ws`, `.wsc`, `.pc2`, and
-`.pcv2` files, plus supported single-game ZIP archives. You must supply games
-and system startup files that you are authorized to use.
+`.pcv2` files, plus supported single-game ZIP archives. Supply only games and
+optional original firmware that you are authorized to use.
 
 See the [privacy policy](PRIVACY.md), [security policy](SECURITY.md),
 [support guide](SUPPORT.md), and [third-party notices](Dependencies/THIRD_PARTY_NOTICES.md)
@@ -74,7 +74,7 @@ gameplay capture after a meaningful frame appears; portrait games remain
 uncropped, and the player can replace the image or return to procedural art.
 The selected-game inspector also presents **Game Confidence** as three
 independent local signals: **Launch Readiness** reports whether the managed
-game copy, required System Startup File, and execution engine are ready;
+game copy and execution engine are ready;
 **Compatibility Evidence** distinguishes Untested, Reached Video, Confirmed
 Works, and Reported Issues; and **ROM Integrity** reports managed-copy and
 footer-checksum health. Normal play records Reached Video only after the
@@ -98,10 +98,11 @@ SwanSong Pocket `.sav` files can be imported and exported with exact
 SRAM/EEPROM sizing, semantic RTC translation, legacy-layout recognition, and a
 human-readable format report.
 
-Normal gameplay requires a **System Startup File** supplied by the user.
-SwanSong never bundles or downloads startup files. You must choose an authorized
-local copy for the matching system; the app validates it before making a
-private local copy in Application Support.
+Normal gameplay uses **SwanSong Open IPL**, an independently written startup
+implementation built into the engine. No dumped WonderSwan BIOS bytes are
+included, and users do not need to find a startup file. An authorized original
+BIOS may be installed as an optional compatibility override; SwanSong validates
+it before making a private local copy in Application Support.
 
 The app now also includes a native Translation Lab for projects created by the
 private WonderSwan translation toolkit. It links a project without copying its
@@ -109,7 +110,7 @@ ROM, shows toolkit readiness, runs a deliberately small allowlist of guarded
 stages, boots original or patched output with isolated persistence, records and
 replays route-v3 input tests from a clean power-on with empty isolated
 persistence and a fixed UTC RTC seed, and binds each route to its target frame,
-source ROM, startup file, hardware model, engine build, RTC policy, and native
+source ROM, startup implementation, hardware model, engine build, RTC policy, and native
 game-raster checkpoint. Captures pair
 the emulator framebuffer PNG with its game-raster fingerprint, internal RAM,
 ares state, route, and SHA-256-bound manifest in one action. A capture is passed
@@ -167,8 +168,8 @@ Requirements:
 - CMake 3.28 or newer;
 - Git and the macOS Command Line Tools (or full Xcode).
 
-Building and inspecting the app does not require a System Startup File. Running
-a game requires the appropriate user-provided startup file described below.
+Building, inspecting, and playing open fixtures does not require a System
+Startup File. SwanSong Open IPL is the production default.
 
 ```sh
 cd SwanSong-Desktop
@@ -191,31 +192,23 @@ drag-and-drop, and folder import without claiming every ZIP as a SwanSong
 document. The default remains ad-hoc signing so CI and
 contributors do not need an Apple account.
 
-### Set up System Startup Files
+### Open IPL and optional original firmware
 
-SwanSong needs the startup file for a game's system before that game can
-launch. If one is missing, the game card and launch alert open the correct
-setup flow. You can also use **Settings > System Startup Files** to view,
-install, replace, or remove one.
+SwanSong Open IPL starts WonderSwan, WonderSwan Color, SwanCrystal, and Pocket
+Challenge V2 software without a user-supplied BIOS. It is implemented in this
+repository and contains no bytes copied from an original system ROM.
 
-You must choose a local startup file copied from hardware you own or another
-source you are authorized to use.
-SwanSong accepts a direct `.rom` or `.bin` file, or a ZIP containing exactly
-one valid image; the setup sheet and each system row also accept the file by
-drag and drop. It validates the file and its system before copying it into
-the private `~/Library/Application Support/SwanSong/Firmware/` directory.
-After setup succeeds, the game you were trying to open resumes launching
-automatically.
+For compatibility testing, **Settings > Startup** can install, replace, or
+remove an authorized original BIOS override. SwanSong accepts a direct `.rom`
+or `.bin` file, or a ZIP containing exactly one valid image. It validates the
+file and its system before copying it into the private
+`~/Library/Application Support/SwanSong/Firmware/` directory. Removing an
+override immediately returns that system to Open IPL.
 
-No startup file is bundled with SwanSong or its release archives, and the app
-never downloads, discovers, uploads, or shares one. Source-free diagnostics
-and Translation Lab exports exclude startup-file bytes as well.
-
-Advanced compatibility note: System Startup Files are technically the
-console's original boot ROM images, also sometimes called BIOS firmware. The
-WonderSwan and Pocket Challenge V2 boot ROMs must each be exactly 4 KiB; the
-WonderSwan Color boot ROM must be exactly 8 KiB. Because the two 4 KiB images
-cannot be identified by size alone, add each one through its named system row.
+SwanSong never bundles, downloads, discovers, uploads, or shares original
+firmware. WonderSwan and Pocket Challenge V2 originals are 4 KiB; WonderSwan
+Color is 8 KiB. Because the two 4 KiB images cannot be identified by size
+alone, add each optional override through its named system row.
 
 Development builds remain native to the current Mac for fast iteration. Set
 `SWAN_UNIVERSAL=1` to build an arm64 + x86_64 app explicitly:
@@ -308,8 +301,8 @@ with:
 ./Scripts/check-live-engine.sh
 ```
 
-For a real, locally owned ROM and startup file, the headless video probe runs
-the same ares engine without opening a macOS window. It reports the first
+For a real, locally owned ROM, the headless video probe runs the same ares
+engine and Open IPL without opening a macOS window. It reports the first
 non-uniform frame, distinct native-raster frames, longest flat-color run, and a
 deterministic final-frame hash. It can also export the final game raster as a
 portable pixmap for visual inspection:
@@ -317,12 +310,14 @@ portable pixmap for visual inspection:
 ```sh
 swift run SwanSongProbe \
   --rom "/path/to/game.wsc" \
-  --startup-file "/path/to/startup-file-or.zip" \
   --frames 600 \
   --report probe.json \
   --capture probe.ppm \
   --require-video-activity
 ```
+
+Pass `--startup-file "/path/to/original-firmware-or.zip"` only when comparing
+the optional original-firmware override with Open IPL.
 
 The report also records audio activity, save-state size, and whether the first
 video/audio batch after a state restore is bit-exact. The report and capture
@@ -346,7 +341,7 @@ SWAN_APP_OUTPUT_DIR="$PWD/.build/owned-smoke-app" \
 
 This lane requires the debug runner and checked app executable to share the
 same Mach-O build UUID, then uses a unique private home and data directory to
-exercise the real archive import, BIOS validation, pending-launch resume,
+exercise the real archive import, optional original-BIOS validation and launch,
 native frame activity, save, and state paths. Running the matched executable
 directly also works in restricted sessions where Launch Services registration
 is unavailable. The lane removes every private artifact and proves that the
@@ -369,7 +364,7 @@ labels static output and settle-required replay instead of treating successful
 execution as commercial-title or original-hardware compatibility evidence.
 
 The source-free A/V soak runs the live core at wall-clock speed with the
-checked-in open 80186 fixture and a temporary generated startup stub. Its
+checked-in open 80186 fixture and SwanSong Open IPL. Its
 sorted-key JSON report records sequential/invalid video frames, frame-delivery
 stalls, 48 kHz stereo format stability, bounded virtual-queue depth,
 post-prime underruns, dropped batches, transport drift, and pacing rate without
@@ -425,9 +420,9 @@ autosave, three-entry versioned save-state timeline, and a save→load preview
 that is byte-identical to the indexed saved moment without touching the real
 user profile. A separate memory-only rewind lane captures frame 90, rewinds
 from frame 450 to the nearest five-second checkpoint, replays frame 90 exactly,
-and proves no `.state` file was written. The smoke first proves that production gameplay remains blocked without
-required firmware, then uses a synthetic test-only bootstrap for the rest of
-the automated fixture run:
+and proves no `.state` file was written. The smoke proves that production-mode
+monochrome, Color, and Pocket Challenge V2 gameplay starts through Open IPL
+with no original firmware installed:
 
 ```sh
 ./Scripts/check-app-runtime.sh
@@ -442,9 +437,8 @@ the absence of firmware payloads from the app bundle:
 ```
 
 The full-app runtime smoke also generates a clean-room Pocket Challenge V2
-program and 4 KiB test bootstrap. It proves the distinct PCV2 startup-file gate,
-pending-launch resume, changing video, PCV2 save-state identity, and automatic
-flash-only persistence without retaining either generated input.
+program. It proves Open IPL boot, changing video, PCV2 save-state identity, and
+automatic flash-only persistence without retaining the generated cartridge.
 
 The native UI gate renders the real AppKit/SwiftUI surfaces offscreen—without
 Launch Services or visible-window enumeration—and checks player recovery,
@@ -591,11 +585,11 @@ The normal loop is:
 
 Every new route uses the `swan-song-input-route-v3` schema. It records the
 Original ROM digest and byte count; clean-power-on and isolated-persistence
-policy; WonderSwan model; installed firmware digest; engine backend/build; exact
+policy; WonderSwan model; Open IPL or optional original-firmware identity; engine backend/build; exact
 RTC mode and fixed UTC seed; target frame; compact input changes; and a native
 game-raster checkpoint. Test
-automation records an explicit synthetic-bootstrap identifier instead of
-pretending it used installed firmware. Replay rejects the route if any bound
+automation records the explicit Open IPL identifier instead of pretending it
+used installed original firmware. Replay rejects the route if any bound
 execution context has changed.
 
 Route-v2 files remain visible and immutable with a **v2 · Re-record RTC** badge,
@@ -649,5 +643,5 @@ release must include the license, third-party notices, and exact corresponding
 source for that build.
 
 SwanSong is an independent, unofficial project. Product names and trademarks
-belong to their respective owners. No games or system startup files are
-included.
+belong to their respective owners. No games or original system firmware are
+included; SwanSong Open IPL is independently written source code.

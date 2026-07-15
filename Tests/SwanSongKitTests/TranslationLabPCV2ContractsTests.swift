@@ -145,12 +145,34 @@ final class TranslationLabPCV2ContractsTests: XCTestCase {
         )
     }
 
+    func testLegacySyntheticBootstrapIdentityRemainsEquivalentToOpenIPL() throws {
+        let openIPL = TranslationRouteFirmware(
+            source: .openIPL,
+            identifier: WonderSwanOpenIPL.identifier
+        )
+        let legacy = TranslationRouteFirmware(
+            source: .syntheticAutomation,
+            identifier: WonderSwanOpenIPL.identifier
+        )
+
+        XCTAssertTrue(openIPL.isRuntimeEquivalent(to: legacy))
+        XCTAssertTrue(legacy.isRuntimeEquivalent(to: openIPL))
+        XCTAssertFalse(
+            openIPL.isRuntimeEquivalent(
+                to: TranslationRouteFirmware(
+                    source: .installed,
+                    image: validDigest(byteCount: 4 * 1_024, character: "f")
+                )
+            )
+        )
+    }
+
     private func pocketChallengeStart() -> TranslationRouteStartContext {
         TranslationRouteStartContext(
             hardwareModel: .pocketChallengeV2,
             firmware: TranslationRouteFirmware(
-                source: .syntheticAutomation,
-                identifier: "open-bootstrap-v1"
+                source: .openIPL,
+                identifier: WonderSwanOpenIPL.identifier
             ),
             engine: TranslationRouteEngineIdentity(
                 backend: "ares",
