@@ -4,6 +4,7 @@ set -eu
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 MACOS_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 OUTPUT_DIR=${SWAN_SONG_UI_SNAPSHOT_DIR:-"$MACOS_DIR/.build/ui-regression"}
+POLISH_OUTPUT_DIR=$(dirname "$OUTPUT_DIR")/ui-polish-regression
 UPDATE_BASELINES=0
 
 if [ "${1:-}" = "--update-baselines" ]; then
@@ -47,8 +48,18 @@ if [ ! -s "$OUTPUT_DIR/manifest.json" ]; then
   echo "UI snapshot manifest is missing from $OUTPUT_DIR" >&2
   exit 1
 fi
+polish_snapshot_count=$(find "$POLISH_OUTPUT_DIR" -type f -name '*.png' 2>/dev/null \
+  | wc -l | tr -d ' ')
+if [ "$polish_snapshot_count" -ne 14 ]; then
+  echo "expected 14 focused polish snapshots, found $polish_snapshot_count in $POLISH_OUTPUT_DIR" >&2
+  exit 1
+fi
+if [ ! -s "$POLISH_OUTPUT_DIR/manifest.json" ]; then
+  echo "focused UI polish manifest is missing from $POLISH_OUTPUT_DIR" >&2
+  exit 1
+fi
 
 if [ "$UPDATE_BASELINES" -eq 1 ]; then
-  echo "UPDATED reviewed perceptual baselines for 52 UI snapshots"
+  echo "UPDATED reviewed perceptual baselines for 66 UI snapshots"
 fi
-echo "PASS 52 offscreen Light/Dark compact/wide UI snapshots: $OUTPUT_DIR"
+echo "PASS 66 offscreen Light/Dark compact/wide UI snapshots: 52 core + 14 focused polish"

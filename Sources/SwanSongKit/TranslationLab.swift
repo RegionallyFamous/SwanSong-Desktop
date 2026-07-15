@@ -54,6 +54,16 @@ public struct TranslationProject: Codable, Hashable, Identifiable, Sendable {
 
     public var id: String { rootURL.path }
     public var slug: String { rootURL.lastPathComponent }
+    public var routeHardwareModel: TranslationRouteHardwareModel {
+        get throws {
+            try TranslationRouteHardwareModel(projectPlatform: platform)
+        }
+    }
+    public var firmwareKind: WonderSwanFirmwareKind {
+        get throws {
+            try routeHardwareModel.firmwareKind
+        }
+    }
 
     public init(projectDirectory: URL) throws {
         let selected = projectDirectory.standardizedFileURL
@@ -625,9 +635,101 @@ public struct TranslationArtifactDigest: Codable, Equatable, Sendable {
     }
 }
 
-public enum TranslationRouteHardwareModel: String, Codable, Sendable {
+public enum TranslationRouteHardwareModel: String, CaseIterable, Codable, Sendable {
     case wonderSwan = "wonderswan"
     case wonderSwanColor = "wonderswan-color"
+    case swanCrystal = "swan-crystal"
+    case pocketChallengeV2 = "pocket-challenge-v2"
+
+    /// Resolves the human-readable platform value stored by translation
+    /// toolkit projects without changing that value on disk.
+    public init(projectPlatform: String) throws {
+        let normalized = projectPlatform
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+            .filter { $0.isLetter || $0.isNumber }
+        switch normalized {
+        case "wonderswan", "ws":
+            self = .wonderSwan
+        case "wonderswancolor", "wsc":
+            self = .wonderSwanColor
+        case "swancrystal":
+            self = .swanCrystal
+        case "pocketchallengev2", "pocketchallenge2", "pcv2", "pc2":
+            self = .pocketChallengeV2
+        default:
+            throw TranslationLabError.invalidProject(
+                "the platform \(projectPlatform) is not supported"
+            )
+        }
+    }
+
+    /// Converts a concrete engine selection into its stable route identity.
+    /// Automatic selection cannot be recorded because it would not preserve
+    /// the hardware used at clean power-on.
+    public init(engineHardwareModel: EngineHardwareModel) throws {
+        switch engineHardwareModel {
+        case .automatic:
+            throw TranslationLabError.invalidRoute(
+                "automatic hardware selection cannot be recorded in a deterministic route"
+            )
+        case .wonderSwan:
+            self = .wonderSwan
+        case .wonderSwanColor:
+            self = .wonderSwanColor
+        case .swanCrystal:
+            self = .swanCrystal
+        case .pocketChallengeV2:
+            self = .pocketChallengeV2
+        }
+    }
+
+    public var engineHardwareModel: EngineHardwareModel {
+        switch self {
+        case .wonderSwan: .wonderSwan
+        case .wonderSwanColor: .wonderSwanColor
+        case .swanCrystal: .swanCrystal
+        case .pocketChallengeV2: .pocketChallengeV2
+        }
+    }
+
+    public var firmwareKind: WonderSwanFirmwareKind {
+        switch self {
+        case .wonderSwan: .monochrome
+        case .wonderSwanColor, .swanCrystal: .color
+        case .pocketChallengeV2: .pocketChallengeV2
+        }
+    }
+
+    /// Semantic controls accepted in deterministic routes for this hardware.
+    /// Pocket Challenge V2 uses its nine dedicated bits rather than aliases
+    /// of the WonderSwan keypad, preserving every labeled key independently.
+    public var semanticInputs: [EngineInput] {
+        switch self {
+        case .wonderSwan, .wonderSwanColor, .swanCrystal:
+            [
+                .y1, .y2, .y3, .y4,
+                .x1, .x2, .x3, .x4,
+                .b, .a, .start, .volume, .power,
+            ]
+        case .pocketChallengeV2:
+            [
+                .pocketChallengeUp,
+                .pocketChallengeRight,
+                .pocketChallengeDown,
+                .pocketChallengeLeft,
+                .pocketChallengePass,
+                .pocketChallengeCircle,
+                .pocketChallengeClear,
+                .pocketChallengeView,
+                .pocketChallengeEscape,
+            ]
+        }
+    }
+
+    public var validInputMask: UInt32 {
+        semanticInputs.reduce(UInt32(0)) { $0 | $1.rawValue }
+    }
 }
 
 public enum TranslationRouteFirmwareSource: String, Codable, Sendable {
@@ -725,6 +827,14 @@ public struct TranslationRouteStartContext: Codable, Equatable, Sendable {
     public let engine: TranslationRouteEngineIdentity
     public let rtc: TranslationRouteRTCContext?
 
+    public var engineHardwareModel: EngineHardwareModel {
+        hardwareModel.engineHardwareModel
+    }
+
+    public var firmwareKind: WonderSwanFirmwareKind {
+        hardwareModel.firmwareKind
+    }
+
     public init(
         kind: String = Self.cleanPowerOnKind,
         hardwareModel: TranslationRouteHardwareModel,
@@ -746,6 +856,12 @@ public struct TranslationRouteStartContext: Codable, Equatable, Sendable {
             throw TranslationLabError.invalidRoute("the route does not begin at a clean power-on")
         }
         try firmware.validate()
+        if let image = firmware.image,
+           image.byteCount != firmwareKind.expectedByteCount {
+            throw TranslationLabError.invalidRoute(
+                "the installed firmware size does not match the recorded \(firmwareKind.title) startup kind"
+            )
+        }
         guard persistencePolicy == Self.isolatedPersistencePolicy else {
             throw TranslationLabError.invalidRoute("the route persistence policy is unsupported")
         }
@@ -786,7 +902,7 @@ public struct TranslationGameRasterDescriptor: Codable, Equatable, Sendable {
     }
 }
 
-/// The packed BGRA pixels belonging to the WonderSwan game display.
+/// The packed BGRA pixels belonging to the emulated game display.
 ///
 /// Engine-owned stride padding and the separate 13-pixel hardware indicator
 /// rail are intentionally excluded.
@@ -1019,7 +1135,11 @@ public struct TranslationRoute: Codable, Equatable, Sendable {
         }
         var previous: UInt64?
         var previousMask: UInt32?
-        let validInputMask = UInt32((1 << 13) - 1)
+        // v1 did not serialize its hardware selection and therefore retains
+        // the original WonderSwan input contract. Newer routes bind their
+        // semantic controls to the recorded clean-boot hardware.
+        let validInputMask = start?.hardwareModel.validInputMask
+            ?? TranslationRouteHardwareModel.wonderSwan.validInputMask
         for event in events {
             guard event.frameIndex < totalFrames else {
                 throw TranslationLabError.invalidRoute("an input event is beyond the end of the route")
@@ -1205,6 +1325,11 @@ public struct TranslationRouteRecorder: Sendable {
     }
 
     public mutating func record(input: EngineInput, frame: EngineVideoFrame) throws {
+        guard input.rawValue & ~start.hardwareModel.validInputMask == 0 else {
+            throw TranslationLabError.invalidRoute(
+                "the recorded input contains controls for different hardware"
+            )
+        }
         let frameNumber = frame.number
         if firstFrameNumber == nil {
             guard frameNumber == 1 else {

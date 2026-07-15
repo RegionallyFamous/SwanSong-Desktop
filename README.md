@@ -71,6 +71,13 @@ directly to the toolkit's existing `capture-intake` stage. Original and patched
 endpoints remain available in a persistent native review inspector with
 Side-by-Side, opacity-controlled Overlay, and Difference heatmap modes at
 exact 1×, 2×, or 4× pixel zoom.
+Any intact capture can also open **Capture to Source Text**: drag a dialogue
+region, run Apple Vision recognition entirely on-device, correct or manually
+transcribe visible lines, explicitly confirm them, and save a deterministic
+private `text-intake.json` beside the capture. The structured intake records
+reviewed source text, pixel bounds, quantized confidence, and the capture hash;
+it never embeds screenshot pixels, filesystem paths, ROM data, timestamps,
+cloud requests, inferred translations, or unreviewed OCR output.
 The selected route can also be verified end to end with one button: SwanSong
 runs fresh Status, QA, validation, strict pack, and a final Status, then replays
 the route against both ROMs with
@@ -398,8 +405,9 @@ compact/wide Light/Dark variants. It rejects blank regions and
 unsupported-control placeholders, proves compact timeline actions can be
 scrolled fully into view, proves the compact Time Ribbon needs no vertical
 scrolling, protects all four active framebuffer corners, checks accessibility
-labels and 28-point interaction targets, and compares all 48
-renders with a reviewed 256-bit perceptual baseline:
+labels and 28-point interaction targets, and compares 66 renders—including
+focused selected-game, startup-file, controller-mapping, and capture-to-text
+polish surfaces—with a reviewed 256-bit perceptual baseline:
 
 ```sh
 ./Scripts/check-ui-snapshots.sh
@@ -427,6 +435,14 @@ game library nor its save store was polluted:
 
 ```sh
 ./Scripts/check-translation-lab.sh
+```
+
+A separate source-free Pocket Challenge V2 lane proves exact PCV2 project and
+startup identity, all nine semantic keypad inputs, 16 KiB internal RAM,
+Original/Patched route replay, and First Visual Change hardware routing:
+
+```sh
+./Scripts/check-pcv2-translation-lab.sh
 ```
 
 ## Translation Lab
@@ -480,6 +496,16 @@ desk reports changed-pixel percentage, count, mean and maximum channel delta,
 and the bounding rectangle of all changes. Difference pixels use a bright
 orange-to-magenta heatmap while unchanged pixels remain dim grayscale; no
 derived visualization is written back into the evidence bundle.
+
+Choose **Extract Source Text…** from an intact capture to open the native
+capture-to-text desk. **Full Frame** and **Dialogue Band** are
+keyboard-accessible region presets; a pointer can draw a tighter rectangle.
+Vision recognition stays on this Mac and is always presented as a draft.
+Correct or type only source text visible in the selected region, confirm each
+line (or use **Confirm All**), then choose **Confirm & Save Intake**. The saved
+artifact is deliberately a reviewed source-text intake—not a translation,
+glyph-table claim, or ROM pointer claim—and remains inside the ignored private
+project workspace.
 
 **Export Source-Free Diagnostic…** creates a `.swsdiag` package containing
 only the rendered frame, verified input route, hashes, metadata, and saved

@@ -182,13 +182,27 @@ normal cartridge-save storage is written. Synthetic bootstrap identity is
 recorded in test routes and is never presented as installed production
 firmware.
 
+Pocket Challenge V2 Translation Lab parity now preserves the exact project,
+engine, startup-file, and route identity; accepts only its nine dedicated
+semantic keypad bits; captures the correct 16 KiB internal RAM surface; and
+routes A/B plus First Visual Change replay through the concrete PCV2 engine.
+An independent source-free fixture gate exercises that complete path.
+
+The evidence desk also includes a private capture-to-text workflow. A bounded
+pixel selection is recognized through Apple Vision on-device, presented as an
+editable draft with quantized confidence, and must be explicitly confirmed
+before a deterministic project-local artifact can be saved. Manual-only lines
+retain manual provenance. Exports fail closed and exclude image data, paths,
+ROM bytes, timestamps, inferred translations, and unreviewed OCR.
+
 Native UI regression evidence uses real offscreen AppKit rendering for player
 recovery, startup-file replacement, the state timeline, RAM Text Buffers,
 Pointer Leads, the Time Ribbon, First Visual Change result/progress/no-change
 states, horizontal/vertical player canvases, the Game Confidence inspector,
 and the Translation Lab overview across compact/wide Light/Dark variants.
-Forty-eight reviewed 256-bit perceptual
-baselines, blank/placeholder guards, a four-corner framebuffer guard, compact
+Sixty-six reviewed 256-bit perceptual baselines—including focused
+selected-game inspector, startup-file, controller-mapping, and capture-to-text
+polish surfaces—plus blank/placeholder guards, a four-corner framebuffer guard, compact
 Translation Lab, Time Ribbon, and timeline geometry, accessibility contracts,
 and minimum
 interaction-target checks run without Launch Services or window-server

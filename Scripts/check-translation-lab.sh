@@ -500,7 +500,7 @@ PID=$!
 attempt=0
 patched_hardware_guard_ready=0
 while [ "$attempt" -lt 20 ]; do
-  if grep -Fq 'the Patched ROM targets a different WonderSwan hardware model than the recorded route' "$PATCHED_HARDWARE_GUARD_LOG_FILE"; then
+  if grep -Eq 'the Patched ROM targets different hardware than the recorded route|project platform WonderSwan does not match patched\.ws' "$PATCHED_HARDWARE_GUARD_LOG_FILE"; then
     patched_hardware_guard_ready=1
     break
   fi

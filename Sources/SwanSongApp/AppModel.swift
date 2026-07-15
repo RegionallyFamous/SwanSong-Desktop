@@ -417,6 +417,14 @@ final class AppModel {
     var translationEvidenceReviewNote = ""
     var translationEvidenceFrameComparison: TranslationEvidenceFrameComparison?
     var translationEvidenceFrameComparisonIssue: String?
+    var isTranslationTextIntakePresented = false
+    var translationTextIntakeIsRecognizing = false
+    var translationTextIntakeIssue: String?
+    var translationTextIntakeSelection: TranslationPixelRect?
+    var translationTextIntakeSession: TranslationTextIntakeSession?
+    var translationTextIntakeDrafts: [String: String] = [:]
+    var translationTextIntakeManualDraft = ""
+    var translationTextIntakeHasSavedArtifact = false
     var translationRAMComparison: TranslationRAMComparison?
     var translationRAMInspectionIssue: String?
     var translationRAMTextReport: TranslationRAMTextReport?
@@ -599,6 +607,10 @@ final class AppModel {
     private var translationVisualDivergenceTask: Task<Void, Never>?
     private var translationVisualDivergenceRoute: TranslationRoute?
     private var translationVisualDivergenceGeneration = UUID()
+    private var translationTextIntakeTask: Task<Void, Never>?
+    private var translationTextIntakeGeneration = UUID()
+    private var translationTextIntakeCapture: TranslationCaptureImage?
+    private var translationTextIntakeEvidenceID: TranslationEvidenceSummary.ID?
     private var ephemeralTranslationGameID: GameRecord.ID?
     private var automatedTranslationRouteEndFrame = ProcessInfo.processInfo.environment[
         "SWAN_SONG_TRANSLATION_ROUTE_END_FRAME"
@@ -615,6 +627,9 @@ final class AppModel {
     private let automatedTranslationTestCaseNote = ProcessInfo.processInfo.environment[
         "SWAN_SONG_TRANSLATION_TEST_CASE_NOTE"
     ] ?? ""
+    private let automatedTranslationPCV2InputProbe = ProcessInfo.processInfo.environment[
+        "SWAN_SONG_TRANSLATION_PCV2_INPUT_PROBE"
+    ] == "1"
     private let translationProjectDefaultsKey = "SwanSong.translationProjectPath"
     private let translationWorkspaceIsEnvironmentConfigured: Bool
 
@@ -1136,6 +1151,39 @@ final class AppModel {
 
     var selectedTranslationEvidence: TranslationEvidenceSummary? {
         translationEvidence.first { $0.id == selectedTranslationEvidenceID }
+    }
+
+    var canStartTranslationTextIntake: Bool {
+        guard let evidence = selectedTranslationEvidence else { return false }
+        return evidence.isIntact
+            && evidence.framePNG != nil
+            && !translationTextIntakeIsRecognizing
+    }
+
+    var translationTextIntakeImagePixelSize: CGSize? {
+        guard let capture = translationTextIntakeCapture else { return nil }
+        return CGSize(width: capture.pixelWidth, height: capture.pixelHeight)
+    }
+
+    var translationTextIntakeLines: [TranslationTextIntakeLine] {
+        translationTextIntakeSession?.lines ?? []
+    }
+
+    var translationTextIntakeCanSave: Bool {
+        guard let session = translationTextIntakeSession else { return false }
+        return !session.lines.isEmpty
+            && (session.state == .reviewing || session.state == .readyToExport)
+    }
+
+    var selectedTranslationEvidenceHasTextIntake: Bool {
+        guard
+            let evidence = selectedTranslationEvidence,
+            let url = safeTranslationTextIntakeURL(
+                for: evidence,
+                project: translationProject
+            )
+        else { return false }
+        return FileManager.default.fileExists(atPath: url.path)
     }
 
     var pairedTranslationEvidence: TranslationEvidenceSummary? {
@@ -2010,7 +2058,7 @@ final class AppModel {
         guard let project = translationProject else { return }
         do {
             let url = try project.romURL(for: role)
-            var game = try importer.inspect(url: url)
+            var game = try translationGame(at: url, project: project)
             game.title = project.title
             guard engineCanExecute else {
                 presentedError = "The live ares engine is required to run a translation test."
@@ -2060,8 +2108,362 @@ final class AppModel {
         NSWorkspace.shared.activateFileViewerSelecting([summary.artifact.directoryURL])
     }
 
+    func beginTranslationTextIntake() {
+        guard
+            let evidence = selectedTranslationEvidence,
+            evidence.isIntact,
+            let framePNG = evidence.framePNG,
+            let bitmap = NSBitmapImageRep(data: framePNG),
+            bitmap.pixelsWide > 0,
+            bitmap.pixelsHigh > 0
+        else {
+            presentedError = "Select an intact captured frame before extracting source text."
+            return
+        }
+        do {
+            let capture = try TranslationCaptureImage(
+                encodedData: framePNG,
+                encoding: .png,
+                pixelWidth: bitmap.pixelsWide,
+                pixelHeight: bitmap.pixelsHigh
+            )
+            guard capture.sha256 == evidence.manifest?.frame.sha256 else {
+                throw TranslationLabError.invalidProject(
+                    "the selected frame no longer matches its evidence manifest"
+                )
+            }
+            resetTranslationTextIntake()
+            translationTextIntakeCapture = capture
+            translationTextIntakeEvidenceID = evidence.id
+            translationTextIntakeSelection = capture.bounds
+            translationTextIntakeHasSavedArtifact = safeTranslationTextIntakeURL(
+                for: evidence,
+                project: translationProject
+            ).map { FileManager.default.fileExists(atPath: $0.path) } ?? false
+            isTranslationTextIntakePresented = true
+        } catch {
+            presentedError = "Source-text intake could not open this capture: \(error.localizedDescription)"
+        }
+    }
+
+    func dismissTranslationTextIntake() {
+        resetTranslationTextIntake()
+    }
+
+    func updateTranslationTextIntakeSelection(_ selection: TranslationPixelRect) {
+        guard
+            !translationTextIntakeIsRecognizing,
+            let capture = translationTextIntakeCapture,
+            capture.bounds.contains(selection)
+        else { return }
+        translationTextIntakeSelection = selection
+        translationTextIntakeSession = nil
+        translationTextIntakeDrafts = [:]
+        translationTextIntakeIssue = nil
+    }
+
+    func useFullFrameForTranslationTextIntake() {
+        guard let capture = translationTextIntakeCapture else { return }
+        updateTranslationTextIntakeSelection(capture.bounds)
+    }
+
+    func useDialogueBandForTranslationTextIntake() {
+        guard let capture = translationTextIntakeCapture else { return }
+        let top = Int((Double(capture.pixelHeight) * 0.55).rounded(.down))
+        updateTranslationTextIntakeSelection(
+            TranslationPixelRect(
+                x: 0,
+                y: top,
+                width: capture.pixelWidth,
+                height: capture.pixelHeight - top
+            )
+        )
+    }
+
+    func restartTranslationTextIntakeRegionSelection() {
+        guard !translationTextIntakeIsRecognizing else { return }
+        translationTextIntakeGeneration = UUID()
+        translationTextIntakeTask?.cancel()
+        translationTextIntakeTask = nil
+        translationTextIntakeSession = nil
+        translationTextIntakeDrafts = [:]
+        translationTextIntakeManualDraft = ""
+        translationTextIntakeIssue = nil
+    }
+
+    func recognizeTranslationTextIntake() {
+        guard
+            !translationTextIntakeIsRecognizing,
+            let capture = translationTextIntakeCapture,
+            let selection = translationTextIntakeSelection,
+            capture.bounds.contains(selection)
+        else { return }
+
+        let recognizer = VisionTranslationTextRecognizer()
+        do {
+            var session = try TranslationTextIntakeSession(
+                capture: capture,
+                selection: selection
+            )
+            let request = try session.beginRecognition(using: recognizer.descriptor)
+            let generation = UUID()
+            translationTextIntakeGeneration = generation
+            translationTextIntakeTask?.cancel()
+            translationTextIntakeSession = session
+            translationTextIntakeDrafts = [:]
+            translationTextIntakeIssue = nil
+            translationTextIntakeIsRecognizing = true
+
+            translationTextIntakeTask = Task { @MainActor [weak self] in
+                do {
+                    let observations = try await recognizer.recognizeText(in: request)
+                    try Task.checkCancellation()
+                    guard
+                        let self,
+                        self.translationTextIntakeGeneration == generation
+                    else { return }
+                    var completed = session
+                    try completed.finishRecognition(
+                        observations,
+                        from: recognizer.descriptor
+                    )
+                    self.translationTextIntakeSession = completed
+                    self.translationTextIntakeDrafts = Dictionary(
+                        uniqueKeysWithValues: completed.lines.map {
+                            ($0.id, $0.reviewedText)
+                        }
+                    )
+                    self.translationTextIntakeIssue = observations.isEmpty
+                        ? "No text was found in this region. Adjust the selection or type a source line manually."
+                        : nil
+                    self.translationTextIntakeIsRecognizing = false
+                    self.translationTextIntakeTask = nil
+                } catch is CancellationError {
+                    guard
+                        let self,
+                        self.translationTextIntakeGeneration == generation
+                    else { return }
+                    self.translationTextIntakeIsRecognizing = false
+                    self.translationTextIntakeTask = nil
+                } catch {
+                    guard
+                        let self,
+                        self.translationTextIntakeGeneration == generation
+                    else { return }
+                    var failed = session
+                    try? failed.cancelRecognition()
+                    self.translationTextIntakeSession = failed
+                    self.translationTextIntakeIssue = "On-device text recognition failed: \(error.localizedDescription)"
+                    self.translationTextIntakeIsRecognizing = false
+                    self.translationTextIntakeTask = nil
+                }
+            }
+        } catch {
+            translationTextIntakeIssue = "Text recognition could not start: \(error.localizedDescription)"
+        }
+    }
+
+    func updateTranslationTextIntakeDraft(id: String, text: String) {
+        guard translationTextIntakeSession?.lines.contains(where: { $0.id == id }) == true else {
+            return
+        }
+        translationTextIntakeDrafts[id] = text
+    }
+
+    func addManualTranslationTextIntakeLine() {
+        let source = translationTextIntakeManualDraft
+        guard
+            let capture = translationTextIntakeCapture,
+            let selection = translationTextIntakeSelection,
+            capture.bounds.contains(selection)
+        else { return }
+        do {
+            var session: TranslationTextIntakeSession
+            if let current = translationTextIntakeSession {
+                session = current
+                if session.state == .awaitingRecognition {
+                    try session.beginManualTranscription()
+                }
+            } else {
+                session = try TranslationTextIntakeSession(
+                    capture: capture,
+                    selection: selection
+                )
+                try session.beginManualTranscription()
+            }
+            let id = try session.addManualLine(text: source, bounds: selection)
+            translationTextIntakeSession = session
+            translationTextIntakeDrafts[id] = session.lines.first {
+                $0.id == id
+            }?.reviewedText ?? source
+            translationTextIntakeManualDraft = ""
+            translationTextIntakeIssue = nil
+        } catch {
+            translationTextIntakeIssue = "That manual source line could not be added: \(error.localizedDescription)"
+        }
+    }
+
+    func confirmTranslationTextIntakeLine(_ id: String) {
+        do {
+            var session = try editableTranslationTextIntakeSession()
+            guard let line = session.lines.first(where: { $0.id == id }) else {
+                throw TranslationTextIntakeError.lineNotFound(id)
+            }
+            let draft = translationTextIntakeDrafts[id] ?? line.reviewedText
+            if draft != line.reviewedText {
+                try session.correctLine(id: id, text: draft)
+            }
+            try session.confirmLine(id: id)
+            translationTextIntakeSession = session
+            translationTextIntakeDrafts[id] = session.lines.first {
+                $0.id == id
+            }?.reviewedText ?? draft
+            translationTextIntakeIssue = nil
+        } catch {
+            translationTextIntakeIssue = "That source line could not be confirmed: \(error.localizedDescription)"
+        }
+    }
+
+    func reopenTranslationTextIntakeLine(_ id: String) {
+        do {
+            var session = try editableTranslationTextIntakeSession()
+            try session.reopenLine(id: id)
+            translationTextIntakeSession = session
+            translationTextIntakeIssue = nil
+        } catch {
+            translationTextIntakeIssue = "That source line could not be reopened: \(error.localizedDescription)"
+        }
+    }
+
+    func confirmAllTranslationTextIntakeLines() {
+        do {
+            var session = try reviewedTranslationTextIntakeSessionApplyingDrafts()
+            try session.confirmAllLines()
+            translationTextIntakeSession = session
+            translationTextIntakeIssue = nil
+        } catch {
+            translationTextIntakeIssue = "The source text is not ready: \(error.localizedDescription)"
+        }
+    }
+
+    func saveTranslationTextIntake() {
+        guard
+            let project = translationProject,
+            let evidence = selectedTranslationEvidence,
+            evidence.id == translationTextIntakeEvidenceID,
+            evidence.isIntact,
+            let destination = safeTranslationTextIntakeURL(
+                for: evidence,
+                project: project
+            )
+        else {
+            translationTextIntakeIssue = "The selected evidence changed. Close this intake and start again."
+            return
+        }
+        do {
+            var session = try reviewedTranslationTextIntakeSessionApplyingDrafts()
+            try session.confirmAllLines()
+            let directoryValues = try evidence.artifact.directoryURL.resourceValues(
+                forKeys: [.isDirectoryKey, .isSymbolicLinkKey]
+            )
+            guard
+                directoryValues.isDirectory == true,
+                directoryValues.isSymbolicLink != true
+            else {
+                throw TranslationLabError.unsafePath(evidence.artifact.directoryURL.path)
+            }
+            if FileManager.default.fileExists(atPath: destination.path) {
+                let values = try destination.resourceValues(
+                    forKeys: [.isRegularFileKey, .isSymbolicLinkKey]
+                )
+                guard values.isRegularFile == true, values.isSymbolicLink != true else {
+                    throw TranslationLabError.unsafePath(destination.path)
+                }
+            }
+            try session.encodedArtifact().write(to: destination, options: [.atomic])
+            try session.markExported()
+            translationTextIntakeSession = session
+            translationTextIntakeHasSavedArtifact = true
+            translationTextIntakeIssue = nil
+            presentedNotice = "Saved reviewed source text beside this private evidence capture. Image pixels, paths, and ROM data were excluded."
+            isTranslationTextIntakePresented = false
+        } catch {
+            translationTextIntakeIssue = "The private source-text intake could not be saved: \(error.localizedDescription)"
+        }
+    }
+
+    func revealTranslationTextIntake() {
+        guard
+            let project = translationProject,
+            let evidence = selectedTranslationEvidence,
+            let url = safeTranslationTextIntakeURL(for: evidence, project: project),
+            FileManager.default.fileExists(atPath: url.path)
+        else { return }
+        NSWorkspace.shared.activateFileViewerSelecting([url])
+    }
+
+    private func editableTranslationTextIntakeSession() throws -> TranslationTextIntakeSession {
+        guard let session = translationTextIntakeSession else {
+            throw TranslationLabError.invalidProject(
+                "recognize or manually enter at least one source line first"
+            )
+        }
+        guard session.state == .reviewing || session.state == .readyToExport else {
+            throw TranslationLabError.invalidProject(
+                "the current source-text intake is not editable"
+            )
+        }
+        return session
+    }
+
+    private func reviewedTranslationTextIntakeSessionApplyingDrafts() throws
+        -> TranslationTextIntakeSession {
+        var session = try editableTranslationTextIntakeSession()
+        for line in session.lines {
+            let draft = translationTextIntakeDrafts[line.id] ?? line.reviewedText
+            if draft != line.reviewedText {
+                try session.correctLine(id: line.id, text: draft)
+            }
+        }
+        return session
+    }
+
+    private func safeTranslationTextIntakeURL(
+        for evidence: TranslationEvidenceSummary,
+        project: TranslationProject?
+    ) -> URL? {
+        guard let project else { return nil }
+        let directory = evidence.artifact.directoryURL.standardizedFileURL
+        guard project.contains(directory) else { return nil }
+        let destination = directory
+            .appendingPathComponent("text-intake.json", isDirectory: false)
+            .standardizedFileURL
+        guard project.contains(destination) else { return nil }
+        return destination
+    }
+
+    private func resetTranslationTextIntake() {
+        translationTextIntakeGeneration = UUID()
+        translationTextIntakeTask?.cancel()
+        translationTextIntakeTask = nil
+        translationTextIntakeCapture = nil
+        translationTextIntakeEvidenceID = nil
+        translationTextIntakeIsRecognizing = false
+        translationTextIntakeIssue = nil
+        translationTextIntakeSelection = nil
+        translationTextIntakeSession = nil
+        translationTextIntakeDrafts = [:]
+        translationTextIntakeManualDraft = ""
+        translationTextIntakeHasSavedArtifact = false
+        isTranslationTextIntakePresented = false
+    }
+
     func selectTranslationEvidence(_ id: TranslationEvidenceSummary.ID) {
         guard let evidence = translationEvidence.first(where: { $0.id == id }) else { return }
+        if translationTextIntakeEvidenceID != nil,
+           translationTextIntakeEvidenceID != evidence.id {
+            resetTranslationTextIntake()
+        }
         translationRAMComparison = nil
         translationRAMInspectionIssue = nil
         translationRAMTextReport = nil
@@ -4291,6 +4693,42 @@ final class AppModel {
         }
     }
 
+    private func translationGame(
+        at url: URL,
+        project: TranslationProject
+    ) throws -> GameRecord {
+        // Translation projects link their ROM in place, but they must pass the
+        // same structural and extension-aware inspection as library imports.
+        // In particular, `.pc2`/`.pcv2` is what selects Benesse hardware;
+        // its footer alone is intentionally indistinguishable from mono WS.
+        guard url.pathExtension.lowercased() != "zip" else {
+            throw TranslationLabError.invalidProject(
+                "translation ROMs must be direct .ws, .wsc, .pc2, or .pcv2 files"
+            )
+        }
+        let image = try LibraryGameImageImporter.image(from: url)
+        let declaredHardware = try project.routeHardwareModel
+        let inspectedHardware = try TranslationRouteHardwareModel(
+            engineHardwareModel: image.hardwareModel
+        )
+        let hardwareMatches = declaredHardware == inspectedHardware
+            || (declaredHardware == .swanCrystal
+                && inspectedHardware == .wonderSwanColor)
+        guard hardwareMatches else {
+            throw TranslationLabError.invalidProject(
+                "project platform \(project.platform) does not match \(url.lastPathComponent)"
+            )
+        }
+        return GameRecord(
+            title: project.title,
+            fileURL: url.standardizedFileURL,
+            metadata: image.metadata,
+            managedROM: nil,
+            sourceFileName: image.sourceFileName,
+            preferredHardwareModel: declaredHardware.engineHardwareModel
+        )
+    }
+
     private func preflightTranslationFirmware(
         _ role: TranslationROMRole,
         continuation: TranslationFirmwareContinuation
@@ -4299,7 +4737,7 @@ final class AppModel {
         guard let project = translationProject else { return false }
         do {
             let url = try project.romURL(for: role)
-            let game = try importer.inspect(url: url)
+            let game = try translationGame(at: url, project: project)
             let requiredFirmware = firmwareKind(for: game)
             do {
                 _ = try requireFirmwareForLaunch(requiredFirmware)
@@ -4355,10 +4793,18 @@ final class AppModel {
             byteCount: rom.count,
             sha256: TranslationEvidenceStore.sha256(rom)
         )
-        let hardwareModel: TranslationRouteHardwareModel = game.metadata.isColor
-            ? .wonderSwanColor
-            : .wonderSwan
-        let kind = firmwareKind(for: game)
+        let hardwareModel = try TranslationRouteHardwareModel(
+            engineHardwareModel: game.resolvedHardwareModel
+        )
+        if let project = translationProject {
+            let declaredHardware = try project.routeHardwareModel
+            guard declaredHardware == hardwareModel else {
+                throw TranslationLabError.invalidProject(
+                    "project platform \(project.platform) does not match the selected game hardware"
+                )
+            }
+        }
+        let kind = hardwareModel.firmwareKind
         let firmware: TranslationRouteFirmware
         if let image = try firmwareStore.load(kind) {
             firmware = TranslationRouteFirmware(
@@ -4398,7 +4844,7 @@ final class AppModel {
             throw TranslationLabError.invalidProject("no translation project is selected")
         }
         let originalURL = try project.romURL(for: .original)
-        let original = try importer.inspect(url: originalURL)
+        let original = try translationGame(at: originalURL, project: project)
         let current = try translationRouteBinding(for: original, romURL: originalURL)
         guard route.sourceROM == current.sourceROM else {
             throw TranslationLabError.invalidRoute(
@@ -4410,7 +4856,7 @@ final class AppModel {
         }
         guard recordedStart.hardwareModel == current.start.hardwareModel else {
             throw TranslationLabError.invalidRoute(
-                "the WonderSwan hardware model changed; re-record the test"
+                "the recorded hardware model changed; re-record the test"
             )
         }
         guard recordedStart.firmware == current.start.firmware else {
@@ -4450,11 +4896,11 @@ final class AppModel {
         }
 
         let patchedURL = try project.romURL(for: .patched)
-        let patched = try importer.inspect(url: patchedURL)
+        let patched = try translationGame(at: patchedURL, project: project)
         let patchedBinding = try translationRouteBinding(for: patched, romURL: patchedURL)
         guard patchedBinding.start.hardwareModel == recordedStart.hardwareModel else {
             throw TranslationLabError.invalidRoute(
-                "the Patched ROM targets a different WonderSwan hardware model than the recorded route"
+                "the Patched ROM targets different hardware than the recorded route"
             )
         }
         guard patchedBinding.start.firmware == recordedStart.firmware else {
@@ -5403,6 +5849,7 @@ final class AppModel {
     }
 
     private func resetTranslationProjectState() {
+        resetTranslationTextIntake()
         translationVisualDivergenceGeneration = UUID()
         translationVisualDivergenceTask?.cancel()
         translationVisualDivergenceTask = nil
@@ -5692,9 +6139,12 @@ final class AppModel {
         do {
             try validateTranslationRouteForCurrentProject(route)
             try validateTranslationReplayTarget(.patched, route: route)
-            let kind: WonderSwanFirmwareKind = route.start?.hardwareModel == .wonderSwanColor
-                ? .color
-                : .monochrome
+            guard let start = route.start else {
+                throw TranslationLabError.invalidRoute(
+                    "the route start context is missing"
+                )
+            }
+            let kind = start.firmwareKind
             let startupFile = try firmwareStore.load(kind)
             if route.start?.firmware.source == .installed, startupFile == nil {
                 throw WonderSwanFirmwareError.missingImage(kind)
@@ -6024,8 +6474,37 @@ final class AppModel {
     }
 
     private func translationInputForNextFrame(manualInput: EngineInput) -> EngineInput {
-        guard let route = translationReplayRoute else { return manualInput }
-        return route.input(at: translationReplayFrameIndex)
+        if let route = translationReplayRoute {
+            return route.input(at: translationReplayFrameIndex)
+        }
+        #if SWAN_SONG_AUTOMATION
+        if automatedTranslationPCV2InputProbe,
+           allowsSyntheticBootForAutomation,
+           translationRouteRecorder != nil,
+           playingGame?.resolvedHardwareModel == .pocketChallengeV2 {
+            // One independent semantic PCV2 control per frame, followed by a
+            // release frame. This is deliberately unavailable to normal app
+            // sessions; the source-free Translation Lab gate uses it to prove
+            // that route recording and replay preserve all nine Benesse keys.
+            let sequence: [EngineInput] = [
+                .pocketChallengeUp,
+                .pocketChallengeRight,
+                .pocketChallengeDown,
+                .pocketChallengeLeft,
+                .pocketChallengePass,
+                .pocketChallengeCircle,
+                .pocketChallengeClear,
+                .pocketChallengeView,
+                .pocketChallengeEscape,
+                [],
+            ]
+            let nextFrameIndex = Int(currentFrame?.number ?? 0)
+            return sequence.indices.contains(nextFrameIndex)
+                ? sequence[nextFrameIndex]
+                : []
+        }
+        #endif
+        return manualInput
     }
 
     private func didProduceTranslationFrame(input: EngineInput, frame: EngineVideoFrame) {

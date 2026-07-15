@@ -3229,6 +3229,19 @@ private struct TranslationLabView: View {
         ) {
             TranslationVisualDivergenceView(model: model)
         }
+        .sheet(
+            isPresented: Binding(
+                get: { model.isTranslationTextIntakePresented },
+                set: { isPresented in
+                    if !isPresented {
+                        model.dismissTranslationTextIntake()
+                    }
+                }
+            )
+        ) {
+            TranslationTextIntakeView(model: model)
+                .interactiveDismissDisabled(model.translationTextIntakeIsRecognizing)
+        }
         .task {
             if model.translationProject != nil,
                model.translationReadiness == nil,
@@ -4461,14 +4474,31 @@ private struct TranslationLabView: View {
                             .buttonStyle(.borderedProminent)
                             .disabled(!model.translationEvidenceReviewHasChanges)
 
-                            Button("Show in Finder", systemImage: "folder") {
-                                model.revealTranslationEvidence(evidence)
+                            Button("Extract Source Text…", systemImage: "text.viewfinder") {
+                                model.beginTranslationTextIntake()
                             }
+                            .disabled(!model.canStartTranslationTextIntake)
+                            .help("Recognize visible source text locally, then review every line")
 
-                            Button("Export Source-Free Diagnostic…", systemImage: "shippingbox") {
-                                model.exportSelectedTranslationDiagnostic()
+                            Menu {
+                                Button("Show Capture in Finder", systemImage: "folder") {
+                                    model.revealTranslationEvidence(evidence)
+                                }
+
+                                Button("Export Source-Free Diagnostic…", systemImage: "shippingbox") {
+                                    model.exportSelectedTranslationDiagnostic()
+                                }
+                                .disabled(!evidence.isIntact)
+
+                                if model.selectedTranslationEvidenceHasTextIntake {
+                                    Divider()
+                                    Button("Show Saved Source Text", systemImage: "doc.text.magnifyingglass") {
+                                        model.revealTranslationTextIntake()
+                                    }
+                                }
+                            } label: {
+                                Label("More", systemImage: "ellipsis.circle")
                             }
-                            .disabled(!evidence.isIntact)
 
                             Spacer()
                         }
@@ -5352,6 +5382,583 @@ private struct TranslationLabView: View {
     }
 }
 
+enum TranslationTextIntakeSelectionGeometry {
+    static func imageRect(container: CGSize, pixels: CGSize) -> CGRect {
+        guard container.width > 0,
+              container.height > 0,
+              pixels.width > 0,
+              pixels.height > 0 else { return .zero }
+        let scale = min(container.width / pixels.width, container.height / pixels.height)
+        let size = CGSize(width: pixels.width * scale, height: pixels.height * scale)
+        return CGRect(
+            x: (container.width - size.width) / 2,
+            y: (container.height - size.height) / 2,
+            width: size.width,
+            height: size.height
+        )
+    }
+
+    static func viewRect(
+        for selection: TranslationPixelRect,
+        imageRect: CGRect,
+        pixels: CGSize
+    ) -> CGRect? {
+        guard imageRect.width > 0, imageRect.height > 0,
+              pixels.width > 0, pixels.height > 0,
+              selection.isValid else { return nil }
+        let scaleX = imageRect.width / pixels.width
+        let scaleY = imageRect.height / pixels.height
+        return CGRect(
+            x: imageRect.minX + CGFloat(selection.x) * scaleX,
+            y: imageRect.minY + CGFloat(selection.y) * scaleY,
+            width: CGFloat(selection.width) * scaleX,
+            height: CGFloat(selection.height) * scaleY
+        ).intersection(imageRect)
+    }
+
+    static func pixelRect(
+        for dragRect: CGRect,
+        imageRect: CGRect,
+        pixels: CGSize
+    ) -> TranslationPixelRect? {
+        guard imageRect.width > 0, imageRect.height > 0,
+              pixels.width > 0, pixels.height > 0 else { return nil }
+        let clipped = dragRect.standardized.intersection(imageRect)
+        guard !clipped.isNull, clipped.width >= 2, clipped.height >= 2 else { return nil }
+
+        let minX = Int(
+            (((clipped.minX - imageRect.minX) / imageRect.width) * pixels.width)
+                .rounded(.down)
+        )
+        let minY = Int(
+            (((clipped.minY - imageRect.minY) / imageRect.height) * pixels.height)
+                .rounded(.down)
+        )
+        let maxX = Int(
+            (((clipped.maxX - imageRect.minX) / imageRect.width) * pixels.width)
+                .rounded(.up)
+        )
+        let maxY = Int(
+            (((clipped.maxY - imageRect.minY) / imageRect.height) * pixels.height)
+                .rounded(.up)
+        )
+        let pixelWidth = Int(pixels.width)
+        let pixelHeight = Int(pixels.height)
+        let x = min(max(minX, 0), pixelWidth)
+        let y = min(max(minY, 0), pixelHeight)
+        let boundedMaxX = min(max(maxX, x), pixelWidth)
+        let boundedMaxY = min(max(maxY, y), pixelHeight)
+        let result = TranslationPixelRect(
+            x: x,
+            y: y,
+            width: boundedMaxX - x,
+            height: boundedMaxY - y
+        )
+        return result.isValid ? result : nil
+    }
+}
+
+struct TranslationTextIntakeView: View {
+    static let accessibilityIdentifier = "translation-text-intake-sheet"
+
+    @Bindable var model: AppModel
+    @FocusState private var focusedLineID: String?
+    @FocusState private var manualFieldIsFocused: Bool
+
+    private var hasReviewSession: Bool {
+        model.translationTextIntakeSession != nil
+    }
+
+    private var canChooseRegion: Bool {
+        !model.translationTextIntakeIsRecognizing && !hasReviewSession
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            header
+            Divider()
+            content
+            Divider()
+            footer
+        }
+        .frame(minWidth: 900, idealWidth: 980, minHeight: 650, idealHeight: 720)
+        .background(Color(nsColor: .windowBackgroundColor))
+        .tint(SwanTheme.accent)
+        .accessibilityIdentifier(Self.accessibilityIdentifier)
+    }
+
+    private var header: some View {
+        HStack(spacing: 15) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 13, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [SwanTheme.accent, SwanTheme.cyan],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                Image(systemName: "text.viewfinder")
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundStyle(.white)
+            }
+            .frame(width: 48, height: 48)
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Capture to Source Text")
+                    .font(.title2.weight(.semibold))
+                Text("Select visible dialogue, recognize it on this Mac, then verify every line.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            Label("On-device only", systemImage: "lock.shield.fill")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.green)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(Color.green.opacity(0.1), in: Capsule())
+
+            Button("Close", systemImage: "xmark") {
+                model.dismissTranslationTextIntake()
+            }
+            .labelStyle(.iconOnly)
+            .buttonStyle(.borderless)
+            .keyboardShortcut(.cancelAction)
+            .disabled(model.translationTextIntakeIsRecognizing)
+            .help("Close source-text intake")
+        }
+        .padding(.horizontal, 22)
+        .padding(.vertical, 17)
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        if let data = model.selectedTranslationEvidence?.framePNG,
+           let image = NSImage(data: data),
+           let pixels = model.translationTextIntakeImagePixelSize,
+           let selection = model.translationTextIntakeSelection {
+            HStack(alignment: .top, spacing: 22) {
+                captureDesk(image: image, pixels: pixels, selection: selection)
+                    .frame(maxWidth: .infinity)
+
+                Divider()
+
+                reviewDesk
+                    .frame(width: 350)
+            }
+            .padding(22)
+        } else {
+            ContentUnavailableView {
+                Label("Capture Unavailable", systemImage: "exclamationmark.triangle")
+            } description: {
+                Text("Close this window and select an intact evidence capture.")
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    private func captureDesk(
+        image: NSImage,
+        pixels: CGSize,
+        selection: TranslationPixelRect
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("1. Select a text region")
+                        .font(.headline)
+                    Text(canChooseRegion ? "Drag over the dialogue you want to transcribe." : "Region locked while you review this result.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Text("\(selection.width) × \(selection.height) px")
+                    .font(.caption.monospaced().weight(.semibold))
+                    .foregroundStyle(.secondary)
+            }
+
+            TranslationCaptureSelectionView(
+                image: image,
+                pixelSize: pixels,
+                selection: selection,
+                isEnabled: canChooseRegion,
+                onSelection: model.updateTranslationTextIntakeSelection
+            )
+            .frame(minHeight: 350, maxHeight: 440)
+
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 8) {
+                    regionButtons
+                    Spacer()
+                    regionCoordinateLabel(selection)
+                }
+                VStack(alignment: .leading, spacing: 8) {
+                    regionButtons
+                    regionCoordinateLabel(selection)
+                }
+            }
+
+            Label(
+                "The saved intake contains reviewed text, bounds, confidence, and a capture hash—never image pixels, ROM bytes, paths, or cloud requests.",
+                systemImage: "hand.raised.fill"
+            )
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(12)
+            .background(.background.secondary, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        }
+    }
+
+    @ViewBuilder
+    private var regionButtons: some View {
+        if canChooseRegion {
+            HStack(spacing: 8) {
+                Button("Full Frame") {
+                    model.useFullFrameForTranslationTextIntake()
+                }
+                Button("Dialogue Band") {
+                    model.useDialogueBandForTranslationTextIntake()
+                }
+            }
+            .controlSize(.small)
+        } else if !model.translationTextIntakeIsRecognizing {
+            Button("Change Region", systemImage: "crop") {
+                model.restartTranslationTextIntakeRegionSelection()
+            }
+            .controlSize(.small)
+        }
+    }
+
+    private func regionCoordinateLabel(_ selection: TranslationPixelRect) -> some View {
+        Text("x \(selection.x) · y \(selection.y)")
+            .font(.caption2.monospaced())
+            .foregroundStyle(.tertiary)
+    }
+
+    private var reviewDesk: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("2. Recognize locally")
+                        .font(.headline)
+                    Text("Apple Vision runs locally; only lines fully inside this region are kept. No translation is guessed.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+
+                Button {
+                    model.recognizeTranslationTextIntake()
+                } label: {
+                    if model.translationTextIntakeIsRecognizing {
+                        Label("Recognizing…", systemImage: "ellipsis")
+                    } else {
+                        Label(hasReviewSession ? "Recognize Again" : "Recognize Text", systemImage: "viewfinder")
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .disabled(model.translationTextIntakeIsRecognizing || hasReviewSession)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                if model.translationTextIntakeIsRecognizing {
+                    ProgressView("Analyzing selected region…")
+                        .controlSize(.small)
+                }
+
+                if let issue = model.translationTextIntakeIssue {
+                    Label(issue, systemImage: "info.circle.fill")
+                        .font(.caption)
+                        .foregroundStyle(.orange)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(10)
+                        .background(Color.orange.opacity(0.08), in: RoundedRectangle(cornerRadius: 10))
+                }
+
+                Divider()
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("3. Review source lines")
+                        .font(.headline)
+                    Text("Correct OCR mistakes, then confirm the text you can actually see.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                if model.translationTextIntakeLines.isEmpty {
+                    Text("Recognized lines will appear here. You can also type a visible line manually.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.vertical, 4)
+                } else {
+                    VStack(spacing: 10) {
+                        ForEach(model.translationTextIntakeLines) { line in
+                            sourceLineEditor(line)
+                        }
+                    }
+                }
+
+                manualLineEntry
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .scrollIndicators(.automatic)
+    }
+
+    private func sourceLineEditor(_ line: TranslationTextIntakeLine) -> some View {
+        let isConfirmed = line.reviewStatus == .confirmed
+        let confidence = line.confidence.map {
+            "\(Int(($0.value * 100).rounded()))%"
+        } ?? "Manual"
+        return VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Label(
+                    isConfirmed ? "Confirmed" : confidence,
+                    systemImage: isConfirmed ? "checkmark.circle.fill" : "waveform.badge.magnifyingglass"
+                )
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(isConfirmed ? Color.green : Color.secondary)
+                Spacer()
+                Text("\(line.bounds.width) × \(line.bounds.height)")
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+            }
+
+            TextField(
+                "Visible source text",
+                text: Binding(
+                    get: {
+                        model.translationTextIntakeDrafts[line.id]
+                            ?? line.reviewedText
+                    },
+                    set: { model.updateTranslationTextIntakeDraft(id: line.id, text: $0) }
+                ),
+                axis: .vertical
+            )
+            .textFieldStyle(.roundedBorder)
+            .lineLimit(1...4)
+            .focused($focusedLineID, equals: line.id)
+            .disabled(isConfirmed)
+            .accessibilityLabel("Source text \(line.id)")
+
+            HStack {
+                if isConfirmed {
+                    Button("Edit", systemImage: "pencil") {
+                        model.reopenTranslationTextIntakeLine(line.id)
+                        focusedLineID = line.id
+                    }
+                } else {
+                    Button("Confirm Line", systemImage: "checkmark") {
+                        model.confirmTranslationTextIntakeLine(line.id)
+                    }
+                }
+                Spacer()
+            }
+            .controlSize(.small)
+        }
+        .padding(11)
+        .background(
+            (isConfirmed ? Color.green : Color.accentColor).opacity(0.055),
+            in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+        )
+        .overlay {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke((isConfirmed ? Color.green : Color.accentColor).opacity(0.16))
+        }
+    }
+
+    private var manualLineEntry: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Manual source line")
+                .font(.subheadline.weight(.semibold))
+            TextField(
+                "Type only text visible in the selected region",
+                text: $model.translationTextIntakeManualDraft,
+                axis: .vertical
+            )
+            .lineLimit(1...3)
+            .focused($manualFieldIsFocused)
+            HStack {
+                Spacer()
+                Button("Add Line", systemImage: "plus") {
+                    model.addManualTranslationTextIntakeLine()
+                    manualFieldIsFocused = true
+                }
+                .disabled(
+                    model.translationTextIntakeManualDraft
+                        .trimmingCharacters(in: .whitespacesAndNewlines)
+                        .isEmpty
+                        || model.translationTextIntakeIsRecognizing
+                )
+            }
+        }
+        .padding(11)
+        .background(.background.secondary, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+    }
+
+    private var footer: some View {
+        HStack(spacing: 10) {
+            Button("Cancel", role: .cancel) {
+                model.dismissTranslationTextIntake()
+            }
+            .disabled(model.translationTextIntakeIsRecognizing)
+
+            if model.translationTextIntakeHasSavedArtifact {
+                Button("Show Existing Intake", systemImage: "doc.text.magnifyingglass") {
+                    model.revealTranslationTextIntake()
+                }
+            }
+
+            Spacer()
+
+            Button("Confirm All") {
+                model.confirmAllTranslationTextIntakeLines()
+            }
+            .disabled(model.translationTextIntakeLines.isEmpty)
+
+            Button("Confirm & Save Intake", systemImage: "checkmark.shield.fill") {
+                model.saveTranslationTextIntake()
+            }
+            .buttonStyle(.borderedProminent)
+            .keyboardShortcut(.defaultAction)
+            .disabled(!model.translationTextIntakeCanSave)
+        }
+        .padding(.horizontal, 22)
+        .padding(.vertical, 14)
+    }
+}
+
+private struct TranslationCaptureSelectionView: View {
+    let image: NSImage
+    let pixelSize: CGSize
+    let selection: TranslationPixelRect
+    let isEnabled: Bool
+    let onSelection: (TranslationPixelRect) -> Void
+
+    @State private var dragRect: CGRect?
+
+    var body: some View {
+        GeometryReader { proxy in
+            let imageRect = TranslationTextIntakeSelectionGeometry.imageRect(
+                container: proxy.size,
+                pixels: pixelSize
+            )
+            let selectedRect = dragRect
+                ?? TranslationTextIntakeSelectionGeometry.viewRect(
+                    for: selection,
+                    imageRect: imageRect,
+                    pixels: pixelSize
+                )
+                ?? imageRect
+
+            ZStack {
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(Color.black.opacity(0.94))
+
+                Image(nsImage: image)
+                    .resizable()
+                    .interpolation(.none)
+                    .frame(width: imageRect.width, height: imageRect.height)
+                    .position(x: imageRect.midX, y: imageRect.midY)
+
+                Path { path in
+                    path.addRect(imageRect)
+                    path.addRect(selectedRect.intersection(imageRect))
+                }
+                .fill(
+                    Color.black.opacity(isEnabled ? 0.46 : 0.30),
+                    style: FillStyle(eoFill: true)
+                )
+
+                Rectangle()
+                    .stroke(Color.white.opacity(0.94), lineWidth: 1)
+                    .background(Color.accentColor.opacity(0.09))
+                    .frame(width: selectedRect.width, height: selectedRect.height)
+                    .position(x: selectedRect.midX, y: selectedRect.midY)
+
+                ForEach(0..<4, id: \.self) { corner in
+                    Circle()
+                        .fill(Color.white)
+                        .frame(width: 7, height: 7)
+                        .position(cornerPoint(corner, rect: selectedRect))
+                        .shadow(color: .black.opacity(0.4), radius: 1)
+                }
+
+                if isEnabled {
+                    Label("Drag to select", systemImage: "viewfinder")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 9)
+                        .padding(.vertical, 5)
+                        .background(.black.opacity(0.62), in: Capsule())
+                        .position(x: imageRect.midX, y: imageRect.maxY - 18)
+                        .allowsHitTesting(false)
+                }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .stroke(Color.white.opacity(0.08))
+            }
+            .contentShape(Rectangle())
+            .gesture(
+                DragGesture(minimumDistance: 2)
+                    .onChanged { value in
+                        guard isEnabled else { return }
+                        dragRect = CGRect(
+                            x: value.startLocation.x,
+                            y: value.startLocation.y,
+                            width: value.location.x - value.startLocation.x,
+                            height: value.location.y - value.startLocation.y
+                        )
+                        .standardized
+                        .intersection(imageRect)
+                    }
+                    .onEnded { value in
+                        guard isEnabled else {
+                            dragRect = nil
+                            return
+                        }
+                        let rect = CGRect(
+                            x: value.startLocation.x,
+                            y: value.startLocation.y,
+                            width: value.location.x - value.startLocation.x,
+                            height: value.location.y - value.startLocation.y
+                        )
+                        if let pixels = TranslationTextIntakeSelectionGeometry.pixelRect(
+                            for: rect,
+                            imageRect: imageRect,
+                            pixels: pixelSize
+                        ) {
+                            onSelection(pixels)
+                        }
+                        dragRect = nil
+                    }
+            )
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Captured frame text region")
+            .accessibilityValue(
+                "x \(selection.x), y \(selection.y), width \(selection.width), height \(selection.height) pixels"
+            )
+            .accessibilityHint("Use Full Frame or Dialogue Band for keyboard-accessible region presets")
+        }
+    }
+
+    private func cornerPoint(_ corner: Int, rect: CGRect) -> CGPoint {
+        switch corner {
+        case 0: CGPoint(x: rect.minX, y: rect.minY)
+        case 1: CGPoint(x: rect.maxX, y: rect.minY)
+        case 2: CGPoint(x: rect.minX, y: rect.maxY)
+        default: CGPoint(x: rect.maxX, y: rect.maxY)
+        }
+    }
+}
+
 enum GameConfidenceAccessibility {
     static let panel = "game-confidence-panel"
     static let launchReadiness = "game-confidence-launch-readiness"
@@ -5376,7 +5983,17 @@ enum GameConfidenceAccessibility {
 enum GameInspectorAccessibility {
     static let systemIdentity = "game-inspector-system-identity"
     static let runtimeStatus = "game-inspector-runtime-status"
+    static let confidenceExplanations = "game-inspector-confidence-explanations"
+    static let gameDetails = "game-inspector-game-details"
+    static let pocketSave = "game-inspector-pocket-save"
     static let pocketChallengeProgramFlash = "pocket-challenge-v2-program-flash"
+}
+
+enum SettingsSurfaceAccessibility {
+    static let minimumInteractiveDimension: CGFloat = 28
+    static let startupFiles = "startup-files-settings"
+    static let controllerMapping = "controller-mapping-settings"
+    static let controllerLiveInput = "controller-live-input-disclosure"
 }
 
 @MainActor
@@ -6063,20 +6680,16 @@ private struct GameConfidenceRow: View {
                 .background(color.opacity(0.10), in: RoundedRectangle(cornerRadius: 7))
                 .accessibilityHidden(true)
 
-            VStack(alignment: .leading, spacing: 3) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(lane.uppercased())
                     .font(.system(size: 9, weight: .bold))
                     .tracking(0.75)
                     .foregroundStyle(.secondary)
                 Text(title)
                     .font(.subheadline.weight(.semibold))
-                Text(detail)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
             }
         }
-        .padding(11)
+        .padding(9)
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .background(color.opacity(0.055), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
         .overlay {
@@ -6096,6 +6709,7 @@ private struct GameConfidencePanel: View {
     let onSetVerdict: (GameCompatibilityVerdict?) -> Void
     let onSaveNote: (String) -> Void
     let geometryProbe: GameConfidenceGeometryProbe?
+    @State private var showsCheckExplanations = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -6112,14 +6726,14 @@ private struct GameConfidencePanel: View {
                     Image(systemName: "checkmark.seal.text.page.fill")
                         .foregroundStyle(.white)
                 }
-                .frame(width: 36, height: 36)
+                .frame(width: 34, height: 34)
                 .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text("Game Confidence")
                         .font(.headline)
                         .accessibilityAddTraits(.isHeader)
-                    Text("Local evidence for this exact game. Setup, compatibility, and byte integrity remain independent.")
+                    Text("Three independent signals for this exact game.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -6153,12 +6767,45 @@ private struct GameConfidencePanel: View {
                 accessibilityIdentifier: GameConfidenceAccessibility.romIntegrity
             )
 
+            DisclosureGroup(
+                "What these checks mean",
+                isExpanded: $showsCheckExplanations
+            ) {
+                VStack(alignment: .leading, spacing: 10) {
+                    confidenceExplanation(
+                        "Launch readiness",
+                        detail: confidence.launchReadiness.confidenceDetail
+                    )
+                    confidenceExplanation(
+                        "Compatibility evidence",
+                        detail: confidence.compatibility.confidenceDetail
+                    )
+                    confidenceExplanation(
+                        "ROM integrity",
+                        detail: confidence.romIntegrity.confidenceDetail
+                    )
+
+                    if confidence.compatibility == .reachedVideo {
+                        Label(
+                            "Reached video confirms only a non-uniform native game raster—not gameplay, controls, audio, timing, saves, or hardware accuracy.",
+                            systemImage: "info.circle"
+                        )
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .padding(.top, 6)
+            }
+            .font(.caption.weight(.semibold))
+            .accessibilityIdentifier(GameInspectorAccessibility.confidenceExplanations)
+
             Divider()
 
             VStack(alignment: .leading, spacing: 8) {
                 Text("Your compatibility verdict")
                     .font(.subheadline.weight(.semibold))
-                Text("Record what you experienced without changing launch readiness or ROM-integrity checks.")
+                Text("Record your experience without changing the checks above.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -6177,7 +6824,7 @@ private struct GameConfidencePanel: View {
                     .font(.callout)
                     .scrollContentBackground(.hidden)
                     .padding(6)
-                    .frame(minHeight: 74, maxHeight: 110)
+                    .frame(minHeight: 64, maxHeight: 96)
                     .background(.background, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
                     .overlay {
                         RoundedRectangle(cornerRadius: 9, style: .continuous)
@@ -6208,13 +6855,6 @@ private struct GameConfidencePanel: View {
                 }
             }
 
-            Label(
-                "Reached video means SwanSong observed a non-uniform native game raster. It does not confirm gameplay, controls, audio, timing, saves, or WonderSwan hardware accuracy.",
-                systemImage: "info.circle"
-            )
-            .font(.caption)
-            .foregroundStyle(.secondary)
-            .fixedSize(horizontal: false, vertical: true)
         }
         .padding(14)
         .background(
@@ -6231,6 +6871,20 @@ private struct GameConfidencePanel: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(GameConfidenceAccessibility.panel)
+    }
+
+    private func confidenceExplanation(
+        _ title: String,
+        detail: String
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title)
+                .font(.caption.weight(.semibold))
+            Text(detail)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
     }
 
     private var noteHasChanges: Bool {
@@ -6343,7 +6997,7 @@ private struct GameConfidencePanel: View {
     }
 }
 
-private struct GameInspector: View {
+struct GameInspector: View {
     let game: GameRecord
     let artwork: GameArtworkRecord?
     let confidence: GameConfidence
@@ -6364,122 +7018,126 @@ private struct GameInspector: View {
     let onSaveCompatibilityNote: (String) -> Void
     let geometryProbe: GameConfidenceGeometryProbe?
     @State private var compatibilityNoteDraft = ""
+    @State private var showsGameDetails = false
+    @State private var showsSaveTools = false
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 3) {
-                GameArtworkTile(game: game, artwork: artwork)
-                    .aspectRatio(16 / 10, contentMode: .fit)
-                    .clipShape(RoundedRectangle(cornerRadius: 13, style: .continuous))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 13, style: .continuous)
-                            .stroke(.separator.opacity(0.55), lineWidth: 1)
-                    }
-                    .padding(.bottom, 13)
-
-                Text(game.title)
-                    .font(.title3.weight(.semibold))
-                    .lineLimit(2)
-                    .accessibilityAddTraits(.isHeader)
-                Text(game.systemTitle)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .accessibilityIdentifier(GameInspectorAccessibility.systemIdentity)
-            }
-
-            Label(runtimeDetail, systemImage: runtimeDetailSymbol)
-                .font(.callout.weight(.medium))
-                .foregroundStyle(runtimeDetailColor)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 10)
-                .padding(.bottom, 13)
-                .accessibilityIdentifier(GameInspectorAccessibility.runtimeStatus)
-
-            primaryAction
-                .controlSize(.large)
-
-            Divider()
-                .padding(.vertical, 13)
-
-            GameConfidencePanel(
-                confidence: confidence,
-                evidence: game.compatibilityEvidence,
-                noteDraft: $compatibilityNoteDraft,
-                onSetVerdict: onSetCompatibilityVerdict,
-                onSaveNote: onSaveCompatibilityNote,
-                geometryProbe: geometryProbe
-            )
-
-            Divider()
-                .padding(.vertical, 13)
-
-            VStack(alignment: .leading, spacing: 9) {
-                Text("Game Details")
-                    .font(.headline)
-                    .accessibilityAddTraits(.isHeader)
-                LabeledContent(
-                    "System",
-                    value: game.systemTitle
-                )
-                LabeledContent(
-                    "Size",
-                    value: ByteCountFormatter.string(
-                        fromByteCount: Int64(game.metadata.fileSize),
-                        countStyle: .file
-                    )
-                )
-                if let artwork {
-                    LabeledContent(
-                        "Last capture",
-                        value: artwork.manifest.isVertical ? "Vertical" : "Horizontal"
-                    )
-                }
-                if game.metadata.hasRTC {
-                    LabeledContent("Real-time clock", value: "Supported")
-                }
-            }
-
-            Divider()
-                .padding(.vertical, 13)
-
-            if game.resolvedHardwareModel == .pocketChallengeV2 {
+            VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 10) {
-                    Label("Program Flash", systemImage: "memorychip.fill")
-                        .font(.headline)
-                        .accessibilityAddTraits(.isHeader)
-                    Text("Pocket Challenge V2 stores progress in its writable cartridge flash. SwanSong saves the complete flash image automatically and restores it only for this exact game.")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    GameArtworkTile(game: game, artwork: artwork)
+                        .aspectRatio(16 / 9, contentMode: .fit)
+                        .clipShape(RoundedRectangle(cornerRadius: 13, style: .continuous))
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 13, style: .continuous)
+                                .stroke(.separator.opacity(0.55), lineWidth: 1)
+                        }
+
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(game.title)
+                            .font(.title3.weight(.semibold))
+                            .lineLimit(2)
+                            .accessibilityAddTraits(.isHeader)
+                        Text(game.systemTitle)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .accessibilityIdentifier(GameInspectorAccessibility.systemIdentity)
+                    }
+
+                    Label(runtimeDetail, systemImage: runtimeDetailSymbol)
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(runtimeDetailColor)
                         .fixedSize(horizontal: false, vertical: true)
-                    Label("Automatic · private · identity-bound", systemImage: "lock.shield.fill")
-                        .font(.caption.weight(.medium))
-                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 9)
+                        .padding(.vertical, 6)
+                        .background(runtimeDetailColor.opacity(0.10), in: Capsule())
+                        .accessibilityIdentifier(GameInspectorAccessibility.runtimeStatus)
+
+                    primaryAction
+                        .controlSize(.large)
                 }
-                .accessibilityElement(children: .contain)
-                .accessibilityIdentifier(
-                    GameInspectorAccessibility.pocketChallengeProgramFlash
+
+                GameConfidencePanel(
+                    confidence: confidence,
+                    evidence: game.compatibilityEvidence,
+                    noteDraft: $compatibilityNoteDraft,
+                    onSetVerdict: onSetCompatibilityVerdict,
+                    onSaveNote: onSaveCompatibilityNote,
+                    geometryProbe: geometryProbe
                 )
-            } else {
-                VStack(alignment: .leading, spacing: 10) {
-                    Label("Pocket Save", systemImage: "externaldrive")
+
+                DisclosureGroup("Game Details", isExpanded: $showsGameDetails) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        LabeledContent("System", value: game.systemTitle)
+                        LabeledContent(
+                            "Size",
+                            value: ByteCountFormatter.string(
+                                fromByteCount: Int64(game.metadata.fileSize),
+                                countStyle: .file
+                            )
+                        )
+                        if let artwork {
+                            LabeledContent(
+                                "Last capture",
+                                value: artwork.manifest.isVertical ? "Vertical" : "Horizontal"
+                            )
+                        }
+                        if game.metadata.hasRTC {
+                            LabeledContent("Real-time clock", value: "Supported")
+                        }
+                    }
+                    .font(.callout)
+                    .padding(.top, 8)
+                }
+                .font(.headline)
+                .padding(12)
+                .background(.background.secondary, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
+                .accessibilityIdentifier(GameInspectorAccessibility.gameDetails)
+
+                if game.resolvedHardwareModel == .pocketChallengeV2 {
+                    VStack(alignment: .leading, spacing: 7) {
+                        Label("Program Flash", systemImage: "memorychip.fill")
+                            .font(.headline)
+                            .accessibilityAddTraits(.isHeader)
+                        Text("Progress is saved automatically as a private, identity-bound cartridge-flash image.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .padding(12)
+                    .background(.background.secondary, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
+                    .accessibilityElement(children: .contain)
+                    .accessibilityIdentifier(
+                        GameInspectorAccessibility.pocketChallengeProgramFlash
+                    )
+                } else {
+                    DisclosureGroup("Pocket Save", isExpanded: $showsSaveTools) {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Move compatible cartridge-save data between SwanSong and Analogue Pocket.")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                            Button(action: onImportSave) {
+                                Label("Import Save…", systemImage: "square.and.arrow.down")
+                                    .frame(maxWidth: .infinity)
+                            }
+                            .buttonStyle(.bordered)
+                            .frame(minHeight: 28)
+                            .disabled(!canImportSave)
+                            Button(action: onExportSave) {
+                                Label("Export Save…", systemImage: "square.and.arrow.up")
+                                    .frame(maxWidth: .infinity)
+                            }
+                            .buttonStyle(.bordered)
+                            .frame(minHeight: 28)
+                            .disabled(!canExportSave)
+                        }
+                        .padding(.top, 8)
+                    }
                     .font(.headline)
-                    .accessibilityAddTraits(.isHeader)
-                    Text("Move compatible cartridge-save data between SwanSong and Analogue Pocket.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-                    Button(action: onImportSave) {
-                        Label("Import Save…", systemImage: "square.and.arrow.down")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.bordered)
-                    .disabled(!canImportSave)
-                    Button(action: onExportSave) {
-                        Label("Export Save…", systemImage: "square.and.arrow.up")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.bordered)
-                    .disabled(!canExportSave)
+                    .padding(12)
+                    .background(.background.secondary, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
+                    .accessibilityIdentifier(GameInspectorAccessibility.pocketSave)
                 }
             }
         }
@@ -6577,7 +7235,7 @@ private struct GameInspector: View {
         if managedHealth == .missing { return .red }
         if managedHealth == .invalidReference { return .red }
         if managedHealth == .changed || requiredFirmware != nil { return .orange }
-        return .secondary
+        return canPlay ? .green : .secondary
     }
 
     private var runtimeDetailSymbol: String {
@@ -9287,10 +9945,10 @@ private struct FirmwareSettingsView: View {
                     .accessibilityHidden(true)
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("System Startup Files")
+                        Text("Startup Files")
                             .font(.title2.weight(.semibold))
                             .accessibilityAddTraits(.isHeader)
-                        Text("Required before play. Add a user-supplied boot ROM / BIOS once for each supported system you use.")
+                        Text("Add your own startup file once for each system in your library.")
                             .font(.callout)
                             .foregroundStyle(.secondary)
                     }
@@ -9332,7 +9990,7 @@ private struct FirmwareSettingsView: View {
                 Button("About Startup Files…", systemImage: "questionmark.circle") {
                     showsStartupFileGuide = true
                 }
-                Text("Files are validated locally. SwanSong never bundles, searches for, downloads, uploads, or shares them.")
+                Text("Validation and storage stay on this Mac. SwanSong never downloads or shares these files.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -9363,6 +10021,7 @@ private struct FirmwareSettingsView: View {
         }
         .formStyle(.grouped)
         .padding()
+        .accessibilityIdentifier(SettingsSurfaceAccessibility.startupFiles)
         .animation(
             reduceMotion ? nil : .easeInOut(duration: 0.18),
             value: model.firmwareSettingsError
@@ -9448,65 +10107,17 @@ private struct FirmwareSettingsView: View {
                 )
             }
 
-            HStack(spacing: 10) {
-                Label(
-                    "\(kind.expectedByteCount / 1_024) KiB local file",
-                    systemImage: "internaldrive"
-                )
-                .font(.caption)
-                .foregroundStyle(.secondary)
-
-                Label(
-                    targetedFirmwareKind == kind
-                        ? "Release to check this file"
-                        : installed ? "Drop a file here to replace" : "Drop a file here or choose Add",
-                    systemImage: targetedFirmwareKind == kind
-                        ? "arrow.down.circle.fill"
-                        : "arrow.down.doc"
-                )
-                .font(.caption)
-                .foregroundStyle(targetedFirmwareKind == kind ? SwanTheme.accent : Color.secondary)
-
-                Spacer()
-
-                if installed {
-                    Button("Replace…") {
-                        pendingFocusKind = kind
-                        model.chooseFirmwareFromSettings(for: kind)
-                    }
-                    .buttonStyle(.bordered)
-                    .disabled(model.firmwareImportIsBusy || model.isPlaying)
-                    .focused($focusedFirmwareKind, equals: kind)
-                    .accessibilityFocused($accessibilityFocusedFirmwareKind, equals: kind)
-                    .accessibilityLabel("Replace \(kind.title) startup file")
-                } else if rowReadiness == .neededForLibrary {
-                    Button("Add…") {
-                        pendingFocusKind = kind
-                        model.chooseFirmwareFromSettings(for: kind)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(model.firmwareImportIsBusy || model.isPlaying)
-                    .focused($focusedFirmwareKind, equals: kind)
-                    .accessibilityFocused($accessibilityFocusedFirmwareKind, equals: kind)
-                    .accessibilityLabel("Add \(kind.title) startup file")
-                } else {
-                    Button("Add…") {
-                        pendingFocusKind = kind
-                        model.chooseFirmwareFromSettings(for: kind)
-                    }
-                    .buttonStyle(.bordered)
-                    .disabled(model.firmwareImportIsBusy || model.isPlaying)
-                    .focused($focusedFirmwareKind, equals: kind)
-                    .accessibilityFocused($accessibilityFocusedFirmwareKind, equals: kind)
-                    .accessibilityLabel("Add \(kind.title) startup file")
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 10) {
+                    firmwareDropSummary(kind, installed: installed)
+                    Spacer(minLength: 12)
+                    firmwareActions(kind, installed: installed, readiness: rowReadiness)
                 }
 
-                if installed {
-                    Button("Remove…", role: .destructive) {
-                        removalCandidate = kind
-                    }
-                    .disabled(model.firmwareImportIsBusy || model.isPlaying)
-                    .accessibilityLabel("Remove \(kind.title) startup file")
+                VStack(alignment: .leading, spacing: 9) {
+                    firmwareDropSummary(kind, installed: installed)
+                    firmwareActions(kind, installed: installed, readiness: rowReadiness)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
                 }
             }
         }
@@ -9514,7 +10125,7 @@ private struct FirmwareSettingsView: View {
         .background(
             targetedFirmwareKind == kind
                 ? SwanTheme.accent.opacity(0.10)
-                : Color.clear,
+                : rowColor.opacity(0.035),
             in: RoundedRectangle(cornerRadius: 12, style: .continuous)
         )
         .overlay {
@@ -9542,6 +10153,79 @@ private struct FirmwareSettingsView: View {
             targetedFirmwareKind = targeted ? kind : nil
         }
         .animation(.easeInOut(duration: 0.14), value: targetedFirmwareKind)
+    }
+
+    private func firmwareDropSummary(
+        _ kind: WonderSwanFirmwareKind,
+        installed: Bool
+    ) -> some View {
+        Label(
+            targetedFirmwareKind == kind
+                ? "Release to validate"
+                : "\(kind.expectedByteCount / 1_024) KiB · Drop to \(installed ? "replace" : "add")",
+            systemImage: targetedFirmwareKind == kind
+                ? "arrow.down.circle.fill"
+                : "arrow.down.doc"
+        )
+        .font(.caption)
+        .foregroundStyle(
+            targetedFirmwareKind == kind ? SwanTheme.accent : Color.secondary
+        )
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
+    @ViewBuilder
+    private func firmwareActions(
+        _ kind: WonderSwanFirmwareKind,
+        installed: Bool,
+        readiness: StartupFileRowReadiness
+    ) -> some View {
+        HStack(spacing: 8) {
+            if !installed && readiness == .neededForLibrary {
+                firmwareChooseButton(kind, installed: installed)
+                    .buttonStyle(.borderedProminent)
+            } else {
+                firmwareChooseButton(kind, installed: installed)
+                    .buttonStyle(.bordered)
+            }
+
+            if installed {
+                Menu {
+                    Button("Remove Startup File…", systemImage: "trash", role: .destructive) {
+                        removalCandidate = kind
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                        .frame(
+                            minWidth: SettingsSurfaceAccessibility.minimumInteractiveDimension,
+                            minHeight: SettingsSurfaceAccessibility.minimumInteractiveDimension
+                        )
+                        .contentShape(Rectangle())
+                }
+                .menuStyle(.borderlessButton)
+                .menuIndicator(.hidden)
+                .disabled(model.firmwareImportIsBusy || model.isPlaying)
+                .help("More actions for \(kind.title)")
+                .accessibilityLabel("More actions for \(kind.title) startup file")
+            }
+        }
+    }
+
+    private func firmwareChooseButton(
+        _ kind: WonderSwanFirmwareKind,
+        installed: Bool
+    ) -> some View {
+        Button(installed ? "Replace…" : "Add…") {
+            pendingFocusKind = kind
+            model.chooseFirmwareFromSettings(for: kind)
+        }
+        .frame(minHeight: SettingsSurfaceAccessibility.minimumInteractiveDimension)
+        .disabled(model.firmwareImportIsBusy || model.isPlaying)
+        .focused($focusedFirmwareKind, equals: kind)
+        .accessibilityFocused($accessibilityFocusedFirmwareKind, equals: kind)
+        .accessibilityLabel(
+            "\(installed ? "Replace" : "Add") \(kind.title) startup file"
+        )
     }
 
     @ViewBuilder
@@ -9660,6 +10344,7 @@ private struct FirmwareSettingsView: View {
 
 private struct ControllerSettingsView: View {
     @Bindable var model: AppModel
+    @State private var showsLiveInputTest = false
 
     private var presetSelection: Binding<ControllerMappingPreset> {
         Binding(
@@ -9669,103 +10354,199 @@ private struct ControllerSettingsView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack(alignment: .top, spacing: 14) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 15, style: .continuous)
-                        .fill(
-                            LinearGradient(
-                                colors: [.indigo, .cyan.opacity(0.72)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                    Image(systemName: "gamecontroller.fill")
-                        .font(.system(size: 28, weight: .medium))
-                        .foregroundStyle(.white)
-                }
-                .frame(width: 58, height: 58)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                ViewThatFits(in: .horizontal) {
+                    HStack(alignment: .top, spacing: 14) {
+                        controllerHeader
+                        Spacer(minLength: 16)
+                        connectionStatus
+                    }
 
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("WonderSwan Controller")
-                        .font(.title2.weight(.semibold))
-                    Text("Map both direction clusters as first-class controls—not as a rotated generic D-pad.")
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
-                }
-                Spacer()
-                Label(
-                    model.connectedControllerName ?? "No controller connected",
-                    systemImage: model.connectedControllerName == nil
-                        ? "gamecontroller"
-                        : "checkmark.circle.fill"
-                )
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(model.connectedControllerName == nil ? Color.secondary : Color.green)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 6)
-                .background(.quaternary, in: Capsule())
-            }
-
-            HStack(spacing: 12) {
-                Picker("Layout", selection: presetSelection) {
-                    ForEach(ControllerMappingPreset.allCases) { preset in
-                        Text(preset.title)
-                            .tag(preset)
-                            .disabled(preset == .custom)
+                    VStack(alignment: .leading, spacing: 10) {
+                        controllerHeader
+                        connectionStatus
                     }
                 }
-                .frame(width: 300)
 
-                Text(model.controllerProfile.preset.detail)
+                GroupBox("Mapping Layout") {
+                    ViewThatFits(in: .horizontal) {
+                        HStack(spacing: 12) {
+                            presetPicker
+                            Text(model.controllerProfile.preset.detail)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .lineLimit(2)
+                            Spacer(minLength: 8)
+                            restoreDefaultButton
+                        }
+
+                        VStack(alignment: .leading, spacing: 10) {
+                            HStack(spacing: 10) {
+                                presetPicker
+                                Spacer()
+                                restoreDefaultButton
+                            }
+                            Text(model.controllerProfile.preset.detail)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                    .padding(.top, 4)
+                }
+
+                mappingDeck
+
+                if let learning = model.controllerLearningControl {
+                    HStack(spacing: 10) {
+                        ProgressView()
+                            .controlSize(.small)
+                        Text("Press any controller control for \(learning.title)")
+                            .font(.callout.weight(.semibold))
+                        Spacer()
+                        Button("Cancel", action: model.cancelLearningControllerBinding)
+                            .frame(
+                                minHeight: SettingsSurfaceAccessibility.minimumInteractiveDimension
+                            )
+                    }
+                    .padding(12)
+                    .background(Color.accentColor.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                } else {
+                    Label(
+                        "Choose a WonderSwan tile, then press the physical control. Its menu also supports manual selection and clearing.",
+                        systemImage: "hand.tap"
+                    )
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                    .lineLimit(2)
-                Spacer()
-                Button("Restore Default", systemImage: "arrow.counterclockwise") {
-                    model.applyControllerPreset(.twinCluster)
                 }
-            }
 
+                DisclosureGroup(isExpanded: $showsLiveInputTest) {
+                    ControllerLiveInputView(model: model)
+                        .padding(.top, 8)
+                } label: {
+                    HStack {
+                        Label("Live Input Test", systemImage: "waveform.path.ecg")
+                            .font(.subheadline.weight(.semibold))
+                        Spacer()
+                        Text(model.connectedControllerName == nil ? "Waiting" : "Listening")
+                            .font(.caption.monospaced().weight(.semibold))
+                            .foregroundStyle(model.connectedControllerName == nil ? Color.secondary : Color.green)
+                    }
+                }
+                .padding(12)
+                .background(.background.secondary, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .accessibilityIdentifier(SettingsSurfaceAccessibility.controllerLiveInput)
+            }
+            .padding(22)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+        }
+        .accessibilityIdentifier(SettingsSurfaceAccessibility.controllerMapping)
+    }
+
+    private var controllerHeader: some View {
+        HStack(alignment: .top, spacing: 14) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [.indigo, .cyan.opacity(0.72)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                Image(systemName: "gamecontroller.fill")
+                    .font(.system(size: 28, weight: .medium))
+                    .foregroundStyle(.white)
+            }
+            .frame(width: 58, height: 58)
+            .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("WonderSwan Controller")
+                    .font(.title2.weight(.semibold))
+                    .accessibilityAddTraits(.isHeader)
+                Text("Map both direction clusters as native WonderSwan controls.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    private var connectionStatus: some View {
+        Label(
+            model.connectedControllerName ?? "No controller connected",
+            systemImage: model.connectedControllerName == nil
+                ? "gamecontroller"
+                : "checkmark.circle.fill"
+        )
+        .font(.caption.weight(.semibold))
+        .foregroundStyle(model.connectedControllerName == nil ? Color.secondary : Color.green)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(.quaternary, in: Capsule())
+        .accessibilityLabel("Controller connection")
+        .accessibilityValue(model.connectedControllerName ?? "No controller connected")
+    }
+
+    private var presetPicker: some View {
+        Picker("Layout", selection: presetSelection) {
+            ForEach(ControllerMappingPreset.allCases) { preset in
+                Text(preset.title)
+                    .tag(preset)
+                    .disabled(preset == .custom)
+            }
+        }
+        .frame(minWidth: 220, idealWidth: 280, maxWidth: 300)
+    }
+
+    private var restoreDefaultButton: some View {
+        Button("Restore Default", systemImage: "arrow.counterclockwise") {
+            model.applyControllerPreset(.twinCluster)
+        }
+        .frame(minHeight: SettingsSurfaceAccessibility.minimumInteractiveDimension)
+    }
+
+    private var mappingDeck: some View {
+        ViewThatFits(in: .horizontal) {
             HStack(alignment: .top, spacing: 14) {
-                ControllerClusterMappingView(
-                    title: "X Cluster",
-                    subtitle: "Primary movement",
-                    controls: [.x1, .x2, .x3, .x4],
-                    model: model
-                )
-                ControllerClusterMappingView(
-                    title: "Y Cluster",
-                    subtitle: "Rotation and second cluster",
-                    controls: [.y1, .y2, .y3, .y4],
-                    model: model
-                )
+                xCluster
+                yCluster
                 ControllerActionMappingView(model: model)
             }
 
-            if let learning = model.controllerLearningControl {
-                HStack(spacing: 10) {
-                    ProgressView()
-                        .controlSize(.small)
-                    Text("Press any controller control for \(learning.title)")
-                        .font(.callout.weight(.semibold))
-                    Spacer()
-                    Button("Cancel", action: model.cancelLearningControllerBinding)
+            VStack(spacing: 14) {
+                HStack(alignment: .top, spacing: 14) {
+                    xCluster
+                    yCluster
                 }
-                .padding(12)
-                .background(Color.accentColor.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-            } else {
-                Label(
-                    "Click a WonderSwan tile, then press the physical control. Use its menu for manual selection or to clear it.",
-                    systemImage: "hand.tap"
-                )
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                ControllerActionMappingView(model: model)
             }
 
-            ControllerLiveInputView(model: model)
+            VStack(spacing: 14) {
+                xCluster
+                yCluster
+                ControllerActionMappingView(model: model)
+            }
         }
-        .padding(22)
+    }
+
+    private var xCluster: some View {
+        ControllerClusterMappingView(
+            title: "X Cluster",
+            subtitle: "Primary movement",
+            controls: [.x1, .x2, .x3, .x4],
+            model: model
+        )
+    }
+
+    private var yCluster: some View {
+        ControllerClusterMappingView(
+            title: "Y Cluster",
+            subtitle: "Rotation and second cluster",
+            controls: [.y1, .y2, .y3, .y4],
+            model: model
+        )
     }
 }
 
@@ -9792,7 +10573,7 @@ private struct ControllerClusterMappingView: View {
             ControllerMappingKey(control: controls[2], model: model)
         }
         .padding(14)
-        .frame(maxWidth: .infinity, minHeight: 280, maxHeight: 280)
+        .frame(maxWidth: .infinity, minHeight: 268, maxHeight: 268)
         .background(.background.secondary, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 }
@@ -9819,7 +10600,7 @@ private struct ControllerActionMappingView: View {
             }
         }
         .padding(14)
-        .frame(maxWidth: .infinity, minHeight: 280, maxHeight: 280, alignment: .top)
+        .frame(maxWidth: .infinity, minHeight: 268, maxHeight: 268, alignment: .top)
         .background(.background.secondary, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 }
@@ -9868,6 +10649,9 @@ private struct ControllerMappingKey: View {
             }
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("Map \(control.title)")
+        .accessibilityValue(element?.title ?? "Unassigned")
+        .accessibilityHint("Press a physical controller control, or use the binding menu")
         .overlay(alignment: .bottomTrailing) {
             Menu {
                 ForEach(ControllerElement.allCases) { candidate in
@@ -9891,10 +10675,17 @@ private struct ControllerMappingKey: View {
                 Image(systemName: "chevron.down.circle.fill")
                     .font(.caption)
                     .symbolRenderingMode(.hierarchical)
+                    .frame(
+                        minWidth: SettingsSurfaceAccessibility.minimumInteractiveDimension,
+                        minHeight: SettingsSurfaceAccessibility.minimumInteractiveDimension
+                    )
+                    .contentShape(Rectangle())
             }
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
-            .offset(x: 5, y: 5)
+            .offset(x: 7, y: 7)
+            .help("Choose a binding for \(control.title)")
+            .accessibilityLabel("Choose a binding for \(control.title)")
         }
         .animation(.easeOut(duration: 0.1), value: isActive)
         .animation(.easeOut(duration: 0.15), value: isLearning)
@@ -9907,14 +10698,6 @@ private struct ControllerLiveInputView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Label("Live input test", systemImage: "waveform.path.ecg")
-                    .font(.subheadline.weight(.semibold))
-                Spacer()
-                Text(model.connectedControllerName == nil ? "Waiting for controller" : "Listening")
-                    .font(.caption.monospaced().weight(.semibold))
-                    .foregroundStyle(model.connectedControllerName == nil ? Color.secondary : Color.green)
-            }
             inputBadges(
                 title: "Physical",
                 values: ControllerElement.allCases
@@ -9928,8 +10711,6 @@ private struct ControllerLiveInputView: View {
                     .map(\.title)
             )
         }
-        .padding(12)
-        .background(.background.secondary, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 
     private func inputBadges(title: String, values: [String]) -> some View {

@@ -170,7 +170,7 @@ enum TranslationVisualDivergenceRunner {
         startupFile: Data?,
         progress: @escaping @Sendable (Progress) async -> Void
     ) async throws -> OriginalPass {
-        let runner = try makeRunner()
+        let runner = try makeRunner(route: route)
         do {
             try await prepare(runner, rom: rom, startupFile: startupFile)
             var fingerprints: [String] = []
@@ -225,7 +225,7 @@ enum TranslationVisualDivergenceRunner {
                 "the Original fingerprint pass ended before the route endpoint"
             )
         }
-        let runner = try makeRunner()
+        let runner = try makeRunner(route: route)
         do {
             try await prepare(runner, rom: rom, startupFile: startupFile)
             var previousFrame: EngineVideoFrame?
@@ -284,7 +284,7 @@ enum TranslationVisualDivergenceRunner {
         through target: UInt64,
         progress: @escaping @Sendable (Progress) async -> Void
     ) async throws -> (EngineVideoFrame, EngineVideoFrame?) {
-        let runner = try makeRunner()
+        let runner = try makeRunner(route: route)
         do {
             try await prepare(runner, rom: rom, startupFile: startupFile)
             var previous: EngineVideoFrame?
@@ -322,11 +322,17 @@ enum TranslationVisualDivergenceRunner {
         }
     }
 
-    private static func makeRunner() throws -> EmulationRunner {
-        try EmulationRunner(
+    private static func makeRunner(route: TranslationRoute) throws -> EmulationRunner {
+        guard let start = route.start else {
+            throw TranslationLabError.invalidRoute(
+                "the route start context is missing"
+            )
+        }
+        return try EmulationRunner(
             rtcMode: .deterministic(
                 seedUnixSeconds: TranslationRouteRTCContext.proofSeedUnixSeconds
-            )
+            ),
+            hardwareModel: start.engineHardwareModel
         )
     }
 

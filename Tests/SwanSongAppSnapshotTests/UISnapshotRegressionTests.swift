@@ -24,17 +24,20 @@ final class UISnapshotRegressionTests: XCTestCase {
     private struct Scenario {
         let name: String
         let size: CGSize
+        let usesPolishOutput: Bool
         let makeView: () -> AnyView
         let prepare: ((NSView, NSWindow) -> Void)?
 
         init(
             name: String,
             size: CGSize,
+            usesPolishOutput: Bool = false,
             prepare: ((NSView, NSWindow) -> Void)? = nil,
             makeView: @escaping () -> AnyView
         ) {
             self.name = name
             self.size = size
+            self.usesPolishOutput = usesPolishOutput
             self.makeView = makeView
             self.prepare = prepare
         }
@@ -114,6 +117,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             "libraryWindowHeight",
             "librarySortOption",
             "showsLibraryInspector",
+            "settingsPane",
         ].map { key in
             (key, UserDefaults.standard.object(forKey: key))
         }
@@ -129,6 +133,10 @@ final class UISnapshotRegressionTests: XCTestCase {
             translationProjectRoot: translationProjectRoot
         )
         let output = try snapshotOutputDirectory()
+        let polishOutput = output
+            .deletingLastPathComponent()
+            .appendingPathComponent("ui-polish-regression", isDirectory: true)
+        try resetTemporaryDirectory(polishOutput)
         var signatures: [SnapshotSignature] = []
 
         for scenario in scenarios {
@@ -141,7 +149,8 @@ final class UISnapshotRegressionTests: XCTestCase {
                 )
                 let fileName = "\(scenario.name)-\(scheme.rawValue).png"
                 try rendered.png.write(
-                    to: output.appendingPathComponent(fileName),
+                    to: (scenario.usesPolishOutput ? polishOutput : output)
+                        .appendingPathComponent(fileName),
                     options: [.atomic]
                 )
 
@@ -156,7 +165,14 @@ final class UISnapshotRegressionTests: XCTestCase {
                 XCTAssertEqual(signature.height, Int(scenario.size.height), fileName)
                 XCTAssertGreaterThan(signature.pngByteCount, 2_000, fileName)
                 XCTAssertGreaterThan(signature.sampledColorCount, 8, fileName)
-                XCTAssertGreaterThan(signature.opaqueSampleFraction, 0.98, fileName)
+                let minimumOpaqueFraction = scenario.name.contains("-settings-")
+                    ? 0.97
+                    : 0.98
+                XCTAssertGreaterThan(
+                    signature.opaqueSampleFraction,
+                    minimumOpaqueFraction,
+                    fileName
+                )
                 XCTAssertLessThan(
                     signature.centralDominantColorFraction,
                     0.96,
@@ -170,7 +186,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             }
         }
 
-        XCTAssertEqual(signatures.count, 52)
+        XCTAssertEqual(signatures.count, 66)
         for scenario in scenarios {
             let pair = signatures.filter { $0.name == scenario.name }
             XCTAssertEqual(pair.count, 2, scenario.name)
@@ -195,11 +211,21 @@ final class UISnapshotRegressionTests: XCTestCase {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         try encoder.encode(signatures).write(to: manifestURL, options: [.atomic])
+        try encoder.encode(signatures.filter { signature in
+            scenarios.first { $0.name == signature.name }?.usesPolishOutput == true
+        }).write(
+            to: polishOutput.appendingPathComponent("manifest.json"),
+            options: [.atomic]
+        )
     }
 
     func testCoreSurfaceAccessibilityContracts() throws {
         let root = try temporaryRoot()
         defer { try? FileManager.default.removeItem(at: root) }
+        XCTAssertEqual(
+            TranslationTextIntakeView.accessibilityIdentifier,
+            "translation-text-intake-sheet"
+        )
         XCTAssertEqual(PlayerVideoActivityRecoveryCard.accessibilityIdentifier, "player-video-warning")
         XCTAssertEqual(
             PlayerVideoActivityRecoveryCard.dismissAccessibilityLabel,
@@ -363,8 +389,36 @@ final class UISnapshotRegressionTests: XCTestCase {
             "game-inspector-runtime-status"
         )
         XCTAssertEqual(
+            GameInspectorAccessibility.confidenceExplanations,
+            "game-inspector-confidence-explanations"
+        )
+        XCTAssertEqual(
+            GameInspectorAccessibility.gameDetails,
+            "game-inspector-game-details"
+        )
+        XCTAssertEqual(
+            GameInspectorAccessibility.pocketSave,
+            "game-inspector-pocket-save"
+        )
+        XCTAssertEqual(
             GameInspectorAccessibility.pocketChallengeProgramFlash,
             "pocket-challenge-v2-program-flash"
+        )
+        XCTAssertEqual(
+            SettingsSurfaceAccessibility.startupFiles,
+            "startup-files-settings"
+        )
+        XCTAssertEqual(
+            SettingsSurfaceAccessibility.controllerMapping,
+            "controller-mapping-settings"
+        )
+        XCTAssertEqual(
+            SettingsSurfaceAccessibility.controllerLiveInput,
+            "controller-live-input-disclosure"
+        )
+        XCTAssertGreaterThanOrEqual(
+            SettingsSurfaceAccessibility.minimumInteractiveDimension,
+            28
         )
         let stableCardID = UUID(uuidString: "10000000-0000-0000-0000-000000000004")!
         XCTAssertEqual(
@@ -1049,6 +1103,13 @@ final class UISnapshotRegressionTests: XCTestCase {
             dataRoot: root.appendingPathComponent("translation-overview"),
             projectRoot: translationProjectRoot
         )
+        let translationTextIntakeModel = try translationTextIntakeModel(
+            dataRoot: root.appendingPathComponent("translation-text-intake"),
+            projectRoot: root.appendingPathComponent(
+                "translation-text-intake-project",
+                isDirectory: true
+            )
+        )
         let confidenceFixture = try gameConfidenceFixture(
             root: root.appendingPathComponent("game-confidence")
         )
@@ -1147,6 +1208,13 @@ final class UISnapshotRegressionTests: XCTestCase {
                     )
                 )
             },
+            Scenario(
+                name: "translation-text-intake",
+                size: CGSize(width: 980, height: 720),
+                usesPolishOutput: true
+            ) {
+                AnyView(TranslationTextIntakeView(model: translationTextIntakeModel))
+            },
             Scenario(name: "game-confidence-compact", size: CGSize(width: 820, height: 560)) {
                 UserDefaults.standard.set(false, forKey: "showsLibraryInspector")
                 return AnyView(
@@ -1189,6 +1257,62 @@ final class UISnapshotRegressionTests: XCTestCase {
                     )
                 )
             },
+            Scenario(
+                name: "selected-game-inspector-compact",
+                size: CGSize(width: 340, height: 620),
+                usesPolishOutput: true
+            ) {
+                AnyView(
+                    self.selectedGameInspectorSurface(
+                        model: confidenceFixture.model,
+                        game: confidenceFixture.reportedIssues
+                    )
+                )
+            },
+            Scenario(
+                name: "selected-game-inspector-wide",
+                size: CGSize(width: 420, height: 720),
+                usesPolishOutput: true
+            ) {
+                AnyView(
+                    self.selectedGameInspectorSurface(
+                        model: confidenceFixture.model,
+                        game: confidenceFixture.reportedIssues
+                    )
+                )
+            },
+            Scenario(
+                name: "startup-files-settings-compact",
+                size: CGSize(width: 640, height: 620),
+                usesPolishOutput: true
+            ) {
+                UserDefaults.standard.set(2, forKey: "settingsPane")
+                return AnyView(self.settingsSurface(model: confidenceFixture.model))
+            },
+            Scenario(
+                name: "startup-files-settings-wide",
+                size: CGSize(width: 860, height: 720),
+                usesPolishOutput: true
+            ) {
+                UserDefaults.standard.set(2, forKey: "settingsPane")
+                return AnyView(self.settingsSurface(model: confidenceFixture.model))
+            },
+            Scenario(
+                name: "controller-mapping-settings-compact",
+                size: CGSize(width: 640, height: 620),
+                usesPolishOutput: true
+            ) {
+                UserDefaults.standard.set(1, forKey: "settingsPane")
+                return AnyView(self.settingsSurface(model: confidenceFixture.model))
+            },
+            Scenario(
+                name: "controller-mapping-settings-wide",
+                size: CGSize(width: 980, height: 720),
+                usesPolishOutput: true
+            ) {
+                UserDefaults.standard.set(1, forKey: "settingsPane")
+                return AnyView(self.settingsSurface(model: confidenceFixture.model))
+            },
             Scenario(name: "player-canvas-horizontal", size: CGSize(width: 760, height: 430)) {
                 AnyView(self.playerCanvasSurface(frame: horizontalPlayerFrame, scale: 2))
             },
@@ -1214,6 +1338,39 @@ final class UISnapshotRegressionTests: XCTestCase {
             )
             .padding(20)
         }
+    }
+
+    private func selectedGameInspectorSurface(
+        model: AppModel,
+        game: GameRecord
+    ) -> some View {
+        GameInspector(
+            game: game,
+            artwork: model.gameArtwork[game.id],
+            confidence: model.gameConfidence(for: game),
+            canPlay: model.canPlayGame(game),
+            managedHealth: model.managedGameHealth[game.id],
+            isCheckingManagedCopy: model.checkingManagedGameIDs.contains(game.id),
+            isRepairingManagedCopy: model.repairingGameID == game.id,
+            requiredFirmware: model.missingFirmware(for: game),
+            canImportSave: model.canImportPocketSave,
+            canExportSave: model.canExportPocketSave,
+            onPlay: {},
+            onRepair: {},
+            onReAdd: {},
+            onInstallFirmware: {},
+            onImportSave: {},
+            onExportSave: {},
+            onSetCompatibilityVerdict: { _ in },
+            onSaveCompatibilityNote: { _ in },
+            geometryProbe: nil
+        )
+        .background(SwanTheme.libraryBackground)
+    }
+
+    private func settingsSurface(model: AppModel) -> some View {
+        SettingsView(model: model)
+            .background(Color(nsColor: .windowBackgroundColor))
     }
 
     private func rewindRibbonSurface(
@@ -1753,6 +1910,62 @@ final class UISnapshotRegressionTests: XCTestCase {
                 frame: frame
             )
         )
+    }
+
+    private func translationTextIntakeModel(
+        dataRoot: URL,
+        projectRoot: URL
+    ) throws -> AppModel {
+        let model = try translationOverviewModel(
+            dataRoot: dataRoot,
+            projectRoot: projectRoot
+        )
+        let project = try XCTUnwrap(model.translationProject)
+        let originalROM = project.rootURL
+            .appendingPathComponent("rom", isDirectory: true)
+            .appendingPathComponent("original.ws")
+        let patchedROM = project.rootURL
+            .appendingPathComponent("build", isDirectory: true)
+            .appendingPathComponent("patched.ws")
+        try FileManager.default.createDirectory(
+            at: originalROM.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        try FileManager.default.createDirectory(
+            at: patchedROM.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        let rom = Data(repeating: 0x5a, count: 128 * 1_024)
+        try rom.write(to: originalROM, options: [.atomic])
+        try rom.write(to: patchedROM, options: [.atomic])
+
+        let store = TranslationEvidenceStore()
+        _ = try store.capture(
+            TranslationEvidenceInput(
+                project: project,
+                role: .original,
+                romURL: originalROM,
+                romFooterChecksum: 0,
+                backend: "snapshot-fixture",
+                frameNumber: 4_923,
+                framePNG: try previewPNG(),
+                state: Data(repeating: 0x21, count: 2_048),
+                internalRAM: Data(repeating: 0x00, count: 64 * 1_024),
+                route: nil
+            )
+        )
+        model.translationEvidence = try store.listEvidence(project: project)
+        model.selectedTranslationEvidenceID = try XCTUnwrap(model.translationEvidence.first?.id)
+        model.beginTranslationTextIntake()
+        model.useDialogueBandForTranslationTextIntake()
+        model.translationTextIntakeManualDraft = "PRESS START"
+        model.addManualTranslationTextIntakeLine()
+        model.translationTextIntakeManualDraft = "はじめから"
+        model.addManualTranslationTextIntakeLine()
+        if let first = model.translationTextIntakeLines.first {
+            model.confirmTranslationTextIntakeLine(first.id)
+        }
+        return model
     }
 
     private func timelineFixture(in store: GameStateStore) throws -> [GameStateSummary] {

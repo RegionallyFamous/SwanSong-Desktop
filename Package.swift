@@ -46,6 +46,10 @@ let package = Package(
         .executable(name: "SwanSongDifferential", targets: ["SwanSongDifferential"]),
         .executable(name: "SwanSongProbe", targets: ["SwanSongProbe"]),
         .executable(name: "SwanSongSoak", targets: ["SwanSongSoak"]),
+        .executable(
+            name: "SwanSongTextIntakeChecks",
+            targets: ["SwanSongTextIntakeChecks"]
+        ),
         .library(name: "SwanSongKit", targets: ["SwanSongKit"]),
     ],
     targets: [
@@ -63,11 +67,14 @@ let package = Package(
             linkerSettings: [
                 .linkedFramework("AppKit"),
                 .linkedFramework("AVFAudio"),
+                .linkedFramework("CoreGraphics"),
                 .linkedFramework("GameController"),
+                .linkedFramework("ImageIO"),
                 .linkedFramework("Metal"),
                 .linkedFramework("MetalKit"),
                 .linkedFramework("SwiftUI"),
                 .linkedFramework("UniformTypeIdentifiers"),
+                .linkedFramework("Vision"),
             ]
         ),
         .executableTarget(
@@ -86,10 +93,18 @@ let package = Package(
             name: "SwanSongSoak",
             dependencies: ["SwanSongKit"]
         ),
+        .executableTarget(
+            name: "SwanSongTextIntakeChecks",
+            dependencies: ["SwanSongKit"]
+        ),
         .testTarget(
             name: "SwanSongAppSnapshotTests",
             dependencies: ["SwanSongApp", "SwanSongKit"],
             resources: [.copy("ui-perceptual-baselines.json")]
+        ),
+        .testTarget(
+            name: "SwanSongKitTests",
+            dependencies: ["SwanSongKit"]
         ),
     ],
     cxxLanguageStandard: .cxx20
