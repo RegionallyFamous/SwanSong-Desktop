@@ -49,6 +49,17 @@ if [ "$UNIVERSAL" = "1" ]; then
 else
   set -- "$@" -D SWAN_PORTABLE_BUILD=OFF
 fi
+
+# A moved checkout leaves absolute source/build paths in CMakeCache.txt. Ask
+# CMake to regenerate that ignored cache in place instead of failing with a
+# source-directory mismatch or silently retaining the former checkout.
+if [ -f "$BUILD_DIR/CMakeCache.txt" ]; then
+  cached_source=$(sed -n 's/^CMAKE_HOME_DIRECTORY:INTERNAL=//p' \
+    "$BUILD_DIR/CMakeCache.txt" | tail -1)
+  if [ -n "$cached_source" ] && [ "$cached_source" != "$MACOS_DIR/Engine" ]; then
+    set -- --fresh "$@"
+  fi
+fi
 cmake "$@"
 cmake --build "$BUILD_DIR" --target SwanAresEngine SwanAresSmoke --parallel
 

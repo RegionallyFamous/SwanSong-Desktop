@@ -6,6 +6,11 @@ func appDiagnostic(_ message: String) {
     FileHandle.standardError.write(Data("SwanSong: \(message)\n".utf8))
 }
 
+private func openBundledDocument(named name: String, extension fileExtension: String? = nil) {
+    guard let url = Bundle.main.url(forResource: name, withExtension: fileExtension) else { return }
+    NSWorkspace.shared.open(url)
+}
+
 @MainActor
 private final class SwanSongAppDelegate: NSObject, NSApplicationDelegate {
     let model = AppModel()
@@ -89,12 +94,17 @@ struct SwanSongApp: App {
 
             CommandGroup(after: .appInfo) {
                 Divider()
+                Button("Privacy…") {
+                    openBundledDocument(named: "PRIVACY", extension: "md")
+                }
+                Button("Support…") {
+                    openBundledDocument(named: "SUPPORT", extension: "md")
+                }
+                Button("License…") {
+                    openBundledDocument(named: "LICENSE")
+                }
                 Button("Acknowledgements…") {
-                    guard let url = Bundle.main.url(
-                        forResource: "THIRD_PARTY_NOTICES",
-                        withExtension: "md"
-                    ) else { return }
-                    NSWorkspace.shared.open(url)
+                    openBundledDocument(named: "THIRD_PARTY_NOTICES", extension: "md")
                 }
             }
             CommandGroup(after: .toolbar) {

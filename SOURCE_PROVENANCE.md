@@ -32,10 +32,11 @@ are reproducible emulator tests, not commercial games or firmware:
 - the Wonderful medium-SRAM probe, with its example and syslib notices.
 
 The WonderWitch/Athena example is source-only and retains its AthenaOS notice;
-building it requires a separately installed Wonderful toolchain. The clean-room
-PCV2 startup fixture used by app checks is generated at test time by
-[`Scripts/generate-pcv2-fixture.py`](Scripts/generate-pcv2-fixture.py) and is
-never committed as firmware.
+building it requires a separately installed Wonderful toolchain.
+[`Scripts/generate-pcv2-fixture.py`](Scripts/generate-pcv2-fixture.py) generates
+the clean-room 128 KiB PCV2 cartridge used by app checks. The runtime scripts
+create their separate 4 KiB source-free startup bytes at test time. Neither
+generated input is committed as a game or firmware artifact.
 
 ## Private and external inputs
 

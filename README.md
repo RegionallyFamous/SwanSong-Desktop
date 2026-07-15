@@ -1,5 +1,51 @@
 # SwanSong Desktop
 
+**WonderSwan, at home on your Mac.**
+
+SwanSong Desktop is a private, native WonderSwan player and translation
+workbench for macOS. It is designed for the Mac rather than wrapped from
+another platform, with a visual game library, controller-first play, a
+memory-only Time Ribbon, screenshot-backed save states, and careful support
+for WonderSwan's unusual control layout.
+
+[Download the latest release](https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest)
+· [Build from source](#build-and-run-the-live-app)
+· [Privacy](PRIVACY.md)
+· [Support](SUPPORT.md)
+
+> **Release status:** pre-release. Developer ID signing is enabled, but the
+> first public download will wait for Apple notarization so a clean Mac can
+> verify it through Gatekeeper.
+
+<p align="center">
+  <img src="Packaging/AppIcon.png" width="160" alt="SwanSong app icon">
+</p>
+
+## Built for trust
+
+- **Private by default.** No analytics, ads, accounts, telemetry, update
+  checker, or network client. Games, startup files, saves, screenshots, and
+  translation evidence stay on your Mac unless you explicitly export them.
+- **Bring your own files.** SwanSong never bundles or downloads commercial
+  games or system startup files. It validates authorized local copies and
+  stores them privately in Application Support.
+- **Inspectable releases.** Public builds are universal for Apple silicon and
+  Intel, Developer ID signed, hardened, notarized, and paired with SHA-256
+  checksums and the exact source tag.
+- **Conservative claims.** Compatibility evidence distinguishes observed
+  video from a user-confirmed works report; it does not turn a successful boot
+  into an accuracy claim.
+
+SwanSong requires **macOS 14 or newer**. It opens `.ws`, `.wsc`, `.pc2`, and
+`.pcv2` files, plus supported single-game ZIP archives. You must supply games
+and system startup files that you are authorized to use.
+
+See the [privacy policy](PRIVACY.md), [security policy](SECURITY.md),
+[support guide](SUPPORT.md), and [third-party notices](Dependencies/THIRD_PARTY_NOTICES.md)
+before installing or contributing.
+
+## Current engineering status
+
 This repository contains the dedicated native macOS application, whose product
 name and app label are **SwanSong**. It is
 deliberately separate from the Analogue Pocket packaging and FPGA build.
@@ -71,13 +117,17 @@ directly to the toolkit's existing `capture-intake` stage. Original and patched
 endpoints remain available in a persistent native review inspector with
 Side-by-Side, opacity-controlled Overlay, and Difference heatmap modes at
 exact 1×, 2×, or 4× pixel zoom.
-Any intact capture can also open **Capture to Source Text**: drag a dialogue
-region, run Apple Vision recognition entirely on-device, correct or manually
-transcribe visible lines, explicitly confirm them, and save a deterministic
-private `text-intake.json` beside the capture. The structured intake records
-reviewed source text, pixel bounds, quantized confidence, and the capture hash;
-it never embeds screenshot pixels, filesystem paths, ROM data, timestamps,
-cloud requests, inferred translations, or unreviewed OCR output.
+Any intact capture can also open **Capture & Draft Translation**: drag a
+dialogue region, run Apple Vision recognition entirely on-device, correct or
+manually transcribe visible lines, explicitly confirm them, then draft and
+review the project's target-language text. SwanSong saves deterministic private
+`text-intake.json` and `translation-draft.json` sidecars beside the capture.
+The source intake records reviewed text, pixel bounds, quantized confidence,
+and the capture hash. The draft binds the exact intake bytes by SHA-256, keeps
+source IDs and text immutable, allows unfinished target lines, and records only
+manual user entry and review status. Neither artifact embeds screenshot pixels,
+filesystem paths, ROM data, timestamps, cloud requests, generated translation
+claims, or unreviewed OCR output.
 The selected route can also be verified end to end with one button: SwanSong
 runs fresh Status, QA, validation, strict pack, and a final Status, then replays
 the route against both ROMs with
@@ -405,8 +455,8 @@ compact/wide Light/Dark variants. It rejects blank regions and
 unsupported-control placeholders, proves compact timeline actions can be
 scrolled fully into view, proves the compact Time Ribbon needs no vertical
 scrolling, protects all four active framebuffer corners, checks accessibility
-labels and 28-point interaction targets, and compares 66 renders—including
-focused selected-game, startup-file, controller-mapping, and capture-to-text
+labels and 28-point interaction targets, and compares 70 renders—including
+focused selected-game, startup-file, controller-mapping, and capture-and-draft
 polish surfaces—with a reviewed 256-bit perceptual baseline:
 
 ```sh
@@ -498,14 +548,18 @@ orange-to-magenta heatmap while unchanged pixels remain dim grayscale; no
 derived visualization is written back into the evidence bundle.
 
 Choose **Extract Source Text…** from an intact capture to open the native
-capture-to-text desk. **Full Frame** and **Dialogue Band** are
+capture-and-draft desk. **Full Frame** and **Dialogue Band** are
 keyboard-accessible region presets; a pointer can draw a tighter rectangle.
 Vision recognition stays on this Mac and is always presented as a draft.
 Correct or type only source text visible in the selected region, confirm each
-line (or use **Confirm All**), then choose **Confirm & Save Intake**. The saved
-artifact is deliberately a reviewed source-text intake—not a translation,
-glyph-table claim, or ROM pointer claim—and remains inside the ignored private
-project workspace.
+line (or use **Confirm All**), then save the intake to unlock target drafting.
+Each target line retains its confirmed source as a read-only reference and can
+be saved blank, saved as a draft, or explicitly marked reviewed. Reopening the
+same capture resumes only when the saved intake and draft binding still match.
+The source artifact remains evidence of reviewed visible text—not a translation,
+glyph-table claim, or ROM pointer claim—while the linked draft records manual
+user-authored target text without modifying the ROM. Both stay inside the
+ignored private project workspace.
 
 **Export Source-Free Diagnostic…** creates a `.swsdiag` package containing
 only the rendered frame, verified input route, hashes, metadata, and saved
@@ -587,3 +641,13 @@ full Xcode.
 
 See [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for the complete product,
 architecture, milestones, and acceptance gates.
+
+## License and independence
+
+SwanSong is free software licensed under **GPL-2.0-only**. Every official binary
+release must include the license, third-party notices, and exact corresponding
+source for that build.
+
+SwanSong is an independent, unofficial project. Product names and trademarks
+belong to their respective owners. No games or system startup files are
+included.

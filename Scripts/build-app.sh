@@ -182,6 +182,8 @@ cp "$MACOS_DIR/Packaging/Info.plist" "$APP_DIR/Contents/Info.plist"
 cp "$MACOS_DIR/Packaging/AppIcon.icns" "$APP_DIR/Contents/Resources/AppIcon.icns"
 cp "$MACOS_DIR/Packaging/AppIcon.png" "$APP_DIR/Contents/Resources/AppIcon.png"
 cp "$MACOS_DIR/LICENSE" "$APP_DIR/Contents/Resources/LICENSE"
+cp "$MACOS_DIR/PRIVACY.md" "$APP_DIR/Contents/Resources/PRIVACY.md"
+cp "$MACOS_DIR/SUPPORT.md" "$APP_DIR/Contents/Resources/SUPPORT.md"
 cp "$MACOS_DIR/Dependencies/THIRD_PARTY_NOTICES.md" \
   "$APP_DIR/Contents/Resources/THIRD_PARTY_NOTICES.md"
 
@@ -197,26 +199,31 @@ if otool -l "$APP_DIR/Contents/MacOS/SwanSong" | grep -Fq "path $BUILD_DIR"; the
     "$APP_DIR/Contents/MacOS/SwanSong"
 fi
 
-# SwiftPM can add the selected Command Line Tools runtime directory while
-# cross-compiling. macOS 14 supplies the Swift runtime; retaining an absolute
-# developer-machine path would make the release bundle non-portable. `sort -u`
-# is important because otool prints each universal2 slice separately.
+# SwiftPM can add the selected Command Line Tools or full-Xcode runtime
+# directory while cross-compiling. macOS 14 supplies the Swift runtime;
+# retaining any absolute developer-machine path would make the release bundle
+# non-portable. `sort -u` is important because otool prints each universal2
+# slice separately.
 development_swift_rpaths=$(list_rpaths \
   "$APP_DIR/Contents/MacOS/SwanSong" \
-  | grep '^/Library/Developer/CommandLineTools/.*swift' \
+  | grep -E '^/(Library/Developer/CommandLineTools|Applications/.*Xcode[^/]*)/.*swift' \
   | sort -u \
   || true)
-for rpath in $development_swift_rpaths; do
-  install_name_tool -delete_rpath "$rpath" \
-    "$APP_DIR/Contents/MacOS/SwanSong"
-done
+while IFS= read -r rpath; do
+  if [ -n "$rpath" ]; then
+    install_name_tool -delete_rpath "$rpath" \
+      "$APP_DIR/Contents/MacOS/SwanSong"
+  fi
+done <<EOF
+$development_swift_rpaths
+EOF
 
 install_name_tool -add_rpath "@executable_path/../Frameworks" \
   "$APP_DIR/Contents/MacOS/SwanSong"
 
 if list_rpaths "$APP_DIR/Contents/MacOS/SwanSong" \
-  | grep -q '^/Library/Developer/CommandLineTools/.*swift'; then
-  echo "an absolute Command Line Tools Swift runtime rpath remains in the app" >&2
+  | grep -Eq '^/(Library/Developer/CommandLineTools|Applications/.*Xcode[^/]*)/.*swift'; then
+  echo "an absolute developer-toolchain Swift runtime rpath remains in the app" >&2
   exit 1
 fi
 

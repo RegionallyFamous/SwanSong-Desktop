@@ -1,0 +1,31 @@
+name: Feature request
+description: Propose a focused improvement to SwanSong Desktop.
+title: "[Feature]: "
+labels: [enhancement, needs-triage]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Describe the user need before proposing an interface.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed experience
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This request does not require SwanSong to distribute or download copyrighted game or startup-file material.
+          required: true
+        - label: I have not included private game or translation files.
+          required: true

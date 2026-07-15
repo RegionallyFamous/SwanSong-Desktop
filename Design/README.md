@@ -10,6 +10,12 @@ studies made from the same brief. `SwanSong-Library-Populated.png` is a capture
 of the running SwiftUI app using public test fixtures, so it can be used for
 visual-regression comparison without confusing concept art with shipped UI.
 
+These files are design-history material, not a launch press kit. The populated
+library capture contains diagnostic fixture names and a warning state and must
+not be used as a product hero. Two former studies that referenced a commercial
+title were removed before public publication. Product screenshots must come
+from the running app with open or clean-room fixtures.
+
 ## ImageGen brief
 
 > Create a shippable, high-fidelity native macOS dark-mode interface for a

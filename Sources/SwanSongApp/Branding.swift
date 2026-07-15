@@ -87,7 +87,7 @@ struct SwanSongWordmark: View {
                 Text("SwanSong")
                     .font(.system(.headline, design: .rounded, weight: .semibold))
                 if includesSubtitle {
-                    Text("WONDERSWAN STUDIO")
+                    Text("FOR WONDERSWAN")
                         .font(.system(size: 8.5, weight: .bold, design: .rounded))
                         .tracking(1.35)
                         .foregroundStyle(.secondary)

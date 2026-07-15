@@ -17,6 +17,8 @@ unexpected_file=$(find "$APP/Contents" -type f \
   ! -path "$APP/Contents/Resources/AppIcon.icns" \
   ! -path "$APP/Contents/Resources/AppIcon.png" \
   ! -path "$APP/Contents/Resources/LICENSE" \
+  ! -path "$APP/Contents/Resources/PRIVACY.md" \
+  ! -path "$APP/Contents/Resources/SUPPORT.md" \
   ! -path "$APP/Contents/Resources/THIRD_PARTY_NOTICES.md" \
   ! -path "$APP/Contents/_CodeSignature/CodeResources" \
   -print -quit)

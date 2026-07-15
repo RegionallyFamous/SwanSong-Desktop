@@ -1377,7 +1377,7 @@ private struct AppSidebar: View {
                 VStack(alignment: .leading, spacing: 1) {
                     Text("SwanSong")
                         .font(.headline)
-                    Text("WONDERSWAN")
+                    Text("FOR WONDERSWAN")
                         .font(.system(size: 9, weight: .bold))
                         .tracking(1.25)
                         .foregroundStyle(.secondary)
@@ -1414,7 +1414,7 @@ private struct TranslationOverviewSnapshotSidebar: View {
                 VStack(alignment: .leading, spacing: 1) {
                     Text("SwanSong")
                         .font(.headline)
-                    Text("WONDERSWAN")
+                    Text("FOR WONDERSWAN")
                         .font(.system(size: 9, weight: .bold))
                         .tracking(1.25)
                         .foregroundStyle(.secondary)
@@ -5460,17 +5460,43 @@ enum TranslationTextIntakeSelectionGeometry {
 
 struct TranslationTextIntakeView: View {
     static let accessibilityIdentifier = "translation-text-intake-sheet"
+    static let sourceProgressAccessibilityIdentifier = "translation-text-source-progress"
+    static let targetSectionAccessibilityIdentifier = "translation-text-target-section"
+    static let targetProgressAccessibilityIdentifier = "translation-text-target-progress"
+    static let saveAccessibilityIdentifier = "translation-text-save-intake"
+
+    static func targetRowAccessibilityIdentifier(_ lineID: String) -> String {
+        "translation-text-target-row-\(lineID)"
+    }
+
+    static func targetFieldAccessibilityIdentifier(_ lineID: String) -> String {
+        "translation-text-target-field-\(lineID)"
+    }
+
+    static func targetReviewAccessibilityIdentifier(_ lineID: String) -> String {
+        "translation-text-target-review-\(lineID)"
+    }
+
+    static func targetClearAccessibilityIdentifier(_ lineID: String) -> String {
+        "translation-text-target-clear-\(lineID)"
+    }
 
     @Bindable var model: AppModel
     @FocusState private var focusedLineID: String?
+    @FocusState private var focusedDraftLineID: String?
     @FocusState private var manualFieldIsFocused: Bool
+    @State private var confirmsDiscardSavedDraft = false
 
     private var hasReviewSession: Bool {
         model.translationTextIntakeSession != nil
     }
 
+    private var hasDraftSession: Bool {
+        model.translationDraftSession != nil
+    }
+
     private var canChooseRegion: Bool {
-        !model.translationTextIntakeIsRecognizing && !hasReviewSession
+        !model.translationTextIntakeIsRecognizing && !hasReviewSession && !hasDraftSession
     }
 
     var body: some View {
@@ -5481,10 +5507,25 @@ struct TranslationTextIntakeView: View {
             Divider()
             footer
         }
-        .frame(minWidth: 900, idealWidth: 980, minHeight: 650, idealHeight: 720)
+        .frame(minWidth: 620, idealWidth: 980, minHeight: 650, idealHeight: 720)
         .background(Color(nsColor: .windowBackgroundColor))
         .tint(SwanTheme.accent)
+        .onKeyPress(phases: .down, action: handleTranslationIntakeKeyPress)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Capture and draft translation")
         .accessibilityIdentifier(Self.accessibilityIdentifier)
+        .confirmationDialog(
+            "Discard the saved target draft?",
+            isPresented: $confirmsDiscardSavedDraft,
+            titleVisibility: .visible
+        ) {
+            Button("Discard Saved Draft", role: .destructive) {
+                model.discardSavedTranslationDraft()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This permanently deletes translation-draft.json for this capture. The source intake and evidence image remain unchanged.")
+        }
     }
 
     private var header: some View {
@@ -5498,23 +5539,21 @@ struct TranslationTextIntakeView: View {
                             endPoint: .bottomTrailing
                         )
                     )
-                Image(systemName: "text.viewfinder")
-                    .font(.system(size: 22, weight: .semibold))
-                    .foregroundStyle(.white)
+                TranslationTextViewfinderMark()
             }
             .frame(width: 48, height: 48)
 
             VStack(alignment: .leading, spacing: 3) {
-                Text("Capture to Source Text")
+                Text("Capture & Draft Translation")
                     .font(.title2.weight(.semibold))
-                Text("Select visible dialogue, recognize it on this Mac, then verify every line.")
+                Text("Verify visible source text, then draft the project’s \(targetLanguageName) translation.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
             }
 
             Spacer()
 
-            Label("On-device only", systemImage: "lock.shield.fill")
+            Label("Private on this Mac", systemImage: "lock.shield.fill")
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.green)
                 .padding(.horizontal, 10)
@@ -5528,7 +5567,7 @@ struct TranslationTextIntakeView: View {
             .buttonStyle(.borderless)
             .keyboardShortcut(.cancelAction)
             .disabled(model.translationTextIntakeIsRecognizing)
-            .help("Close source-text intake")
+            .help("Close translation intake")
         }
         .padding(.horizontal, 22)
         .padding(.vertical, 17)
@@ -5540,16 +5579,22 @@ struct TranslationTextIntakeView: View {
            let image = NSImage(data: data),
            let pixels = model.translationTextIntakeImagePixelSize,
            let selection = model.translationTextIntakeSelection {
-            HStack(alignment: .top, spacing: 22) {
-                captureDesk(image: image, pixels: pixels, selection: selection)
-                    .frame(maxWidth: .infinity)
+            GeometryReader { proxy in
+                if proxy.size.width >= 860 {
+                    HStack(alignment: .top, spacing: 22) {
+                        captureDesk(image: image, pixels: pixels, selection: selection)
+                            .frame(maxWidth: .infinity)
 
-                Divider()
+                        Divider()
 
-                reviewDesk
-                    .frame(width: 350)
+                        reviewDesk
+                            .frame(minWidth: 360, idealWidth: 380, maxWidth: 410)
+                    }
+                    .padding(22)
+                } else {
+                    compactContent(image: image, pixels: pixels, selection: selection)
+                }
             }
-            .padding(22)
         } else {
             ContentUnavailableView {
                 Label("Capture Unavailable", systemImage: "exclamationmark.triangle")
@@ -5558,6 +5603,71 @@ struct TranslationTextIntakeView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+    }
+
+    private func compactContent(
+        image: NSImage,
+        pixels: CGSize,
+        selection: TranslationPixelRect
+    ) -> some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                if hasDraftSession {
+                    compactCaptureSummary(
+                        image: image,
+                        selection: selection
+                    )
+                } else {
+                    captureDesk(image: image, pixels: pixels, selection: selection)
+                }
+
+                Divider()
+
+                reviewDeskContent
+            }
+            .padding(18)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .scrollIndicators(.automatic)
+    }
+
+    private func compactCaptureSummary(
+        image: NSImage,
+        selection: TranslationPixelRect
+    ) -> some View {
+        HStack(spacing: 14) {
+            Image(nsImage: image)
+                .resizable()
+                .interpolation(.none)
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 128, height: 86)
+                .background(.black.opacity(0.82))
+                .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 9, style: .continuous)
+                        .stroke(.separator.opacity(0.7))
+                }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Label("Selected text region", systemImage: "crop")
+                    .font(.subheadline.weight(.semibold))
+                Text("\(selection.width) × \(selection.height) px · Source capture locked")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Text("The image remains private and is not stored in the translation draft.")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 0)
+        }
+        .padding(12)
+        .background(.background.secondary, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(
+            "Selected source capture region, \(selection.width) by \(selection.height) pixels, locked"
+        )
     }
 
     private func captureDesk(
@@ -5625,7 +5735,7 @@ struct TranslationTextIntakeView: View {
                 }
             }
             .controlSize(.small)
-        } else if !model.translationTextIntakeIsRecognizing {
+        } else if !model.translationTextIntakeIsRecognizing && !hasDraftSession {
             Button("Change Region", systemImage: "crop") {
                 model.restartTranslationTextIntakeRegionSelection()
             }
@@ -5641,7 +5751,22 @@ struct TranslationTextIntakeView: View {
 
     private var reviewDesk: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
+            reviewDeskContent
+        }
+        .scrollIndicators(.automatic)
+    }
+
+    @ViewBuilder
+    private var reviewDeskContent: some View {
+        if hasDraftSession {
+            draftDesk
+        } else {
+            sourceReviewDesk
+        }
+    }
+
+    private var sourceReviewDesk: some View {
+        VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 3) {
                     Text("2. Recognize locally")
                         .font(.headline)
@@ -5671,12 +5796,21 @@ struct TranslationTextIntakeView: View {
                 }
 
                 if let issue = model.translationTextIntakeIssue {
-                    Label(issue, systemImage: "info.circle.fill")
-                        .font(.caption)
-                        .foregroundStyle(.orange)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(10)
-                        .background(Color.orange.opacity(0.08), in: RoundedRectangle(cornerRadius: 10))
+                    VStack(alignment: .leading, spacing: 8) {
+                        Label(issue, systemImage: "info.circle.fill")
+                            .font(.caption)
+                            .foregroundStyle(.orange)
+                            .fixedSize(horizontal: false, vertical: true)
+
+                        if model.translationDraftHasSavedArtifact {
+                            Button("Discard Saved Draft…", systemImage: "trash", role: .destructive) {
+                                confirmsDiscardSavedDraft = true
+                            }
+                            .controlSize(.small)
+                        }
+                    }
+                    .padding(10)
+                    .background(Color.orange.opacity(0.08), in: RoundedRectangle(cornerRadius: 10))
                 }
 
                 Divider()
@@ -5704,10 +5838,307 @@ struct TranslationTextIntakeView: View {
                 }
 
                 manualLineEntry
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .scrollIndicators(.automatic)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var draftDesk: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            sourceConfirmationSummary
+
+            Divider()
+
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text("4. Draft \(targetLanguageName)")
+                        .font(.headline)
+                    Spacer()
+                    Text(targetProgressLabel)
+                        .font(.caption.monospacedDigit().weight(.semibold))
+                        .foregroundStyle(.secondary)
+                        .accessibilityIdentifier(Self.targetProgressAccessibilityIdentifier)
+                }
+                Text("Translate each confirmed source line manually. Target completion is optional.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier(Self.targetSectionAccessibilityIdentifier)
+            .accessibilityLabel("Draft \(targetLanguageName) translation")
+            .accessibilityValue(targetSectionAccessibilityValue)
+
+            if let issue = model.translationDraftIssue {
+                Label(issue, systemImage: "info.circle.fill")
+                    .font(.caption)
+                    .foregroundStyle(.orange)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(10)
+                    .background(Color.orange.opacity(0.08), in: RoundedRectangle(cornerRadius: 10))
+            }
+
+            if model.translationDraftLines.isEmpty {
+                ContentUnavailableView {
+                    Label("No Source Lines", systemImage: "text.badge.xmark")
+                } description: {
+                    Text("Save at least one confirmed source line before drafting a translation.")
+                }
+            } else {
+                VStack(spacing: 10) {
+                    ForEach(model.translationDraftLines) { line in
+                        targetLineEditor(line)
+                    }
+                }
+            }
+
+            Label(
+                "Target drafts stay inside this private project. They record user-authored text and review status—not source-text evidence—and never modify the ROM.",
+                systemImage: "person.text.rectangle.fill"
+            )
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(12)
+            .background(.background.secondary, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var sourceConfirmationSummary: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "checkmark.seal.fill")
+                .font(.title3)
+                .foregroundStyle(.green)
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Source intake confirmed")
+                    .font(.headline)
+                Text(
+                    "\(model.translationDraftLines.count) \(sourceLanguageName) source \(model.translationDraftLines.count == 1 ? "line is" : "lines are") locked to this private draft."
+                )
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 4)
+
+            Button("Show Source", systemImage: "doc.text.magnifyingglass") {
+                model.revealTranslationTextIntake()
+            }
+            .labelStyle(.iconOnly)
+            .buttonStyle(.borderless)
+            .help("Show saved source intake")
+        }
+        .padding(12)
+        .background(Color.green.opacity(0.07), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke(Color.green.opacity(0.18))
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(Self.sourceProgressAccessibilityIdentifier)
+        .accessibilityLabel("Source intake confirmed")
+        .accessibilityValue(
+            "\(model.translationDraftLines.count) of \(model.translationDraftLines.count) \(sourceLanguageName) source lines confirmed"
+        )
+    }
+
+    private func targetLineEditor(_ line: TranslationDraftLine) -> some View {
+        let target = targetDraft(for: line)
+        let isReviewed = line.reviewStatus == .reviewed && target == line.targetText
+        let status = targetStatusLabel(line: line, target: target)
+        let ordinal = (model.translationDraftLines.firstIndex { $0.id == line.id } ?? 0) + 1
+
+        return VStack(alignment: .leading, spacing: 9) {
+            HStack(spacing: 6) {
+                Label(status.title, systemImage: status.symbol)
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(status.color)
+                Spacer()
+                Text("\(sourceLanguageCode) → \(targetLanguageCode)")
+                    .font(.caption2.monospaced().weight(.medium))
+                    .foregroundStyle(.tertiary)
+            }
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text("SOURCE")
+                    .font(.caption2.weight(.bold))
+                    .foregroundStyle(.tertiary)
+                Text(line.sourceText)
+                    .font(.body.weight(.medium))
+                    .textSelection(.enabled)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityLabel("\(sourceLanguageName) source text")
+            }
+
+            TextField(
+                "\(targetLanguageName) target text",
+                text: Binding(
+                    get: { targetDraft(for: line) },
+                    set: { model.updateTranslationDraftTarget(id: line.id, text: $0) }
+                ),
+                axis: .vertical
+            )
+            .textFieldStyle(.roundedBorder)
+            .lineLimit(1...4)
+            .focused($focusedDraftLineID, equals: line.id)
+            .disabled(isReviewed)
+            .accessibilityLabel("\(targetLanguageName) target text for line \(ordinal)")
+            .accessibilityIdentifier(Self.targetFieldAccessibilityIdentifier(line.id))
+
+            HStack(spacing: 8) {
+                if isReviewed {
+                    Button("Edit", systemImage: "pencil") {
+                        model.reopenTranslationDraftLine(line.id)
+                        focusedDraftLineID = line.id
+                    }
+                    .accessibilityLabel("Edit \(targetLanguageName) target for line \(ordinal)")
+                    .accessibilityIdentifier(Self.targetReviewAccessibilityIdentifier(line.id))
+                } else {
+                    Button("Mark Reviewed", systemImage: "checkmark") {
+                        model.reviewTranslationDraftLine(line.id)
+                    }
+                    .disabled(target.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .accessibilityLabel("Mark \(targetLanguageName) target for line \(ordinal) reviewed")
+                    .accessibilityIdentifier(Self.targetReviewAccessibilityIdentifier(line.id))
+                }
+
+                Spacer()
+
+                if !target.isEmpty {
+                    Menu("More", systemImage: "ellipsis.circle") {
+                        Button("Clear Draft", systemImage: "trash", role: .destructive) {
+                            model.clearTranslationDraftLine(line.id)
+                            focusedDraftLineID = line.id
+                        }
+                        .accessibilityIdentifier(Self.targetClearAccessibilityIdentifier(line.id))
+                    }
+                    .labelStyle(.iconOnly)
+                    .menuStyle(.borderlessButton)
+                    .fixedSize()
+                    .help("More target-draft actions")
+                }
+            }
+            .controlSize(.small)
+        }
+        .padding(11)
+        .background(
+            (isReviewed ? Color.green : SwanTheme.accent).opacity(0.055),
+            in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+        )
+        .overlay {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke((isReviewed ? Color.green : SwanTheme.accent).opacity(0.16))
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier(Self.targetRowAccessibilityIdentifier(line.id))
+        .accessibilityLabel("Translation line \(ordinal) of \(model.translationDraftLines.count)")
+        .accessibilityValue(
+            "\(sourceLanguageName) source confirmed; \(targetLanguageName) target \(status.accessibilityValue)"
+        )
+    }
+
+    private struct TargetStatusPresentation {
+        let title: String
+        let accessibilityValue: String
+        let symbol: String
+        let color: Color
+    }
+
+    private func targetStatusLabel(
+        line: TranslationDraftLine,
+        target: String
+    ) -> TargetStatusPresentation {
+        if target.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return TargetStatusPresentation(
+                title: "Not drafted",
+                accessibilityValue: "not started",
+                symbol: "circle.dashed",
+                color: .secondary
+            )
+        }
+        if line.reviewStatus == .reviewed, target == line.targetText {
+            return TargetStatusPresentation(
+                title: "Reviewed",
+                accessibilityValue: "reviewed",
+                symbol: "checkmark.circle.fill",
+                color: .green
+            )
+        }
+        return TargetStatusPresentation(
+            title: "Draft",
+            accessibilityValue: "draft needs review",
+            symbol: "pencil.line",
+            color: .orange
+        )
+    }
+
+    private func targetDraft(for line: TranslationDraftLine) -> String {
+        model.translationDraftTargetDrafts[line.id] ?? line.targetText
+    }
+
+    private var targetProgressLabel: String {
+        guard let completeness = model.translationDraftCompleteness else {
+            return "0 of 0 drafted"
+        }
+        return "\(completeness.translatedLines) of \(completeness.totalLines) drafted"
+    }
+
+    private var targetSectionAccessibilityValue: String {
+        guard let completeness = model.translationDraftCompleteness else {
+            return "No target drafts"
+        }
+        return "\(completeness.reviewedLines) of \(completeness.totalLines) target drafts reviewed"
+    }
+
+    private var fullDraftProgressLabel: String {
+        guard let completeness = model.translationDraftCompleteness else {
+            return "Source 0/0 · Drafts 0/0 · Reviewed 0/0"
+        }
+        return "Source \(completeness.totalLines)/\(completeness.totalLines) · Drafts \(completeness.translatedLines)/\(completeness.totalLines) · Reviewed \(completeness.reviewedLines)/\(completeness.totalLines)"
+    }
+
+    private var sourceLanguageName: String {
+        languageName(model.translationProject?.sourceLanguage, fallback: "Source")
+    }
+
+    private var targetLanguageName: String {
+        languageName(model.translationProject?.targetLanguage, fallback: "Target")
+    }
+
+    private var sourceLanguageCode: String {
+        languageCode(model.translationProject?.sourceLanguage, fallback: "SRC")
+    }
+
+    private var targetLanguageCode: String {
+        languageCode(model.translationProject?.targetLanguage, fallback: "TGT")
+    }
+
+    private func languageName(_ value: String?, fallback: String) -> String {
+        guard let value else { return fallback }
+        return switch value.lowercased() {
+        case "ja", "jp", "japanese": "Japanese"
+        case "en", "eng", "english": "English"
+        case "es", "spa", "spanish": "Spanish"
+        case "fr", "fra", "fre", "french": "French"
+        case "de", "deu", "ger", "german": "German"
+        case "it", "ita", "italian": "Italian"
+        default: value.uppercased()
+        }
+    }
+
+    private func languageCode(_ value: String?, fallback: String) -> String {
+        guard let value else { return fallback }
+        return switch value.lowercased() {
+        case "japanese": "JA"
+        case "english": "EN"
+        case "spanish": "ES"
+        case "french": "FR"
+        case "german": "DE"
+        case "italian": "IT"
+        default: value.prefix(3).uppercased()
+        }
     }
 
     private func sourceLineEditor(_ line: TranslationTextIntakeLine) -> some View {
@@ -5802,6 +6233,21 @@ struct TranslationTextIntakeView: View {
     }
 
     private var footer: some View {
+        Group {
+            if hasDraftSession {
+                ViewThatFits(in: .horizontal) {
+                    draftFooterWide
+                    draftFooterCompact
+                }
+            } else {
+                sourceFooter
+            }
+        }
+        .padding(.horizontal, 22)
+        .padding(.vertical, 14)
+    }
+
+    private var sourceFooter: some View {
         HStack(spacing: 10) {
             Button("Cancel", role: .cancel) {
                 model.dismissTranslationTextIntake()
@@ -5821,15 +6267,118 @@ struct TranslationTextIntakeView: View {
             }
             .disabled(model.translationTextIntakeLines.isEmpty)
 
-            Button("Confirm & Save Intake", systemImage: "checkmark.shield.fill") {
+            Button("Save Source & Start Drafting", systemImage: "checkmark.shield.fill") {
                 model.saveTranslationTextIntake()
             }
             .buttonStyle(.borderedProminent)
             .keyboardShortcut(.defaultAction)
             .disabled(!model.translationTextIntakeCanSave)
         }
-        .padding(.horizontal, 22)
-        .padding(.vertical, 14)
+    }
+
+    private var draftFooterWide: some View {
+        HStack(spacing: 10) {
+            draftFooterLeadingActions
+
+            Spacer()
+
+            Text(fullDraftProgressLabel)
+                .font(.caption.monospacedDigit())
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+
+            saveDraftButton
+        }
+    }
+
+    private var draftFooterCompact: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 10) {
+                draftFooterLeadingActions
+                Spacer()
+                Text(fullDraftProgressLabel)
+                    .font(.caption.monospacedDigit())
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
+
+            saveDraftButton
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+    }
+
+    private var draftFooterLeadingActions: some View {
+        HStack(spacing: 10) {
+            Button("Close", role: .cancel) {
+                model.dismissTranslationTextIntake()
+            }
+
+            Button("Show Draft File", systemImage: "doc.text.magnifyingglass") {
+                model.revealTranslationDraft()
+            }
+            .disabled(!model.translationDraftHasSavedArtifact)
+        }
+    }
+
+    private var saveDraftButton: some View {
+        Button("Save Draft Progress", systemImage: "checkmark.shield.fill") {
+            model.saveTranslationDraft()
+        }
+        .buttonStyle(.borderedProminent)
+        .keyboardShortcut("s", modifiers: .command)
+        .accessibilityIdentifier(Self.saveAccessibilityIdentifier)
+    }
+
+    private func handleTranslationIntakeKeyPress(_ press: KeyPress) -> KeyPress.Result {
+        guard press.key == .return, press.modifiers.contains(.command) else {
+            return .ignored
+        }
+        if let focusedDraftLineID,
+           let line = model.translationDraftLines.first(where: { $0.id == focusedDraftLineID }),
+           !targetDraft(for: line).trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            model.reviewTranslationDraftLine(focusedDraftLineID)
+            return .handled
+        }
+        if let focusedLineID {
+            model.confirmTranslationTextIntakeLine(focusedLineID)
+            return .handled
+        }
+        return .ignored
+    }
+}
+
+/// A tiny mark built from filled primitives avoids AppKit offscreen-rendering
+/// defects that drop both the SF Symbol and stroked Canvas paths in Dark Mode.
+private struct TranslationTextViewfinderMark: View {
+    var body: some View {
+        ZStack {
+            markBar(width: 7, height: 2, x: -8, y: -10)
+            markBar(width: 2, height: 7, x: -11, y: -7)
+            markBar(width: 7, height: 2, x: 8, y: -10)
+            markBar(width: 2, height: 7, x: 11, y: -7)
+            markBar(width: 7, height: 2, x: -8, y: 10)
+            markBar(width: 2, height: 7, x: -11, y: 7)
+            markBar(width: 7, height: 2, x: 8, y: 10)
+            markBar(width: 2, height: 7, x: 11, y: 7)
+            markBar(width: 10, height: 2, x: 0, y: -4)
+            markBar(width: 12, height: 2, x: 0, y: 0)
+            markBar(width: 9, height: 2, x: -0.5, y: 4)
+        }
+        .frame(width: 24, height: 24)
+        .accessibilityHidden(true)
+    }
+
+    private func markBar(
+        width: CGFloat,
+        height: CGFloat,
+        x: CGFloat,
+        y: CGFloat
+    ) -> some View {
+        Capsule()
+            .fill(Color.white)
+            .frame(width: width, height: height)
+            .offset(x: x, y: y)
     }
 }
 
@@ -9835,7 +10384,7 @@ struct SettingsView: View {
                         VStack(alignment: .leading, spacing: 3) {
                             Text("SwanSong")
                                 .font(.title3.weight(.semibold))
-                            Text("A focused WonderSwan player and translation studio for macOS.")
+                            Text("A private, native WonderSwan player and translation workbench for macOS.")
                                 .font(.callout)
                                 .foregroundStyle(.secondary)
                         }

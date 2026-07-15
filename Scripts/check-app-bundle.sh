@@ -12,6 +12,13 @@ COLOR_ROM="$TEMP_ROOT/80186-quirks-color.wsc"
 DATA_DIR="$TEMP_ROOT/Data"
 PID=
 
+list_rpaths() {
+  otool -l "$1" | awk '
+    $1 == "cmd" && $2 == "LC_RPATH" { in_rpath = 1; next }
+    in_rpath && $1 == "path" { print $2; in_rpath = 0 }
+  '
+}
+
 cleanup() {
   if [ -n "$PID" ] && kill -0 "$PID" 2>/dev/null; then
     kill "$PID" 2>/dev/null || true
@@ -56,9 +63,9 @@ if otool -l "$APP/Contents/MacOS/SwanSong" | grep -Fq "path $BUILD_DIR"; then
   echo "development ares rpath leaked into the app bundle" >&2
   exit 1
 fi
-if otool -l "$APP/Contents/MacOS/SwanSong" \
-  | grep -Eq 'path /Library/Developer/CommandLineTools/.*swift'; then
-  echo "an absolute Command Line Tools Swift runtime rpath leaked into the app bundle" >&2
+if list_rpaths "$APP/Contents/MacOS/SwanSong" \
+  | grep -Eq '^/(Library/Developer/CommandLineTools|Applications/.*Xcode[^/]*)/.*swift'; then
+  echo "an absolute developer-toolchain Swift runtime rpath leaked into the app bundle" >&2
   exit 1
 fi
 

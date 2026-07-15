@@ -22,6 +22,18 @@ private func expectError(
     }
 }
 
+private func expectDraftError(
+    _ expected: TranslationDraftError,
+    _ operation: () throws -> Void
+) throws {
+    do {
+        try operation()
+        throw CheckFailure(message: "expected \(expected) but the draft operation succeeded")
+    } catch let error as TranslationDraftError {
+        try expect(error == expected, "expected \(expected), received \(error)")
+    }
+}
+
 private func makeCapture() throws -> TranslationCaptureImage {
     try TranslationCaptureImage(
         encodedData: Data([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 1, 2, 3, 4]),
@@ -38,7 +50,11 @@ private enum SwanSongTextIntakeChecks {
         try checkPrivacyAndSelectionValidation()
         try checkNoInventedOCRFallback()
         try checkStateTransitions()
-        print("PASS SwanSong private translation text intake checks")
+        try checkDraftSourceBinding()
+        try checkDraftEditsAndCompleteness()
+        try checkDraftDeterminismAndPrivacy()
+        try checkDraftLimits()
+        print("PASS SwanSong private translation text intake and manual draft checks")
     }
 
     private static let localVision = TranslationTextRecognizerDescriptor(
@@ -179,6 +195,256 @@ private enum SwanSongTextIntakeChecks {
         } catch let TranslationTextIntakeError.invalidState(_, actual) {
             try expect(actual == .exported, "export mutation failed for the wrong state")
         }
+    }
+
+    private static func checkDraftSourceBinding() throws {
+        let source = try confirmedIntake(["Source one", "Source two"])
+        let encodedSource = try source.encoded()
+        let session = try TranslationDraftSession(
+            sourceIntake: source,
+            sourceLanguage: "Japanese",
+            targetLanguage: "English"
+        )
+        let saved = session.makeArtifact()
+
+        let alternateEncoding = try JSONEncoder().encode(source)
+        try expect(alternateEncoding != encodedSource, "source-binding control encoding was not distinct")
+        try expectDraftError(.sourceBindingMismatch) {
+            _ = try TranslationDraftSession(
+                draft: saved,
+                encodedSourceIntake: alternateEncoding,
+                expectedSourceLanguage: "japanese",
+                expectedTargetLanguage: "english"
+            )
+        }
+
+        let replacement = try replacingRequiredText(
+            in: try saved.encoded(),
+            source: "Source one",
+            replacement: "Source ONE"
+        )
+        let forged = try JSONDecoder().decode(TranslationDraftArtifact.self, from: replacement)
+        try expectDraftError(.sourceLinesMismatch) {
+            _ = try TranslationDraftSession(
+                draft: forged,
+                encodedSourceIntake: encodedSource,
+                expectedSourceLanguage: "japanese",
+                expectedTargetLanguage: "english"
+            )
+        }
+
+        _ = try TranslationDraftSession(
+            draft: saved,
+            encodedSourceIntake: encodedSource,
+            expectedSourceLanguage: " Japanese ",
+            expectedTargetLanguage: "ENGLISH"
+        )
+        try expectDraftError(.languageBindingMismatch) {
+            _ = try TranslationDraftSession(
+                draft: saved,
+                encodedSourceIntake: encodedSource,
+                expectedSourceLanguage: "japanese",
+                expectedTargetLanguage: "spanish"
+            )
+        }
+
+        let invalidCoordinateSpace = try replacingRequiredText(
+            in: encodedSource,
+            source: "full-image-pixels-top-left",
+            replacement: "full-image-pixels-bottom-left"
+        )
+        try expectDraftError(.invalidSourceIntake) {
+            _ = try TranslationDraftSession(
+                encodedSourceIntake: invalidCoordinateSpace,
+                sourceLanguage: "japanese",
+                targetLanguage: "english"
+            )
+        }
+        let contradictoryClaim = try replacingRequiredText(
+            in: encodedSource,
+            source: "no-translation-generated",
+            replacement: "translation-generated"
+        )
+        try expectDraftError(.invalidSourceIntake) {
+            _ = try TranslationDraftSession(
+                encodedSourceIntake: contradictoryClaim,
+                sourceLanguage: "japanese",
+                targetLanguage: "english"
+            )
+        }
+
+        let tabbedSource = try confirmedIntake(["Label\tValue"])
+        let tabbedSourceData = try tabbedSource.encoded()
+        let tabbedSession = try TranslationDraftSession(
+            encodedSourceIntake: tabbedSourceData,
+            sourceLanguage: "japanese",
+            targetLanguage: "english"
+        )
+        let reopenedTabbedSession = try TranslationDraftSession(
+            draft: tabbedSession.makeArtifact(),
+            encodedSourceIntake: tabbedSourceData,
+            expectedSourceLanguage: "japanese",
+            expectedTargetLanguage: "english"
+        )
+        try expect(
+            reopenedTabbedSession.lines.first?.sourceText == "Label\tValue",
+            "valid v1 source text containing a tab did not round trip through a draft"
+        )
+    }
+
+    private static func checkDraftEditsAndCompleteness() throws {
+        let source = try confirmedIntake(["First source", "Second source"])
+        var draft = try TranslationDraftSession(
+            sourceIntake: source,
+            sourceLanguage: " Japanese ",
+            targetLanguage: " English "
+        )
+        try expect(draft.sourceLanguage == "japanese", "source language was not normalized")
+        try expect(draft.targetLanguage == "english", "target language was not normalized")
+        try expect(draft.lines.map(\.id) == source.lines.map(\.id), "draft changed immutable source IDs")
+        try expect(
+            draft.lines.map(\.sourceText) == source.lines.map(\.reviewedText),
+            "draft changed immutable source text"
+        )
+        try expect(draft.completeness.blankTargetLines == 2, "new draft did not preserve blank targets")
+        try expect(!draft.completeness.isComplete, "blank draft was marked complete")
+        _ = try draft.encodedArtifact()
+
+        let firstID = draft.lines[0].id
+        let secondID = draft.lines[1].id
+        try draft.updateManualTarget(lineID: firstID, text: "  First target  ")
+        try expect(draft.lines[0].targetText == "First target", "manual target was not normalized")
+        try expect(draft.lines[0].reviewStatus == .needsReview, "manual edit skipped review")
+        try draft.markReviewed(lineID: firstID)
+        try expect(draft.lines[0].reviewStatus == .reviewed, "manual target was not reviewed")
+        try draft.reopen(lineID: firstID)
+        try expect(draft.lines[0].reviewStatus == .needsReview, "reopen did not restore review work")
+        try draft.markReviewed(lineID: firstID)
+        try expect(!draft.completeness.isComplete, "partially translated draft was marked complete")
+        try draft.updateManualTarget(lineID: secondID, text: "Second target")
+        try draft.markReviewed(lineID: secondID)
+        try expect(draft.completeness.isComplete, "fully reviewed manual draft remained incomplete")
+
+        try draft.updateManualTarget(lineID: secondID, text: "")
+        try expect(draft.lines[1].reviewStatus == .notStarted, "blank target retained reviewed status")
+        try expect(!draft.completeness.isComplete, "reblanked draft remained complete")
+        try expectDraftError(.blankTargetCannotBeReviewed) {
+            try draft.markReviewed(lineID: secondID)
+        }
+    }
+
+    private static func checkDraftDeterminismAndPrivacy() throws {
+        let source = try confirmedIntake(["Private source"])
+        let encodedSource = try source.encoded()
+        var draft = try TranslationDraftSession(
+            encodedSourceIntake: encodedSource,
+            sourceLanguage: "JA",
+            targetLanguage: "EN-US"
+        )
+        try draft.updateManualTarget(lineID: draft.lines[0].id, text: "Private target")
+        try draft.markReviewed(lineID: draft.lines[0].id)
+        let first = try draft.encodedArtifact()
+        let second = try draft.encodedArtifact()
+        try expect(first == second, "manual draft JSON was nondeterministic")
+
+        let artifact = try JSONDecoder().decode(TranslationDraftArtifact.self, from: first)
+        try expect(artifact.schema == "swan-song-translation-draft-v1", "draft schema changed")
+        try expect(artifact.sourceLanguage == "ja", "source language tag was not normalized")
+        try expect(artifact.targetLanguage == "en-us", "target language tag was not normalized")
+        try expect(artifact.privacy.localOnly, "draft did not remain local-only")
+        try expect(!artifact.privacy.containsImageData, "draft claimed to contain image data")
+        try expect(!artifact.privacy.containsFilesystemPaths, "draft claimed to contain paths")
+        try expect(!artifact.privacy.containsTimestamps, "draft claimed to contain timestamps")
+        try expect(
+            artifact.claims == [
+                "manual-user-target-text",
+                "no-generated-translation-claim",
+                "no-rom-binding-claimed",
+            ],
+            "draft overstated its target-text provenance"
+        )
+        let json = String(decoding: first, as: UTF8.self)
+        try expect(!json.contains("encodedData"), "draft leaked capture image bytes")
+        try expect(!json.contains("coordinateSpace"), "draft copied capture geometry")
+
+        let reopened = try TranslationDraftSession(
+            draft: artifact,
+            encodedSourceIntake: encodedSource,
+            expectedSourceLanguage: "ja",
+            expectedTargetLanguage: "en-us"
+        )
+        try expect(reopened.lines == draft.lines, "bound draft did not reopen byte-for-byte")
+    }
+
+    private static func checkDraftLimits() throws {
+        let source = try confirmedIntake(["Source"])
+        try expectDraftError(.invalidLanguageLabel) {
+            _ = try TranslationDraftSession(
+                sourceIntake: source,
+                sourceLanguage: "../japanese",
+                targetLanguage: "english"
+            )
+        }
+        var perLine = try TranslationDraftSession(
+            sourceIntake: source,
+            sourceLanguage: "japanese",
+            targetLanguage: "english"
+        )
+        try expectDraftError(.targetLineTooLong) {
+            try perLine.updateManualTarget(
+                lineID: perLine.lines[0].id,
+                text: String(
+                    repeating: "x",
+                    count: TranslationDraftLimits.maximumTargetLineUTF8Bytes + 1
+                )
+            )
+        }
+
+        let manySourceLines = try confirmedIntake(
+            (0..<129).map { "Source \($0)" }
+        )
+        var total = try TranslationDraftSession(
+            sourceIntake: manySourceLines,
+            sourceLanguage: "ja",
+            targetLanguage: "en"
+        )
+        let fullLine = String(
+            repeating: "x",
+            count: TranslationDraftLimits.maximumTargetLineUTF8Bytes
+        )
+        for line in total.lines.prefix(128) {
+            try total.updateManualTarget(lineID: line.id, text: fullLine)
+        }
+        try expectDraftError(.totalTargetTextTooLarge) {
+            try total.updateManualTarget(lineID: total.lines[128].id, text: "x")
+        }
+    }
+
+    private static func confirmedIntake(
+        _ sourceLines: [String]
+    ) throws -> TranslationTextIntakeArtifact {
+        var intake = try TranslationTextIntakeSession(capture: makeCapture())
+        try intake.beginManualTranscription()
+        for text in sourceLines {
+            _ = try intake.addManualLine(
+                text: text,
+                bounds: TranslationPixelRect(x: 1, y: 1, width: 200, height: 12)
+            )
+        }
+        try intake.confirmAllLines()
+        return try intake.makeArtifact()
+    }
+
+    private static func replacingRequiredText(
+        in data: Data,
+        source: String,
+        replacement: String
+    ) throws -> Data {
+        let string = String(decoding: data, as: UTF8.self)
+        guard string.contains(source) else {
+            throw CheckFailure(message: "fixture JSON did not contain \(source)")
+        }
+        return Data(string.replacingOccurrences(of: source, with: replacement).utf8)
     }
 }
 

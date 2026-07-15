@@ -425,6 +425,10 @@ final class AppModel {
     var translationTextIntakeDrafts: [String: String] = [:]
     var translationTextIntakeManualDraft = ""
     var translationTextIntakeHasSavedArtifact = false
+    var translationDraftSession: TranslationDraftSession?
+    var translationDraftTargetDrafts: [String: String] = [:]
+    var translationDraftIssue: String?
+    var translationDraftHasSavedArtifact = false
     var translationRAMComparison: TranslationRAMComparison?
     var translationRAMInspectionIssue: String?
     var translationRAMTextReport: TranslationRAMTextReport?
@@ -1176,14 +1180,29 @@ final class AppModel {
     }
 
     var selectedTranslationEvidenceHasTextIntake: Bool {
-        guard
-            let evidence = selectedTranslationEvidence,
-            let url = safeTranslationTextIntakeURL(
-                for: evidence,
-                project: translationProject
-            )
-        else { return false }
-        return FileManager.default.fileExists(atPath: url.path)
+        guard let evidence = selectedTranslationEvidence,
+              let project = translationProject else { return false }
+        return (try? translationEvidenceStore.privateArtifactExists(
+            .textIntake,
+            evidence: evidence,
+            project: project
+        )) == true
+    }
+
+    var translationDraftLines: [TranslationDraftLine] {
+        translationDraftSession?.lines ?? []
+    }
+
+    var translationDraftCompleteness: TranslationDraftCompleteness? {
+        translationDraftSession?.completeness
+    }
+
+    var translationDraftHasAnyTargets: Bool {
+        translationDraftLines.contains { line in
+            !(translationDraftTargetDrafts[line.id] ?? line.targetText)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .isEmpty
+        }
     }
 
     var pairedTranslationEvidence: TranslationEvidenceSummary? {
@@ -2136,10 +2155,23 @@ final class AppModel {
             translationTextIntakeCapture = capture
             translationTextIntakeEvidenceID = evidence.id
             translationTextIntakeSelection = capture.bounds
-            translationTextIntakeHasSavedArtifact = safeTranslationTextIntakeURL(
-                for: evidence,
-                project: translationProject
-            ).map { FileManager.default.fileExists(atPath: $0.path) } ?? false
+            if let project = translationProject {
+                translationTextIntakeHasSavedArtifact = try translationEvidenceStore
+                    .privateArtifactExists(.textIntake, evidence: evidence, project: project)
+                translationDraftHasSavedArtifact = try translationEvidenceStore
+                    .privateArtifactExists(.translationDraft, evidence: evidence, project: project)
+                if translationTextIntakeHasSavedArtifact {
+                    do {
+                        try loadSavedTranslationWorkspace(
+                            evidence: evidence,
+                            project: project,
+                            capture: capture
+                        )
+                    } catch {
+                        translationTextIntakeIssue = "The saved private workspace could not be resumed: \(error.localizedDescription) You can select a region and create a new intake."
+                    }
+                }
+            }
             isTranslationTextIntakePresented = true
         } catch {
             presentedError = "Source-text intake could not open this capture: \(error.localizedDescription)"
@@ -2160,6 +2192,9 @@ final class AppModel {
         translationTextIntakeSession = nil
         translationTextIntakeDrafts = [:]
         translationTextIntakeIssue = nil
+        translationDraftSession = nil
+        translationDraftTargetDrafts = [:]
+        translationDraftIssue = nil
     }
 
     func useFullFrameForTranslationTextIntake() {
@@ -2189,6 +2224,9 @@ final class AppModel {
         translationTextIntakeDrafts = [:]
         translationTextIntakeManualDraft = ""
         translationTextIntakeIssue = nil
+        translationDraftSession = nil
+        translationDraftTargetDrafts = [:]
+        translationDraftIssue = nil
     }
 
     func recognizeTranslationTextIntake() {
@@ -2351,11 +2389,7 @@ final class AppModel {
             let project = translationProject,
             let evidence = selectedTranslationEvidence,
             evidence.id == translationTextIntakeEvidenceID,
-            evidence.isIntact,
-            let destination = safeTranslationTextIntakeURL(
-                for: evidence,
-                project: project
-            )
+            evidence.isIntact
         else {
             translationTextIntakeIssue = "The selected evidence changed. Close this intake and start again."
             return
@@ -2363,30 +2397,48 @@ final class AppModel {
         do {
             var session = try reviewedTranslationTextIntakeSessionApplyingDrafts()
             try session.confirmAllLines()
-            let directoryValues = try evidence.artifact.directoryURL.resourceValues(
-                forKeys: [.isDirectoryKey, .isSymbolicLinkKey]
-            )
-            guard
-                directoryValues.isDirectory == true,
-                directoryValues.isSymbolicLink != true
-            else {
-                throw TranslationLabError.unsafePath(evidence.artifact.directoryURL.path)
-            }
-            if FileManager.default.fileExists(atPath: destination.path) {
-                let values = try destination.resourceValues(
-                    forKeys: [.isRegularFileKey, .isSymbolicLinkKey]
+            let intakeData = try session.encodedArtifact()
+
+            let draft: TranslationDraftSession
+            if let savedDraftData = try translationEvidenceStore.loadPrivateArtifact(
+                .translationDraft,
+                evidence: evidence,
+                project: project
+            ) {
+                let savedDraft = try JSONDecoder().decode(
+                    TranslationDraftArtifact.self,
+                    from: savedDraftData
                 )
-                guard values.isRegularFile == true, values.isSymbolicLink != true else {
-                    throw TranslationLabError.unsafePath(destination.path)
-                }
+                draft = try TranslationDraftSession(
+                    draft: savedDraft,
+                    encodedSourceIntake: intakeData,
+                    expectedSourceLanguage: project.sourceLanguage,
+                    expectedTargetLanguage: project.targetLanguage
+                )
+            } else {
+                draft = try TranslationDraftSession(
+                    encodedSourceIntake: intakeData,
+                    sourceLanguage: project.sourceLanguage,
+                    targetLanguage: project.targetLanguage
+                )
             }
-            try session.encodedArtifact().write(to: destination, options: [.atomic])
+
+            _ = try translationEvidenceStore.savePrivateArtifact(
+                intakeData,
+                kind: .textIntake,
+                evidence: evidence,
+                project: project
+            )
             try session.markExported()
             translationTextIntakeSession = session
             translationTextIntakeHasSavedArtifact = true
+            translationDraftSession = draft
+            translationDraftTargetDrafts = Dictionary(
+                uniqueKeysWithValues: draft.lines.map { ($0.id, $0.targetText) }
+            )
+            translationDraftIssue = nil
             translationTextIntakeIssue = nil
-            presentedNotice = "Saved reviewed source text beside this private evidence capture. Image pixels, paths, and ROM data were excluded."
-            isTranslationTextIntakePresented = false
+            presentedNotice = "Saved \(session.lines.count) confirmed source \(session.lines.count == 1 ? "line" : "lines") privately. Target drafting is ready."
         } catch {
             translationTextIntakeIssue = "The private source-text intake could not be saved: \(error.localizedDescription)"
         }
@@ -2396,10 +2448,183 @@ final class AppModel {
         guard
             let project = translationProject,
             let evidence = selectedTranslationEvidence,
-            let url = safeTranslationTextIntakeURL(for: evidence, project: project),
-            FileManager.default.fileExists(atPath: url.path)
+            let url = try? translationEvidenceStore.privateArtifactURL(
+                .textIntake,
+                evidence: evidence,
+                project: project
+            ),
+            (try? translationEvidenceStore.privateArtifactExists(
+                .textIntake,
+                evidence: evidence,
+                project: project
+            )) == true
         else { return }
         NSWorkspace.shared.activateFileViewerSelecting([url])
+    }
+
+    func updateTranslationDraftTarget(id: String, text: String) {
+        guard var session = translationDraftSession,
+              session.lines.contains(where: { $0.id == id }) else { return }
+        translationDraftTargetDrafts[id] = text
+        do {
+            try session.updateManualTarget(lineID: id, text: text)
+            translationDraftSession = session
+            translationDraftIssue = nil
+        } catch {
+            translationDraftIssue = "That target draft is not valid: \(error.localizedDescription)"
+        }
+    }
+
+    func reviewTranslationDraftLine(_ id: String) {
+        do {
+            guard var session = translationDraftSession,
+                  let line = session.lines.first(where: { $0.id == id }) else {
+                throw TranslationDraftError.lineNotFound(id)
+            }
+            try session.updateManualTarget(
+                lineID: id,
+                text: translationDraftTargetDrafts[id] ?? line.targetText
+            )
+            try session.markReviewed(lineID: id)
+            translationDraftSession = session
+            translationDraftTargetDrafts[id] = session.lines.first {
+                $0.id == id
+            }?.targetText ?? ""
+            translationDraftIssue = nil
+        } catch {
+            translationDraftIssue = "That target draft could not be reviewed: \(error.localizedDescription)"
+        }
+    }
+
+    func reopenTranslationDraftLine(_ id: String) {
+        do {
+            guard var session = translationDraftSession,
+                  let line = session.lines.first(where: { $0.id == id }) else {
+                throw TranslationDraftError.lineNotFound(id)
+            }
+            try session.updateManualTarget(
+                lineID: id,
+                text: translationDraftTargetDrafts[id] ?? line.targetText
+            )
+            try session.reopen(lineID: id)
+            translationDraftSession = session
+            translationDraftIssue = nil
+        } catch {
+            translationDraftIssue = "That target draft could not be reopened: \(error.localizedDescription)"
+        }
+    }
+
+    func clearTranslationDraftLine(_ id: String) {
+        guard var session = translationDraftSession else { return }
+        do {
+            try session.updateManualTarget(lineID: id, text: "")
+            translationDraftSession = session
+            translationDraftTargetDrafts[id] = ""
+            translationDraftIssue = nil
+        } catch {
+            translationDraftIssue = "That target draft could not be cleared: \(error.localizedDescription)"
+        }
+    }
+
+    func saveTranslationDraft() {
+        guard let project = translationProject,
+              let evidence = selectedTranslationEvidence,
+              evidence.id == translationTextIntakeEvidenceID,
+              evidence.isIntact else {
+            translationDraftIssue = "The selected evidence changed. Close this workspace and start again."
+            return
+        }
+        do {
+            let editedSession = try translationDraftSessionApplyingDrafts()
+            guard let intakeData = try translationEvidenceStore.loadPrivateArtifact(
+                .textIntake,
+                evidence: evidence,
+                project: project
+            ) else {
+                throw TranslationDraftError.invalidSourceIntake
+            }
+            // Reopen the exact in-memory artifact against the source bytes and
+            // current project languages at the write boundary. This prevents
+            // an external edit while the sheet is open from producing a stale
+            // or mislabeled replacement draft.
+            let session = try TranslationDraftSession(
+                draft: editedSession.makeArtifact(),
+                encodedSourceIntake: intakeData,
+                expectedSourceLanguage: project.sourceLanguage,
+                expectedTargetLanguage: project.targetLanguage
+            )
+            let data = try session.encodedArtifact()
+            _ = try translationEvidenceStore.savePrivateArtifact(
+                data,
+                kind: .translationDraft,
+                evidence: evidence,
+                project: project
+            )
+            translationDraftSession = session
+            translationDraftTargetDrafts = Dictionary(
+                uniqueKeysWithValues: session.lines.map { ($0.id, $0.targetText) }
+            )
+            translationDraftHasSavedArtifact = true
+            translationDraftIssue = nil
+            let progress = session.completeness
+            presentedNotice = "Saved \(progress.translatedLines) of \(progress.totalLines) target \(progress.totalLines == 1 ? "draft" : "drafts") privately; \(progress.reviewedLines) reviewed."
+        } catch {
+            translationDraftIssue = "The private translation draft could not be saved: \(error.localizedDescription)"
+        }
+    }
+
+    func revealTranslationDraft() {
+        guard let project = translationProject,
+              let evidence = selectedTranslationEvidence,
+              let url = try? translationEvidenceStore.privateArtifactURL(
+                  .translationDraft,
+                  evidence: evidence,
+                  project: project
+              ),
+              (try? translationEvidenceStore.privateArtifactExists(
+                  .translationDraft,
+                  evidence: evidence,
+                  project: project
+              )) == true else { return }
+        NSWorkspace.shared.activateFileViewerSelecting([url])
+    }
+
+    func discardSavedTranslationDraft() {
+        guard let project = translationProject,
+              let evidence = selectedTranslationEvidence,
+              evidence.id == translationTextIntakeEvidenceID else {
+            translationTextIntakeIssue = "The selected evidence changed. Close this workspace and start again."
+            return
+        }
+        do {
+            _ = try translationEvidenceStore.removePrivateArtifact(
+                .translationDraft,
+                evidence: evidence,
+                project: project
+            )
+            translationDraftSession = nil
+            translationDraftTargetDrafts = [:]
+            translationDraftIssue = nil
+            translationDraftHasSavedArtifact = false
+            translationTextIntakeIssue = nil
+            if let capture = translationTextIntakeCapture,
+               translationTextIntakeHasSavedArtifact {
+                do {
+                    try loadSavedTranslationWorkspace(
+                        evidence: evidence,
+                        project: project,
+                        capture: capture
+                    )
+                    presentedNotice = "Discarded the saved target draft and opened a new blank draft from the unchanged source intake."
+                } catch {
+                    translationTextIntakeIssue = "The target draft was discarded, but the saved source intake still could not be resumed: \(error.localizedDescription) Create a new source intake to continue."
+                }
+            } else {
+                presentedNotice = "Discarded the saved target draft. The source intake and evidence were not changed."
+            }
+        } catch {
+            translationTextIntakeIssue = "The saved target draft could not be discarded: \(error.localizedDescription)"
+        }
     }
 
     private func editableTranslationTextIntakeSession() throws -> TranslationTextIntakeSession {
@@ -2428,18 +2653,68 @@ final class AppModel {
         return session
     }
 
-    private func safeTranslationTextIntakeURL(
-        for evidence: TranslationEvidenceSummary,
-        project: TranslationProject?
-    ) -> URL? {
-        guard let project else { return nil }
-        let directory = evidence.artifact.directoryURL.standardizedFileURL
-        guard project.contains(directory) else { return nil }
-        let destination = directory
-            .appendingPathComponent("text-intake.json", isDirectory: false)
-            .standardizedFileURL
-        guard project.contains(destination) else { return nil }
-        return destination
+    private func translationDraftSessionApplyingDrafts() throws -> TranslationDraftSession {
+        guard var session = translationDraftSession else {
+            throw TranslationLabError.invalidProject(
+                "save confirmed source text before drafting its translation"
+            )
+        }
+        for line in session.lines {
+            try session.updateManualTarget(
+                lineID: line.id,
+                text: translationDraftTargetDrafts[line.id] ?? line.targetText
+            )
+        }
+        return session
+    }
+
+    private func loadSavedTranslationWorkspace(
+        evidence: TranslationEvidenceSummary,
+        project: TranslationProject,
+        capture: TranslationCaptureImage
+    ) throws {
+        guard let intakeData = try translationEvidenceStore.loadPrivateArtifact(
+            .textIntake,
+            evidence: evidence,
+            project: project
+        ) else { return }
+        let intake = try JSONDecoder().decode(TranslationTextIntakeArtifact.self, from: intakeData)
+        guard intake.schema == TranslationTextIntakeArtifact.currentSchema,
+              intake.capture.sha256 == capture.sha256,
+              intake.capture.pixelWidth == capture.pixelWidth,
+              intake.capture.pixelHeight == capture.pixelHeight,
+              capture.bounds.contains(intake.capture.selection) else {
+            throw TranslationDraftError.sourceBindingMismatch
+        }
+
+        let draft: TranslationDraftSession
+        if let draftData = try translationEvidenceStore.loadPrivateArtifact(
+            .translationDraft,
+            evidence: evidence,
+            project: project
+        ) {
+            let artifact = try JSONDecoder().decode(TranslationDraftArtifact.self, from: draftData)
+            draft = try TranslationDraftSession(
+                draft: artifact,
+                encodedSourceIntake: intakeData,
+                expectedSourceLanguage: project.sourceLanguage,
+                expectedTargetLanguage: project.targetLanguage
+            )
+            translationDraftHasSavedArtifact = true
+        } else {
+            draft = try TranslationDraftSession(
+                encodedSourceIntake: intakeData,
+                sourceLanguage: project.sourceLanguage,
+                targetLanguage: project.targetLanguage
+            )
+            translationDraftHasSavedArtifact = false
+        }
+        translationTextIntakeSelection = intake.capture.selection
+        translationDraftSession = draft
+        translationDraftTargetDrafts = Dictionary(
+            uniqueKeysWithValues: draft.lines.map { ($0.id, $0.targetText) }
+        )
+        translationDraftIssue = nil
     }
 
     private func resetTranslationTextIntake() {
@@ -2455,6 +2730,10 @@ final class AppModel {
         translationTextIntakeDrafts = [:]
         translationTextIntakeManualDraft = ""
         translationTextIntakeHasSavedArtifact = false
+        translationDraftSession = nil
+        translationDraftTargetDrafts = [:]
+        translationDraftIssue = nil
+        translationDraftHasSavedArtifact = false
         isTranslationTextIntakePresented = false
     }
 

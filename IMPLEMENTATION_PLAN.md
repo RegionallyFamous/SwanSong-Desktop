@@ -188,20 +188,23 @@ semantic keypad bits; captures the correct 16 KiB internal RAM surface; and
 routes A/B plus First Visual Change replay through the concrete PCV2 engine.
 An independent source-free fixture gate exercises that complete path.
 
-The evidence desk also includes a private capture-to-text workflow. A bounded
+The evidence desk also includes a private capture-and-draft workflow. A bounded
 pixel selection is recognized through Apple Vision on-device, presented as an
-editable draft with quantized confidence, and must be explicitly confirmed
-before a deterministic project-local artifact can be saved. Manual-only lines
-retain manual provenance. Exports fail closed and exclude image data, paths,
-ROM bytes, timestamps, inferred translations, and unreviewed OCR.
+editable source intake with quantized confidence, and must be explicitly
+confirmed before a deterministic project-local artifact can be saved.
+Confirmed source text then opens a manual target-language workspace whose
+incomplete and reviewed lines are stored in a separate draft bound to the exact
+source-intake bytes. Manual-only lines retain manual provenance. Both artifacts
+fail closed and exclude image data, paths, ROM bytes, timestamps, generated
+translation claims, and unreviewed OCR.
 
 Native UI regression evidence uses real offscreen AppKit rendering for player
 recovery, startup-file replacement, the state timeline, RAM Text Buffers,
 Pointer Leads, the Time Ribbon, First Visual Change result/progress/no-change
 states, horizontal/vertical player canvases, the Game Confidence inspector,
 and the Translation Lab overview across compact/wide Light/Dark variants.
-Sixty-six reviewed 256-bit perceptual baselines—including focused
-selected-game inspector, startup-file, controller-mapping, and capture-to-text
+Seventy reviewed 256-bit perceptual baselines—including focused selected-game
+inspector, startup-file, controller-mapping, and capture-and-draft
 polish surfaces—plus blank/placeholder guards, a four-corner framebuffer guard, compact
 Translation Lab, Time Ribbon, and timeline geometry, accessibility contracts,
 and minimum
@@ -432,8 +435,13 @@ without exposing copyrighted inputs.
 Deliverables:
 
 - universal signed and notarized application;
-- update feed and reproducible release manifest;
+- versioned universal archive, checksums, exact corresponding source, and a
+  reproducible release manifest;
+- explicit user-invoked release-page update check for the first public beta;
+  a signed automatic update feed remains a later privacy-reviewed decision;
 - complete notices and source-offer obligations;
+- native welcome/legal/support surfaces, public privacy and security policies,
+  and rights-safe screenshots captured from open or clean-room fixtures;
 - accessibility, localization readiness, energy, thermal, and long-soak QA;
 - public compatibility and known-limit documentation.
 

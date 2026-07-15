@@ -17,18 +17,28 @@ struct VisionTranslationTextRecognizer: TranslationTextRecognizing, Sendable {
     func recognizeText(
         in request: TranslationTextRecognitionRequest
     ) async throws -> [TranslationTextRecognitionObservation] {
-        try await Task.detached(priority: .userInitiated) {
+        try Task.checkCancellation()
+        let worker = Task.detached(priority: .userInitiated) {
             try Self.recognizeSynchronously(in: request)
-        }.value
+        }
+        return try await withTaskCancellationHandler {
+            let observations = try await worker.value
+            try Task.checkCancellation()
+            return observations
+        } onCancel: {
+            worker.cancel()
+        }
     }
 
     private static func recognizeSynchronously(
         in request: TranslationTextRecognitionRequest
     ) throws -> [TranslationTextRecognitionObservation] {
+        try Task.checkCancellation()
         guard request.capture.bounds.contains(request.selection) else {
             throw TranslationTextIntakeError.invalidSelection
         }
         let decoded = try decode(request.capture)
+        try Task.checkCancellation()
         let visionRequest = VNRecognizeTextRequest()
         visionRequest.recognitionLevel = .accurate
         visionRequest.usesLanguageCorrection = true
@@ -40,13 +50,17 @@ struct VisionTranslationTextRecognizer: TranslationTextRecognizing, Sendable {
             orientation: decoded.orientation,
             options: [:]
         )
+        try Task.checkCancellation()
         try handler.perform([visionRequest])
+        try Task.checkCancellation()
 
         var recognized: [TranslationTextRecognitionObservation] = []
         for observation in visionRequest.results ?? [] {
+            try Task.checkCancellation()
             guard let candidate = observation.topCandidates(1).first else { continue }
             let confidence = try TranslationTextConfidence(Double(candidate.confidence))
             for line in lines(in: candidate.string) {
+                try Task.checkCancellation()
                 guard let lineObservation = try candidate.boundingBox(for: line.range),
                       let bounds = pixelBounds(
                         for: lineObservation.boundingBox,
@@ -68,6 +82,7 @@ struct VisionTranslationTextRecognizer: TranslationTextRecognizing, Sendable {
                 }
             }
         }
+        try Task.checkCancellation()
         return recognized
     }
 
@@ -136,6 +151,24 @@ struct VisionTranslationTextRecognizer: TranslationTextRecognizing, Sendable {
         return result
     }
 
+    struct DecodedImageMetadata: Equatable {
+        let pixelWidth: Int
+        let pixelHeight: Int
+        let orientation: CGImagePropertyOrientation
+    }
+
+    static func decodedImageMetadata(
+        for capture: TranslationCaptureImage
+    ) throws -> DecodedImageMetadata {
+        let decoded = try decode(capture)
+        let swapsDimensions = swapsDimensions(decoded.orientation)
+        return DecodedImageMetadata(
+            pixelWidth: swapsDimensions ? decoded.image.height : decoded.image.width,
+            pixelHeight: swapsDimensions ? decoded.image.width : decoded.image.height,
+            orientation: decoded.orientation
+        )
+    }
+
     private struct DecodedImage {
         let image: CGImage
         let orientation: CGImagePropertyOrientation
@@ -164,10 +197,7 @@ struct VisionTranslationTextRecognizer: TranslationTextRecognizing, Sendable {
         } else {
             orientation = .up
         }
-        let swapsDimensions = switch orientation {
-        case .left, .leftMirrored, .right, .rightMirrored: true
-        default: false
-        }
+        let swapsDimensions = swapsDimensions(orientation)
         let orientedWidth = swapsDimensions ? image.height : image.width
         let orientedHeight = swapsDimensions ? image.width : image.height
         guard orientedWidth == capture.pixelWidth,
@@ -175,6 +205,15 @@ struct VisionTranslationTextRecognizer: TranslationTextRecognizing, Sendable {
             throw TranslationTextIntakeError.invalidImageDimensions
         }
         return DecodedImage(image: image, orientation: orientation)
+    }
+
+    private static func swapsDimensions(
+        _ orientation: CGImagePropertyOrientation
+    ) -> Bool {
+        switch orientation {
+        case .left, .leftMirrored, .right, .rightMirrored: true
+        default: false
+        }
     }
 
     private static func expectedType(

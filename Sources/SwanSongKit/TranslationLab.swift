@@ -1,4 +1,5 @@
 import CryptoKit
+import Darwin
 import Foundation
 
 public enum TranslationROMRole: String, CaseIterable, Codable, Sendable {
@@ -1679,8 +1680,135 @@ public struct TranslationEvidenceSummary: Identifiable, Sendable {
     public var isIntact: Bool { integrityIssue == nil && manifest != nil }
 }
 
+public enum TranslationEvidencePrivateArtifact: String, CaseIterable, Sendable {
+    case textIntake = "text-intake.json"
+    case translationDraft = "translation-draft.json"
+}
+
 public struct TranslationEvidenceStore: Sendable {
+    public static let maximumPrivateArtifactBytes = 2 * 1_024 * 1_024
+
     public init() {}
+
+    public func privateArtifactURL(
+        _ kind: TranslationEvidencePrivateArtifact,
+        evidence: TranslationEvidenceSummary,
+        project: TranslationProject
+    ) throws -> URL {
+        let directory = evidence.artifact.directoryURL.standardizedFileURL
+        let lab = project.rootURL
+            .appendingPathComponent("analysis", isDirectory: true)
+            .appendingPathComponent("swan-song-lab", isDirectory: true)
+            .standardizedFileURL
+        guard safeEvidenceName(directory.lastPathComponent),
+              directory.deletingLastPathComponent() == lab,
+              project.contains(directory),
+              FileManager.default.fileExists(atPath: directory.path) else {
+            throw TranslationLabError.unsafePath(directory.path)
+        }
+        // Revalidate every project-relative directory component immediately
+        // before deriving the private sidecar path. This rejects symlinked or
+        // replaced capture ancestors rather than trusting the earlier index.
+        _ = try prepareDirectory(directory, project: project)
+        try securePrivateArtifactDirectory(directory, project: project)
+        let target = directory
+            .appendingPathComponent(kind.rawValue, isDirectory: false)
+            .standardizedFileURL
+        guard project.contains(target), target.deletingLastPathComponent() == directory else {
+            throw TranslationLabError.unsafePath(target.path)
+        }
+        return target
+    }
+
+    public func privateArtifactExists(
+        _ kind: TranslationEvidencePrivateArtifact,
+        evidence: TranslationEvidenceSummary,
+        project: TranslationProject
+    ) throws -> Bool {
+        let url = try privateArtifactURL(kind, evidence: evidence, project: project)
+        guard try privateArtifactNodeExists(url) else { return false }
+        try securePrivateArtifactFile(url, project: project)
+        return true
+    }
+
+    public func loadPrivateArtifact(
+        _ kind: TranslationEvidencePrivateArtifact,
+        evidence: TranslationEvidenceSummary,
+        project: TranslationProject
+    ) throws -> Data? {
+        let url = try privateArtifactURL(kind, evidence: evidence, project: project)
+        guard try privateArtifactNodeExists(url) else { return nil }
+        try securePrivateArtifactFile(url, project: project)
+        let values = try url.resourceValues(forKeys: [.fileSizeKey])
+        guard let byteCount = values.fileSize,
+              byteCount > 0,
+              byteCount <= Self.maximumPrivateArtifactBytes else {
+            throw TranslationLabError.invalidProject(
+                "the private \(kind.rawValue) sidecar exceeds its size limit"
+            )
+        }
+        let data = try Data(contentsOf: url, options: [.mappedIfSafe])
+        guard !data.isEmpty, data.count <= Self.maximumPrivateArtifactBytes else {
+            throw TranslationLabError.invalidProject(
+                "the private \(kind.rawValue) sidecar changed while it was being read"
+            )
+        }
+        return data
+    }
+
+    @discardableResult
+    public func savePrivateArtifact(
+        _ data: Data,
+        kind: TranslationEvidencePrivateArtifact,
+        evidence: TranslationEvidenceSummary,
+        project: TranslationProject
+    ) throws -> URL {
+        guard !data.isEmpty, data.count <= Self.maximumPrivateArtifactBytes else {
+            throw TranslationLabError.invalidProject(
+                "the private \(kind.rawValue) sidecar exceeds its size limit"
+            )
+        }
+        let url = try privateArtifactURL(kind, evidence: evidence, project: project)
+        if try privateArtifactNodeExists(url) {
+            try securePrivateArtifactFile(url, project: project)
+        }
+        // Revalidate the complete directory chain again at the write boundary
+        // so UI time between selection and save cannot silently follow a new
+        // symlink or non-directory ancestor.
+        _ = try privateArtifactURL(kind, evidence: evidence, project: project)
+        try data.write(to: url, options: [.atomic])
+        try securePrivateArtifactFile(url, project: project)
+        let writtenValues = try url.resourceValues(forKeys: [.fileSizeKey])
+        guard writtenValues.fileSize == data.count else {
+            throw TranslationLabError.invalidProject(
+                "the private \(kind.rawValue) sidecar was not written completely"
+            )
+        }
+        return url
+    }
+
+    /// Removes only the named private sidecar after repeating the same path
+    /// and regular-file checks used for reads and writes. Callers should put
+    /// an explicit destructive confirmation in front of this operation.
+    @discardableResult
+    public func removePrivateArtifact(
+        _ kind: TranslationEvidencePrivateArtifact,
+        evidence: TranslationEvidenceSummary,
+        project: TranslationProject
+    ) throws -> Bool {
+        let url = try privateArtifactURL(kind, evidence: evidence, project: project)
+        guard try privateArtifactNodeExists(url) else { return false }
+        try securePrivateArtifactFile(url, project: project)
+        _ = try privateArtifactURL(kind, evidence: evidence, project: project)
+        try securePrivateArtifactFile(url, project: project)
+        try FileManager.default.removeItem(at: url)
+        guard try !privateArtifactNodeExists(url) else {
+            throw TranslationLabError.invalidProject(
+                "the private \(kind.rawValue) sidecar could not be removed"
+            )
+        }
+        return true
+    }
 
     public func saveRoute(
         _ route: TranslationRoute,
@@ -2554,6 +2682,85 @@ public struct TranslationEvidenceStore: Sendable {
         guard values.isRegularFile == true, values.isSymbolicLink != true else {
             throw TranslationLabError.unsafePath(url.path)
         }
+    }
+
+    private func securePrivateArtifactDirectory(
+        _ url: URL,
+        project: TranslationProject
+    ) throws {
+        guard project.contains(url) else {
+            throw TranslationLabError.unsafePath(url.path)
+        }
+        let values = try url.resourceValues(forKeys: [.isDirectoryKey, .isSymbolicLinkKey])
+        guard values.isDirectory == true, values.isSymbolicLink != true else {
+            throw TranslationLabError.unsafePath(url.path)
+        }
+        try validatePrivateArtifactIdentity(url, kind: .directory)
+        try FileManager.default.setAttributes(
+            [.posixPermissions: NSNumber(value: Int16(0o700))],
+            ofItemAtPath: url.path
+        )
+        let status = try validatePrivateArtifactIdentity(url, kind: .directory)
+        guard Int(status.st_mode & 0o777) == 0o700 else {
+            throw TranslationLabError.invalidProject(
+                "the private evidence directory could not be restricted to its owner"
+            )
+        }
+    }
+
+    private func securePrivateArtifactFile(
+        _ url: URL,
+        project: TranslationProject
+    ) throws {
+        try validateRegularFile(url, project: project)
+        try validatePrivateArtifactIdentity(url, kind: .regularFile)
+        try FileManager.default.setAttributes(
+            [.posixPermissions: NSNumber(value: Int16(0o600))],
+            ofItemAtPath: url.path
+        )
+        try validateRegularFile(url, project: project)
+        let status = try validatePrivateArtifactIdentity(url, kind: .regularFile)
+        guard Int(status.st_mode & 0o777) == 0o600 else {
+            throw TranslationLabError.invalidProject(
+                "the private sidecar could not be restricted to its owner"
+            )
+        }
+    }
+
+    private enum PrivateArtifactNodeKind {
+        case directory
+        case regularFile
+    }
+
+    @discardableResult
+    private func validatePrivateArtifactIdentity(
+        _ url: URL,
+        kind: PrivateArtifactNodeKind
+    ) throws -> stat {
+        var status = stat()
+        guard lstat(url.path, &status) == 0,
+              status.st_uid == getuid() else {
+            throw TranslationLabError.unsafePath(url.path)
+        }
+        let nodeType = status.st_mode & mode_t(S_IFMT)
+        switch kind {
+        case .directory:
+            guard nodeType == mode_t(S_IFDIR) else {
+                throw TranslationLabError.unsafePath(url.path)
+            }
+        case .regularFile:
+            guard nodeType == mode_t(S_IFREG), status.st_nlink == 1 else {
+                throw TranslationLabError.unsafePath(url.path)
+            }
+        }
+        return status
+    }
+
+    private func privateArtifactNodeExists(_ url: URL) throws -> Bool {
+        var status = stat()
+        if lstat(url.path, &status) == 0 { return true }
+        if errno == ENOENT { return false }
+        throw TranslationLabError.unsafePath(url.path)
     }
 
     private func timestamp(_ date: Date) -> String {

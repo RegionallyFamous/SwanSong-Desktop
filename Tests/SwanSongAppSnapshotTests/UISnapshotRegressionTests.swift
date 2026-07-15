@@ -186,7 +186,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             }
         }
 
-        XCTAssertEqual(signatures.count, 66)
+        XCTAssertEqual(signatures.count, 70)
         for scenario in scenarios {
             let pair = signatures.filter { $0.name == scenario.name }
             XCTAssertEqual(pair.count, 2, scenario.name)
@@ -225,6 +225,38 @@ final class UISnapshotRegressionTests: XCTestCase {
         XCTAssertEqual(
             TranslationTextIntakeView.accessibilityIdentifier,
             "translation-text-intake-sheet"
+        )
+        XCTAssertEqual(
+            TranslationTextIntakeView.sourceProgressAccessibilityIdentifier,
+            "translation-text-source-progress"
+        )
+        XCTAssertEqual(
+            TranslationTextIntakeView.targetSectionAccessibilityIdentifier,
+            "translation-text-target-section"
+        )
+        XCTAssertEqual(
+            TranslationTextIntakeView.targetProgressAccessibilityIdentifier,
+            "translation-text-target-progress"
+        )
+        XCTAssertEqual(
+            TranslationTextIntakeView.targetRowAccessibilityIdentifier("line-0001"),
+            "translation-text-target-row-line-0001"
+        )
+        XCTAssertEqual(
+            TranslationTextIntakeView.targetFieldAccessibilityIdentifier("line-0001"),
+            "translation-text-target-field-line-0001"
+        )
+        XCTAssertEqual(
+            TranslationTextIntakeView.targetReviewAccessibilityIdentifier("line-0001"),
+            "translation-text-target-review-line-0001"
+        )
+        XCTAssertEqual(
+            TranslationTextIntakeView.targetClearAccessibilityIdentifier("line-0001"),
+            "translation-text-target-clear-line-0001"
+        )
+        XCTAssertEqual(
+            TranslationTextIntakeView.saveAccessibilityIdentifier,
+            "translation-text-save-intake"
         )
         XCTAssertEqual(PlayerVideoActivityRecoveryCard.accessibilityIdentifier, "player-video-warning")
         XCTAssertEqual(
@@ -807,14 +839,20 @@ final class UISnapshotRegressionTests: XCTestCase {
             size: size,
             scheme: .dark
         )
-        let inset = 6
+        // NSBitmapImageRep coordinates are backing pixels while `size` and the
+        // SwiftUI padding above are points. Sample the same six-point inset on
+        // both 1x and Retina hosts instead of accidentally reading the chrome.
+        let backingScaleX = CGFloat(rendered.bitmap.pixelsWide) / size.width
+        let backingScaleY = CGFloat(rendered.bitmap.pixelsHigh) / size.height
+        let insetX = max(1, Int((6 * backingScaleX).rounded()))
+        let insetY = max(1, Int((6 * backingScaleY).rounded()))
         let samples = [
-            (inset, inset),
-            (rendered.bitmap.pixelsWide - inset - 1, inset),
-            (inset, rendered.bitmap.pixelsHigh - inset - 1),
+            (insetX, insetY),
+            (rendered.bitmap.pixelsWide - insetX - 1, insetY),
+            (insetX, rendered.bitmap.pixelsHigh - insetY - 1),
             (
-                rendered.bitmap.pixelsWide - inset - 1,
-                rendered.bitmap.pixelsHigh - inset - 1
+                rendered.bitmap.pixelsWide - insetX - 1,
+                rendered.bitmap.pixelsHigh - insetY - 1
             ),
         ].compactMap { x, y in
             rendered.bitmap.colorAt(x: x, y: y)?.usingColorSpace(.deviceRGB)
@@ -1110,6 +1148,13 @@ final class UISnapshotRegressionTests: XCTestCase {
                 isDirectory: true
             )
         )
+        let translationTextDraftingModel = try translationTextDraftingModel(
+            dataRoot: root.appendingPathComponent("translation-text-drafting"),
+            projectRoot: root.appendingPathComponent(
+                "translation-text-drafting-project",
+                isDirectory: true
+            )
+        )
         let confidenceFixture = try gameConfidenceFixture(
             root: root.appendingPathComponent("game-confidence")
         )
@@ -1214,6 +1259,20 @@ final class UISnapshotRegressionTests: XCTestCase {
                 usesPolishOutput: true
             ) {
                 AnyView(TranslationTextIntakeView(model: translationTextIntakeModel))
+            },
+            Scenario(
+                name: "translation-text-drafting-wide",
+                size: CGSize(width: 980, height: 720),
+                usesPolishOutput: true
+            ) {
+                AnyView(TranslationTextIntakeView(model: translationTextDraftingModel))
+            },
+            Scenario(
+                name: "translation-text-drafting-compact",
+                size: CGSize(width: 680, height: 760),
+                usesPolishOutput: true
+            ) {
+                AnyView(TranslationTextIntakeView(model: translationTextDraftingModel))
             },
             Scenario(name: "game-confidence-compact", size: CGSize(width: 820, height: 560)) {
                 UserDefaults.standard.set(false, forKey: "showsLibraryInspector")
@@ -1964,6 +2023,28 @@ final class UISnapshotRegressionTests: XCTestCase {
         model.addManualTranslationTextIntakeLine()
         if let first = model.translationTextIntakeLines.first {
             model.confirmTranslationTextIntakeLine(first.id)
+        }
+        return model
+    }
+
+    private func translationTextDraftingModel(
+        dataRoot: URL,
+        projectRoot: URL
+    ) throws -> AppModel {
+        let model = try translationTextIntakeModel(
+            dataRoot: dataRoot,
+            projectRoot: projectRoot
+        )
+        model.confirmAllTranslationTextIntakeLines()
+        model.saveTranslationTextIntake()
+
+        let lines = model.translationDraftLines
+        if let first = lines.first {
+            model.updateTranslationDraftTarget(id: first.id, text: "Press Start")
+            model.reviewTranslationDraftLine(first.id)
+        }
+        if lines.count > 1 {
+            model.updateTranslationDraftTarget(id: lines[1].id, text: "New Game")
         }
         return model
     }
