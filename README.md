@@ -13,9 +13,9 @@ for WonderSwan's unusual control layout.
 · [Privacy](PRIVACY.md)
 · [Support](SUPPORT.md)
 
-> **Release status:** pre-release. Developer ID signing is enabled, but the
-> first public download will wait for Apple notarization so a clean Mac can
-> verify it through Gatekeeper.
+> **Release trust:** official downloads are universal, Developer ID signed,
+> notarized by Apple, stapled, and verified through Gatekeeper. Development
+> builds are not presented as official releases.
 
 <p align="center">
   <img src="Packaging/AppIcon.png" width="160" alt="SwanSong app icon">

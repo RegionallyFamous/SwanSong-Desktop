@@ -4,6 +4,7 @@ set -eu
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 MACOS_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 BUILD_DIR=${ARES_BUILD_DIR:-"$MACOS_DIR/.engine/build"}
+APP_BUILD_DIR=${SWAN_TRANSLATION_LAB_SWIFT_DIR:-"$MACOS_DIR/.build/translation-lab-swift"}
 TEMP_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/swan-song-translation-lab.XXXXXX")
 TOOLKIT="$TEMP_ROOT/toolkit"
 PROJECT="$TOOLKIT/projects/fixture"
@@ -55,7 +56,7 @@ run_readiness_rejection() {
   SWAN_SONG_TRANSLATION_BUILD_AND_RUN=1 \
   SWAN_SONG_FIXTURE_READINESS_STATUS="$fixture_status" \
   SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-  "$MACOS_DIR/.build/debug/SwanSong" >"$guard_log_file" 2>&1 &
+  "$APP_BUILD_DIR/debug/SwanSong" >"$guard_log_file" 2>&1 &
   PID=$!
 
   attempt=0
@@ -123,7 +124,9 @@ cp "$MACOS_DIR/testroms/ws-test-suite/80186_quirks/80186_quirks.ws" "$PROJECT/bu
 
 "$SCRIPT_DIR/build-engine.sh" >/dev/null
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-  "$SCRIPT_DIR/swift-package.sh" build --package-path "$MACOS_DIR" >/dev/null
+  "$SCRIPT_DIR/swift-package.sh" build \
+    --package-path "$MACOS_DIR" \
+    --scratch-path "$APP_BUILD_DIR" >/dev/null
 
 # A successful Status command is still a hard preflight gate. BLOCKED and
 # malformed/UNKNOWN readiness must stop before QA, Validate, or Strict Pack and
@@ -143,7 +146,7 @@ SWAN_SONG_TRANSLATION_TEST_CASE_NAME='Opening screen baseline' \
 SWAN_SONG_TRANSLATION_TEST_CASE_NOTE='Confirm the translated opening screen stays inside its frame.' \
 SWAN_SONG_FIXTURE_READINESS_STATUS=PENDING \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-"$MACOS_DIR/.build/debug/SwanSong" >"$LOG_FILE" 2>&1 &
+"$APP_BUILD_DIR/debug/SwanSong" >"$LOG_FILE" 2>&1 &
 PID=$!
 
 attempt=0
@@ -299,7 +302,7 @@ SWAN_SONG_TRANSLATION_PROJECT="$PROJECT" \
 SWAN_SONG_ALLOW_SYNTHETIC_BOOT=1 \
 SWAN_SONG_TRANSLATION_LOCATE_FIRST_CHANGE=1 \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-"$MACOS_DIR/.build/debug/SwanSong" >"$FIRST_CHANGE_LOG_FILE" 2>&1 &
+"$APP_BUILD_DIR/debug/SwanSong" >"$FIRST_CHANGE_LOG_FILE" 2>&1 &
 PID=$!
 
 attempt=0
@@ -340,7 +343,7 @@ SWAN_SONG_HEADLESS=1 \
 SWAN_SONG_TRANSLATION_PROJECT="$PROJECT" \
 SWAN_SONG_TRANSLATION_APPROVE_BASELINE=1 \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-"$MACOS_DIR/.build/debug/SwanSong" >"$BASELINE_LOG_FILE" 2>&1 &
+"$APP_BUILD_DIR/debug/SwanSong" >"$BASELINE_LOG_FILE" 2>&1 &
 PID=$!
 
 attempt=0
@@ -381,7 +384,7 @@ SWAN_SONG_TRANSLATION_ROUTE_END_FRAME=18 \
 SWAN_SONG_TRANSLATION_TEST_CASE_NAME='Early boot checkpoint' \
 SWAN_SONG_TRANSLATION_TEST_CASE_NOTE='Catch regressions before the opening screen settles.' \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-"$MACOS_DIR/.build/debug/SwanSong" >"$SECOND_LOG_FILE" 2>&1 &
+"$APP_BUILD_DIR/debug/SwanSong" >"$SECOND_LOG_FILE" 2>&1 &
 PID=$!
 
 attempt=0
@@ -438,7 +441,7 @@ SWAN_SONG_TRANSLATION_PROJECT="$PROJECT" \
 SWAN_SONG_ALLOW_SYNTHETIC_BOOT=1 \
 SWAN_SONG_TRANSLATION_VERIFY_ROUTE=1 \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-"$MACOS_DIR/.build/debug/SwanSong" >"$SOURCE_GUARD_LOG_FILE" 2>&1 &
+"$APP_BUILD_DIR/debug/SwanSong" >"$SOURCE_GUARD_LOG_FILE" 2>&1 &
 PID=$!
 
 attempt=0
@@ -494,7 +497,7 @@ SWAN_SONG_ALLOW_SYNTHETIC_BOOT=1 \
 SWAN_SONG_TRANSLATION_VERIFY_ROUTE=1 \
 SWAN_SONG_FIXTURE_PATCH_COLOR_FLAG=1 \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-"$MACOS_DIR/.build/debug/SwanSong" >"$PATCHED_HARDWARE_GUARD_LOG_FILE" 2>&1 &
+"$APP_BUILD_DIR/debug/SwanSong" >"$PATCHED_HARDWARE_GUARD_LOG_FILE" 2>&1 &
 PID=$!
 
 attempt=0
@@ -589,7 +592,7 @@ SWAN_SONG_OPEN_TEST_CASES=1 \
 SWAN_SONG_ALLOW_SYNTHETIC_BOOT=1 \
 SWAN_SONG_TRANSLATION_VERIFY_SUITE=1 \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-"$MACOS_DIR/.build/debug/SwanSong" >"$LEGACY_GUARD_LOG_FILE" 2>&1 &
+"$APP_BUILD_DIR/debug/SwanSong" >"$LEGACY_GUARD_LOG_FILE" 2>&1 &
 PID=$!
 
 attempt=0
@@ -676,7 +679,7 @@ SWAN_SONG_OPEN_TEST_CASES=1 \
 SWAN_SONG_ALLOW_SYNTHETIC_BOOT=1 \
 SWAN_SONG_TRANSLATION_VERIFY_SUITE=1 \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-"$MACOS_DIR/.build/debug/SwanSong" >"$RTC_V2_GUARD_LOG_FILE" 2>&1 &
+"$APP_BUILD_DIR/debug/SwanSong" >"$RTC_V2_GUARD_LOG_FILE" 2>&1 &
 PID=$!
 
 attempt=0
@@ -762,7 +765,7 @@ SWAN_SONG_OPEN_TEST_CASES=1 \
 SWAN_SONG_ALLOW_SYNTHETIC_BOOT=1 \
 SWAN_SONG_TRANSLATION_VERIFY_SUITE=1 \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-"$MACOS_DIR/.build/debug/SwanSong" >"$INVALID_V3_GUARD_LOG_FILE" 2>&1 &
+"$APP_BUILD_DIR/debug/SwanSong" >"$INVALID_V3_GUARD_LOG_FILE" 2>&1 &
 PID=$!
 
 attempt=0
@@ -820,7 +823,7 @@ SWAN_SONG_TRANSLATION_PROJECT="$PROJECT" \
 SWAN_SONG_ALLOW_SYNTHETIC_BOOT=1 \
 SWAN_SONG_TRANSLATION_VERIFY_SUITE=1 \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-"$MACOS_DIR/.build/debug/SwanSong" >"$SUITE_LOG_FILE" 2>&1 &
+"$APP_BUILD_DIR/debug/SwanSong" >"$SUITE_LOG_FILE" 2>&1 &
 PID=$!
 
 attempt=0

@@ -4,6 +4,7 @@ set -eu
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 MACOS_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 BUILD_DIR=${ARES_BUILD_DIR:-"$MACOS_DIR/.engine/build"}
+APP_BUILD_DIR=${SWAN_PLAYER_WINDOW_SWIFT_DIR:-"$MACOS_DIR/.build/player-window-swift"}
 TEMP_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/swan-song-player-window.XXXXXX")
 ROM="$TEMP_ROOT/portrait-80186-quirks.ws"
 DATA_DIR="$TEMP_ROOT/Data"
@@ -22,7 +23,9 @@ trap cleanup EXIT INT TERM
 "$SCRIPT_DIR/build-engine.sh" >/dev/null
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
   "$SCRIPT_DIR/swift-package.sh" build \
-    --package-path "$MACOS_DIR" --product SwanSong >/dev/null
+    --package-path "$MACOS_DIR" \
+    --scratch-path "$APP_BUILD_DIR" \
+    --product SwanSong >/dev/null
 
 swift -e '
   import Foundation
@@ -44,7 +47,7 @@ SWAN_SONG_INITIAL_ROM="$ROM" \
 SWAN_SONG_QUICK_STATE_FRAME=60 \
 SWAN_SONG_STOP_AT_FRAME=240 \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-"$MACOS_DIR/.build/debug/SwanSong" \
+"$APP_BUILD_DIR/debug/SwanSong" \
   -automaticallyFitGameOrientation YES \
   -libraryWindowWidth 1040 \
   -libraryWindowHeight 680 >"$LOG_FILE" 2>&1 &

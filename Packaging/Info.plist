@@ -21,7 +21,7 @@
 			<string>Alternate</string>
             <key>LSItemContentTypes</key>
             <array>
-                <string>games.swansong.wonderswan-rom</string>
+                <string>com.regionallyfamous.swansong.wonderswan-rom</string>
             </array>
         </dict>
         <dict>
@@ -37,7 +37,7 @@
 			<string>Alternate</string>
             <key>LSItemContentTypes</key>
             <array>
-                <string>games.swansong.wonderswan-color-rom</string>
+                <string>com.regionallyfamous.swansong.wonderswan-color-rom</string>
             </array>
         </dict>
         <dict>
@@ -54,7 +54,7 @@
 			<string>Alternate</string>
             <key>LSItemContentTypes</key>
             <array>
-                <string>games.swansong.pocket-challenge-v2-program</string>
+                <string>com.regionallyfamous.swansong.pocket-challenge-v2-program</string>
             </array>
         </dict>
     </array>
@@ -63,7 +63,7 @@
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
     <key>CFBundleIdentifier</key>
-    <string>games.swansong.macos</string>
+    <string>com.regionallyfamous.swansong</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
@@ -96,7 +96,7 @@
             <key>UTTypeDescription</key>
             <string>WonderSwan ROM</string>
             <key>UTTypeIdentifier</key>
-            <string>games.swansong.wonderswan-rom</string>
+            <string>com.regionallyfamous.swansong.wonderswan-rom</string>
             <key>UTTypeTagSpecification</key>
             <dict>
                 <key>public.filename-extension</key>
@@ -113,7 +113,7 @@
             <key>UTTypeDescription</key>
             <string>WonderSwan Color ROM</string>
             <key>UTTypeIdentifier</key>
-            <string>games.swansong.wonderswan-color-rom</string>
+            <string>com.regionallyfamous.swansong.wonderswan-color-rom</string>
             <key>UTTypeTagSpecification</key>
             <dict>
                 <key>public.filename-extension</key>
@@ -130,7 +130,7 @@
             <key>UTTypeDescription</key>
             <string>Pocket Challenge V2 Program</string>
             <key>UTTypeIdentifier</key>
-            <string>games.swansong.pocket-challenge-v2-program</string>
+            <string>com.regionallyfamous.swansong.pocket-challenge-v2-program</string>
             <key>UTTypeTagSpecification</key>
             <dict>
                 <key>public.filename-extension</key>

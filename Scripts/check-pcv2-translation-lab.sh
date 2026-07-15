@@ -4,6 +4,7 @@ set -eu
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 MACOS_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 BUILD_DIR=${ARES_BUILD_DIR:-"$MACOS_DIR/.engine/build"}
+APP_BUILD_DIR=${SWAN_PCV2_TRANSLATION_SWIFT_DIR:-"$MACOS_DIR/.build/pcv2-translation-swift"}
 TEMP_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/swan-song-pcv2-translation.XXXXXX")
 TOOLKIT="$TEMP_ROOT/toolkit"
 PROJECT="$TOOLKIT/projects/pcv2-fixture"
@@ -56,7 +57,9 @@ PY
 
 "$SCRIPT_DIR/build-engine.sh" >/dev/null
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-  "$SCRIPT_DIR/swift-package.sh" build --package-path "$MACOS_DIR" >/dev/null
+  "$SCRIPT_DIR/swift-package.sh" build \
+    --package-path "$MACOS_DIR" \
+    --scratch-path "$APP_BUILD_DIR" >/dev/null
 
 SWAN_SONG_DATA_DIR="$DATA_DIR" \
 SWAN_SONG_HEADLESS=1 \
@@ -71,7 +74,7 @@ SWAN_SONG_TRANSLATION_TEST_CASE_NAME='PCV2 nine-key route' \
 SWAN_SONG_TRANSLATION_TEST_CASE_NOTE='Prove every Benesse keypad control survives deterministic A/B replay.' \
 SWAN_SONG_FIXTURE_READINESS_STATUS=COMPLETE \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-"$MACOS_DIR/.build/debug/SwanSong" >"$LOG_FILE" 2>&1 &
+"$APP_BUILD_DIR/debug/SwanSong" >"$LOG_FILE" 2>&1 &
 PID=$!
 
 attempt=0
@@ -172,7 +175,7 @@ SWAN_SONG_TRANSLATION_PROJECT="$PROJECT" \
 SWAN_SONG_ALLOW_SYNTHETIC_BOOT=1 \
 SWAN_SONG_TRANSLATION_LOCATE_FIRST_CHANGE=1 \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-"$MACOS_DIR/.build/debug/SwanSong" >"$FIRST_CHANGE_LOG_FILE" 2>&1 &
+"$APP_BUILD_DIR/debug/SwanSong" >"$FIRST_CHANGE_LOG_FILE" 2>&1 &
 PID=$!
 
 attempt=0

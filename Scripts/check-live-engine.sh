@@ -4,6 +4,7 @@ set -eu
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 MACOS_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 BUILD_DIR=${ARES_BUILD_DIR:-"$MACOS_DIR/.engine/build"}
+SWIFT_BUILD_DIR=${SWAN_LIVE_ENGINE_SWIFT_DIR:-"$MACOS_DIR/.build/live-engine-swift"}
 
 "$SCRIPT_DIR/build-engine.sh" >/dev/null
 
@@ -24,4 +25,6 @@ check_fixture "$MACOS_DIR/testroms/ws-test-suite/80186_quirks/80186_quirks.ws"
 check_fixture "$MACOS_DIR/testroms/ws-test-suite/tile_screen_extended_range/tile_screen_extended_range.wsc"
 
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" run \
-  --package-path "$MACOS_DIR" SwanSongChecks
+  --package-path "$MACOS_DIR" \
+  --scratch-path "$SWIFT_BUILD_DIR" \
+  SwanSongChecks

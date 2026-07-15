@@ -35,6 +35,16 @@ agent, environment file, or build log.
    `SHA256SUMS.txt`, and release manifest must agree with the tag.
 8. Create a draft GitHub release, attach every artifact, and verify the download
    on a clean supported Mac before publishing.
+9. Download the published app archive back from GitHub, verify its checksum,
+   install that exact archive on this release Mac, and launch it:
+
+   ```sh
+   ./Scripts/install-release-local.sh \
+     /path/to/SwanSong-X.Y.Z-macOS-universal.zip
+   ```
+
+   A SwanSong release is not complete until the installed `/Applications` copy
+   passes Developer ID, notarization-ticket, and Gatekeeper checks.
 
 `release-app.sh` refuses dirty source. A notarized build must be at the exact
 version tag unless a maintainer deliberately sets the documented emergency
