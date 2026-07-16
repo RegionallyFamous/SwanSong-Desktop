@@ -78,6 +78,8 @@ The project uses semantic versioning once a release is published.
   no longer intermittently stall while waiting for a subprocess pipe to close.
   The deterministic main and Pocket Challenge V2 release lanes share a
   configurable bounded wait budget for slower Macs and CI runners.
+- The release A/V soak now tests the optimized distribution configuration and
+  preserves its bounded telemetry in CI whenever a timing gate fails.
 
 ## [0.1.1] - 2026-07-15
 

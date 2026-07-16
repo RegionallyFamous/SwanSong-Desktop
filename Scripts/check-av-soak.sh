@@ -116,9 +116,10 @@ if [ "$VALIDATE_ONLY" = "0" ]; then
     "$SCRIPT_DIR/swift-package.sh" build \
     --package-path "$MACOS_DIR" \
     --scratch-path "$SOAK_BUILD_DIR" \
+    --configuration release \
     --product SwanSongSoak >/dev/null
 
-  set -- "$SOAK_BUILD_DIR/debug/SwanSongSoak" \
+  set -- "$SOAK_BUILD_DIR/release/SwanSongSoak" \
     --rom "$ROM" \
     --fixture-id "checked-in-open-80186-quirks" \
     --duration-ms "$DURATION_MS" \
