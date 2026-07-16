@@ -55,18 +55,21 @@ jobs:
           printf 'RELEASE_TAG=v%s\n' "$RELEASE_VERSION" >>"$GITHUB_ENV"
 
       - name: Download immutable GitHub Release assets
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           mkdir dist
-          gh release download "$RELEASE_TAG" \
-            --repo RegionallyFamous/SwanSong-Desktop \
-            --dir dist \
-            --pattern "SwanSong-$RELEASE_VERSION-macOS-universal.zip" \
-            --pattern "SwanSong-$RELEASE_VERSION-source.tar.xz" \
-            --pattern "SwanSong-$RELEASE_VERSION-release.json" \
-            --pattern SHA256SUMS.txt
+          release_url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/$RELEASE_TAG"
+          for asset in \
+            "SwanSong-$RELEASE_VERSION-macOS-universal.zip" \
+            "SwanSong-$RELEASE_VERSION-source.tar.xz" \
+            "SwanSong-$RELEASE_VERSION-release.json" \
+            SHA256SUMS.txt; do
+            curl --fail --location --silent --show-error \
+              --proto '=https' --tlsv1.2 \
+              --retry 5 --retry-delay 2 --retry-all-errors \
+              --output "dist/$asset.partial" "$release_url/$asset"
+            mv "dist/$asset.partial" "dist/$asset"
+          done
 
       - name: Resolve the pinned Sparkle signer
         run: |
