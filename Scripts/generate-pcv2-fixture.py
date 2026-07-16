@@ -146,7 +146,12 @@ def program() -> bytes:
 
     # Exercise PCV2's KARNAK ADPCM ports. Four 7 nibbles advance the clean
     # reset accumulator from 100h to 17eh, so D9h must return BFh.
-    code.emit(0xBA, 0xD6, 0x00, 0xB0, 0x80, 0xEE)
+    # Drive the documented disabled state first so the cartridge's I/O reset
+    # path establishes the accumulator explicitly before the timer is enabled.
+    # This also verifies that D6h reset behavior instead of depending only on
+    # the mapper object's construction order.
+    code.emit(0xBA, 0xD6, 0x00, 0x31, 0xC0, 0xEE)
+    code.emit(0xB0, 0x80, 0xEE)
     code.emit(0xBA, 0xD8, 0x00, 0xB0, 0x77)
     code.emit(0xEE, 0xEE, 0xEE, 0xEE)
     code.emit(0xBA, 0xD9, 0x00, 0xEC)
