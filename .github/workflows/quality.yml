@@ -74,6 +74,9 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Resolve pinned release dependencies
+        run: ./Scripts/swift-package.sh package resolve --package-path .
+
       - name: Run release-chain tamper and rollback self-tests
         run: |
           set -eu
