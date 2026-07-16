@@ -56,8 +56,16 @@ This repository contains the dedicated native macOS application, whose product
 name and app label are **SwanSong**. It is deliberately separate from the
 Analogue Pocket packaging and FPGA build in the
 [`swansong-core`](https://github.com/RegionallyFamous/swansong-core)
-repository. SwanSong Desktop does not install or update an Analogue Pocket
-core.
+repository. The **Analogue Pocket** tool in Desktop can prepare a mounted
+exFAT/FAT32 card with an authorized stable SwanSong Core release from that
+repository. It verifies the immutable GitHub release, release policy,
+machine-readable manifest, size, and SHA-256 before merging only the Core's
+managed `Assets`, `Cores`, and `Platforms` files. It checks free space first,
+retains replaced files until every managed destination file reads back exactly,
+and rolls back a failed write or verification. It does not format the card,
+download games or BIOS files, or change saves, settings, Memories, Presets, or
+unrelated cores. No verified Core release is currently published, so the
+installer remains fail-closed and performs no write.
 
 The current implementation is a working vertical slice. It builds a pinned,
 WonderSwan-family ares engine; loads open `.ws`, `.wsc`, `.pc2`, `.pcv2`, and
@@ -149,7 +157,8 @@ two automatic behaviors are off until the user opts in. Sparkle system
 profiling is disabled, and SwanSong sends no library, game, controller, or
 Translation Lab data with an update request. App updates are separate from the
 signed first-party Homebrew Catalog: Sparkle updates SwanSong itself and does
-not distribute games or update the Analogue Pocket core. See [App updates and
+not distribute games or run the separate, manually invoked Analogue Pocket
+installer. See [App updates and
 privacy](PRIVACY.md#app-updates) for the exact network boundary.
 
 The tracked Sparkle dependency is fail-closed across `Package.swift`,

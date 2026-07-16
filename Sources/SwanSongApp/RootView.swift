@@ -719,6 +719,8 @@ private struct LibraryShell: View {
                     usesDeterministicSidebarForOffscreenSnapshots:
                         usesDeterministicSidebarForOffscreenSnapshots
                 )
+            } else if model.section == .pocketCore {
+                PocketCoreSetupView()
             } else if model.section == .translationLab {
                 TranslationLabView(
                     model: model,
@@ -776,6 +778,12 @@ private struct AppSidebar: View {
                     .tag(AppModel.Section.homebrew)
                 }
                 Section("Tools") {
+                    Label(
+                        AppModel.Section.pocketCore.rawValue,
+                        systemImage: AppModel.Section.pocketCore.symbol
+                    )
+                    .tag(AppModel.Section.pocketCore)
+
                     Label(
                         AppModel.Section.translationLab.rawValue,
                         systemImage: AppModel.Section.translationLab.symbol
@@ -1629,6 +1637,7 @@ private struct LibraryView: View {
         case .favorites: .favorites
         case .recent: .recentlyPlayed
         case .homebrew: .all
+        case .pocketCore: .all
         case .translationLab: .all
         }
     }
@@ -1644,6 +1653,7 @@ private struct LibraryView: View {
         case .favorites: "No favorites yet"
         case .recent: "Nothing played recently"
         case .homebrew: "Homebrew Catalog Coming Soon"
+        case .pocketCore: "No Pocket SD card selected"
         case .translationLab: "No translation project linked"
         }
     }
@@ -1654,6 +1664,7 @@ private struct LibraryView: View {
         case .favorites: "star"
         case .recent: "clock"
         case .homebrew: "shippingbox"
+        case .pocketCore: "sdcard"
         case .translationLab: "character.book.closed"
         }
     }
@@ -1664,6 +1675,7 @@ private struct LibraryView: View {
         case .favorites: "Mark the games you return to most often."
         case .recent: "Games appear here after they have been played."
         case .homebrew: "No catalog network requests are made in this release. You can still add homebrew from your Mac."
+        case .pocketCore: "Choose the Analogue Pocket tool to verify and install the first-party Core."
         case .translationLab: "Link a private translation-toolkit project to begin."
         }
     }

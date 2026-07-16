@@ -186,7 +186,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             }
         }
 
-        XCTAssertEqual(signatures.count, 62)
+        XCTAssertEqual(signatures.count, 66)
         for scenario in scenarios {
             let pair = signatures.filter { $0.name == scenario.name }
             XCTAssertEqual(pair.count, 2, scenario.name)
@@ -543,6 +543,23 @@ final class UISnapshotRegressionTests: XCTestCase {
             TranslationVisualDivergenceView.accessibilityIdentifier,
             "translation-first-visual-change"
         )
+        XCTAssertEqual(PocketCoreSetupAccessibility.page, "pocket-core-setup")
+        XCTAssertEqual(
+            PocketCoreSetupAccessibility.checkRelease,
+            "pocket-core-check-release"
+        )
+        XCTAssertEqual(
+            PocketCoreSetupAccessibility.chooseCard,
+            "pocket-core-choose-card"
+        )
+        XCTAssertEqual(
+            PocketCoreSetupAccessibility.prepareCard,
+            "pocket-core-prepare-card"
+        )
+        XCTAssertGreaterThanOrEqual(
+            PocketCoreSetupAccessibility.minimumInteractiveDimension,
+            28
+        )
         XCTAssertEqual(GameConfidenceAccessibility.panel, "game-confidence-panel")
         XCTAssertEqual(
             GameConfidenceAccessibility.launchReadiness,
@@ -651,6 +668,9 @@ final class UISnapshotRegressionTests: XCTestCase {
         XCTAssertEqual(SettingsView.migratedTab(2), 0)
         XCTAssertEqual(SettingsView.migratedTab(3), 3)
         XCTAssertEqual(SettingsView.migratedTab(-1), 0)
+        XCTAssertTrue(AppModel.Section.allCases.contains(.pocketCore))
+        XCTAssertEqual(AppModel.Section.pocketCore.rawValue, "Analogue Pocket")
+        XCTAssertEqual(AppModel.Section.pocketCore.symbol, "sdcard")
     }
 
     func testPocketChallengeV2LibraryContracts() throws {
@@ -1423,6 +1443,12 @@ final class UISnapshotRegressionTests: XCTestCase {
                         usesDeterministicSidebarForOffscreenSnapshots: true
                     )
                 )
+            },
+            Scenario(name: "pocket-core-setup-compact", size: CGSize(width: 820, height: 560)) {
+                AnyView(PocketCoreSetupView())
+            },
+            Scenario(name: "pocket-core-setup-wide", size: CGSize(width: 1_040, height: 680)) {
+                AnyView(PocketCoreSetupView())
             },
             Scenario(
                 name: "selected-game-inspector-compact",

@@ -185,6 +185,7 @@ final class AppModel {
         case favorites = "Favorites"
         case recent = "Recently Played"
         case homebrew = "Homebrew"
+        case pocketCore = "Analogue Pocket"
         case translationLab = "Translation Lab"
 
         var id: Self { self }
@@ -195,6 +196,7 @@ final class AppModel {
             case .favorites: "star"
             case .recent: "clock"
             case .homebrew: "shippingbox"
+            case .pocketCore: "sdcard"
             case .translationLab: "character.book.closed"
             }
         }
@@ -778,6 +780,8 @@ final class AppModel {
                 .filter { $0.lastPlayedAt != nil }
                 .sorted { ($0.lastPlayedAt ?? .distantPast) > ($1.lastPlayedAt ?? .distantPast) }
         case .homebrew:
+            []
+        case .pocketCore:
             []
         case .translationLab:
             []
@@ -5135,7 +5139,23 @@ final class AppModel {
                     await Task.yield()
                     guard let self else { return }
                     self.stopPlaying()
-                    self.verifyLatestTranslationRoute()
+                    for _ in 0..<600 {
+                        if !self.isPlaying, !self.translationToolIsRunning {
+                            appDiagnostic(
+                                "automated translation comparison starting after recording"
+                            )
+                            self.verifyLatestTranslationRoute()
+                            return
+                        }
+                        do {
+                            try await Task.sleep(for: .milliseconds(100))
+                        } catch {
+                            return
+                        }
+                    }
+                    appDiagnostic(
+                        "automated translation comparison timed out waiting for project status"
+                    )
                 }
             }
             if showNotice {

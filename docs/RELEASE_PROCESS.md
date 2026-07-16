@@ -230,7 +230,20 @@ catalog cleanup would weaken signed-catalog rollback protection.
 The Sparkle release key and appcast are independent of the Homebrew Catalog
 key, detached catalog signature, consent, cache, and anti-rollback state.
 Sparkle updates `SwanSong.app` only. It must never be used to distribute games
-or update the separate Analogue Pocket core.
+or invoke the separate Analogue Pocket installer.
+
+Exercise the Analogue Pocket tool against a controlled immutable Core release
+fixture and blank/existing exFAT or FAT32 cards. Confirm release-policy,
+manifest, checksum, unsafe-archive, symlink, wrong-filesystem, wrong-volume,
+download, insufficient-space, post-write mismatch, and interrupted-write
+failures remain fail-closed. Verify every managed file reads back exactly and
+games, saves, Memories, Settings, Presets, and unrelated cores are
+byte-unchanged. Repeat filesystem detection with a non-English macOS language
+to ensure it uses the stable mounted filesystem type rather than localized
+display text. Replace the selected volume during a suspended fixture download
+and confirm its changed mount identity blocks the write.
+When no authorized Core release exists, the production endpoint must report
+that state without downloading a package or writing a card.
 
 ## Public release contents
 

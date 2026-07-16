@@ -97,6 +97,7 @@ struct SwanSongApp: App {
                 .disabled(
                     model.isPlaying
                         || model.section == .homebrew
+                        || model.section == .pocketCore
                         || model.section == .translationLab
                         || model.selectedGame == nil
                 )
@@ -144,6 +145,13 @@ struct SwanSongApp: App {
                     model.exportPocketSave()
                 }
                 .disabled(!model.canExportPocketSave)
+
+                Divider()
+
+                Button("Prepare Analogue Pocket SD Card…") {
+                    model.section = .pocketCore
+                }
+                .disabled(model.isPlaying)
             }
             CommandMenu("Emulation") {
                 Button("Play Selected Game") {

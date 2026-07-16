@@ -14,6 +14,14 @@ FIRST_CHANGE_DATA_DIR="$TEMP_ROOT/FirstChangeData"
 FIRST_CHANGE_LOG_FILE="$TEMP_ROOT/first-change.log"
 PID=
 KEEP_TEST_ARTIFACTS=${SWAN_SONG_KEEP_TEST_ARTIFACTS:-0}
+WAIT_ATTEMPTS=${SWAN_TRANSLATION_SUITE_WAIT_ATTEMPTS:-90}
+
+case "$WAIT_ATTEMPTS" in
+  ''|*[!0-9]*|0)
+    echo "SWAN_TRANSLATION_SUITE_WAIT_ATTEMPTS must be a positive integer" >&2
+    exit 2
+    ;;
+esac
 
 cleanup() {
   if [ -n "$PID" ] && kill -0 "$PID" 2>/dev/null; then
@@ -79,7 +87,7 @@ PID=$!
 
 attempt=0
 ready=0
-while [ "$attempt" -lt 40 ]; do
+while [ "$attempt" -lt "$WAIT_ATTEMPTS" ]; do
   manifest_count=$(find "$PROJECT/analysis/swan-song-lab" -name manifest.json \
     2>/dev/null | wc -l | tr -d ' ')
   route=$(find "$PROJECT/analysis/swan-song-lab/routes" -name 'route-*.json' \
@@ -100,7 +108,7 @@ while [ "$attempt" -lt 40 ]; do
 done
 
 if [ "$ready" -ne 1 ]; then
-  echo "PCV2 Translation Lab did not produce complete route evidence" >&2
+  echo "PCV2 Translation Lab did not produce complete route evidence within $WAIT_ATTEMPTS seconds" >&2
   sed -n '1,260p' "$LOG_FILE" >&2
   exit 1
 fi
@@ -180,7 +188,7 @@ PID=$!
 
 attempt=0
 first_change_ready=0
-while [ "$attempt" -lt 30 ]; do
+while [ "$attempt" -lt "$WAIT_ATTEMPTS" ]; do
   if grep -q '^SwanSong: first visual change complete result=no-difference frames=24$' \
     "$FIRST_CHANGE_LOG_FILE"; then
     first_change_ready=1
@@ -196,7 +204,7 @@ while [ "$attempt" -lt 30 ]; do
 done
 
 if [ "$first_change_ready" -ne 1 ]; then
-  echo "PCV2 first-change replay did not finish with identical lanes" >&2
+  echo "PCV2 first-change replay did not finish with identical lanes within $WAIT_ATTEMPTS seconds" >&2
   sed -n '1,260p' "$FIRST_CHANGE_LOG_FILE" >&2
   exit 1
 fi

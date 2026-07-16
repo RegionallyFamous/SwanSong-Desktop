@@ -15,6 +15,13 @@ PID=
 KEEP_TEST_ARTIFACTS=${SWAN_SONG_KEEP_TEST_ARTIFACTS:-0}
 SUITE_WAIT_ATTEMPTS=${SWAN_TRANSLATION_SUITE_WAIT_ATTEMPTS:-90}
 
+case "$SUITE_WAIT_ATTEMPTS" in
+  ''|*[!0-9]*|0)
+    echo "SWAN_TRANSLATION_SUITE_WAIT_ATTEMPTS must be a positive integer" >&2
+    exit 2
+    ;;
+esac
+
 snapshot_toolkit_mutations() {
   python3 - "$PROJECT" <<'PY'
 import hashlib
@@ -150,7 +157,7 @@ PID=$!
 
 attempt=0
 initial_ready=0
-while [ "$attempt" -lt 30 ]; do
+while [ "$attempt" -lt "$SUITE_WAIT_ATTEMPTS" ]; do
   manifest_count=$(find "$PROJECT/analysis/swan-song-lab" -name manifest.json 2>/dev/null | wc -l | tr -d ' ')
   ram_count=$(find "$PROJECT/analysis/swan-song-lab" -name ram.bin -size 16384c 2>/dev/null | wc -l | tr -d ' ')
   route=$(find "$PROJECT/analysis/swan-song-lab/routes" -name 'route-*.json' -print -quit 2>/dev/null || true)
@@ -258,7 +265,7 @@ PY
 done
 
 if [ "$initial_ready" -ne 1 ]; then
-  echo "Translation Lab did not produce complete A/B evidence within 30 seconds" >&2
+  echo "Translation Lab did not produce complete A/B evidence within $SUITE_WAIT_ATTEMPTS seconds" >&2
   sed -n '1,160p' "$LOG_FILE" >&2
   exit 1
 fi
@@ -305,7 +312,7 @@ PID=$!
 
 attempt=0
 first_change_ready=0
-while [ "$attempt" -lt 30 ]; do
+while [ "$attempt" -lt "$SUITE_WAIT_ATTEMPTS" ]; do
   if grep -q '^SwanSong: first visual change complete result=no-difference frames=30$' \
     "$FIRST_CHANGE_LOG_FILE"; then
     first_change_ready=1
@@ -321,7 +328,7 @@ while [ "$attempt" -lt 30 ]; do
 done
 
 if [ "$first_change_ready" -ne 1 ]; then
-  echo "Translation Lab did not complete first-visual-change analysis within 30 seconds" >&2
+  echo "Translation Lab did not complete first-visual-change analysis within $SUITE_WAIT_ATTEMPTS seconds" >&2
   sed -n '1,220p' "$FIRST_CHANGE_LOG_FILE" >&2
   exit 1
 fi
