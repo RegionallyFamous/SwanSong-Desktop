@@ -13,6 +13,7 @@ MAXIMUM_DRIFT_MS=${SWAN_AV_SOAK_MAXIMUM_DRIFT_MS:-2}
 INJECT_HOST_GAP_MS=${SWAN_AV_SOAK_INJECT_HOST_GAP_MS:-}
 INJECT_HOST_GAP_AFTER_FRAMES=${SWAN_AV_SOAK_INJECT_HOST_GAP_AFTER_FRAMES:-120}
 DISABLE_DISCONTINUITY_RECOVERY=${SWAN_AV_SOAK_DISABLE_DISCONTINUITY_RECOVERY:-0}
+CLOCK_MODE=${SWAN_AV_SOAK_CLOCK_MODE:-wall-clock}
 EXPECTED_STATUS=${SWAN_AV_SOAK_EXPECT_STATUS:-pass}
 VALIDATE_ONLY=${SWAN_AV_SOAK_VALIDATE_ONLY:-0}
 TEMP_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/swan-song-av-soak.XXXXXX")
@@ -88,6 +89,17 @@ case "$DISABLE_DISCONTINUITY_RECOVERY" in
     exit 2
     ;;
 esac
+case "$CLOCK_MODE" in
+  wall-clock|media-time) ;;
+  *)
+    echo "SWAN_AV_SOAK_CLOCK_MODE must be wall-clock or media-time" >&2
+    exit 2
+    ;;
+esac
+if [ "$CLOCK_MODE" = "media-time" ] && [ -n "$INJECT_HOST_GAP_MS" ]; then
+  echo "host-gap injection requires SWAN_AV_SOAK_CLOCK_MODE=wall-clock" >&2
+  exit 2
+fi
 case "$EXPECTED_STATUS" in
   pass|fail) ;;
   *)
@@ -125,6 +137,7 @@ if [ "$VALIDATE_ONLY" = "0" ]; then
     --duration-ms "$DURATION_MS" \
     --stall-threshold-ms "$STALL_THRESHOLD_MS" \
     --maximum-drift-ms "$MAXIMUM_DRIFT_MS" \
+    --sink-clock "$CLOCK_MODE" \
     --report "$OUTPUT"
   if [ -n "$INJECT_HOST_GAP_MS" ]; then
     set -- "$@" \
@@ -167,7 +180,8 @@ python3 - \
   "$INJECT_HOST_GAP_MS" \
   "$DISABLE_DISCONTINUITY_RECOVERY" \
   "$STALL_THRESHOLD_MS" \
-  "$MAXIMUM_DRIFT_MS" <<'PY'
+  "$MAXIMUM_DRIFT_MS" \
+  "$CLOCK_MODE" <<'PY'
 import json
 import pathlib
 import re
@@ -180,9 +194,10 @@ injected_gap = int(sys.argv[4]) if sys.argv[4] else None
 recovery_enabled = sys.argv[5] == "0"
 expected_stall_threshold = int(sys.argv[6])
 expected_maximum_drift = float(sys.argv[7])
+expected_clock_mode = sys.argv[8]
 report = json.loads(report_path.read_text())
 
-if report.get("schema") != "swan-song-av-soak-v3":
+if report.get("schema") != "swan-song-av-soak-v4":
     raise SystemExit("unexpected A/V soak report schema")
 if report.get("status") != expected_status:
     raise SystemExit("A/V soak report did not match the expected status")
@@ -219,7 +234,14 @@ if report.get("rtcMode") != "deterministic" \
     raise SystemExit("A/V soak did not bind its deterministic RTC context")
 if report.get("fixtureID") != "checked-in-open-80186-quirks":
     raise SystemExit("A/V soak report did not bind the open fixture label")
-if report.get("audio", {}).get("sink") != "virtual-realtime-48khz-stereo":
+if report.get("sinkClockMode") != expected_clock_mode:
+    raise SystemExit("A/V soak did not bind the requested sink clock")
+expected_sink = (
+    "virtual-realtime-48khz-stereo"
+    if expected_clock_mode == "wall-clock"
+    else "virtual-media-clock-48khz-stereo"
+)
+if report.get("audio", {}).get("sink") != expected_sink:
     raise SystemExit("A/V soak report obscured its virtual audio-sink scope")
 scope = report.get("scope", "")
 for required in ("open fixture", "Open IPL", "no commercial-game", "Core Audio device", "original-hardware"):
@@ -279,5 +301,13 @@ print(
     f"{video['temporalStalls']} frame stalls"
 )
 print(report_path)
-print("Scope: virtual audio sink and open fixture; real Core Audio hardware and owned-game testing remain separate gates.")
+print(
+    "Scope: virtual audio sink and open fixture; "
+    + (
+        "strict wall-clock realtime; "
+        if expected_clock_mode == "wall-clock"
+        else "scheduler-neutral shared-runner integrity only; "
+    )
+    + "real Core Audio hardware and owned-game testing remain separate gates."
+)
 PY

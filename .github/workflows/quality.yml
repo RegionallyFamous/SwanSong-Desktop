@@ -99,9 +99,13 @@ jobs:
           ./Scripts/check-sparkle-configuration.sh .build/app/SwanSong.app
           ./Scripts/check-sparkle-framework.sh .build/app/SwanSong.app
 
-      - name: Run bounded A/V soak
+      - name: Run scheduler-neutral A/V integrity soak
         env:
           SWAN_AV_SOAK_SECONDS: "60"
+          # Shared hosted runners can inject 100+ ms scheduling gaps. Keep CI
+          # strict about media integrity and >=70 Hz throughput; the release
+          # Mac separately runs the default wall-clock 30-minute gate.
+          SWAN_AV_SOAK_CLOCK_MODE: media-time
         run: ./Scripts/check-av-soak.sh
 
       - name: Render and verify UI snapshots

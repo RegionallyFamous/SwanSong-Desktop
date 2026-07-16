@@ -438,22 +438,28 @@ release mode is exactly 30 minutes by default:
 ./Scripts/check-av-soak.sh
 ```
 
-CI and local iteration can request an exact shorter wall duration, to
-millisecond precision, without changing the production default:
+CI and local iteration can request an exact shorter duration, to millisecond
+precision, without changing the production default. Hosted CI binds the
+virtual sink to produced media time so shared-runner scheduling jitter cannot
+masquerade as an app underrun; it still enforces the 70–82 Hz throughput bound
+and every frame/audio integrity invariant. Release Macs use the default strict
+wall-clock sink:
 
 ```sh
 SWAN_AV_SOAK_SECONDS=5 ./Scripts/check-av-soak.sh
+SWAN_AV_SOAK_SECONDS=5 SWAN_AV_SOAK_CLOCK_MODE=media-time \
+  ./Scripts/check-av-soak.sh .build/av-soak/ci-integrity.json
 ```
 
 The short-duration lane and its deliberate failure paths are automated and
 verified. The strict lane first exposed that the old three-batch target could
 drain during an ordinary 38 ms host scheduling gap, so production pacing now
-targets four batches (about 53 ms nominal) while retaining the 180 ms hard cap.
+targets five batches (about 66 ms nominal) while retaining the 180 ms hard cap.
 Two later exact 30-minute runs kept a healthy 16 ms p99 frame gap and recorded
 no drops or stalls, but exposed rare 122 ms and 230 ms host discontinuities.
 Those are handled as bounded transport-epoch recoveries: only after a primed
 queue has actually drained beyond the full four-batch horizon, the player
-clears its obsolete schedule, re-primes three batches, fades in the first 5 ms,
+clears its obsolete schedule, re-primes five batches, fades in the first 5 ms,
 and resumes. Ordinary sub-horizon starvation remains an underrun and fails the
 gate; the steady queue and drift thresholds are unchanged. Reports separately
 count recovered discontinuities and permit at most one per requested minute.

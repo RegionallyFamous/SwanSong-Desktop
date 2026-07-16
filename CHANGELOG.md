@@ -79,7 +79,9 @@ The project uses semantic versioning once a release is published.
   The deterministic main and Pocket Challenge V2 release lanes share a
   configurable bounded wait budget for slower Macs and CI runners.
 - The release A/V soak now tests the optimized distribution configuration and
-  preserves its bounded telemetry in CI whenever a timing gate fails.
+  preserves bounded failure telemetry. Hosted CI uses a declared
+  scheduler-neutral integrity clock; notarization keeps the strict 30-minute
+  wall-clock gate on the release Mac.
 
 ## [0.1.1] - 2026-07-15
 
