@@ -37,10 +37,13 @@ Automated tests cover the standard mappings and lifecycle reducers; enumeration,
 hotplug, and input delivery on actual Extended, Micro, and Directional hardware
 remain physical beta checks.
 
-SwanSong Desktop does not install or update the Analogue Pocket FPGA core. That
-is a separate product and release lane in the
+The Analogue Pocket FPGA build remains a separate product and release lane in
+the
 [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core)
-repository.
+repository. Desktop's **Analogue Pocket** tool may install only an immutable,
+authorized stable Core release after its manifest and checksum agree. No such
+release is currently published, so the production check must report that state
+without downloading a package or writing the selected card.
 
 ## Before reporting a result
 
@@ -56,6 +59,10 @@ repository.
 6. For an updater result, record the installed version/build, selected channel,
    automatic-check/download settings, offered version, and exact visible error.
    Do not attach a downloaded archive that failed verification.
+7. For a Pocket-card result, record only the card filesystem, whether it began
+   blank or with a Pocket layout, and the visible error. Do not attach card
+   listings, games, saves, or Core packages. Confirm that a successful install
+   completes its post-write read-back check, then eject the card in Finder.
 
 Use the repository's [support guide](../SUPPORT.md) for the reporting checklist
 and [privacy policy](../PRIVACY.md) for the exact data boundary.

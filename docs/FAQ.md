@@ -44,8 +44,8 @@ system profiling is disabled. See [App updates](APP_UPDATES.md) for security,
 privacy, and release details.
 
 This updates the macOS application only. Sparkle does not distribute homebrew
-games and does not update the separate Analogue Pocket core. Those are
-independent repositories, trust keys, and release lanes.
+games and does not invoke the separate Analogue Pocket SD-card tool. Those are
+independent repositories, trust records, and release lanes.
 
 ## Which Macs are supported?
 
@@ -92,10 +92,19 @@ alias so one press cannot trigger two logical controls.
 
 ## Does SwanSong Desktop install or update the Analogue Pocket core?
 
-No. SwanSong Desktop is the native macOS application. The Analogue Pocket FPGA
-build is a separate product and source repository at
+Yes, through an explicit **Analogue Pocket** SD-card workflow. The FPGA build
+and its release authorization remain owned by the separate repository at
 [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core).
-Installing or updating either one does not modify the other.
+Desktop checks only when asked and will accept only an immutable, authorized
+stable release whose manifest, asset size, and SHA-256 all agree. It then
+merges the verified Core files onto a selected mounted exFAT/FAT32 card, keeps
+replaced files recoverable until every managed file reads back exactly, and
+rolls back a failed write. It does not format the card or change games, saves,
+settings, Memories, Presets, or other cores. The tool performs no write while
+the Core repository has no verified public release.
+
+Installing the Core does not update the macOS app, and Sparkle app updates do
+not run the Core installer.
 
 ## Why can a game reach video but still be “Untested”?
 

@@ -2,6 +2,11 @@ import Darwin
 import Foundation
 import SwanSongKit
 
+private enum SinkClockMode: String {
+    case wallClock = "wall-clock"
+    case mediaTime = "media-time"
+}
+
 private struct Options {
     var rom: URL?
     var fixtureID = "unspecified-open-fixture"
@@ -11,6 +16,7 @@ private struct Options {
     var injectedHostGapMilliseconds: Int?
     var injectedHostGapAfterFrames = 120
     var discontinuityRecoveryEnabled = true
+    var sinkClockMode = SinkClockMode.wallClock
     var report: URL?
 }
 
@@ -24,6 +30,7 @@ private struct SoakReport: Codable {
     let openIPLIdentifier: String
     let rtcMode: String
     let rtcSeedUnixSeconds: UInt64
+    let sinkClockMode: String
     let durationMode: String
     let requestedDurationMilliseconds: Int
     let elapsedMilliseconds: Int
@@ -302,6 +309,9 @@ private struct SwanSongSoak {
         var maximumEngineWork = 0.0
         var maximumRequestedSleep = 0.0
         var didInjectHostGap = false
+        var mediaClock = 0.0
+        var mediaTransportStartedAt: TimeInterval?
+        var mediaTransportStartedAtMediaTime = 0.0
 
         while ProcessInfo.processInfo.systemUptime < deadline {
             if !didInjectHostGap,
@@ -358,11 +368,27 @@ private struct SwanSongSoak {
             audioSampleRate = audio.sampleRate
             batchesProduced += 1
             audioFramesProduced += audio.frameCount
+            let sinkNow: TimeInterval
+            switch options.sinkClockMode {
+            case .wallClock:
+                sinkNow = frameArrivedAt
+            case .mediaTime:
+                if audio.frameCount > 0, audio.sampleRate > 0 {
+                    mediaClock += Double(audio.frameCount) / Double(audio.sampleRate)
+                }
+                sinkNow = mediaClock
+            }
             sink.enqueue(
                 frameCount: audio.frameCount,
                 sampleRate: audio.sampleRate,
-                now: frameArrivedAt
+                now: sinkNow
             )
+            if options.sinkClockMode == .mediaTime,
+               !sink.isRebuffering,
+               mediaTransportStartedAt == nil {
+                mediaTransportStartedAt = frameArrivedAt
+                mediaTransportStartedAtMediaTime = mediaClock
+            }
 
             let delay = policy.delaySeconds(
                 producedAudioFrames: audio.frameCount,
@@ -370,14 +396,26 @@ private struct SwanSongSoak {
                 queuedAudioSeconds: sink.pacingQueueSeconds,
                 fastForwarding: false
             )
+            let clockAdjustedDelay: TimeInterval
+            if options.sinkClockMode == .mediaTime,
+               let mediaTransportStartedAt {
+                let target = mediaTransportStartedAt
+                    + (mediaClock - mediaTransportStartedAtMediaTime)
+                clockAdjustedDelay = max(
+                    0,
+                    target - ProcessInfo.processInfo.systemUptime
+                )
+            } else {
+                clockAdjustedDelay = delay
+            }
             let remaining = deadline - ProcessInfo.processInfo.systemUptime
-            let boundedDelay = min(delay, max(0, remaining))
+            let boundedDelay = min(clockAdjustedDelay, max(0, remaining))
             maximumRequestedSleep = max(maximumRequestedSleep, boundedDelay)
             if boundedDelay > 0 { Thread.sleep(forTimeInterval: boundedDelay) }
         }
 
         let finishedAt = ProcessInfo.processInfo.systemUptime
-        sink.finish(at: finishedAt)
+        sink.finish(at: options.sinkClockMode == .wallClock ? finishedAt : mediaClock)
         if let previousFrameAt {
             let finalGap = max(0, finishedAt - previousFrameAt)
             frameGaps.append(finalGap)
@@ -435,15 +473,18 @@ private struct SwanSongSoak {
         }
 
         return SoakReport(
-            schema: "swan-song-av-soak-v3",
+            schema: "swan-song-av-soak-v4",
             status: issues.isEmpty ? "pass" : "fail",
-            scope: "Checked-in open fixture using SwanSong Open IPL; live ares execution and virtual audio sink only; no commercial-game, Core Audio device, or original-hardware compatibility evidence.",
+            scope: options.sinkClockMode == .wallClock
+                ? "Checked-in open fixture using SwanSong Open IPL; live ares execution and virtual wall-clock audio sink only; no commercial-game, Core Audio device, or original-hardware compatibility evidence."
+                : "Checked-in open fixture using SwanSong Open IPL; live ares execution and scheduler-neutral produced-media-time virtual audio sink for shared-runner integrity; no commercial-game, Core Audio device, wall-clock realtime, or original-hardware compatibility evidence.",
             fixtureID: options.fixtureID,
             backend: engine.backendName,
             engineBuildID: engine.buildID,
             openIPLIdentifier: WonderSwanOpenIPL.identifier,
             rtcMode: "deterministic",
             rtcSeedUnixSeconds: 1,
+            sinkClockMode: options.sinkClockMode.rawValue,
             durationMode: options.requestedDurationMilliseconds == 1_800_000
                 ? "release-30-minute"
                 : "duration-override",
@@ -462,7 +503,9 @@ private struct SwanSongSoak {
                 p99FrameGapMilliseconds: milliseconds(p99Gap)
             ),
             audio: AudioReport(
-                sink: "virtual-realtime-48khz-stereo",
+                sink: options.sinkClockMode == .wallClock
+                    ? "virtual-realtime-48khz-stereo"
+                    : "virtual-media-clock-48khz-stereo",
                 queuePrimed: sink.hasEverPrimed,
                 batchesProduced: batchesProduced,
                 framesProduced: audioFramesProduced,
@@ -560,6 +603,12 @@ private struct SwanSongSoak {
                 options.injectedHostGapAfterFrames = value
             case "--disable-discontinuity-recovery":
                 options.discontinuityRecoveryEnabled = false
+            case "--sink-clock":
+                let value = try takeValue(&arguments, for: argument)
+                guard let mode = SinkClockMode(rawValue: value) else {
+                    throw SoakError(message: "--sink-clock must be wall-clock or media-time.")
+                }
+                options.sinkClockMode = mode
             case "--report":
                 options.report = URL(fileURLWithPath: try takeValue(&arguments, for: argument))
             case "--help", "-h":
@@ -610,9 +659,12 @@ private struct SwanSongSoak {
                                   Injection point (default 120)
       --disable-discontinuity-recovery
                                   Keep the old continuous transport for a control run
+      --sink-clock MODE           wall-clock (release gate) or media-time (CI integrity)
       --report FILE               Atomically write sorted-key JSON evidence
 
-    The gate uses a virtual real-time audio sink. It does not claim Core Audio
-    device, commercial-game, or original-hardware compatibility evidence.
+    The gate uses a virtual audio sink. Wall-clock mode is the strict release
+    gate; media-time mode isolates shared-runner scheduling for CI integrity.
+    Neither mode claims Core Audio device, commercial-game, or
+    original-hardware compatibility evidence.
     """
 }

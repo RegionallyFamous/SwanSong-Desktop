@@ -56,8 +56,16 @@ This repository contains the dedicated native macOS application, whose product
 name and app label are **SwanSong**. It is deliberately separate from the
 Analogue Pocket packaging and FPGA build in the
 [`swansong-core`](https://github.com/RegionallyFamous/swansong-core)
-repository. SwanSong Desktop does not install or update an Analogue Pocket
-core.
+repository. The **Analogue Pocket** tool in Desktop can prepare a mounted
+exFAT/FAT32 card with an authorized stable SwanSong Core release from that
+repository. It verifies the immutable GitHub release, release policy,
+machine-readable manifest, size, and SHA-256 before merging only the Core's
+managed `Assets`, `Cores`, and `Platforms` files. It checks free space first,
+retains replaced files until every managed destination file reads back exactly,
+and rolls back a failed write or verification. It does not format the card,
+download games or BIOS files, or change saves, settings, Memories, Presets, or
+unrelated cores. No verified Core release is currently published, so the
+installer remains fail-closed and performs no write.
 
 The current implementation is a working vertical slice. It builds a pinned,
 WonderSwan-family ares engine; loads open `.ws`, `.wsc`, `.pc2`, `.pcv2`, and
@@ -149,7 +157,8 @@ two automatic behaviors are off until the user opts in. Sparkle system
 profiling is disabled, and SwanSong sends no library, game, controller, or
 Translation Lab data with an update request. App updates are separate from the
 signed first-party Homebrew Catalog: Sparkle updates SwanSong itself and does
-not distribute games or update the Analogue Pocket core. See [App updates and
+not distribute games or run the separate, manually invoked Analogue Pocket
+installer. See [App updates and
 privacy](PRIVACY.md#app-updates) for the exact network boundary.
 
 The tracked Sparkle dependency is fail-closed across `Package.swift`,
@@ -429,22 +438,28 @@ release mode is exactly 30 minutes by default:
 ./Scripts/check-av-soak.sh
 ```
 
-CI and local iteration can request an exact shorter wall duration, to
-millisecond precision, without changing the production default:
+CI and local iteration can request an exact shorter duration, to millisecond
+precision, without changing the production default. Hosted CI binds the
+virtual sink to produced media time so shared-runner scheduling jitter cannot
+masquerade as an app underrun; it still enforces the 70–82 Hz throughput bound
+and every frame/audio integrity invariant. Release Macs use the default strict
+wall-clock sink:
 
 ```sh
 SWAN_AV_SOAK_SECONDS=5 ./Scripts/check-av-soak.sh
+SWAN_AV_SOAK_SECONDS=5 SWAN_AV_SOAK_CLOCK_MODE=media-time \
+  ./Scripts/check-av-soak.sh .build/av-soak/ci-integrity.json
 ```
 
 The short-duration lane and its deliberate failure paths are automated and
 verified. The strict lane first exposed that the old three-batch target could
 drain during an ordinary 38 ms host scheduling gap, so production pacing now
-targets four batches (about 53 ms nominal) while retaining the 180 ms hard cap.
+targets five batches (about 66 ms nominal) while retaining the 180 ms hard cap.
 Two later exact 30-minute runs kept a healthy 16 ms p99 frame gap and recorded
 no drops or stalls, but exposed rare 122 ms and 230 ms host discontinuities.
 Those are handled as bounded transport-epoch recoveries: only after a primed
 queue has actually drained beyond the full four-batch horizon, the player
-clears its obsolete schedule, re-primes three batches, fades in the first 5 ms,
+clears its obsolete schedule, re-primes five batches, fades in the first 5 ms,
 and resumes. Ordinary sub-horizon starvation remains an underrun and fails the
 gate; the steady queue and drift thresholds are unchanged. Reports separately
 count recovered discontinuities and permit at most one per requested minute.

@@ -40,7 +40,7 @@ set -- \
   -B "$BUILD_DIR" \
   -G "Unix Makefiles" \
   -D "ARES_SOURCE_DIR=$SOURCE_DIR" \
-  -D CMAKE_BUILD_TYPE=RelWithDebInfo
+  -D CMAKE_BUILD_TYPE=Release
 if [ "$UNIVERSAL" = "1" ]; then
   set -- "$@" \
     -D "CMAKE_OSX_ARCHITECTURES=arm64;x86_64" \

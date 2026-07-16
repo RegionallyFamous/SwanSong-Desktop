@@ -19,7 +19,9 @@ Release notes and the issue tracker are authoritative for shipped behavior.
   first explicitly licensed Story Forge ROM, immutable release asset, signed
   non-empty catalog, and production public key all pass the release gate.
 - Keep SwanSong Desktop and the separate Analogue Pocket `swansong-core`
-  release lanes explicit; neither product installs or updates the other.
+  release lanes explicit. Desktop's manual SD-card tool may install only an
+  immutable, authorized stable Core release after its manifest and checksum
+  agree; it must not build, publish, or silently update the FPGA product.
 - Ship the native Sparkle 2 updater against the signed GitHub-hosted appcast,
   with manual checks always available, automatic checks/downloads opt-in,
   system profiling disabled, and stable/beta channel behavior covered by the

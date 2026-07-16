@@ -1,5 +1,5 @@
 import Foundation
-import CryptoKit
+@preconcurrency import CryptoKit
 import SwanSongKit
 @testable import SwanSongApp
 import XCTest

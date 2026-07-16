@@ -1,0 +1,112 @@
+name: Quality
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Tests (${{ matrix.label }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: macOS 14 Apple silicon
+            runner: macos-14
+            developer_dir: /Applications/Xcode_16.2.app/Contents/Developer
+          - label: macOS 15 Intel
+            runner: macos-15-intel
+            developer_dir: /Applications/Xcode.app/Contents/Developer
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 35
+    env:
+      DEVELOPER_DIR: ${{ matrix.developer_dir }}
+      # AppKit/SwiftUI rasterization is OS-specific. Both runners still render
+      # every surface and enforce geometry/content invariants; reviewed pixel
+      # hashes remain strict on the macOS family that produced the baseline.
+      SWAN_SONG_ALLOW_UI_BASELINE_PLATFORM_MISMATCH: "1"
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Record toolchain and architecture
+        run: |
+          set -eu
+          xcodebuild -version
+          sw_vers
+          uname -m
+
+      - name: Run complete Swift and XCTest suite
+        run: ./Scripts/swift-package.sh test --package-path .
+
+      - name: Run engine-boundary and library checks
+        run: ./Scripts/swift-package.sh run --package-path . SwanSongChecks
+
+      - name: Check fail-closed production configuration
+        run: |
+          set -eu
+          ./Scripts/check-homebrew-production-readiness.sh
+          python3 ./Scripts/check-sparkle-dependency-lock.py --repository .
+
+  release-preflight:
+    name: Release preflight
+    needs: tests
+    runs-on: macos-14
+    timeout-minutes: 75
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_16.2.app/Contents/Developer
+      SWAN_SONG_ALLOW_UI_BASELINE_PLATFORM_MISMATCH: "1"
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Resolve pinned release dependencies
+        run: ./Scripts/swift-package.sh package resolve --package-path .
+
+      - name: Run release-chain tamper and rollback self-tests
+        run: |
+          set -eu
+          ./Scripts/selftest-release-build-snapshot.sh
+          ./Scripts/selftest-package-release-snapshots.sh
+          ./Scripts/selftest-release-artifacts.sh
+          ./Scripts/selftest-release-installer.sh
+          ./Scripts/selftest-sparkle-dependency-lock.sh
+          ./Scripts/selftest-sparkle-appcast.sh
+
+      - name: Run public-fixture compatibility matrix
+        run: ./Scripts/check-compatibility-matrix.sh
+
+      - name: Build and inspect universal application
+        run: |
+          set -eu
+          SWAN_UNIVERSAL=1 ./Scripts/build-app.sh
+          ./Scripts/check-app-payload.sh .build/app/SwanSong.app
+          ./Scripts/verify-app-architectures.sh .build/app/SwanSong.app
+          ./Scripts/check-sparkle-configuration.sh .build/app/SwanSong.app
+          ./Scripts/check-sparkle-framework.sh .build/app/SwanSong.app
+
+      - name: Run scheduler-neutral A/V integrity soak
+        env:
+          SWAN_AV_SOAK_SECONDS: "60"
+          # Shared hosted runners can inject 100+ ms scheduling gaps. Keep CI
+          # strict about media integrity and >=70 Hz throughput; the release
+          # Mac separately runs the default wall-clock 30-minute gate.
+          SWAN_AV_SOAK_CLOCK_MODE: media-time
+        run: ./Scripts/check-av-soak.sh
+
+      - name: Render and verify UI snapshots
+        run: ./Scripts/check-ui-snapshots.sh

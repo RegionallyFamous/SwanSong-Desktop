@@ -56,8 +56,26 @@ Gatekeeper, or updater-signature error.
 
 The manual archive-and-checksum installation above remains available for
 offline verification, rollback, and recovery. Sparkle updates SwanSong itself;
-it does not install homebrew or update the separate Analogue Pocket core. See
+it does not install homebrew or invoke the separate Analogue Pocket SD-card
+tool. See
 [App updates](APP_UPDATES.md) for the full trust and release contract.
+
+## Preparing an Analogue Pocket SD card
+
+Open **Analogue Pocket** in SwanSong's sidebar, or choose **File > Prepare
+Analogue Pocket SD Card…**. Check for the official Core release, choose the
+mounted exFAT/FAT32 card itself under `/Volumes`, and review the exact card and
+Core version before confirming.
+
+The tool accepts a blank card or an existing Pocket layout. It verifies the
+immutable GitHub Release, release authorization, manifest, package size, and
+SHA-256, then merges only the verified SwanSong Core and WonderSwan platform
+files. It checks free space first and keeps a recovery copy until every managed
+file reads back exactly. It never formats the card, supplies games/BIOS/Pocket
+firmware, or changes saves, Memories, Settings, Presets, or unrelated cores.
+Make a complete backup first and eject the card in Finder after success. Until
+`swansong-core` publishes an authorized stable release, the tool reports that
+no verified release exists and performs no write.
 
 ## First game
 

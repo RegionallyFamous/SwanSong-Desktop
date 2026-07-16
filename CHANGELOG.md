@@ -5,6 +5,8 @@ The project uses semantic versioning once a release is published.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-16
+
 ### Added
 
 - Added an off-by-default Debug Tools mode with a live keyboard-focus/input
@@ -24,6 +26,12 @@ The project uses semantic versioning once a release is published.
   SwanSong Desktop GitHub Release assets. Manual checks remain available while
   automatic checks and automatic download/install are separate opt-ins;
   testers can independently include beta updates.
+- Added an **Analogue Pocket** SD-card tool that checks the official Core
+  repository only when asked, accepts only an immutable authorized stable
+  release, and merges its verified managed files onto a selected exFAT/FAT32
+  card without formatting it or changing games, saves, settings, Memories,
+  Presets, or unrelated cores. The tool remains locked while no verified Core
+  release is published.
 
 ### Security
 
@@ -44,6 +52,15 @@ The project uses semantic versioning once a release is published.
 - Pinned Sparkle by exact version and source commit, added deterministic
   signed-appcast publication and verification tools, and included its license
   and locked source in official corresponding-source archives.
+- Bound Pocket Core installation to agreement between the official immutable
+  GitHub Release, release policy, completed release gates, manifest, asset byte
+  count, and SHA-256. Unsafe archive paths, unsupported/non-writable volumes,
+  insufficient free space, symlinks, partial in-process writes, and failed
+  post-write read-back verification fail closed with rollback. The selected
+  mounted-volume identity is checked again after the package download.
+- Added required GitHub Actions quality gates on macOS 14 Apple silicon and
+  macOS 15 Intel, plus universal-app, public-fixture, A/V-soak, UI, payload,
+  Sparkle, and release-chain preflight coverage.
 
 ### Changed
 
@@ -52,7 +69,19 @@ The project uses semantic versioning once a release is published.
   use SwanSong Open IPL exclusively across the app and developer tools.
 - Replaced the browser-only Releases-page action with a native **Check for
   Updates…** workflow. App updating remains independent of the first-party
-  Homebrew Catalog and never installs games or the Analogue Pocket core.
+  Homebrew Catalog and never installs games or invokes the separate Analogue
+  Pocket tool.
+
+### Fixed
+
+- Translation Lab toolkit pipelines now retain only bounded command output and
+  no longer intermittently stall while waiting for a subprocess pipe to close.
+  The deterministic main and Pocket Challenge V2 release lanes share a
+  configurable bounded wait budget for slower Macs and CI runners.
+- The release A/V soak now tests the optimized distribution configuration and
+  preserves bounded failure telemetry. Hosted CI uses a declared
+  scheduler-neutral integrity clock; notarization keeps the strict 30-minute
+  wall-clock gate on the release Mac.
 
 ## [0.1.1] - 2026-07-15
 
@@ -92,6 +121,7 @@ The project uses semantic versioning once a release is published.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.1.0

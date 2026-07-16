@@ -144,7 +144,12 @@ unreachable feed, tampered signature, cancellation, interrupted download, and
 failed installation; the prior app must survive every failure. Confirm no
 system profile or per-user/device identifier is sent. The Sparkle key and feed
 are independent of the Homebrew Catalog trust path and cannot authorize games
-or the separate Analogue Pocket core.
+or a Pocket Core package. Separately test the Analogue Pocket tool with an
+immutable authorized Core fixture and rejection cases for release policy,
+manifest/checksum drift, unsafe ZIP paths, symlinks, wrong filesystems, and
+insufficient space, post-write mismatch, and write rollback. Every managed file
+must read back exactly. Games, saves, Memories, Settings, Presets, and unrelated
+cores must remain byte-unchanged.
 
 The detailed operator checklist remains tracked at
 [`docs/RELEASE_PROCESS.md`](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/RELEASE_PROCESS.md).

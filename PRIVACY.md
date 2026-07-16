@@ -24,6 +24,12 @@ are stored locally. SwanSong does not upload or share them. Apple Vision text
 recognition used by Capture & Draft Translation runs on-device, and recognized
 text is not sent to a translation service.
 
+When you choose an Analogue Pocket SD card, SwanSong reads the mounted volume's
+name, filesystem type, capacity, top-level folder names, installed SwanSong
+`core.json` version (if present), and only the Core-managed files that a
+verified package may replace. It does not read or upload game, save, Memory,
+Settings, or Preset contents from the card.
+
 SwanSong only creates an external copy when you explicitly choose an export or
 save destination. Source-free diagnostic exports are allowlist-based and omit
 game, RAM, save-state, and persistence bytes. Sparkle may hold a downloaded app
@@ -78,7 +84,32 @@ count that information under its own policies.
 
 App updates are separate from homebrew distribution. Sparkle updates the
 SwanSong macOS application only; it does not fetch the Homebrew Catalog,
-install games, or install/update the separate Analogue Pocket core.
+install games, or invoke the separate Analogue Pocket installer.
+
+### Analogue Pocket Core
+
+The **Analogue Pocket** tool makes no request at launch, in the background, or
+merely because you open its page. Choosing **Check for Core Release** requests
+the official `RegionallyFamous/swansong-core` latest-release record through the
+GitHub HTTPS API. If an immutable authorized stable release exists, SwanSong
+then fetches that release's small `release-manifest.json` and `SHA256SUMS`
+assets. Choosing and confirming **Prepare SD Card** downloads the named Core ZIP
+from the same official GitHub Release.
+
+The manifest's publisher, release authorization, completed release gates,
+package identity, byte count, and SHA-256 must agree with the GitHub release
+and `SHA256SUMS` before SwanSong opens or writes the package. The current Core
+repository has no verified public release, so a check reports that status and
+no package or card write occurs.
+
+These requests use no GitHub account, credential, unique app identifier, card
+identifier, or library data. GitHub receives the connecting IP address,
+request time, requested API/asset URLs, the `SwanSong-Desktop` User-Agent, and
+ordinary HTTP/TLS information. SwanSong does not send volume names, volume
+UUIDs, paths, folder listings, installed Core versions, games, ROM digests,
+saves, screenshots, settings, or Translation Lab data. Archive inspection uses
+the local macOS `unzip` and `ditto` tools after verification; neither is given a
+network URL or user game/save path.
 
 ### Homebrew Catalog
 

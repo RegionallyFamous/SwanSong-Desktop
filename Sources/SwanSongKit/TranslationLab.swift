@@ -577,14 +577,33 @@ public enum TranslationToolkitRunner {
         environment["PATH"] = (usefulPaths + [currentPath]).joined(separator: ":")
         process.environment = environment
 
-        let pipe = Pipe()
-        process.standardOutput = pipe
-        process.standardError = pipe
+        let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "SwanSong-Translation-Command-\(UUID().uuidString).log"
+        )
+        guard FileManager.default.createFile(
+            atPath: outputURL.path,
+            contents: nil,
+            attributes: [.posixPermissions: 0o600]
+        ) else {
+            throw CocoaError(.fileWriteUnknown)
+        }
+        defer { try? FileManager.default.removeItem(at: outputURL) }
+        let outputHandle = try FileHandle(forWritingTo: outputURL)
+        defer { try? outputHandle.close() }
+        process.standardOutput = outputHandle
+        process.standardError = outputHandle
         try process.run()
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
         process.waitUntilExit()
+        try outputHandle.synchronize()
+        try outputHandle.close()
+
         let maximumBytes = 512 * 1024
-        let retained = data.count > maximumBytes ? data.suffix(maximumBytes) : data[...]
+        let inputHandle = try FileHandle(forReadingFrom: outputURL)
+        defer { try? inputHandle.close() }
+        let byteCount = try inputHandle.seekToEnd()
+        let retainedByteCount = min(byteCount, UInt64(maximumBytes))
+        try inputHandle.seek(toOffset: byteCount - retainedByteCount)
+        let retained = try inputHandle.read(upToCount: Int(retainedByteCount)) ?? Data()
         let output = String(decoding: retained, as: UTF8.self)
         return TranslationCommandResult(
             stageTitle: stage.title,

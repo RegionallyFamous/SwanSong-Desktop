@@ -482,23 +482,32 @@ private struct SwanSongProbe {
             )
         }
         if options.requirePocketChallengeV2FixtureContract {
-            let contractIsExact = activeHardwareModel == .pocketChallengeV2
-                && activeHardwareModelClearedAfterUnload == true
-                && cartridgeFlashByteCount == rom.count
-                && cartridgeFlashMatchesROM == true
-                && cartridgeFlashRoundTripExact == true
-                && consoleEEPROMAbsent
-                && pcv2InternalRAMByteCount == 16 * 1024
-                && pcv2KARNAKExact == true
-                && pcv2InputContractExact == true
-                && settledReplayFrameExact
-                && postStartupActivityDetected
-                && postStartupNonzeroAudioSamples > 0
-                && freshBootFirstVideoExact == true
-                && freshBootFirstAudioExact == true
-            if !contractIsExact {
+            let karnakCheckName = pcv2KARNAKResult.map {
+                String(format: "KARNAK(actual=0x%02X,expected=0xBF)", $0)
+            } ?? "KARNAK(actual=missing,expected=0xBF)"
+            let contractChecks: [(name: String, passed: Bool)] = [
+                ("hardwareModel", activeHardwareModel == .pocketChallengeV2),
+                ("hardwareModelClearedAfterUnload", activeHardwareModelClearedAfterUnload == true),
+                ("persistenceKinds", persistenceKinds == ["cartridgeFlash"]),
+                ("cartridgeFlashByteCount", cartridgeFlashByteCount == rom.count),
+                ("cartridgeFlashMatchesROM", cartridgeFlashMatchesROM == true),
+                ("cartridgeFlashRoundTrip", cartridgeFlashRoundTripExact == true),
+                ("consoleEEPROMAbsent", consoleEEPROMAbsent),
+                ("internalRAMByteCount", pcv2InternalRAMByteCount == 16 * 1024),
+                (karnakCheckName, pcv2KARNAKExact == true),
+                ("inputRows", pcv2InputContractExact == true),
+                ("settledReplay", settledReplayFrameExact),
+                ("postStartupVideoActivity", postStartupActivityDetected),
+                ("postStartupNonzeroAudio", postStartupNonzeroAudioSamples > 0),
+                ("freshBootFirstVideo", freshBootFirstVideoExact == true),
+                ("freshBootFirstAudio", freshBootFirstAudioExact == true),
+            ]
+            let mismatches = contractChecks.compactMap { check in
+                check.passed ? nil : check.name
+            }
+            if !mismatches.isEmpty {
                 throw ProbeError(
-                    message: "The Pocket Challenge V2 fixture contract was not exact. See the probe report for model, input, KARNAK, determinism, and flash evidence."
+                    message: "The Pocket Challenge V2 fixture contract was not exact: \(mismatches.joined(separator: ", ")). See the probe report for bounded model, input, KARNAK, determinism, and flash evidence."
                 )
             }
         }

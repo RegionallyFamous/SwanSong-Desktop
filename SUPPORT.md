@@ -35,6 +35,11 @@ uses your default browser. Read [PRIVACY.md](PRIVACY.md) for the exact
 app-update behavior and the
 disclosure that applies if a future release activates the first-party catalog.
 
+The **Analogue Pocket** page also stays offline until you choose **Check for
+Core Release**. That action checks the official Core repository on GitHub; a
+confirmed install downloads only the verified Core release. It does not search
+for or download games, BIOS files, or Pocket firmware.
+
 ### How do app updates work?
 
 SwanSong's native updater checks a signed feed stored in this repository and
@@ -42,7 +47,7 @@ downloads accepted updates from immutable, exact-tag SwanSong Desktop GitHub
 Release assets. Stable updates are the default. Enable **Include beta versions**
 only if you want prereleases; turning it off returns the updater to the stable
 channel. Sparkle updates SwanSong itself and is unrelated to Homebrew game
-installation or the separate Analogue Pocket core.
+installation or the separately invoked Analogue Pocket SD-card tool.
 
 If an update fails, leave the current app installed, confirm GitHub is
 reachable, and try **Check for Updates…** again. Do not bypass a signature,
@@ -57,6 +62,21 @@ archives containing one authorized game or homebrew image. The first-party
 Homebrew Catalog is **Coming Soon** in the current production configuration.
 SwanSong does not provide a general ROM catalog, accept original BIOS files,
 or open multi-game archive collections.
+
+### How do I put SwanSong Core on an Analogue Pocket card?
+
+Open **Analogue Pocket** in the sidebar or choose **File > Prepare Analogue
+Pocket SD Card…**. Check for the official Core release, choose the mounted card
+itself under `/Volumes`, review the exact card and version, then confirm. The
+card must be exFAT or FAT32 and should be backed up first.
+
+SwanSong accepts a blank card or an existing Pocket layout. It merges only the
+verified SwanSong Core and WonderSwan platform files; it does not format the
+card or remove games, saves, settings, Memories, Presets, or other cores. If no
+authorized stable Core release is published, the tool remains locked and does
+not write to the card. SwanSong checks free space before installation, keeps a
+transaction backup until the new files read back exactly, and rolls back if
+the write cannot be verified. Eject the card in Finder before removing it.
 
 ## Ask for help or report a bug
 
