@@ -87,6 +87,9 @@ jobs:
           ./Scripts/selftest-sparkle-dependency-lock.sh
           ./Scripts/selftest-sparkle-appcast.sh
 
+      - name: Run public-fixture compatibility matrix
+        run: ./Scripts/check-compatibility-matrix.sh
+
       - name: Build and inspect universal application
         run: |
           set -eu
@@ -95,9 +98,6 @@ jobs:
           ./Scripts/verify-app-architectures.sh .build/app/SwanSong.app
           ./Scripts/check-sparkle-configuration.sh .build/app/SwanSong.app
           ./Scripts/check-sparkle-framework.sh .build/app/SwanSong.app
-
-      - name: Run public-fixture compatibility matrix
-        run: ./Scripts/check-compatibility-matrix.sh
 
       - name: Run bounded A/V soak
         env:

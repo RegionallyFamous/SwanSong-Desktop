@@ -482,6 +482,9 @@ private struct SwanSongProbe {
             )
         }
         if options.requirePocketChallengeV2FixtureContract {
+            let karnakCheckName = pcv2KARNAKResult.map {
+                String(format: "KARNAK(actual=0x%02X,expected=0xBF)", $0)
+            } ?? "KARNAK(actual=missing,expected=0xBF)"
             let contractChecks: [(name: String, passed: Bool)] = [
                 ("hardwareModel", activeHardwareModel == .pocketChallengeV2),
                 ("hardwareModelClearedAfterUnload", activeHardwareModelClearedAfterUnload == true),
@@ -491,7 +494,7 @@ private struct SwanSongProbe {
                 ("cartridgeFlashRoundTrip", cartridgeFlashRoundTripExact == true),
                 ("consoleEEPROMAbsent", consoleEEPROMAbsent),
                 ("internalRAMByteCount", pcv2InternalRAMByteCount == 16 * 1024),
-                ("KARNAK", pcv2KARNAKExact == true),
+                (karnakCheckName, pcv2KARNAKExact == true),
                 ("inputRows", pcv2InputContractExact == true),
                 ("settledReplay", settledReplayFrameExact),
                 ("postStartupVideoActivity", postStartupActivityDetected),
