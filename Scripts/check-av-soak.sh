@@ -140,6 +140,14 @@ if [ "$VALIDATE_ONLY" = "0" ]; then
   set -e
   if [ "$EXPECTED_STATUS" = "pass" ] && [ "$SOAK_STATUS" -ne 0 ]; then
     echo "A/V soak failed unexpectedly (exit $SOAK_STATUS)" >&2
+    if [ -s "$STDOUT_FILE" ]; then
+      echo "A/V soak diagnostic report:" >&2
+      cat "$STDOUT_FILE" >&2
+    elif [ -s "$OUTPUT" ]; then
+      echo "A/V soak diagnostic report:" >&2
+      cat "$OUTPUT" >&2
+      echo >&2
+    fi
     exit "$SOAK_STATUS"
   fi
   if [ "$EXPECTED_STATUS" = "fail" ] && [ "$SOAK_STATUS" -ne 1 ]; then
