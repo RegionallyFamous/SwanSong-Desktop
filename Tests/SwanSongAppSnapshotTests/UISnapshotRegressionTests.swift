@@ -2739,7 +2739,9 @@ final class UISnapshotRegressionTests: XCTestCase {
         var result = [ViewType]()
         func visit(_ view: NSView) {
             if let match = view as? ViewType { result.append(match) }
-            view.subviews.forEach(visit)
+            for subview in view.subviews {
+                visit(subview)
+            }
         }
         visit(root)
         return result
