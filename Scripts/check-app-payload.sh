@@ -13,9 +13,11 @@ fi
 unexpected_file=$(find "$APP/Contents" -type f \
   ! -path "$APP/Contents/Info.plist" \
   ! -path "$APP/Contents/MacOS/SwanSong" \
+  ! -path "$APP/Contents/Helpers/SwanSongRouteRunner" \
   ! -path "$APP/Contents/Frameworks/libSwanAresEngine.dylib" \
   ! -path "$APP/Contents/Resources/AppIcon.icns" \
   ! -path "$APP/Contents/Resources/AppIcon.png" \
+  ! -path "$APP/Contents/Resources/AppIconCompact.png" \
   ! -path "$APP/Contents/Resources/LICENSE" \
   ! -path "$APP/Contents/Resources/PRIVACY.md" \
   ! -path "$APP/Contents/Resources/SUPPORT.md" \
@@ -47,4 +49,16 @@ if find "$APP/Contents" -type f \
   exit 1
 fi
 
-echo "PASS app bundle payload matches the firmware-free allowlist"
+ENGINE="$APP/Contents/Frameworks/libSwanAresEngine.dylib"
+if nm -am "$ENGINE" 2>/dev/null \
+  | grep -Eiq 'swan_engine_stage_boot_rom|stage_boot_rom|staged_boot_rom'; then
+  echo "the production engine retains a boot-ROM staging symbol" >&2
+  exit 1
+fi
+if strings -a "$ENGINE" \
+  | grep -Eq 'boot ROM must be staged|WonderSwan boot ROM must be|could not retain boot ROM data|needs an? (4|8) KiB boot ROM'; then
+  echo "the production engine retains a boot-ROM override path" >&2
+  exit 1
+fi
+
+echo "PASS app bundle payload and engine API match the firmware-free allowlist"

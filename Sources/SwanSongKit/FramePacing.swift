@@ -3,54 +3,56 @@ import Foundation
 /// Separates an ordinary late producer callback from a transport discontinuity.
 ///
 /// The steady-state queue remains deliberately small. Recovery is armed only
-/// after playback has primed, the producer has been absent for at least the
-/// whole target-buffer horizon, and the renderer has actually exhausted that
-/// queue. At that point continuing the old sample timeline only turns one host
+/// after playback has primed, the producer has been absent for the complete
+/// discontinuity horizon, and the renderer has actually exhausted its queue.
+/// At that point continuing the old sample timeline only turns one host
 /// scheduling gap into persistent drift. The player instead starts a new
-/// timeline epoch and briefly re-primes before resuming.
+/// timeline epoch and re-primes before resuming.
 public struct AudioTransportDiscontinuityPolicy: Sendable {
     public var minimumHostGapSeconds: Double
     public var queueDepletionToleranceSeconds: Double
+    public var recoveryHorizonFrames: Double
     public var reprimeBufferedFrames: Double
 
     public init(
         minimumHostGapSeconds: Double = 0.050,
         queueDepletionToleranceSeconds: Double = 0.000_1,
-        reprimeBufferedFrames: Double = 3
+        recoveryHorizonFrames: Double = 4,
+        reprimeBufferedFrames: Double = 5
     ) {
         self.minimumHostGapSeconds = minimumHostGapSeconds
         self.queueDepletionToleranceSeconds = queueDepletionToleranceSeconds
+        self.recoveryHorizonFrames = recoveryHorizonFrames
         self.reprimeBufferedFrames = reprimeBufferedFrames
     }
 
-    public func recoveryThresholdSeconds(
-        nominalBatchSeconds: Double,
-        targetBufferedFrames: Double
-    ) -> Double {
+    public func recoveryThresholdSeconds(nominalBatchSeconds: Double) -> Double {
         max(
             minimumHostGapSeconds,
-            max(0, nominalBatchSeconds) * max(1, targetBufferedFrames)
+            max(0, nominalBatchSeconds) * max(1, recoveryHorizonFrames)
         )
     }
 
     public func shouldRecover(
         hostGapSeconds: Double,
-        queuedAudioSeconds: Double,
+        remainingQueuedAudioSeconds: Double,
         nominalBatchSeconds: Double,
-        targetBufferedFrames: Double,
         transportWasPrimed: Bool
     ) -> Bool {
         guard transportWasPrimed,
               hostGapSeconds.isFinite,
-              queuedAudioSeconds.isFinite,
+              remainingQueuedAudioSeconds.isFinite,
               nominalBatchSeconds.isFinite,
               hostGapSeconds >= recoveryThresholdSeconds(
-                nominalBatchSeconds: nominalBatchSeconds,
-                targetBufferedFrames: targetBufferedFrames
+                nominalBatchSeconds: nominalBatchSeconds
               ) else { return false }
 
-        return hostGapSeconds
-            > max(0, queuedAudioSeconds) + queueDepletionToleranceSeconds
+        // The caller samples the renderer at the end of the host gap. A long
+        // producer delay is recoverable only if that sample confirms the
+        // renderer queue is empty; a merely late callback with audio remaining
+        // must stay on the existing transport epoch.
+        return max(0, remainingQueuedAudioSeconds)
+            <= queueDepletionToleranceSeconds
     }
 
     public func reprimeTargetSeconds(nominalBatchSeconds: Double) -> Double {
@@ -66,11 +68,11 @@ public struct FramePacingPolicy: Sendable {
 
     public init(
         fallbackFrameRate: Double = 75.47,
-        // Four audio batches are about 53 ms at the native rate. Engine work
-        // consumes part of that cushion before the next pacing sleep, leaving
-        // enough margin for ordinary macOS scheduling jitter while remaining
-        // far below AudioOutput's 180 ms hard queue bound.
-        targetBufferedFrames: Double = 4,
+        // Five audio batches are about 66 ms at the native rate. That leaves a
+        // complete batch beyond the four-batch discontinuity horizon, even
+        // after engine work consumes part of the queue before the next sleep,
+        // while remaining far below AudioOutput's 180 ms hard queue bound.
+        targetBufferedFrames: Double = 5,
         correctionStrength: Double = 0.35,
         discontinuity: AudioTransportDiscontinuityPolicy = .init()
     ) {
@@ -83,13 +85,20 @@ public struct FramePacingPolicy: Sendable {
     public func delaySeconds(
         producedAudioFrames: Int,
         sampleRate: Int,
-        queuedAudioSeconds: Double,
+        queuedAudioSeconds: Double?,
         fastForwarding: Bool
     ) -> Double {
         guard !fastForwarding else { return 0 }
         let nominal = producedAudioFrames > 0 && sampleRate > 0
             ? Double(producedAudioFrames) / Double(sampleRate)
             : 1 / fallbackFrameRate
+        // When Core Audio is unavailable there is no renderer queue to use as
+        // feedback. Preserve the native frame period instead of treating the
+        // missing sink as a permanently starved queue and collapsing to an
+        // unthrottled loop.
+        guard let queuedAudioSeconds, queuedAudioSeconds.isFinite else {
+            return nominal
+        }
         let target = nominal * targetBufferedFrames
         let correction = (queuedAudioSeconds - target) * correctionStrength
         return min(nominal * 2, max(0, nominal + correction))

@@ -1,8 +1,7 @@
 #!/bin/sh
 set -eu
 
-# Privacy-safe, opt-in smoke for a personally owned WonderSwan dump and an
-# optional original-BIOS compatibility override.
+# Privacy-safe, opt-in Open IPL smoke for a personally owned WonderSwan dump.
 # This script never builds SwanSong and never prints private paths, names,
 # hashes, diagnostics, screenshots, or ROM-derived metadata.
 
@@ -11,16 +10,14 @@ MACOS_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 
 APP=${SWAN_SONG_REAL_SMOKE_APP:-"$MACOS_DIR/.build/app/SwanSong.app"}
 RUNNER=${SWAN_SONG_REAL_SMOKE_RUNNER:-"$MACOS_DIR/.build/debug/SwanSong"}
-BIOS=${SWAN_SONG_REAL_SMOKE_BIOS:-}
 ROM=${SWAN_SONG_REAL_SMOKE_ROM:-}
 WAIT_SECONDS=${SWAN_SONG_REAL_SMOKE_WAIT_SECONDS:-90}
 
 usage() {
   cat >&2 <<'EOF'
-Usage: check-owned-rom-smoke.sh --bios /absolute/owned-bios-or-zip --rom /absolute/owned-rom.zip [--app /absolute/SwanSong.app] [--runner /absolute/debug/SwanSong]
+Usage: check-owned-rom-smoke.sh --rom /absolute/owned-game-or-zip [--app /absolute/SwanSong.app] [--runner /absolute/debug/SwanSong]
 
 Equivalent private environment variables:
-  SWAN_SONG_REAL_SMOKE_BIOS
   SWAN_SONG_REAL_SMOKE_ROM
   SWAN_SONG_REAL_SMOKE_APP
   SWAN_SONG_REAL_SMOKE_RUNNER
@@ -35,11 +32,6 @@ EOF
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
-    --bios)
-      [ "$#" -ge 2 ] || usage
-      BIOS=$2
-      shift 2
-      ;;
     --rom)
       [ "$#" -ge 2 ] || usage
       ROM=$2
@@ -107,17 +99,14 @@ canonical_private_file() {
   printf '%s/%s\n' "$parent" "$(basename -- "$candidate")"
 }
 
-[ -n "$BIOS" ] || usage
 [ -n "$ROM" ] || usage
 
-BIOS=$(canonical_private_file "$BIOS") \
-  || fail "the BIOS input must be an absolute regular non-symlink file"
 ROM=$(canonical_private_file "$ROM") \
   || fail "the ROM input must be an absolute regular non-symlink file"
 
 case "$(printf '%s' "$ROM" | tr '[:upper:]' '[:lower:]')" in
-  *.zip) ;;
-  *) fail "the ROM input must be a one-game ZIP archive" ;;
+  *.ws|*.wsc|*.pc2|*.pcv2|*.zip) ;;
+  *) fail "the ROM input must be a supported game image or one-game ZIP archive" ;;
 esac
 
 case "$WAIT_SECONDS" in
@@ -162,9 +151,6 @@ for runner_uuid in $RUNNER_UUIDS; do
   fi
 done
 
-case "$BIOS" in
-  "$APP"/*) fail "the BIOS input must remain outside the app bundle" ;;
-esac
 case "$ROM" in
   "$APP"/*) fail "the ROM input must remain outside the app bundle" ;;
 esac
@@ -184,7 +170,7 @@ CAPTURE_FILE="$TEMP_ROOT/frame-660.png"
 BUNDLE_BEFORE="$TEMP_ROOT/bundle-before.txt"
 BUNDLE_AFTER="$TEMP_ROOT/bundle-after.txt"
 BUNDLE_HASHES="$TEMP_ROOT/bundle-hashes.txt"
-PAYLOAD_HASHES="$TEMP_ROOT/imported-payload-hashes.txt"
+PAYLOAD_HASHES="$TEMP_ROOT/imported-game-hashes.txt"
 FRAME_HASHES="$TEMP_ROOT/frame-pixel-hashes.txt"
 PIXEL_DIR="$TEMP_ROOT/PixelFrames"
 
@@ -224,7 +210,6 @@ awk '{ print $1 }' "$BUNDLE_BEFORE" | LC_ALL=C sort -u >"$BUNDLE_HASHES"
   SWAN_SONG_HEADLESS=1 \
   SWAN_SONG_APP_DIAGNOSTICS=1 \
   SWAN_SONG_INITIAL_ROM="$ROM" \
-  SWAN_SONG_INITIAL_FIRMWARE="$BIOS" \
   SWAN_SONG_QUICK_STATE_FRAMES=120,360,600 \
   SWAN_SONG_CAPTURE_FRAME=660 \
   SWAN_SONG_CAPTURE_FRAME_PATH="$CAPTURE_FILE" \
@@ -237,16 +222,13 @@ ready=false
 while [ "$elapsed" -lt "$WAIT_SECONDS" ]; do
   state_count=$(find "$DATA_DIR/States" -type f -name '*.state' -print 2>/dev/null \
     | wc -l | tr -d ' ')
-  console_save=$(find "$DATA_DIR/Saves" -type f -name console.eeprom \
-    -size +0c -print -quit 2>/dev/null || true)
   if [ -f "$DATA_DIR/Library.json" ] \
     && [ -s "$CAPTURE_FILE" ] \
     && [ "$state_count" -ge 3 ] \
-    && [ -n "$console_save" ] \
     && find "$DATA_DIR/States" -type f -name Timeline.json -print -quit \
       2>/dev/null | grep -q . \
     && grep -q '^SwanSong: captured frame=660 ' "$LOG_FILE" 2>/dev/null \
-    && grep -q '^SwanSong: firmware installed .*resume=true' "$LOG_FILE" 2>/dev/null; then
+    && grep -q '^SwanSong: startup selected .* source=openIPL identifier=open-bootstrap-v3$' "$LOG_FILE" 2>/dev/null; then
     ready=true
     break
   fi
@@ -272,16 +254,16 @@ if grep -q '^SwanSong: error:' "$LOG_FILE" 2>/dev/null \
   fail "the app reported a launch, playback, or capture failure"
 fi
 
-firmware_payload_count=$(find "$DATA_DIR/Firmware" -type f -print 2>/dev/null \
-  | wc -l | tr -d ' ')
 managed_game_count=$(find "$DATA_DIR/Games" -type f -print 2>/dev/null \
   | wc -l | tr -d ' ')
-[ "$firmware_payload_count" -eq 1 ] \
-  || fail "the validated BIOS was not isolated as one managed payload"
 [ "$managed_game_count" -eq 1 ] \
   || fail "the owned archive was not isolated as one managed game payload"
+if [ -d "$DATA_DIR/Firmware" ] \
+  && find "$DATA_DIR/Firmware" -type f -print -quit 2>/dev/null | grep -q .; then
+  fail "the Open IPL app smoke unexpectedly created a firmware payload"
+fi
 
-if find "$DATA_DIR/Saves" "$DATA_DIR/States" "$DATA_DIR/Firmware" "$DATA_DIR/Games" \
+if find "$DATA_DIR/Saves" "$DATA_DIR/States" "$DATA_DIR/Games" \
   -type l -print -quit 2>/dev/null | grep -q .; then
   fail "private app storage contains a symbolic link"
 fi
@@ -314,11 +296,11 @@ distinct_frame_count=$(LC_ALL=C sort -u "$FRAME_HASHES" | wc -l | tr -d ' ')
 
 # Hash the exact raw payloads accepted by SwanSong, not only their source ZIP
 # containers. None may equal any file inside the app bundle.
-find "$DATA_DIR/Firmware" "$DATA_DIR/Games" -type f -exec shasum -a 256 {} + \
+find "$DATA_DIR/Games" -type f -exec shasum -a 256 {} + \
   | awk '{ print $1 }' | LC_ALL=C sort -u >"$PAYLOAD_HASHES"
 while IFS= read -r payload_hash; do
   if grep -Fqx "$payload_hash" "$BUNDLE_HASHES"; then
-    fail "an imported BIOS or game payload is present inside the app bundle"
+    fail "the imported game payload is present inside the app bundle"
   fi
 done <"$PAYLOAD_HASHES"
 
@@ -328,7 +310,7 @@ if ! cmp -s "$BUNDLE_BEFORE" "$BUNDLE_AFTER"; then
   fail "the app bundle changed while private inputs were in use"
 fi
 if ! "$SCRIPT_DIR/check-app-payload.sh" "$APP" >"$TEMP_ROOT/payload-after.log" 2>&1; then
-  fail "the app bundle no longer matches its firmware-free payload allowlist"
+  fail "the app bundle no longer matches its game-and-firmware-free payload allowlist"
 fi
 
 # The app's requested stop already finalized private persistence. Terminate the
@@ -346,4 +328,4 @@ rm -rf "$TEMP_ROOT" >/dev/null 2>&1 \
 TEMP_ROOT=
 trap - EXIT INT TERM HUP
 
-echo "PASS private owned-ROM app smoke: real archive import, validated optional original-BIOS override, visible frame activity, isolated Saves/States, immutable firmware-free app, and cleanup"
+echo "PASS private owned-ROM app smoke: Open IPL launch, real game import, visible frame activity, isolated Saves/States, immutable game-and-firmware-free app, and cleanup"

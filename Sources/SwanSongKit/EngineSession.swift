@@ -208,7 +208,7 @@ public enum EngineHardwareModel: String, CaseIterable, Codable, Hashable, Sendab
 }
 
 public final class EngineSession: @unchecked Sendable {
-    private let handle: OpaquePointer
+    package let handle: OpaquePointer
     public let rtcMode: EngineRTCMode
     public let hardwareModel: EngineHardwareModel
 
@@ -373,17 +373,6 @@ public final class EngineSession: @unchecked Sendable {
         }
     }
 
-    public func stageBootROM(_ data: Data) throws {
-        let result = data.withUnsafeBytes { bytes in
-            swan_engine_stage_boot_rom(
-                handle,
-                bytes.bindMemory(to: UInt8.self).baseAddress,
-                bytes.count
-            )
-        }
-        try check(result)
-    }
-
     public func capturePersistence() throws -> EnginePersistence {
         var regions: [EnginePersistenceKind: Data] = [:]
         for kind in EnginePersistenceKind.allCases {
@@ -512,7 +501,7 @@ public final class EngineSession: @unchecked Sendable {
 }
 
 public actor EmulationRunner {
-    private let engine: EngineSession
+    package let engine: EngineSession
 
     public init(
         sampleRate: UInt32 = 48_000,
@@ -536,10 +525,6 @@ public actor EmulationRunner {
 
     public func stagePersistence(_ persistence: EnginePersistence) throws {
         try engine.stagePersistence(persistence)
-    }
-
-    public func stageBootROM(_ data: Data) throws {
-        try engine.stageBootROM(data)
     }
 
     public func nextFrame(input: EngineInput = []) throws -> (

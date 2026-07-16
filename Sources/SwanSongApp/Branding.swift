@@ -17,6 +17,16 @@ enum SwanTheme {
         return nil
     }
 
+    static var compactApplicationIcon: NSImage? {
+        if let bundledURL = Bundle.main.url(
+            forResource: "AppIconCompact",
+            withExtension: "png"
+        ), let image = NSImage(contentsOf: bundledURL) {
+            return image
+        }
+        return nil
+    }
+
     static var libraryBackground: LinearGradient {
         LinearGradient(
             colors: [
@@ -56,8 +66,12 @@ struct SwanSongIcon: View {
     var showsShadow = true
 
     var body: some View {
+        let preferredIcon = size <= 64
+            ? (SwanTheme.compactApplicationIcon ?? SwanTheme.applicationIcon)
+            : SwanTheme.applicationIcon
+
         Group {
-            if let image = SwanTheme.applicationIcon {
+            if let image = preferredIcon {
                 Image(nsImage: image)
                     .resizable()
                     .interpolation(.high)

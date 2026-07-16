@@ -44,55 +44,6 @@ enum PlayerControlCopy {
     }
 }
 
-enum StartupFileRowReadiness: Equatable {
-    case originalInstalled
-    case openIPL
-
-    var title: String {
-        switch self {
-        case .originalInstalled: "Original IPL"
-        case .openIPL: "Open IPL"
-        }
-    }
-
-    var symbol: String {
-        switch self {
-        case .originalInstalled: "checkmark.seal.fill"
-        case .openIPL: "checkmark.shield.fill"
-        }
-    }
-}
-
-struct StartupFileLibraryReadiness: Equatable {
-    let libraryKinds: Set<WonderSwanFirmwareKind>
-    let installedKinds: Set<WonderSwanFirmwareKind>
-
-    var installedLibraryKinds: Set<WonderSwanFirmwareKind> {
-        libraryKinds.intersection(installedKinds)
-    }
-
-    var summary: String {
-        guard !installedLibraryKinds.isEmpty else { return "Open IPL ready" }
-        return "\(installedLibraryKinds.count) original override\(installedLibraryKinds.count == 1 ? "" : "s")"
-    }
-
-    var summarySymbol: String {
-        "checkmark.shield.fill"
-    }
-
-    var needsAttention: Bool {
-        false
-    }
-
-    var isReadyForLibrary: Bool {
-        true
-    }
-
-    func rowReadiness(for kind: WonderSwanFirmwareKind) -> StartupFileRowReadiness {
-        installedKinds.contains(kind) ? .originalInstalled : .openIPL
-    }
-}
-
 struct RootView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.openSettings) private var openSettings
@@ -212,7 +163,7 @@ struct RootView: View {
         }
         .onChange(of: pauseWhenInactive) { _, shouldPause in
             model.updateApplicationActivity(
-                isActive: scenePhase == .active || !shouldPause,
+                isActive: scenePhase == .active,
                 pauseWhenInactive: shouldPause
             )
         }
@@ -239,20 +190,6 @@ struct RootView: View {
             }
         } message: {
             Text(model.presentedError ?? "")
-        }
-        .sheet(
-            isPresented: Binding(
-                get: { model.firmwareInstallationRequest != nil },
-                set: { isPresented in
-                    if !isPresented {
-                        model.cancelFirmwareInstallationRequest()
-                    }
-                }
-            )
-        ) {
-            if let requiredFirmware = model.firmwareInstallationRequest {
-                FirmwareRequirementView(model: model, kind: requiredFirmware)
-            }
         }
         .overlay(alignment: .topTrailing) {
             VStack(alignment: .trailing, spacing: 10) {
@@ -718,570 +655,6 @@ private struct NoticeBanner: View {
     }
 }
 
-struct FirmwareRequirementView: View {
-    static let accessibilityIdentifier = "firmware-required-sheet"
-    static let minimumInteractiveDimension: CGFloat = 28
-
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @Bindable var model: AppModel
-    let kind: WonderSwanFirmwareKind
-    @State private var dropIsTargeted = false
-    @AccessibilityFocusState private var errorHasAccessibilityFocus: Bool
-    @FocusState private var primaryActionHasFocus: Bool
-
-    var body: some View {
-        VStack(spacing: 0) {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 22) {
-                    HStack(alignment: .top, spacing: 16) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 17, style: .continuous)
-                                .fill(
-                                    LinearGradient(
-                                        colors: [SwanTheme.violet, SwanTheme.cyan.opacity(0.9)],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                            Image(systemName: "power.circle.fill")
-                                .font(.system(size: 30, weight: .semibold))
-                                .foregroundStyle(.white)
-                        }
-                        .frame(width: 64, height: 64)
-                        .accessibilityHidden(true)
-
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text(firmwareGateStatus.uppercased())
-                                .font(.caption2.weight(.bold))
-                                .tracking(0.8)
-                                .foregroundStyle(
-                                    model.firmwareInstallationIsReplacement
-                                        ? Color.orange
-                                        : SwanTheme.accent
-                                )
-                            Text(accessibilityContractHeadline)
-                                .font(.title2.weight(.semibold))
-                                .accessibilityAddTraits(.isHeader)
-                            Text(requirementHeadline)
-                                .font(.callout)
-                                .foregroundStyle(.secondary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                    }
-
-                    Text(firmwareRequirementIntroduction)
-                    .font(.body)
-                    .fixedSize(horizontal: false, vertical: true)
-
-                    VStack(alignment: .leading, spacing: 12) {
-                        requirementFact(
-                            symbol: "gamecontroller.fill",
-                            title: "Optional original BIOS",
-                            detail: systemUseDescription
-                        )
-                        Divider()
-                        requirementFact(
-                            symbol: "doc.zipper",
-                            title: "Valid local file",
-                            detail:
-                                "\(kind.expectedByteCount / 1_024) KiB .rom or .bin, or a ZIP containing exactly one BIOS image."
-                        )
-                        Divider()
-                        requirementFact(
-                            symbol: "lock.shield.fill",
-                            title: "Kept private",
-                            detail:
-                                "Checked on this Mac, then copied into SwanSong’s private Application Support folder."
-                        )
-                    }
-                    .padding(15)
-                    .background(
-                        .background.secondary, in: RoundedRectangle(cornerRadius: 15, style: .continuous))
-
-                    DisclosureGroup("Why this file is optional") {
-                        Text(
-                            "SwanSong includes its independently written Open IPL for normal play. It never bundles, searches for, downloads, uploads, or shares original system firmware. Any original file you select is validated locally and remains on this Mac."
-                        )
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.top, 6)
-                    }
-                    .font(.callout.weight(.medium))
-
-                    VStack(spacing: 10) {
-                        Image(systemName: dropIsTargeted ? "arrow.down.doc.fill" : "arrow.down.doc")
-                            .font(.system(size: 28, weight: .medium))
-                            .foregroundStyle(dropIsTargeted ? SwanTheme.cyan : SwanTheme.accent)
-                            .accessibilityHidden(true)
-
-                        Text("Drop your \(kind.expectedByteCount / 1_024) KiB \(kind.title) BIOS here")
-                            .font(.headline)
-                            .multilineTextAlignment(.center)
-
-                        Text(".rom  ·  .bin  ·  ZIP with one BIOS image")
-                            .font(.caption.monospaced())
-                            .foregroundStyle(.secondary)
-
-                        Label("Checked, then copied to private local storage", systemImage: "lock.fill")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                    .padding(18)
-                    .frame(maxWidth: .infinity, minHeight: 132)
-                    .background(
-                        (dropIsTargeted ? SwanTheme.accent.opacity(0.13) : Color.primary.opacity(0.035)),
-                        in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    )
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .strokeBorder(
-                                dropIsTargeted ? SwanTheme.cyan.opacity(0.85) : Color.secondary.opacity(0.25),
-                                style: StrokeStyle(lineWidth: dropIsTargeted ? 2 : 1, dash: [7, 6])
-                            )
-                    }
-                    .dropDestination(for: URL.self) { urls, _ in
-                        guard
-                            !model.firmwareImportIsBusy,
-                            let url = urls.first,
-                            urls.count == 1
-                        else { return false }
-                        model.installRequestedFirmware(at: url, requiredKind: kind)
-                        return true
-                    } isTargeted: { targeted in
-                        dropIsTargeted = targeted
-                    }
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel(
-                        "Drop the \(kind.title) BIOS here. Direct ROM, binary, or one-file ZIP."
-                    )
-                    .accessibilityIdentifier("firmware-required-drop-zone")
-
-                    if let error = model.firmwareInstallationError {
-                        Label {
-                            VStack(alignment: .leading, spacing: 3) {
-                                Text("This BIOS can’t be used")
-                                    .fontWeight(.semibold)
-                                Text(error)
-                                    .fixedSize(horizontal: false, vertical: true)
-                            }
-                        } icon: {
-                            Image(systemName: "exclamationmark.triangle.fill")
-                        }
-                        .font(.callout)
-                        .foregroundStyle(.red)
-                        .padding(13)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color.red.opacity(0.09), in: RoundedRectangle(cornerRadius: 12))
-                        .accessibilityLabel("BIOS error: \(error)")
-                        .accessibilityIdentifier("firmware-required-error")
-                        .accessibilityFocused($errorHasAccessibilityFocus)
-                        .transition(
-                            reduceMotion
-                                ? .opacity
-                                : .move(edge: .top).combined(with: .opacity)
-                        )
-                    }
-
-                    if model.firmwareInstallationIsBusy {
-                        HStack(spacing: 11) {
-                            ProgressView()
-                                .controlSize(.small)
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text("Checking BIOS…")
-                                    .font(.callout.weight(.semibold))
-                                Text("Identifying the system and creating the private local copy.")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                        .accessibilityElement(children: .combine)
-                        .accessibilityLabel("Checking and installing the \(kind.title) BIOS")
-                    }
-
-                }
-                .padding(26)
-            }
-
-            Divider()
-            firmwareActionBar
-                .padding(.horizontal, 26)
-                .padding(.vertical, 16)
-                .background(.bar)
-        }
-        .frame(
-            minWidth: 480,
-            idealWidth: 620,
-            maxWidth: 660,
-            minHeight: 480,
-            idealHeight: 650,
-            maxHeight: 760
-        )
-        .accessibilityIdentifier(Self.accessibilityIdentifier)
-        .interactiveDismissDisabled(model.firmwareInstallationIsBusy)
-        .animation(
-            reduceMotion ? nil : .easeInOut(duration: 0.18),
-            value: model.firmwareInstallationError
-        )
-        .onAppear {
-            Task { @MainActor in
-                await Task.yield()
-                if let error = model.firmwareInstallationError {
-                    postAccessibilityAnnouncement(
-                        "BIOS error. \(error)",
-                        priority: .high
-                    )
-                    errorHasAccessibilityFocus = true
-                } else {
-                    primaryActionHasFocus = true
-                }
-            }
-        }
-        .onChange(of: model.firmwareInstallationError) { _, error in
-            guard let error else {
-                errorHasAccessibilityFocus = false
-                return
-            }
-            postAccessibilityAnnouncement(
-                "BIOS error. \(error)",
-                priority: .high
-            )
-            errorHasAccessibilityFocus = true
-        }
-        .onChange(of: model.firmwareInstallationIsBusy) { _, isBusy in
-            guard isBusy else { return }
-            postAccessibilityAnnouncement("Checking the \(kind.title) BIOS.")
-        }
-    }
-
-    private var firmwareActionBar: some View {
-        ViewThatFits(in: .horizontal) {
-            HStack(spacing: 16) {
-                firmwareContinuationStatus
-                Spacer(minLength: 12)
-                firmwareActionButtons
-            }
-            .fixedSize(horizontal: true, vertical: false)
-
-            VStack(alignment: .leading, spacing: 12) {
-                firmwareContinuationStatus
-                firmwareActionButtons
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-            }
-        }
-    }
-
-    private var firmwareContinuationStatus: some View {
-        Label(
-            model.firmwareInstallationIsReplacement
-                ? "Optional compatibility override"
-                : model.firmwareInstallationWillResumeLaunch
-                ? "Original BIOS will be used for this retry"
-                : "Open IPL remains available",
-            systemImage: model.firmwareInstallationIsReplacement
-                ? "arrow.clockwise.circle"
-                : model.firmwareInstallationWillResumeLaunch
-                ? "play.circle"
-                : "checkmark.shield.fill"
-        )
-        .font(.caption.weight(.semibold))
-        .foregroundStyle(model.firmwareInstallationIsReplacement ? Color.orange : SwanTheme.accent)
-        .fixedSize(horizontal: false, vertical: true)
-    }
-
-    private var firmwareActionButtons: some View {
-        HStack(spacing: 10) {
-            Button("Not Now", role: .cancel) {
-                model.cancelFirmwareInstallationRequest()
-            }
-            .keyboardShortcut(.cancelAction)
-            .frame(minHeight: Self.minimumInteractiveDimension)
-            .contentShape(Rectangle())
-            .disabled(model.firmwareInstallationIsBusy)
-            .accessibilityIdentifier("firmware-required-cancel")
-
-            Button(accessibilityContractPrimaryActionTitle) {
-                model.installRequestedFirmware(kind)
-            }
-            .buttonStyle(.borderedProminent)
-            .keyboardShortcut(.defaultAction)
-            .frame(minHeight: Self.minimumInteractiveDimension)
-            .contentShape(Rectangle())
-            .focused($primaryActionHasFocus)
-            .disabled(model.firmwareInstallationIsBusy)
-            .accessibilityHint(primaryActionAccessibilityHint)
-            .accessibilityIdentifier("firmware-required-choose")
-        }
-        .fixedSize(horizontal: true, vertical: false)
-    }
-
-    private var requirementHeadline: String {
-        if model.firmwareInstallationIsReplacement {
-            return "Choose a different original \(kind.title) BIOS. SwanSong will validate it privately and retry \(continuationDescription) automatically."
-        }
-        if let target = model.firmwareInstallationTargetTitle {
-            return "\(target) can use SwanSong Open IPL now. Optionally choose an original \(kind.expectedByteCount / 1_024) KiB BIOS and SwanSong will retry with it automatically."
-        }
-        return "SwanSong Open IPL already starts \(kind.title) games. Add an original \(kind.expectedByteCount / 1_024) KiB BIOS only when you want a compatibility override."
-    }
-
-    var accessibilityContractHeadline: String {
-        model.firmwareInstallationIsReplacement
-            ? "Try Another Original \(kind.title) BIOS"
-            : "Optional Original \(kind.title) BIOS"
-    }
-
-    var accessibilityContractPrimaryActionTitle: String {
-        let title = model.firmwareInstallationPrimaryActionTitle.replacingOccurrences(
-            of: "Startup File",
-            with: "BIOS"
-        )
-        return title.hasSuffix("…") ? title : "\(title)…"
-    }
-
-    private var firmwareGateStatus: String {
-        model.firmwareInstallationIsReplacement
-            ? "Compatibility option"
-            : "Optional override"
-    }
-
-    private var firmwareRequirementIntroduction: String {
-        if model.firmwareInstallationIsReplacement {
-            return "The emulator produced frames, but the installed original BIOS may not suit this game. You can try another authorized dump or remove the override in Settings to return to SwanSong Open IPL."
-        }
-        return "This optional original system BIOS—also called a boot ROM or startup file—must come from hardware you own or another source you are authorized to use. It is not required for normal play."
-    }
-
-    private var systemUseDescription: String {
-        switch kind {
-        case .monochrome:
-            "The \(kind.expectedByteCount / 1_024) KiB original BIOS can replace Open IPL for monochrome WonderSwan compatibility testing."
-        case .color:
-            "The \(kind.expectedByteCount / 1_024) KiB original BIOS can replace Open IPL for WonderSwan Color and SwanCrystal compatibility testing."
-        case .pocketChallengeV2:
-            "The \(kind.expectedByteCount / 1_024) KiB original BIOS can replace Open IPL on the distinct Pocket Challenge V2 hardware path."
-        }
-    }
-
-    private var continuationDescription: String {
-        model.firmwareInstallationTargetTitle.map { "\($0)" } ?? "the requested software"
-    }
-
-    private var primaryActionAccessibilityHint: String {
-        if model.firmwareInstallationIsReplacement {
-            return "Choose and validate another BIOS. SwanSong will retry \(continuationDescription) after replacement."
-        }
-        if model.firmwareInstallationWillResumeLaunch {
-            return "Choose an original BIOS. SwanSong will retry \(continuationDescription) with that compatibility override."
-        }
-        return "Choose and validate an optional original BIOS for private local storage."
-    }
-
-    private func requirementFact(
-        symbol: String,
-        title: String,
-        detail: String
-    ) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: symbol)
-                .foregroundStyle(SwanTheme.accent)
-                .frame(width: 20)
-                .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.callout.weight(.semibold))
-                Text(detail)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-        }
-        .accessibilityElement(children: .combine)
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
-
-private struct StartupFileGuideView: View {
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        VStack(spacing: 0) {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 22) {
-                    HStack(alignment: .top, spacing: 16) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                .fill(
-                                    LinearGradient(
-                                        colors: [SwanTheme.violet, SwanTheme.cyan],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                            Image(systemName: "cpu.fill")
-                                .font(.system(size: 31, weight: .medium))
-                                .foregroundStyle(.white)
-                        }
-                        .frame(width: 68, height: 68)
-                        .shadow(color: SwanTheme.violet.opacity(0.28), radius: 14, y: 7)
-                        .accessibilityHidden(true)
-
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Open IPL & Original Startup Files")
-                                .font(.title2.weight(.semibold))
-                                .accessibilityAddTraits(.isHeader)
-                            Text("SwanSong includes an independent startup implementation, with optional support for original boot ROMs.")
-                                .font(.callout)
-                                .foregroundStyle(.secondary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                    }
-
-                    Text("Games start with SwanSong Open IPL and require no separate BIOS. For compatibility comparisons, you may install an original startup file; SwanSong validates it locally and keeps a private copy in Application Support.")
-                        .font(.body)
-                        .fixedSize(horizontal: false, vertical: true)
-
-                    VStack(spacing: 12) {
-                        HStack(spacing: 12) {
-                            startupFileCard(
-                                title: "WonderSwan",
-                                size: "4 KiB",
-                                detail: "Original monochrome games",
-                                symbol: "circle.grid.cross"
-                            )
-                            startupFileCard(
-                                title: "WonderSwan Color",
-                                size: "8 KiB",
-                                detail: "Color and SwanCrystal games",
-                                symbol: "circle.hexagongrid.fill"
-                            )
-                        }
-                        startupFileCard(
-                            title: "Pocket Challenge V2",
-                            size: "4 KiB",
-                            detail: "Benesse keypad software",
-                            symbol: "rectangle.grid.2x2.fill"
-                        )
-                    }
-
-                    VStack(alignment: .leading, spacing: 14) {
-                        Text("Using an original startup file")
-                            .font(.headline)
-                        guideStep(
-                            number: 1,
-                            title: "Only if you want the override",
-                            detail: "Normal play already uses SwanSong Open IPL. Install original firmware only for compatibility testing or original startup behavior."
-                        )
-                        guideStep(
-                            number: 2,
-                            title: "Choose an authorized local copy",
-                            detail: "SwanSong accepts .rom, .bin, or a ZIP containing exactly one startup file copied from hardware you own or another authorized source."
-                        )
-                        guideStep(
-                            number: 3,
-                            title: "SwanSong verifies it privately",
-                            detail: "Size and structure checks happen on this Mac. The file is never uploaded."
-                        )
-                    }
-                    .padding(18)
-                    .background(.quaternary.opacity(0.45), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-
-                    HStack(alignment: .top, spacing: 12) {
-                        Image(systemName: "lock.shield.fill")
-                            .font(.title3)
-                            .foregroundStyle(SwanTheme.cyan)
-                            .accessibilityHidden(true)
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Independent startup, no firmware download")
-                                .font(.callout.weight(.semibold))
-                            Text("SwanSong Open IPL contains no Bandai boot-ROM bytes. Public availability does not grant redistribution permission, so SwanSong does not bundle, search for, download, or upload original startup files.")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                    }
-                    .padding(16)
-                    .background(SwanTheme.violet.opacity(0.10), in: RoundedRectangle(cornerRadius: 15, style: .continuous))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .stroke(SwanTheme.violet.opacity(0.22), lineWidth: 1)
-                    }
-                }
-                .padding(26)
-            }
-
-            Divider()
-
-            HStack {
-                Label("Open IPL included · original files optional", systemImage: "checkmark.shield.fill")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Button("Done") { dismiss() }
-                    .buttonStyle(.borderedProminent)
-                    .keyboardShortcut(.defaultAction)
-            }
-            .padding(.horizontal, 26)
-            .padding(.vertical, 16)
-            .background(.bar)
-        }
-        .frame(width: 650, height: 650)
-        .background(SwanTheme.libraryBackground)
-    }
-
-    private func startupFileCard(
-        title: String,
-        size: String,
-        detail: String,
-        symbol: String
-    ) -> some View {
-        HStack(spacing: 12) {
-            Image(systemName: symbol)
-                .font(.title2)
-                .foregroundStyle(SwanTheme.accent)
-                .frame(width: 34, height: 34)
-                .background(SwanTheme.accent.opacity(0.11), in: RoundedRectangle(cornerRadius: 9))
-                .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.callout.weight(.semibold))
-                Text("\(size) · \(detail)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-            Spacer(minLength: 0)
-        }
-        .padding(14)
-        .frame(maxWidth: .infinity)
-        .background(.background.secondary, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .stroke(.separator.opacity(0.45), lineWidth: 1)
-        }
-        .accessibilityElement(children: .combine)
-    }
-
-    private func guideStep(number: Int, title: String, detail: String) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            Text("\(number)")
-                .font(.caption.monospacedDigit().weight(.bold))
-                .foregroundStyle(.white)
-                .frame(width: 24, height: 24)
-                .background(SwanTheme.accent, in: Circle())
-                .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.callout.weight(.semibold))
-                Text(detail)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-        }
-        .accessibilityElement(children: .combine)
-    }
-}
-
 @MainActor
 private func postAccessibilityAnnouncement(
     _ message: String,
@@ -1312,7 +685,10 @@ private struct LibraryShell: View {
                         .frame(width: 230)
                     Divider()
                     detail
-                        .frame(minWidth: 590)
+                        .frame(
+                            minWidth: model.section == .homebrew ? 0 : 590,
+                            maxWidth: model.section == .homebrew ? .infinity : nil
+                        )
                 }
             } else {
                 NavigationSplitView(columnVisibility: splitVisibility) {
@@ -1337,7 +713,13 @@ private struct LibraryShell: View {
 
     private var detail: some View {
         NavigationStack {
-            if model.section == .translationLab {
+            if model.section == .homebrew {
+                HomebrewCatalogView(
+                    model: model,
+                    usesDeterministicSidebarForOffscreenSnapshots:
+                        usesDeterministicSidebarForOffscreenSnapshots
+                )
+            } else if model.section == .translationLab {
                 TranslationLabView(
                     model: model,
                     overviewGeometryProbe: translationLabOverviewGeometryProbe
@@ -1377,10 +759,28 @@ private struct AppSidebar: View {
 
             List(selection: $model.section) {
                 Section("Browse") {
-                    ForEach(AppModel.Section.allCases) { section in
+                    ForEach([
+                        AppModel.Section.library,
+                        .favorites,
+                        .recent,
+                    ]) { section in
                         Label(section.rawValue, systemImage: section.symbol)
                             .tag(section)
                     }
+                }
+                Section("Discover") {
+                    Label(
+                        AppModel.Section.homebrew.rawValue,
+                        systemImage: AppModel.Section.homebrew.symbol
+                    )
+                    .tag(AppModel.Section.homebrew)
+                }
+                Section("Tools") {
+                    Label(
+                        AppModel.Section.translationLab.rawValue,
+                        systemImage: AppModel.Section.translationLab.symbol
+                    )
+                    .tag(AppModel.Section.translationLab)
                 }
             }
             .listStyle(.sidebar)
@@ -1412,29 +812,13 @@ private struct TranslationOverviewSnapshotSidebar: View {
             .padding(.top, 14)
             .padding(.bottom, 12)
 
-            VStack(alignment: .leading, spacing: 5) {
-                Text("BROWSE")
-                    .font(.caption2.weight(.semibold))
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 10)
-                    .padding(.bottom, 2)
-
-                ForEach(AppModel.Section.allCases) { section in
-                    Label(section.rawValue, systemImage: section.symbol)
-                        .font(.callout)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 7)
-                        .foregroundStyle(
-                            section == model.section ? Color.accentColor : Color.primary
-                        )
-                        .background(
-                            section == model.section
-                                ? Color.accentColor.opacity(0.14)
-                                : Color.clear,
-                            in: RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        )
-                }
+            VStack(alignment: .leading, spacing: 8) {
+                snapshotGroup(
+                    "BROWSE",
+                    sections: [.library, .favorites, .recent]
+                )
+                snapshotGroup("DISCOVER", sections: [.homebrew])
+                snapshotGroup("TOOLS", sections: [.translationLab])
             }
             .padding(.horizontal, 8)
 
@@ -1442,6 +826,36 @@ private struct TranslationOverviewSnapshotSidebar: View {
         }
         .background(Color(nsColor: .windowBackgroundColor))
         .accessibilityIdentifier("app-sidebar")
+    }
+
+    private func snapshotGroup(
+        _ title: String,
+        sections: [AppModel.Section]
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text(title)
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 10)
+                .padding(.bottom, 2)
+
+            ForEach(sections) { section in
+                Label(section.rawValue, systemImage: section.symbol)
+                    .font(.callout)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 7)
+                    .foregroundStyle(
+                        section == model.section ? Color.accentColor : Color.primary
+                    )
+                    .background(
+                        section == model.section
+                            ? Color.accentColor.opacity(0.14)
+                            : Color.clear,
+                        in: RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    )
+            }
+        }
     }
 }
 
@@ -1451,6 +865,542 @@ private extension GameLibrarySortOrder {
         case .title: "textformat"
         case .recentlyAdded: "plus.circle"
         case .recentlyPlayed: "clock"
+        }
+    }
+}
+
+private struct HomebrewCatalogView: View {
+    @Environment(\.openURL) private var openURL
+    @Bindable var model: AppModel
+    var usesDeterministicSidebarForOffscreenSnapshots = false
+    @State private var searchText = ""
+    @State private var showsStopUsingConfirmation = false
+
+    private let columns = [
+        GridItem(.adaptive(minimum: 210, maximum: 270), spacing: 18),
+    ]
+
+    var body: some View {
+        Group {
+            if usesDeterministicSidebarForOffscreenSnapshots,
+               let entry = selectedEntry {
+                HStack(spacing: 0) {
+                    pageContent
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+                    Divider()
+
+                    HomebrewCatalogInspector(model: model, entry: entry)
+                        .frame(width: 320)
+                }
+            } else {
+                pageContent
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .navigationTitle("Homebrew")
+        .background(SwanTheme.libraryBackground.ignoresSafeArea())
+        .searchable(
+            text: $searchText,
+            placement: .toolbar,
+            prompt: "Search Homebrew"
+        )
+        .toolbar {
+            if model.homebrewCatalogIsConfigured,
+               model.homebrewCatalogConsentGranted {
+                ToolbarItem {
+                    Button(action: model.refreshHomebrewCatalog) {
+                        Label("Refresh Homebrew Catalog", systemImage: "arrow.clockwise")
+                    }
+                    .keyboardShortcut("r", modifiers: .command)
+                    .disabled(
+                        model.homebrewCatalogIsLoading
+                            || model.homebrewInstallingEntryID != nil
+                    )
+                    .accessibilityIdentifier("homebrew-refresh")
+                }
+                if model.homebrewCatalogIsLoading {
+                    ToolbarItem {
+                        ProgressView()
+                            .controlSize(.small)
+                            .accessibilityLabel("Refreshing the Homebrew Catalog")
+                    }
+                }
+                ToolbarItem {
+                    Menu {
+                        Button(
+                            "Stop Using Homebrew Catalog…",
+                            systemImage: "network.slash",
+                            role: .destructive
+                        ) {
+                            showsStopUsingConfirmation = true
+                        }
+                        .disabled(model.homebrewInstallingEntryID != nil)
+                    } label: {
+                        Label("Homebrew Catalog Options", systemImage: "ellipsis.circle")
+                    }
+                    .accessibilityIdentifier("homebrew-options")
+                }
+            }
+        }
+        .confirmationDialog(
+            "Stop Using the Homebrew Catalog?",
+            isPresented: $showsStopUsingConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Stop Using Catalog", role: .destructive) {
+                model.stopUsingHomebrewCatalog()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text(
+                "SwanSong will remove network consent and its saved catalog copy. Games already added to your library will stay installed."
+            )
+        }
+        .inspector(isPresented: inspectorPresentation) {
+            if let entry = selectedEntry {
+                HomebrewCatalogInspector(model: model, entry: entry)
+                    .inspectorColumnWidth(min: 280, ideal: 320, max: 380)
+            }
+        }
+        .task {
+            model.loadHomebrewCatalogIfNeeded()
+        }
+        .onChange(of: searchText) { _, _ in
+            clearSelectionIfFilteredOut()
+        }
+        .onChange(of: model.homebrewCatalogEntries.map(\.id)) { _, entryIDs in
+            guard let selectedID = model.selectedHomebrewEntryID,
+                  !entryIDs.contains(selectedID) else { return }
+            model.selectedHomebrewEntryID = nil
+        }
+    }
+
+    @ViewBuilder
+    private var pageContent: some View {
+        if !model.homebrewCatalogIsConfigured {
+            notPublished
+        } else if !model.homebrewCatalogConsentGranted {
+            disclosure
+        } else if model.homebrewCatalog == nil,
+                  model.homebrewCatalogIsLoading {
+            VStack(spacing: 14) {
+                ProgressView()
+                Text("Loading the Homebrew Catalog…")
+                    .font(.headline)
+                Text("Requesting the first-party catalog from GitHub.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .accessibilityElement(children: .combine)
+            .accessibilityIdentifier("homebrew-loading")
+        } else if model.homebrewCatalog == nil {
+            unavailable
+        } else {
+            catalogContent
+        }
+    }
+
+    private var notPublished: some View {
+        ContentUnavailableView {
+            Label("Homebrew Catalog Coming Soon", systemImage: "shippingbox")
+        } description: {
+            Text(
+                "Direct Homebrew installation is built in, but this SwanSong build does not yet contain a production catalog signing key. No network request will be made."
+            )
+        } actions: {
+            Button("Add From Mac…", action: model.chooseGames)
+                .buttonStyle(.borderedProminent)
+            Button("Open SwanSong Releases") {
+                openURL(SwanSongLinks.releases)
+            }
+            .buttonStyle(.bordered)
+        }
+        .frame(maxWidth: 620)
+        .accessibilityIdentifier("homebrew-not-published")
+    }
+
+    private var disclosure: some View {
+        ContentUnavailableView {
+            Label("Explore SwanSong Homebrew", systemImage: "shippingbox")
+        } description: {
+            Text(
+                "SwanSong can load its curated homebrew catalog from GitHub. No library, game, save, or translation data is sent. GitHub receives ordinary connection information and can see which catalog item you download."
+            )
+        } actions: {
+            HStack(spacing: 10) {
+                Button("Load Catalog", action: model.enableHomebrewCatalog)
+                    .buttonStyle(.borderedProminent)
+                    .keyboardShortcut(.defaultAction)
+                    .accessibilityIdentifier("homebrew-consent-load")
+                Button("Not Now", action: model.declineHomebrewCatalog)
+                    .buttonStyle(.bordered)
+                Button("Privacy") {
+                    presentLegalSupport(.privacy)
+                }
+                .buttonStyle(.link)
+                .frame(minWidth: 28, minHeight: 28)
+                .contentShape(Rectangle())
+            }
+        }
+        .frame(maxWidth: 620)
+        .accessibilityIdentifier("homebrew-disclosure")
+    }
+
+    private var unavailable: some View {
+        ContentUnavailableView {
+            Label("Catalog Unavailable", systemImage: "wifi.exclamationmark")
+        } description: {
+            Text(
+                model.homebrewCatalogIssue
+                    ?? "SwanSong could not load the first-party catalog from GitHub."
+            )
+        } actions: {
+            Button("Try Again", action: model.refreshHomebrewCatalog)
+                .buttonStyle(.borderedProminent)
+            Button("Add From Mac…", action: model.chooseGames)
+                .buttonStyle(.bordered)
+        }
+        .accessibilityIdentifier("homebrew-unavailable")
+    }
+
+    private var catalogContent: some View {
+        VStack(spacing: 0) {
+            if let issue = model.homebrewCatalogIssue {
+                HStack(spacing: 9) {
+                    Image(systemName: "wifi.exclamationmark")
+                    Text(issue)
+                        .font(.callout)
+                    Spacer()
+                    Button("Retry", action: model.refreshHomebrewCatalog)
+                        .buttonStyle(.link)
+                        .frame(minWidth: 28, minHeight: 28)
+                        .contentShape(Rectangle())
+                }
+                .padding(.horizontal, 18)
+                .padding(.vertical, 9)
+                .background(.orange.opacity(0.12))
+                .accessibilityIdentifier("homebrew-saved-catalog-notice")
+            }
+
+            if displayedEntries.isEmpty {
+                ContentUnavailableView {
+                    Label(
+                        searchText.isEmpty ? "No Homebrew Published Yet" : "No Homebrew Found",
+                        systemImage: searchText.isEmpty ? "shippingbox" : "magnifyingglass"
+                    )
+                } description: {
+                    Text(
+                        searchText.isEmpty
+                            ? "The verified catalog is ready, but it does not contain a public release yet."
+                            : "No catalog items match “\(searchText)”."
+                    )
+                } actions: {
+                    if !searchText.isEmpty {
+                        Button("Clear Search") { searchText = "" }
+                    }
+                }
+            } else {
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 18) {
+                        ForEach(displayedEntries, id: \.id) { entry in
+                            HomebrewCatalogCard(
+                                model: model,
+                                entry: entry,
+                                isSelected: model.selectedHomebrewEntryID == entry.id,
+                                onSelect: { model.selectedHomebrewEntryID = entry.id }
+                            )
+                        }
+                    }
+                    .padding(24)
+                }
+            }
+        }
+    }
+
+    private var displayedEntries: [HomebrewCatalogEntry] {
+        guard !searchText.isEmpty else { return model.homebrewCatalogEntries }
+        return model.homebrewCatalogEntries.filter {
+            $0.title.localizedCaseInsensitiveContains(searchText)
+                || $0.developer.localizedCaseInsensitiveContains(searchText)
+                || $0.summary.localizedCaseInsensitiveContains(searchText)
+        }
+    }
+
+    private var selectedEntry: HomebrewCatalogEntry? {
+        guard let selectedID = model.selectedHomebrewEntryID else { return nil }
+        return displayedEntries.first { $0.id == selectedID }
+    }
+
+    private var inspectorPresentation: Binding<Bool> {
+        Binding(
+            get: {
+                !usesDeterministicSidebarForOffscreenSnapshots
+                    && selectedEntry != nil
+            },
+            set: { if !$0 { model.selectedHomebrewEntryID = nil } }
+        )
+    }
+
+    private func clearSelectionIfFilteredOut() {
+        guard let selectedID = model.selectedHomebrewEntryID,
+              !displayedEntries.contains(where: { $0.id == selectedID }) else { return }
+        model.selectedHomebrewEntryID = nil
+    }
+}
+
+private struct HomebrewCatalogCard: View {
+    @Bindable var model: AppModel
+    let entry: HomebrewCatalogEntry
+    let isSelected: Bool
+    let onSelect: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 13) {
+            ZStack {
+                LinearGradient(
+                    colors: [SwanTheme.violet.opacity(0.72), SwanTheme.cyan.opacity(0.48)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                Image(systemName: "gamecontroller.fill")
+                    .font(.system(size: 42, weight: .semibold))
+                    .foregroundStyle(.white.opacity(0.9))
+            }
+            .frame(height: 112)
+            .clipShape(RoundedRectangle(cornerRadius: 13, style: .continuous))
+            .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(entry.title)
+                    .font(.headline)
+                    .lineLimit(2)
+                Text(entry.developer)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                if let release = model.latestHomebrewRelease(for: entry) {
+                    Text("\(release.asset.hardwareModel.catalogDisplayName) · v\(release.version)")
+                        .font(.caption2.weight(.medium))
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            primaryAction
+                .frame(maxWidth: .infinity)
+        }
+        .padding(12)
+        .background(
+            isSelected ? Color.accentColor.opacity(0.14) : Color(nsColor: .controlBackgroundColor),
+            in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+        )
+        .overlay {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(
+                    isSelected
+                        ? Color.accentColor.opacity(0.75)
+                        : Color(nsColor: .separatorColor),
+                    lineWidth: isSelected ? 2 : 1
+                )
+        }
+        .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .onTapGesture(perform: onSelect)
+        .focusable()
+        .onKeyPress(phases: .down, action: handleSelectionKeyPress)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(accessibilitySummary)
+        .accessibilityHint("Show details for this homebrew game")
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .accessibilityAction(named: "Show Details", onSelect)
+        .accessibilityIdentifier("homebrew-card-\(entry.id)")
+    }
+
+    @ViewBuilder
+    private var primaryAction: some View {
+        if model.homebrewInstallingEntryID == entry.id {
+            VStack(spacing: 7) {
+                ProgressView(value: model.homebrewInstallProgress ?? 0)
+                    .accessibilityLabel(model.homebrewInstallPhase ?? "Downloading")
+                    .accessibilityValue(
+                        (model.homebrewInstallProgress ?? 0).formatted(.percent.precision(.fractionLength(0)))
+                    )
+                Button("Cancel", action: model.cancelHomebrewInstall)
+                    .buttonStyle(.borderless)
+                    .frame(minWidth: 28, minHeight: 28)
+                    .contentShape(Rectangle())
+            }
+        } else if model.homebrewUpdateIsAvailable(for: entry) {
+            Button("Update", systemImage: "arrow.down.circle") {
+                model.installHomebrew(entry)
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(model.homebrewInstallingEntryID != nil || model.gameImportIsBusy)
+        } else if model.installedHomebrewGame(for: entry) != nil {
+            Button("Play", systemImage: "play.fill") {
+                model.playInstalledHomebrew(entry)
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(model.homebrewInstallingEntryID != nil || model.gameImportIsBusy)
+        } else {
+            Button("Add to Library", systemImage: "plus") {
+                model.installHomebrew(entry)
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(model.homebrewInstallingEntryID != nil || model.gameImportIsBusy)
+        }
+    }
+
+    private var accessibilitySummary: String {
+        let release = model.latestHomebrewRelease(for: entry)
+        let status = model.homebrewUpdateIsAvailable(for: entry)
+            ? "Update available"
+            : model.installedHomebrewGame(for: entry) == nil ? "Not installed" : "Installed"
+        return [
+            entry.title,
+            "by \(entry.developer)",
+            release?.asset.hardwareModel.catalogDisplayName,
+            release.map { "version \($0.version)" },
+            status,
+        ].compactMap { $0 }.joined(separator: ", ")
+    }
+
+    private func handleSelectionKeyPress(_ press: KeyPress) -> KeyPress.Result {
+        guard press.modifiers.intersection([.command, .control, .option]).isEmpty else {
+            return .ignored
+        }
+        guard press.key == .return || press.key == " " else { return .ignored }
+        onSelect()
+        return .handled
+    }
+}
+
+private struct HomebrewCatalogInspector: View {
+    @Bindable var model: AppModel
+    let entry: HomebrewCatalogEntry
+    @AccessibilityFocusState private var installIssueHasAccessibilityFocus: Bool
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(entry.title)
+                        .font(.title2.weight(.semibold))
+                    Text(entry.developer)
+                        .foregroundStyle(.secondary)
+                    Text(entry.description)
+                        .font(.callout)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+
+                if let release = model.latestHomebrewRelease(for: entry) {
+                    Grid(alignment: .leading, horizontalSpacing: 12, verticalSpacing: 7) {
+                        detailRow("System", release.asset.hardwareModel.catalogDisplayName)
+                        detailRow("Version", release.version)
+                        detailRow("Download", ByteCountFormatter.string(fromByteCount: Int64(release.asset.byteCount), countStyle: .file))
+                        if let releasedAt = release.releasedAt {
+                            detailRow("Released", releasedAt.formatted(date: .abbreviated, time: .omitted))
+                        }
+                        detailRow("License", entry.licenseName)
+                    }
+
+                    if let issue = installIssue {
+                        Label(issue, systemImage: "exclamationmark.triangle.fill")
+                            .font(.callout)
+                            .foregroundStyle(.orange)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .accessibilityLabel("Installation failed: \(issue)")
+                            .accessibilityFocused($installIssueHasAccessibilityFocus)
+                            .accessibilityIdentifier("homebrew-install-error")
+                    }
+
+                    inspectorActions(release)
+
+                    Divider()
+
+                    inspectorLink("Release", destination: release.releaseURL)
+                    inspectorLink("Source Code", destination: entry.sourceURL)
+                    inspectorLink("License", destination: entry.licenseURL)
+                    inspectorLink("Asset Provenance", destination: entry.provenanceURL)
+                }
+            }
+            .padding(20)
+        }
+        .accessibilityIdentifier("homebrew-inspector")
+        .onChange(of: installIssue, initial: true) { _, issue in
+            guard let issue else {
+                installIssueHasAccessibilityFocus = false
+                return
+            }
+            Task { @MainActor in
+                await Task.yield()
+                installIssueHasAccessibilityFocus = true
+            }
+            postAccessibilityAnnouncement(
+                "Homebrew installation failed. \(issue)",
+                priority: .high
+            )
+        }
+    }
+
+    @ViewBuilder
+    private func inspectorActions(_ release: HomebrewCatalogRelease) -> some View {
+        if model.homebrewInstallingEntryID == entry.id {
+            VStack(alignment: .leading, spacing: 8) {
+                Text(model.homebrewInstallPhase ?? "Downloading…")
+                    .font(.callout.weight(.medium))
+                ProgressView(value: model.homebrewInstallProgress ?? 0)
+                Button("Cancel Download", action: model.cancelHomebrewInstall)
+                    .frame(minWidth: 28, minHeight: 28)
+                    .contentShape(Rectangle())
+            }
+        } else if model.homebrewUpdateIsAvailable(for: entry) {
+            Button("Update to v\(release.version)") {
+                model.installHomebrew(entry)
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(model.homebrewInstallingEntryID != nil || model.gameImportIsBusy)
+        } else if model.installedHomebrewGame(for: entry) != nil {
+            HStack {
+                Button("Play") { model.playInstalledHomebrew(entry) }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(model.homebrewInstallingEntryID != nil || model.gameImportIsBusy)
+                Button("Show in Library") { model.showInstalledHomebrewInLibrary(entry) }
+                    .buttonStyle(.bordered)
+            }
+        } else {
+            Button("Add to Library") { model.installHomebrew(entry) }
+                .buttonStyle(.borderedProminent)
+                .disabled(model.homebrewInstallingEntryID != nil || model.gameImportIsBusy)
+        }
+    }
+
+    private func detailRow(_ label: String, _ value: String) -> some View {
+        GridRow {
+            Text(label).foregroundStyle(.secondary)
+            Text(value).fontWeight(.medium)
+        }
+    }
+
+    private var installIssue: String? {
+        guard model.homebrewInstallIssueEntryID == entry.id else { return nil }
+        return model.homebrewInstallIssue
+    }
+
+    private func inspectorLink(_ title: String, destination: URL) -> some View {
+        Link(title, destination: destination)
+            .frame(minWidth: 28, maxWidth: .infinity, minHeight: 28, alignment: .leading)
+            .contentShape(Rectangle())
+    }
+}
+
+private extension EngineHardwareModel {
+    var catalogDisplayName: String {
+        switch self {
+        case .automatic, .wonderSwan: "WonderSwan"
+        case .wonderSwanColor: "WonderSwan Color"
+        case .swanCrystal: "SwanCrystal"
+        case .pocketChallengeV2: "Pocket Challenge V2"
         }
     }
 }
@@ -1548,12 +1498,10 @@ private struct LibraryView: View {
             managedHealth: model.managedGameHealth[game.id],
             isCheckingManagedCopy: model.checkingManagedGameIDs.contains(game.id),
             isRepairingManagedCopy: model.repairingGameID == game.id,
-            requiredFirmware: model.missingFirmware(for: game),
             onSelect: { model.selectedGameID = game.id },
             onPlay: { model.play(game.id) },
             onRepair: { model.repairManagedGame(game.id) },
             onReAdd: model.chooseGame,
-            onInstallFirmware: { model.play(game.id) },
             onFavorite: { model.toggleFavorite(game.id) },
             onUseProceduralArtwork: { model.useProceduralArtwork(game.id) },
             onCaptureArtworkNextPlay: { model.captureArtworkNextTimePlayed(game.id) },
@@ -1572,13 +1520,11 @@ private struct LibraryView: View {
             managedHealth: model.managedGameHealth[game.id],
             isCheckingManagedCopy: model.checkingManagedGameIDs.contains(game.id),
             isRepairingManagedCopy: model.repairingGameID == game.id,
-            requiredFirmware: model.missingFirmware(for: game),
             canImportSave: model.canImportPocketSave,
             canExportSave: model.canExportPocketSave,
             onPlay: { model.play(game.id) },
             onRepair: { model.repairManagedGame(game.id) },
             onReAdd: model.chooseGame,
-            onInstallFirmware: { model.play(game.id) },
             onImportSave: model.importPocketSave,
             onExportSave: model.exportPocketSave,
             onSetCompatibilityVerdict: {
@@ -1682,6 +1628,7 @@ private struct LibraryView: View {
         case .library: .all
         case .favorites: .favorites
         case .recent: .recentlyPlayed
+        case .homebrew: .all
         case .translationLab: .all
         }
     }
@@ -1696,6 +1643,7 @@ private struct LibraryView: View {
         case .library: "Your WonderSwan library is empty"
         case .favorites: "No favorites yet"
         case .recent: "Nothing played recently"
+        case .homebrew: "Homebrew Catalog Coming Soon"
         case .translationLab: "No translation project linked"
         }
     }
@@ -1705,6 +1653,7 @@ private struct LibraryView: View {
         case .library: "rectangle.stack.badge.plus"
         case .favorites: "star"
         case .recent: "clock"
+        case .homebrew: "shippingbox"
         case .translationLab: "character.book.closed"
         }
     }
@@ -1714,6 +1663,7 @@ private struct LibraryView: View {
         case .library: "Open a .ws, .wsc, .pc2, .pcv2, or one-game ZIP. SwanSong keeps a private managed copy."
         case .favorites: "Mark the games you return to most often."
         case .recent: "Games appear here after they have been played."
+        case .homebrew: "No catalog network requests are made in this release. You can still add homebrew from your Mac."
         case .translationLab: "Link a private translation-toolkit project to begin."
         }
     }
@@ -6402,8 +6352,8 @@ enum GameInspectorAccessibility {
 
 enum SettingsSurfaceAccessibility {
     static let minimumInteractiveDimension: CGFloat = 28
-    static let startupFiles = "startup-files-settings"
     static let controllerMapping = "controller-mapping-settings"
+    static let controllerCapabilityWarning = "controller-capability-warning"
     static let controllerLiveInput = "controller-live-input-disclosure"
 }
 
@@ -6517,12 +6467,10 @@ private struct GameCard: View {
     let managedHealth: ManagedGameHealth?
     let isCheckingManagedCopy: Bool
     let isRepairingManagedCopy: Bool
-    let requiredFirmware: WonderSwanFirmwareKind?
     let onSelect: () -> Void
     let onPlay: () -> Void
     let onRepair: () -> Void
     let onReAdd: () -> Void
-    let onInstallFirmware: () -> Void
     let onFavorite: () -> Void
     let onUseProceduralArtwork: () -> Void
     let onCaptureArtworkNextPlay: () -> Void
@@ -6565,8 +6513,6 @@ private struct GameCard: View {
                 Button("Re-add Game…", systemImage: "plus.rectangle.on.folder", action: onReAdd)
             } else if needsRepair {
                 Button("Repair Private Copy…", systemImage: "wrench.and.screwdriver.fill", action: onRepair)
-            } else if let requiredFirmware {
-                Button("Set Up \(requiredFirmware.title) & Play…", systemImage: "cpu", action: onInstallFirmware)
             } else {
                 Button("Play", systemImage: "play.fill", action: onPlay)
                     .disabled(!canPlay)
@@ -6679,9 +6625,6 @@ private struct GameCard: View {
         if managedHealth == .invalidReference {
             return "This entry cannot be verified. Re-add the original game as a new library entry."
         }
-        if let requiredFirmware {
-            return "Select this game, then use the Set Up and Play action to choose the required \(requiredFirmware.title) startup file and continue."
-        }
         return canPlay
             ? "Select this game. Double-click to play."
             : "Select this game. The native emulation engine is unavailable."
@@ -6705,9 +6648,6 @@ private struct GameCard: View {
         }
         if managedHealth == .invalidReference {
             return "\(system); \(artworkDescription); library identity invalid; re-add needed; \(compatibility)"
-        }
-        if let requiredFirmware {
-            return "\(system); \(artworkDescription); \(requiredFirmware.title) startup file setup needed; \(compatibility)"
         }
         return canPlay
             ? "\(system); \(artworkDescription); ready to play; \(compatibility)"
@@ -6733,7 +6673,7 @@ private struct GameCard: View {
     private var accessibilityActionTitle: String {
         if managedHealth == .invalidReference { return "Re-add Game" }
         if needsRepair { return "Repair" }
-        return requiredFirmware == nil ? "Play" : "Set Up and Play"
+        return "Play"
     }
 
     private func performPrimaryAction() {
@@ -6743,10 +6683,8 @@ private struct GameCard: View {
             onReAdd()
         } else if needsRepair {
             onRepair()
-        } else if requiredFirmware == nil {
-            onPlay()
         } else {
-            onInstallFirmware()
+            onPlay()
         }
     }
 
@@ -6755,7 +6693,6 @@ private struct GameCard: View {
         if isCheckingManagedCopy { return "Checking" }
         if managedHealth == .invalidReference { return "Re-add" }
         if needsRepair { return "Repair" }
-        if requiredFirmware != nil { return "Set Up" }
         return "Play"
     }
 
@@ -6764,7 +6701,6 @@ private struct GameCard: View {
         if isCheckingManagedCopy { return "checkmark.shield" }
         if managedHealth == .invalidReference { return "plus.rectangle.on.folder" }
         if needsRepair { return "wrench.and.screwdriver.fill" }
-        if requiredFirmware != nil { return "cpu" }
         return "play.fill"
     }
 
@@ -6773,7 +6709,6 @@ private struct GameCard: View {
             || isCheckingManagedCopy
             || (managedHealth != .invalidReference
                 && !needsRepair
-                && requiredFirmware == nil
                 && !canPlay)
     }
 
@@ -6782,7 +6717,6 @@ private struct GameCard: View {
         if isCheckingManagedCopy { return "Checking the private game copy" }
         if managedHealth == .invalidReference { return "Re-add this game" }
         if needsRepair { return "Repair this game’s private copy" }
-        if let requiredFirmware { return "Set up \(requiredFirmware.title) and play" }
         return "Play \(game.title)"
     }
 
@@ -6801,9 +6735,6 @@ private struct GameCard: View {
         }
         if managedHealth == .invalidReference {
             return ("Re-add needed", "exclamationmark.octagon.fill", Color.red)
-        }
-        if let requiredFirmware {
-            return ("\(requiredFirmware.title) file required", "exclamationmark.circle.fill", Color.orange)
         }
         if !canPlay {
             return ("Playback unavailable", "exclamationmark.triangle.fill", Color.secondary)
@@ -6962,7 +6893,6 @@ extension GameLaunchReadiness {
         case .ready: "Ready to launch"
         case .checkingGame: "Checking game copy"
         case .gameUnavailable: "Game copy unavailable"
-        case .startupFileRequired: "Original startup override unavailable"
         case .engineUnavailable: "Playback engine unavailable"
         }
     }
@@ -6975,8 +6905,6 @@ extension GameLaunchReadiness {
             "SwanSong is checking the private game copy before allowing play."
         case .gameUnavailable:
             "Repair or re-add the exact game before trying to play."
-        case .startupFileRequired:
-            "This legacy status is retained for older diagnostics; current games use SwanSong Open IPL."
         case .engineUnavailable:
             "The native SwanSong playback engine is not currently available."
         }
@@ -6987,7 +6915,6 @@ extension GameLaunchReadiness {
         case .ready: "play.circle.fill"
         case .checkingGame: "checkmark.shield"
         case .gameUnavailable: "externaldrive.badge.exclamationmark"
-        case .startupFileRequired: "cpu"
         case .engineUnavailable: "exclamationmark.triangle.fill"
         }
     }
@@ -6997,7 +6924,6 @@ extension GameLaunchReadiness {
         case .ready: .green
         case .checkingGame: SwanTheme.cyan
         case .gameUnavailable: .red
-        case .startupFileRequired: .orange
         case .engineUnavailable: .secondary
         }
     }
@@ -7416,13 +7342,11 @@ struct GameInspector: View {
     let managedHealth: ManagedGameHealth?
     let isCheckingManagedCopy: Bool
     let isRepairingManagedCopy: Bool
-    let requiredFirmware: WonderSwanFirmwareKind?
     let canImportSave: Bool
     let canExportSave: Bool
     let onPlay: () -> Void
     let onRepair: () -> Void
     let onReAdd: () -> Void
-    let onInstallFirmware: () -> Void
     let onImportSave: () -> Void
     let onExportSave: () -> Void
     let onSetCompatibilityVerdict: (GameCompatibilityVerdict?) -> Void
@@ -7599,14 +7523,6 @@ struct GameInspector: View {
                 .buttonStyle(.borderedProminent)
                 .help("Choose the exact original game file to repair this private copy")
                 .accessibilityLabel("Repair \(game.title)’s private copy")
-        } else if let requiredFirmware {
-            Button(action: onInstallFirmware) {
-                Label("Set Up \(requiredFirmware.title) & Play…", systemImage: "cpu")
-                    .frame(maxWidth: .infinity)
-            }
-                .buttonStyle(.borderedProminent)
-                .help("Set up the required \(requiredFirmware.title) startup file, then play")
-                .accessibilityLabel("Set up \(requiredFirmware.title) startup file and play")
         } else {
             Button(action: onPlay) {
                 Label("Play", systemImage: "play.fill")
@@ -7634,9 +7550,6 @@ struct GameInspector: View {
         if managedHealth == .invalidReference {
             return "Library identity invalid · re-add as a new entry"
         }
-        if let requiredFirmware {
-            return "\(requiredFirmware.title) startup file setup needed"
-        }
         return canPlay ? "Ready to play" : "Playback engine unavailable"
     }
 
@@ -7645,7 +7558,7 @@ struct GameInspector: View {
         if isCheckingManagedCopy { return .secondary }
         if managedHealth == .missing { return .red }
         if managedHealth == .invalidReference { return .red }
-        if managedHealth == .changed || requiredFirmware != nil { return .orange }
+        if managedHealth == .changed { return .orange }
         return canPlay ? .green : .secondary
     }
 
@@ -7655,7 +7568,6 @@ struct GameInspector: View {
         if managedHealth == .missing { return "externaldrive.badge.xmark" }
         if managedHealth == .invalidReference { return "exclamationmark.octagon.fill" }
         if managedHealth == .changed { return "exclamationmark.triangle.fill" }
-        if requiredFirmware != nil { return "cpu" }
         return canPlay ? "checkmark.circle.fill" : "xmark.circle.fill"
     }
 
@@ -7747,7 +7659,13 @@ private struct PlayerView: View {
         .toolbar {
             playerToolbar
         }
-        .onAppear(perform: requestGameplayFocus)
+        .onAppear {
+            model.updateDebugGameplayFocus(gameplayHasFocus)
+            requestGameplayFocus()
+        }
+        .onDisappear {
+            model.updateDebugGameplayFocus(false)
+        }
         .onChange(of: model.playingGameID) { _, _ in requestGameplayFocus() }
         .onChange(of: model.playerIsInteractive, initial: true) { _, isInteractive in
             guard isInteractive else { return }
@@ -7783,6 +7701,7 @@ private struct PlayerView: View {
             requestGameplayFocus()
         }
         .onChange(of: gameplayHasFocus) { _, focused in
+            model.updateDebugGameplayFocus(focused)
             if !focused { model.clearKeyboardInput() }
         }
         .onChange(of: isInputGuidePresented) { _, presented in
@@ -7877,6 +7796,7 @@ private struct PlayerView: View {
                 MetalScreenView(
                     frame: frame,
                     profile: displayProfile,
+                    hardwareModel: model.playingGame?.resolvedHardwareModel ?? .automatic,
                     responseScale: Float(lcdMotionLevel.responseScale)
                 )
                 .aspectRatio(
@@ -7891,6 +7811,15 @@ private struct PlayerView: View {
         .aspectRatio(playerAspectRatio, contentMode: .fit)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(Rectangle())
+        .overlay(alignment: .topLeading) {
+            if model.debugToolsEnabled,
+               model.debugOverlayIsVisible,
+               model.currentFrame != nil {
+                playerDebugOverlay
+                    .padding(9)
+                    .allowsHitTesting(false)
+            }
+        }
         .onTapGesture {
             if model.playerIsInteractive { requestGameplayFocus() }
         }
@@ -8056,7 +7985,7 @@ private struct PlayerView: View {
     @ViewBuilder
     private var playerLaunchRecoveryActions: some View {
         if model.playerLaunchStage == .closingPreviousSession {
-            Button("Back to Library", systemImage: "chevron.backward") {
+            Button(model.playerReturnTitle, systemImage: "chevron.backward") {
                 model.stopPlaying()
             }
             .buttonStyle(.borderedProminent)
@@ -8066,18 +7995,12 @@ private struct PlayerView: View {
             ViewThatFits(in: .horizontal) {
                 HStack(spacing: 9) {
                     launchTryAgainButton
-                    if launchShowsStartupFileRecovery {
-                        launchStartupFileButton
-                    }
                     launchBackToLibraryButton
                 }
                 .fixedSize(horizontal: true, vertical: false)
 
                 VStack(spacing: 8) {
                     launchTryAgainButton
-                    if launchShowsStartupFileRecovery {
-                        launchStartupFileButton
-                    }
                     launchBackToLibraryButton
                 }
                 .frame(maxWidth: 300)
@@ -8094,16 +8017,8 @@ private struct PlayerView: View {
         .focused($launchRecoveryActionHasFocus)
     }
 
-    private var launchStartupFileButton: some View {
-        Button(startupFileReplacementTitle, systemImage: "cpu") {
-            model.replaceStartupFileAndRetryCurrentSession()
-        }
-        .buttonStyle(.bordered)
-        .disabled(model.playerStateOperationIsBusy || model.firmwareImportIsBusy)
-    }
-
     private var launchBackToLibraryButton: some View {
-        Button("Back to Library", systemImage: "chevron.backward") {
+        Button(model.playerReturnTitle, systemImage: "chevron.backward") {
             model.stopPlaying()
         }
         .buttonStyle(.borderless)
@@ -8238,16 +8153,12 @@ private struct PlayerView: View {
         PlayerVideoActivityRecoveryCard(
             headline: playerVideoActivityHeadline,
             detail: playerVideoActivityDetail,
-            startupFileAccessibilityTitle: startupFileReplacementTitle,
             restartIsDisabled: model.playerStateOperationIsBusy,
-            startupFileActionIsDisabled: model.playerStateOperationIsBusy
-                || model.firmwareImportIsBusy,
             onTryControls: {
                 model.dismissPlayerVideoActivityDiagnostic()
                 requestGameplayFocus()
             },
             onRestart: model.restartCurrentSession,
-            onReplaceStartupFile: model.replaceStartupFileAndRetryCurrentSession,
             onDismiss: model.dismissPlayerVideoActivityDiagnostic
         )
     }
@@ -8257,14 +8168,12 @@ private struct PlayerView: View {
         ToolbarItem(placement: .navigation) {
             Button(action: model.stopPlaying) {
                 Label(
-                    model.activeTranslationRole == nil ? "Library" : "Translation Lab",
+                    model.playerReturnDestinationTitle,
                     systemImage: "chevron.backward"
                 )
             }
-            .help(model.activeTranslationRole == nil ? "Back to Library" : "Back to Translation Lab")
-            .accessibilityLabel(
-                model.activeTranslationRole == nil ? "Back to Library" : "Back to Translation Lab"
-            )
+            .help(model.playerReturnTitle)
+            .accessibilityLabel(model.playerReturnTitle)
             .accessibilityIdentifier("player-back")
             .disabled(
                 model.translationRouteIsRecording
@@ -8410,6 +8319,35 @@ private struct PlayerView: View {
                 }
                 .disabled(!model.canShowRewind)
 
+                if model.debugToolsEnabled {
+                    Divider()
+
+                    Menu("Debug Tools", systemImage: "wrench.and.screwdriver") {
+                        Toggle(
+                            "Show Focus & Input Overlay",
+                            isOn: debugOverlayBinding
+                        )
+                        if model.debugLogIsRecording {
+                            Button("Stop Input/Frame Log", systemImage: "stop.circle") {
+                                model.stopDebugLog()
+                            }
+                        } else {
+                            Button("Start Input/Frame Log", systemImage: "record.circle") {
+                                model.startDebugLog()
+                            }
+                            .disabled(!model.playerIsInteractive)
+                        }
+                        Button("Export Input/Frame Log…", systemImage: "square.and.arrow.up") {
+                            model.exportDebugLog()
+                        }
+                        .disabled(model.debugLogFrameCount == 0)
+                        Button("Clear Input/Frame Log", systemImage: "trash") {
+                            model.clearDebugLog()
+                        }
+                        .disabled(model.debugLogFrameCount == 0)
+                    }
+                }
+
                 Divider()
 
                 Button(action: model.toggleFullScreen) {
@@ -8452,14 +8390,80 @@ private struct PlayerView: View {
                 }
             }
             .disabled(displayProfile == .purePixels)
-            Divider()
-            Toggle("Show Player Diagnostics", isOn: $showPlayerDiagnostics)
+            if model.debugToolsEnabled {
+                Divider()
+                Toggle("Show Focus & Input Overlay", isOn: debugOverlayBinding)
+                Toggle("Show Player Diagnostics", isOn: $showPlayerDiagnostics)
+            }
         } label: {
             Label(displayProfile.rawValue, systemImage: "display")
         }
         .help(displayProfile.detail)
         .accessibilityLabel("Display profile")
         .accessibilityValue(displayProfile.rawValue)
+    }
+
+    private var playerDiagnosticsAreVisible: Bool {
+        model.debugToolsEnabled && showPlayerDiagnostics
+    }
+
+    private var debugOverlayBinding: Binding<Bool> {
+        Binding(
+            get: { model.debugToolsEnabled && model.debugOverlayIsVisible },
+            set: { model.setDebugOverlayVisible($0) }
+        )
+    }
+
+    private var playerDebugOverlay: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            HStack(spacing: 6) {
+                Circle()
+                    .fill(gameplayHasFocus ? Color.green : Color.orange)
+                    .frame(width: 7, height: 7)
+                Text(gameplayHasFocus ? "FOCUS: KEYBOARD ACTIVE" : "FOCUS: KEYBOARD INACTIVE")
+                    .fontWeight(.bold)
+                if let frame = model.currentFrame {
+                    Text("FRAME \(frame.number)")
+                        .foregroundStyle(.white.opacity(0.68))
+                }
+            }
+            Text("Keyboard  \(model.keyboardInput.debugSummary)")
+            Text(
+                "Controller \(model.activeGameplayControllerInput.debugSummary)"
+                    + (model.connectedControllerName.map { " · \($0)" } ?? "")
+            )
+            Text("Effective \(model.debugLastEffectiveInput.debugSummary)")
+            HStack(spacing: 6) {
+                Text(
+                    model.debugLogIsRecording
+                        ? "LOG: RECORDING · \(model.debugLogFrameCount) frames"
+                        : model.debugLogFrameCount > 0
+                            ? "LOG: STOPPED · \(model.debugLogFrameCount) frames"
+                            : "LOG: OFF"
+                )
+                if model.debugLogDroppedFrameCount > 0 {
+                    Text("· \(model.debugLogDroppedFrameCount) dropped")
+                        .foregroundStyle(.orange)
+                }
+            }
+            .foregroundStyle(
+                model.debugLogIsRecording ? Color.red.opacity(0.92) : .white.opacity(0.68)
+            )
+        }
+        .font(.system(size: 10, weight: .medium, design: .monospaced))
+        .foregroundStyle(.white)
+        .padding(.horizontal, 9)
+        .padding(.vertical, 7)
+        .background(
+            Color.black.opacity(0.82),
+            in: RoundedRectangle(cornerRadius: 7, style: .continuous)
+        )
+        .overlay {
+            RoundedRectangle(cornerRadius: 7, style: .continuous)
+                .stroke(Color.white.opacity(0.22), lineWidth: 1)
+        }
+        .accessibilityIdentifier("player-debug-focus-input-overlay")
+        .accessibilityElement(children: .combine)
     }
 
     private var playerCanvasChromeColor: Color {
@@ -8485,7 +8489,7 @@ private struct PlayerView: View {
     }
 
     private var shouldShowPlayerStatus: Bool {
-        showPlayerDiagnostics
+        playerDiagnosticsAreVisible
             || model.isPaused
             || model.isFastForwarding
             || model.playerStateOperation != nil
@@ -8578,7 +8582,7 @@ private struct PlayerView: View {
             if let controllerName = model.connectedControllerName {
                 Label(controllerName, systemImage: "gamecontroller.fill")
             }
-            if showPlayerDiagnostics {
+            if playerDiagnosticsAreVisible {
                 Label(displayProfile.rawValue, systemImage: "display")
                 if let frame = model.currentFrame {
                     Label("Frame \(frame.number)", systemImage: "rectangle.on.rectangle")
@@ -8598,7 +8602,7 @@ private struct PlayerView: View {
                 keyboardFocusStatus
             }
             prioritizedTranslationStatus
-            if showPlayerDiagnostics, let frame = model.currentFrame {
+            if playerDiagnosticsAreVisible, let frame = model.currentFrame {
                 Label("Frame \(frame.number)", systemImage: "rectangle.on.rectangle")
             }
             if model.connectedControllerName != nil {
@@ -8615,7 +8619,7 @@ private struct PlayerView: View {
             prioritizedTranslationStatus
             if model.playerIsInteractive, !gameplayHasFocus {
                 keyboardFocusStatus
-            } else if showPlayerDiagnostics, let frame = model.currentFrame {
+            } else if playerDiagnosticsAreVisible, let frame = model.currentFrame {
                 Label("Frame \(frame.number)", systemImage: "rectangle.on.rectangle")
             }
         }
@@ -8703,8 +8707,8 @@ private struct PlayerView: View {
     private var launchHeadline: String {
         if model.playerLaunchNeedsAttention {
             switch model.playerLaunchStage ?? .verifyingGame {
-            case .loadingStartupFile:
-                return "Startup is taking longer to prepare"
+            case .initializingSystem:
+                return "System initialization is taking longer"
             case .startingSystem, .waitingForFirstFrame:
                 return "Still waiting for the first frame"
             case .closingPreviousSession, .verifyingGame, .startingEngine, .restoringSave:
@@ -8723,14 +8727,14 @@ private struct PlayerView: View {
                 return "The private game copy is taking longer than expected to verify. Try again, or return to the Library without changing the game."
             case .startingEngine:
                 return "The native emulation engine is taking longer than expected to start. Try again, or return to the Library."
-            case .loadingStartupFile:
-                return "The startup path is taking longer than expected to prepare. Try again or review the optional original-file override in Settings."
+            case .initializingSystem:
+                return "System initialization is taking longer than expected. Try again, or return to the Library."
             case .restoringSave:
                 return "The local cartridge save is taking longer than expected to restore. Try again, or return to the Library without changing it."
             case .startingSystem:
-                return "The emulated system has not finished powering on. Try again; if this continues, review Startup settings."
+                return "The emulated system has not finished powering on. Try again, or return to the Library."
             case .waitingForFirstFrame:
-                return "The engine is running, but no game frame has arrived. Try again; if this continues, review Startup settings."
+                return "The engine is running, but no game frame has arrived. Try again, or return to the Library."
             }
         }
         switch model.playerLaunchStage ?? .verifyingGame {
@@ -8740,8 +8744,8 @@ private struct PlayerView: View {
             return "Confirming the private game copy before anything runs."
         case .startingEngine:
             return "Preparing the native ares emulation engine."
-        case .loadingStartupFile:
-            return "Selecting SwanSong Open IPL or an installed original compatibility override."
+        case .initializingSystem:
+            return "Initializing the emulated system with SwanSong Open IPL."
         case .restoringSave:
             return "Restoring this game’s local cartridge save data."
         case .startingSystem:
@@ -8756,7 +8760,7 @@ private struct PlayerView: View {
         case .closingPreviousSession: "Closing previous game"
         case .verifyingGame: "Verifying game"
         case .startingEngine: "Starting engine"
-        case .loadingStartupFile: "Preparing startup"
+        case .initializingSystem: "Initializing system"
         case .restoringSave: "Restoring save data"
         case .startingSystem: "Starting system"
         case .waitingForFirstFrame: "Waiting for video"
@@ -8768,19 +8772,10 @@ private struct PlayerView: View {
         case .closingPreviousSession: "arrow.backward.circle.fill"
         case .verifyingGame: "checkmark.shield.fill"
         case .startingEngine: "gearshape.2.fill"
-        case .loadingStartupFile: "cpu.fill"
+        case .initializingSystem: "power.circle.fill"
         case .restoringSave: "externaldrive.fill.badge.checkmark"
         case .startingSystem: "power.circle.fill"
         case .waitingForFirstFrame: "display"
-        }
-    }
-
-    private var launchShowsStartupFileRecovery: Bool {
-        switch model.playerLaunchStage ?? .verifyingGame {
-        case .loadingStartupFile, .startingSystem, .waitingForFirstFrame:
-            true
-        case .closingPreviousSession, .verifyingGame, .startingEngine, .restoringSave:
-            false
         }
     }
 
@@ -8788,28 +8783,15 @@ private struct PlayerView: View {
         if model.playerLaunchStage == .closingPreviousSession {
             return "The previous game is taking longer than expected to close safely. Keep waiting or return to the Library."
         }
-        if launchShowsStartupFileRecovery {
-            return "Still waiting for the first game frame while \(launchStageTitle.lowercased()). Try again or review Startup settings."
-        }
         return "Game startup is taking longer than expected while \(launchStageTitle.lowercased()). Try again or return to the Library."
     }
 
-    private var startupFileReplacementTitle: String {
-        guard let game = model.playingGame else {
-            return "Stop & Try an Original Startup File…"
-        }
-        return "Stop & Try an Original \(model.firmwareKind(for: game).title) Startup File…"
-    }
-
     private var playerVideoActivityDetail: String {
-        let startupFile = model.playingGame.map {
-            " or try the optional original \(model.firmwareKind(for: $0).title) startup mode"
-        } ?? ""
         switch model.playerVideoActivityIssue {
         case .lowMotion:
-            return "Frames are arriving, but most of the picture is not changing. The game may simply be waiting for input. Try the controls first, then restart\(startupFile) if it remains unchanged."
+            return "Frames are arriving, but most of the picture is not changing. The game may simply be waiting for input. Try the controls first, then restart if it remains unchanged."
         case .flatColor, .none:
-            return "Frames are arriving, but the picture has stayed almost entirely one color. Try the controls first, then restart\(startupFile) if it remains unchanged."
+            return "Frames are arriving, but the picture has stayed almost entirely one color. Try the controls first, then restart if it remains unchanged."
         }
     }
 
@@ -8852,7 +8834,7 @@ private struct PlayerView: View {
             return "SwanSong is saving and unloading the failed emulation session"
         }
         if model.playerVideoActivityIsDegraded {
-            return "Game controls remain available. Use Recovery to review restart and optional original-BIOS choices."
+            return "Game controls remain available. Use Recovery to try the controls or restart."
         }
         return "Click the game display to enable keyboard controls"
     }
@@ -9186,12 +9168,9 @@ struct PlayerVideoActivityRecoveryCard: View {
 
     let headline: String
     let detail: String
-    let startupFileAccessibilityTitle: String
     let restartIsDisabled: Bool
-    let startupFileActionIsDisabled: Bool
     let onTryControls: () -> Void
     let onRestart: () -> Void
-    let onReplaceStartupFile: () -> Void
     let onDismiss: () -> Void
 
     var body: some View {
@@ -9250,7 +9229,6 @@ struct PlayerVideoActivityRecoveryCard: View {
             HStack(spacing: 8) {
                 tryControlsButton
                 restartButton
-                startupFileButton
             }
             .fixedSize(horizontal: true, vertical: false)
 
@@ -9259,7 +9237,6 @@ struct PlayerVideoActivityRecoveryCard: View {
                     tryControlsButton
                     restartButton
                 }
-                startupFileButton
             }
         }
     }
@@ -9278,21 +9255,6 @@ struct PlayerVideoActivityRecoveryCard: View {
             .frame(minHeight: Self.minimumInteractiveDimension)
             .contentShape(Rectangle())
             .disabled(restartIsDisabled)
-    }
-
-    private var startupFileButton: some View {
-        Button(
-            "Try an Original Startup File…",
-            systemImage: "cpu",
-            action: onReplaceStartupFile
-        )
-        .buttonStyle(.borderless)
-        .frame(minHeight: Self.minimumInteractiveDimension)
-        .contentShape(Rectangle())
-        .disabled(startupFileActionIsDisabled)
-        .help("Stop the game, choose an optional original startup file, and retry automatically")
-        .accessibilityLabel(startupFileAccessibilityTitle)
-        .accessibilityHint("Stops the current game, then retries automatically after the optional original file is validated")
     }
 
     private var dismissButton: some View {
@@ -10144,7 +10106,7 @@ struct StateTimelineCard: View {
         case .ready: "Ready"
         case .legacyNeedsConfirmation: "Legacy"
         case .wrongROM: "Different Game File"
-        case .wrongFirmware: "Different Startup File"
+        case .wrongFirmware: "Different Startup Version"
         case .wrongEngineBuild: "Incompatible Engine"
         case .damaged: "Damaged"
         }
@@ -10279,6 +10241,18 @@ struct SettingsView: View {
                     LabeledContent("Execution engine", value: backendName)
                         .foregroundStyle(.secondary)
                 }
+                Section("Debugging") {
+                    Toggle("Enable Debug Tools", isOn: debugToolsBinding)
+                        .accessibilityIdentifier("settings-enable-debug-tools")
+                    Text(
+                        model.debugToolsEnabled
+                            ? "Testing overlays, input/frame logging, and the Debug menu are available. The bundled route runner still requires its explicit debug flag."
+                            : "Off by default. Game-testing controls stay hidden from the player until enabled."
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                }
             }
             .formStyle(.grouped)
             .padding()
@@ -10292,23 +10266,22 @@ struct SettingsView: View {
                     Label("Controller", systemImage: "gamecontroller.fill")
                 }
                 .tag(1)
-
-            FirmwareSettingsView(model: model)
-                .tabItem {
-                    Label("Startup", systemImage: "cpu")
-                }
-                .tag(2)
-
         }
         .tint(SwanTheme.accent)
         .background(SwanTheme.libraryBackground.ignoresSafeArea())
         .onAppear {
+            selectedTab = Self.migratedTab(selectedTab)
             if ProcessInfo.processInfo.environment["SWAN_SONG_SETTINGS_TAB"] == "controller" {
                 selectedTab = 1
-            } else if ProcessInfo.processInfo.environment["SWAN_SONG_SETTINGS_TAB"] == "firmware" {
-                selectedTab = 2
             }
         }
+    }
+
+    /// Startup was tab 2 before the built-in Open IPL made that pane obsolete.
+    /// Clamp persisted legacy or damaged values so existing users never open a
+    /// TabView with no matching selection.
+    static func migratedTab(_ storedValue: Int) -> Int {
+        storedValue == 1 ? 1 : 0
     }
 
     private var displayProfile: DisplayProfile {
@@ -10321,427 +10294,12 @@ struct SettingsView: View {
             set: { lcdResponseScale = $0.responseScale }
         )
     }
-}
 
-private struct FirmwareSettingsView: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @Bindable var model: AppModel
-    @State private var removalCandidate: WonderSwanFirmwareKind?
-    @State private var pendingFocusKind: WonderSwanFirmwareKind?
-    @State private var targetedFirmwareKind: WonderSwanFirmwareKind?
-    @State private var showsAdvanced = false
-    @State private var showsStartupFileGuide = false
-    @FocusState private var focusedFirmwareKind: WonderSwanFirmwareKind?
-    @AccessibilityFocusState private var accessibilityFocusedFirmwareKind: WonderSwanFirmwareKind?
-    @AccessibilityFocusState private var feedbackHasAccessibilityFocus: Bool
-
-    var body: some View {
-        Form {
-            Section {
-                HStack(alignment: .top, spacing: 14) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .fill(
-                                LinearGradient(
-                                    colors: [SwanTheme.violet, SwanTheme.cyan.opacity(0.82)],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                        Image(systemName: "cpu.fill")
-                            .font(.system(size: 27, weight: .medium))
-                            .foregroundStyle(.white)
-                    }
-                    .frame(width: 58, height: 58)
-                    .accessibilityHidden(true)
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("WonderSwan Startup")
-                            .font(.title2.weight(.semibold))
-                            .accessibilityAddTraits(.isHeader)
-                        Text("SwanSong Open IPL is included. Original hardware startup files are optional compatibility overrides.")
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
-                    }
-
-                    Spacer()
-
-                    Label(
-                        libraryReadiness.summary,
-                        systemImage: libraryReadiness.summarySymbol
-                    )
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(readinessSummaryColor)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(
-                        readinessSummaryColor.opacity(0.1),
-                        in: Capsule()
-                    )
-                    .accessibilityLabel(libraryReadiness.summary)
-                }
-                .padding(.vertical, 3)
-            }
-
-            if model.firmwareSettingsIsBusy
-                || model.firmwareSettingsError != nil
-                || model.firmwareSettingsNotice != nil {
-                Section("Setup Status") {
-                    settingsFeedback
-                }
-            }
-
-            Section("Systems") {
-                firmwareRow(.monochrome)
-                firmwareRow(.color)
-                firmwareRow(.pocketChallengeV2)
-            }
-
-            Section("Help") {
-                Button("About Open IPL & Original Startup Files…", systemImage: "questionmark.circle") {
-                    showsStartupFileGuide = true
-                }
-                Text("Games start without extra system files. If you install an original startup file, validation and storage stay on this Mac.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            Section {
-                DisclosureGroup("Advanced", isExpanded: $showsAdvanced) {
-                    VStack(alignment: .leading, spacing: 12) {
-                        LabeledContent("WonderSwan file size", value: "4 KiB")
-                        LabeledContent("WonderSwan Color file size", value: "8 KiB")
-                        LabeledContent("Pocket Challenge V2 file size", value: "4 KiB")
-
-                        Divider()
-
-                        Text("Optional original files are checked before SwanSong stores private local copies in Application Support. ZIP archives must contain exactly one valid startup file.")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .fixedSize(horizontal: false, vertical: true)
-
-                        Button("Show Storage Folder", systemImage: "folder") {
-                            model.revealFirmwareFolder()
-                        }
-                        .disabled(model.firmwareImportIsBusy)
-                    }
-                }
-            } footer: {
-                Text("SwanSong includes its own independently written Open IPL, not Bandai firmware. Optional original files must come from hardware you own or another source you are authorized to use.")
-            }
-        }
-        .formStyle(.grouped)
-        .padding()
-        .accessibilityIdentifier(SettingsSurfaceAccessibility.startupFiles)
-        .animation(
-            reduceMotion ? nil : .easeInOut(duration: 0.18),
-            value: model.firmwareSettingsError
+    private var debugToolsBinding: Binding<Bool> {
+        Binding(
+            get: { model.debugToolsEnabled },
+            set: { model.setDebugToolsEnabled($0) }
         )
-        .animation(
-            reduceMotion ? nil : .easeInOut(duration: 0.18),
-            value: model.firmwareSettingsNotice
-        )
-        .alert(
-            removalCandidate.map { "Remove \($0.title) Startup File?" }
-                ?? "Remove Startup File?",
-            isPresented: Binding(
-                get: { removalCandidate != nil },
-                set: { if !$0 { removalCandidate = nil } }
-            )
-        ) {
-            Button("Cancel", role: .cancel) {
-                removalCandidate = nil
-            }
-            .keyboardShortcut(.defaultAction)
-
-            if let kind = removalCandidate {
-                Button("Remove", role: .destructive) {
-                    removalCandidate = nil
-                    model.removeFirmwareFromSettings(kind)
-                }
-            }
-        } message: {
-            if let kind = removalCandidate {
-                Text("Games for \(kind.title) will return to SwanSong Open IPL. The original file outside SwanSong is not changed.")
-            }
-        }
-        .onChange(of: model.firmwareSettingsNotice) { _, notice in
-            guard let notice else { return }
-            postAccessibilityAnnouncement(notice, priority: .high)
-            restoreFirmwareActionFocus()
-        }
-        .onChange(of: model.firmwareSettingsError) { _, error in
-            guard let error else { return }
-            postAccessibilityAnnouncement("Startup file error. \(error)", priority: .high)
-            feedbackHasAccessibilityFocus = true
-            restoreFirmwareActionFocus(accessibility: false)
-        }
-        .onChange(of: model.firmwareSettingsIsBusy) { _, isBusy in
-            guard isBusy else { return }
-            postAccessibilityAnnouncement("Checking and installing the startup file.")
-        }
-        .sheet(isPresented: $showsStartupFileGuide) {
-            StartupFileGuideView()
-        }
-    }
-
-    private func firmwareRow(_ kind: WonderSwanFirmwareKind) -> some View {
-        let installed = model.isFirmwareInstalled(kind)
-        let rowReadiness = libraryReadiness.rowReadiness(for: kind)
-        let rowColor = readinessColor(for: rowReadiness)
-        return VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .top, spacing: 12) {
-                Image(systemName: rowReadiness.symbol)
-                    .font(.title3)
-                    .foregroundStyle(rowColor)
-                    .accessibilityHidden(true)
-
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(kind.title)
-                        .font(.body.weight(.semibold))
-                    Text(systemDescription(for: kind))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-
-                Spacer()
-
-                Label(
-                    rowReadiness.title,
-                    systemImage: rowReadiness.symbol
-                )
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(rowColor)
-                .accessibilityLabel(
-                    "\(kind.title), \(rowReadiness.title.lowercased())"
-                )
-            }
-
-            ViewThatFits(in: .horizontal) {
-                HStack(spacing: 10) {
-                    firmwareDropSummary(kind, installed: installed)
-                    Spacer(minLength: 12)
-                    firmwareActions(kind, installed: installed, readiness: rowReadiness)
-                }
-
-                VStack(alignment: .leading, spacing: 9) {
-                    firmwareDropSummary(kind, installed: installed)
-                    firmwareActions(kind, installed: installed, readiness: rowReadiness)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                }
-            }
-        }
-        .padding(12)
-        .background(
-            targetedFirmwareKind == kind
-                ? SwanTheme.accent.opacity(0.10)
-                : rowColor.opacity(0.035),
-            in: RoundedRectangle(cornerRadius: 12, style: .continuous)
-        )
-        .overlay {
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .stroke(
-                    targetedFirmwareKind == kind
-                        ? SwanTheme.cyan.opacity(0.7)
-                        : Color.clear,
-                    style: StrokeStyle(lineWidth: 1.5, dash: [6, 5])
-                )
-        }
-        .accessibilityElement(children: .contain)
-        .accessibilityIdentifier("firmware-settings-\(kind.rawValue)-row")
-        .dropDestination(for: URL.self) { urls, _ in
-            guard
-                !model.firmwareImportIsBusy,
-                !model.isPlaying,
-                let url = urls.first,
-                urls.count == 1
-            else { return false }
-            pendingFocusKind = kind
-            model.installFirmwareFromSettings(at: url, requiredKind: kind)
-            return true
-        } isTargeted: { targeted in
-            targetedFirmwareKind = targeted ? kind : nil
-        }
-        .animation(.easeInOut(duration: 0.14), value: targetedFirmwareKind)
-    }
-
-    private func firmwareDropSummary(
-        _ kind: WonderSwanFirmwareKind,
-        installed: Bool
-    ) -> some View {
-        Label(
-            targetedFirmwareKind == kind
-                ? "Release to validate"
-                : "\(kind.expectedByteCount / 1_024) KiB · Drop to \(installed ? "replace" : "add")",
-            systemImage: targetedFirmwareKind == kind
-                ? "arrow.down.circle.fill"
-                : "arrow.down.doc"
-        )
-        .font(.caption)
-        .foregroundStyle(
-            targetedFirmwareKind == kind ? SwanTheme.accent : Color.secondary
-        )
-        .fixedSize(horizontal: false, vertical: true)
-    }
-
-    @ViewBuilder
-    private func firmwareActions(
-        _ kind: WonderSwanFirmwareKind,
-        installed: Bool,
-        readiness: StartupFileRowReadiness
-    ) -> some View {
-        HStack(spacing: 8) {
-            firmwareChooseButton(kind, installed: installed)
-                .buttonStyle(.bordered)
-
-            if installed {
-                Menu {
-                    Button("Remove Startup File…", systemImage: "trash", role: .destructive) {
-                        removalCandidate = kind
-                    }
-                } label: {
-                    Image(systemName: "ellipsis.circle")
-                        .frame(
-                            minWidth: SettingsSurfaceAccessibility.minimumInteractiveDimension,
-                            minHeight: SettingsSurfaceAccessibility.minimumInteractiveDimension
-                        )
-                        .contentShape(Rectangle())
-                }
-                .menuStyle(.borderlessButton)
-                .menuIndicator(.hidden)
-                .disabled(model.firmwareImportIsBusy || model.isPlaying)
-                .help("More actions for \(kind.title)")
-                .accessibilityLabel("More actions for \(kind.title) startup file")
-            }
-        }
-    }
-
-    private func firmwareChooseButton(
-        _ kind: WonderSwanFirmwareKind,
-        installed: Bool
-    ) -> some View {
-        Button(installed ? "Replace…" : "Add…") {
-            pendingFocusKind = kind
-            model.chooseFirmwareFromSettings(for: kind)
-        }
-        .frame(minHeight: SettingsSurfaceAccessibility.minimumInteractiveDimension)
-        .disabled(model.firmwareImportIsBusy || model.isPlaying)
-        .focused($focusedFirmwareKind, equals: kind)
-        .accessibilityFocused($accessibilityFocusedFirmwareKind, equals: kind)
-        .accessibilityLabel(
-            "\(installed ? "Replace" : "Add") \(kind.title) startup file"
-        )
-    }
-
-    @ViewBuilder
-    private var settingsFeedback: some View {
-        Group {
-            if model.firmwareSettingsIsBusy {
-                HStack(spacing: 11) {
-                    ProgressView()
-                        .controlSize(.small)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Checking startup file…")
-                            .font(.callout.weight(.semibold))
-                        Text("SwanSong is validating the selected system and saving a private local copy.")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                .accessibilityElement(children: .combine)
-            } else if let error = model.firmwareSettingsError {
-                feedbackRow(
-                    error,
-                    symbol: "exclamationmark.triangle.fill",
-                    color: .red
-                ) {
-                    model.firmwareSettingsError = nil
-                }
-            } else if let notice = model.firmwareSettingsNotice {
-                feedbackRow(
-                    notice,
-                    symbol: "checkmark.circle.fill",
-                    color: .green
-                ) {
-                    model.firmwareSettingsNotice = nil
-                }
-            }
-        }
-        .accessibilityFocused($feedbackHasAccessibilityFocus)
-    }
-
-    private func feedbackRow(
-        _ message: String,
-        symbol: String,
-        color: Color,
-        onDismiss: @escaping () -> Void
-    ) -> some View {
-        HStack(alignment: .top, spacing: 10) {
-            Image(systemName: symbol)
-                .foregroundStyle(color)
-                .accessibilityHidden(true)
-            Text(message)
-                .font(.callout)
-                .fixedSize(horizontal: false, vertical: true)
-            Spacer()
-            Button("Dismiss", systemImage: "xmark", action: onDismiss)
-                .labelStyle(.iconOnly)
-                .buttonStyle(.plain)
-                .accessibilityLabel("Dismiss setup status")
-        }
-        .padding(.vertical, 3)
-        .accessibilityElement(children: .contain)
-        .transition(
-            reduceMotion
-                ? .opacity
-                : .move(edge: .top).combined(with: .opacity)
-        )
-    }
-
-    private var libraryReadiness: StartupFileLibraryReadiness {
-        StartupFileLibraryReadiness(
-            libraryKinds: model.startupFileKindsUsedByLibrary,
-            installedKinds: Set(
-                WonderSwanFirmwareKind.allCases.filter {
-                    model.isFirmwareInstalled($0)
-                }
-            )
-        )
-    }
-
-    private var readinessSummaryColor: Color {
-        .green
-    }
-
-    private func readinessColor(for readiness: StartupFileRowReadiness) -> Color {
-        switch readiness {
-        case .originalInstalled: .green
-        case .openIPL: SwanTheme.cyan
-        }
-    }
-
-    private func restoreFirmwareActionFocus(accessibility: Bool = true) {
-        guard let kind = pendingFocusKind else { return }
-        pendingFocusKind = nil
-        Task { @MainActor in
-            await Task.yield()
-            focusedFirmwareKind = kind
-            if accessibility {
-                accessibilityFocusedFirmwareKind = kind
-            }
-        }
-    }
-
-    private func systemDescription(for kind: WonderSwanFirmwareKind) -> String {
-        switch kind {
-        case .monochrome:
-            "SwanSong Open IPL starts monochrome WonderSwan games; an installed original file overrides it."
-        case .color:
-            "SwanSong Open IPL starts WonderSwan Color and SwanCrystal games; an installed original file overrides it."
-        case .pocketChallengeV2:
-            "SwanSong Open IPL starts Pocket Challenge V2 software on its distinct Benesse hardware path; an installed original file overrides it."
-        }
     }
 }
 
@@ -10797,6 +10355,10 @@ private struct ControllerSettingsView: View {
                         }
                     }
                     .padding(.top, 4)
+                }
+
+                if !model.unavailableControllerBindings.isEmpty {
+                    controllerCapabilityWarning
                 }
 
                 mappingDeck
@@ -10890,6 +10452,12 @@ private struct ControllerSettingsView: View {
         .background(.quaternary, in: Capsule())
         .accessibilityLabel("Controller connection")
         .accessibilityValue(model.connectedControllerName ?? "No controller connected")
+        .accessibilityHint(
+            "USB and Bluetooth gamepads appear when macOS exposes a standard GameController profile."
+        )
+        .help(
+            "USB and Bluetooth gamepads appear when macOS exposes a standard GameController profile."
+        )
     }
 
     private var presetPicker: some View {
@@ -10901,6 +10469,35 @@ private struct ControllerSettingsView: View {
             }
         }
         .frame(minWidth: 220, idealWidth: 280, maxWidth: 300)
+    }
+
+    private var controllerCapabilityWarning: some View {
+        let bindings = model.unavailableControllerBindings
+        let controls = bindings.map(\.control.title).joined(separator: ", ")
+        return HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(.orange)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Limited controller profile")
+                    .font(.callout.weight(.semibold))
+                Text(
+                    "macOS does not expose the saved controls for \(controls) on the connected controller input. Remap the marked tiles or connect a full gamepad; keyboard controls remain available."
+                )
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.orange.opacity(0.10), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier(
+            SettingsSurfaceAccessibility.controllerCapabilityWarning
+        )
+        .accessibilityLabel("Limited controller profile")
+        .accessibilityValue("Unavailable saved controls: \(controls)")
     }
 
     private var restoreDefaultButton: some View {
@@ -11021,7 +10618,21 @@ private struct ControllerMappingKey: View {
     }
 
     private var isActive: Bool {
-        model.controllerInput.contains(control.engineInput)
+        model.controllerPreviewInput.contains(control.engineInput)
+    }
+
+    private var isUnavailable: Bool {
+        guard model.connectedControllerName != nil, let element else {
+            return false
+        }
+        return !model.controllerAvailableElements.contains(element)
+    }
+
+    private var accessibilityValue: String {
+        guard let element else { return "Unassigned" }
+        return isUnavailable
+            ? "\(element.title), unavailable on connected controller"
+            : element.title
     }
 
     var body: some View {
@@ -11040,24 +10651,45 @@ private struct ControllerMappingKey: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.7)
             }
-            .foregroundStyle(isActive || isLearning ? Color.white : Color.primary)
+            .foregroundStyle(
+                isActive || isLearning
+                    ? Color.white
+                    : isUnavailable ? Color.orange : Color.primary
+            )
             .frame(width: 74, height: 48)
             .background(
-                isLearning ? Color.orange : isActive ? Color.accentColor : Color.primary.opacity(0.07),
+                isLearning
+                    ? Color.orange
+                    : isActive
+                        ? Color.accentColor
+                        : isUnavailable
+                            ? Color.orange.opacity(0.12)
+                            : Color.primary.opacity(0.07),
                 in: RoundedRectangle(cornerRadius: 11, style: .continuous)
             )
             .overlay {
                 RoundedRectangle(cornerRadius: 11, style: .continuous)
-                    .stroke(isLearning ? Color.orange : Color.accentColor.opacity(isActive ? 0.8 : 0.16), lineWidth: 1.5)
+                    .stroke(
+                        isLearning || isUnavailable
+                            ? Color.orange
+                            : Color.accentColor.opacity(isActive ? 0.8 : 0.16),
+                        lineWidth: 1.5
+                    )
             }
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Map \(control.title)")
-        .accessibilityValue(element?.title ?? "Unassigned")
-        .accessibilityHint("Press a physical controller control, or use the binding menu")
+        .accessibilityValue(accessibilityValue)
+        .accessibilityHint(
+            isUnavailable
+                ? "This saved binding is unavailable on the connected controller. Use the binding menu to choose an available control."
+                : "Press a physical controller control, or use the binding menu"
+        )
         .overlay(alignment: .bottomTrailing) {
             Menu {
                 ForEach(ControllerElement.allCases) { candidate in
+                    let candidateIsUnavailable = model.connectedControllerName != nil
+                        && !model.controllerAvailableElements.contains(candidate)
                     Button {
                         model.setControllerBinding(control, to: candidate)
                     } label: {
@@ -11065,10 +10697,13 @@ private struct ControllerMappingKey: View {
                             Label(candidate.title, systemImage: "checkmark")
                         } else if let assigned = model.controllerProfile.control(for: candidate) {
                             Text("\(candidate.title) · currently \(assigned.title)")
+                        } else if candidateIsUnavailable {
+                            Text("\(candidate.title) · unavailable")
                         } else {
                             Text(candidate.title)
                         }
                     }
+                    .disabled(candidateIsUnavailable)
                 }
                 Divider()
                 Button("Clear Binding", systemImage: "xmark.circle", role: .destructive) {
@@ -11092,7 +10727,11 @@ private struct ControllerMappingKey: View {
         }
         .animation(.easeOut(duration: 0.1), value: isActive)
         .animation(.easeOut(duration: 0.15), value: isLearning)
-        .help("\(control.title): \(element?.title ?? "Unassigned")")
+        .help(
+            isUnavailable
+                ? "\(control.title): \(element?.title ?? "Unassigned") is unavailable on the connected controller"
+                : "\(control.title): \(element?.title ?? "Unassigned")"
+        )
     }
 }
 
@@ -11110,7 +10749,7 @@ private struct ControllerLiveInputView: View {
             inputBadges(
                 title: "WonderSwan",
                 values: WonderSwanControl.allCases
-                    .filter { model.controllerInput.contains($0.engineInput) }
+                    .filter { model.controllerPreviewInput.contains($0.engineInput) }
                     .map(\.title)
             )
         }

@@ -1,8 +1,10 @@
 #!/bin/sh
 set -eu
 
-SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-MACOS_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
+SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+MACOS_DIR=$(CDPATH='' cd -- "$SCRIPT_DIR/.." && pwd)
+EXPECTED_BUNDLE_ID=com.regionallyfamous.swansong
+EXPECTED_TEAM_ID=3J8H48TP7P
 SIGNING_MODE=${SWAN_SIGNING_MODE:-developer-id}
 UNIVERSAL=${SWAN_UNIVERSAL:-1}
 OUTPUT_DIR=${SWAN_APP_OUTPUT_DIR:-"$MACOS_DIR/.build/app"}
@@ -19,6 +21,11 @@ case "$SIGNING_MODE" in
     ;;
 esac
 
+if [ "$UNIVERSAL" != "1" ]; then
+  echo "release-app requires SWAN_UNIVERSAL=1" >&2
+  exit 64
+fi
+
 case "$ALLOW_DIRTY" in
   0)
     if [ -n "$(git -C "$MACOS_DIR" status --porcelain)" ]; then
@@ -32,6 +39,12 @@ case "$ALLOW_DIRTY" in
     exit 64
     ;;
 esac
+
+SOURCE_COMMIT=$(git -C "$MACOS_DIR" rev-parse --verify HEAD)
+printf '%s\n' "$SOURCE_COMMIT" | grep -Eq '^[0-9a-f]{40}$' || {
+  echo "could not determine a 40-character release source commit" >&2
+  exit 1
+}
 
 case "$NOTARIZE" in
   0) ;;
@@ -47,29 +60,90 @@ case "$NOTARIZE" in
     ;;
 esac
 
+# Every release build input comes from a private detached worktree at the
+# captured commit. Before/after cleanliness checks on the developer worktree
+# cannot detect a tracked source that is changed only while the compiler reads
+# it, so the live worktree is never used as a release compilation source.
+RELEASE_SOURCE_TEMP=$(mktemp -d \
+  "${TMPDIR:-/tmp}/swan-song-release-source.XXXXXX")
+RELEASE_DESKTOP_SOURCE="$RELEASE_SOURCE_TEMP/desktop"
+RELEASE_WORKTREE_ADDED=0
+cleanup() {
+  status=$?
+  trap - EXIT INT TERM
+  if [ "$RELEASE_WORKTREE_ADDED" = "1" ]; then
+    git -C "$MACOS_DIR" worktree remove --force \
+      "$RELEASE_DESKTOP_SOURCE" >/dev/null 2>&1 || true
+  fi
+  rm -rf "$RELEASE_SOURCE_TEMP"
+  exit "$status"
+}
+trap cleanup EXIT INT TERM
+git -C "$MACOS_DIR" worktree add --quiet --detach \
+  "$RELEASE_DESKTOP_SOURCE" "$SOURCE_COMMIT"
+RELEASE_WORKTREE_ADDED=1
+if [ "$(git -C "$RELEASE_DESKTOP_SOURCE" rev-parse --verify HEAD)" \
+    != "$SOURCE_COMMIT" ] \
+  || [ -n "$(git -C "$RELEASE_DESKTOP_SOURCE" \
+    status --porcelain --untracked-files=all)" ]; then
+  echo "private release source does not match the captured clean commit" >&2
+  exit 1
+fi
+RELEASE_SCRIPT_DIR="$RELEASE_DESKTOP_SOURCE/Scripts"
+RELEASE_OUTPUT_DIR=${SWAN_RELEASE_OUTPUT_DIR:-"$MACOS_DIR/dist"}
+
 if [ "$NOTARIZE" = "1" ]; then
   VERSION=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' \
-    "$MACOS_DIR/Packaging/Info.plist")
+    "$RELEASE_DESKTOP_SOURCE/Packaging/Info.plist")
   EXPECTED_TAG="v$VERSION"
-  SOURCE_TAG=$(git -C "$MACOS_DIR" describe --tags --exact-match 2>/dev/null || true)
+  SOURCE_TAG=$(git -C "$MACOS_DIR" describe --tags --exact-match \
+    "$SOURCE_COMMIT" 2>/dev/null || true)
   if [ "$ALLOW_UNTAGGED" != "1" ] && [ "$SOURCE_TAG" != "$EXPECTED_TAG" ]; then
     echo "notarized release must be built from exact tag $EXPECTED_TAG" >&2
     exit 64
   fi
 fi
 
+"$RELEASE_SCRIPT_DIR/check-homebrew-production-readiness.sh"
+
+# The shared ares checkout only supplies immutable Git objects. Prepare it with
+# the commit-derived helper and patch, then materialize the actual build source
+# privately from the locked commit and that same commit-bound patch.
+ARES_REPOSITORY=${ARES_SOURCE_DIR:-"$MACOS_DIR/.engine/ares"}
+ARES_SOURCE_DIR="$ARES_REPOSITORY" \
+  "$RELEASE_SCRIPT_DIR/prepare-ares.sh" >/dev/null
+ARES_COMMIT=$(plutil -extract commit raw \
+  "$RELEASE_DESKTOP_SOURCE/Dependencies/ares.lock.json")
+RELEASE_ARES_SOURCE="$RELEASE_SOURCE_TEMP/ares-source"
+RELEASE_ARES_PATCH="$RELEASE_DESKTOP_SOURCE/Engine/ares-headless.patch"
+"$RELEASE_SCRIPT_DIR/materialize-ares-source.sh" \
+  "$ARES_REPOSITORY" "$ARES_COMMIT" "$RELEASE_ARES_SOURCE" \
+  "$RELEASE_ARES_PATCH" >/dev/null
+
+RELEASE_BUILD_ROOT="$RELEASE_SOURCE_TEMP/build"
 SWAN_SIGNING_MODE="$SIGNING_MODE" \
 SWAN_UNIVERSAL="$UNIVERSAL" \
-  "$SCRIPT_DIR/build-app.sh" >/dev/null
-"$SCRIPT_DIR/check-app-payload.sh" "$APP"
+SWAN_APP_OUTPUT_DIR="$OUTPUT_DIR" \
+ARES_SOURCE_DIR="$RELEASE_ARES_SOURCE" \
+ARES_BUILD_DIR="$RELEASE_BUILD_ROOT/ares" \
+SWAN_UNIVERSAL_SWIFT_DIR="$RELEASE_BUILD_ROOT/swift" \
+  "$RELEASE_SCRIPT_DIR/build-app.sh" >/dev/null
+"$RELEASE_SCRIPT_DIR/check-app-source-provenance.sh" --require-clean \
+  "$APP" "$SOURCE_COMMIT" "$ARES_COMMIT" >/dev/null
+"$RELEASE_SCRIPT_DIR/check-app-payload.sh" "$APP"
 if [ "$UNIVERSAL" = "1" ]; then
-  "$SCRIPT_DIR/verify-app-architectures.sh" "$APP"
+  "$RELEASE_SCRIPT_DIR/verify-app-architectures.sh" "$APP"
 fi
-SWAN_REQUIRE_DEVELOPER_ID=1 "$SCRIPT_DIR/verify-app-signature.sh" "$APP"
+SWAN_REQUIRE_DEVELOPER_ID=1 \
+SWAN_EXPECTED_BUNDLE_ID="$EXPECTED_BUNDLE_ID" \
+SWAN_EXPECTED_TEAM_ID="$EXPECTED_TEAM_ID" \
+  "$RELEASE_SCRIPT_DIR/verify-app-signature.sh" "$APP"
 
 if [ "$NOTARIZE" = "1" ]; then
-  "$SCRIPT_DIR/notarize-app.sh" "$APP"
-  "$SCRIPT_DIR/package-release.sh" "$APP"
+  "$RELEASE_SCRIPT_DIR/notarize-app.sh" "$APP"
+  ARES_SOURCE_REPOSITORY="$ARES_REPOSITORY" \
+  SWAN_RELEASE_OUTPUT_DIR="$RELEASE_OUTPUT_DIR" \
+    "$RELEASE_SCRIPT_DIR/package-release.sh" "$APP"
 else
   echo "Developer ID signing is complete; notarization was not requested." >&2
   echo "Set SWAN_NOTARIZE=1 and SWAN_NOTARY_PROFILE to prepare a distributable build." >&2

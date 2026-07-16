@@ -3,18 +3,23 @@
 This roadmap describes intended outcomes, not promises or compatibility claims.
 Release notes and the issue tracker are authoritative for shipped behavior.
 
-## First public beta
+## 0.2 beta closure
 
-- Freeze the bundle identifier and public product naming.
-- Build from an exact signed source tag on a clean signing Mac.
-- Developer ID sign, notarize, staple, and pass Gatekeeper assessment.
-- Publish a versioned universal archive, exact corresponding source archive,
-  SHA-256 checksums, machine-readable manifest, and human release notes.
-- Replace design studies and diagnostic captures with rights-safe screenshots
-  of the running app using open or clean-room fixtures.
-- Add a native welcome, legal, privacy, and copy-support-information surface.
-- Complete install, firmware setup, keyboard, controller, save/state, portrait,
-  accessibility, and minimum-macOS acceptance passes.
+- Publish the Open-IPL-only 0.2 build as an explicitly marked GitHub
+  prerelease, built from its exact signed source tag on a clean signing Mac.
+- Developer ID sign, notarize, staple, and pass Gatekeeper assessment for the
+  universal Apple silicon and Intel archive.
+- Publish the exact corresponding-source archive, SHA-256 checksums,
+  machine-readable manifest, human release notes, and beta testing guide.
+- Complete install, Open IPL, keyboard, standard GameController, save/state,
+  portrait, accessibility, and minimum-macOS acceptance passes. Treat devices
+  that macOS does not expose through GameController as unsupported, not as
+  silently guessed raw HID layouts.
+- Keep the Homebrew Catalog visibly **Coming Soon** and network-silent until the
+  first explicitly licensed Story Forge ROM, immutable release asset, signed
+  non-empty catalog, and production public key all pass the release gate.
+- Keep SwanSong Desktop and the separate Analogue Pocket `swansong-core`
+  release lanes explicit; neither product installs or updates the other.
 
 ## 1.0 readiness
 
@@ -22,7 +27,7 @@ Release notes and the issue tracker are authoritative for shipped behavior.
   first frame as a full-game verdict.
 - Complete release testing on supported Apple silicon and Intel hardware.
 - Publish a concise known-limits and compatibility report.
-- Add an explicit, user-invoked update check that opens the Releases page.
+- Retain and verify the explicit, user-invoked Releases-page update check.
 - Review GPL corresponding-source completeness with a license specialist.
 
 ## Later

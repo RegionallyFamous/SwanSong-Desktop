@@ -6,7 +6,7 @@ public enum PlayerFailurePhase: String, Codable, Equatable, Sendable {
 }
 
 /// Context retained after the native runner has been safely unloaded. This is
-/// presentation-only: it never stores ROM, startup-file, save, or state bytes.
+/// presentation-only: it never stores ROM, save, or state bytes.
 public struct PlayerFailureState: Identifiable, Equatable, Sendable {
     public let id: UUID
     public let gameID: UUID

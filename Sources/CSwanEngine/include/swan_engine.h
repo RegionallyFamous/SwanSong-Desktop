@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-#define SWAN_ENGINE_ABI_VERSION 4u
+#define SWAN_ENGINE_ABI_VERSION 5u
 
 typedef struct swan_engine swan_engine_t;
 
@@ -188,10 +188,6 @@ SWAN_ENGINE_API swan_result_t swan_engine_audio_batch(
 SWAN_ENGINE_API swan_result_t swan_engine_stage_persistence(
     swan_engine_t* engine,
     swan_persistence_kind_t kind,
-    const uint8_t* bytes,
-    size_t size);
-SWAN_ENGINE_API swan_result_t swan_engine_stage_boot_rom(
-    swan_engine_t* engine,
     const uint8_t* bytes,
     size_t size);
 SWAN_ENGINE_API swan_result_t swan_engine_persistence_size(

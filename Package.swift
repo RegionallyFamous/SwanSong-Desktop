@@ -45,6 +45,10 @@ let package = Package(
         .executable(name: "SwanSongChecks", targets: ["SwanSongChecks"]),
         .executable(name: "SwanSongDifferential", targets: ["SwanSongDifferential"]),
         .executable(name: "SwanSongProbe", targets: ["SwanSongProbe"]),
+        .executable(
+            name: "SwanSongRouteRunner",
+            targets: ["SwanSongRouteRunner"]
+        ),
         .executable(name: "SwanSongSoak", targets: ["SwanSongSoak"]),
         .executable(
             name: "SwanSongTextIntakeChecks",
@@ -72,6 +76,7 @@ let package = Package(
                 .linkedFramework("ImageIO"),
                 .linkedFramework("Metal"),
                 .linkedFramework("MetalKit"),
+                .linkedFramework("Security"),
                 .linkedFramework("SwiftUI"),
                 .linkedFramework("UniformTypeIdentifiers"),
                 .linkedFramework("Vision"),
@@ -87,6 +92,10 @@ let package = Package(
         ),
         .executableTarget(
             name: "SwanSongProbe",
+            dependencies: ["SwanSongKit"]
+        ),
+        .executableTarget(
+            name: "SwanSongRouteRunner",
             dependencies: ["SwanSongKit"]
         ),
         .executableTarget(

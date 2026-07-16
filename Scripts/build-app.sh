@@ -1,15 +1,15 @@
 #!/bin/sh
 set -eu
 
-SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-MACOS_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
+SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+MACOS_DIR=$(CDPATH='' cd -- "$SCRIPT_DIR/.." && pwd)
 UNIVERSAL=${SWAN_UNIVERSAL:-0}
 case "$UNIVERSAL" in
   0)
-    DEFAULT_ENGINE_BUILD_DIR="$MACOS_DIR/.engine/build"
+    DEFAULT_ENGINE_BUILD_DIR="$MACOS_DIR/.engine/build-app"
     ;;
   1)
-    DEFAULT_ENGINE_BUILD_DIR="$MACOS_DIR/.engine/build-universal"
+    DEFAULT_ENGINE_BUILD_DIR="$MACOS_DIR/.engine/build-app-universal"
     ;;
   *)
     echo "unknown SWAN_UNIVERSAL '$UNIVERSAL' (use 0 or 1)" >&2
@@ -23,6 +23,15 @@ APP_DIR="$OUTPUT_DIR/SwanSong.app"
 UNIVERSAL_SWIFT_DIR=${SWAN_UNIVERSAL_SWIFT_DIR:-"$MACOS_DIR/.build/swan-universal"}
 SIGNING_MODE=${SWAN_SIGNING_MODE:-adhoc}
 SIGNING_IDENTITY=${SWAN_CODE_SIGN_IDENTITY:-}
+SOURCE_COMMIT=$(git -C "$MACOS_DIR" rev-parse --verify HEAD)
+printf '%s\n' "$SOURCE_COMMIT" | grep -Eq '^[0-9a-f]{40}$' || {
+  echo "could not determine a 40-character Git source commit" >&2
+  exit 1
+}
+SOURCE_TREE_DIRTY=false
+if [ -n "$(git -C "$MACOS_DIR" status --porcelain --untracked-files=all)" ]; then
+  SOURCE_TREE_DIRTY=true
+fi
 
 find_signing_identity() {
   prefix=$1
@@ -134,6 +143,13 @@ if [ "$UNIVERSAL" = "1" ]; then
     --scratch-path "$ARM_SCRATCH" \
     --triple arm64-apple-macosx14.0 \
     --sdk "$SDK_PATH"
+  SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
+    --package-path "$MACOS_DIR" \
+    --product SwanSongRouteRunner \
+    --configuration "$CONFIGURATION" \
+    --scratch-path "$ARM_SCRATCH" \
+    --triple arm64-apple-macosx14.0 \
+    --sdk "$SDK_PATH"
   ARM_BIN_DIR=$(SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
     --package-path "$MACOS_DIR" \
     --product SwanSong \
@@ -150,6 +166,13 @@ if [ "$UNIVERSAL" = "1" ]; then
     --scratch-path "$INTEL_SCRATCH" \
     --triple x86_64-apple-macosx14.0 \
     --sdk "$SDK_PATH"
+  SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
+    --package-path "$MACOS_DIR" \
+    --product SwanSongRouteRunner \
+    --configuration "$CONFIGURATION" \
+    --scratch-path "$INTEL_SCRATCH" \
+    --triple x86_64-apple-macosx14.0 \
+    --sdk "$SDK_PATH"
   INTEL_BIN_DIR=$(SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
     --package-path "$MACOS_DIR" \
     --product SwanSong \
@@ -161,11 +184,17 @@ if [ "$UNIVERSAL" = "1" ]; then
 else
   SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
     --package-path "$MACOS_DIR" \
+    --product SwanSong \
+    --configuration "$CONFIGURATION"
+  SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
+    --package-path "$MACOS_DIR" \
+    --product SwanSongRouteRunner \
     --configuration "$CONFIGURATION"
 fi
 
 rm -rf "$APP_DIR"
 mkdir -p "$APP_DIR/Contents/MacOS"
+mkdir -p "$APP_DIR/Contents/Helpers"
 mkdir -p "$APP_DIR/Contents/Frameworks"
 mkdir -p "$APP_DIR/Contents/Resources"
 
@@ -174,13 +203,21 @@ if [ "$UNIVERSAL" = "1" ]; then
     "$ARM_BIN_DIR/SwanSong" \
     "$INTEL_BIN_DIR/SwanSong" \
     -output "$APP_DIR/Contents/MacOS/SwanSong"
+  xcrun lipo -create \
+    "$ARM_BIN_DIR/SwanSongRouteRunner" \
+    "$INTEL_BIN_DIR/SwanSongRouteRunner" \
+    -output "$APP_DIR/Contents/Helpers/SwanSongRouteRunner"
 else
   cp "$MACOS_DIR/.build/$CONFIGURATION/SwanSong" "$APP_DIR/Contents/MacOS/SwanSong"
+  cp "$MACOS_DIR/.build/$CONFIGURATION/SwanSongRouteRunner" \
+    "$APP_DIR/Contents/Helpers/SwanSongRouteRunner"
 fi
 cp "$BUILD_DIR/libSwanAresEngine.dylib" "$APP_DIR/Contents/Frameworks/libSwanAresEngine.dylib"
 cp "$MACOS_DIR/Packaging/Info.plist" "$APP_DIR/Contents/Info.plist"
 cp "$MACOS_DIR/Packaging/AppIcon.icns" "$APP_DIR/Contents/Resources/AppIcon.icns"
 cp "$MACOS_DIR/Packaging/AppIcon.png" "$APP_DIR/Contents/Resources/AppIcon.png"
+cp "$MACOS_DIR/Packaging/AppIconCompact.png" \
+  "$APP_DIR/Contents/Resources/AppIconCompact.png"
 cp "$MACOS_DIR/LICENSE" "$APP_DIR/Contents/Resources/LICENSE"
 cp "$MACOS_DIR/PRIVACY.md" "$APP_DIR/Contents/Resources/PRIVACY.md"
 cp "$MACOS_DIR/SUPPORT.md" "$APP_DIR/Contents/Resources/SUPPORT.md"
@@ -196,44 +233,60 @@ list_rpaths() {
   '
 }
 
-if otool -l "$APP_DIR/Contents/MacOS/SwanSong" | grep -Fq "path $BUILD_DIR"; then
-  install_name_tool -delete_rpath "$BUILD_DIR" \
-    "$APP_DIR/Contents/MacOS/SwanSong"
-fi
-
-# SwiftPM can add the selected Command Line Tools or full-Xcode runtime
-# directory while cross-compiling. macOS 14 supplies the Swift runtime;
-# retaining any absolute developer-machine path would make the release bundle
-# non-portable. `sort -u` is important because otool prints each universal2
-# slice separately.
-development_swift_rpaths=$(list_rpaths \
+for executable in \
   "$APP_DIR/Contents/MacOS/SwanSong" \
-  | grep -E '^/(Library/Developer/CommandLineTools|Applications/.*Xcode[^/]*)/.*swift' \
-  | sort -u \
-  || true)
-while IFS= read -r rpath; do
-  if [ -n "$rpath" ]; then
-    install_name_tool -delete_rpath "$rpath" \
-      "$APP_DIR/Contents/MacOS/SwanSong"
+  "$APP_DIR/Contents/Helpers/SwanSongRouteRunner"; do
+  if otool -l "$executable" | grep -Fq "path $BUILD_DIR"; then
+    install_name_tool -delete_rpath "$BUILD_DIR" "$executable"
   fi
-done <<EOF
+
+  # SwiftPM can add the selected Command Line Tools or full-Xcode runtime
+  # directory while cross-compiling. macOS 14 supplies the Swift runtime;
+  # retaining any absolute developer-machine path would make the release bundle
+  # non-portable. `sort -u` is important because otool prints each universal2
+  # slice separately.
+  development_swift_rpaths=$(list_rpaths "$executable" \
+    | grep -E '^/(Library/Developer/CommandLineTools|Applications/.*Xcode[^/]*)/.*swift' \
+    | sort -u \
+    || true)
+  while IFS= read -r rpath; do
+    if [ -n "$rpath" ]; then
+      install_name_tool -delete_rpath "$rpath" "$executable"
+    fi
+  done <<EOF
 $development_swift_rpaths
 EOF
 
-install_name_tool -add_rpath "@executable_path/../Frameworks" \
-  "$APP_DIR/Contents/MacOS/SwanSong"
+  install_name_tool -add_rpath "@executable_path/../Frameworks" "$executable"
 
-if list_rpaths "$APP_DIR/Contents/MacOS/SwanSong" \
-  | grep -Eq '^/(Library/Developer/CommandLineTools|Applications/.*Xcode[^/]*)/.*swift'; then
-  echo "an absolute developer-toolchain Swift runtime rpath remains in the app" >&2
-  exit 1
+  if list_rpaths "$executable" \
+    | grep -Eq '^/(Library/Developer/CommandLineTools|Applications/.*Xcode[^/]*)/.*swift'; then
+    echo "an absolute developer-toolchain Swift runtime rpath remains in $executable" >&2
+    exit 1
+  fi
+done
+
+# Bind the exact source snapshot into the signed app. Recheck immediately
+# before signing so a commit change or working-tree mutation during the build
+# cannot be recorded as a clean build.
+FINAL_SOURCE_COMMIT=$(git -C "$MACOS_DIR" rev-parse --verify HEAD)
+if [ "$FINAL_SOURCE_COMMIT" != "$SOURCE_COMMIT" ] \
+  || [ -n "$(git -C "$MACOS_DIR" status --porcelain --untracked-files=all)" ]; then
+  SOURCE_TREE_DIRTY=true
 fi
+/usr/libexec/PlistBuddy -c \
+  "Add :SwanSongSourceCommit string $SOURCE_COMMIT" \
+  "$APP_DIR/Contents/Info.plist"
+/usr/libexec/PlistBuddy -c \
+  "Add :SwanSongSourceTreeDirty bool $SOURCE_TREE_DIRTY" \
+  "$APP_DIR/Contents/Info.plist"
 
 if [ "$UNIVERSAL" = "1" ]; then
   "$SCRIPT_DIR/verify-app-architectures.sh" "$APP_DIR"
 fi
 
 sign_code "$APP_DIR/Contents/Frameworks/libSwanAresEngine.dylib"
+sign_code "$APP_DIR/Contents/Helpers/SwanSongRouteRunner"
 sign_code "$APP_DIR"
 
 codesign --verify --deep --strict "$APP_DIR"

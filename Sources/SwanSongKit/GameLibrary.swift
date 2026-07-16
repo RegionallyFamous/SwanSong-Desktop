@@ -16,6 +16,10 @@ public struct GameRecord: Codable, Hashable, Identifiable, Sendable {
     public var sourceFileName: String?
     public var artworkPreference: GameArtworkPreference?
     public var compatibilityEvidence: GameCompatibilityEvidence?
+    /// Present when a managed copy came from SwanSong's verified first-party
+    /// homebrew catalog. The stable entry identity lets catalog updates keep the
+    /// existing library UUID, saves, states, artwork, and user metadata.
+    public var homebrewCatalogOrigin: HomebrewCatalogOrigin?
     /// Stored only when the cartridge footer cannot identify the hardware.
     /// Pocket Challenge V2 software uses the monochrome WonderSwan footer
     /// shape but requires a distinct system, mapper, keypad, and flash path.
@@ -33,6 +37,7 @@ public struct GameRecord: Codable, Hashable, Identifiable, Sendable {
         sourceFileName: String? = nil,
         artworkPreference: GameArtworkPreference? = nil,
         compatibilityEvidence: GameCompatibilityEvidence? = nil,
+        homebrewCatalogOrigin: HomebrewCatalogOrigin? = nil,
         preferredHardwareModel: EngineHardwareModel? = nil
     ) {
         self.id = id
@@ -46,6 +51,7 @@ public struct GameRecord: Codable, Hashable, Identifiable, Sendable {
         self.sourceFileName = sourceFileName
         self.artworkPreference = artworkPreference
         self.compatibilityEvidence = compatibilityEvidence
+        self.homebrewCatalogOrigin = homebrewCatalogOrigin
         self.preferredHardwareModel = preferredHardwareModel
     }
 
@@ -1333,7 +1339,7 @@ public struct GameStateStore: Sendable {
         guard firmwareByteCount == expectedSessionIdentity.firmwareByteCount,
               firmwareSHA256 == expectedSessionIdentity.firmwareSHA256 else {
             return .wrongFirmware(
-                "This saved moment was created with a different WonderSwan startup implementation or original firmware override."
+                "This saved moment was created with a different version of SwanSong Open IPL."
             )
         }
         guard manifest.backend == expectedSessionIdentity.backend else {

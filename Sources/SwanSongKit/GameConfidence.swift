@@ -92,7 +92,6 @@ public enum GameLaunchReadiness: String, Equatable, Sendable {
     case ready
     case checkingGame
     case gameUnavailable
-    case startupFileRequired
     case engineUnavailable
 }
 

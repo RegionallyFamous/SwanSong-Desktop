@@ -8,21 +8,80 @@ WonderSwan engine. It also includes an optional local Translation Lab.
 
 ## Does it include games or require a BIOS?
 
-It includes no games and no original system firmware. Normal play uses the
-independently written SwanSong Open IPL, so a BIOS is not required. SwanSong
-never searches for or downloads original firmware; an authorized local copy
-can be installed only as an optional compatibility override.
+The app bundle includes no games and no original system firmware. Normal play
+uses the independently written SwanSong Open IPL, so a BIOS is not required.
+SwanSong 0.2 always uses Open IPL and never accepts, searches for, or downloads
+original firmware. Import only game and homebrew images you are authorized to
+use. Historical 0.1.x behavior remains documented in its versioned release
+notes.
+
+## Can SwanSong install homebrew directly from GitHub?
+
+The signed, first-party Homebrew Catalog installer is implemented in the 0.2
+source, but it is not available in the current production configuration. The
+Homebrew page says **Coming Soon**, contains no production trust key, and makes
+no catalog or game-download request. **Add From Mac** remains available for
+authorized local homebrew. A future build can activate the catalog only after
+a non-empty signed catalog and its public trust key pass the release gate.
 
 ## Does it collect anything?
 
-SwanSong itself initiates no network requests and has no accounts, ads,
-analytics, telemetry, crash-reporting service, or automatic update checks.
-Read [PRIVACY.md](../PRIVACY.md) for the qualifications and storage details.
+SwanSong has no accounts, ads, analytics, telemetry, crash-reporting service,
+or automatic update checks. It makes no request at launch or in the
+background. The current production Homebrew page says **Coming Soon** and makes
+no catalog or game-download request. Read [PRIVACY.md](../PRIVACY.md) for the
+complete current policy and the disclosure that applies if a future release
+activates the catalog.
 
 ## Which Macs are supported?
 
 The release target is macOS 14 or newer on Apple silicon and Intel. Official
 archives are universal and must be Developer ID signed and notarized.
+
+## Does every USB gamepad work?
+
+SwanSong supports the Extended, Micro, and Directional profiles exposed by
+macOS's GameController framework, plus devices whose physical-input profile
+provides standard direction and action aliases. Connection method does not
+matter: a USB or Bluetooth gamepad can connect, disconnect, or be replaced
+while SwanSong is running.
+
+This is not a promise that every device sold as a USB gamepad will appear.
+Some older, DirectInput-style, unusual, or otherwise generic USB HID devices
+may not be surfaced by macOS as a GameController even when they follow the USB
+HID transport standard. SwanSong intentionally does not guess raw button
+numbers or vendor-specific HID reports: those layouts vary, can duplicate a
+GameController device, and could silently produce the wrong WonderSwan input.
+Use a macOS driver or mapping layer that exposes a standard GameController
+profile, or use the keyboard, for a device that does not appear in Settings.
+
+Micro and Directional profiles cannot necessarily emit every saved WonderSwan
+binding. Settings marks those unavailable bindings and limits manual choices
+to the standardized controls macOS actually reports.
+
+Standard bumpers, Share, underside back-button positions, Xbox paddles, and the
+DualShock touchpad click are exposed as distinct remappable inputs when macOS
+reports them. The system-reserved Home button is intentionally not a binding.
+
+For arcade controllers that use Apple's positional `Arcade Button` aliases,
+SwanSong recognizes a bounded 3×4 grid. Rows and columns are zero-based:
+
+| Arcade position | SwanSong logical control |
+| --- | --- |
+| Row 0, columns 0–3 | West face, North face, Right Shoulder, Left Shoulder |
+| Row 1, columns 0–3 | South face, East face, Right Trigger, Left Trigger |
+| Row 2, columns 0–3 | Options, Menu, Left Stick Click, Right Stick Click |
+
+Buttons outside that grid are not guessed. If macOS gives one physical button
+both a core gamepad alias and an arcade-grid alias, SwanSong prefers the core
+alias so one press cannot trigger two logical controls.
+
+## Does SwanSong Desktop install or update the Analogue Pocket core?
+
+No. SwanSong Desktop is the native macOS application. The Analogue Pocket FPGA
+build is a separate product and source repository at
+[`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core).
+Installing or updating either one does not modify the other.
 
 ## Why can a game reach video but still be “Untested”?
 
@@ -38,5 +97,5 @@ removing app data.
 
 ## How do I report a problem?
 
-Follow [SUPPORT.md](../SUPPORT.md). Never attach ROMs, system startup files,
+Follow [SUPPORT.md](../SUPPORT.md). Never attach ROMs, original firmware dumps,
 saves, private screenshots, or Translation Lab evidence.

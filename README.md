@@ -8,8 +8,11 @@ another platform, with a visual game library, controller-first play, a
 memory-only Time Ribbon, screenshot-backed save states, and careful support
 for WonderSwan's unusual control layout.
 
-[Download the latest release](https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest)
+[Download the latest stable release](https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest)
+· [Browse betas and prereleases](https://github.com/RegionallyFamous/SwanSong-Desktop/releases)
 · [Build from source](#build-and-run-the-live-app)
+· [Documentation](docs/README.md)
+· [Beta testing guide](docs/BETA_TESTING.md)
 · [Privacy](PRIVACY.md)
 · [Support](SUPPORT.md)
 
@@ -23,12 +26,14 @@ for WonderSwan's unusual control layout.
 
 ## Built for trust
 
-- **Private by default.** No analytics, ads, accounts, telemetry, update
-  checker, or network client. Games, optional original firmware, saves, screenshots, and
-  translation evidence stay on your Mac unless you explicitly export them.
-- **No BIOS hunt.** SwanSong includes an independently written Open IPL for
-  normal play. It never bundles or downloads commercial games or original
-  system firmware; optional authorized firmware overrides stay private.
+- **Private by default.** No analytics, ads, accounts, telemetry, automatic
+  update checks, or startup/background network requests. The current
+  fail-closed Homebrew Catalog is not published and makes no request; local
+  imports remain available.
+- **No BIOS hunt in 0.2.** SwanSong includes an independently written Open IPL
+  for every supported system. The 0.2 app always uses Open IPL and never
+  accepts, bundles, or downloads original system firmware. Historical 0.1.x
+  behavior remains documented in its release notes.
 - **Inspectable releases.** Public builds are universal for Apple silicon and
   Intel, Developer ID signed, hardened, notarized, and paired with SHA-256
   checksums and the exact source tag.
@@ -38,7 +43,7 @@ for WonderSwan's unusual control layout.
 
 SwanSong requires **macOS 14 or newer**. It opens `.ws`, `.wsc`, `.pc2`, and
 `.pcv2` files, plus supported single-game ZIP archives. Supply only games and
-optional original firmware that you are authorized to use.
+homebrew images that you are authorized to use.
 
 See the [privacy policy](PRIVACY.md), [security policy](SECURITY.md),
 [support guide](SUPPORT.md), and [third-party notices](Dependencies/THIRD_PARTY_NOTICES.md)
@@ -47,8 +52,11 @@ before installing or contributing.
 ## Current engineering status
 
 This repository contains the dedicated native macOS application, whose product
-name and app label are **SwanSong**. It is
-deliberately separate from the Analogue Pocket packaging and FPGA build.
+name and app label are **SwanSong**. It is deliberately separate from the
+Analogue Pocket packaging and FPGA build in the
+[`swansong-core`](https://github.com/RegionallyFamous/swansong-core)
+repository. SwanSong Desktop does not install or update an Analogue Pocket
+core.
 
 The current implementation is a working vertical slice. It builds a pinned,
 WonderSwan-family ares engine; loads open `.ws`, `.wsc`, `.pc2`, `.pcv2`, and
@@ -91,6 +99,22 @@ dedicated controller settings desk maps those clusters directly, offers
 D-pad/right-stick, dual-stick, and D-pad/face-diamond presets, learns a binding
 from the next physical input, prevents duplicate assignments, previews the
 physical-to-WonderSwan result live, and persists custom profiles atomically.
+Controller discovery is vendor-neutral and reads standardized aliases from
+macOS's physical-input profile. SwanSong declares Extended, Micro, and
+Directional Gamepad support; a basic or arcade-style controller also works when
+macOS exposes standard direction and action aliases for it. USB and Bluetooth
+controllers can be connected, disconnected, or replaced while the app is
+running. Connected controllers cooperate: their held inputs are merged, even
+when two devices hold opposite directions, and disconnecting one preserves the
+other's held controls. Micro and directional devices expose only their available
+standard controls. Settings marks saved bindings that a limited profile cannot
+emit and offers only controls macOS actually reports for manual remapping.
+Standard bumpers, Share, underside back buttons, Xbox paddles, and the DualShock
+touchpad click remain distinct remappable inputs when macOS reports them.
+SwanSong does not guess mappings for proprietary vendor-only HID elements, so a
+USB device must be recognized by macOS's GameController framework with standard
+direction and action inputs; the system-reserved Home button is not exposed as a
+game binding.
 Play mode collapses all library chrome into a focused, one-game surface. The
 active framebuffer remains square-cornered and untouched; focus, pause,
 warnings, and failure UI live outside the game pixels. Canonical
@@ -98,11 +122,20 @@ SwanSong Pocket `.sav` files can be imported and exported with exact
 SRAM/EEPROM sizing, semantic RTC translation, legacy-layout recognition, and a
 human-readable format report.
 
-Normal gameplay uses **SwanSong Open IPL**, an independently written startup
-implementation built into the engine. No dumped WonderSwan BIOS bytes are
-included, and users do not need to find a startup file. An authorized original
-BIOS may be installed as an optional compatibility override; SwanSong validates
-it before making a private local copy in Application Support.
+Normal gameplay in 0.2 uses **SwanSong Open IPL**, an independently written
+startup implementation built into the engine. No dumped WonderSwan BIOS bytes
+are included, and the 0.2 app has no original-BIOS import, storage, or override
+path. Users add only authorized games and homebrew images.
+
+<!-- homebrew-catalog-status: coming-soon -->
+The **Homebrew Catalog** installer is implemented but is not published in the
+current production configuration. The Homebrew page says **Coming Soon**, has
+no production trust key, and makes no catalog or game request. You can still
+use **Add From Mac** for authorized local homebrew. An official build cannot
+activate direct installation until its embedded public trust key validates a
+non-empty signed catalog already published by Regionally Famous; the release
+gate checks that exact production path. See the [privacy policy](PRIVACY.md)
+for the behavior that applies when a future release activates the catalog.
 
 The app now also includes a native Translation Lab for projects created by the
 private WonderSwan translation toolkit. It links a project without copying its
@@ -157,7 +190,7 @@ Side-by-Side, Overlay, and Difference views with changed-pixel metrics and
 bounds. **Create Test at This Frame** saves a new immutable, event-filtered
 route prefix so translators can turn the discovery into a focused regression
 case. The comparison never enters the normal library or writes cartridge
-saves, save states, ROMs, or startup files.
+saves, save states, or ROMs.
 
 ## Build and run the live app
 
@@ -168,8 +201,8 @@ Requirements:
 - CMake 3.28 or newer;
 - Git and the macOS Command Line Tools (or full Xcode).
 
-Building, inspecting, and playing open fixtures does not require a System
-Startup File. SwanSong Open IPL is the production default.
+All app and developer-tool execution uses SwanSong Open IPL; no external
+startup image is accepted or required.
 
 ```sh
 cd SwanSong-Desktop
@@ -192,23 +225,16 @@ drag-and-drop, and folder import without claiming every ZIP as a SwanSong
 document. The default remains ad-hoc signing so CI and
 contributors do not need an Apple account.
 
-### Open IPL and optional original firmware
+### Open IPL
 
 SwanSong Open IPL starts WonderSwan, WonderSwan Color, SwanCrystal, and Pocket
-Challenge V2 software without a user-supplied BIOS. It is implemented in this
-repository and contains no bytes copied from an original system ROM.
+Challenge V2 software entirely from the built-in implementation. It is
+implemented in this repository and contains no bytes copied from an original
+system ROM.
 
-For compatibility testing, **Settings > Startup** can install, replace, or
-remove an authorized original BIOS override. SwanSong accepts a direct `.rom`
-or `.bin` file, or a ZIP containing exactly one valid image. It validates the
-file and its system before copying it into the private
-`~/Library/Application Support/SwanSong/Firmware/` directory. Removing an
-override immediately returns that system to Open IPL.
-
-SwanSong never bundles, downloads, discovers, uploads, or shares original
-firmware. WonderSwan and Pocket Challenge V2 originals are 4 KiB; WonderSwan
-Color is 8 KiB. Because the two 4 KiB images cannot be identified by size
-alone, add each optional override through its named system row.
+SwanSong 0.2 always uses Open IPL. It has no UI or import path for an original
+BIOS and never bundles, downloads, discovers, uploads, or shares one. Add only
+authorized game and homebrew images.
 
 Development builds remain native to the current Mac for fast iteration. Set
 `SWAN_UNIVERSAL=1` to build an arm64 + x86_64 app explicitly:
@@ -218,9 +244,10 @@ SWAN_UNIVERSAL=1 ./Scripts/build-app.sh
 ./Scripts/verify-app-architectures.sh ".build/app/SwanSong.app"
 ```
 
-The universal engine uses a separate `.engine/build-universal` tree and the
-two Swift slices use separate scratch directories, so switching back to a
-normal host-native build cannot reuse an incompatible CMake or Swift cache.
+The app's firmware-hook-free universal engine uses a separate
+`.engine/build-app-universal` tree. The two Swift slices also use separate
+scratch directories, so switching back to a normal host-native build cannot
+reuse an incompatible CMake or Swift cache.
 
 ### Signing and notarizing a release
 
@@ -271,10 +298,9 @@ For a hardened-runtime Developer ID build suitable for notarization:
 ./Scripts/verify-app-signature.sh ".build/app/SwanSong.app"
 ```
 
-`release-app.sh` builds universal2 by default, requires an installed
-`Developer ID Application` identity, and does not upload anything by default.
-Set `SWAN_UNIVERSAL=0` only for a deliberately architecture-specific release.
-Signing alone is not enough for clean
+`release-app.sh` builds universal2, requires an installed `Developer ID
+Application` identity, and does not upload anything by default. It refuses
+architecture-specific public builds. Signing alone is not enough for clean
 Gatekeeper acceptance on another Mac. Once a `notarytool` Keychain profile has
 been created, notarization and stapling are deliberately opt-in:
 
@@ -316,17 +342,14 @@ swift run SwanSongProbe \
   --require-video-activity
 ```
 
-Pass `--startup-file "/path/to/original-firmware-or.zip"` only when comparing
-the optional original-firmware override with Open IPL.
-
 The report also records audio activity, save-state size, and whether the first
 video/audio batch after a state restore is bit-exact. The report and capture
 contain rendered output and measurements only; the probe never writes ROM,
-startup-file, save-state, or memory bytes into its outputs.
+save-state, persistence, or memory bytes into its outputs.
 
-For an opt-in end-to-end app-code and bundle smoke with a personally owned ROM
-and startup file, first build a debug automation bundle into a separate output
-directory, then pass both private inputs explicitly:
+For an opt-in end-to-end app-code and bundle smoke with a personally owned ROM,
+first build a debug automation bundle into a separate output directory, then
+pass that private game input explicitly:
 
 ```sh
 CONFIGURATION=debug \
@@ -335,19 +358,29 @@ SWAN_APP_OUTPUT_DIR="$PWD/.build/owned-smoke-app" \
 
 ./Scripts/check-owned-rom-smoke.sh \
   --app "$PWD/.build/owned-smoke-app/SwanSong.app" \
-  --bios "$OWNED_BIOS_ZIP" \
   --rom "$OWNED_GAME_ZIP"
 ```
 
 This lane requires the debug runner and checked app executable to share the
 same Mach-O build UUID, then uses a unique private home and data directory to
-exercise the real archive import, optional original-BIOS validation and launch,
-native frame activity, save, and state paths. Running the matched executable
+exercise real game import, Open IPL launch, native frame activity, save, and
+state paths. Running the matched executable
 directly also works in restricted sessions where Launch Services registration
 is unavailable. The lane removes every private artifact and proves that the
 signed app bundle is byte-identical before and after the run and contains no
-imported BIOS or game payload. The script never prints private paths, names,
+game or firmware payload. The script never prints private paths, names,
 hashes, frames, or diagnostics and never runs by default.
+
+For a privacy-safe aggregate across a private owned-ROM directory, run the
+Open IPL matrix. It accepts direct games and one-game ZIPs, rejects 4/8 KiB
+firmware-shaped inputs, binds the exact Open IPL identifier and deterministic
+RTC seed, and writes only source-free case counts:
+
+```sh
+./Scripts/check-owned-rom-open-ipl.sh \
+  --rom-dir "/path/to/owned-rom-directory" \
+  --report .build/compatibility/owned-open-ipl-summary.json
+```
 
 The public-fixture execution matrix builds the Probe in an isolated live-ares
 scratch directory, runs every checked-in `.ws`/`.wsc` fixture plus a clean-room
@@ -422,7 +455,7 @@ user profile. A separate memory-only rewind lane captures frame 90, rewinds
 from frame 450 to the nearest five-second checkpoint, replays frame 90 exactly,
 and proves no `.state` file was written. The smoke proves that production-mode
 monochrome, Color, and Pocket Challenge V2 gameplay starts through Open IPL
-with no original firmware installed:
+on the same BIOS-free path used by the shipped app:
 
 ```sh
 ./Scripts/check-app-runtime.sh
@@ -442,15 +475,15 @@ automatic flash-only persistence without retaining the generated cartridge.
 
 The native UI gate renders the real AppKit/SwiftUI surfaces offscreen—without
 Launch Services or visible-window enumeration—and checks player recovery,
-startup-file replacement, the save-state timeline, RAM Text Buffers, Pointer
+the save-state timeline, RAM Text Buffers, Pointer
 Leads, the Time Ribbon, First Visual Change result/progress/no-change states,
 horizontal/vertical player canvases, and the Game Confidence inspector in
 compact/wide Light/Dark variants. It rejects blank regions and
 unsupported-control placeholders, proves compact timeline actions can be
 scrolled fully into view, proves the compact Time Ribbon needs no vertical
 scrolling, protects all four active framebuffer corners, checks accessibility
-labels and 28-point interaction targets, and compares 70 renders—including
-focused selected-game, startup-file, controller-mapping, and capture-and-draft
+labels and 28-point interaction targets, and compares 62 renders—including
+focused selected-game, controller-mapping, and capture-and-draft
 polish surfaces—with a reviewed 256-bit perceptual baseline:
 
 ```sh
@@ -585,12 +618,49 @@ The normal loop is:
 
 Every new route uses the `swan-song-input-route-v3` schema. It records the
 Original ROM digest and byte count; clean-power-on and isolated-persistence
-policy; WonderSwan model; Open IPL or optional original-firmware identity; engine backend/build; exact
+policy; WonderSwan model; exact Open IPL identity; engine backend/build; exact
 RTC mode and fixed UTC seed; target frame; compact input changes; and a native
 game-raster checkpoint. Test
-automation records the explicit Open IPL identifier instead of pretending it
-used installed original firmware. Replay rejects the route if any bound
+automation records the explicit Open IPL identifier. Replay rejects the route if any bound
 execution context has changed.
+
+Game-testing surfaces are off by default. Enable **Debug Tools** in Settings
+to reveal the live focus/input overlay, player diagnostics, and the bounded
+input/frame recorder. The recorder exports readable
+`swan-song-input-frame-log-v2` JSON containing frame geometry/timing, separate
+keyboard and controller masks, effective input, focus state, runtime mode, and
+a SHA-256 fingerprint of the canonical native game raster. It does not include
+ROM, save, RAM, persistence, or framebuffer bytes.
+
+Signed app bundles also include a deterministic command-line runner. It is
+separately gated by an explicit flag even when the in-app preference is on:
+
+```sh
+/Applications/SwanSong.app/Contents/Helpers/SwanSongRouteRunner \
+  --enable-debug-tools \
+  --rom "/path/to/game.wsc" \
+  --route "/path/to/route.json" \
+  --output "/path/to/route-report.json" \
+  --capture "/path/to/final-frame.png"
+```
+
+The runner requires the route-bound ROM digest, hardware, Open IPL context,
+deterministic RTC seed, and exact bundled engine build to agree. It exits
+nonzero when the final native-raster checkpoint differs and records the app,
+engine, dylib, ROM, input schedule, and observed checkpoint identities in its
+report.
+
+For a live AppKit focus/input regression against an authorized test ROM, run:
+
+```sh
+./Scripts/check-player-input.sh "/path/to/game.wsc"
+```
+
+The gate posts the physical X key, requires SwanSong to record keyboard and
+effective WonderSwan A with active gameplay focus, and proves that canonical
+game-raster fingerprints change. Exit 77 means the host lacks WindowServer or
+Accessibility permission; grant the invoking terminal or Codex app access in
+System Settings > Privacy & Security > Accessibility and rerun it.
 
 Route-v2 files remain visible and immutable with a **v2 · Re-record RTC** badge,
 but they did not record an RTC mode or seed. Route-v1 files remain visible with

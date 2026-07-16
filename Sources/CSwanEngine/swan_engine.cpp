@@ -2,7 +2,7 @@
 #include "swan_engine_backend.hpp"
 
 #ifndef SWAN_ENGINE_BUILD_ID
-#define SWAN_ENGINE_BUILD_ID "inspection-stub-swan-abi4"
+#define SWAN_ENGINE_BUILD_ID "inspection-stub-swan-abi5"
 #endif
 
 #include <algorithm>
@@ -175,7 +175,8 @@ const char* swan_result_message(swan_result_t result) {
     case SWAN_RESULT_ABI_MISMATCH: return "engine ABI mismatch";
     case SWAN_RESULT_INVALID_ROM: return "invalid or unsupported WonderSwan ROM";
     case SWAN_RESULT_IO_ERROR: return "input/output error";
-    case SWAN_RESULT_BACKEND_UNAVAILABLE: return "ares backend is not connected yet";
+    case SWAN_RESULT_BACKEND_UNAVAILABLE:
+      return "live ares backend is unavailable in this build";
     case SWAN_RESULT_NOT_LOADED: return "no game is loaded";
     case SWAN_RESULT_UNSUPPORTED: return "operation is unsupported";
     case SWAN_RESULT_INTERNAL_ERROR: return "internal engine error";
@@ -365,26 +366,6 @@ swan_result_t swan_engine_stage_persistence(swan_engine_t* engine,
                          : std::span<const uint8_t>();
   return finish_backend_call(
       engine, engine->backend->stage_persistence(kind, data, error),
-      std::move(error));
-}
-
-swan_result_t swan_engine_stage_boot_rom(swan_engine_t* engine,
-                                         const uint8_t* bytes,
-                                         size_t size) {
-  if (!engine) return SWAN_RESULT_INVALID_ARGUMENT;
-  if (!bytes || (size != 4096u && size != 8192u)) {
-    engine->last_error = "WonderSwan boot ROM must be 4 KiB or 8 KiB";
-    return SWAN_RESULT_INVALID_ARGUMENT;
-  }
-  if (engine->loaded) {
-    engine->last_error = "boot ROM must be staged before loading a game";
-    return SWAN_RESULT_UNSUPPORTED;
-  }
-  std::string error;
-  return finish_backend_call(
-      engine,
-      engine->backend->stage_boot_rom(
-          std::span<const uint8_t>(bytes, size), error),
       std::move(error));
 }
 

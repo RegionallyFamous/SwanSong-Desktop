@@ -1,6 +1,6 @@
 # SwanSong Desktop implementation plan
 
-## Status — July 15, 2026
+## Status — July 16, 2026
 
 - M0 is implemented: plan, pinned dependency, native package, C ABI, ROM
   inspection, library persistence, and automated checks.
@@ -119,12 +119,11 @@ The checked-in app remains intentionally honest about incomplete features. A
 plain Swift build uses an inspection-only fallback; live execution is enabled
 only when the separately built pinned ares dylib is supplied.
 
-Live gameplay defaults to SwanSong Open IPL, an independently written minimal
-startup implementation with no original boot-ROM bytes. The native Startup
-settings desk can optionally install an authorized original 4 KiB WonderSwan
-or Pocket Challenge V2 image, or 8 KiB WonderSwan Color image, as a private
-compatibility override. No original firmware is bundled, downloaded,
-discovered, uploaded, or included in releases or source-free diagnostics.
+Live gameplay always uses SwanSong Open IPL, an independently written minimal
+startup implementation with no original boot-ROM bytes. The shipped app has no
+original-firmware import, storage, or override path. No original firmware is
+bundled, downloaded, discovered, uploaded, or included in releases or
+source-free diagnostics.
 
 An app builder now embeds that dylib, registers `.ws`, `.wsc`, `.pc2`, and
 `.pcv2` document types, and supports deterministic ad-hoc, Apple Development, or hardened
@@ -135,7 +134,7 @@ M6 release action.
 Automated evidence currently includes deterministic mono and Color frame
 hashes, C/Swift ABI and persistence checks, pacing-policy checks, and a full-app
 runtime smoke that boots monochrome, Color, and Pocket Challenge V2 fixtures
-through the production Open IPL with no original firmware installed, then
+through the production Open IPL path used by the shipped app, then
 plays, autosaves, captures a three-entry timeline, restores a byte-lossless
 preview, and resets the presentation counter in an isolated profile. The
 clean-room PCV2 lane proves active changing video, PCV2 state identity, and automatic flash-only persistence
@@ -152,12 +151,12 @@ or hardware compatibility. The current public set exercises mono, Color, and
 Pocket Challenge V2; SRAM, EEPROM, RTC, and flash; semantic PCV2 keypad rows;
 KARNAK access; landscape output; changing PCV2 video; and nonzero PCV2 stereo
 audio. The seven legacy rendered programs remain static and effectively
-silent. An authorized private GunPey run supplies the current
-portrait, meaningful-motion, and audible-audio evidence without copying either
-the game or startup file into the repository or app. An opt-in private
+silent. Authorized private owned-game runs supply the current
+portrait, meaningful-motion, and audio-output evidence without copying any
+game into the repository or app. An opt-in private
 app-code/bundle smoke now binds its debug runner to the checked app by Mach-O
-UUID, repeats real archive import and optional original-BIOS override install
-in disposable storage, requires changing native frame pixels and
+UUID, repeats real game import and Open IPL launch in disposable storage,
+requires changing native frame pixels and
 isolated save/state persistence, then proves the signed bundle stayed
 byte-identical and firmware/ROM-free before deleting every private artifact.
 Native game-raster and audio replay settle by the second post-restore frame
@@ -176,12 +175,11 @@ toolkit stages. BLOCKED and malformed readiness stop after Status without pack
 mutation; PENDING follows the exact five-stage guarded order. An externally
 tampered synthetic frame is re-indexed as damaged by the next successful
 Status. The smoke fails if the project ROM appears in the regular library or if
-normal cartridge-save storage is written. Synthetic bootstrap identity is
-recorded in test routes and is never presented as installed production
-firmware.
+normal cartridge-save storage is written. The exact Open IPL identity is
+recorded in test routes.
 
 Pocket Challenge V2 Translation Lab parity now preserves the exact project,
-engine, startup-file, and route identity; accepts only its nine dedicated
+engine, Open IPL, and route identity; accepts only its nine dedicated
 semantic keypad bits; captures the correct 16 KiB internal RAM surface; and
 routes A/B plus First Visual Change replay through the concrete PCV2 engine.
 An independent source-free fixture gate exercises that complete path.
@@ -197,12 +195,12 @@ fail closed and exclude image data, paths, ROM bytes, timestamps, generated
 translation claims, and unreviewed OCR.
 
 Native UI regression evidence uses real offscreen AppKit rendering for player
-recovery, startup-file replacement, the state timeline, RAM Text Buffers,
+recovery, the state timeline, RAM Text Buffers,
 Pointer Leads, the Time Ribbon, First Visual Change result/progress/no-change
 states, horizontal/vertical player canvases, the Game Confidence inspector,
 and the Translation Lab overview across compact/wide Light/Dark variants.
-Seventy reviewed 256-bit perceptual baselines—including focused selected-game
-inspector, startup-file, controller-mapping, and capture-and-draft
+Sixty-two reviewed 256-bit perceptual baselines—including focused selected-game
+inspector, controller-mapping, and capture-and-draft
 polish surfaces—plus blank/placeholder guards, a four-corner framebuffer guard, compact
 Translation Lab, Time Ribbon, and timeline geometry, accessibility contracts,
 and minimum
@@ -265,8 +263,7 @@ code.
 - Core Audio for a low-latency stereo output ring.
 - GameController plus keyboard input with a first-class X/Y-cluster mapper.
 - Application Support storage for the game library, preferences, crash-safe
-  persistent saves, state thumbnails, optional recordings, and user-installed
-  firmware kept in a private per-user directory.
+  persistent saves, state thumbnails, and optional recordings.
 
 ### Engine boundary
 
@@ -275,7 +272,7 @@ covering:
 
 - lifecycle and backend capability discovery;
 - ROM inspection and loading;
-- system model, boot ROM, console EEPROM, and RTC configuration;
+- system model, built-in Open IPL identity, console EEPROM, and RTC configuration;
 - complete physical input state;
 - run-until-frame execution;
 - immutable video frames and interleaved audio batches;
@@ -316,7 +313,8 @@ C ABI rather than teaching Swift about the ares node graph.
    still available through shortcuts.
 5. Persistent saves are automatic, atomic, checksummed, and recoverable.
 6. Controller setup displays the actual two WonderSwan direction clusters.
-7. Debugging tools stay out of the player path until Workbench is enabled.
+7. Game-testing tools stay out of the player path until the off-by-default
+   Debug Tools toggle is enabled.
 
 ## Milestones and acceptance gates
 
@@ -376,8 +374,7 @@ Deliverables:
 - three-axis Game Confidence for launch readiness, local personal
   compatibility evidence, and ROM integrity without converting emulator video
   activity into a hardware-accuracy claim;
-- native Firmware settings with per-system install, validation, status,
-  removal, and targeted recovery when a game needs a missing boot ROM;
+- clear built-in Open IPL status and targeted startup-error recovery;
 - animated orientation-aware game window;
 - visual X/Y input mapper;
 - display profiles and LCD response controls;
@@ -386,8 +383,7 @@ Deliverables:
 - Pocket-compatible save import/export with explicit format reporting.
 
 Gate: a new user can open, play, save, resume, rotate, and map a controller
-without supplying firmware or entering a generic emulator-driver screen; an
-optional original override remains installable with keyboard or VoiceOver.
+without supplying firmware or entering a generic emulator-driver screen.
 
 ### M4 — accuracy convergence
 
@@ -410,7 +406,7 @@ Deliverables:
 - isolated original/patched runtime lanes;
 - route-v3 recording from clean power-on, with the recorder armed before frame
   one, deterministic UTC, and an accessible exact Save-at-Frame workflow;
-- explicit route binding to ROM, model, firmware, engine, persistence and RTC
+- explicit route binding to ROM, model, Open IPL identity, engine, persistence and RTC
   policies, target frame, input changes, and native game-raster checkpoint;
 - visible immutable route-v1 and RTC-unbound route-v2 migration states with
   replay, verification, and suite blocking until clean-boot re-recording;
@@ -434,7 +430,8 @@ Deliverables:
 - universal signed and notarized application;
 - versioned universal archive, checksums, exact corresponding source, and a
   reproducible release manifest;
-- explicit user-invoked release-page update check for the first public beta;
+- verification of the shipped user-invoked release-page update check for the
+  0.2 beta;
   a signed automatic update feed remains a later privacy-reviewed decision;
 - complete notices and source-offer obligations;
 - native welcome/legal/support surfaces, public privacy and security policies,
@@ -446,14 +443,17 @@ Gate: clean-machine install, Gatekeeper verification, deterministic release
 identity, accepted license audit, and a completed hardware-informed title
 matrix.
 
-## Immediate implementation sequence
+## Completed foundation sequence (historical)
 
-1. Land the Swift package, C ABI, ROM inspector, and ABI/unit tests.
-2. Add an ares-only CMake build and lock its exact source inputs.
-3. Implement the in-memory ares platform adapter behind `CSwanEngine`.
-4. Prove one open mono and one open Color fixture headlessly.
-5. Replace the placeholder player surface with the Metal/Core Audio loop.
-6. Add persistence before broad UI work so normal play cannot lose saves.
+These original first implementation steps are complete and retained only as
+project history:
+
+1. Landed the Swift package, C ABI, ROM inspector, and ABI/unit tests.
+2. Added an ares-only CMake build and locked its exact source inputs.
+3. Implemented the in-memory ares platform adapter behind `CSwanEngine`.
+4. Proved open monochrome and Color fixtures headlessly.
+5. Replaced the placeholder player with the Metal/Core Audio loop.
+6. Added transactional persistence before broad UI work.
 
 ## Principal risks
 
@@ -468,7 +468,7 @@ matrix.
 - **licensing:** the selected ares core is permissively licensed, but every
   linked dependency and every SwanSong-derived contribution still needs an
   auditable origin and notice. SwanSong Open IPL contains no original firmware
-  bytes. Any copyrighted boot-ROM override is user-supplied, remains in private
-  local storage, and is never redistributed or included in diagnostics.
+  bytes. Runtime and compatibility validation use the same built-in Open IPL as
+  the shipped app; SwanSong has no external firmware comparison or override lane.
 - **toolchain:** Swift Package Manager supports current development, but signed
   application packaging requires a full Xcode installation and signing setup.

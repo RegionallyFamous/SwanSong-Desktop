@@ -759,12 +759,15 @@ public struct TranslationRouteFirmware: Codable, Equatable, Sendable {
         switch source {
         case .installed:
             guard let image else {
-                throw TranslationLabError.invalidRoute("installed firmware is missing its digest")
+                throw TranslationLabError.invalidRoute("the legacy startup image is missing its digest")
             }
-            try validateDigest(image, label: "firmware")
+            try validateDigest(image, label: "legacy startup image")
             guard identifier == nil else {
-                throw TranslationLabError.invalidRoute("installed firmware has an unexpected identifier")
+                throw TranslationLabError.invalidRoute("the legacy startup image has an unexpected identifier")
             }
+            throw TranslationLabError.invalidRoute(
+                "this route predates Open-IPL-only playback; re-record it with the current SwanSong Open IPL"
+            )
         case .openIPL, .syntheticAutomation:
             guard image == nil, identifier == WonderSwanOpenIPL.identifier else {
                 throw TranslationLabError.invalidRoute("open IPL identity is invalid")
@@ -876,7 +879,7 @@ public struct TranslationRouteStartContext: Codable, Equatable, Sendable {
         if let image = firmware.image,
            image.byteCount != firmwareKind.expectedByteCount {
             throw TranslationLabError.invalidRoute(
-                "the installed firmware size does not match the recorded \(firmwareKind.title) startup kind"
+                "the legacy startup image size does not match the recorded \(firmwareKind.title) system"
             )
         }
         guard persistencePolicy == Self.isolatedPersistencePolicy else {

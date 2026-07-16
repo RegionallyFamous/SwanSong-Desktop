@@ -10,8 +10,8 @@ SWIFT_BUILD_DIR=${SWAN_LIVE_ENGINE_SWIFT_DIR:-"$MACOS_DIR/.build/live-engine-swi
 
 check_fixture() {
   fixture=$1
-  first=$($BUILD_DIR/SwanAresSmoke "$fixture")
-  second=$($BUILD_DIR/SwanAresSmoke "$fixture")
+  first=$("$BUILD_DIR/SwanAresSmoke" "$fixture")
+  second=$("$BUILD_DIR/SwanAresSmoke" "$fixture")
   if [ "$first" != "$second" ]; then
     echo "nondeterministic output for $fixture" >&2
     echo "$first" >&2

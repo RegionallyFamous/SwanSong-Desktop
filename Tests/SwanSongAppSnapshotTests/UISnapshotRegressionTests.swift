@@ -75,7 +75,7 @@ final class UISnapshotRegressionTests: XCTestCase {
         let model: AppModel
         let readyUntested: GameRecord
         let reachedVideo: GameRecord
-        let missingStartupFile: GameRecord
+        let colorReady: GameRecord
         let reportedIssues: GameRecord
     }
 
@@ -186,7 +186,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             }
         }
 
-        XCTAssertEqual(signatures.count, 70)
+        XCTAssertEqual(signatures.count, 62)
         for scenario in scenarios {
             let pair = signatures.filter { $0.name == scenario.name }
             XCTAssertEqual(pair.count, 2, scenario.name)
@@ -217,6 +217,170 @@ final class UISnapshotRegressionTests: XCTestCase {
             to: polishOutput.appendingPathComponent("manifest.json"),
             options: [.atomic]
         )
+    }
+
+    func testHomebrewSurfaceSnapshots() throws {
+        let root = try temporaryRoot()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let consentKey = "SwanSong.homebrewCatalogConsent.v1"
+        let preservedPreferences = [
+            consentKey,
+            "showsSidebar",
+            "libraryWindowWidth",
+            "libraryWindowHeight",
+        ].map { key in
+            (key, UserDefaults.standard.object(forKey: key))
+        }
+        defer {
+            for (key, value) in preservedPreferences {
+                restoreUserDefault(value, forKey: key)
+            }
+        }
+        UserDefaults.standard.set(true, forKey: "showsSidebar")
+
+        let catalog = homebrewCatalogFixture()
+        try HomebrewCatalogValidator.validate(
+            catalog,
+            sourceURL: URL(
+                string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-story-forge/main/distribution/catalog-v1.json"
+            )!
+        )
+        let comingSoonModel = makeModel(
+            root: root.appendingPathComponent("coming-soon")
+        )
+        comingSoonModel.section = .homebrew
+        let disclosureModel = makeHomebrewModel(
+            root: root.appendingPathComponent("disclosure"),
+            consentGranted: false,
+            catalog: nil
+        )
+        let compactCatalogModel = makeHomebrewModel(
+            root: root.appendingPathComponent("catalog-compact"),
+            consentGranted: true,
+            catalog: catalog
+        )
+        let wideCatalogModel = makeHomebrewModel(
+            root: root.appendingPathComponent("catalog-wide"),
+            consentGranted: true,
+            catalog: catalog,
+            selectedEntryID: "signal-before-dawn"
+        )
+
+        let compactSize = CGSize(width: 760, height: 560)
+        let wideSize = CGSize(width: 1_180, height: 720)
+        let scenarios = [
+            Scenario(name: "homebrew-coming-soon-compact", size: compactSize) {
+                AnyView(
+                    RootView(
+                        model: comingSoonModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+            Scenario(name: "homebrew-coming-soon-wide", size: wideSize) {
+                AnyView(
+                    RootView(
+                        model: comingSoonModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+            Scenario(name: "homebrew-disclosure-compact", size: compactSize) {
+                AnyView(
+                    RootView(
+                        model: disclosureModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+            Scenario(name: "homebrew-disclosure-wide", size: wideSize) {
+                AnyView(
+                    RootView(
+                        model: disclosureModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+            Scenario(name: "homebrew-catalog-compact", size: compactSize) {
+                AnyView(
+                    RootView(
+                        model: compactCatalogModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+            Scenario(name: "homebrew-catalog-wide", size: wideSize) {
+                AnyView(
+                    RootView(
+                        model: wideCatalogModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+        ]
+        let output = try snapshotOutputDirectory()
+            .appendingPathComponent("homebrew", isDirectory: true)
+        try FileManager.default.createDirectory(
+            at: output,
+            withIntermediateDirectories: true
+        )
+        var signatures = [SnapshotSignature]()
+
+        for scenario in scenarios {
+            for scheme in Scheme.allCases {
+                let rendered = try render(
+                    scenario.makeView(),
+                    size: scenario.size,
+                    scheme: scheme
+                )
+                let fileName = "\(scenario.name)-\(scheme.rawValue).png"
+                try rendered.png.write(
+                    to: output.appendingPathComponent(fileName),
+                    options: [.atomic]
+                )
+                let signature = imageSignature(
+                    name: scenario.name,
+                    scheme: scheme,
+                    bitmap: rendered.bitmap,
+                    png: rendered.png
+                )
+                signatures.append(signature)
+                XCTAssertEqual(signature.width, Int(scenario.size.width), fileName)
+                XCTAssertEqual(signature.height, Int(scenario.size.height), fileName)
+                XCTAssertGreaterThan(signature.pngByteCount, 2_000, fileName)
+                XCTAssertGreaterThan(signature.sampledColorCount, 8, fileName)
+                XCTAssertGreaterThan(signature.opaqueSampleFraction, 0.98, fileName)
+                XCTAssertLessThan(
+                    signature.centralDominantColorFraction,
+                    0.96,
+                    "\(fileName) has a largely blank central region"
+                )
+                XCTAssertLessThan(
+                    signature.yellowPlaceholderFraction,
+                    0.08,
+                    "\(fileName) contains an unsupported-control placeholder"
+                )
+            }
+        }
+
+        XCTAssertEqual(signatures.count, scenarios.count * Scheme.allCases.count)
+        for scenario in scenarios {
+            let pair = signatures.filter { $0.name == scenario.name }
+            XCTAssertEqual(pair.count, 2, scenario.name)
+            XCTAssertNotEqual(
+                pair[0].sha256,
+                pair[1].sha256,
+                "\(scenario.name) ignored Light/Dark"
+            )
+        }
+        XCTAssertFalse(comingSoonModel.homebrewCatalogIsConfigured)
+        XCTAssertNil(comingSoonModel.homebrewCatalog)
+        XCTAssertFalse(disclosureModel.homebrewCatalogIsLoading)
+        XCTAssertNil(disclosureModel.homebrewCatalog)
+        XCTAssertFalse(compactCatalogModel.homebrewCatalogIsLoading)
+        XCTAssertEqual(compactCatalogModel.homebrewCatalog, catalog)
+        XCTAssertFalse(wideCatalogModel.homebrewCatalogIsLoading)
+        XCTAssertEqual(wideCatalogModel.homebrewCatalog, catalog)
     }
 
     func testLegalSupportOverviewRendersAtMinimumWindowSize() throws {
@@ -292,35 +456,6 @@ final class UISnapshotRegressionTests: XCTestCase {
             "Dismiss picture activity notice"
         )
 
-        let firmwareModel = makeModel(root: root.appendingPathComponent("firmware-contract"))
-        firmwareModel.firmwareInstallationIsReplacement = true
-        let firmware = FirmwareRequirementView(model: firmwareModel, kind: .color)
-        XCTAssertEqual(
-            firmware.accessibilityContractHeadline,
-            "Try Another Original WonderSwan Color BIOS"
-        )
-        XCTAssertEqual(
-            firmware.accessibilityContractPrimaryActionTitle,
-            "Choose Another Original BIOS & Retry…"
-        )
-        XCTAssertEqual(FirmwareRequirementView.accessibilityIdentifier, "firmware-required-sheet")
-
-        let missingFirmwareModel = makeModel(
-            root: root.appendingPathComponent("missing-firmware-contract")
-        )
-        let missingFirmware = FirmwareRequirementView(
-            model: missingFirmwareModel,
-            kind: .color
-        )
-        XCTAssertEqual(
-            missingFirmware.accessibilityContractHeadline,
-            "Optional Original WonderSwan Color BIOS"
-        )
-        XCTAssertEqual(
-            missingFirmware.accessibilityContractPrimaryActionTitle,
-            "Choose Original BIOS…"
-        )
-
         let stateStore = GameStateStore(
             rootURL: root.appendingPathComponent("contract-states")
         )
@@ -393,7 +528,6 @@ final class UISnapshotRegressionTests: XCTestCase {
 
         let interactionMinimums = [
             PlayerVideoActivityRecoveryCard.minimumInteractiveDimension,
-            FirmwareRequirementView.minimumInteractiveDimension,
             StateTimelineView.minimumInteractiveDimension,
             StateTimelineCard.minimumInteractiveDimension,
             RewindTimeRibbonContent.minimumInteractiveDimension,
@@ -465,16 +599,16 @@ final class UISnapshotRegressionTests: XCTestCase {
             "pocket-challenge-v2-program-flash"
         )
         XCTAssertEqual(
-            SettingsSurfaceAccessibility.startupFiles,
-            "startup-files-settings"
-        )
-        XCTAssertEqual(
             SettingsSurfaceAccessibility.controllerMapping,
             "controller-mapping-settings"
         )
         XCTAssertEqual(
             SettingsSurfaceAccessibility.controllerLiveInput,
             "controller-live-input-disclosure"
+        )
+        XCTAssertEqual(
+            SettingsSurfaceAccessibility.controllerCapabilityWarning,
+            "controller-capability-warning"
         )
         XCTAssertGreaterThanOrEqual(
             SettingsSurfaceAccessibility.minimumInteractiveDimension,
@@ -512,45 +646,10 @@ final class UISnapshotRegressionTests: XCTestCase {
         XCTAssertFalse(pocketChallengeHint.contains("X pad"))
         XCTAssertTrue(pocketChallengeHint.contains("Pass/Circle/Clear"))
         XCTAssertTrue(pocketChallengeHint.contains("Escape"))
-
-        let optional = StartupFileLibraryReadiness(
-            libraryKinds: [],
-            installedKinds: []
-        )
-        XCTAssertEqual(optional.summary, "Open IPL ready")
-        XCTAssertFalse(optional.needsAttention)
-        XCTAssertEqual(optional.rowReadiness(for: .color), .openIPL)
-
-        let missingPocketChallenge = StartupFileLibraryReadiness(
-            libraryKinds: [.monochrome, .pocketChallengeV2],
-            installedKinds: [.monochrome]
-        )
-        XCTAssertEqual(missingPocketChallenge.summary, "1 original override")
-        XCTAssertFalse(missingPocketChallenge.needsAttention)
-        XCTAssertEqual(
-            missingPocketChallenge.rowReadiness(for: .monochrome),
-            .originalInstalled
-        )
-        XCTAssertEqual(
-            missingPocketChallenge.rowReadiness(for: .pocketChallengeV2),
-            .openIPL
-        )
-        XCTAssertEqual(
-            missingPocketChallenge.rowReadiness(for: .color),
-            .openIPL
-        )
-
-        let ready = StartupFileLibraryReadiness(
-            libraryKinds: [.pocketChallengeV2],
-            installedKinds: [.pocketChallengeV2]
-        )
-        XCTAssertEqual(ready.summary, "1 original override")
-        XCTAssertTrue(ready.isReadyForLibrary)
-        XCTAssertFalse(ready.needsAttention)
-        XCTAssertEqual(
-            GameLaunchReadiness.startupFileRequired.confidenceDetail,
-            "This legacy status is retained for older diagnostics; current games use SwanSong Open IPL."
-        )
+        XCTAssertEqual(SettingsView.migratedTab(0), 0)
+        XCTAssertEqual(SettingsView.migratedTab(1), 1)
+        XCTAssertEqual(SettingsView.migratedTab(2), 0)
+        XCTAssertEqual(SettingsView.migratedTab(-1), 0)
     }
 
     func testPocketChallengeV2LibraryContracts() throws {
@@ -563,14 +662,6 @@ final class UISnapshotRegressionTests: XCTestCase {
         XCTAssertEqual(fixture.game.resolvedHardwareModel, .pocketChallengeV2)
         XCTAssertEqual(fixture.game.systemTitle, "Pocket Challenge V2")
         XCTAssertEqual(fixture.game.sourceFileName, "Kana Quest Coach.pc2")
-        XCTAssertEqual(fixture.model.firmwareKind(for: fixture.game), .pocketChallengeV2)
-        XCTAssertEqual(
-            fixture.model.startupFileKindsUsedByLibrary,
-            [.monochrome, .pocketChallengeV2]
-        )
-        XCTAssertNil(fixture.model.missingFirmware(for: fixture.game))
-        XCTAssertFalse(fixture.model.isFirmwareInstalled(.pocketChallengeV2))
-        XCTAssertTrue(fixture.model.isFirmwareInstalled(.monochrome))
         XCTAssertEqual(
             fixture.model.gameConfidence(for: fixture.game),
             GameConfidence(
@@ -622,7 +713,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             )
         )
         XCTAssertEqual(
-            fixture.model.gameConfidence(for: fixture.missingStartupFile),
+            fixture.model.gameConfidence(for: fixture.colorReady),
             GameConfidence(
                 launchReadiness: .ready,
                 compatibility: .untested,
@@ -1126,12 +1217,6 @@ final class UISnapshotRegressionTests: XCTestCase {
         root: URL,
         translationProjectRoot: URL
     ) throws -> [Scenario] {
-        let firmwareModel = makeModel(root: root.appendingPathComponent("firmware"))
-        firmwareModel.firmwareInstallationRequest = .color
-        firmwareModel.firmwareInstallationIsReplacement = true
-        firmwareModel.firmwareInstallationError =
-            "That file is 4 KiB. WonderSwan Color startup files must be exactly 8 KiB."
-
         let stateRoot = root.appendingPathComponent("timeline")
         let stateStore = GameStateStore(rootURL: stateRoot.appendingPathComponent("States"))
         let timelineModel = makeModel(root: stateRoot, stateStore: stateStore)
@@ -1196,12 +1281,6 @@ final class UISnapshotRegressionTests: XCTestCase {
             },
             Scenario(name: "player-recovery-wide", size: CGSize(width: 980, height: 170)) {
                 AnyView(self.playerRecoverySurface)
-            },
-            Scenario(name: "bios-replacement-compact", size: CGSize(width: 500, height: 600)) {
-                AnyView(FirmwareRequirementView(model: firmwareModel, kind: .color))
-            },
-            Scenario(name: "bios-replacement-wide", size: CGSize(width: 660, height: 760)) {
-                AnyView(FirmwareRequirementView(model: firmwareModel, kind: .color))
             },
             Scenario(name: "state-timeline-compact", size: CGSize(width: 760, height: 430)) {
                 AnyView(StateTimelineView(model: timelineModel))
@@ -1369,22 +1448,6 @@ final class UISnapshotRegressionTests: XCTestCase {
                 )
             },
             Scenario(
-                name: "startup-files-settings-compact",
-                size: CGSize(width: 640, height: 620),
-                usesPolishOutput: true
-            ) {
-                UserDefaults.standard.set(2, forKey: "settingsPane")
-                return AnyView(self.settingsSurface(model: confidenceFixture.model))
-            },
-            Scenario(
-                name: "startup-files-settings-wide",
-                size: CGSize(width: 860, height: 720),
-                usesPolishOutput: true
-            ) {
-                UserDefaults.standard.set(2, forKey: "settingsPane")
-                return AnyView(self.settingsSurface(model: confidenceFixture.model))
-            },
-            Scenario(
                 name: "controller-mapping-settings-compact",
                 size: CGSize(width: 640, height: 620),
                 usesPolishOutput: true
@@ -1414,13 +1477,10 @@ final class UISnapshotRegressionTests: XCTestCase {
             SwanTheme.playerBackground
             PlayerVideoActivityRecoveryCard(
                 headline: "Picture is not changing",
-                detail: "Frames are arriving, but most of the picture is not changing. The game may simply be waiting for input. Try the controls first, then restart or review the WonderSwan Color startup file if it remains unchanged.",
-                startupFileAccessibilityTitle: "Stop & Try Another WonderSwan Color Startup File…",
+                detail: "Frames are arriving, but most of the picture is not changing. The game may simply be waiting for input. Try the controls first, then restart if it remains unchanged.",
                 restartIsDisabled: false,
-                startupFileActionIsDisabled: false,
                 onTryControls: {},
                 onRestart: {},
-                onReplaceStartupFile: {},
                 onDismiss: {}
             )
             .padding(20)
@@ -1439,13 +1499,11 @@ final class UISnapshotRegressionTests: XCTestCase {
             managedHealth: model.managedGameHealth[game.id],
             isCheckingManagedCopy: model.checkingManagedGameIDs.contains(game.id),
             isRepairingManagedCopy: model.repairingGameID == game.id,
-            requiredFirmware: model.missingFirmware(for: game),
             canImportSave: model.canImportPocketSave,
             canExportSave: model.canExportPocketSave,
             onPlay: {},
             onRepair: {},
             onReAdd: {},
-            onInstallFirmware: {},
             onImportSave: {},
             onExportSave: {},
             onSetCompatibilityVerdict: { _ in },
@@ -1729,12 +1787,139 @@ final class UISnapshotRegressionTests: XCTestCase {
             controllerProfileStore: ControllerProfileStore(
                 fileURL: root.appendingPathComponent("ControllerProfile.json")
             ),
-            firmwareStore: WonderSwanFirmwareStore(
-                rootURL: root.appendingPathComponent("Firmware")
+            translationWorkspaceStore: TranslationWorkspaceStore(
+                fileURL: root.appendingPathComponent("TranslationWorkspace.json")
+            )
+        )
+    }
+
+    private func makeHomebrewModel(
+        root: URL,
+        consentGranted: Bool,
+        catalog: HomebrewCatalog?,
+        selectedEntryID: String? = nil
+    ) -> AppModel {
+        UserDefaults.standard.set(
+            consentGranted,
+            forKey: "SwanSong.homebrewCatalogConsent.v1"
+        )
+        let model = AppModel(
+            store: GameLibraryStore(fileURL: root.appendingPathComponent("Library.json")),
+            saveStore: GameSaveStore(rootURL: root.appendingPathComponent("Saves")),
+            stateStore: GameStateStore(rootURL: root.appendingPathComponent("States")),
+            managedGameStore: ManagedGameStore(rootURL: root.appendingPathComponent("Games")),
+            homebrewCatalogURL: URL(string: "https://127.0.0.1:9/catalog-v1.json")!,
+            homebrewCatalogCacheStore: HomebrewCatalogCacheStore(
+                directoryURL: root.appendingPathComponent("HomebrewCache", isDirectory: true)
+            ),
+            homebrewCatalogSignatureVerifier: Self.snapshotCatalogVerifier,
+            artworkStore: GameArtworkStore(rootURL: root.appendingPathComponent("Artwork")),
+            controllerProfileStore: ControllerProfileStore(
+                fileURL: root.appendingPathComponent("ControllerProfile.json")
             ),
             translationWorkspaceStore: TranslationWorkspaceStore(
                 fileURL: root.appendingPathComponent("TranslationWorkspace.json")
             )
+        )
+        model.section = .homebrew
+        model.homebrewCatalogConsentGranted = consentGranted
+        model.homebrewCatalog = catalog
+        model.homebrewCatalogLastUpdatedAt = catalog.map { _ in
+            Date(timeIntervalSince1970: 1_750_000_600)
+        }
+        model.selectedHomebrewEntryID = selectedEntryID
+        model.loadHomebrewCatalogIfNeeded()
+        return model
+    }
+
+    private static let snapshotCatalogVerifier: HomebrewCatalogSignatureVerifier = {
+        let privateKey = try! Curve25519.Signing.PrivateKey(
+            rawRepresentation: Data(repeating: 0x5a, count: 32)
+        )
+        return HomebrewCatalogSignatureVerifier(
+            trustedKeys: [
+                HomebrewCatalogTrustedKey(
+                    keyID: "snapshot-key",
+                    rawPublicKey: privateKey.publicKey.rawRepresentation
+                ),
+            ]
+        )
+    }()
+
+    private func homebrewCatalogFixture() -> HomebrewCatalog {
+        let commit = String(repeating: "a", count: 40)
+        let releasedAt = Date(timeIntervalSince1970: 1_749_900_000)
+
+        func entry(
+            id: String,
+            title: String,
+            summary: String,
+            description: String,
+            version: String,
+            digestCharacter: Character
+        ) -> HomebrewCatalogEntry {
+            let tag = "\(id)-v\(version)"
+            return HomebrewCatalogEntry(
+                id: id,
+                title: title,
+                developer: "Regionally Famous",
+                summary: summary,
+                description: description,
+                sourceURL: URL(
+                    string: "https://github.com/RegionallyFamous/swansong-story-forge/tree/\(commit)/games/\(id)"
+                )!,
+                provenanceURL: URL(
+                    string: "https://github.com/RegionallyFamous/swansong-story-forge/blob/\(commit)/games/\(id)/reports/release-report.json"
+                )!,
+                licenseName: "MIT License",
+                licenseURL: URL(
+                    string: "https://github.com/RegionallyFamous/swansong-story-forge/blob/\(commit)/LICENSE"
+                )!,
+                releases: [
+                    HomebrewCatalogRelease(
+                        version: version,
+                        saveCompatibilityID: "\(id)-save-v1",
+                        releasedAt: releasedAt,
+                        releaseURL: URL(
+                            string: "https://github.com/RegionallyFamous/swansong-story-forge/releases/tag/\(tag)"
+                        )!,
+                        asset: HomebrewCatalogAsset(
+                            url: URL(
+                                string: "https://github.com/RegionallyFamous/swansong-story-forge/releases/download/\(tag)/\(id).wsc"
+                            )!,
+                            byteCount: 128 * 1_024,
+                            sha256: String(repeating: digestCharacter, count: 64),
+                            fileExtension: "wsc",
+                            hardwareModel: .wonderSwanColor
+                        )
+                    ),
+                ]
+            )
+        }
+
+        return HomebrewCatalog(
+            catalogID: HomebrewCatalogValidator.firstPartyCatalogID,
+            revision: 7,
+            generatedAt: Date(timeIntervalSince1970: 1_750_000_000),
+            repositoryURL: HomebrewCatalogValidator.firstPartyRepositoryURL,
+            entries: [
+                entry(
+                    id: "signal-before-dawn",
+                    title: "Signal Before Dawn",
+                    summary: "A short color adventure built for SwanSong.",
+                    description: "Tune a pocket receiver, follow the lights across the harbor, and find the source of a signal that arrives just before sunrise.",
+                    version: "1.0.0",
+                    digestCharacter: "a"
+                ),
+                entry(
+                    id: "backlight-bazaar",
+                    title: "Backlight Bazaar",
+                    summary: "A bright arcade score chase for WonderSwan Color.",
+                    description: "Trade sparks, chain quick deliveries, and keep a tiny night market glowing until the last train leaves.",
+                    version: "1.1.0",
+                    digestCharacter: "b"
+                ),
+            ]
         )
     }
 
@@ -1758,7 +1943,7 @@ final class UISnapshotRegressionTests: XCTestCase {
                 reachedVideoAt: Date(timeIntervalSince1970: 1_735_862_400)
             )
         )
-        let missingStartupFile = GameRecord(
+        let colorReady = GameRecord(
             id: UUID(uuidString: "10000000-0000-0000-0000-000000000003")!,
             title: "Color Signal",
             fileURL: root.appendingPathComponent("color-signal.wsc"),
@@ -1780,16 +1965,10 @@ final class UISnapshotRegressionTests: XCTestCase {
                 updatedAt: Date(timeIntervalSince1970: 1_735_948_860)
             )
         )
-        let games = [readyUntested, reachedVideo, missingStartupFile, reportedIssues]
+        let games = [readyUntested, reachedVideo, colorReady, reportedIssues]
         let store = GameLibraryStore(fileURL: root.appendingPathComponent("Library.json"))
         try store.save(GameLibraryDocument(games: games))
 
-        let firmwareStore = WonderSwanFirmwareStore(
-            rootURL: root.appendingPathComponent("Firmware", isDirectory: true)
-        )
-        _ = try firmwareStore.install(
-            syntheticStartupFile(kind: .monochrome)
-        )
         let model = AppModel(
             store: store,
             saveStore: GameSaveStore(rootURL: root.appendingPathComponent("Saves")),
@@ -1799,7 +1978,6 @@ final class UISnapshotRegressionTests: XCTestCase {
             controllerProfileStore: ControllerProfileStore(
                 fileURL: root.appendingPathComponent("ControllerProfile.json")
             ),
-            firmwareStore: firmwareStore,
             translationWorkspaceStore: TranslationWorkspaceStore(
                 fileURL: root.appendingPathComponent("TranslationWorkspace.json")
             ),
@@ -1811,7 +1989,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             model: model,
             readyUntested: readyUntested,
             reachedVideo: reachedVideo,
-            missingStartupFile: missingStartupFile,
+            colorReady: colorReady,
             reportedIssues: reportedIssues
         )
     }
@@ -1842,13 +2020,6 @@ final class UISnapshotRegressionTests: XCTestCase {
         let store = GameLibraryStore(fileURL: root.appendingPathComponent("Library.json"))
         try store.save(GameLibraryDocument(games: [game, companion]))
 
-        let firmwareStore = WonderSwanFirmwareStore(
-            rootURL: root.appendingPathComponent("Firmware", isDirectory: true)
-        )
-        _ = try firmwareStore.install(
-            syntheticStartupFile(kind: .monochrome),
-            as: .monochrome
-        )
         let model = AppModel(
             store: store,
             saveStore: GameSaveStore(rootURL: root.appendingPathComponent("Saves")),
@@ -1858,7 +2029,6 @@ final class UISnapshotRegressionTests: XCTestCase {
             controllerProfileStore: ControllerProfileStore(
                 fileURL: root.appendingPathComponent("ControllerProfile.json")
             ),
-            firmwareStore: firmwareStore,
             translationWorkspaceStore: TranslationWorkspaceStore(
                 fileURL: root.appendingPathComponent("TranslationWorkspace.json")
             ),
@@ -1892,18 +2062,6 @@ final class UISnapshotRegressionTests: XCTestCase {
             ROMMetadata.self,
             from: JSONSerialization.data(withJSONObject: object, options: [.sortedKeys])
         )
-    }
-
-    private func syntheticStartupFile(kind: WonderSwanFirmwareKind) -> Data {
-        var data = Data(repeating: 0, count: kind.expectedByteCount)
-        data[0] = 0x90
-        let vector = data.count - 16
-        data[vector] = 0xea
-        data[vector + 1] = 0x00
-        data[vector + 2] = 0x00
-        data[vector + 3] = 0xff
-        data[vector + 4] = 0xff
-        return data
     }
 
     private func translationOverviewModel(
@@ -1979,11 +2137,8 @@ final class UISnapshotRegressionTests: XCTestCase {
             start: TranslationRouteStartContext(
                 hardwareModel: .wonderSwan,
                 firmware: TranslationRouteFirmware(
-                    source: .installed,
-                    image: TranslationArtifactDigest(
-                        byteCount: 4 * 1_024,
-                        sha256: String(repeating: "b", count: 64)
-                    )
+                    source: .openIPL,
+                    identifier: WonderSwanOpenIPL.identifier
                 ),
                 engine: TranslationRouteEngineIdentity(
                     backend: "ares",

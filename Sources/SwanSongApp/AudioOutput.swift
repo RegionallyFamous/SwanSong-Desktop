@@ -26,6 +26,18 @@ final class AudioOutput {
     private(set) var isRunning = false
     private(set) var recoveredDiscontinuities = 0
 
+    /// Headless automation explicitly trades realtime pacing for test speed.
+    /// Ordinary audio startup failures must never take this path.
+    var usesUnthrottledHeadlessMode: Bool { isHeadless }
+
+    /// Queue feedback is meaningful only while Core Audio owns a live sink.
+    /// During initial priming or recovery the player is intentionally stopped;
+    /// expose a starved pacing queue so the producer fills the resume cushion
+    /// without sleeping between batches.
+    var pacingQueuedSeconds: Double? {
+        isRunning ? (isRebuffering ? 0 : queuedSeconds) : nil
+    }
+
     private let maximumQueuedSeconds = 0.18
 
     init(pacingPolicy: FramePacingPolicy = .init()) {
@@ -40,7 +52,7 @@ final class AudioOutput {
         guard !isHeadless else { return }
         // AVAudioPlayerNode can abort during construction on managed/no-audio
         // hosts. Delay all CoreAudio component work until playback actually
-        // starts so library, firmware setup, and diagnostics remain usable.
+        // starts so the library and diagnostics remain usable.
         let engine = AVAudioEngine()
         let player = AVAudioPlayerNode()
         self.engine = engine
@@ -59,14 +71,15 @@ final class AudioOutput {
         engine.connect(player, to: engine.mainMixerNode, format: format)
         engine.prepare()
         try engine.start()
-        player.play()
         scheduledFrames = 0
         suppressScheduling = false
         isPaused = false
         lastEnqueueUptime = nil
         transportWasPrimed = false
-        isRebuffering = false
-        fadeInNextBuffer = false
+        // Do not start an empty renderer. Initial playback follows the same
+        // bounded re-prime path as a recovered transport discontinuity.
+        isRebuffering = true
+        fadeInNextBuffer = true
         recoveredDiscontinuities = 0
         isRunning = true
     }
@@ -84,9 +97,8 @@ final class AudioOutput {
            !suppressScheduling,
            pacingPolicy.discontinuity.shouldRecover(
             hostGapSeconds: max(0, now - lastEnqueueUptime),
-            queuedAudioSeconds: before,
+            remainingQueuedAudioSeconds: before,
             nominalBatchSeconds: nominalBatchSeconds,
-            targetBufferedFrames: pacingPolicy.targetBufferedFrames,
             transportWasPrimed: transportWasPrimed
            ), let player {
             beginDiscontinuityRecovery(player: player)
@@ -210,9 +222,10 @@ final class AudioOutput {
         scheduledFrames = 0
         lastEnqueueUptime = nil
         transportWasPrimed = false
-        isRebuffering = false
-        fadeInNextBuffer = false
-        if !fastForwarding, !isPaused { player.play() }
+        // Leaving fast-forward creates a new player timeline. Refill the same
+        // startup/recovery cushion before making it audible.
+        isRebuffering = !fastForwarding
+        fadeInNextBuffer = !fastForwarding
     }
 
     private func beginDiscontinuityRecovery(player: AVAudioPlayerNode) {

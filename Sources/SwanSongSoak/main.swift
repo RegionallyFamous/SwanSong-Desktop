@@ -4,7 +4,6 @@ import SwanSongKit
 
 private struct Options {
     var rom: URL?
-    var startupFile: URL?
     var fixtureID = "unspecified-open-fixture"
     var requestedDurationMilliseconds = 1_800_000
     var stallThresholdMilliseconds = 250
@@ -21,6 +20,10 @@ private struct SoakReport: Codable {
     let scope: String
     let fixtureID: String
     let backend: String
+    let engineBuildID: String
+    let openIPLIdentifier: String
+    let rtcMode: String
+    let rtcSeedUnixSeconds: UInt64
     let durationMode: String
     let requestedDurationMilliseconds: Int
     let elapsedMilliseconds: Int
@@ -69,6 +72,7 @@ private struct PacingReport: Codable {
     let policy: String
     let targetBufferedFrames: Double
     let discontinuityRecoveryEnabled: Bool
+    let discontinuityHorizonFrames: Double
     let discontinuityThresholdMilliseconds: Int
     let recoveryReprimeFrames: Double
     let injectedHostGapMilliseconds: Int?
@@ -116,6 +120,7 @@ private struct VirtualRealtimeAudioSink {
     private var lastNominalBatchSeconds = 0.0
     private(set) var isPrimed = false
     private(set) var hasEverPrimed = false
+    private(set) var isRebuffering = true
     private let pacingPolicy: FramePacingPolicy
     private let discontinuityRecoveryEnabled: Bool
     private let maximumQueuedSeconds = 0.18
@@ -130,6 +135,11 @@ private struct VirtualRealtimeAudioSink {
         self.discontinuityRecoveryEnabled = discontinuityRecoveryEnabled
     }
 
+    /// A stopped transport is not consuming its scheduled buffers. Feeding a
+    /// zero pacing value fills the bounded re-prime cushion immediately, just
+    /// like AudioOutput.pacingQueuedSeconds.
+    var pacingQueueSeconds: Double { isRebuffering ? 0 : queueSeconds }
+
     mutating func enqueue(
         frameCount: Int,
         sampleRate: Int,
@@ -140,11 +150,7 @@ private struct VirtualRealtimeAudioSink {
         lastNominalBatchSeconds = duration
         advance(to: now, nominalBatchSeconds: duration)
 
-        if transportStartedAt == nil {
-            transportStartedAt = now
-            epochScheduledSeconds = 0
-            lastUpdate = now
-        }
+        if lastUpdate == nil { lastUpdate = now }
         if queueSeconds >= maximumQueuedSeconds {
             droppedBatches += 1
             observeDrift(at: now)
@@ -155,17 +161,15 @@ private struct VirtualRealtimeAudioSink {
         totalScheduledSeconds += duration
         epochScheduledSeconds += duration
         maximumQueueSeconds = max(maximumQueueSeconds, queueSeconds)
-        // Engine work also consumes queue time before the pacing sleep is
-        // calculated, so the feedback loop settles slightly below its
-        // four-frame target. Three complete batches distinguish a primed
-        // transport from startup and are also the bounded recovery cushion.
-        let primingFrames = max(
-            1,
-            pacingPolicy.discontinuity.reprimeBufferedFrames
+        let reprimeTarget = pacingPolicy.discontinuity.reprimeTargetSeconds(
+            nominalBatchSeconds: duration
         )
-        if queueSeconds + primingToleranceSeconds >= duration * primingFrames {
+        if isRebuffering,
+           queueSeconds + primingToleranceSeconds >= reprimeTarget {
+            isRebuffering = false
             isPrimed = true
             hasEverPrimed = true
+            transportStartedAt = now
         }
         observeDrift(at: now)
     }
@@ -182,7 +186,10 @@ private struct VirtualRealtimeAudioSink {
         guard let lastUpdate else { return }
         let elapsed = max(0, now - lastUpdate)
         self.lastUpdate = now
-        guard elapsed > 0 else { return }
+        // AudioOutput stops AVAudioPlayerNode while it fills the initial or
+        // recovery cushion. The virtual sink must not drain buffers that the
+        // corresponding real transport is not rendering.
+        guard elapsed > 0, !isRebuffering else { return }
 
         let queuedBeforeAdvance = queueSeconds
         if elapsed > queuedBeforeAdvance {
@@ -191,9 +198,8 @@ private struct VirtualRealtimeAudioSink {
                 if discontinuityRecoveryEnabled,
                    pacingPolicy.discontinuity.shouldRecover(
                     hostGapSeconds: elapsed,
-                    queuedAudioSeconds: queuedBeforeAdvance,
+                    remainingQueuedAudioSeconds: 0,
                     nominalBatchSeconds: nominalBatchSeconds,
-                    targetBufferedFrames: pacingPolicy.targetBufferedFrames,
                     transportWasPrimed: true
                    ) {
                     recoveredDiscontinuities += 1
@@ -206,6 +212,7 @@ private struct VirtualRealtimeAudioSink {
                     // Mirror that new epoch instead of carrying the old wall-clock
                     // discontinuity forward as permanent transport drift.
                     isPrimed = false
+                    isRebuffering = true
                     transportStartedAt = nil
                     epochScheduledSeconds = 0
                 } else {
@@ -262,26 +269,10 @@ private struct SwanSongSoak {
         }
 
         let rom = try Data(contentsOf: romURL, options: [.mappedIfSafe])
-        let metadata = try EngineSession.inspect(rom: rom)
-        let expectedKind: WonderSwanFirmwareKind = metadata.isColor ? .color : .monochrome
-        let startup = try options.startupFile.map {
-            try WonderSwanFirmwareImporter.data(from: $0)
-        }
-        if let startup {
-            let startupKind = try WonderSwanFirmwareStore.kind(for: startup)
-            guard startupKind == expectedKind else {
-                throw SoakError(
-                    message: "The optional original firmware is for \(startupKind.title), not \(expectedKind.title)."
-                )
-            }
-        }
 
         let engine = try EngineSession(rtcMode: .deterministic(seedUnixSeconds: 1))
         guard engine.capabilities.contains(.execution), engine.capabilities.contains(.audio) else {
             throw SoakError(message: "SwanSongSoak requires the live ares execution and audio backend.")
-        }
-        if let startup {
-            try engine.stageBootROM(startup)
         }
         _ = try engine.load(rom: rom)
 
@@ -376,7 +367,7 @@ private struct SwanSongSoak {
             let delay = policy.delaySeconds(
                 producedAudioFrames: audio.frameCount,
                 sampleRate: audio.sampleRate,
-                queuedAudioSeconds: sink.queueSeconds,
+                queuedAudioSeconds: sink.pacingQueueSeconds,
                 fastForwarding: false
             )
             let remaining = deadline - ProcessInfo.processInfo.systemUptime
@@ -411,6 +402,10 @@ private struct SwanSongSoak {
 
         var issues: [String] = []
         if engine.backendName != "ares" { issues.append("live ares backend was not used") }
+        if !engine.buildID.hasPrefix("ares-")
+            || !engine.buildID.hasSuffix("-swan-abi5") {
+            issues.append("live engine build identity was not ABI 5")
+        }
         if !durationCompleted { issues.append("requested wall-clock duration did not complete") }
         if framesProduced == 0 { issues.append("no video frames were produced") }
         if invalidFrames > 0 { issues.append("invalid video frames were produced") }
@@ -421,7 +416,7 @@ private struct SwanSongSoak {
         if invalidAudioBatches > 0 { issues.append("invalid or non-48-kHz-stereo audio batches were produced") }
         if audioFormatChanges > 0 { issues.append("audio format changed during the soak") }
         if !sink.hasEverPrimed { issues.append("the virtual real-time audio queue never primed") }
-        if sink.hasEverPrimed, !sink.isPrimed {
+        if sink.hasEverPrimed, sink.isRebuffering {
             issues.append("the virtual real-time audio queue did not finish re-priming")
         }
         if sink.underrunEpisodes > 0 { issues.append("the virtual real-time audio queue underrun") }
@@ -440,11 +435,15 @@ private struct SwanSongSoak {
         }
 
         return SoakReport(
-            schema: "swan-song-av-soak-v2",
+            schema: "swan-song-av-soak-v3",
             status: issues.isEmpty ? "pass" : "fail",
-            scope: "Checked-in open fixture plus generated synthetic startup; live ares execution and virtual audio sink only; no commercial-game, Core Audio device, or original-hardware compatibility evidence.",
+            scope: "Checked-in open fixture using SwanSong Open IPL; live ares execution and virtual audio sink only; no commercial-game, Core Audio device, or original-hardware compatibility evidence.",
             fixtureID: options.fixtureID,
             backend: engine.backendName,
+            engineBuildID: engine.buildID,
+            openIPLIdentifier: WonderSwanOpenIPL.identifier,
+            rtcMode: "deterministic",
+            rtcSeedUnixSeconds: 1,
             durationMode: options.requestedDurationMilliseconds == 1_800_000
                 ? "release-30-minute"
                 : "duration-override",
@@ -479,7 +478,7 @@ private struct SwanSongSoak {
                 maximumRecoveredHostGapMilliseconds: milliseconds(
                     sink.maximumRecoveredHostGapSeconds
                 ),
-                recoveryInProgress: sink.hasEverPrimed && !sink.isPrimed,
+                recoveryInProgress: sink.hasEverPrimed && sink.isRebuffering,
                 droppedBatches: sink.droppedBatches,
                 totalStarvedMilliseconds: milliseconds(sink.totalStarvedSeconds),
                 finalQueueMilliseconds: milliseconds(sink.queueSeconds),
@@ -490,13 +489,13 @@ private struct SwanSongSoak {
                 policy: "audio-duration with bounded queue correction",
                 targetBufferedFrames: policy.targetBufferedFrames,
                 discontinuityRecoveryEnabled: options.discontinuityRecoveryEnabled,
+                discontinuityHorizonFrames: policy.discontinuity.recoveryHorizonFrames,
                 discontinuityThresholdMilliseconds: milliseconds(
                     policy.discontinuity.recoveryThresholdSeconds(
                         nominalBatchSeconds: audioSampleRate > 0
                             ? Double(audioFramesProduced) / Double(max(1, batchesProduced))
                                 / Double(audioSampleRate)
-                            : 0,
-                        targetBufferedFrames: policy.targetBufferedFrames
+                            : 0
                     )
                 ),
                 recoveryReprimeFrames: policy.discontinuity.reprimeBufferedFrames,
@@ -528,8 +527,6 @@ private struct SwanSongSoak {
             switch argument {
             case "--rom":
                 options.rom = URL(fileURLWithPath: try takeValue(&arguments, for: argument))
-            case "--startup-file":
-                options.startupFile = URL(fileURLWithPath: try takeValue(&arguments, for: argument))
             case "--fixture-id":
                 let value = try takeValue(&arguments, for: argument)
                 guard !value.isEmpty else { throw SoakError(message: "--fixture-id cannot be empty.") }
@@ -604,7 +601,6 @@ private struct SwanSongSoak {
 
     private static let usage = """
     Usage: SwanSongSoak --rom OPEN_FIXTURE [options]
-      --startup-file FILE         Use optional original firmware instead of Open IPL
       --fixture-id ID             Source-free fixture label for the report
       --duration-ms N             Exact requested wall duration (default 1800000)
       --stall-threshold-ms N      Fail on a frame gap above N (default 250)

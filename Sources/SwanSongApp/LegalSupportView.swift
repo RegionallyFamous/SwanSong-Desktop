@@ -34,6 +34,11 @@ enum LegalSupportSection: String, CaseIterable, Identifiable {
     }
 }
 
+@MainActor
+func presentLegalSupport(_ section: LegalSupportSection) {
+    LegalSupportWindowController.shared.present(section)
+}
+
 struct LegalSupportCommands: Commands {
     var body: some Commands {
         CommandGroup(after: .appInfo) {
@@ -54,7 +59,7 @@ struct LegalSupportCommands: Commands {
 
     private func present(_ section: LegalSupportSection) {
         Task { @MainActor in
-            LegalSupportWindowController.shared.present(section)
+            presentLegalSupport(section)
         }
     }
 }
@@ -166,7 +171,12 @@ struct LegalSupportView: View {
             detailGrid
 
             Text(
-                "SwanSong includes an independently written Open IPL, but no games or original system firmware. Add only local copies you own or are authorized to use."
+                "SwanSong always starts games with its independently written Open IPL. No BIOS is needed or accepted. Add only game and homebrew images you own or are authorized to use."
+            )
+            .foregroundStyle(.secondary)
+
+            Text(
+                catalogOverviewText
             )
             .foregroundStyle(.secondary)
 
@@ -206,8 +216,7 @@ struct LegalSupportView: View {
         VStack(alignment: .leading, spacing: 16) {
             sectionHeading(
                 "Updates",
-                detail:
-                    "SwanSong does not check the network in the background. You decide when to look for and install a release."
+                detail: catalogUpdatesDetail
             )
 
             GroupBox {
@@ -231,6 +240,39 @@ struct LegalSupportView: View {
             )
             .font(.callout)
             .foregroundStyle(.secondary)
+
+            Text(
+                catalogNetworkDetail
+            )
+            .font(.callout)
+            .foregroundStyle(.secondary)
+        }
+    }
+
+    var catalogOverviewText: String {
+        switch HomebrewCatalogProductionTrust.publicationStatus {
+        case .comingSoon:
+            "The first-party Homebrew Catalog is coming soon and makes no network requests in this release. SwanSong does not upload your library, saves, states, screenshots, settings, or Translation Lab data."
+        case .published:
+            "The first-party Homebrew Catalog never loads at launch or in the background. After you choose Load Catalog once, opening Homebrew without a saved verified copy contacts GitHub; refreshing it or downloading a listed title does too. SwanSong does not upload your library, saves, states, screenshots, settings, or Translation Lab data."
+        }
+    }
+
+    var catalogUpdatesDetail: String {
+        switch HomebrewCatalogProductionTrust.publicationStatus {
+        case .comingSoon:
+            "SwanSong does not check for app updates. The Homebrew Catalog is coming soon and makes no network requests in this release."
+        case .published:
+            "SwanSong does not check for app updates or refresh the Homebrew Catalog at launch or in the background. After catalog consent, opening Homebrew can request a missing verified copy; refresh remains an explicit action."
+        }
+    }
+
+    var catalogNetworkDetail: String {
+        switch HomebrewCatalogProductionTrust.publicationStatus {
+        case .comingSoon:
+            "Opening Releases is the only network action on this page. The unavailable Homebrew Catalog cannot contact GitHub in this release."
+        case .published:
+            "The Homebrew Catalog uses separate, consented GitHub requests when Homebrew needs a missing verified catalog, when you refresh it, or when you download a listed title. GitHub receives normal connection information and the requested URL; SwanSong does not attach library, save, or Translation Lab data."
         }
     }
 
@@ -371,7 +413,7 @@ private struct SwanSongMetadata {
     }
 }
 
-private enum SwanSongLinks {
+enum SwanSongLinks {
     static let project = URL(string: "https://github.com/RegionallyFamous/SwanSong-Desktop")!
     static let releases = URL(
         string: "https://github.com/RegionallyFamous/SwanSong-Desktop/releases")!

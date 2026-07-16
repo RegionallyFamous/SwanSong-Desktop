@@ -29,8 +29,6 @@ class SwanEngineBackend {
   virtual swan_result_t stage_persistence(swan_persistence_kind_t kind,
                                           std::span<const uint8_t> bytes,
                                           std::string& error) = 0;
-  virtual swan_result_t stage_boot_rom(std::span<const uint8_t> bytes,
-                                      std::string& error) = 0;
   virtual swan_result_t persistence_size(swan_persistence_kind_t kind,
                                          size_t& size,
                                          std::string& error) = 0;
