@@ -1127,7 +1127,7 @@ final class AppModel {
         }
     }
 
-    private static func homebrewReleaseSortsBefore(
+    private nonisolated static func homebrewReleaseSortsBefore(
         _ left: HomebrewCatalogRelease,
         _ right: HomebrewCatalogRelease
     ) -> Bool {
@@ -1141,7 +1141,7 @@ final class AppModel {
         )
     }
 
-    private static func homebrewReleaseSortsBefore(
+    private nonisolated static func homebrewReleaseSortsBefore(
         releasedAt candidateDate: Date?,
         version candidateVersion: String,
         digest candidateDigest: String,
