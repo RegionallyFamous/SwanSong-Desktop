@@ -4,9 +4,13 @@ set -eu
 SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 MACOS_DIR=$(CDPATH='' cd -- "$SCRIPT_DIR/.." && pwd)
 PRIVATE_KEY=${SPARKLE_ED25519_PRIVATE_KEY:-}
+RELEASE_API_TOKEN=${GITHUB_RELEASE_TOKEN:-}
 # Keep the secret as a non-exported shell variable so curl, Python, Git, and
 # every verifier launched below cannot inherit it through their environment.
 unset SPARKLE_ED25519_PRIVATE_KEY
+# The short-lived Actions token is needed only for release metadata. Remove it
+# from the inherited environment and pass it to that one curl request on stdin.
+unset GITHUB_RELEASE_TOKEN
 FEED="$MACOS_DIR/updates/appcast.xml"
 ARCHIVE=
 SOURCE_ARCHIVE=
@@ -146,13 +150,29 @@ download_asset "$(basename -- "$MANIFEST")" $((1024 * 1024))
 download_asset "$(basename -- "$CHECKSUMS")" $((64 * 1024))
 
 GITHUB_RELEASE_JSON="$TEMP_ROOT/github-release.json"
-curl --fail --location --silent --show-error \
-  --proto '=https' --tlsv1.2 \
-  --max-filesize $((1024 * 1024)) \
-  -H 'Accept: application/vnd.github+json' \
-  -H 'X-GitHub-Api-Version: 2022-11-28' \
-  "https://api.github.com/repos/RegionallyFamous/SwanSong-Desktop/releases/tags/$RELEASE_TAG" \
-  --output "$GITHUB_RELEASE_JSON" \
+download_release_metadata() {
+  if [ -n "$RELEASE_API_TOKEN" ]; then
+    printf 'header = "Authorization: Bearer %s"\n' "$RELEASE_API_TOKEN" \
+      | curl --config - --fail --location --silent --show-error \
+          --proto '=https' --tlsv1.2 \
+          --retry 5 --retry-delay 2 --retry-all-errors \
+          --max-filesize $((1024 * 1024)) \
+          -H 'Accept: application/vnd.github+json' \
+          -H 'X-GitHub-Api-Version: 2022-11-28' \
+          "https://api.github.com/repos/RegionallyFamous/SwanSong-Desktop/releases/tags/$RELEASE_TAG" \
+          --output "$GITHUB_RELEASE_JSON"
+  else
+    curl --fail --location --silent --show-error \
+      --proto '=https' --tlsv1.2 \
+      --retry 5 --retry-delay 2 --retry-all-errors \
+      --max-filesize $((1024 * 1024)) \
+      -H 'Accept: application/vnd.github+json' \
+      -H 'X-GitHub-Api-Version: 2022-11-28' \
+      "https://api.github.com/repos/RegionallyFamous/SwanSong-Desktop/releases/tags/$RELEASE_TAG" \
+      --output "$GITHUB_RELEASE_JSON"
+  fi
+}
+download_release_metadata \
   || fail "could not read the published GitHub release metadata"
 python3 - "$GITHUB_RELEASE_JSON" "$RELEASE_TAG" "$CHANNEL" \
   "$MANIFEST_ARCHIVE" "$MANIFEST_SOURCE" \

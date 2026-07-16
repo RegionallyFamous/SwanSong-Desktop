@@ -79,6 +79,7 @@ jobs:
       - name: Sign and verify the appcast
         env:
           SPARKLE_ED25519_PRIVATE_KEY: ${{ secrets.SPARKLE_ED25519_PRIVATE_KEY }}
+          GITHUB_RELEASE_TOKEN: ${{ github.token }}
           RELEASE_CHANNEL: ${{ inputs.channel }}
         run: |
           set -euo pipefail
