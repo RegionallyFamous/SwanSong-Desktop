@@ -1,6 +1,7 @@
 {
   "algorithm" : "dhash-16x16-luma-v1",
   "bitCount" : 256,
+  "macOSMajorVersion" : 26,
   "entries" : {
     "controller-mapping-settings-compact-dark" : "801869006cc04c003011092380808c8c848e848496968a8a8484808080c08160",
     "controller-mapping-settings-compact-light" : "3a0294488b94a1208520e21c1100311131313939696975743939010101010681",

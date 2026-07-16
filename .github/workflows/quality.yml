@@ -31,6 +31,10 @@ jobs:
     timeout-minutes: 35
     env:
       DEVELOPER_DIR: ${{ matrix.developer_dir }}
+      # AppKit/SwiftUI rasterization is OS-specific. Both runners still render
+      # every surface and enforce geometry/content invariants; reviewed pixel
+      # hashes remain strict on the macOS family that produced the baseline.
+      SWAN_SONG_ALLOW_UI_BASELINE_PLATFORM_MISMATCH: "1"
     steps:
       - name: Check out exact source
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -63,6 +67,7 @@ jobs:
     timeout-minutes: 75
     env:
       DEVELOPER_DIR: /Applications/Xcode_16.2.app/Contents/Developer
+      SWAN_SONG_ALLOW_UI_BASELINE_PLATFORM_MISMATCH: "1"
     steps:
       - name: Check out exact source
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0

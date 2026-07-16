@@ -62,6 +62,7 @@ final class UISnapshotRegressionTests: XCTestCase {
         let algorithm: String
         let bitCount: Int
         let maximumHammingDistance: Int
+        let macOSMajorVersion: Int
         let entries: [String: String]
     }
 
@@ -2563,6 +2564,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             algorithm: Self.perceptualHashAlgorithm,
             bitCount: 256,
             maximumHammingDistance: Self.maximumPerceptualHammingDistance,
+            macOSMajorVersion: ProcessInfo.processInfo.operatingSystemVersion.majorVersion,
             entries: currentEntries
         )
         if ProcessInfo.processInfo.environment["SWAN_SONG_UPDATE_UI_BASELINES"] == "1" {
@@ -2603,6 +2605,21 @@ final class UISnapshotRegressionTests: XCTestCase {
             throw SnapshotError.invalidBaseline(
                 "scenario set differs; missing \(missing), stale \(stale)"
             )
+        }
+
+        let currentMajorVersion = ProcessInfo.processInfo.operatingSystemVersion.majorVersion
+        guard baseline.macOSMajorVersion == currentMajorVersion else {
+            guard ProcessInfo.processInfo.environment[
+                "SWAN_SONG_ALLOW_UI_BASELINE_PLATFORM_MISMATCH"
+            ] == "1" else {
+                throw SnapshotError.invalidBaseline(
+                    "perceptual baselines were reviewed on macOS \(baseline.macOSMajorVersion), but this host runs macOS \(currentMajorVersion). Pixel hashes are OS-specific; run the structural snapshot checks in CI with SWAN_SONG_ALLOW_UI_BASELINE_PLATFORM_MISMATCH=1 or review and refresh baselines on this OS."
+                )
+            }
+            print(
+                "SKIP perceptual hash comparison: reviewed on macOS \(baseline.macOSMajorVersion), structural rendering checks passed on macOS \(currentMajorVersion)"
+            )
+            return
         }
 
         for key in currentEntries.keys.sorted() {
