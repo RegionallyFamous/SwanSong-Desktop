@@ -7,7 +7,7 @@ import Foundation
 /// the selected hardware model and cartridge bus width. This marker is not a
 /// dumped boot ROM and deliberately contains no third-party firmware bytes.
 public enum WonderSwanOpenIPL {
-    public static let identifier = "open-bootstrap-v1"
+    public static let identifier = "open-bootstrap-v3"
     public static let displayName = "SwanSong Open IPL"
 
     public static func identityData(for kind: WonderSwanFirmwareKind) -> Data {

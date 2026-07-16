@@ -18,6 +18,17 @@ private final class StateLoadUndoActionTarget: NSObject {
     }
 }
 
+private enum HomebrewCatalogAppError: LocalizedError {
+    case libraryChanged
+
+    var errorDescription: String? {
+        switch self {
+        case .libraryChanged:
+            "The library changed while the game was downloading. No install changes were kept; try again."
+        }
+    }
+}
+
 struct PlayerVideoActivityDiagnosticState: Sendable {
     static let defaultWarningRearmFrameThreshold = 600
 
@@ -89,6 +100,9 @@ struct PlayerVideoActivityDiagnosticState: Sendable {
 @MainActor
 @Observable
 final class AppModel {
+    private static let homebrewCatalogConsentDefaultsKey =
+        "SwanSong.homebrewCatalogConsent.v1"
+    private static let debugToolsDefaultsKey = "SwanSong.debugToolsEnabled.v1"
     private struct GameLaunchIdentityError: LocalizedError {
         let title: String
 
@@ -149,74 +163,28 @@ final class AppModel {
         }
     }
 
-    private enum FirmwareImportError: LocalizedError {
-        case wrongSystem(expected: WonderSwanFirmwareKind, actual: WonderSwanFirmwareKind)
-
-        var errorDescription: String? {
-            switch self {
-            case let .wrongSystem(expected, actual):
-                "That is a \(actual.title) startup file. The selected optional override is for \(expected.title)."
-            }
-        }
-    }
-
-    private enum PendingFirmwareIntent: Equatable {
+    private enum PlayerLaunchIntent: Equatable {
         case game(id: GameRecord.ID, title: String)
         case translation(
-            continuation: TranslationFirmwareContinuation,
+            continuation: TranslationLaunchContinuation,
             projectPath: String,
             title: String
         )
-
-        var title: String {
-            switch self {
-            case let .game(_, title), let .translation(_, _, title):
-                title
-            }
-        }
-
-        var primaryActionTitle: String {
-            switch self {
-            case .game:
-                "Choose Original Startup File & Play…"
-            case let .translation(continuation, _, _):
-                continuation.primaryActionTitle
-            }
-        }
     }
 
-    private enum TranslationFirmwareContinuation: Equatable {
+    private enum TranslationLaunchContinuation: Equatable {
         case play(role: TranslationROMRole, recordingFromCleanBoot: Bool)
         case replay(role: TranslationROMRole, route: TranslationRoute)
         case verifyRoute(TranslationRoute)
         case verifySuite
         case locateVisualDivergence(TranslationRoute)
-
-        var primaryActionTitle: String {
-            switch self {
-            case .play:
-                "Choose Original Startup File & Start Test…"
-            case .replay:
-                "Choose Original Startup File & Replay Test…"
-            case .verifyRoute:
-                "Choose Original Startup File & Verify Route…"
-            case .verifySuite:
-                "Choose Original Startup File & Run Suite…"
-            case .locateVisualDivergence:
-                "Choose Original Startup File & Locate Change…"
-            }
-        }
-    }
-
-    private enum FirmwareFeedbackDestination {
-        case request
-        case settings
     }
 
     enum Section: String, CaseIterable, Identifiable {
         case library = "Library"
         case favorites = "Favorites"
         case recent = "Recently Played"
+        case homebrew = "Homebrew"
         case translationLab = "Translation Lab"
 
         var id: Self { self }
@@ -226,6 +194,7 @@ final class AppModel {
             case .library: "square.grid.2x2"
             case .favorites: "star"
             case .recent: "clock"
+            case .homebrew: "shippingbox"
             case .translationLab: "character.book.closed"
             }
         }
@@ -344,13 +313,6 @@ final class AppModel {
             if let presentedNotice { appDiagnostic("notice: \(presentedNotice)") }
         }
     }
-    var firmwareInstallationRequest: WonderSwanFirmwareKind?
-    var firmwareInstallationError: String?
-    var firmwareInstallationIsBusy = false
-    var firmwareInstallationIsReplacement = false
-    var firmwareSettingsError: String?
-    var firmwareSettingsNotice: String?
-    var firmwareSettingsIsBusy = false
     var playingGameID: GameRecord.ID?
     var currentFrame: EngineVideoFrame?
     var playerFailure: PlayerFailureState?
@@ -363,9 +325,30 @@ final class AppModel {
     var keyboardInput: EngineInput = []
     var controllerInput: EngineInput = []
     var controllerPhysicalElements: Set<ControllerElement> = []
+    var controllerAvailableElements: Set<ControllerElement> = []
     var controllerProfile: ControllerProfile = .default
     var controllerLearningControl: WonderSwanControl?
     var connectedControllerName: String?
+    private(set) var debugToolsEnabled = false
+    var debugOverlayIsVisible = false
+    private(set) var debugGameplayHasFocus = false
+    private(set) var debugLastEffectiveInput: EngineInput = []
+    private(set) var debugLogIsRecording = false
+    private(set) var debugLogFrameCount = 0
+    private(set) var debugLogDroppedFrameCount = 0
+    private(set) var debugLastExportURL: URL?
+    var unavailableControllerBindings: [ControllerBinding] {
+        guard connectedControllerName != nil else { return [] }
+        return controllerProfile.unavailableBindings(
+            for: controllerAvailableElements
+        )
+    }
+    /// The Settings live test reflects the saved mapping even when no game is
+    /// running. Gameplay delivery remains separately gated through
+    /// `controllerInput` and `playerIsInteractive`.
+    var controllerPreviewInput: EngineInput {
+        controllerProfile.input(for: controllerPhysicalElements)
+    }
     var isPaused = false
     var isFastForwarding = false
     var audioQueueMilliseconds = 0.0
@@ -381,6 +364,18 @@ final class AppModel {
         playerVideoActivityDiagnostic.isDegraded
     }
     var gameImportIsBusy = false
+    var homebrewCatalogConsentGranted = false
+    private(set) var homebrewCatalogIsConfigured = false
+    var homebrewCatalog: HomebrewCatalog?
+    var selectedHomebrewEntryID: String?
+    var homebrewCatalogIsLoading = false
+    var homebrewCatalogIssue: String?
+    var homebrewCatalogLastUpdatedAt: Date?
+    var homebrewInstallingEntryID: String?
+    var homebrewInstallProgress: Double?
+    var homebrewInstallPhase: String?
+    var homebrewInstallIssue: String?
+    var homebrewInstallIssueEntryID: String?
     var gameArtwork: [GameRecord.ID: GameArtworkRecord] = [:]
     var managedGameHealth: [GameRecord.ID: ManagedGameHealth] = [:]
     var checkingManagedGameIDs: Set<GameRecord.ID> = []
@@ -450,29 +445,7 @@ final class AppModel {
     var translationSuiteCaseResults: [TranslationSuiteCaseResult] = []
     var isCapturingTranslationEvidence = false
     var translationComparisonPhase: TranslationComparisonPhase?
-    var monochromeFirmwareInstalled = false
-    var colorFirmwareInstalled = false
-    var pocketChallengeV2FirmwareInstalled = false
     var fitWindowRequestID = 0
-
-    var firmwareInstallationTargetTitle: String? {
-        pendingFirmwareIntent?.title
-    }
-
-    var firmwareInstallationPrimaryActionTitle: String {
-        if firmwareInstallationIsReplacement {
-            return "Choose Another Original Startup File & Retry…"
-        }
-        return pendingFirmwareIntent?.primaryActionTitle ?? "Choose Original Startup File"
-    }
-
-    var firmwareInstallationWillResumeLaunch: Bool {
-        pendingFirmwareIntent != nil
-    }
-
-    var firmwareImportIsBusy: Bool {
-        firmwareInstallationIsBusy || firmwareSettingsIsBusy
-    }
 
     var hasEmulationSessionPendingFinalization: Bool {
         emulationTask != nil || retiringEmulationSession != nil
@@ -486,9 +459,13 @@ final class AppModel {
     private let saveStore: GameSaveStore
     private let stateStore: GameStateStore
     private let managedGameStore: ManagedGameStore
+    private let homebrewCatalogClient: HomebrewCatalogClient
+    private let homebrewCatalogCacheStore: HomebrewCatalogCacheStore
+    private let homebrewCatalogSignatureVerifier: HomebrewCatalogSignatureVerifier
+    private let homebrewCatalogHighWaterStore: any HomebrewCatalogHighWaterStoring
+    private let homebrewCatalogMinimumRevision: Int
     private let artworkStore: GameArtworkStore
     private let controllerProfileStore: ControllerProfileStore
-    private let firmwareStore: WonderSwanFirmwareStore
     private let translationWorkspaceStore: TranslationWorkspaceStore
     private let translationEvidenceStore = TranslationEvidenceStore()
     private let importer = GameImporter()
@@ -510,14 +487,20 @@ final class AppModel {
     private var playerStateTransactionID = UUID()
     private var pendingPlayerRetirement: PendingPlayerRetirement?
     private var discardFinalPersistenceGenerations: Set<UUID> = []
-    private var playerFailureRetryIntent: PendingFirmwareIntent?
+    private var playerFailureRetryIntent: PlayerLaunchIntent?
     private var frameAdvanceGate = FrameAdvanceGate()
     private var frameActivityMonitor = FrameActivityMonitor()
     private var playerVideoActivityDiagnostic = PlayerVideoActivityDiagnosticState()
     private var applicationIsActive = true
+    private var debugLogRecorder: GameDebugLogRecorder?
     private var pendingAutomaticArtworkGameID: GameRecord.ID?
     private var managedGameHealthScanGeneration = UUID()
     private var pendingRepairPlayGameID: GameRecord.ID?
+    private var homebrewCatalogRefreshTask: Task<Void, Never>?
+    private var homebrewCatalogRefreshGeneration = UUID()
+    private var homebrewInstallTask: Task<Void, Never>?
+    private var homebrewCatalogRefreshAttemptedThisSession = false
+    private var playerReturnSection: Section = .library
     private let pacingPolicy = FramePacingPolicy()
     private var inactivityPauseWasApplied = false
     private var automatedQuickStateFrames: [UInt64] = {
@@ -531,6 +514,9 @@ final class AppModel {
         "SWAN_SONG_STOP_AT_FRAME"
     ].flatMap(UInt64.init)
     #if SWAN_SONG_AUTOMATION
+    private let automatedDebugLogURL = ProcessInfo.processInfo.environment[
+        "SWAN_SONG_DEBUG_LOG_PATH"
+    ].flatMap { $0.isEmpty ? nil : URL(fileURLWithPath: $0) }
     private var automatedCaptureFrame = ProcessInfo.processInfo.environment[
         "SWAN_SONG_CAPTURE_FRAME"
     ].flatMap(UInt64.init)
@@ -587,17 +573,9 @@ final class AppModel {
             && environment["SWAN_SONG_HEADLESS"] == "1"
             && environment["SWAN_SONG_DATA_DIR"]?.isEmpty == false
     }()
-    private let allowsInitialFirmwareImportAutomation: Bool = {
-        let environment = ProcessInfo.processInfo.environment
-        return environment["SWAN_SONG_HEADLESS"] == "1"
-            && environment["SWAN_SONG_APP_DIAGNOSTICS"] == "1"
-            && environment["SWAN_SONG_DATA_DIR"]?.isEmpty == false
-    }()
     #else
     private let allowsAutomatedPCV2InputProbe = false
-    private let allowsInitialFirmwareImportAutomation = false
     #endif
-    private var pendingFirmwareIntent: PendingFirmwareIntent?
     private var activeTranslationROMURL: URL?
     private var translationRouteRecorder: TranslationRouteRecorder?
     private var translationReplayRoute: TranslationRoute?
@@ -642,9 +620,14 @@ final class AppModel {
         saveStore: GameSaveStore = .defaultStore(),
         stateStore: GameStateStore = .defaultStore(),
         managedGameStore: ManagedGameStore = .defaultStore(),
+        homebrewCatalogURL: URL = HomebrewCatalogClient.catalogURL,
+        homebrewCatalogClientOverride: HomebrewCatalogClient? = nil,
+        homebrewCatalogCacheStore: HomebrewCatalogCacheStore? = nil,
+        homebrewCatalogSignatureVerifier: HomebrewCatalogSignatureVerifier = HomebrewCatalogProductionTrust.verifier,
+        homebrewCatalogHighWaterStore: any HomebrewCatalogHighWaterStoring = HomebrewCatalogKeychainHighWaterStore(),
+        homebrewCatalogMinimumRevision: Int = HomebrewCatalogProductionTrust.minimumRevision,
         artworkStore: GameArtworkStore = .defaultStore(),
         controllerProfileStore: ControllerProfileStore = .defaultStore(),
-        firmwareStore: WonderSwanFirmwareStore = .defaultStore(),
         translationWorkspaceStore: TranslationWorkspaceStore = .defaultStore(),
         engineCanExecuteOverride: Bool? = nil
     ) {
@@ -652,11 +635,31 @@ final class AppModel {
         self.saveStore = saveStore
         self.stateStore = stateStore
         self.managedGameStore = managedGameStore
+        self.homebrewCatalogClient = homebrewCatalogClientOverride
+            ?? HomebrewCatalogClient(sourceURL: homebrewCatalogURL)
+        self.homebrewCatalogCacheStore = homebrewCatalogCacheStore
+            ?? HomebrewCatalogCacheStore(
+                directoryURL: store.fileURL
+                    .deletingLastPathComponent()
+                    .appendingPathComponent("Homebrew", isDirectory: true)
+            )
+        self.homebrewCatalogSignatureVerifier = homebrewCatalogSignatureVerifier
+        self.homebrewCatalogIsConfigured = !homebrewCatalogSignatureVerifier
+            .trustedKeys.isEmpty
+        self.homebrewCatalogHighWaterStore = homebrewCatalogHighWaterStore
+        self.homebrewCatalogMinimumRevision = homebrewCatalogMinimumRevision
         self.artworkStore = artworkStore
         self.batchImporter = GameBatchImporter(managedStore: managedGameStore)
         self.controllerProfileStore = controllerProfileStore
-        self.firmwareStore = firmwareStore
         self.translationWorkspaceStore = translationWorkspaceStore
+        self.debugToolsEnabled = UserDefaults.standard.bool(
+            forKey: Self.debugToolsDefaultsKey
+        )
+        #if SWAN_SONG_AUTOMATION
+        if ProcessInfo.processInfo.environment["SWAN_SONG_ENABLE_DEBUG_TOOLS"] == "1" {
+            self.debugToolsEnabled = true
+        }
+        #endif
         self.translationWorkspaceIsEnvironmentConfigured = ProcessInfo.processInfo.environment[
             "SWAN_SONG_TRANSLATION_PROJECT"
         ] != nil
@@ -677,16 +680,20 @@ final class AppModel {
         controller.onChange = { [weak self] elements in
             self?.handleControllerElements(elements)
         }
-        controller.onConnectionChange = { [weak self] name in
+        controller.onConnectionChange = { [weak self] name, availableElements in
             self?.connectedControllerName = name
+            self?.controllerAvailableElements = availableElements
             if name == nil {
                 self?.controllerLearningControl = nil
             }
         }
         connectedControllerName = controller.connectedControllerName
         controllerPhysicalElements = controller.pressedElements
+        controllerAvailableElements = controller.availableElements
         controllerInput = controllerProfile.input(for: controllerPhysicalElements)
-        refreshFirmwareStatus()
+        homebrewCatalogConsentGranted = UserDefaults.standard.bool(
+            forKey: Self.homebrewCatalogConsentDefaultsKey
+        )
         do {
             games = try store.load().games
             loadGameArtwork()
@@ -696,6 +703,7 @@ final class AppModel {
         } catch {
             presentedError = "The game library could not be read: \(error.localizedDescription)"
         }
+        loadCachedHomebrewCatalog()
         loadTranslationWorkspace()
         refreshManagedGameHealth()
     }
@@ -769,8 +777,386 @@ final class AppModel {
             games
                 .filter { $0.lastPlayedAt != nil }
                 .sorted { ($0.lastPlayedAt ?? .distantPast) > ($1.lastPlayedAt ?? .distantPast) }
+        case .homebrew:
+            []
         case .translationLab:
             []
+        }
+    }
+
+    var homebrewCatalogEntries: [HomebrewCatalogEntry] {
+        (homebrewCatalog?.entries ?? []).sorted {
+            $0.title.localizedStandardCompare($1.title) == .orderedAscending
+        }
+    }
+
+    func latestHomebrewRelease(
+        for entry: HomebrewCatalogEntry
+    ) -> HomebrewCatalogRelease? {
+        entry.releases.max(by: Self.homebrewReleaseSortsBefore)
+    }
+
+    func installedHomebrewGame(for entry: HomebrewCatalogEntry) -> GameRecord? {
+        games.first { game in
+            game.homebrewCatalogOrigin?.catalogID == homebrewCatalog?.catalogID
+                && game.homebrewCatalogOrigin?.entryID == entry.id
+        }
+    }
+
+    func homebrewUpdateIsAvailable(for entry: HomebrewCatalogEntry) -> Bool {
+        guard let installed = installedHomebrewGame(for: entry),
+              let origin = installed.homebrewCatalogOrigin,
+              let release = latestHomebrewRelease(for: entry),
+              origin.assetSHA256.lowercased()
+                != release.asset.sha256.lowercased() else { return false }
+        guard origin.version != release.version else { return false }
+        let installedReleasedAt = origin.releasedAt
+            ?? entry.releases.first(where: {
+                $0.version == origin.version
+                    && $0.asset.sha256 == origin.assetSHA256
+            })?.releasedAt
+        guard let installedReleasedAt else { return false }
+        return Self.homebrewReleaseSortsBefore(
+            releasedAt: installedReleasedAt,
+            version: origin.version,
+            digest: origin.assetSHA256,
+            than: release.releasedAt,
+            version: release.version,
+            digest: release.asset.sha256
+        )
+    }
+
+    func showInstalledHomebrewInLibrary(_ entry: HomebrewCatalogEntry) {
+        guard let game = installedHomebrewGame(for: entry) else { return }
+        selectedGameID = game.id
+        section = .library
+    }
+
+    func playInstalledHomebrew(_ entry: HomebrewCatalogEntry) {
+        guard let game = installedHomebrewGame(for: entry) else { return }
+        guard homebrewInstallTask == nil, !gameImportIsBusy else {
+            homebrewInstallIssueEntryID = entry.id
+            homebrewInstallIssue = "Finish the current library operation before playing this game."
+            return
+        }
+        playerReturnSection = .homebrew
+        selectedGameID = game.id
+        play(game.id)
+    }
+
+    func enableHomebrewCatalog() {
+        guard homebrewCatalogIsConfigured else {
+            homebrewCatalogIssue = "The signed Homebrew Catalog has not been published for this SwanSong build yet."
+            return
+        }
+        homebrewCatalogConsentGranted = true
+        UserDefaults.standard.set(
+            true,
+            forKey: Self.homebrewCatalogConsentDefaultsKey
+        )
+        refreshHomebrewCatalog()
+    }
+
+    func declineHomebrewCatalog() {
+        section = .library
+    }
+
+    func stopUsingHomebrewCatalog() {
+        guard homebrewInstallTask == nil else {
+            presentedNotice = "Finish or cancel the current Homebrew install before stopping use of the catalog."
+            return
+        }
+        homebrewCatalogRefreshGeneration = UUID()
+        homebrewCatalogRefreshTask?.cancel()
+        homebrewCatalogRefreshTask = nil
+        homebrewCatalogIsLoading = false
+        homebrewCatalogRefreshAttemptedThisSession = false
+        homebrewCatalogConsentGranted = false
+        UserDefaults.standard.removeObject(
+            forKey: Self.homebrewCatalogConsentDefaultsKey
+        )
+        homebrewCatalog = nil
+        selectedHomebrewEntryID = nil
+        homebrewCatalogLastUpdatedAt = nil
+        homebrewCatalogIssue = nil
+
+        do {
+            try homebrewCatalogCacheStore.remove()
+            presentedNotice = "Stopped using the Homebrew Catalog and removed its saved catalog copy. Installed games were not changed."
+        } catch {
+            presentedError = "SwanSong stopped using the Homebrew Catalog, but its saved catalog copy could not be removed safely. \(error.localizedDescription)"
+        }
+    }
+
+    func loadHomebrewCatalogIfNeeded() {
+        guard homebrewCatalogIsConfigured,
+              homebrewCatalogConsentGranted,
+              homebrewCatalog == nil,
+              !homebrewCatalogRefreshAttemptedThisSession else { return }
+        refreshHomebrewCatalog()
+    }
+
+    func refreshHomebrewCatalog() {
+        guard homebrewCatalogIsConfigured,
+              homebrewCatalogConsentGranted else { return }
+        guard homebrewCatalogRefreshTask == nil,
+              homebrewInstallTask == nil else { return }
+        homebrewCatalogRefreshAttemptedThisSession = true
+        homebrewCatalogIssue = nil
+        homebrewCatalogIsLoading = true
+        let client = homebrewCatalogClient
+        let cacheStore = homebrewCatalogCacheStore
+        let verifier = homebrewCatalogSignatureVerifier
+        let highWaterStore = homebrewCatalogHighWaterStore
+        let minimumRevision = homebrewCatalogMinimumRevision
+        let sourceURL = client.catalogSourceURL
+        let refreshGeneration = UUID()
+        homebrewCatalogRefreshGeneration = refreshGeneration
+        homebrewCatalogRefreshTask = Task { [weak self] in
+            defer {
+                if self?.homebrewCatalogRefreshGeneration == refreshGeneration {
+                    self?.homebrewCatalogIsLoading = false
+                    self?.homebrewCatalogRefreshTask = nil
+                }
+            }
+            do {
+                var wireBundle: HomebrewCatalogWireBundle?
+                var authenticated: AuthenticatedHomebrewCatalog?
+                for attempt in 0..<2 {
+                    let candidate = try await client.fetchCatalogBundle()
+                    do {
+                        let verified = try await Task.detached(
+                            priority: .userInitiated
+                        ) {
+                            try verifier.verify(
+                                catalogData: candidate.catalogData,
+                                signatureData: candidate.signatureData
+                            )
+                        }.value
+                        wireBundle = candidate
+                        authenticated = verified
+                        break
+                    } catch let error as HomebrewCatalogSignatureError
+                        where attempt == 0
+                            && Self.shouldRetryHomebrewCatalogPair(error) {
+                        continue
+                    }
+                }
+                guard let wireBundle, let authenticated else {
+                    throw HomebrewCatalogSignatureError.noTrustedSignature
+                }
+                try Task.checkCancellation()
+                let catalog = try await Task.detached(priority: .userInitiated) {
+                    try Self.decodeHomebrewCatalog(
+                        wireBundle.catalogData,
+                        sourceURL: sourceURL
+                    )
+                }.value
+                try Task.checkCancellation()
+                guard let self,
+                      homebrewCatalogRefreshGeneration == refreshGeneration,
+                      homebrewCatalogConsentGranted,
+                      homebrewCatalogIsConfigured else { return }
+
+                // This small commit is intentionally actor-isolated. Stop Using
+                // cannot interleave between the final ownership check and these
+                // writes, and detached verification/decode has no side effects
+                // that could recreate the cache after cancellation.
+                let currentState = try highWaterStore.load(
+                    catalogID: catalog.catalogID
+                )
+                let nextState = try HomebrewCatalogRollbackPolicy.nextState(
+                    catalog: catalog,
+                    authenticated: authenticated,
+                    trustedKeys: verifier.trustedKeys,
+                    minimumRevision: minimumRevision,
+                    currentState: currentState
+                )
+                try Task.checkCancellation()
+                let cacheBundle = HomebrewCatalogCachedBundle(
+                    catalogData: wireBundle.catalogData,
+                    signatureData: wireBundle.signatureData
+                )
+                // Re-read, compare, advance trust, and publish the dependent
+                // cache while holding one cross-process lock. A stale process
+                // therefore cannot replace a newer process's verified cache.
+                try highWaterStore.advance(
+                    to: nextState,
+                    publishingWhileLocked: {
+                        try cacheStore.store(cacheBundle)
+                    }
+                )
+                homebrewCatalog = catalog
+                homebrewCatalogLastUpdatedAt = catalog.generatedAt
+                if selectedHomebrewEntryID == nil {
+                    selectedHomebrewEntryID = catalog.entries.first?.id
+                }
+                homebrewCatalogIssue = nil
+            } catch is CancellationError {
+                return
+            } catch {
+                guard let self,
+                      !Task.isCancelled,
+                      homebrewCatalogRefreshGeneration == refreshGeneration,
+                      homebrewCatalogConsentGranted else { return }
+                if homebrewCatalog == nil {
+                    homebrewCatalogIssue = "The Homebrew Catalog could not be loaded. \(error.localizedDescription)"
+                } else if error is HomebrewCatalogError
+                            || error is HomebrewCatalogAppError
+                            || error is HomebrewCatalogSignatureError
+                            || error is HomebrewCatalogRollbackError
+                            || error is HomebrewCatalogHighWaterStoreError {
+                    homebrewCatalogIssue = "The catalog update could not be verified. SwanSong is showing the last verified catalog saved on this Mac."
+                } else {
+                    homebrewCatalogIssue = "GitHub could not be reached. SwanSong is showing the last verified catalog saved on this Mac."
+                }
+            }
+        }
+    }
+
+    func cancelHomebrewInstall() {
+        homebrewInstallTask?.cancel()
+    }
+
+    func installHomebrew(_ entry: HomebrewCatalogEntry) {
+        guard let catalog = homebrewCatalog,
+              let entry = catalog.entries.first(where: { $0.id == entry.id }),
+              let release = latestHomebrewRelease(for: entry) else { return }
+        guard homebrewInstallTask == nil,
+              !gameImportIsBusy,
+              repairingGameID == nil else {
+            homebrewInstallIssueEntryID = entry.id
+            homebrewInstallIssue = "Finish the current library operation before adding this game."
+            return
+        }
+        if let installed = installedHomebrewGame(for: entry),
+           installed.id == playingGameID {
+            homebrewInstallIssueEntryID = entry.id
+            homebrewInstallIssue = "Stop this game before installing an update."
+            return
+        }
+
+        let previousGames = games
+        let client = homebrewCatalogClient
+        let managedGameStore = managedGameStore
+        homebrewInstallingEntryID = entry.id
+        homebrewInstallProgress = 0
+        homebrewInstallPhase = "Downloading…"
+        homebrewInstallIssue = nil
+        homebrewInstallIssueEntryID = nil
+        gameImportIsBusy = true
+        homebrewInstallTask = Task { [weak self] in
+            guard let model = self else { return }
+            var createdReference: ManagedGameReference?
+            defer {
+                model.homebrewInstallingEntryID = nil
+                model.homebrewInstallProgress = nil
+                model.homebrewInstallPhase = nil
+                model.homebrewInstallTask = nil
+                model.gameImportIsBusy = false
+            }
+            do {
+                let data = try await client.fetchAsset(release.asset) { progress in
+                    Task { @MainActor [weak model] in
+                        guard model?.homebrewInstallingEntryID == entry.id else { return }
+                        model?.homebrewInstallProgress = progress
+                    }
+                }
+                try Task.checkCancellation()
+                model.homebrewInstallPhase = "Verifying and adding to Library…"
+                let result = try await Task.detached(priority: .userInitiated) {
+                    try HomebrewCatalogInstaller(assetData: data).install(
+                        entry: entry,
+                        release: release,
+                        into: previousGames,
+                        managedStore: managedGameStore
+                    )
+                }.value
+                createdReference = result.createdReference
+                try Task.checkCancellation()
+                guard model.games == previousGames else {
+                    throw HomebrewCatalogAppError.libraryChanged
+                }
+                model.games = result.games
+                model.selectedGameID = result.gameID
+                do {
+                    try model.persist()
+                } catch {
+                    model.games = previousGames
+                    throw error
+                }
+                model.invalidateManagedGameHealthScan()
+                model.managedGameHealth[result.gameID] = .healthy
+                model.checkingManagedGameIDs.remove(result.gameID)
+                try? model.managedGameStore.prune(
+                    retaining: model.games.compactMap(\.managedROM)
+                )
+                model.homebrewInstallIssue = nil
+                model.homebrewInstallIssueEntryID = nil
+                model.presentedNotice = switch result.action {
+                case .installed, .adopted:
+                    "Added \(entry.title) to Library."
+                case .updated:
+                    "Updated \(entry.title) to version \(release.version) without changing its saves or library identity."
+                case .unchanged:
+                    "\(entry.title) is already installed."
+                }
+            } catch is CancellationError {
+                if let createdReference {
+                    model.rollbackManagedImports(
+                        [createdReference],
+                        retaining: previousGames
+                    )
+                }
+                model.homebrewInstallIssue = nil
+                model.homebrewInstallIssueEntryID = nil
+            } catch {
+                if let createdReference {
+                    model.rollbackManagedImports(
+                        [createdReference],
+                        retaining: model.games
+                    )
+                }
+                model.homebrewInstallIssueEntryID = entry.id
+                model.homebrewInstallIssue = "\(entry.title) was not installed. \(error.localizedDescription)"
+            }
+        }
+    }
+
+    private static func homebrewReleaseSortsBefore(
+        _ left: HomebrewCatalogRelease,
+        _ right: HomebrewCatalogRelease
+    ) -> Bool {
+        homebrewReleaseSortsBefore(
+            releasedAt: left.releasedAt,
+            version: left.version,
+            digest: left.asset.sha256,
+            than: right.releasedAt,
+            version: right.version,
+            digest: right.asset.sha256
+        )
+    }
+
+    private static func homebrewReleaseSortsBefore(
+        releasedAt candidateDate: Date?,
+        version candidateVersion: String,
+        digest candidateDigest: String,
+        than comparisonDate: Date?,
+        version comparisonVersion: String,
+        digest comparisonDigest: String
+    ) -> Bool {
+        switch (candidateDate, comparisonDate) {
+        case let (candidateDate?, comparisonDate?) where candidateDate != comparisonDate:
+            return candidateDate < comparisonDate
+        case (nil, .some):
+            return true
+        case (.some, nil):
+            return false
+        default:
+            if candidateVersion != comparisonVersion {
+                return candidateVersion < comparisonVersion
+            }
+            return candidateDigest < comparisonDigest
         }
     }
 
@@ -851,7 +1237,17 @@ final class AppModel {
     }
 
     var playerFailureReturnTitle: String {
-        activeTranslationRole == nil ? "Back to Library" : "Back to Translation Lab"
+        playerReturnTitle
+    }
+
+    var playerReturnTitle: String {
+        "Back to \(playerReturnDestinationTitle)"
+    }
+
+    var playerReturnDestinationTitle: String {
+        activeTranslationRole == nil
+            ? playerReturnSection.rawValue
+            : Section.translationLab.rawValue
     }
 
     var playerIsInteractive: Bool {
@@ -966,7 +1362,6 @@ final class AppModel {
         activeTranslationRole != nil
             && playerIsInteractive
             && !playerStateOperationIsBusy
-            && !firmwareImportIsBusy
             && latestTranslationRoute?.proofEligibility == .proofReady
             && !translationRouteIsRecording
             && !translationRouteRecordingIsPreparing
@@ -978,7 +1373,6 @@ final class AppModel {
         activeTranslationRole == .original
             && playerIsInteractive
             && !playerStateOperationIsBusy
-            && !firmwareImportIsBusy
             && !isLaunchingGame
             && !translationRouteIsRecording
             && !translationRouteRecordingIsPreparing
@@ -1012,7 +1406,6 @@ final class AppModel {
 
     var canVerifyLatestTranslationRoute: Bool {
         engineCanExecute
-            && !firmwareImportIsBusy
             && !isPlaying
             && !translationToolIsRunning
             && translationComparisonPhase == nil
@@ -1023,7 +1416,6 @@ final class AppModel {
 
     var canLocateFirstTranslationVisualChange: Bool {
         engineCanExecute
-            && !firmwareImportIsBusy
             && !isPlaying
             && !translationToolIsRunning
             && translationComparisonPhase == nil
@@ -1036,7 +1428,6 @@ final class AppModel {
 
     var canVerifyTranslationSuite: Bool {
         engineCanExecute
-            && !firmwareImportIsBusy
             && !isPlaying
             && !translationToolIsRunning
             && translationComparisonPhase == nil
@@ -1332,6 +1723,10 @@ final class AppModel {
         keyboardInput.union(gameplayControllerInput)
     }
 
+    var activeGameplayControllerInput: EngineInput {
+        gameplayControllerInput
+    }
+
     func firmwareKind(for game: GameRecord) -> WonderSwanFirmwareKind {
         switch game.resolvedHardwareModel {
         case .pocketChallengeV2: .pocketChallengeV2
@@ -1340,43 +1735,14 @@ final class AppModel {
         }
     }
 
-    var startupFileKindsUsedByLibrary: Set<WonderSwanFirmwareKind> {
-        Set(games.map { firmwareKind(for: $0) })
-    }
-
-    func missingFirmware(for game: GameRecord) -> WonderSwanFirmwareKind? {
-        nil
-    }
-
     func canPlayGame(_ game: GameRecord) -> Bool {
         !terminationIsInProgress
             && engineCanExecute
-            && !firmwareImportIsBusy
             && !checkingManagedGameIDs.contains(game.id)
             && repairingGameID != game.id
             && managedGameHealth[game.id] != .missing
             && managedGameHealth[game.id] != .changed
             && managedGameHealth[game.id] != .invalidReference
-    }
-
-    func requestFirmwareSetup(_ kind: WonderSwanFirmwareKind) {
-        refreshFirmwareStatus()
-        guard !firmwareImportIsBusy else {
-            presentedNotice = "Original startup-file setup is already in progress."
-            return
-        }
-        guard !isFirmwareInstalled(kind) else {
-            presentedError = nil
-            presentedNotice = "An original \(kind.title) startup file is already installed."
-            return
-        }
-        presentedNotice = nil
-        presentedError = nil
-        firmwareInstallationRequest = kind
-        firmwareInstallationError = nil
-        firmwareInstallationIsReplacement = false
-        pendingFirmwareIntent = nil
-        appDiagnostic("optional firmware setup presented kind=\(kind.rawValue) target=settings")
     }
 
     func chooseGame() {
@@ -1450,219 +1816,8 @@ final class AppModel {
         presentedError = nil
     }
 
-    func installRequestedFirmware(_ kind: WonderSwanFirmwareKind) {
-        chooseFirmware(requiredKind: kind, feedback: .request)
-    }
-
-    func cancelFirmwareInstallationRequest() {
-        guard !firmwareImportIsBusy else { return }
-        firmwareInstallationRequest = nil
-        firmwareInstallationError = nil
-        firmwareInstallationIsReplacement = false
-        pendingFirmwareIntent = nil
-    }
-
-    /// Stops the current session, asks for a replacement startup file through
-    /// the same validated private-install flow, then retries the exact launch
-    /// intent. This avoids sending recovery into Settings while its controls
-    /// are deliberately disabled during play.
-    func replaceStartupFileAndRetryCurrentSession() {
-        guard playerSessionReplacementIsAvailable() else { return }
-        guard !firmwareImportIsBusy else {
-            presentedNotice = "Finish the current startup-file setup, then try again."
-            return
-        }
-        guard let game = playingGame,
-              let intent = currentPlayerLaunchIntent(for: game) else {
-            presentedError = "SwanSong could not preserve this launch context. Return to the Library and start the game again."
-            return
-        }
-        let kind = firmwareKind(for: game)
-        stopPlaying()
-        presentedNotice = nil
-        presentedError = nil
-        firmwareInstallationRequest = kind
-        firmwareInstallationError = nil
-        firmwareInstallationIsReplacement = true
-        pendingFirmwareIntent = intent
-        appDiagnostic(
-            "startup-file replacement requested kind=\(kind.rawValue) target=\(intent.title)"
-        )
-    }
-
-    func installRequestedFirmware(
-        at url: URL,
-        requiredKind: WonderSwanFirmwareKind
-    ) {
-        installFirmware(at: url, requiredKind: requiredKind, feedback: .request)
-    }
-
-    func installFirmwareFromSettings(
-        at url: URL,
-        requiredKind: WonderSwanFirmwareKind
-    ) {
-        guard !isPlaying else {
-            firmwareSettingsNotice = nil
-            firmwareSettingsError = "Stop the current game before changing system startup files."
-            return
-        }
-        installFirmware(at: url, requiredKind: requiredKind, feedback: .settings)
-    }
-
-    func chooseFirmwareFromSettings(for requiredKind: WonderSwanFirmwareKind? = nil) {
-        guard !isPlaying else {
-            firmwareSettingsNotice = nil
-            firmwareSettingsError = "Stop the current game before changing system startup files."
-            return
-        }
-        firmwareSettingsError = nil
-        firmwareSettingsNotice = nil
-        chooseFirmware(requiredKind: requiredKind, feedback: .settings)
-    }
-
-    private func chooseFirmware(
-        requiredKind: WonderSwanFirmwareKind?,
-        feedback: FirmwareFeedbackDestination
-    ) {
-        guard !firmwareInstallationIsBusy, !firmwareSettingsIsBusy else { return }
-        let panel = NSOpenPanel()
-        panel.title = requiredKind.map { "Choose an Original \($0.title) Startup File" }
-            ?? "Choose an Original WonderSwan Startup File"
-        panel.message = requiredKind.map {
-            "Optional: choose a startup file copied from \($0.title) hardware you own, or a ZIP containing it. SwanSong will identify and check the file before storing a private local copy."
-        } ?? "Optional: choose a WonderSwan startup file copied from hardware you own, or a ZIP containing one image. SwanSong will identify the system automatically."
-        panel.prompt = "Choose File"
-        panel.allowsMultipleSelection = false
-        panel.canChooseDirectories = false
-        panel.canChooseFiles = true
-        let contentTypes = ["rom", "bin"].compactMap {
-            UTType(filenameExtension: $0, conformingTo: .data)
-        }
-        panel.allowedContentTypes = [.zip] + (contentTypes.isEmpty ? [.data] : contentTypes)
-        guard panel.runModal() == .OK, let url = panel.url else { return }
-
-        installFirmware(at: url, requiredKind: requiredKind, feedback: feedback)
-    }
-
-    private func installFirmware(
-        at url: URL,
-        requiredKind: WonderSwanFirmwareKind?,
-        feedback: FirmwareFeedbackDestination
-    ) {
-        guard !firmwareImportIsBusy else { return }
-
-        switch feedback {
-        case .request:
-            firmwareInstallationError = nil
-            firmwareInstallationIsBusy = true
-        case .settings:
-            firmwareSettingsError = nil
-            firmwareSettingsNotice = nil
-            firmwareSettingsIsBusy = true
-            if requiredKind == firmwareInstallationRequest,
-               pendingFirmwareIntent != nil {
-                firmwareInstallationError = nil
-                firmwareInstallationIsBusy = true
-            }
-        }
-
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let data = try await Task.detached(priority: .userInitiated) {
-                    try WonderSwanFirmwareImporter.data(from: url)
-                }.value
-                let detectedKind: WonderSwanFirmwareKind
-                if let requiredKind {
-                    try WonderSwanFirmwareStore.validate(data, for: requiredKind)
-                    detectedKind = requiredKind
-                } else {
-                    detectedKind = try WonderSwanFirmwareStore.kind(for: data)
-                }
-                let kind = try firmwareStore.install(data, as: detectedKind)
-                finishFirmwareInstallation(kind, feedback: feedback)
-            } catch {
-                failFirmwareInstallation(error, requiredKind: requiredKind, feedback: feedback)
-            }
-        }
-    }
-
-    private func finishFirmwareInstallation(
-        _ kind: WonderSwanFirmwareKind,
-        feedback: FirmwareFeedbackDestination
-    ) {
-        refreshFirmwareStatus()
-        firmwareInstallationIsBusy = false
-        firmwareSettingsIsBusy = false
-
-        switch feedback {
-        case .request:
-            let intent = pendingFirmwareIntent
-            appDiagnostic(
-                "firmware installed kind=\(kind.rawValue) resume=\(intent != nil)"
-            )
-            firmwareInstallationRequest = nil
-            firmwareInstallationError = nil
-            firmwareInstallationIsReplacement = false
-            pendingFirmwareIntent = nil
-            resumeFirmwareIntent(intent, installedKind: kind)
-        case .settings:
-            if firmwareInstallationRequest == kind,
-               let intent = pendingFirmwareIntent {
-                appDiagnostic("firmware installed kind=\(kind.rawValue) resume=true")
-                firmwareInstallationRequest = nil
-                firmwareInstallationError = nil
-                firmwareInstallationIsReplacement = false
-                pendingFirmwareIntent = nil
-                firmwareSettingsError = nil
-                firmwareSettingsNotice = "\(kind.title) is ready. Continuing \(intent.title)."
-                resumeFirmwareIntent(intent, installedKind: kind)
-            } else {
-                firmwareSettingsError = nil
-                firmwareSettingsNotice = "The original \(kind.title) startup file is installed and will be used instead of SwanSong Open IPL."
-            }
-        }
-    }
-
-    private func failFirmwareInstallation(
-        _ error: Error,
-        requiredKind: WonderSwanFirmwareKind?,
-        feedback: FirmwareFeedbackDestination
-    ) {
-        firmwareInstallationIsBusy = false
-        firmwareSettingsIsBusy = false
-        let message = "The startup file could not be installed. \(error.localizedDescription)"
-        switch feedback {
-        case .request:
-            firmwareInstallationRequest = requiredKind ?? firmwareInstallationRequest
-            firmwareInstallationError = message
-            let kindName = requiredKind?.rawValue ?? "automatic"
-            appDiagnostic(
-                "firmware installation failed kind=\(kindName) reason=\(error.localizedDescription)"
-            )
-        case .settings:
-            firmwareSettingsNotice = nil
-            firmwareSettingsError = message
-            if requiredKind == firmwareInstallationRequest,
-               pendingFirmwareIntent != nil {
-                firmwareInstallationError = message
-            }
-        }
-    }
-
-    private func resumeFirmwareIntent(
-        _ intent: PendingFirmwareIntent?,
-        installedKind: WonderSwanFirmwareKind
-    ) {
-        guard let intent else {
-            presentedNotice = "The original \(installedKind.title) startup file is installed."
-            return
-        }
-        resumePlayerIntent(intent, diagnosticContext: "firmware intent resumed")
-    }
-
     private func resumePlayerIntent(
-        _ intent: PendingFirmwareIntent,
+        _ intent: PlayerLaunchIntent,
         diagnosticContext: String,
         deferred: Bool = true
     ) {
@@ -1677,7 +1832,7 @@ final class AppModel {
     }
 
     private func performPlayerIntent(
-        _ intent: PendingFirmwareIntent,
+        _ intent: PlayerLaunchIntent,
         diagnosticContext: String
     ) {
         guard !terminationIsInProgress else { return }
@@ -1721,41 +1876,6 @@ final class AppModel {
                 )
                 beginLocatingFirstTranslationVisualChange(route)
             }
-        }
-    }
-
-    func removeFirmwareFromSettings(_ kind: WonderSwanFirmwareKind) {
-        guard !isPlaying else {
-            firmwareSettingsNotice = nil
-            firmwareSettingsError = "Stop the current game before removing a system startup file."
-            return
-        }
-        do {
-            try firmwareStore.remove(kind)
-            refreshFirmwareStatus()
-            firmwareSettingsError = nil
-            firmwareSettingsNotice = "Removed the original \(kind.title) startup file. Games for this system will use SwanSong Open IPL."
-        } catch {
-            firmwareSettingsNotice = nil
-            firmwareSettingsError = "The \(kind.title) startup file could not be removed. \(error.localizedDescription)"
-        }
-    }
-
-    func revealFirmwareFolder() {
-        do {
-            let url = try firmwareStore.prepareStorage()
-            NSWorkspace.shared.activateFileViewerSelecting([url])
-        } catch {
-            firmwareSettingsNotice = nil
-            firmwareSettingsError = "The startup-file folder could not be opened. \(error.localizedDescription)"
-        }
-    }
-
-    func isFirmwareInstalled(_ kind: WonderSwanFirmwareKind) -> Bool {
-        switch kind {
-        case .monochrome: monochromeFirmwareInstalled
-        case .color: colorFirmwareInstalled
-        case .pocketChallengeV2: pocketChallengeV2FirmwareInstalled
         }
     }
 
@@ -1890,10 +2010,6 @@ final class AppModel {
     }
 
     func buildAndRunTranslation() {
-        guard !firmwareImportIsBusy else {
-            presentedNotice = "Finish the current startup-file setup, then try again."
-            return
-        }
         guard !isPlaying else {
             presentedError = "Stop the current test before building a new patched ROM."
             return
@@ -1902,7 +2018,6 @@ final class AppModel {
     }
 
     func verifyLatestTranslationRoute() {
-        guard !firmwareImportIsBusy else { return }
         guard !isPlaying else {
             presentedError = "Stop the current test before starting an A/B route verification."
             return
@@ -1924,7 +2039,6 @@ final class AppModel {
     }
 
     func locateFirstTranslationVisualChange() {
-        guard !firmwareImportIsBusy else { return }
         guard !isPlaying else {
             presentedError = "Stop the current test before locating its first visual change."
             return
@@ -1952,10 +2066,7 @@ final class AppModel {
               !translationToolIsRunning,
               translationComparisonPhase == nil,
               !translationVisualDivergenceIsRunning else { return }
-        guard preflightTranslationFirmware(
-            .original,
-            continuation: .locateVisualDivergence(route)
-        ) else { return }
+        guard preflightTranslationROM(.original) else { return }
         do {
             try validateTranslationRouteForCurrentProject(route)
             try validateTranslationReplayTarget(.patched, route: route)
@@ -1984,10 +2095,7 @@ final class AppModel {
         guard !isPlaying, !translationToolIsRunning, translationComparisonPhase == nil else {
             return
         }
-        guard preflightTranslationFirmware(
-            .original,
-            continuation: .verifyRoute(route)
-        ) else { return }
+        guard preflightTranslationROM(.original) else { return }
         do {
             try validateTranslationRouteForCurrentProject(route)
         } catch {
@@ -2003,7 +2111,6 @@ final class AppModel {
     }
 
     func verifyTranslationSuite() {
-        guard !firmwareImportIsBusy else { return }
         guard !isPlaying else {
             presentedError = "Stop the current test before starting the route suite."
             return
@@ -2025,10 +2132,7 @@ final class AppModel {
             presentedError = "Record at least one input route before starting a verification suite."
             return
         }
-        guard preflightTranslationFirmware(
-            .original,
-            continuation: .verifySuite
-        ) else { return }
+        guard preflightTranslationROM(.original) else { return }
         do {
             for summary in translationRoutes {
                 try validateTranslationRouteForCurrentProject(summary.route)
@@ -2051,7 +2155,6 @@ final class AppModel {
     }
 
     func startCleanBootTranslationTest() {
-        guard !firmwareImportIsBusy else { return }
         guard !isPlaying, !translationToolIsRunning else {
             presentedError = "Stop the current operation before recording a new route test."
             return
@@ -2065,10 +2168,6 @@ final class AppModel {
     ) {
         guard !terminationIsInProgress else { return }
         guard playerSessionReplacementIsAvailable() else { return }
-        guard !firmwareImportIsBusy else {
-            presentedNotice = "Finish the current startup-file setup, then try again."
-            return
-        }
         guard let project = translationProject else { return }
         do {
             let url = try project.romURL(for: role)
@@ -3084,36 +3183,9 @@ final class AppModel {
             if beginPlayingFirst,
                let gameID = result.importedGameIDs.first,
                result.successCount > 0 {
-                if !self.installAutomatedInitialFirmwareOverrideIfRequested(
-                    beforePlaying: gameID
-                ) {
-                    self.play(gameID)
-                }
+                self.play(gameID)
             }
         }
-    }
-
-    /// The private owned-ROM smoke can deliberately exercise the optional
-    /// original-firmware path. Production launches and ordinary automation do
-    /// not enter this branch, and therefore continue directly through Open IPL.
-    private func installAutomatedInitialFirmwareOverrideIfRequested(
-        beforePlaying gameID: GameRecord.ID
-    ) -> Bool {
-        #if SWAN_SONG_AUTOMATION
-        guard
-            allowsInitialFirmwareImportAutomation,
-            let path = ProcessInfo.processInfo.environment["SWAN_SONG_INITIAL_FIRMWARE"],
-            !path.isEmpty,
-            let game = games.first(where: { $0.id == gameID })
-        else { return false }
-        presentMissingFirmware(
-            firmwareKind(for: game),
-            intent: .game(id: game.id, title: game.title)
-        )
-        return true
-        #else
-        return false
-        #endif
     }
 
     private func rollbackManagedImports(
@@ -3131,8 +3203,7 @@ final class AppModel {
         resumeAfterRepair: Bool = false
     ) {
         guard repairingGameID == nil,
-              !gameImportIsBusy,
-              !firmwareImportIsBusy else {
+              !gameImportIsBusy else {
             presentedNotice = "Finish the current library operation before repairing a game."
             return
         }
@@ -3162,8 +3233,7 @@ final class AppModel {
 
     func repairManagedGame(_ id: GameRecord.ID, from sourceURL: URL) {
         guard repairingGameID == nil,
-              !gameImportIsBusy,
-              !firmwareImportIsBusy else { return }
+              !gameImportIsBusy else { return }
         guard let game = games.first(where: { $0.id == id }),
               let reference = game.managedROM else {
             presentedError = "That library entry cannot be repaired without its original managed-game identity."
@@ -3347,6 +3417,7 @@ final class AppModel {
         guard !terminationIsInProgress else { return }
         guard playerSessionReplacementIsAvailable() else { return }
         guard let game = games.first(where: { $0.id == id }) else { return }
+        playerReturnSection = translationRole == nil ? section : .translationLab
         if managedGameHealth[id] == .invalidReference {
             presentedError = "This library entry has lost its verified game identity and cannot be repaired safely. Re-add the original game as a new entry, confirm it works, then remove this one."
             return
@@ -3363,20 +3434,14 @@ final class AppModel {
             presentedNotice = "SwanSong is repairing \(game.title). It will be ready shortly."
             return
         }
-        guard !firmwareImportIsBusy else {
-            presentedNotice = "Finish the current startup-file setup, then try again."
-            return
-        }
         guard engineCanExecute else {
             presentedError = "The playback engine is unavailable. Rebuild SwanSong with its ares engine, then try again."
             return
         }
-        let firmwareKind = firmwareKind(for: game)
-        let firmwareImage = startupFileForLaunch(firmwareKind)
-        let startupIdentity = firmwareImage
-            ?? WonderSwanOpenIPL.identityData(for: firmwareKind)
+        let startupKind = firmwareKind(for: game)
+        let startupIdentity = WonderSwanOpenIPL.identityData(for: startupKind)
         appDiagnostic(
-            "startup selected kind=\(firmwareKind.rawValue) source=\(firmwareImage == nil ? "openIPL" : "installed")"
+            "startup selected kind=\(startupKind.rawValue) source=openIPL identifier=\(WonderSwanOpenIPL.identifier)"
         )
 
             stopPlaying()
@@ -3511,10 +3576,7 @@ final class AppModel {
                         return
                     }
                     self?.activeRunner = runner
-                    self?.playerLaunchStage = .loadingStartupFile
-                    if let firmwareImage {
-                        try await runner.stageBootROM(firmwareImage)
-                    }
+                    self?.playerLaunchStage = .initializingSystem
                     guard self?.emulationGeneration == generation,
                           !Task.isCancelled else {
                         try? await runner.stop()
@@ -3576,6 +3638,14 @@ final class AppModel {
                                 didRecordSuccessfulLaunch = true
                             }
                             self?.lastAudioFrameCount = isStepping ? 0 : output.audio.frameCount
+                            #if SWAN_SONG_AUTOMATION
+                            self?.startAutomatedDebugLogIfRequested()
+                            #endif
+                            self?.recordDebugFrame(
+                                input: input,
+                                frame: videoFrame,
+                                isFrameStep: isStepping
+                            )
                             let audioStatus: AudioOutput.ScheduleResult?
                             if isStepping {
                                 audioStatus = nil
@@ -3643,6 +3713,9 @@ final class AppModel {
                             #endif
                             if self?.automatedStopAtFrame == videoFrame.number {
                                 self?.automatedStopAtFrame = nil
+                                #if SWAN_SONG_AUTOMATION
+                                self?.exportAutomatedDebugLogIfRequested()
+                                #endif
                                 self?.stopPlaying()
                                 break
                             }
@@ -3652,12 +3725,14 @@ final class AppModel {
                                     try saveStore.save(snapshot, gameID: game.id)
                                 }.value
                             }
-                            let delay = pacingPolicy.delaySeconds(
-                                producedAudioFrames: output.audio.frameCount,
-                                sampleRate: output.audio.sampleRate,
-                                queuedAudioSeconds: audioStatus?.queuedSeconds ?? 0,
-                                fastForwarding: fastForwarding
-                            )
+                            let delay = self?.audioOutput.usesUnthrottledHeadlessMode == true
+                                ? 0
+                                : pacingPolicy.delaySeconds(
+                                    producedAudioFrames: output.audio.frameCount,
+                                    sampleRate: output.audio.sampleRate,
+                                    queuedAudioSeconds: self?.audioOutput.pacingQueuedSeconds,
+                                    fastForwarding: fastForwarding
+                                )
                             if !isStepping, delay > 0 {
                                 try await Task.sleep(
                                     nanoseconds: UInt64(delay * 1_000_000_000)
@@ -3787,26 +3862,6 @@ final class AppModel {
             appDiagnostic("save integrity failure presented title=\(failedGame.title)")
             return
         }
-        if let firmwareError = error as? WonderSwanFirmwareError,
-           firmwareError == .unsafeStorage {
-            stopPlaying()
-            translationComparisonIsTransitioning = false
-            resetTranslationSuiteExecution()
-            presentedError = "SwanSong did not use the optional original startup-file location because it is not a private folder owned by your account. The built-in Open IPL remains available; restore Application Support/SwanSong/Firmware to a regular private folder before using original firmware overrides."
-            return
-        }
-        if error is WonderSwanFirmwareError, let failedGame {
-            let intent = failedIntent ?? .game(id: failedGame.id, title: failedGame.title)
-            stopPlaying()
-            translationComparisonIsTransitioning = false
-            resetTranslationSuiteExecution()
-            presentMissingFirmware(
-                firmwareKind(for: failedGame),
-                intent: intent,
-                validationError: error
-            )
-            return
-        }
         if let managedError = error as? ManagedGameStoreError,
            managedError == .unsafeStorage {
             stopPlaying()
@@ -3857,7 +3912,7 @@ final class AppModel {
 
     private func currentPlayerLaunchIntent(
         for game: GameRecord
-    ) -> PendingFirmwareIntent? {
+    ) -> PlayerLaunchIntent? {
         guard let role = activeTranslationRole else {
             return .game(id: game.id, title: game.title)
         }
@@ -3865,7 +3920,7 @@ final class AppModel {
             return nil
         }
 
-        let continuation: TranslationFirmwareContinuation
+        let continuation: TranslationLaunchContinuation
         if translationSuiteIsActive {
             continuation = .verifySuite
         } else if translationComparisonPhase != nil,
@@ -4330,6 +4385,7 @@ final class AppModel {
     }
 
     private func retirePlayerSession(preservingPlayerPresentation: Bool) {
+        stopDebugLogRegardless()
         let shouldCancelTranslationSuite = translationSuiteIsActive
             && !translationComparisonIsTransitioning
         cancelTranslationRouteRecording(showNotice: false)
@@ -4481,6 +4537,178 @@ final class AppModel {
         return false
     }
 
+    func setDebugToolsEnabled(_ enabled: Bool) {
+        guard debugToolsEnabled != enabled else { return }
+        debugToolsEnabled = enabled
+        UserDefaults.standard.set(enabled, forKey: Self.debugToolsDefaultsKey)
+        if !enabled {
+            debugOverlayIsVisible = false
+            debugLastEffectiveInput = []
+            stopDebugLogRegardless()
+        }
+    }
+
+    func setDebugOverlayVisible(_ visible: Bool) {
+        guard debugToolsEnabled else {
+            debugOverlayIsVisible = false
+            return
+        }
+        debugOverlayIsVisible = visible
+    }
+
+    func updateDebugGameplayFocus(_ hasFocus: Bool) {
+        debugGameplayHasFocus = hasFocus
+    }
+
+    func startDebugLog() {
+        guard debugToolsEnabled else { return }
+        guard playerIsInteractive,
+              let game = playingGame,
+              let identity = activeGameStateSessionIdentity else {
+            presentedError = "Start a game and wait for its first frame before recording an input/frame log."
+            return
+        }
+        beginDebugLog(game: game, identity: identity, announce: true)
+    }
+
+    private func beginDebugLog(
+        game: GameRecord,
+        identity: GameStateSessionIdentity,
+        announce: Bool
+    ) {
+        let info = Bundle.main.infoDictionary ?? [:]
+        let session = GameDebugSession(
+            appVersion: info["CFBundleShortVersionString"] as? String ?? "development",
+            appBuild: info["CFBundleVersion"] as? String ?? "development",
+            engineBackend: engineBackendName,
+            engineBuildID: engineBuildID,
+            gameTitle: game.title,
+            romSHA256: identity.romSHA256,
+            romByteCount: identity.romByteCount,
+            romChecksum: identity.romChecksum,
+            hardwareModel: identity.hardwareModel.rawValue,
+            openIPLIdentifier: WonderSwanOpenIPL.identifier,
+            controllerName: connectedControllerName
+        )
+        debugLogRecorder = GameDebugLogRecorder(session: session)
+        debugLogIsRecording = true
+        debugLogFrameCount = 0
+        debugLogDroppedFrameCount = 0
+        debugLastExportURL = nil
+        if announce {
+            presentedNotice = "Input/frame logging started."
+        }
+    }
+
+    func stopDebugLog() {
+        guard debugToolsEnabled else { return }
+        stopDebugLogRegardless()
+    }
+
+    func clearDebugLog() {
+        guard debugToolsEnabled else { return }
+        debugLogRecorder = nil
+        debugLogIsRecording = false
+        debugLogFrameCount = 0
+        debugLogDroppedFrameCount = 0
+        debugLastExportURL = nil
+    }
+
+    func exportDebugLog() {
+        guard debugToolsEnabled else { return }
+        guard let recorder = debugLogRecorder,
+              recorder.totalFrameCount > 0 else {
+            presentedError = "Record at least one game frame before exporting a debug log."
+            return
+        }
+        let panel = NSSavePanel()
+        panel.title = "Export Input/Frame Log"
+        panel.prompt = "Export Log"
+        panel.nameFieldStringValue = "SwanSong-input-frame-log.json"
+        panel.allowedContentTypes = [.json]
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        writeDebugLog(recorder, to: url, announce: true)
+    }
+
+    private func writeDebugLog(
+        _ recorder: GameDebugLogRecorder,
+        to url: URL,
+        announce: Bool
+    ) {
+        do {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [
+                .prettyPrinted,
+                .sortedKeys,
+                .withoutEscapingSlashes,
+            ]
+            encoder.dateEncodingStrategy = .iso8601
+            let data = try encoder.encode(recorder.snapshot())
+            try data.write(to: url, options: .atomic)
+            debugLastExportURL = url
+            if announce {
+                presentedNotice = "Exported \(debugLogFrameCount.formatted()) input/frame records."
+            }
+        } catch {
+            presentedError = "The input/frame log could not be exported: \(error.localizedDescription)"
+            appDiagnostic("debug log export failed: \(error.localizedDescription)")
+        }
+    }
+
+    #if SWAN_SONG_AUTOMATION
+    private func startAutomatedDebugLogIfRequested() {
+        guard automatedDebugLogURL != nil,
+              debugLogRecorder == nil,
+              let game = playingGame,
+              let identity = activeGameStateSessionIdentity else { return }
+        beginDebugLog(game: game, identity: identity, announce: false)
+    }
+
+    private func exportAutomatedDebugLogIfRequested() {
+        guard let url = automatedDebugLogURL,
+              let recorder = debugLogRecorder,
+              recorder.totalFrameCount > 0 else { return }
+        writeDebugLog(recorder, to: url, announce: false)
+    }
+    #endif
+
+    private func stopDebugLogRegardless() {
+        debugLogIsRecording = false
+    }
+
+    private func recordDebugFrame(
+        input: EngineInput,
+        frame: EngineVideoFrame,
+        isFrameStep: Bool
+    ) {
+        guard debugToolsEnabled else { return }
+        debugLastEffectiveInput = input
+        guard debugLogIsRecording,
+              var recorder = debugLogRecorder else { return }
+        let focus: GameDebugFocusState
+        if !applicationIsActive {
+            focus = .applicationInactive
+        } else if debugGameplayHasFocus {
+            focus = .keyboardActive
+        } else {
+            focus = .keyboardInactive
+        }
+        recorder.record(
+            frame: frame,
+            keyboardInput: keyboardInput,
+            controllerInput: gameplayControllerInput,
+            effectiveInput: input,
+            focus: focus,
+            isPaused: isPaused,
+            isFastForwarding: isFastForwarding,
+            isFrameStep: isFrameStep,
+            audioFrameCount: lastAudioFrameCount
+        )
+        debugLogRecorder = recorder
+        debugLogFrameCount = Int(clamping: recorder.totalFrameCount)
+        debugLogDroppedFrameCount = recorder.droppedFrameCount
+    }
+
     func setKeyboardButton(_ button: EngineInput, pressed: Bool) {
         guard playerIsInteractive else {
             keyboardInput = []
@@ -4525,7 +4753,7 @@ final class AppModel {
         controllerInput = controllerProfile.input(for: controllerPhysicalElements)
     }
 
-    private func handleControllerElements(_ elements: Set<ControllerElement>) {
+    func handleControllerElements(_ elements: Set<ControllerElement>) {
         let newlyPressed = elements.subtracting(controllerPhysicalElements)
         controllerPhysicalElements = elements
         if let learning = controllerLearningControl {
@@ -4590,13 +4818,17 @@ final class AppModel {
     func updateApplicationActivity(isActive: Bool, pauseWhenInactive: Bool) {
         applicationIsActive = isActive
         if isActive {
-            refreshFirmwareStatus()
+            controller.resumeGameplayInput()
             refreshManagedGameHealth()
-        }
-        if !isActive {
-            // App switches can swallow key-up events. Never leave a gameplay
-            // direction or action logically held when SwanSong is inactive.
+        } else {
+            // macOS suppresses controller events for a background app by
+            // default. Neutralize both input sources now, then resnapshot
+            // connected controllers when SwanSong becomes active again.
             keyboardInput = []
+            controllerLearningControl = nil
+            controller.suspendGameplayInput()
+            controllerPhysicalElements = []
+            controllerInput = []
         }
         guard playerIsInteractive else {
             inactivityPauseWasApplied = false
@@ -4947,10 +5179,7 @@ final class AppModel {
         role: TranslationROMRole,
         route: TranslationRoute
     ) {
-        guard preflightTranslationFirmware(
-            role,
-            continuation: .replay(role: role, route: route)
-        ) else { return }
+        guard preflightTranslationROM(role) else { return }
         do {
             try validateTranslationRouteForCurrentProject(route)
             playTranslationROM(role)
@@ -5004,11 +5233,7 @@ final class AppModel {
         )
     }
 
-    private func preflightTranslationFirmware(
-        _ role: TranslationROMRole,
-        continuation: TranslationFirmwareContinuation
-    ) -> Bool {
-        guard !firmwareImportIsBusy else { return false }
+    private func preflightTranslationROM(_ role: TranslationROMRole) -> Bool {
         guard let project = translationProject else { return false }
         do {
             let url = try project.romURL(for: role)
@@ -5064,22 +5289,10 @@ final class AppModel {
                 )
             }
         }
-        let kind = hardwareModel.firmwareKind
-        let firmware: TranslationRouteFirmware
-        if let image = startupFileForLaunch(kind) {
-            firmware = TranslationRouteFirmware(
-                source: .installed,
-                image: TranslationArtifactDigest(
-                    byteCount: image.count,
-                    sha256: TranslationEvidenceStore.sha256(image)
-                )
-            )
-        } else {
-            firmware = TranslationRouteFirmware(
-                source: .openIPL,
-                identifier: WonderSwanOpenIPL.identifier
-            )
-        }
+        let firmware = TranslationRouteFirmware(
+            source: .openIPL,
+            identifier: WonderSwanOpenIPL.identifier
+        )
         return (
             sourceROM,
             TranslationRouteStartContext(
@@ -5121,7 +5334,7 @@ final class AppModel {
             to: current.start.firmware
         ) else {
             throw TranslationLabError.invalidRoute(
-                "the startup implementation changed after this route was recorded; restore the same Open IPL/original-firmware choice or re-record the test"
+                "the Open IPL version changed after this route was recorded; re-record the test"
             )
         }
         guard recordedStart.engine == current.start.engine else {
@@ -5409,8 +5622,10 @@ final class AppModel {
         isPaused = true
         audioOutput.setPaused(true)
         let stateStore = stateStore
-        Task { [weak self] in
+        let transactionID = beginTrackedPlayerStateTransaction()
+        let transactionTask = Task { [weak self] in
             guard let self else { return }
+            defer { self.finishTrackedPlayerStateTransaction(transactionID) }
             do {
                 await self.waitForPlayerFrameProductionToQuiesce()
                 let state = try await runner.captureState()
@@ -5449,6 +5664,7 @@ final class AppModel {
                 self.audioOutput.setPaused(false)
             }
         }
+        trackPlayerStateTransaction(transactionTask, id: transactionID)
     }
 
     func loadQuickState() {
@@ -6406,16 +6622,11 @@ final class AppModel {
                     "the route start context is missing"
                 )
             }
-            let kind = start.firmwareKind
-            let startupFile = start.firmware.source == .installed
-                ? try firmwareStore.load(kind)
-                : nil
-            if start.firmware.source == .installed, startupFile == nil {
-                throw WonderSwanFirmwareError.missingImage(kind)
+            guard start.firmware.source != .installed else {
+                throw TranslationLabError.invalidRoute(
+                    "this legacy route predates Open-IPL-only playback; re-record it with the current SwanSong Open IPL"
+                )
             }
-            let selectedStartupFile = start.firmware.source == .installed
-                ? startupFile
-                : nil
             let originalURL = try project.romURL(for: .original)
             let patchedURL = try project.romURL(for: .patched)
             let generation = UUID()
@@ -6434,8 +6645,7 @@ final class AppModel {
                     let result = try await TranslationVisualDivergenceRunner.run(
                         route: route,
                         originalROM: originalROM,
-                        patchedROM: patchedROM,
-                        startupFile: selectedStartupFile
+                        patchedROM: patchedROM
                     ) { [weak self] progress in
                         await MainActor.run {
                             guard self?.translationVisualDivergenceGeneration == generation,
@@ -6823,7 +7033,7 @@ final class AppModel {
                     translationComparisonRoute = nil
                     resetTranslationSuiteExecution()
                 }
-                presentedError = "The Original ROM did not reproduce the recorded checkpoint at frame \(frameNumber) (expected \(checkpoint.sha256.prefix(10))…, got \(actualCheckpoint?.prefix(10) ?? "unavailable")…). The route, BIOS, or emulator context changed; re-record this test before creating evidence."
+                presentedError = "The Original ROM did not reproduce the recorded checkpoint at frame \(frameNumber) (expected \(checkpoint.sha256.prefix(10))…, got \(actualCheckpoint?.prefix(10) ?? "unavailable")…). The route, Open IPL, or emulator context changed; re-record this test before creating evidence."
                 return
             }
             translationEvidenceRoute = route
@@ -6942,80 +7152,64 @@ final class AppModel {
     }
     #endif
 
-    private func refreshFirmwareStatus() {
-        monochromeFirmwareInstalled = firmwareStore.isInstalled(.monochrome)
-        colorFirmwareInstalled = firmwareStore.isInstalled(.color)
-        pocketChallengeV2FirmwareInstalled = firmwareStore.isInstalled(.pocketChallengeV2)
-    }
-
-    private func startupFileForLaunch(
-        _ kind: WonderSwanFirmwareKind
-    ) -> Data? {
-        do {
-            return try firmwareStore.load(kind)
-        } catch {
-            appDiagnostic(
-                "optional firmware ignored kind=\(kind.rawValue) reason=\(error.localizedDescription)"
-            )
-            presentedNotice = "SwanSong could not use the optional original \(kind.title) startup file, so this launch will use SwanSong Open IPL. Review Original Startup Files in Settings when convenient."
-            return nil
-        }
-    }
-
-    private func presentMissingFirmware(
-        _ kind: WonderSwanFirmwareKind,
-        intent: PendingFirmwareIntent,
-        validationError: Error? = nil
-    ) {
-        refreshFirmwareStatus()
-        guard !firmwareImportIsBusy else {
-            appDiagnostic(
-                "optional firmware replacement ignored while import is busy target=\(intent.title)"
-            )
-            return
-        }
-        presentedNotice = nil
-        presentedError = nil
-        firmwareInstallationRequest = kind
-        firmwareInstallationError = validationError.flatMap { error in
-            if let firmwareError = error as? WonderSwanFirmwareError,
-               case .missingImage = firmwareError {
-                return nil
-            }
-            return "The previously installed startup file can no longer be used. \(error.localizedDescription)"
-        }
-        firmwareInstallationIsReplacement = false
-        pendingFirmwareIntent = intent
-        appDiagnostic(
-            "optional firmware replacement presented kind=\(kind.rawValue) target=\(intent.title)"
-        )
-        #if SWAN_SONG_AUTOMATION
-        Task { @MainActor [weak self] in
-            await Task.yield()
-            self?.installAutomatedInitialFirmwareIfRequested()
-        }
-        #endif
-    }
-
-    private func installAutomatedInitialFirmwareIfRequested() {
-        #if SWAN_SONG_AUTOMATION
-        guard
-            allowsInitialFirmwareImportAutomation,
-            let path = ProcessInfo.processInfo.environment["SWAN_SONG_INITIAL_FIRMWARE"],
-            !path.isEmpty,
-            let requiredKind = firmwareInstallationRequest
-        else { return }
-        appDiagnostic("automated firmware import requested kind=\(requiredKind.rawValue)")
-        installFirmware(
-            at: URL(fileURLWithPath: path),
-            requiredKind: requiredKind,
-            feedback: .request
-        )
-        #endif
-    }
-
     private func persist() throws {
         try store.save(GameLibraryDocument(games: games))
+    }
+
+    private func loadCachedHomebrewCatalog() {
+        guard homebrewCatalogIsConfigured else { return }
+        do {
+            guard let bundle = try homebrewCatalogCacheStore.load() else { return }
+            let authenticated = try homebrewCatalogSignatureVerifier.verify(
+                catalogData: bundle.catalogData,
+                signatureData: bundle.signatureData
+            )
+            let catalog = try Self.decodeHomebrewCatalog(
+                bundle.catalogData,
+                sourceURL: homebrewCatalogClient.catalogSourceURL
+            )
+            let currentState = try homebrewCatalogHighWaterStore.load(
+                catalogID: catalog.catalogID
+            )
+            let nextState = try HomebrewCatalogRollbackPolicy.nextState(
+                catalog: catalog,
+                authenticated: authenticated,
+                trustedKeys: homebrewCatalogSignatureVerifier.trustedKeys,
+                minimumRevision: homebrewCatalogMinimumRevision,
+                currentState: currentState
+            )
+            // Always commit through the cross-process transaction. A second
+            // process may have advanced the state since `currentState` loaded.
+            try homebrewCatalogHighWaterStore.advance(to: nextState)
+            homebrewCatalog = catalog
+            homebrewCatalogLastUpdatedAt = catalog.generatedAt
+            selectedHomebrewEntryID = catalog.entries.first?.id
+        } catch {
+            appDiagnostic(
+                "saved homebrew catalog skipped reason=\(error.localizedDescription)"
+            )
+            if homebrewCatalogConsentGranted {
+                homebrewCatalogIssue = "The catalog saved on this Mac could not be verified. Refresh to request a clean copy from GitHub."
+            }
+        }
+    }
+
+    nonisolated private static func decodeHomebrewCatalog(
+        _ data: Data,
+        sourceURL: URL
+    ) throws -> HomebrewCatalog {
+        try HomebrewCatalogValidator.decode(data, sourceURL: sourceURL)
+    }
+
+    nonisolated private static func shouldRetryHomebrewCatalogPair(
+        _ error: HomebrewCatalogSignatureError
+    ) -> Bool {
+        switch error {
+        case .catalogByteCountMismatch, .catalogDigestMismatch, .noTrustedSignature:
+            true
+        default:
+            false
+        }
     }
 
     private func loadGameArtwork() {

@@ -95,6 +95,7 @@ struct SwanSongApp: App {
                 .keyboardShortcut("i", modifiers: [.command, .option])
                 .disabled(
                     model.isPlaying
+                        || model.section == .homebrew
                         || model.section == .translationLab
                         || model.selectedGame == nil
                 )
@@ -148,7 +149,7 @@ struct SwanSongApp: App {
                     model.playSelectedGame()
                 }
                 .keyboardShortcut(.return, modifiers: [])
-                .disabled(!model.selectedGameCanPlay || model.isPlaying || model.firmwareImportIsBusy)
+                .disabled(!model.selectedGameCanPlay || model.isPlaying)
 
                 if let game = model.selectedGame {
                     if model.managedGameHealth[game.id] == .invalidReference {
@@ -164,14 +165,8 @@ struct SwanSongApp: App {
                         .disabled(
                             model.isPlaying
                                 || model.gameImportIsBusy
-                                || model.firmwareImportIsBusy
                                 || model.repairingGameID != nil
                         )
-                    } else if let requiredFirmware = model.missingFirmware(for: game) {
-                        Button("Set Up \(requiredFirmware.title) Startup File & Play…") {
-                            model.play(game.id)
-                        }
-                        .disabled(model.isPlaying || model.firmwareImportIsBusy)
                     }
                 }
 
@@ -264,6 +259,41 @@ struct SwanSongApp: App {
                 )
 
             }
+            if model.debugToolsEnabled {
+                CommandMenu("Debug") {
+                    Toggle(
+                        "Show Focus & Input Overlay",
+                        isOn: Binding(
+                            get: { model.debugOverlayIsVisible },
+                            set: { model.setDebugOverlayVisible($0) }
+                        )
+                    )
+                    .disabled(!model.playerIsInteractive || model.currentFrame == nil)
+
+                    Divider()
+
+                    if model.debugLogIsRecording {
+                        Button("Stop Input/Frame Log") {
+                            model.stopDebugLog()
+                        }
+                    } else {
+                        Button("Start Input/Frame Log") {
+                            model.startDebugLog()
+                        }
+                        .disabled(!model.playerIsInteractive)
+                    }
+
+                    Button("Export Input/Frame Log…") {
+                        model.exportDebugLog()
+                    }
+                    .disabled(model.debugLogFrameCount == 0)
+
+                    Button("Clear Input/Frame Log") {
+                        model.clearDebugLog()
+                    }
+                    .disabled(model.debugLogFrameCount == 0)
+                }
+            }
             CommandMenu("Translation") {
                 Button("Add Translation Project or Toolkit…") {
                     model.chooseTranslationProject()
@@ -292,7 +322,6 @@ struct SwanSongApp: App {
                         || !model.translationOriginalROMAvailable
                         || model.translationToolIsRunning
                         || model.isPlaying
-                        || model.firmwareImportIsBusy
                 )
 
                 Button("Run Original") {
@@ -303,7 +332,6 @@ struct SwanSongApp: App {
                         || !model.translationOriginalROMAvailable
                         || model.translationToolIsRunning
                         || model.isPlaying
-                        || model.firmwareImportIsBusy
                 )
 
                 Button("Build & Run Patched") {
@@ -313,7 +341,6 @@ struct SwanSongApp: App {
                     model.translationProject == nil
                         || model.translationToolIsRunning
                         || model.isPlaying
-                        || model.firmwareImportIsBusy
                 )
 
                 Button("Verify Selected Route Against Both ROMs") {

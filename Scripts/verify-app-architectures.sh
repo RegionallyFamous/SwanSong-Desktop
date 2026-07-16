@@ -32,6 +32,7 @@ verify_binary() {
 }
 
 verify_binary "Contents/MacOS/SwanSong"
+verify_binary "Contents/Helpers/SwanSongRouteRunner"
 verify_binary "Contents/Frameworks/libSwanAresEngine.dylib"
 
-echo "PASS app executable and ares engine contain: $REQUIRED_ARCHITECTURES"
+echo "PASS app executable, route runner, and ares engine contain: $REQUIRED_ARCHITECTURES"

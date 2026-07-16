@@ -4,8 +4,8 @@ import SwanSongKit
 
 private struct Options {
     var rom: URL?
-    var startupFile: URL?
     var frameCount = 600
+    var warmupFrameCount: Int?
     var report: URL?
     var capture: URL?
     var hardwareModel: EngineHardwareModel = .automatic
@@ -13,18 +13,38 @@ private struct Options {
     var requireStateReplayExact = false
     var requireSettledStateReplayExact = false
     var requirePocketChallengeV2FixtureContract = false
+    var exerciseInputs = false
+}
+
+private struct InputExerciseReport: Codable {
+    let plan: String
+    let comparedFrames: Int
+    let settleFramesIgnored: Int
+    let framesWithInput: Int
+    let firstVideoDivergenceOffset: Int?
+    let firstAudioDivergenceOffset: Int?
+    let videoDiverged: Bool
+    let audioDiverged: Bool
 }
 
 private struct ProbeReport: Codable {
     let schema: String
     let romName: String
     let system: String
+    let openIPLIdentifier: String
+    let rtcMode: String
+    let rtcSeedUnixSeconds: UInt64
+    let footerChecksumValid: Bool
+    let footerValid: Bool
+    let compactLayout: Bool
     let backend: String
     let configuredHardwareModel: String
     let activeHardwareModel: String?
     let activeHardwareModelClearedAfterUnload: Bool?
     let pocketChallengeV2CapabilityAdvertised: Bool
     let framesRun: Int
+    let startupWarmupFrames: Int
+    let postStartupObservationFrames: Int
     let finalFrame: UInt64
     let contentWidth: Int
     let contentHeight: Int
@@ -33,6 +53,16 @@ private struct ProbeReport: Codable {
     let longestUniformRun: Int
     let finalContentFNV1A64: String
     let videoActivityDetected: Bool
+    let startupFirstNonUniformFrame: UInt64?
+    let startupDistinctContentFrames: Int
+    let startupVideoActivityDetected: Bool
+    let startupAudioFramesProduced: Int
+    let startupNonzeroAudioSamples: Int
+    let postStartupFirstNonUniformFrame: UInt64?
+    let postStartupDistinctContentFrames: Int
+    let postStartupVideoActivityDetected: Bool
+    let postStartupAudioFramesProduced: Int
+    let postStartupNonzeroAudioSamples: Int
     let audioFramesProduced: Int
     let nonzeroAudioSamples: Int
     let audioChannels: Int
@@ -59,6 +89,7 @@ private struct ProbeReport: Codable {
     let pocketChallengeV2InputContractExact: Bool?
     let freshBootFirstVideoExact: Bool?
     let freshBootFirstAudioExact: Bool?
+    let inputExercise: InputExerciseReport?
 }
 
 private struct ProbeError: LocalizedError {
@@ -68,6 +99,8 @@ private struct ProbeError: LocalizedError {
 
 @main
 private struct SwanSongProbe {
+    private static let deterministicRTCSeed: UInt64 = 1
+
     static func main() {
         do {
             try run()
@@ -83,31 +116,28 @@ private struct SwanSongProbe {
         guard let romURL = options.rom else {
             throw ProbeError(message: usage)
         }
+        let warmupFrameCount = options.warmupFrameCount
+            ?? min(120, max(0, options.frameCount - 1))
+        guard warmupFrameCount < options.frameCount else {
+            throw ProbeError(
+                message: "--warmup-frames must be smaller than --frames so the post-startup observation window is not empty."
+            )
+        }
 
         let rom = try Data(contentsOf: romURL, options: [.mappedIfSafe])
         let metadata = try EngineSession.inspect(rom: rom)
-        let startupKind: WonderSwanFirmwareKind
+        let configuredSystem: EngineHardwareModel
         switch options.hardwareModel {
         case .automatic:
-            startupKind = metadata.isColor ? .color : .monochrome
+            configuredSystem = metadata.isColor ? .wonderSwanColor : .wonderSwan
         case .wonderSwan:
-            startupKind = .monochrome
-        case .wonderSwanColor, .swanCrystal:
-            startupKind = .color
+            configuredSystem = .wonderSwan
+        case .wonderSwanColor:
+            configuredSystem = .wonderSwanColor
+        case .swanCrystal:
+            configuredSystem = .swanCrystal
         case .pocketChallengeV2:
-            startupKind = .pocketChallengeV2
-        }
-        let startup = try options.startupFile.map {
-            try WonderSwanFirmwareImporter.data(from: $0)
-        }
-        if let startup {
-            do {
-                try WonderSwanFirmwareStore.validate(startup, for: startupKind)
-            } catch {
-                throw ProbeError(
-                    message: "The optional \(startupKind.title) original-firmware override is invalid: \(error.localizedDescription)"
-                )
-            }
+            configuredSystem = .pocketChallengeV2
         }
 
         if options.requirePocketChallengeV2FixtureContract {
@@ -123,16 +153,16 @@ private struct SwanSongProbe {
             }
         }
 
-        let engine = try EngineSession(hardwareModel: options.hardwareModel)
+        let engine = try EngineSession(
+            rtcMode: .deterministic(seedUnixSeconds: deterministicRTCSeed),
+            hardwareModel: options.hardwareModel
+        )
         guard engine.capabilities.contains(.execution) else {
             throw ProbeError(message: "SwanSongProbe requires the live ares engine.")
         }
         if options.hardwareModel == .pocketChallengeV2,
            !engine.capabilities.contains(.pocketChallengeV2) {
             throw ProbeError(message: "The live engine does not advertise Pocket Challenge V2 support.")
-        }
-        if let startup {
-            try engine.stageBootROM(startup)
         }
         _ = try engine.load(rom: rom)
         let activeHardwareModel = engine.activeHardwareModel
@@ -144,19 +174,33 @@ private struct SwanSongProbe {
 
         var monitor = FrameActivityMonitor(attentionThreshold: options.frameCount + 1)
         var distinctHashes = Set<String>()
+        var startupMonitor = FrameActivityMonitor(
+            attentionThreshold: options.frameCount + 1
+        )
+        var startupDistinctHashes = Set<String>()
+        var postStartupMonitor = FrameActivityMonitor(
+            attentionThreshold: options.frameCount + 1
+        )
+        var postStartupDistinctHashes = Set<String>()
         var firstNonUniformFrame: UInt64?
+        var startupFirstNonUniformFrame: UInt64?
+        var postStartupFirstNonUniformFrame: UInt64?
         var longestUniformRun = 0
         var finalFrame: EngineVideoFrame?
         var finalRGB = Data()
         var audioFramesProduced = 0
         var nonzeroAudioSamples = 0
+        var startupAudioFramesProduced = 0
+        var startupNonzeroAudioSamples = 0
+        var postStartupAudioFramesProduced = 0
+        var postStartupNonzeroAudioSamples = 0
         var audioChannels = 0
         var audioSampleRate = 0
         var firstFrame: EngineVideoFrame?
         var firstRGB = Data()
         var firstAudio: EngineAudioBatch?
 
-        for _ in 0..<options.frameCount {
+        for frameIndex in 0..<options.frameCount {
             try engine.setInput([])
             try engine.runFrame()
             let frame = try engine.videoFrame()
@@ -167,7 +211,28 @@ private struct SwanSongProbe {
                 firstNonUniformFrame = frame.number
             }
             longestUniformRun = max(longestUniformRun, activity.consecutiveUniformFrames)
-            distinctHashes.insert(FrameDifferential.fnv1a64(rgb))
+            let frameHash = FrameDifferential.fnv1a64(rgb)
+            distinctHashes.insert(frameHash)
+            let frameNonzeroAudioSamples = audio.interleavedSamples.count { $0 != 0 }
+            if frameIndex < warmupFrameCount {
+                let startupActivity = startupMonitor.observe(frame)
+                if startupActivity.consecutiveUniformFrames == 0,
+                   startupFirstNonUniformFrame == nil {
+                    startupFirstNonUniformFrame = frame.number
+                }
+                startupDistinctHashes.insert(frameHash)
+                startupAudioFramesProduced += audio.frameCount
+                startupNonzeroAudioSamples += frameNonzeroAudioSamples
+            } else {
+                let postStartupActivity = postStartupMonitor.observe(frame)
+                if postStartupActivity.consecutiveUniformFrames == 0,
+                   postStartupFirstNonUniformFrame == nil {
+                    postStartupFirstNonUniformFrame = frame.number
+                }
+                postStartupDistinctHashes.insert(frameHash)
+                postStartupAudioFramesProduced += audio.frameCount
+                postStartupNonzeroAudioSamples += frameNonzeroAudioSamples
+            }
             if firstFrame == nil {
                 firstFrame = frame
                 firstRGB = rgb
@@ -176,7 +241,7 @@ private struct SwanSongProbe {
             finalFrame = frame
             finalRGB = rgb
             audioFramesProduced += audio.frameCount
-            nonzeroAudioSamples += audio.interleavedSamples.count { $0 != 0 }
+            nonzeroAudioSamples += frameNonzeroAudioSamples
             audioChannels = audio.channels
             audioSampleRate = audio.sampleRate
         }
@@ -186,6 +251,10 @@ private struct SwanSongProbe {
         }
         let dimensions = contentDimensions(finalFrame)
         let activityDetected = firstNonUniformFrame != nil && distinctHashes.count > 1
+        let startupActivityDetected = startupFirstNonUniformFrame != nil
+            && startupDistinctHashes.count > 1
+        let postStartupActivityDetected = postStartupFirstNonUniformFrame != nil
+            && postStartupDistinctHashes.count > 1
         let state = try engine.captureState()
         try engine.setInput([])
         try engine.runFrame()
@@ -218,6 +287,10 @@ private struct SwanSongProbe {
             && expectedSettledReplayAudio.sampleRate == actualSettledReplayAudio.sampleRate
             && expectedSettledReplayAudio.interleavedSamples
                 == actualSettledReplayAudio.interleavedSamples
+
+        let inputExercise = options.exerciseInputs
+            ? try runInputExercise(engine: engine, hardwareModel: activeHardwareModel)
+            : nil
 
         var persistence = try engine.capturePersistence()
         let persistenceKinds = persistence.regions.keys.map(\.rawValue).sorted()
@@ -289,9 +362,6 @@ private struct SwanSongProbe {
             try engine.stagePersistence(
                 EnginePersistence(regions: [.cartridgeFlash: stagedFlash])
             )
-            if let startup {
-                try engine.stageBootROM(startup)
-            }
             _ = try engine.load(rom: rom)
             guard engine.activeHardwareModel == .pocketChallengeV2 else {
                 throw ProbeError(message: "The staged-flash reload did not select Pocket Challenge V2.")
@@ -314,15 +384,23 @@ private struct SwanSongProbe {
         }
 
         let report = ProbeReport(
-            schema: "swan-song-video-probe-v3",
+            schema: "swan-song-video-probe-v7",
             romName: romURL.lastPathComponent,
-            system: startupKind.title,
+            system: systemTitle(activeHardwareModel ?? configuredSystem),
+            openIPLIdentifier: WonderSwanOpenIPL.identifier,
+            rtcMode: "deterministic",
+            rtcSeedUnixSeconds: deterministicRTCSeed,
+            footerChecksumValid: metadata.checksumIsValid,
+            footerValid: metadata.footerIsValid,
+            compactLayout: metadata.usesCompactLayout,
             backend: engine.backendName,
             configuredHardwareModel: options.hardwareModel.rawValue,
             activeHardwareModel: activeHardwareModel?.rawValue,
             activeHardwareModelClearedAfterUnload: activeHardwareModelClearedAfterUnload,
             pocketChallengeV2CapabilityAdvertised: engine.capabilities.contains(.pocketChallengeV2),
             framesRun: options.frameCount,
+            startupWarmupFrames: warmupFrameCount,
+            postStartupObservationFrames: options.frameCount - warmupFrameCount,
             finalFrame: finalFrame.number,
             contentWidth: dimensions.width,
             contentHeight: dimensions.height,
@@ -331,6 +409,16 @@ private struct SwanSongProbe {
             longestUniformRun: longestUniformRun,
             finalContentFNV1A64: FrameDifferential.fnv1a64(finalRGB),
             videoActivityDetected: activityDetected,
+            startupFirstNonUniformFrame: startupFirstNonUniformFrame,
+            startupDistinctContentFrames: startupDistinctHashes.count,
+            startupVideoActivityDetected: startupActivityDetected,
+            startupAudioFramesProduced: startupAudioFramesProduced,
+            startupNonzeroAudioSamples: startupNonzeroAudioSamples,
+            postStartupFirstNonUniformFrame: postStartupFirstNonUniformFrame,
+            postStartupDistinctContentFrames: postStartupDistinctHashes.count,
+            postStartupVideoActivityDetected: postStartupActivityDetected,
+            postStartupAudioFramesProduced: postStartupAudioFramesProduced,
+            postStartupNonzeroAudioSamples: postStartupNonzeroAudioSamples,
             audioFramesProduced: audioFramesProduced,
             nonzeroAudioSamples: nonzeroAudioSamples,
             audioChannels: audioChannels,
@@ -358,7 +446,8 @@ private struct SwanSongProbe {
             pocketChallengeV2InputRowsLeft: pcv2InputRowsLeft,
             pocketChallengeV2InputContractExact: pcv2InputContractExact,
             freshBootFirstVideoExact: freshBootFirstVideoExact,
-            freshBootFirstAudioExact: freshBootFirstAudioExact
+            freshBootFirstAudioExact: freshBootFirstAudioExact,
+            inputExercise: inputExercise
         )
 
         let encoder = JSONEncoder()
@@ -377,9 +466,9 @@ private struct SwanSongProbe {
         FileHandle.standardOutput.write(reportData)
         FileHandle.standardOutput.write(Data("\n".utf8))
 
-        if options.requireVideoActivity, !activityDetected {
+        if options.requireVideoActivity, !postStartupActivityDetected {
             throw ProbeError(
-                message: "The engine ran \(options.frameCount) frames, but the game raster never showed meaningful video activity."
+                message: "The engine ran \(options.frameCount) frames, but the raster did not show meaningful video activity during the \(options.frameCount - warmupFrameCount)-frame post-startup observation window."
             )
         }
         if options.requireStateReplayExact, !firstReplayFrameExact {
@@ -403,6 +492,8 @@ private struct SwanSongProbe {
                 && pcv2KARNAKExact == true
                 && pcv2InputContractExact == true
                 && settledReplayFrameExact
+                && postStartupActivityDetected
+                && postStartupNonzeroAudioSamples > 0
                 && freshBootFirstVideoExact == true
                 && freshBootFirstAudioExact == true
             if !contractIsExact {
@@ -418,6 +509,117 @@ private struct SwanSongProbe {
             return (min(frame.width, 144), min(frame.height, 224))
         }
         return (min(frame.width, 224), min(frame.height, 144))
+    }
+
+    /// Runs a no-input control branch and an input branch from the exact same
+    /// captured state. The first restored frame is ignored because the pinned
+    /// ares frontend has a documented one-frame presentation settle. Comparing
+    /// the remaining branches distinguishes a real input response from an
+    /// attract-mode animation without exposing ROM, state, audio, or pixels.
+    private static func runInputExercise(
+        engine: EngineSession,
+        hardwareModel: EngineHardwareModel?
+    ) throws -> InputExerciseReport {
+        let comparedFrames = 240
+        let origin = try engine.captureState()
+        var controlVideo: [String] = []
+        var controlAudio: [EngineAudioBatch] = []
+        controlVideo.reserveCapacity(comparedFrames + 1)
+        controlAudio.reserveCapacity(comparedFrames + 1)
+
+        for _ in 0...comparedFrames {
+            try engine.setInput([])
+            try engine.runFrame()
+            controlVideo.append(
+                FrameDifferential.fnv1a64(try contentRGB(engine.videoFrame()))
+            )
+            controlAudio.append(try engine.audioBatch())
+        }
+
+        try engine.restoreState(origin)
+        try engine.setInput([])
+        try engine.runFrame()
+        _ = try engine.videoFrame()
+        _ = try engine.audioBatch()
+
+        var framesWithInput = 0
+        var firstVideoDivergenceOffset: Int?
+        var firstAudioDivergenceOffset: Int?
+        for offset in 0..<comparedFrames {
+            let input = exerciseInput(at: offset, hardwareModel: hardwareModel)
+            if !input.isEmpty { framesWithInput += 1 }
+            try engine.setInput(input)
+            try engine.runFrame()
+            let video = FrameDifferential.fnv1a64(
+                try contentRGB(engine.videoFrame())
+            )
+            let audio = try engine.audioBatch()
+            let controlIndex = offset + 1
+            if firstVideoDivergenceOffset == nil,
+               video != controlVideo[controlIndex] {
+                firstVideoDivergenceOffset = offset
+            }
+            let control = controlAudio[controlIndex]
+            if firstAudioDivergenceOffset == nil,
+               (audio.channels != control.channels
+                || audio.sampleRate != control.sampleRate
+                || audio.interleavedSamples != control.interleavedSamples) {
+                firstAudioDivergenceOffset = offset
+            }
+        }
+        try engine.setInput([])
+
+        return InputExerciseReport(
+            plan: hardwareModel == .pocketChallengeV2
+                ? "pocket-challenge-controls-v1"
+                : "wonderswan-controls-v1",
+            comparedFrames: comparedFrames,
+            settleFramesIgnored: 1,
+            framesWithInput: framesWithInput,
+            firstVideoDivergenceOffset: firstVideoDivergenceOffset,
+            firstAudioDivergenceOffset: firstAudioDivergenceOffset,
+            videoDiverged: firstVideoDivergenceOffset != nil,
+            audioDiverged: firstAudioDivergenceOffset != nil
+        )
+    }
+
+    private static func exerciseInput(
+        at offset: Int,
+        hardwareModel: EngineHardwareModel?
+    ) -> EngineInput {
+        let pulseLength = 3
+        let phaseLength = 20
+        guard offset % phaseLength < pulseLength else { return [] }
+        let phase = offset / phaseLength
+        let controls: [EngineInput]
+        if hardwareModel == .pocketChallengeV2 {
+            controls = [
+                .pocketChallengeView,
+                .pocketChallengeCircle,
+                .pocketChallengePass,
+                .pocketChallengeUp,
+                .pocketChallengeRight,
+                .pocketChallengeDown,
+                .pocketChallengeLeft,
+                .pocketChallengeClear,
+                .pocketChallengeEscape,
+            ]
+        } else {
+            controls = [
+                .start,
+                .a,
+                .b,
+                .y1,
+                .y2,
+                .y3,
+                .y4,
+                .x1,
+                .x2,
+                .x3,
+                .x4,
+            ]
+        }
+        return controls.indices.contains(phase) ? controls[phase] : []
     }
 
     private static func contentRGB(_ frame: EngineVideoFrame) throws -> Data {
@@ -461,13 +663,16 @@ private struct SwanSongProbe {
             switch argument {
             case "--rom":
                 options.rom = URL(fileURLWithPath: try takeValue(&arguments, for: argument))
-            case "--startup-file":
-                options.startupFile = URL(fileURLWithPath: try takeValue(&arguments, for: argument))
             case "--frames":
                 guard let value = Int(try takeValue(&arguments, for: argument)), value > 0 else {
                     throw ProbeError(message: "--frames must be a positive integer.")
                 }
                 options.frameCount = value
+            case "--warmup-frames":
+                guard let value = Int(try takeValue(&arguments, for: argument)), value >= 0 else {
+                    throw ProbeError(message: "--warmup-frames must be a nonnegative integer.")
+                }
+                options.warmupFrameCount = value
             case "--report":
                 options.report = URL(fileURLWithPath: try takeValue(&arguments, for: argument))
             case "--capture":
@@ -484,6 +689,8 @@ private struct SwanSongProbe {
                 options.requireSettledStateReplayExact = true
             case "--require-pcv2-fixture-contract":
                 options.requirePocketChallengeV2FixtureContract = true
+            case "--exercise-inputs":
+                options.exerciseInputs = true
             case "--help", "-h":
                 print(usage)
                 exit(0)
@@ -510,6 +717,16 @@ private struct SwanSongProbe {
         }
     }
 
+    private static func systemTitle(_ model: EngineHardwareModel) -> String {
+        switch model {
+        case .automatic: "Automatic"
+        case .wonderSwan: "WonderSwan"
+        case .wonderSwanColor: "WonderSwan Color"
+        case .swanCrystal: "SwanCrystal"
+        case .pocketChallengeV2: "Pocket Challenge V2"
+        }
+    }
+
     private static func takeValue(_ arguments: inout [String], for option: String) throws -> String {
         guard !arguments.isEmpty else {
             throw ProbeError(message: "\(option) requires a value.")
@@ -519,14 +736,15 @@ private struct SwanSongProbe {
 
     private static let usage = """
     Usage: SwanSongProbe --rom FILE [options]
-      --startup-file FILE_OR_ZIP
-                                Use optional original firmware instead of Open IPL
       --frames N                Run N frames (default 600)
+      --warmup-frames N         Treat the first N frames as startup warmup
+                                (default min(120, --frames minus 1))
       --report FILE             Write a deterministic JSON activity report
       --capture FILE.ppm        Write the final native game raster as PPM
       --hardware-model MODEL    Select automatic, wonderswan, wonderswan-color,
                                 swan-crystal, or pocket-challenge-v2
       --require-video-activity  Fail unless the raster becomes non-uniform and changes
+                                after the startup warmup window
       --require-state-replay-exact
                                 Fail unless the first restored video/audio batch is bit-exact
       --require-settled-state-replay-exact
@@ -535,5 +753,7 @@ private struct SwanSongProbe {
       --require-pcv2-fixture-contract
                                 Require the clean-room PCV2 model, keypad, KARNAK,
                                 deterministic restart, and flash round-trip contract
+      --exercise-inputs         Compare a deterministic Start/A/B/X/Y input branch
+                                with a no-input control branch from the same state
     """
 }

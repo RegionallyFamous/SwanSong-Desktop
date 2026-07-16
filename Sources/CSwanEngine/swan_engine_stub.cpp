@@ -8,7 +8,7 @@ namespace {
 
 class StubBackend final : public SwanEngineBackend {
  public:
-  const char* name() const override { return "ares adapter pending"; }
+  const char* name() const override { return "inspection-only fallback"; }
   uint64_t capabilities() const override {
     return SWAN_CAPABILITY_ROM_INSPECTION;
   }
@@ -65,16 +65,6 @@ class StubBackend final : public SwanEngineBackend {
     return SWAN_RESULT_UNSUPPORTED;
   }
 
-  swan_result_t stage_boot_rom(std::span<const uint8_t> bytes,
-                               std::string& error) override {
-    if (bytes.size() != 4096u && bytes.size() != 8192u) {
-      error = "WonderSwan boot ROM must be 4 KiB or 8 KiB";
-      return SWAN_RESULT_INVALID_ARGUMENT;
-    }
-    error.clear();
-    return SWAN_RESULT_OK;
-  }
-
   swan_result_t persistence_size(swan_persistence_kind_t,
                                  size_t&,
                                  std::string& error) override {
@@ -120,7 +110,7 @@ class StubBackend final : public SwanEngineBackend {
  private:
   swan_result_t unavailable(std::string& error) const {
     if (rom_.empty()) return SWAN_RESULT_NOT_LOADED;
-    error = "ares backend is not connected yet";
+    error = "live ares backend is unavailable in this build";
     return SWAN_RESULT_BACKEND_UNAVAILABLE;
   }
 

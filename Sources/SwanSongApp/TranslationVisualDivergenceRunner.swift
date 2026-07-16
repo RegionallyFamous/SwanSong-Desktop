@@ -71,7 +71,6 @@ enum TranslationVisualDivergenceRunner {
         route: TranslationRoute,
         originalROM: Data,
         patchedROM: Data,
-        startupFile: Data?,
         progress: @escaping @Sendable (Progress) async -> Void
     ) async throws -> TranslationVisualDivergenceResult {
         // Validate the proof route and hard frame cap before allocating its
@@ -81,13 +80,11 @@ enum TranslationVisualDivergenceRunner {
         let original = try await runOriginalPass(
             route: route,
             rom: originalROM,
-            startupFile: startupFile,
             progress: progress
         )
         let patched = try await runPatchedPass(
             route: route,
             rom: patchedROM,
-            startupFile: startupFile,
             originalFingerprints: original.fingerprints,
             progress: progress
         )
@@ -122,7 +119,6 @@ enum TranslationVisualDivergenceRunner {
             reconstructOriginalFrame(
                 route: route,
                 rom: originalROM,
-                startupFile: startupFile,
                 through: differenceIndex,
                 progress: progress
             )
@@ -167,12 +163,11 @@ enum TranslationVisualDivergenceRunner {
     private static func runOriginalPass(
         route: TranslationRoute,
         rom: Data,
-        startupFile: Data?,
         progress: @escaping @Sendable (Progress) async -> Void
     ) async throws -> OriginalPass {
         let runner = try makeRunner(route: route)
         do {
-            try await prepare(runner, rom: rom, startupFile: startupFile)
+            try await prepare(runner, rom: rom)
             var fingerprints: [String] = []
             fingerprints.reserveCapacity(Int(route.totalFrames))
             var endpoint: EngineVideoFrame?
@@ -216,7 +211,6 @@ enum TranslationVisualDivergenceRunner {
     private static func runPatchedPass(
         route: TranslationRoute,
         rom: Data,
-        startupFile: Data?,
         originalFingerprints: [String],
         progress: @escaping @Sendable (Progress) async -> Void
     ) async throws -> PatchedPass {
@@ -227,7 +221,7 @@ enum TranslationVisualDivergenceRunner {
         }
         let runner = try makeRunner(route: route)
         do {
-            try await prepare(runner, rom: rom, startupFile: startupFile)
+            try await prepare(runner, rom: rom)
             var previousFrame: EngineVideoFrame?
             var firstDifferenceFrameIndex: UInt64?
             var firstDifferenceFrame: EngineVideoFrame?
@@ -280,13 +274,12 @@ enum TranslationVisualDivergenceRunner {
     private static func reconstructOriginalFrame(
         route: TranslationRoute,
         rom: Data,
-        startupFile: Data?,
         through target: UInt64,
         progress: @escaping @Sendable (Progress) async -> Void
     ) async throws -> (EngineVideoFrame, EngineVideoFrame?) {
         let runner = try makeRunner(route: route)
         do {
-            try await prepare(runner, rom: rom, startupFile: startupFile)
+            try await prepare(runner, rom: rom)
             var previous: EngineVideoFrame?
             var targetFrame: EngineVideoFrame?
             for frameIndex in 0...target {
@@ -338,12 +331,8 @@ enum TranslationVisualDivergenceRunner {
 
     private static func prepare(
         _ runner: EmulationRunner,
-        rom: Data,
-        startupFile: Data?
+        rom: Data
     ) async throws {
-        if let startupFile {
-            try await runner.stageBootROM(startupFile)
-        }
         _ = try await runner.load(rom: rom)
     }
 }

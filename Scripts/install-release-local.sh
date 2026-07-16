@@ -1,17 +1,84 @@
 #!/bin/sh
 set -eu
 
-SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-MACOS_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
-ARCHIVE=${1:-}
+SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 INSTALL_DIR=${SWAN_LOCAL_INSTALL_DIR:-/Applications}
 OPEN_AFTER_INSTALL=${SWAN_OPEN_AFTER_INSTALL:-1}
 TARGET="$INSTALL_DIR/SwanSong.app"
+ARCHIVE=
+SOURCE_ARCHIVE=
+MANIFEST=
+CHECKSUMS=
 
-if [ -z "$ARCHIVE" ] || [ ! -f "$ARCHIVE" ]; then
-  echo "usage: $0 /path/to/SwanSong-X.Y.Z-macOS-universal.zip" >&2
+usage() {
+  echo "usage: $0 [--source-archive SOURCE.tar.xz] [--manifest RELEASE.json] [--checksums SHA256SUMS.txt] RELEASE.zip" >&2
   exit 64
+}
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --manifest)
+      [ "$#" -ge 2 ] || usage
+      MANIFEST=$2
+      shift 2
+      ;;
+    --source-archive)
+      [ "$#" -ge 2 ] || usage
+      SOURCE_ARCHIVE=$2
+      shift 2
+      ;;
+    --checksums)
+      [ "$#" -ge 2 ] || usage
+      CHECKSUMS=$2
+      shift 2
+      ;;
+    --*) usage ;;
+    *)
+      [ -z "$ARCHIVE" ] || usage
+      ARCHIVE=$1
+      shift
+      ;;
+  esac
+done
+
+[ -n "$ARCHIVE" ] && [ -f "$ARCHIVE" ] || usage
+ARCHIVE_DIR=$(CDPATH='' cd -- "$(dirname -- "$ARCHIVE")" && pwd)
+ARCHIVE_NAME=$(basename -- "$ARCHIVE")
+ARCHIVE="$ARCHIVE_DIR/$ARCHIVE_NAME"
+
+case "$ARCHIVE_NAME" in
+  SwanSong-*-macOS-universal.zip)
+    VERSION=${ARCHIVE_NAME#SwanSong-}
+    VERSION=${VERSION%-macOS-universal.zip}
+    [ -n "$VERSION" ] || usage
+    ;;
+  *)
+    echo "release archive has an unexpected filename: $ARCHIVE_NAME" >&2
+    exit 1
+    ;;
+esac
+
+if [ -z "$MANIFEST" ]; then
+  MANIFEST="$ARCHIVE_DIR/SwanSong-$VERSION-release.json"
 fi
+if [ -z "$SOURCE_ARCHIVE" ]; then
+  SOURCE_ARCHIVE="$ARCHIVE_DIR/SwanSong-$VERSION-source.tar.xz"
+fi
+if [ -z "$CHECKSUMS" ]; then
+  CHECKSUMS="$ARCHIVE_DIR/SHA256SUMS.txt"
+fi
+[ -f "$MANIFEST" ] || {
+  echo "release manifest not found: $MANIFEST" >&2
+  exit 1
+}
+[ -f "$SOURCE_ARCHIVE" ] || {
+  echo "release source archive not found: $SOURCE_ARCHIVE" >&2
+  exit 1
+}
+[ -f "$CHECKSUMS" ] || {
+  echo "release checksums not found: $CHECKSUMS" >&2
+  exit 1
+}
 if [ ! -d "$INSTALL_DIR" ] || [ ! -w "$INSTALL_DIR" ]; then
   echo "install directory is not writable: $INSTALL_DIR" >&2
   exit 1
@@ -25,30 +92,75 @@ case "$OPEN_AFTER_INSTALL" in
 esac
 
 TEMP_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/swan-song-local-install.XXXXXX")
-STAGED="$INSTALL_DIR/.SwanSong.installing.$$"
-BACKUP="$INSTALL_DIR/.SwanSong.backup.$$"
-restore_needed=0
+ARCHIVE_COPY="$TEMP_ROOT/$ARCHIVE_NAME"
+SOURCE_ARCHIVE_COPY="$TEMP_ROOT/$(basename -- "$SOURCE_ARCHIVE")"
+MANIFEST_COPY="$TEMP_ROOT/$(basename -- "$MANIFEST")"
+CHECKSUMS_COPY="$TEMP_ROOT/SHA256SUMS.txt"
+EXTRACT_ROOT="$TEMP_ROOT/extracted"
+STAGED="$INSTALL_DIR/.SwanSong.installing.$$.app"
+BACKUP="$INSTALL_DIR/.SwanSong.backup.$$.app"
+previous_app_backed_up=0
+target_installed=0
+installation_complete=0
+
 cleanup() {
+  status=$?
+  trap - EXIT INT TERM
   rm -rf "$TEMP_ROOT" "$STAGED"
-  if [ "$restore_needed" = "1" ] && [ ! -e "$TARGET" ] && [ -e "$BACKUP" ]; then
-    mv "$BACKUP" "$TARGET"
-  fi
-  if [ "$restore_needed" = "0" ]; then
+
+  if [ "$installation_complete" != "1" ]; then
+    if [ "$target_installed" = "1" ] \
+      && { [ -e "$TARGET" ] || [ -L "$TARGET" ]; }; then
+      rm -rf "$TARGET"
+    fi
+    if [ "$previous_app_backed_up" = "1" ] && [ -e "$BACKUP" ]; then
+      if [ -e "$TARGET" ] || [ -L "$TARGET" ]; then
+        rm -rf "$TARGET"
+      fi
+      if ! mv "$BACKUP" "$TARGET"; then
+        echo "installation failed and the previous app could not be restored from $BACKUP" >&2
+        status=1
+      fi
+    fi
+  else
     rm -rf "$BACKUP"
   fi
+  exit "$status"
 }
 trap cleanup EXIT INT TERM
 
-ditto -x -k "$ARCHIVE" "$TEMP_ROOT"
-SOURCE_APP="$TEMP_ROOT/SwanSong.app"
-if [ ! -d "$SOURCE_APP" ]; then
-  echo "release archive does not contain one top-level SwanSong.app" >&2
+# Work from private copies so the release inputs cannot change between checks.
+cp "$ARCHIVE" "$ARCHIVE_COPY"
+cp "$SOURCE_ARCHIVE" "$SOURCE_ARCHIVE_COPY"
+cp "$MANIFEST" "$MANIFEST_COPY"
+cp "$CHECKSUMS" "$CHECKSUMS_COPY"
+
+"$SCRIPT_DIR/verify-release-artifacts.sh" \
+  --archive "$ARCHIVE_COPY" \
+  --source-archive "$SOURCE_ARCHIVE_COPY" \
+  --manifest "$MANIFEST_COPY" \
+  --checksums "$CHECKSUMS_COPY" >/dev/null
+
+mkdir "$EXTRACT_ROOT"
+ditto -x -k "$ARCHIVE_COPY" "$EXTRACT_ROOT"
+SOURCE_APP="$EXTRACT_ROOT/SwanSong.app"
+if [ ! -d "$SOURCE_APP/Contents" ] || [ -L "$SOURCE_APP" ]; then
+  echo "release archive does not contain a regular top-level SwanSong.app" >&2
+  exit 1
+fi
+UNEXPECTED_TOP_LEVEL=$(find "$EXTRACT_ROOT" -mindepth 1 -maxdepth 1 \
+  ! -name SwanSong.app ! -name __MACOSX -print -quit)
+if [ -n "$UNEXPECTED_TOP_LEVEL" ]; then
+  echo "release archive contains an unexpected top-level payload: $(basename -- "$UNEXPECTED_TOP_LEVEL")" >&2
   exit 1
 fi
 
-SWAN_REQUIRE_DEVELOPER_ID=1 SWAN_GATEKEEPER_ASSESS=1 \
-  "$SCRIPT_DIR/verify-app-signature.sh" "$SOURCE_APP"
-xcrun stapler validate "$SOURCE_APP"
+"$SCRIPT_DIR/verify-release-artifacts.sh" \
+  --archive "$ARCHIVE_COPY" \
+  --source-archive "$SOURCE_ARCHIVE_COPY" \
+  --manifest "$MANIFEST_COPY" \
+  --checksums "$CHECKSUMS_COPY" \
+  --app "$SOURCE_APP" >/dev/null
 
 if pgrep -x SwanSong >/dev/null 2>&1; then
   osascript -e 'tell application "SwanSong" to quit'
@@ -65,26 +177,42 @@ fi
 
 rm -rf "$STAGED" "$BACKUP"
 ditto "$SOURCE_APP" "$STAGED"
-if [ -e "$TARGET" ]; then
+
+# The staged copy is the exact filesystem payload that will replace the app.
+"$SCRIPT_DIR/verify-release-artifacts.sh" \
+  --archive "$ARCHIVE_COPY" \
+  --source-archive "$SOURCE_ARCHIVE_COPY" \
+  --manifest "$MANIFEST_COPY" \
+  --checksums "$CHECKSUMS_COPY" \
+  --app "$STAGED" >/dev/null
+
+if [ -e "$TARGET" ] || [ -L "$TARGET" ]; then
   mv "$TARGET" "$BACKUP"
-  restore_needed=1
+  previous_app_backed_up=1
 fi
 if ! mv "$STAGED" "$TARGET"; then
   echo "could not install SwanSong into $INSTALL_DIR" >&2
   exit 1
 fi
-restore_needed=0
+target_installed=1
+
+# Keep the known-good backup until every check passes at the final target path.
+"$SCRIPT_DIR/verify-release-artifacts.sh" \
+  --archive "$ARCHIVE_COPY" \
+  --source-archive "$SOURCE_ARCHIVE_COPY" \
+  --manifest "$MANIFEST_COPY" \
+  --checksums "$CHECKSUMS_COPY" \
+  --app "$TARGET" >/dev/null
+
+installation_complete=1
 rm -rf "$BACKUP"
+previous_app_backed_up=0
 
-SWAN_REQUIRE_DEVELOPER_ID=1 SWAN_GATEKEEPER_ASSESS=1 \
-  "$SCRIPT_DIR/verify-app-signature.sh" "$TARGET"
-xcrun stapler validate "$TARGET"
-
-VERSION=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' \
+INSTALLED_VERSION=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' \
   "$TARGET/Contents/Info.plist")
-BUNDLE_ID=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' \
+INSTALLED_BUILD=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' \
   "$TARGET/Contents/Info.plist")
-echo "PASS installed SwanSong $VERSION ($BUNDLE_ID) at $TARGET"
+echo "PASS installed SwanSong $INSTALLED_VERSION ($INSTALLED_BUILD) at $TARGET"
 
 if [ "$OPEN_AFTER_INSTALL" = "1" ]; then
   open "$TARGET"

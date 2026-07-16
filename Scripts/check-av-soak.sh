@@ -14,6 +14,7 @@ INJECT_HOST_GAP_MS=${SWAN_AV_SOAK_INJECT_HOST_GAP_MS:-}
 INJECT_HOST_GAP_AFTER_FRAMES=${SWAN_AV_SOAK_INJECT_HOST_GAP_AFTER_FRAMES:-120}
 DISABLE_DISCONTINUITY_RECOVERY=${SWAN_AV_SOAK_DISABLE_DISCONTINUITY_RECOVERY:-0}
 EXPECTED_STATUS=${SWAN_AV_SOAK_EXPECT_STATUS:-pass}
+VALIDATE_ONLY=${SWAN_AV_SOAK_VALIDATE_ONLY:-0}
 TEMP_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/swan-song-av-soak.XXXXXX")
 STDOUT_FILE="$TEMP_ROOT/soak.stdout"
 FIXTURE_RELATIVE_PATH="testroms/ws-test-suite/80186_quirks/80186_quirks.ws"
@@ -94,6 +95,13 @@ case "$EXPECTED_STATUS" in
     exit 2
     ;;
 esac
+case "$VALIDATE_ONLY" in
+  0|1) ;;
+  *)
+    echo "SWAN_AV_SOAK_VALIDATE_ONLY must be 0 or 1" >&2
+    exit 2
+    ;;
+esac
 
 if [ ! -f "$ROM" ]; then
   echo "The checked-in open 80186 fixture is missing" >&2
@@ -102,39 +110,44 @@ fi
 
 mkdir -p "$(dirname "$OUTPUT")"
 
-"$SCRIPT_DIR/build-engine.sh" >/dev/null
-SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
-  "$SCRIPT_DIR/swift-package.sh" build \
-  --package-path "$MACOS_DIR" \
-  --scratch-path "$SOAK_BUILD_DIR" \
-  --product SwanSongSoak >/dev/null
+if [ "$VALIDATE_ONLY" = "0" ]; then
+  "$SCRIPT_DIR/build-engine.sh" >/dev/null
+  SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
+    "$SCRIPT_DIR/swift-package.sh" build \
+    --package-path "$MACOS_DIR" \
+    --scratch-path "$SOAK_BUILD_DIR" \
+    --product SwanSongSoak >/dev/null
 
-set -- "$SOAK_BUILD_DIR/debug/SwanSongSoak" \
-  --rom "$ROM" \
-  --fixture-id "checked-in-open-80186-quirks" \
-  --duration-ms "$DURATION_MS" \
-  --stall-threshold-ms "$STALL_THRESHOLD_MS" \
-  --maximum-drift-ms "$MAXIMUM_DRIFT_MS" \
-  --report "$OUTPUT"
-if [ -n "$INJECT_HOST_GAP_MS" ]; then
-  set -- "$@" \
-    --inject-host-gap-ms "$INJECT_HOST_GAP_MS" \
-    --inject-host-gap-after-frames "$INJECT_HOST_GAP_AFTER_FRAMES"
-fi
-if [ "$DISABLE_DISCONTINUITY_RECOVERY" = "1" ]; then
-  set -- "$@" --disable-discontinuity-recovery
-fi
+  set -- "$SOAK_BUILD_DIR/debug/SwanSongSoak" \
+    --rom "$ROM" \
+    --fixture-id "checked-in-open-80186-quirks" \
+    --duration-ms "$DURATION_MS" \
+    --stall-threshold-ms "$STALL_THRESHOLD_MS" \
+    --maximum-drift-ms "$MAXIMUM_DRIFT_MS" \
+    --report "$OUTPUT"
+  if [ -n "$INJECT_HOST_GAP_MS" ]; then
+    set -- "$@" \
+      --inject-host-gap-ms "$INJECT_HOST_GAP_MS" \
+      --inject-host-gap-after-frames "$INJECT_HOST_GAP_AFTER_FRAMES"
+  fi
+  if [ "$DISABLE_DISCONTINUITY_RECOVERY" = "1" ]; then
+    set -- "$@" --disable-discontinuity-recovery
+  fi
 
-set +e
-"$@" >"$STDOUT_FILE"
-SOAK_STATUS=$?
-set -e
-if [ "$EXPECTED_STATUS" = "pass" ] && [ "$SOAK_STATUS" -ne 0 ]; then
-  echo "A/V soak failed unexpectedly (exit $SOAK_STATUS)" >&2
-  exit "$SOAK_STATUS"
-fi
-if [ "$EXPECTED_STATUS" = "fail" ] && [ "$SOAK_STATUS" -ne 1 ]; then
-  echo "A/V soak failure injection returned $SOAK_STATUS instead of the expected gate failure" >&2
+  set +e
+  "$@" >"$STDOUT_FILE"
+  SOAK_STATUS=$?
+  set -e
+  if [ "$EXPECTED_STATUS" = "pass" ] && [ "$SOAK_STATUS" -ne 0 ]; then
+    echo "A/V soak failed unexpectedly (exit $SOAK_STATUS)" >&2
+    exit "$SOAK_STATUS"
+  fi
+  if [ "$EXPECTED_STATUS" = "fail" ] && [ "$SOAK_STATUS" -ne 1 ]; then
+    echo "A/V soak failure injection returned $SOAK_STATUS instead of the expected gate failure" >&2
+    exit 1
+  fi
+elif [ ! -f "$OUTPUT" ]; then
+  echo "A/V soak report not found for validation: $OUTPUT" >&2
   exit 1
 fi
 
@@ -143,9 +156,12 @@ python3 - \
   "$DURATION_MS" \
   "$EXPECTED_STATUS" \
   "$INJECT_HOST_GAP_MS" \
-  "$DISABLE_DISCONTINUITY_RECOVERY" <<'PY'
+  "$DISABLE_DISCONTINUITY_RECOVERY" \
+  "$STALL_THRESHOLD_MS" \
+  "$MAXIMUM_DRIFT_MS" <<'PY'
 import json
 import pathlib
+import re
 import sys
 
 report_path = pathlib.Path(sys.argv[1])
@@ -153,9 +169,11 @@ expected_duration = int(sys.argv[2])
 expected_status = sys.argv[3]
 injected_gap = int(sys.argv[4]) if sys.argv[4] else None
 recovery_enabled = sys.argv[5] == "0"
+expected_stall_threshold = int(sys.argv[6])
+expected_maximum_drift = float(sys.argv[7])
 report = json.loads(report_path.read_text())
 
-if report.get("schema") != "swan-song-av-soak-v2":
+if report.get("schema") != "swan-song-av-soak-v3":
     raise SystemExit("unexpected A/V soak report schema")
 if report.get("status") != expected_status:
     raise SystemExit("A/V soak report did not match the expected status")
@@ -165,21 +183,47 @@ if expected_status == "fail" and not report.get("issues"):
     raise SystemExit("injected A/V soak failure did not retain its issue")
 if report.get("requestedDurationMilliseconds") != expected_duration:
     raise SystemExit("A/V soak report did not bind the exact requested duration")
+expected_duration_mode = (
+    "release-30-minute"
+    if expected_duration == 1_800_000
+    else "duration-override"
+)
+if report.get("durationMode") != expected_duration_mode:
+    raise SystemExit("A/V soak report did not bind the requested duration mode")
 if not report.get("durationCompleted"):
     raise SystemExit("A/V soak ended before the requested duration")
+elapsed_milliseconds = report.get("elapsedMilliseconds")
+if not isinstance(elapsed_milliseconds, int) \
+   or isinstance(elapsed_milliseconds, bool) \
+   or elapsed_milliseconds < expected_duration:
+    raise SystemExit("A/V soak elapsed time was shorter than the requested duration")
 if report.get("backend") != "ares":
     raise SystemExit("A/V soak did not use the live ares backend")
+if not re.fullmatch(
+    r"ares-[0-9a-f]{40}-swan-abi5", report.get("engineBuildID", "")
+):
+    raise SystemExit("A/V soak did not bind the exact ABI-5 engine build")
+if report.get("openIPLIdentifier") != "open-bootstrap-v3":
+    raise SystemExit("A/V soak did not bind SwanSong Open IPL v3")
+if report.get("rtcMode") != "deterministic" \
+   or report.get("rtcSeedUnixSeconds") != 1:
+    raise SystemExit("A/V soak did not bind its deterministic RTC context")
 if report.get("fixtureID") != "checked-in-open-80186-quirks":
     raise SystemExit("A/V soak report did not bind the open fixture label")
 if report.get("audio", {}).get("sink") != "virtual-realtime-48khz-stereo":
     raise SystemExit("A/V soak report obscured its virtual audio-sink scope")
 scope = report.get("scope", "")
-for required in ("open fixture", "synthetic startup", "no commercial-game", "Core Audio device", "original-hardware"):
+for required in ("open fixture", "Open IPL", "no commercial-game", "Core Audio device", "original-hardware"):
     if required not in scope:
         raise SystemExit(f"A/V soak report scope is missing {required!r}")
 
 video = report["video"]
 audio = report["audio"]
+thresholds = report["thresholds"]
+if thresholds.get("stallThresholdMilliseconds") != expected_stall_threshold:
+    raise SystemExit("A/V soak report did not bind the requested stall threshold")
+if thresholds.get("maximumAbsoluteTransportDriftMilliseconds") != expected_maximum_drift:
+    raise SystemExit("A/V soak report did not bind the requested drift threshold")
 for key in ("invalidFrames", "nonIncreasingFrames", "droppedFrameNumbers", "temporalStalls"):
     if video.get(key) != 0:
         raise SystemExit(f"A/V soak video telemetry recorded {key}")
@@ -194,6 +238,14 @@ if report.get("pacing", {}).get("injectedHostGapMilliseconds") != injected_gap:
     raise SystemExit("A/V soak report did not bind the requested host-gap injection")
 if report.get("pacing", {}).get("discontinuityRecoveryEnabled") != recovery_enabled:
     raise SystemExit("A/V soak report did not bind the requested recovery mode")
+pacing = report["pacing"]
+target_frames = pacing.get("targetBufferedFrames", 0)
+horizon_frames = pacing.get("discontinuityHorizonFrames", float("inf"))
+reprime_frames = pacing.get("recoveryReprimeFrames", 0)
+if target_frames < horizon_frames + 1:
+    raise SystemExit("A/V pacing lost its one-batch ordinary-jitter margin")
+if reprime_frames < target_frames:
+    raise SystemExit("A/V recovery resumes below the steady pacing cushion")
 if audio.get("recoveredDiscontinuities", 0) > report["thresholds"]["maximumRecoveredDiscontinuities"]:
     raise SystemExit("A/V soak exceeded its bounded recovery rarity budget")
 if expected_status == "pass" and audio.get("underrunEpisodes") != 0:

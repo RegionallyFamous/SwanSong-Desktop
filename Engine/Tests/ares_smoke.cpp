@@ -22,6 +22,18 @@ int main(int argc, char** argv) {
     return 1;
   }
 
+  if (argc == 2 && std::strcmp(argv[1], "--build-id") == 0) {
+    const char* build_id = swan_engine_build_id(engine);
+    if (!build_id || !build_id[0]) {
+      std::fputs("engine did not expose a build ID\n", stderr);
+      swan_engine_destroy(engine);
+      return 1;
+    }
+    std::puts(build_id);
+    swan_engine_destroy(engine);
+    return 0;
+  }
+
   const bool backend_ok = std::strcmp(swan_engine_backend_name(engine), "ares") == 0;
   const uint64_t capabilities = swan_engine_capabilities(engine);
   const bool execution_ok = (capabilities & SWAN_CAPABILITY_EXECUTION) != 0;

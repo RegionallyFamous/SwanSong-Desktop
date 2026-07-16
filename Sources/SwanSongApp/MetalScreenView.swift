@@ -6,16 +6,27 @@ import SwiftUI
 struct MetalScreenView: NSViewRepresentable {
     let frame: EngineVideoFrame
     let profile: DisplayProfile
+    let hardwareModel: EngineHardwareModel
     let responseScale: Float
 
     func makeNSView(context: Context) -> SwanMetalView {
         let view = SwanMetalView()
-        view.update(frame: frame, profile: profile, responseScale: responseScale)
+        view.update(
+            frame: frame,
+            profile: profile,
+            hardwareModel: hardwareModel,
+            responseScale: responseScale
+        )
         return view
     }
 
     func updateNSView(_ nsView: SwanMetalView, context: Context) {
-        nsView.update(frame: frame, profile: profile, responseScale: responseScale)
+        nsView.update(
+            frame: frame,
+            profile: profile,
+            hardwareModel: hardwareModel,
+            responseScale: responseScale
+        )
     }
 }
 
@@ -33,6 +44,7 @@ final class SwanMetalView: MTKView, MTKViewDelegate {
     private var previousFramePixels: Data?
     private var textureSize = SIMD2<Int>(repeating: 0)
     private var displayProfile = DisplayProfile.purePixels
+    private var hardwareModel = EngineHardwareModel.automatic
     private var responseScale: Float = 1
 
     init() {
@@ -58,9 +70,15 @@ final class SwanMetalView: MTKView, MTKViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func update(frame: EngineVideoFrame, profile: DisplayProfile, responseScale: Float) {
+    func update(
+        frame: EngineVideoFrame,
+        profile: DisplayProfile,
+        hardwareModel: EngineHardwareModel,
+        responseScale: Float
+    ) {
         guard let device else { return }
         displayProfile = profile
+        self.hardwareModel = hardwareModel
         self.responseScale = responseScale
         let requestedSize = SIMD2(frame.width, frame.height)
         if gameTexture == nil || requestedSize != textureSize {
@@ -131,7 +149,7 @@ final class SwanMetalView: MTKView, MTKViewDelegate {
     }
 
     private func makeDisplayUniforms() -> DisplayUniforms {
-        let parameters = displayProfile.parameters
+        let parameters = displayProfile.parameters(for: hardwareModel)
         return DisplayUniforms(
             adjustments: SIMD4(
                 parameters.saturation,
@@ -148,7 +166,7 @@ final class SwanMetalView: MTKView, MTKViewDelegate {
             geometry: SIMD4(
                 Float(textureSize.x),
                 Float(textureSize.y),
-                0,
+                parameters.smartColorStrength,
                 0
             )
         )
@@ -195,6 +213,21 @@ final class SwanMetalView: MTKView, MTKViewDelegate {
             float4 geometry;
         };
 
+        float3 smartColorPalette(float luminance) {
+            const float3 ink = float3(0.035, 0.055, 0.120);
+            const float3 shadow = float3(0.220, 0.160, 0.420);
+            const float3 midtone = float3(0.170, 0.630, 0.610);
+            const float3 paper = float3(0.950, 0.910, 0.680);
+            float shade = clamp(luminance, 0.0, 1.0) * 3.0;
+            if (shade < 1.0) {
+                return mix(ink, shadow, smoothstep(0.0, 1.0, shade));
+            }
+            if (shade < 2.0) {
+                return mix(shadow, midtone, smoothstep(1.0, 2.0, shade));
+            }
+            return mix(midtone, paper, smoothstep(2.0, 3.0, shade));
+        }
+
         vertex RasterData swanVertex(uint vertexID [[vertex_id]]) {
             const float2 positions[4] = {
                 float2(-1.0, -1.0), float2(1.0, -1.0),
@@ -224,6 +257,8 @@ final class SwanMetalView: MTKView, MTKViewDelegate {
             float3 previousColor = previousGame.sample(nearestSampler, input.textureCoordinate).rgb;
             float3 color = mix(currentColor, previousColor, display.tint.w);
             float luminance = dot(color, float3(0.2126, 0.7152, 0.0722));
+            color = mix(color, smartColorPalette(luminance), display.geometry.z);
+            luminance = dot(color, float3(0.2126, 0.7152, 0.0722));
             color = mix(float3(luminance), color, display.adjustments.x);
             color = (color - 0.5) * display.adjustments.y + 0.5;
             color += display.adjustments.z;

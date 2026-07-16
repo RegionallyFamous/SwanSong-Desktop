@@ -19,16 +19,108 @@ private func makeROM(
     color: Bool = false,
     vertical: Bool = false,
     saveType: UInt8 = 0x01,
-    mapper: UInt8 = 0
+    mapper: UInt8 = 0,
+    footerVersion: UInt8 = 0
 ) -> Data {
     var bytes = [UInt8](repeating: 0, count: 128 * 1024)
     let footer = bytes.count - 16
     bytes[footer + 0] = 0xea
     bytes[footer + 7] = color ? 1 : 0
+    bytes[footer + 9] = footerVersion
     bytes[footer + 10] = 0x00
     bytes[footer + 11] = saveType
     bytes[footer + 12] = vertical ? 0x05 : 0x04
     bytes[footer + 13] = mapper
+    let checksum = bytes[..<(bytes.count - 2)].reduce(UInt16(0)) {
+        $0 &+ UInt16($1)
+    }
+    bytes[bytes.count - 2] = UInt8(truncatingIfNeeded: checksum)
+    bytes[bytes.count - 1] = UInt8(truncatingIfNeeded: checksum >> 8)
+    return Data(bytes)
+}
+
+private func makeOpenIPLObservationROM(
+    color: Bool,
+    footerVersion: UInt8 = 0
+) -> Data {
+    var bytes = [UInt8](makeROM(
+        color: color,
+        footerVersion: footerVersion
+    ))
+    let programOffset = 0x1_0000
+    let program: [UInt8] = [
+        0xfa,                         // cli
+        0x31, 0xc0,                   // xor ax,ax
+        0x8e, 0xd8,                   // mov ds,ax
+        0xe4, 0xb5,                   // in al,KEYPAD
+        0xa2, 0xf0, 0x3f,             // mov [3ff0],al
+        0xe4, 0x60,                   // in al,DISP_MODE
+        0xa2, 0xf1, 0x3f,             // mov [3ff1],al
+        0xe4, 0xbe,                   // in al,IEEP_STATUS
+        0xa2, 0xf2, 0x3f,             // mov [3ff2],al
+        0xc6, 0x06, 0xf3, 0x3f, 0xa5, // mov byte [3ff3],a5
+        0xeb, 0xfe,                   // spin
+    ]
+    bytes.replaceSubrange(
+        programOffset..<(programOffset + program.count),
+        with: program
+    )
+
+    // Standard Open IPL enters the cartridge footer first; the footer then
+    // transfers to the observation program at physical F0000h.
+    let footer = bytes.count - 16
+    bytes.replaceSubrange(
+        footer..<(footer + 5),
+        with: [0xea, 0x00, 0x00, 0x00, 0xf0]
+    )
+    let checksum = bytes[..<(bytes.count - 2)].reduce(UInt16(0)) {
+        $0 &+ UInt16($1)
+    }
+    bytes[bytes.count - 2] = UInt8(truncatingIfNeeded: checksum)
+    bytes[bytes.count - 1] = UInt8(truncatingIfNeeded: checksum >> 8)
+    return Data(bytes)
+}
+
+private func makeOpenIPLPCV2PinstrapROM() -> Data {
+    var bytes = [UInt8](repeating: 0xff, count: 128 * 1_024)
+    let directProgram: [UInt8] = [
+        0xa3, 0xf4, 0x3f,             // mov [3ff4],ax
+        0xbc, 0xec, 0x3f,             // mov sp,3fec (MOV preserves flags)
+        0x9c, 0x58,                   // pushf; pop ax
+        0xa3, 0xf6, 0x3f,             // mov [3ff6],ax
+        0xe4, 0x14,                   // in al,LCD_CTRL
+        0xa2, 0xf8, 0x3f,             // mov [3ff8],al
+        0x8c, 0xc8,                   // mov ax,cs
+        0xa3, 0xf9, 0x3f,             // mov [3ff9],ax
+        0xc6, 0x06, 0xfb, 0x3f, 0xa5, // mov byte [3ffb],a5
+        0xeb, 0xfe,                   // spin
+    ]
+    bytes.replaceSubrange(
+        0x10..<(0x10 + directProgram.count),
+        with: directProgram
+    )
+
+    // A standard WonderSwan reset-vector transfer deliberately lands in this
+    // trap. Only the PCV2 pinstrap entry at physical 40010h reaches the marker.
+    bytes.replaceSubrange(
+        0x1_0000..<0x1_0004,
+        with: [0xfa, 0xf4, 0xeb, 0xfd]
+    )
+    let footer = bytes.count - 16
+    bytes[footer + 0] = 0xea
+    bytes[footer + 1] = 0x00
+    bytes[footer + 2] = 0x00
+    bytes[footer + 3] = 0x00
+    bytes[footer + 4] = 0xf0
+    bytes[footer + 5] = 0x00
+    bytes[footer + 6] = 0x00
+    bytes[footer + 7] = 0x00
+    bytes[footer + 8] = 0x52
+    bytes[footer + 9] = 0x01
+    bytes[footer + 10] = 0x00
+    bytes[footer + 11] = 0x00
+    bytes[footer + 12] = 0x04
+    bytes[footer + 13] = 0x00
     let checksum = bytes[..<(bytes.count - 2)].reduce(UInt16(0)) {
         $0 &+ UInt16($1)
     }
@@ -78,12 +170,10 @@ private struct SwanSongChecks {
         try checkFreshBootDeterminism()
         try checkDeterministicRTC()
         try await checkRunnerFreshBootDeterminism()
-        try checkBootROMStaging()
+        try checkOpenIPLV3Contract()
         try checkLibraryRoundTrip()
         try checkGameConfidence()
         try checkDataRootContainmentPolicy()
-        try checkFirmwareStore()
-        try checkFirmwareImporter()
         try checkBatchGameImport()
         try checkGameArtworkStore()
         try checkLibraryQuery()
@@ -94,6 +184,7 @@ private struct SwanSongChecks {
         try checkFramePacingPolicy()
         try checkPlayerControlPolicy()
         try checkFrameAdvanceGate()
+        try checkGameDebugLog()
         try checkRewindBuffer()
         try checkPlayerLaunchStages()
         try checkPlayerFailureState()
@@ -213,7 +304,10 @@ private struct SwanSongChecks {
             )
         } else {
             try expect(!engine.capabilities.contains(.execution), "stub must not claim execution")
-            try expect(engine.backendName == "ares adapter pending", "backend name mismatch")
+            try expect(
+                engine.backendName == "inspection-only fallback",
+                "backend name mismatch"
+            )
         }
     }
 
@@ -355,6 +449,60 @@ private struct SwanSongChecks {
         _ = gate.request()
         gate.reset()
         try expect(!gate.hasPendingRequest, "reset preserved a stale frame-step request")
+    }
+
+    private static func checkGameDebugLog() throws {
+        let startedAt = Date(timeIntervalSince1970: 1_000)
+        let session = GameDebugSession(
+            appVersion: "1.0",
+            appBuild: "1",
+            engineBackend: "ares",
+            engineBuildID: "checks-engine",
+            gameTitle: "Checks Fixture",
+            romSHA256: String(repeating: "a", count: 64),
+            romByteCount: 128 * 1_024,
+            romChecksum: 0x1234,
+            hardwareModel: "wonderSwanColor",
+            openIPLIdentifier: WonderSwanOpenIPL.identifier,
+            controllerName: "Checks Pad"
+        )
+        var recorder = GameDebugLogRecorder(
+            session: session,
+            recordingStartedAt: startedAt,
+            maximumRetainedFrames: 3
+        )
+        for frameNumber in UInt64(1)...4 {
+            recorder.record(
+                frame: makeRouteFrame(number: frameNumber),
+                keyboardInput: frameNumber == 4 ? [.x1, .a] : [],
+                controllerInput: frameNumber == 4 ? [.y2] : [],
+                effectiveInput: frameNumber == 4 ? [.x1, .y2, .a] : [],
+                focus: frameNumber == 4 ? .keyboardActive : .keyboardInactive,
+                isPaused: false,
+                isFastForwarding: frameNumber == 4,
+                isFrameStep: false,
+                audioFrameCount: 640,
+                recordedAt: startedAt.addingTimeInterval(Double(frameNumber) / 10)
+            )
+        }
+        try expect(recorder.totalFrameCount == 4, "debug log lost its total frame count")
+        try expect(recorder.droppedFrameCount == 1, "debug log did not report bounded-window trimming")
+        try expect(recorder.frames.map(\.frameNumber) == [2, 3, 4], "debug log did not retain the newest frames")
+        let final = try XCTUnwrap(recorder.frames.last)
+        try expect(final.keyboardInputs == ["X1", "A"], "debug log keyboard names are unstable")
+        try expect(final.controllerInputs == ["Y2"], "debug log controller names are unstable")
+        try expect(final.effectiveInputs == ["Y2", "X1", "A"], "debug log effective input is incomplete")
+        try expect(final.focus == .keyboardActive, "debug log focus state is missing")
+
+        let source = recorder.snapshot(exportedAt: startedAt.addingTimeInterval(1))
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let data = try encoder.encode(source)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let decoded = try decoder.decode(GameDebugLog.self, from: data)
+        try expect(decoded == source, "debug log JSON did not round-trip")
+        try expect(decoded.schema == GameDebugLog.currentSchema, "debug log schema is unstable")
     }
 
     private static func checkRewindBuffer() throws {
@@ -770,7 +918,7 @@ private struct SwanSongChecks {
                 .closingPreviousSession,
                 .verifyingGame,
                 .startingEngine,
-                .loadingStartupFile,
+                .initializingSystem,
                 .restoringSave,
                 .startingSystem,
                 .waitingForFirstFrame,
@@ -998,12 +1146,6 @@ private struct SwanSongChecks {
 
     private static func checkBackendTruth() throws {
         let engine = try EngineSession()
-        do {
-            try engine.stageBootROM(Data(repeating: 0xa5, count: 32))
-            throw CheckFailure(message: "an invalid boot ROM size crossed the engine boundary")
-        } catch is SwanEngineError {
-            // Expected: only the exact 4 KiB and 8 KiB firmware shapes are accepted.
-        }
         if engine.capabilities.contains(.execution) {
             var console = Data(repeating: 0, count: 128)
             console[0] = 0x5a
@@ -1170,10 +1312,6 @@ private struct SwanSongChecks {
                 && !fileManager.fileExists(atPath: fallbackRoot.path),
             "data-root resolution changed the filesystem before a store write"
         )
-        try WonderSwanFirmwareStore(
-            rootURL: nestedResolution.rootURL
-                .appendingPathComponent("Firmware", isDirectory: true)
-        ).prepareStorage()
         try ManagedGameStore(
             rootURL: nestedResolution.rootURL
                 .appendingPathComponent("Games", isDirectory: true)
@@ -1184,8 +1322,6 @@ private struct SwanSongChecks {
         )
         try expect(
             fileManager.fileExists(
-                atPath: fallbackRoot.appendingPathComponent("Firmware").path
-            ) && fileManager.fileExists(
                 atPath: fallbackRoot.appendingPathComponent("Games").path
             ),
             "rejected bundle-contained roots did not fall back before writes"
@@ -1207,325 +1343,16 @@ private struct SwanSongChecks {
             !fileManager.fileExists(atPath: externalRoot.path),
             "external data-root resolution wrote before store preparation"
         )
-        try WonderSwanFirmwareStore(
-            rootURL: externalResolution.rootURL
-                .appendingPathComponent("Firmware", isDirectory: true)
-        ).prepareStorage()
         try ManagedGameStore(
             rootURL: externalResolution.rootURL
                 .appendingPathComponent("Games", isDirectory: true)
         ).prepareStorage()
         try expect(
             fileManager.fileExists(
-                atPath: externalRoot.appendingPathComponent("Firmware").path
-            ) && fileManager.fileExists(
                 atPath: externalRoot.appendingPathComponent("Games").path
             ),
             "normal external diagnostics roots no longer support store writes"
         )
-    }
-
-    private static func checkFirmwareStore() throws {
-        let sandbox = FileManager.default.temporaryDirectory
-            .appendingPathComponent(UUID().uuidString, isDirectory: true)
-        try FileManager.default.createDirectory(
-            at: sandbox,
-            withIntermediateDirectories: false,
-            attributes: [.posixPermissions: 0o700]
-        )
-        defer { try? FileManager.default.removeItem(at: sandbox) }
-        let root = sandbox.appendingPathComponent("Firmware", isDirectory: true)
-        let store = WonderSwanFirmwareStore(rootURL: root)
-
-        func fixture(
-            _ kind: WonderSwanFirmwareKind,
-            fill: UInt8,
-            target: UInt32
-        ) -> Data {
-            var data = Data(repeating: fill, count: kind.expectedByteCount)
-            let vector = data.count - 16
-            let segment = target >> 4
-            let offset = target & 0x0f
-            data[vector] = 0xea
-            data[vector + 1] = UInt8(offset & 0xff)
-            data[vector + 2] = UInt8((offset >> 8) & 0xff)
-            data[vector + 3] = UInt8(segment & 0xff)
-            data[vector + 4] = UInt8((segment >> 8) & 0xff)
-            return data
-        }
-
-        func expectUnsafeStorage(
-            _ message: String,
-            _ operation: () throws -> Void
-        ) throws {
-            do {
-                try operation()
-                throw CheckFailure(message: message)
-            } catch WonderSwanFirmwareError.unsafeStorage {
-                // Expected.
-            }
-        }
-
-        try store.prepareStorage()
-        try store.prepareStorage()
-
-        let monochrome = fixture(.monochrome, fill: 0x90, target: 0x0f_fff0)
-        let monoKind = try store.install(monochrome)
-        try expect(monoKind == .monochrome, "4 KiB firmware was not identified as WonderSwan")
-        try expect(store.isInstalled(.monochrome), "installed WonderSwan firmware was not reported")
-        let loadedMonochrome = try store.load(.monochrome)
-        try expect(loadedMonochrome == monochrome, "WonderSwan firmware did not round-trip")
-
-        let color = fixture(.color, fill: 0x91, target: 0x0f_e000)
-        let colorKind = try store.install(color)
-        try expect(colorKind == .color, "8 KiB firmware was not identified as WonderSwan Color")
-        try expect(store.isInstalled(.color), "installed Color firmware was not reported")
-        let loadedColor = try store.load(.color)
-        try expect(loadedColor == color, "Color firmware did not round-trip")
-
-        let monochromeReplacement = fixture(
-            .monochrome,
-            fill: 0x92,
-            target: 0x0f_f100
-        )
-        let invalidMonochromeTarget = fixture(
-            .monochrome,
-            fill: 0x93,
-            target: 0x0f_e000
-        )
-        do {
-            _ = try store.install(invalidMonochromeTarget)
-            throw CheckFailure(message: "firmware with an out-of-range reset target was accepted")
-        } catch WonderSwanFirmwareError.missingResetVector {
-            // Expected.
-        }
-        let preservedMonochrome = try Data(
-            contentsOf: store.fileURL(for: .monochrome)
-        )
-        try expect(
-            preservedMonochrome == monochrome,
-            "failed firmware validation destroyed the installed image"
-        )
-        _ = try store.install(monochromeReplacement)
-        let loadedReplacement = try store.load(.monochrome)
-        try expect(
-            loadedReplacement == monochromeReplacement,
-            "valid firmware replacement did not commit"
-        )
-
-        do {
-            _ = try store.install(Data(repeating: 0, count: 8 * 1_024))
-            throw CheckFailure(message: "an empty firmware image was accepted")
-        } catch WonderSwanFirmwareError.emptyImage {
-            // Expected.
-        }
-        do {
-            _ = try store.install(Data(repeating: 0x5a, count: 6 * 1_024))
-            throw CheckFailure(message: "an unsupported firmware size was accepted")
-        } catch WonderSwanFirmwareError.unsupportedSize {
-            // Expected.
-        }
-        do {
-            var invalidVector = Data(repeating: 0x90, count: 4 * 1_024)
-            invalidVector[invalidVector.count - 1] = 0xea
-            _ = try store.install(invalidVector)
-            throw CheckFailure(message: "firmware without a reset vector was accepted")
-        } catch WonderSwanFirmwareError.missingResetVector {
-            // Expected.
-        }
-
-        let colorURL = store.fileURL(for: .color)
-        try Data(color.dropLast()).write(to: colorURL, options: [.atomic])
-        do {
-            _ = try store.load(.color)
-            throw CheckFailure(message: "truncated installed firmware was accepted")
-        } catch WonderSwanFirmwareError.sizeMismatch {
-            // Expected.
-        }
-        _ = try store.install(color)
-        let invalidColorTarget = fixture(.color, fill: 0x94, target: 0x01_0000)
-        try invalidColorTarget.write(to: colorURL, options: [.atomic])
-        do {
-            _ = try store.load(.color)
-            throw CheckFailure(message: "corrupt installed firmware was accepted")
-        } catch WonderSwanFirmwareError.missingResetVector {
-            // Expected.
-        }
-        _ = try store.install(color)
-
-        try FileManager.default.setAttributes(
-            [.posixPermissions: 0o755],
-            ofItemAtPath: root.path
-        )
-        try FileManager.default.setAttributes(
-            [.posixPermissions: 0o644],
-            ofItemAtPath: colorURL.path
-        )
-        let repairedColor = try store.load(.color)
-        try expect(
-            repairedColor == color,
-            "permission repair changed the installed firmware"
-        )
-
-        let rootPermissions = try FileManager.default.attributesOfItem(atPath: root.path)[.posixPermissions] as? NSNumber
-        try expect(rootPermissions?.intValue == 0o700, "firmware folder permissions were not private")
-        let rootOwner = try FileManager.default.attributesOfItem(atPath: root.path)[.ownerAccountID] as? NSNumber
-        try expect(rootOwner?.uint32Value == getuid(), "firmware folder was not owned by the current user")
-        let colorAttributes = try FileManager.default.attributesOfItem(atPath: colorURL.path)
-        let colorPermissions = colorAttributes[.posixPermissions] as? NSNumber
-        try expect(colorPermissions?.intValue == 0o600, "firmware file permissions were not private")
-        let colorOwner = colorAttributes[.ownerAccountID] as? NSNumber
-        try expect(colorOwner?.uint32Value == getuid(), "firmware file was not owned by the current user")
-
-        let rootTarget = sandbox.appendingPathComponent("root-target", isDirectory: true)
-        let linkedRoot = sandbox.appendingPathComponent("linked-root", isDirectory: true)
-        try FileManager.default.createDirectory(at: rootTarget, withIntermediateDirectories: false)
-        try FileManager.default.createSymbolicLink(at: linkedRoot, withDestinationURL: rootTarget)
-        try expectUnsafeStorage("a symlink firmware root was accepted") {
-            try WonderSwanFirmwareStore(rootURL: linkedRoot).prepareStorage()
-        }
-
-        let parentTarget = sandbox.appendingPathComponent("parent-target", isDirectory: true)
-        let linkedParent = sandbox.appendingPathComponent("linked-parent", isDirectory: true)
-        try FileManager.default.createDirectory(at: parentTarget, withIntermediateDirectories: false)
-        try FileManager.default.createSymbolicLink(at: linkedParent, withDestinationURL: parentTarget)
-        let parentSymlinkStore = WonderSwanFirmwareStore(
-            rootURL: linkedParent.appendingPathComponent("Firmware", isDirectory: true)
-        )
-        try expectUnsafeStorage("a symlink firmware parent was accepted") {
-            try parentSymlinkStore.prepareStorage()
-        }
-
-        let destinationRoot = sandbox.appendingPathComponent(
-            "destination-storage",
-            isDirectory: true
-        )
-        let destinationStore = WonderSwanFirmwareStore(rootURL: destinationRoot)
-        try destinationStore.prepareStorage()
-        let destinationTarget = sandbox.appendingPathComponent("destination-target.bin")
-        let destinationSentinel = Data("do not replace".utf8)
-        try destinationSentinel.write(to: destinationTarget)
-        try FileManager.default.createSymbolicLink(
-            at: destinationStore.fileURL(for: .monochrome),
-            withDestinationURL: destinationTarget
-        )
-        try expectUnsafeStorage("a symlink firmware destination was accepted") {
-            _ = try destinationStore.install(monochrome)
-        }
-        let destinationData = try Data(contentsOf: destinationTarget)
-        try expect(
-            destinationData == destinationSentinel,
-            "a rejected firmware destination modified its symlink target"
-        )
-
-        let temporaryFiles = try FileManager.default.contentsOfDirectory(
-            at: root,
-            includingPropertiesForKeys: nil
-        ).filter { $0.lastPathComponent.hasPrefix(".firmware-install-") }
-        try expect(temporaryFiles.isEmpty, "firmware installation left temporary files behind")
-
-        try store.remove(.monochrome)
-        try store.remove(.monochrome)
-        try expect(!store.isInstalled(.monochrome), "removed WonderSwan firmware remained installed")
-    }
-
-    private static func checkFirmwareImporter() throws {
-        let root = FileManager.default.temporaryDirectory
-            .appendingPathComponent(UUID().uuidString, isDirectory: true)
-        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: false)
-        defer { try? FileManager.default.removeItem(at: root) }
-
-        func fixture(_ kind: WonderSwanFirmwareKind, fill: UInt8) -> Data {
-            var data = Data(repeating: fill, count: kind.expectedByteCount)
-            let vector = data.count - 16
-            data[vector] = 0xea
-            data[vector + 1] = 0x00
-            data[vector + 2] = 0x00
-            data[vector + 3] = 0xff
-            data[vector + 4] = 0xff
-            return data
-        }
-
-        func makeZIP(_ inputs: [URL], at destination: URL) throws {
-            let process = Process()
-            process.executableURL = URL(fileURLWithPath: "/usr/bin/zip")
-            process.arguments = ["-q", "-j", destination.path] + inputs.map(\.path)
-            process.standardOutput = FileHandle.nullDevice
-            process.standardError = FileHandle.nullDevice
-            try process.run()
-            process.waitUntilExit()
-            try expect(process.terminationStatus == 0, "firmware ZIP fixture could not be created")
-        }
-
-        let color = fixture(.color, fill: 0x71)
-        let colorURL = root.appendingPathComponent("[BIOS] Color Startup.rom")
-        try color.write(to: colorURL)
-        let directColor = try WonderSwanFirmwareImporter.data(from: colorURL)
-        try expect(
-            directColor == color,
-            "direct firmware importer changed a valid startup file"
-        )
-
-        let colorZIP = root.appendingPathComponent("Color Startup.zip")
-        try makeZIP([colorURL], at: colorZIP)
-        let zippedColor = try WonderSwanFirmwareImporter.data(from: colorZIP)
-        try expect(
-            zippedColor == color,
-            "single-image ZIP importer did not preserve its startup file"
-        )
-
-        let monochrome = fixture(.monochrome, fill: 0x72)
-        let monochromeURL = root.appendingPathComponent("Mono.rom")
-        try monochrome.write(to: monochromeURL)
-        let monochromeZIP = root.appendingPathComponent("Mono.zip")
-        try makeZIP([monochromeURL], at: monochromeZIP)
-        let zippedMonochrome = try WonderSwanFirmwareImporter.data(from: monochromeZIP)
-        try expect(
-            zippedMonochrome == monochrome,
-            "single-image monochrome ZIP did not preserve its startup file"
-        )
-
-        let ambiguousZIP = root.appendingPathComponent("Ambiguous.zip")
-        try makeZIP([colorURL, monochromeURL], at: ambiguousZIP)
-        do {
-            _ = try WonderSwanFirmwareImporter.data(from: ambiguousZIP)
-            throw CheckFailure(message: "ambiguous firmware ZIP was accepted")
-        } catch WonderSwanFirmwareImportError.ambiguousArchive {
-            // Expected.
-        }
-
-        let linkedURL = root.appendingPathComponent("Linked.rom")
-        try FileManager.default.createSymbolicLink(
-            at: linkedURL,
-            withDestinationURL: colorURL
-        )
-        do {
-            _ = try WonderSwanFirmwareImporter.data(from: linkedURL)
-            throw CheckFailure(message: "symlink startup file was accepted")
-        } catch WonderSwanFirmwareImportError.invalidDirectFile {
-            // Expected.
-        }
-
-        let wrongSizeURL = root.appendingPathComponent("Too Large.rom")
-        try Data(repeating: 0x44, count: 16 * 1_024).write(to: wrongSizeURL)
-        do {
-            _ = try WonderSwanFirmwareImporter.data(from: wrongSizeURL)
-            throw CheckFailure(message: "oversized direct startup file was accepted")
-        } catch WonderSwanFirmwareError.unsupportedSize {
-            // Expected.
-        }
-
-        let corruptURL = root.appendingPathComponent("Corrupt exact size.rom")
-        try Data(repeating: 0x44, count: WonderSwanFirmwareKind.color.expectedByteCount)
-            .write(to: corruptURL)
-        let corrupt = try WonderSwanFirmwareImporter.data(from: corruptURL)
-        do {
-            _ = try WonderSwanFirmwareStore.kind(for: corrupt)
-            throw CheckFailure(message: "corrupt exact-size startup data passed end-to-end validation")
-        } catch WonderSwanFirmwareError.emptyImage {
-            // Expected: the importer preflights the file shape; the store owns
-            // final content validation immediately before its atomic install.
-        }
     }
 
     private static func checkFreshBootDeterminism() throws {
@@ -1537,17 +1364,9 @@ private struct SwanSongChecks {
         } else {
             fixtureROM = makeROM()
         }
-        let fixtureFirmware = try ProcessInfo.processInfo.environment[
-            "SWAN_SONG_FRESH_BOOT_FIRMWARE"
-        ].map {
-            try WonderSwanFirmwareImporter.data(
-                from: URL(fileURLWithPath: $0)
-            )
-        }
         func endpoint() throws -> String? {
             let engine = try EngineSession()
             guard engine.capabilities.contains(.execution) else { return nil }
-            if let fixtureFirmware { try engine.stageBootROM(fixtureFirmware) }
             _ = try engine.load(rom: fixtureROM)
             for _ in 1...30 {
                 try engine.setInput([])
@@ -1647,16 +1466,8 @@ private struct SwanSongChecks {
         let rom = try LibraryGameImageImporter.image(
             from: URL(fileURLWithPath: path)
         ).data
-        let firmware = try ProcessInfo.processInfo.environment[
-            "SWAN_SONG_FRESH_BOOT_FIRMWARE"
-        ].map {
-            try WonderSwanFirmwareImporter.data(
-                from: URL(fileURLWithPath: $0)
-            )
-        }
         func endpoint() async throws -> String {
             let runner = try EmulationRunner()
-            if let firmware { try await runner.stageBootROM(firmware) }
             _ = try await runner.load(rom: rom)
             var frame: EngineVideoFrame?
             for _ in 1...30 {
@@ -1729,112 +1540,149 @@ private struct SwanSongChecks {
         try expect(restored.width == 1_040 && restored.height == 680, "library restore lost the saved size")
     }
 
-    private static func checkBootROMStaging() throws {
+    private static func checkOpenIPLV3Contract() throws {
         let canExecute = try { () -> Bool in
             let probe = try EngineSession()
             return probe.capabilities.contains(.execution)
         }()
         guard canExecute else { return }
 
-        func bootROM(size: Int, runtimeOrientation: UInt8? = nil) -> Data {
-            var data = Data(repeating: 0x90, count: size)
-            var resetCode: [UInt8] = []
-            if let runtimeOrientation {
-                // mov al, value; out LCD_ICON, al
-                resetCode += [0xb0, runtimeOrientation, 0xe6, 0x15]
-            }
-            // jmp far FFFF:0000 into the cartridge mapping.
-            resetCode += [0xea, 0x00, 0x00, 0xff, 0xff]
-            data.replaceSubrange(
-                (data.count - 16)..<(data.count - 16 + resetCode.count),
-                with: resetCode
+        func standardObservations(
+            model: EngineHardwareModel,
+            color: Bool,
+            footerVersion: UInt8,
+            expectedDisplayMode: UInt8,
+            expectedEEPROMStatus: UInt8,
+            verifyLifecycle: Bool
+        ) throws {
+            let engine = try EngineSession(hardwareModel: model)
+            _ = try engine.load(rom: makeOpenIPLObservationROM(
+                color: color,
+                footerVersion: footerVersion
+            ))
+            try expect(
+                engine.activeHardwareModel == model,
+                "Open IPL selected the wrong explicit standard hardware model"
             )
-            return data
-        }
+            try engine.runFrame()
 
-        do {
-            let mono = try EngineSession()
-            try mono.stageBootROM(bootROM(size: 4 * 1_024))
-            _ = try mono.load(rom: makeROM())
-            do {
-                try mono.stageBootROM(bootROM(size: 4 * 1_024))
-                throw CheckFailure(message: "boot ROM staging after load was accepted")
-            } catch let error as SwanEngineError {
-                try expect(
-                    error.code == Int32(SWAN_RESULT_UNSUPPORTED.rawValue),
-                    "boot ROM staging after load returned the wrong error"
-                )
-            }
-        }
-
-        do {
-            let color = try EngineSession()
-            try color.stageBootROM(bootROM(size: 8 * 1_024))
-            _ = try color.load(rom: makeROM(color: true))
-        }
-
-        do {
-            let vertical = try EngineSession()
-            try vertical.stageBootROM(bootROM(size: 4 * 1_024))
-            _ = try vertical.load(rom: makeROM(vertical: true))
-            try vertical.runFrame()
-            let verticalFrame = try vertical.videoFrame()
-            try expect(verticalFrame.isVertical, "vertical ROM metadata did not rotate the live framebuffer")
-            try expect(verticalFrame.height > verticalFrame.width, "vertical framebuffer dimensions remained horizontal")
-        }
-
-        do {
-            let rotatesVertical = try EngineSession()
-            // LCD_ICON bit 1 requests vertical presentation at runtime.
-            try rotatesVertical.stageBootROM(
-                bootROM(size: 4 * 1_024, runtimeOrientation: 0x02)
+            let initialRAM = try engine.captureMemory(.internalRAM)
+            let initial = Array(initialRAM[0x3ff0...0x3ff3])
+            let observed = initial.map {
+                String(format: "%02x", $0)
+            }.joined(separator: " ")
+            try expect(
+                initial == [0x40, expectedDisplayMode, expectedEEPROMStatus, 0xa5],
+                "Open IPL standard startup ports did not match the model/footer contract: \(observed)"
             )
-            _ = try rotatesVertical.load(rom: makeROM(vertical: false))
-            try rotatesVertical.runFrame()
-            let frame = try rotatesVertical.videoFrame()
-            try expect(frame.isVertical, "runtime LCD_ICON vertical request was ignored")
-            try expect(frame.height > frame.width, "runtime vertical request kept horizontal dimensions")
-        }
 
-        do {
-            let rotatesHorizontal = try EngineSession()
-            // LCD_ICON bit 2 requests horizontal presentation at runtime.
-            try rotatesHorizontal.stageBootROM(
-                bootROM(size: 4 * 1_024, runtimeOrientation: 0x04)
+            guard verifyLifecycle else { return }
+            let state = try engine.captureState()
+            try engine.reset()
+            try engine.runFrame()
+            let resetRAM = try engine.captureMemory(.internalRAM)
+            try expect(
+                Array(resetRAM[0x3ff0...0x3ff3]) == initial,
+                "Open IPL standard startup observations changed after reset"
             )
-            _ = try rotatesHorizontal.load(rom: makeROM(vertical: true))
-            try rotatesHorizontal.runFrame()
-            let frame = try rotatesHorizontal.videoFrame()
-            try expect(!frame.isVertical, "runtime LCD_ICON horizontal request was ignored")
-            try expect(frame.width > frame.height, "runtime horizontal request kept vertical dimensions")
+            try engine.restoreState(state)
+            let restoredRAM = try engine.captureMemory(.internalRAM)
+            try expect(
+                Array(restoredRAM[0x3ff0...0x3ff3]) == initial,
+                "Open IPL standard startup observations changed after state restore"
+            )
         }
 
-        do {
-            let monoForColor = try EngineSession()
-            try monoForColor.stageBootROM(bootROM(size: 4 * 1_024))
-            do {
-                _ = try monoForColor.load(rom: makeROM(color: true))
-                throw CheckFailure(message: "4 KiB firmware was accepted for a Color game")
-            } catch let error as SwanEngineError {
-                try expect(
-                    error.code == Int32(SWAN_RESULT_INVALID_ARGUMENT.rawValue),
-                    "Color firmware mismatch returned the wrong error"
-                )
-            }
-        }
+        // Version bit 7 clear: EWEN followed by owner/telemetry protection.
+        try standardObservations(
+            model: .wonderSwan,
+            color: false,
+            footerVersion: 0x00,
+            expectedDisplayMode: 0x00,
+            expectedEEPROMStatus: 0x82,
+            verifyLifecycle: true
+        )
+        try standardObservations(
+            model: .wonderSwanColor,
+            color: true,
+            footerVersion: 0x00,
+            expectedDisplayMode: 0x0a,
+            expectedEEPROMStatus: 0x82,
+            verifyLifecycle: true
+        )
+        try standardObservations(
+            model: .swanCrystal,
+            color: true,
+            footerVersion: 0x00,
+            expectedDisplayMode: 0x0a,
+            expectedEEPROMStatus: 0x82,
+            verifyLifecycle: true
+        )
+
+        // Version bit 7 set: retain owner-area write access after EWEN.
+        try standardObservations(
+            model: .wonderSwan,
+            color: false,
+            footerVersion: 0x80,
+            expectedDisplayMode: 0x00,
+            expectedEEPROMStatus: 0x02,
+            verifyLifecycle: false
+        )
+        try standardObservations(
+            model: .wonderSwanColor,
+            color: true,
+            footerVersion: 0x80,
+            expectedDisplayMode: 0x0a,
+            expectedEEPROMStatus: 0x02,
+            verifyLifecycle: false
+        )
 
         do {
-            let colorForMono = try EngineSession()
-            try colorForMono.stageBootROM(bootROM(size: 8 * 1_024))
-            do {
-                _ = try colorForMono.load(rom: makeROM())
-                throw CheckFailure(message: "8 KiB firmware was accepted for a monochrome game")
-            } catch let error as SwanEngineError {
-                try expect(
-                    error.code == Int32(SWAN_RESULT_INVALID_ARGUMENT.rawValue),
-                    "monochrome firmware mismatch returned the wrong error"
-                )
-            }
+            let engine = try EngineSession(hardwareModel: .pocketChallengeV2)
+            _ = try engine.load(rom: makeOpenIPLPCV2PinstrapROM())
+            try expect(
+                engine.activeHardwareModel == .pocketChallengeV2,
+                "Open IPL PCV2 fixture selected the wrong hardware model"
+            )
+            try engine.runFrame()
+            let initialRAM = try engine.captureMemory(.internalRAM)
+            let powerState = initialRAM[0x3ff4...0x3ff7].map {
+                String(format: "%02x", $0)
+            }.joined(separator: " ")
+            try expect(
+                initialRAM[0x3ff4] == 0x00
+                    && initialRAM[0x3ff5] == 0x00
+                    && initialRAM[0x3ff6] == 0x02
+                    && initialRAM[0x3ff7] == 0xf0,
+                "Open IPL did not preserve PCV2 reset accumulator/flags: \(powerState)"
+            )
+            try expect(
+                initialRAM[0x3ff8] & 0x01 == 0,
+                "Open IPL enabled the PCV2 LCD before cartridge entry"
+            )
+            try expect(
+                initialRAM[0x3ff9] == 0x00
+                    && initialRAM[0x3ffa] == 0x40
+                    && initialRAM[0x3ffb] == 0xa5,
+                "Open IPL did not enter PCV2 directly at 4000:0010"
+            )
+
+            let state = try engine.captureState()
+            try engine.reset()
+            try engine.runFrame()
+            let resetRAM = try engine.captureMemory(.internalRAM)
+            try expect(
+                Array(resetRAM[0x3ff4...0x3ffb])
+                    == Array(initialRAM[0x3ff4...0x3ffb]),
+                "Open IPL PCV2 pinstrap evidence changed after reset"
+            )
+            try engine.restoreState(state)
+            let restoredRAM = try engine.captureMemory(.internalRAM)
+            try expect(
+                Array(restoredRAM[0x3ff4...0x3ffb])
+                    == Array(initialRAM[0x3ff4...0x3ffb]),
+                "Open IPL PCV2 pinstrap evidence changed after state restore"
+            )
         }
     }
 
@@ -1941,18 +1789,6 @@ private struct SwanSongChecks {
         try expect(
             clearedNote.note == nil && clearedNote.updatedAt == nil,
             "blank compatibility note did not clear the user report"
-        )
-
-        let confidence = GameConfidence(
-            launchReadiness: .startupFileRequired,
-            compatibility: .reportedIssues,
-            romIntegrity: .checksumMismatch
-        )
-        try expect(
-            confidence.launchReadiness == .startupFileRequired
-                && confidence.compatibility == .reportedIssues
-                && confidence.romIntegrity == .checksumMismatch,
-            "game confidence collapsed its three independent axes"
         )
 
         let width = 237
@@ -3059,24 +2895,26 @@ private struct SwanSongChecks {
         let nominal = 636.0 / 48_000.0
         let target = nominal * policy.targetBufferedFrames
         try expect(
-            policy.targetBufferedFrames == 4,
-            "default pacing lost its four-batch scheduling-jitter cushion"
+            policy.targetBufferedFrames == 5,
+            "default pacing lost its five-batch scheduling-jitter cushion"
         )
         try expect(target < 0.18, "default pacing target exceeded the bounded audio queue")
         let recoveryThreshold = policy.discontinuity.recoveryThresholdSeconds(
-            nominalBatchSeconds: nominal,
-            targetBufferedFrames: policy.targetBufferedFrames
+            nominalBatchSeconds: nominal
         )
         try expect(
-            abs(recoveryThreshold - target) < 0.000_001,
-            "discontinuity recovery no longer begins at the complete steady-buffer horizon"
+            abs(recoveryThreshold - nominal * 4) < 0.000_001,
+            "discontinuity recovery lost its independent four-batch horizon"
+        )
+        try expect(
+            target - recoveryThreshold >= nominal - 0.000_001,
+            "steady pacing no longer keeps one batch beyond ordinary host jitter"
         )
         try expect(
             !policy.discontinuity.shouldRecover(
-                hostGapSeconds: 0.040,
-                queuedAudioSeconds: 0.020,
+                hostGapSeconds: recoveryThreshold - 0.001,
+                remainingQueuedAudioSeconds: 0,
                 nominalBatchSeconds: nominal,
-                targetBufferedFrames: policy.targetBufferedFrames,
                 transportWasPrimed: true
             ),
             "ordinary sub-horizon starvation was incorrectly hidden as a discontinuity"
@@ -3084,9 +2922,8 @@ private struct SwanSongChecks {
         try expect(
             policy.discontinuity.shouldRecover(
                 hostGapSeconds: 0.120,
-                queuedAudioSeconds: 0.050,
+                remainingQueuedAudioSeconds: 0,
                 nominalBatchSeconds: nominal,
-                targetBufferedFrames: policy.targetBufferedFrames,
                 transportWasPrimed: true
             ),
             "a queue-draining host discontinuity was not recoverable"
@@ -3094,9 +2931,8 @@ private struct SwanSongChecks {
         try expect(
             !policy.discontinuity.shouldRecover(
                 hostGapSeconds: 0.120,
-                queuedAudioSeconds: 0.050,
+                remainingQueuedAudioSeconds: 0,
                 nominalBatchSeconds: nominal,
-                targetBufferedFrames: policy.targetBufferedFrames,
                 transportWasPrimed: false
             ),
             "startup buffering was incorrectly reported as discontinuity recovery"
@@ -3104,9 +2940,8 @@ private struct SwanSongChecks {
         try expect(
             !policy.discontinuity.shouldRecover(
                 hostGapSeconds: 0.120,
-                queuedAudioSeconds: 0.130,
+                remainingQueuedAudioSeconds: 0.010,
                 nominalBatchSeconds: nominal,
-                targetBufferedFrames: policy.targetBufferedFrames,
                 transportWasPrimed: true
             ),
             "a host gap that did not drain the renderer queue reset the transport"
@@ -3114,8 +2949,8 @@ private struct SwanSongChecks {
         try expect(
             abs(policy.discontinuity.reprimeTargetSeconds(
                 nominalBatchSeconds: nominal
-            ) - nominal * 3) < 0.000_001,
-            "discontinuity recovery lost its bounded three-batch re-prime"
+            ) - target) < 0.000_001,
+            "discontinuity recovery no longer restores the full steady cushion"
         )
         let steady = policy.delaySeconds(
             producedAudioFrames: 636,
@@ -3135,9 +2970,19 @@ private struct SwanSongChecks {
             queuedAudioSeconds: target * 2,
             fastForwarding: false
         )
+        let noAudioSink = policy.delaySeconds(
+            producedAudioFrames: 636,
+            sampleRate: 48_000,
+            queuedAudioSeconds: nil,
+            fastForwarding: false
+        )
         try expect(abs(steady - nominal) < 0.000_001, "steady-state pacing drifted")
         try expect(starving < nominal, "starved audio should reduce frame delay")
         try expect(backedUp > nominal, "backed-up audio should increase frame delay")
+        try expect(
+            abs(noAudioSink - nominal) < 0.000_001,
+            "missing audio output must preserve nominal realtime pacing"
+        )
         try expect(
             policy.delaySeconds(
                 producedAudioFrames: 636,
@@ -3150,7 +2995,7 @@ private struct SwanSongChecks {
     }
 
     private static func checkDisplayProfiles() throws {
-        try expect(DisplayProfile.allCases.count == 4, "display profile catalog mismatch")
+        try expect(DisplayProfile.allCases.count == 5, "display profile catalog mismatch")
         let pure = DisplayProfile.purePixels.parameters
         try expect(
             pure.saturation == 1 && pure.contrast == 1 && pure.brightness == 0,
@@ -3163,13 +3008,25 @@ private struct SwanSongChecks {
         )
         let appearances = Set(DisplayProfile.allCases.map { profile in
             let values = profile.parameters
-            return "\(values.saturation):\(values.contrast):\(values.brightness):\(values.pixelGridStrength):\(values.responsePersistence):\(values.tintRed):\(values.tintGreen):\(values.tintBlue)"
+            return "\(values.saturation):\(values.contrast):\(values.brightness):\(values.pixelGridStrength):\(values.responsePersistence):\(values.tintRed):\(values.tintGreen):\(values.tintBlue):\(values.smartColorStrength)"
         })
         try expect(appearances.count == DisplayProfile.allCases.count, "display profiles must have distinct appearances")
         try expect(
             DisplayProfile.colorLCD.parameters.responsePersistence
                 > DisplayProfile.swanCrystalLCD.parameters.responsePersistence,
             "SwanCrystal should respond faster than the original Color panel"
+        )
+        try expect(
+            DisplayProfile.smartColor.parameters(for: .wonderSwan).smartColorStrength == 1
+                && DisplayProfile.smartColor.parameters(for: .pocketChallengeV2).smartColorStrength == 1,
+            "Smart Color must activate for monochrome hardware"
+        )
+        try expect(
+            DisplayProfile.smartColor.parameters(for: .wonderSwanColor)
+                == DisplayProfile.purePixels.parameters
+                && DisplayProfile.smartColor.parameters(for: .swanCrystal)
+                    == DisplayProfile.purePixels.parameters,
+            "Smart Color must preserve native color hardware"
         )
     }
 
@@ -3201,6 +3058,29 @@ private struct SwanSongChecks {
         let faceInput = face.input(for: [.buttonNorth, .rightShoulder, .rightTrigger])
         try expect(faceInput.contains(.y1), "face-diamond preset lost Y1")
         try expect(faceInput.contains(.a) && faceInput.contains(.b), "face-diamond actions mismatch")
+
+        let optionalElements: Set<ControllerElement> = [
+            .leftBumper, .rightBumper, .share,
+            .backLeftPrimary, .backLeftSecondary,
+            .backRightPrimary, .backRightSecondary,
+            .paddleOne, .paddleTwo, .paddleThree, .paddleFour,
+            .touchpadButton,
+        ]
+        try expect(optionalElements.count == 12, "optional controller identities collapsed")
+        try expect(
+            optionalElements.isSubset(of: Set(ControllerElement.allCases)),
+            "optional controller identities are missing from manual remapping"
+        )
+        try expect(
+            Set(ControllerElement.allCases.map(\.shortTitle)).count
+                == ControllerElement.allCases.count,
+            "controller short titles must remain unique for live-input badges"
+        )
+        let optionalBinding = profile.updating(.volume, to: .touchpadButton)
+        try expect(
+            optionalBinding.input(for: [.touchpadButton]).contains(.volume),
+            "optional standard button did not reach a custom WonderSwan binding"
+        )
 
         let root = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
@@ -3376,11 +3256,8 @@ private struct SwanSongChecks {
                 start: TranslationRouteStartContext(
                     hardwareModel: .wonderSwan,
                     firmware: TranslationRouteFirmware(
-                        source: .installed,
-                        image: TranslationArtifactDigest(
-                            byteCount: 4 * 1_024,
-                            sha256: String(repeating: "b", count: 64)
-                        )
+                        source: .openIPL,
+                        identifier: WonderSwanOpenIPL.identifier
                     ),
                     engine: TranslationRouteEngineIdentity(
                         backend: "ares",
@@ -3780,19 +3657,15 @@ private struct SwanSongChecks {
 
         let romHash = TranslationEvidenceStore.sha256(rom)
         let sourceROM = TranslationArtifactDigest(byteCount: rom.count, sha256: romHash)
-        let firmwareBytes = Data(repeating: 0x5a, count: 4 * 1_024)
         let routeStart = TranslationRouteStartContext(
             hardwareModel: .wonderSwan,
             firmware: TranslationRouteFirmware(
-                source: .installed,
-                image: TranslationArtifactDigest(
-                    byteCount: firmwareBytes.count,
-                    sha256: TranslationEvidenceStore.sha256(firmwareBytes)
-                )
+                source: .openIPL,
+                identifier: WonderSwanOpenIPL.identifier
             ),
             engine: TranslationRouteEngineIdentity(
                 backend: "ares",
-                buildID: "ares-public-fixture-swan-abi4"
+                buildID: "ares-public-fixture-swan-abi5"
             )
         )
         var recorder = TranslationRouteRecorder(
@@ -4997,7 +4870,7 @@ private struct SwanSongChecks {
         )
         try expect(
             isWrongFirmware(firmwareMismatch.compatibility),
-            "different startup-file bytes were accepted"
+            "different startup implementation bytes were accepted"
         )
         let buildMismatch = try XCTUnwrap(
             store.loadQuickState(

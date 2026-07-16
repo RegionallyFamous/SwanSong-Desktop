@@ -31,19 +31,30 @@ if [ -z "${DEVELOPER_DIR:-}" ] && [ -d /Applications/Xcode.app/Contents/Develope
   export DEVELOPER_DIR
 fi
 
-mkdir -p "$OUTPUT_DIR" "$SWIFT_SCRATCH_DIR/clang-cache" "$SWIFT_SCRATCH_DIR/module-cache"
+mkdir -p "$OUTPUT_DIR" "$POLISH_OUTPUT_DIR" "$SWIFT_SCRATCH_DIR/clang-cache" "$SWIFT_SCRATCH_DIR/module-cache"
+rm -f "$OUTPUT_DIR"/*.png "$OUTPUT_DIR/manifest.json"
+rm -rf "$OUTPUT_DIR/homebrew"
+rm -f "$POLISH_OUTPUT_DIR"/*.png "$POLISH_OUTPUT_DIR/manifest.json"
 export SWAN_SONG_UI_SNAPSHOT_DIR="$OUTPUT_DIR"
-export CLANG_MODULE_CACHE_PATH=${CLANG_MODULE_CACHE_PATH:-"$SWIFT_SCRATCH_DIR/clang-cache"}
-export SWIFTPM_MODULECACHE_OVERRIDE=${SWIFTPM_MODULECACHE_OVERRIDE:-"$SWIFT_SCRATCH_DIR/module-cache"}
+CLANG_MODULE_CACHE_PATH=${CLANG_MODULE_CACHE_PATH:-"$SWIFT_SCRATCH_DIR/clang-cache"}
+SWIFTPM_MODULECACHE_OVERRIDE=${SWIFTPM_MODULECACHE_OVERRIDE:-"$SWIFT_SCRATCH_DIR/module-cache"}
+export CLANG_MODULE_CACHE_PATH SWIFTPM_MODULECACHE_OVERRIDE
 
 "$SCRIPT_DIR/swift-package.sh" test \
   --package-path "$MACOS_DIR" \
   --scratch-path "$SWIFT_SCRATCH_DIR" \
   --filter UISnapshotRegressionTests
 
-snapshot_count=$(find "$OUTPUT_DIR" -type f -name '*.png' | wc -l | tr -d ' ')
-if [ "$snapshot_count" -ne 52 ]; then
-  echo "expected 52 UI snapshots, found $snapshot_count in $OUTPUT_DIR" >&2
+core_snapshot_count=$(find "$OUTPUT_DIR" -maxdepth 1 -type f -name '*.png' \
+  | wc -l | tr -d ' ')
+if [ "$core_snapshot_count" -ne 48 ]; then
+  echo "expected 48 core UI snapshots, found $core_snapshot_count in $OUTPUT_DIR" >&2
+  exit 1
+fi
+homebrew_snapshot_count=$(find "$OUTPUT_DIR/homebrew" -maxdepth 1 \
+  -type f -name '*.png' 2>/dev/null | wc -l | tr -d ' ')
+if [ "$homebrew_snapshot_count" -ne 12 ]; then
+  echo "expected 12 Homebrew UI snapshots, found $homebrew_snapshot_count in $OUTPUT_DIR/homebrew" >&2
   exit 1
 fi
 if [ ! -s "$OUTPUT_DIR/manifest.json" ]; then
@@ -52,8 +63,8 @@ if [ ! -s "$OUTPUT_DIR/manifest.json" ]; then
 fi
 polish_snapshot_count=$(find "$POLISH_OUTPUT_DIR" -type f -name '*.png' 2>/dev/null \
   | wc -l | tr -d ' ')
-if [ "$polish_snapshot_count" -ne 18 ]; then
-  echo "expected 18 focused polish snapshots, found $polish_snapshot_count in $POLISH_OUTPUT_DIR" >&2
+if [ "$polish_snapshot_count" -ne 14 ]; then
+  echo "expected 14 focused polish snapshots, found $polish_snapshot_count in $POLISH_OUTPUT_DIR" >&2
   exit 1
 fi
 if [ ! -s "$POLISH_OUTPUT_DIR/manifest.json" ]; then
@@ -62,6 +73,6 @@ if [ ! -s "$POLISH_OUTPUT_DIR/manifest.json" ]; then
 fi
 
 if [ "$UPDATE_BASELINES" -eq 1 ]; then
-  echo "UPDATED reviewed perceptual baselines for 70 UI snapshots"
+  echo "UPDATED reviewed perceptual baselines for 62 baseline-tracked UI snapshots"
 fi
-echo "PASS 70 offscreen Light/Dark compact/wide UI snapshots: 52 core + 18 focused polish"
+echo "PASS 74 offscreen Light/Dark compact/wide UI snapshots: 48 core + 12 Homebrew + 14 focused polish"

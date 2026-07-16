@@ -52,8 +52,8 @@ labels and successful read/write values, and the deterministic simulator's
 default protected internal-EEPROM value `0x1921`. Its 224x144 RGB SHA-256 is
 `830503147842b803d26b707675009e6b8e3b0faa1ee3ad1aef15c3e9e74e444d`.
 The manifest target is reset-release capture, 2,887,553 cycles, six completed
-frames, the default 4-KiB mono BIOS identity, zeroed initial IRAM, and complete
-CPU/background history with no trace filters.
+frames, the built-in SwanSong Open IPL `open-bootstrap-v3` mono identity,
+zeroed initial IRAM, and complete CPU/background history with no trace filters.
 
 ## Current translated-RTL result: accepted
 

@@ -8,7 +8,9 @@ This directory is design history, not a press kit.
 | `SwanSong-Library.png` | ImageGen-assisted composition study | Concept only; not a screenshot |
 | `SwanSong-Player.png` | ImageGen-assisted composition study | Concept only; not a screenshot |
 | `SwanSong-Library-Populated.png` | Running SwiftUI app with public fixtures | Regression/reference only; diagnostic names and warning state make it unsuitable as a hero |
-| `Packaging/AppIcon.png` / `.icns` | Existing SwanSong project icon | Shipped app asset; creation/source record still needs maintainer confirmation before press-kit redistribution |
+| `Design/AppIcon-Zine-Source.png` | ImageGen-assisted original directed for SwanSong; generated July 15, 2026 with the prior project icon used only as a concept reference | Project source master; no third-party source artwork |
+| `Packaging/AppIcon.png` | Production resize and alpha mask derived from `Design/AppIcon-Zine-Source.png` | Shipped 1024px master and Dock artwork |
+| `Packaging/AppIconCompact.png` / `AppIcon.icns` | Deterministic crop, palette simplification, and macOS iconset derived from `Packaging/AppIcon.png` by `Scripts/generate-app-icons.sh` | Shipped compact/menu and Finder artwork |
 
 Launch screenshots must be captured from the running app with open-source or
 clean-room fixtures. Record the app version, fixture license, capture date, and

@@ -25,6 +25,18 @@ in [`Dependencies/THIRD_PARTY_NOTICES.md`](Dependencies/THIRD_PARTY_NOTICES.md).
 The fetched checkout and compiled engine live under `.engine/` and are not part
 of the source repository.
 
+The release builder recreates that pinned, patched ares worktree immediately
+before signing and source packaging. Upstream convenience firmware binaries
+are removed from the prepared tree, and the corresponding-source archive is
+rejected if a firmware-like binary or Git metadata reappears anywhere. The
+archive validator also requires one versioned root, the expected SwanSong and
+ares source sentinels, unique canonical paths, regular files/directories only,
+and bounded compressed and expanded resources before release. The build embeds
+the Git source commit and dirty flag in the app before signing. Packaging
+requires clean matching app provenance, and the source archive contains a
+generated provenance marker; its source and ares commits plus the archived
+ares lock must match the manifest and signed app.
+
 ## Open test fixtures
 
 The checked-in files under [`testroms/`](testroms/) are the tracked open-source
@@ -45,8 +57,11 @@ is not committed as a game artifact.
 
 ## Private and external inputs
 
-Games and any optional original System Startup File selected by the user remain
-outside this repository. Linked translation projects keep ROM-derived output
+Authorized games and homebrew images selected by the user remain outside this
+repository. The shipped app does not accept original System Startup Files.
+Private developer reference comparisons, when legally authorized, must keep
+any firmware dump outside the repository and all shared artifacts. Linked
+translation projects keep ROM-derived output
 and evidence in their own private `analysis/swan-song-lab/` directory. The
 optional `SwanSongDifferential` RTL frame directory is likewise an external
 oracle supplied by a developer; the RTL harness and its generated frames are

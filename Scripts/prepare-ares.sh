@@ -17,29 +17,26 @@ fi
 git -C "$SOURCE_DIR" fetch --depth=1 origin "$commit"
 git -C "$SOURCE_DIR" checkout --detach --force "$commit"
 git -C "$SOURCE_DIR" reset --hard "$commit"
-git -C "$SOURCE_DIR" clean -ffd
+# This checkout is a fully managed, ignored build input. Remove ignored as well
+# as untracked files so generated resources or host metadata cannot leak into
+# either a release build or its corresponding-source archive.
+git -C "$SOURCE_DIR" clean -ffdx
 git -C "$SOURCE_DIR" apply "$MACOS_DIR/Engine/ares-headless.patch"
 
-# The upstream multi-system checkout includes convenience firmware images for
-# several WonderSwan-family systems. SwanSong requires a user-supplied local
-# startup file and must neither retain nor package those upstream payloads.
-rm -f \
-  "$SOURCE_DIR/ares/System/WonderSwan/boot.rom" \
-  "$SOURCE_DIR/ares/System/WonderSwan Color/boot.rom" \
-  "$SOURCE_DIR/ares/System/SwanCrystal/boot.rom" \
-  "$SOURCE_DIR/ares/System/Pocket Challenge V2/boot.rom" \
-  "$SOURCE_DIR/mia/Firmware/WonderSwan/boot.rom" \
-  "$SOURCE_DIR/mia/Firmware/WonderSwan Color/boot.rom" \
-  "$SOURCE_DIR/mia/Firmware/Pocket Challenge V2/boot.rom"
+# The upstream multi-system checkout includes convenience firmware binaries.
+# SwanSong builds only the WonderSwan core and supplies its own Open IPL. These
+# payloads are neither corresponding source nor required build inputs, so keep
+# them out of the prepared checkout and every corresponding-source archive.
+find "$SOURCE_DIR/ares/System" "$SOURCE_DIR/mia/Firmware" \
+  -type f \
+  \( -iname '*.rom' -o -iname '*.srom' -o -iname '*.mrom' \) \
+  -delete
 
 if find "$SOURCE_DIR/ares/System" "$SOURCE_DIR/mia/Firmware" \
-  -type f -iname 'boot.rom' \
-  \( -path '*/WonderSwan/*' \
-     -o -path '*/WonderSwan Color/*' \
-     -o -path '*/SwanCrystal/*' \
-     -o -path '*/Pocket Challenge V2/*' \) \
+  -type f \
+  \( -iname '*.rom' -o -iname '*.srom' -o -iname '*.mrom' \) \
   -print -quit | grep -q .; then
-  echo "WonderSwan-family startup images remain in the prepared ares checkout" >&2
+  echo "firmware binaries remain in the prepared ares checkout" >&2
   exit 1
 fi
 

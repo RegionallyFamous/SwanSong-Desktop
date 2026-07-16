@@ -42,15 +42,15 @@ SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
 
 python3 "$SCRIPT_DIR/generate-pcv2-fixture.py" "$PCV2_ROM" >/dev/null
 
-# Production Color launch: there is no installed original firmware, no test
-# bypass, and no startup-file prompt. The built-in Open IPL must reach active
-# playback and create a save state on the ordinary app path.
+# Production Color launch: the built-in Open IPL must reach active playback
+# and create a save state on the ordinary app path. Requesting Stop on the same
+# frame proves retirement waits for the in-flight quick-state transaction.
 SWAN_SONG_DATA_DIR="$COLOR_DATA_DIR" \
 SWAN_SONG_HEADLESS=1 \
 SWAN_SONG_APP_DIAGNOSTICS=1 \
 SWAN_SONG_INITIAL_ROM="$COLOR_ROM" \
 SWAN_SONG_QUICK_STATE_FRAME=20 \
-SWAN_SONG_STOP_AT_FRAME=40 \
+SWAN_SONG_STOP_AT_FRAME=20 \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
 "$APP_BUILD_DIR/debug/SwanSong" >"$COLOR_LOG_FILE" 2>&1 &
 PID=$!
@@ -61,7 +61,7 @@ while [ "$attempt" -lt 20 ]; do
   color_state=$(find "$COLOR_DATA_DIR/States" -name '*.state' -print -quit 2>/dev/null || true)
   if [ -f "$COLOR_DATA_DIR/Library.json" ] \
     && [ -n "$color_state" ] \
-    && grep -q '^SwanSong: startup selected kind=color source=openIPL$' "$COLOR_LOG_FILE"; then
+    && grep -q '^SwanSong: startup selected kind=color source=openIPL identifier=open-bootstrap-v3$' "$COLOR_LOG_FILE"; then
     break
   fi
   if ! kill -0 "$PID" 2>/dev/null; then
@@ -73,20 +73,11 @@ while [ "$attempt" -lt 20 ]; do
   attempt=$((attempt + 1))
 done
 if [ -z "$color_state" ] \
-  || ! grep -q '^SwanSong: startup selected kind=color source=openIPL$' "$COLOR_LOG_FILE"; then
+  || ! grep -q '^SwanSong: startup selected kind=color source=openIPL identifier=open-bootstrap-v3$' "$COLOR_LOG_FILE"; then
   echo "native app did not start the Color fixture with SwanSong Open IPL" >&2
   sed -n '1,160p' "$COLOR_LOG_FILE" >&2
   exit 1
 fi
-if grep -i -q '^SwanSong: firmware requirement presented ' "$COLOR_LOG_FILE"; then
-  echo "Color launch incorrectly requested an original startup file" >&2
-  exit 1
-fi
-if find "$COLOR_DATA_DIR/Firmware" -type f -print -quit 2>/dev/null | grep -q .; then
-  echo "Color Open IPL launch unexpectedly installed an original startup file" >&2
-  exit 1
-fi
-
 kill "$PID" 2>/dev/null || true
 wait "$PID" 2>/dev/null || true
 PID=
@@ -113,7 +104,7 @@ while [ "$attempt" -lt 20 ]; do
   pcv2_state=$(find "$PCV2_DATA_DIR/States" -name '*.state' -print -quit 2>/dev/null || true)
   pcv2_flash=$(find "$PCV2_DATA_DIR/Saves" -name cartridge.flash -size 131072c -print -quit 2>/dev/null || true)
   pcv2_timeline=$(find "$PCV2_DATA_DIR/States" -name Timeline.json -print -quit 2>/dev/null || true)
-  if grep -q '^SwanSong: startup selected kind=pocketChallengeV2 source=openIPL$' "$PCV2_LOG_FILE" \
+  if grep -q '^SwanSong: startup selected kind=pocketChallengeV2 source=openIPL identifier=open-bootstrap-v3$' "$PCV2_LOG_FILE" \
     && grep -q '^SwanSong: captured frame=60 ' "$PCV2_LOG_FILE" \
     && [ -n "$pcv2_state" ] \
     && [ -n "$pcv2_flash" ] \
@@ -133,14 +124,6 @@ if [ -z "$pcv2_state" ] || [ -z "$pcv2_flash" ] || [ -z "$pcv2_timeline" ] \
   || [ ! -f "$PCV2_CAPTURE_FILE" ]; then
   echo "Pocket Challenge V2 did not complete Open IPL playback and flash persistence" >&2
   sed -n '1,200p' "$PCV2_LOG_FILE" >&2
-  exit 1
-fi
-if grep -i -q '^SwanSong: firmware requirement presented ' "$PCV2_LOG_FILE"; then
-  echo "Pocket Challenge V2 launch incorrectly requested an original startup file" >&2
-  exit 1
-fi
-if find "$PCV2_DATA_DIR/Firmware" -type f -print -quit 2>/dev/null | grep -q .; then
-  echo "Pocket Challenge V2 Open IPL launch unexpectedly installed an original startup file" >&2
   exit 1
 fi
 if ! python3 - "$PCV2_DATA_DIR/Library.json" "$pcv2_timeline" "$pcv2_flash" "$PCV2_ROM" <<'PY'
@@ -230,7 +213,7 @@ while [ "$attempt" -lt 35 ]; do
     && [ -f "$REWIND_AFTER_FILE" ] \
     && [ -f "$REWIND_UNDO_BEFORE_FILE" ] \
     && [ -f "$REWIND_UNDO_AFTER_FILE" ] \
-    && grep -q '^SwanSong: startup selected kind=monochrome source=openIPL$' "$REWIND_LOG_FILE" \
+    && grep -q '^SwanSong: startup selected kind=monochrome source=openIPL identifier=open-bootstrap-v3$' "$REWIND_LOG_FILE" \
     && grep -q '^SwanSong: rewind restored frame=75 ' "$REWIND_LOG_FILE" \
     && grep -q '^SwanSong: rewind undo requested frame=90 ready=true paused=false operation_idle=true ' "$REWIND_LOG_FILE" \
     && grep -q '^SwanSong: rewind undo restored frame=450 paused=false operation_idle=true history_count=0 undo_ready=false natural_frame_pending=true ' "$REWIND_LOG_FILE" \
@@ -313,9 +296,9 @@ while [ "$attempt" -lt "$FINAL_RUNTIME_ATTEMPTS" ]; do
     && [ -n "$state_file" ] && [ "$state_count" -ge 3 ] \
     && [ "$timeline_has_quick_pointer" = true ] \
     && [ "$state_load_preview_matches" = true ] \
-    && grep -q '^SwanSong: startup selected kind=monochrome source=openIPL$' "$LOG_FILE" \
+    && grep -q '^SwanSong: startup selected kind=monochrome source=openIPL identifier=open-bootstrap-v3$' "$LOG_FILE" \
     && grep -q '^SwanSong: game reset frame=1$' "$LOG_FILE"; then
-    echo "PASS built-in Open IPL boot for monochrome, Color, and PCV2 without original firmware; PCV2 active playback and flash-only persistence; exact memory-only rewind and Undo; autosave, timeline, state-load preview, and reset numbering"
+    echo "PASS built-in Open IPL boot for monochrome, Color, and PCV2; PCV2 active playback and flash-only persistence; exact memory-only rewind and Undo; autosave, timeline, state-load preview, and reset numbering"
     exit 0
   fi
   if ! kill -0 "$PID" 2>/dev/null; then

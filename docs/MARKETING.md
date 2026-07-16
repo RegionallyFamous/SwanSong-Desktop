@@ -12,8 +12,8 @@ compatibility, accuracy, privacy, security, or release claims.
 - Check download links, versions, checksums, requirements, tag, and manifest.
 - Audit screenshots for shipped UI, clean state, private data, and image rights.
 - Prepare website and press-kit changes for explicit maintainer approval.
-- Confirm that no ROMs, startup files, saves, private hashes, or translation
-  evidence appear in a public artifact.
+- Confirm that no ROMs, original firmware dumps, saves, private hashes, or
+  translation evidence appear in a public artifact.
 
 ## Red lines
 

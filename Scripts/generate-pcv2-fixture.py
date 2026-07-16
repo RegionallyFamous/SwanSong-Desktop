@@ -16,7 +16,8 @@ from pathlib import Path
 
 
 ROM_SIZE = 128 * 1024
-PROGRAM_OFFSET = 0x10000  # Physical F0000h after top-aligned cartridge mapping.
+PROGRAM_OFFSET = 0x10  # Physical 40010h through the PCV2 pinstrap path.
+LEGACY_RESET_TRAP_OFFSET = 0x10000
 MARKER_OFFSET = 0x10400
 FLASH_ROUNDTRIP_OFFSET = 0x10480
 FOOTER_OFFSET = ROM_SIZE - 16
@@ -28,6 +29,10 @@ KEYPAD_ROW_VIEW_ESCAPE_RIGHT = 0x3FF1
 KEYPAD_ROW_LEFT_DOWN_UP = 0x3FF2
 KARNAK_RESULT = 0x3FFE
 SCROLL_COUNTER = 0x3FFF
+PINSTRAP_LCD_STATE = 0x3FF8
+PINSTRAP_ENTRY_SEGMENT = 0x3FFA
+PINSTRAP_ACCUMULATOR = 0x3FF4
+PINSTRAP_FLAGS = 0x3FF6
 
 
 class Program:
@@ -82,6 +87,18 @@ def _scan_keypad_row(code: Program, selector: int, address: int) -> None:
 
 def program() -> bytes:
     code = Program()
+
+    # Capture evidence before touching normal WonderSwan machine state. A
+    # PCV2 pinstrap boot enters at 4000:0010 with reset AX/flags and the LCD
+    # still disabled.
+    code.emit(0xA3, *_word(PINSTRAP_ACCUMULATOR))  # mov [disp16],ax
+    code.emit(0xBC, 0xEC, 0x3F)  # mov sp,3fech (MOV preserves flags)
+    code.emit(0x9C, 0x58)  # pushf; pop ax
+    code.emit(0xA3, *_word(PINSTRAP_FLAGS))  # mov [disp16],ax
+    code.emit(0xE4, 0x14)  # in al,LCD_CTRL
+    _store_al(code, PINSTRAP_LCD_STATE)
+    code.emit(0x8C, 0xC8)  # mov ax,cs
+    code.emit(0xA3, *_word(PINSTRAP_ENTRY_SEGMENT))  # mov [disp16],ax
 
     # Flat IRAM segments, interrupts disabled, display hidden during setup.
     code.emit(0xFA, 0xFC)  # cli; cld
@@ -177,13 +194,20 @@ def footer() -> bytes:
 def image() -> bytes:
     machine_code = program()
     result = bytearray(b"\xFF" * ROM_SIZE)
-    if PROGRAM_OFFSET + len(machine_code) > MARKER_OFFSET:
-        raise ValueError("PCV2 program overlaps its identity marker")
+    if PROGRAM_OFFSET + len(machine_code) > LEGACY_RESET_TRAP_OFFSET:
+        raise ValueError("PCV2 pinstrap program overlaps its reset-path trap")
+    if LEGACY_RESET_TRAP_OFFSET + 4 > MARKER_OFFSET:
+        raise ValueError("PCV2 reset-path trap overlaps its identity marker")
     if MARKER_OFFSET + len(MARKER) > FLASH_ROUNDTRIP_OFFSET:
         raise ValueError("PCV2 identity marker overlaps the flash sentinel")
     if not FLASH_ROUNDTRIP_OFFSET < FOOTER_OFFSET:
         raise ValueError("PCV2 flash sentinel overlaps the footer")
     result[PROGRAM_OFFSET : PROGRAM_OFFSET + len(machine_code)] = machine_code
+    # A standard WonderSwan footer-vector boot stops here. Public integration
+    # tests therefore prove the PCV2 direct 4000:0010 route by reaching video.
+    result[LEGACY_RESET_TRAP_OFFSET : LEGACY_RESET_TRAP_OFFSET + 4] = (
+        b"\xFA\xF4\xEB\xFD"
+    )
     result[MARKER_OFFSET : MARKER_OFFSET + len(MARKER)] = MARKER
     result[FLASH_ROUNDTRIP_OFFSET] = 0xA5
     result[FOOTER_OFFSET:] = footer()

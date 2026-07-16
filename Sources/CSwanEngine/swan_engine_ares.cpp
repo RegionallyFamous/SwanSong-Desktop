@@ -39,36 +39,159 @@ bool save_is_eeprom(uint8_t save_type) {
   return save_type == 0x10 || save_type == 0x20 || save_type == 0x50;
 }
 
-const char* model_name(swan_model_t configured, const swan_rom_info_t& info) {
+enum class OpenIPLModel {
+  WonderSwan,
+  WonderSwanColor,
+  SwanCrystal,
+  PocketChallengeV2,
+};
+
+OpenIPLModel open_ipl_model(swan_model_t configured,
+                            const swan_rom_info_t& info) {
   switch (configured) {
-    case SWAN_MODEL_WONDERSWAN: return "[Bandai] WonderSwan";
-    case SWAN_MODEL_WONDERSWAN_COLOR: return "[Bandai] WonderSwan Color";
-    case SWAN_MODEL_SWANCRYSTAL: return "[Bandai] SwanCrystal";
+    case SWAN_MODEL_WONDERSWAN: return OpenIPLModel::WonderSwan;
+    case SWAN_MODEL_WONDERSWAN_COLOR: return OpenIPLModel::WonderSwanColor;
+    case SWAN_MODEL_SWANCRYSTAL: return OpenIPLModel::SwanCrystal;
     case SWAN_MODEL_POCKET_CHALLENGE_V2:
-      return "[Benesse] Pocket Challenge V2";
+      return OpenIPLModel::PocketChallengeV2;
     case SWAN_MODEL_AUTOMATIC:
-      return info.color ? "[Bandai] WonderSwan Color" : "[Bandai] WonderSwan";
+      return info.color ? OpenIPLModel::WonderSwanColor
+                        : OpenIPLModel::WonderSwan;
+  }
+  return OpenIPLModel::WonderSwan;
+}
+
+const char* model_name(OpenIPLModel model) {
+  switch (model) {
+    case OpenIPLModel::WonderSwan: return "[Bandai] WonderSwan";
+    case OpenIPLModel::WonderSwanColor: return "[Bandai] WonderSwan Color";
+    case OpenIPLModel::SwanCrystal: return "[Bandai] SwanCrystal";
+    case OpenIPLModel::PocketChallengeV2:
+      return "[Benesse] Pocket Challenge V2";
   }
   return "[Bandai] WonderSwan";
 }
 
-bool color_model(const char* model) {
-  return std::strcmp(model, "[Bandai] WonderSwan Color") == 0 ||
-         std::strcmp(model, "[Bandai] SwanCrystal") == 0;
+bool color_model(OpenIPLModel model) {
+  return model == OpenIPLModel::WonderSwanColor ||
+         model == OpenIPLModel::SwanCrystal;
 }
 
 // SwanSong's independently written IPL. The original console boot ROM is not
-// needed for the normal path: select the cartridge's bus width, irreversibly
-// enable cartridge mapping through HW_FLAGS, then transfer through the reset
-// vector now exposed at FFFF:0000. The NOP-filled 4/8 KiB shape matches the
-// address window expected by ares without containing third-party firmware.
-std::vector<uint8_t> swan_song_open_ipl(bool color, bool word_width) {
+// needed for the normal path. The V30 reset vector first jumps backward into
+// the still-mapped IPL window, where this code establishes a conservative
+// cartridge handoff state and writes a tiny transfer routine into internal
+// RAM. That routine irreversibly enables cartridge mapping through HW_FLAGS,
+// then safely transfers through the newly exposed FFFF:0000 reset vector.
+//
+// Executing the lockout from RAM matters: code in the boot window disappears
+// as soon as HW_FLAGS bit 0 is set, so relying on the CPU prefetch queue for a
+// following jump is fragile. The NOP-filled 4/8 KiB container only supplies
+// the address window expected by ares and contains no third-party firmware.
+std::vector<uint8_t> swan_song_open_ipl(OpenIPLModel model,
+                                        bool word_width,
+                                        bool protect_owner_area) {
+  const bool color = color_model(model);
+  const bool pocket_challenge = model == OpenIPLModel::PocketChallengeV2;
   std::vector<uint8_t> boot(color ? 8192u : 4096u, 0x90);
-  const uint8_t bootstrap[] = {
-      0xb0, static_cast<uint8_t>(word_width ? 0x05 : 0x01),
-      0xe6, 0xa0, 0xea, 0x00, 0x00, 0xff, 0xff,
+  const uint8_t hardware_flags = static_cast<uint8_t>(
+      0x81u | (color ? 0x02u : 0u) | (word_width ? 0x04u : 0u));
+  const uint16_t cartridge_entry_offset = pocket_challenge ? 0x0010u : 0x0000u;
+  const uint16_t cartridge_entry_segment = pocket_challenge ? 0x4000u : 0xffffu;
+  std::vector<uint8_t> ram_handoff = {
+      0xb0, hardware_flags,              // mov al, HW_FLAGS
+      0xe6, 0xa0,                        // out 0xa0, al
   };
-  std::copy(std::begin(bootstrap), std::end(bootstrap), boot.end() - 16);
+  if (pocket_challenge) {
+    // The PCV2 pinstrap enters the cartridge with the reset accumulator. MOV
+    // and OUT leave the V30 flags untouched, retaining a near-power-on state.
+    ram_handoff.insert(ram_handoff.end(), {0xb8, 0x00, 0x00}); // mov ax,0
+  }
+  ram_handoff.insert(ram_handoff.end(), {
+      0xea,
+      static_cast<uint8_t>(cartridge_entry_offset),
+      static_cast<uint8_t>(cartridge_entry_offset >> 8),
+      static_cast<uint8_t>(cartridge_entry_segment),
+      static_cast<uint8_t>(cartridge_entry_segment >> 8),
+  });
+
+  std::vector<uint8_t> startup;
+  const auto emit = [&](std::initializer_list<uint8_t> bytes) {
+    startup.insert(startup.end(), bytes.begin(), bytes.end());
+  };
+  const auto emit_out8 = [&](uint8_t port, uint8_t value) {
+    emit({0xb0, value, 0xe6, port});       // mov al,value; out port,al
+  };
+  const auto emit_ram_handoff_bytes = [&] {
+    for (size_t index = 0; index < ram_handoff.size(); ++index) {
+      const uint16_t address = static_cast<uint16_t>(0x0400u + index);
+      emit({0xc6, 0x06,                   // mov byte [address], immediate
+            static_cast<uint8_t>(address),
+            static_cast<uint8_t>(address >> 8),
+            ram_handoff[index]});
+    }
+  };
+
+  if (pocket_challenge) {
+    // Pocket Challenge V2 exposes a keypad pinstrap that bypasses a normal
+    // WonderSwan IPL. Preserve the V30's near-power-on register/flag and LCD
+    // state, lock out the boot window from a tiny IRAM trampoline, and enter
+    // the cartridge directly at the documented 4000:0010 pinstrap target.
+    emit_ram_handoff_bytes();
+    emit({0xea, 0x00, 0x04, 0x00, 0x00}); // jmp far 0x0000:0400
+  } else {
+    emit({0xfa});                           // cli
+    emit({0x31, 0xc0});                     // xor ax, ax
+    emit({0x8e, 0xd8});                     // mov ds, ax
+    emit({0x8e, 0xc0});                     // mov es, ax
+    emit({0x8e, 0xd0});                     // mov ss, ax
+    emit({0xbc, 0x00, 0x20});               // mov sp, 0x2000
+    emit_out8(0x14, 0x01);                  // enable the LCD panel driver
+    emit_out8(0x16, 0x9e);                  // 159 scanlines per frame
+    emit_out8(0x17, 0x9b);                  // hardware vertical sync timing
+    if (color) emit_out8(0x60, 0x0a);       // Color SRAM and I/O wait timing
+    emit_out8(0xb5, 0x40);                  // select the action-button row
+
+    // Public WonderSwan EEPROM interfaces define EWEN through the internal
+    // command/control ports. Standard cartridges then protect the owner and
+    // telemetry area; footer version bit 7 explicitly opts out so software
+    // that manages that area can retain write access.
+    emit_out8(0xbc, color ? 0x00 : 0x30);
+    emit_out8(0xbd, color ? 0x13 : 0x01);
+    emit_out8(0xbe, 0x40);                  // EWEN
+    if (protect_owner_area) emit_out8(0xbe, 0x80);
+
+    emit_ram_handoff_bytes();
+    emit({0xb9, 0x00, 0x00});               // mov cx, 0
+    emit({0xba, 0x01, 0x00});               // mov dx, 1
+    emit({0xbb, static_cast<uint8_t>(color ? 0x43 : 0x40), 0x00});
+    emit({0xbd, 0x00, 0x00});               // mov bp, 0
+    emit({0xbe, static_cast<uint8_t>(color ? 0x35 : 0x3d),
+          static_cast<uint8_t>(color ? 0x04 : 0x02)});  // mov si, handoff value
+    emit({0xbf, static_cast<uint8_t>(color ? 0x0b : 0x0d), 0x04});
+    emit({0xb8, 0x00, static_cast<uint8_t>(color ? 0xfe : 0xff)});
+    emit({0x8e, 0xd8});                     // mov ds, ax
+    emit({0xb8, static_cast<uint8_t>(color ? 0x86 : 0x82), 0xf0});
+    emit({0x50, 0x9d});                     // push ax; popf
+    emit({0xb8, hardware_flags, 0xff});      // observable handoff accumulator
+    emit({0xea, 0x00, 0x04, 0x00, 0x00});   // jmp far 0x0000:0400
+  }
+
+  constexpr size_t kStartupOffsetFromEnd = 256u;
+  constexpr size_t kResetVectorOffsetFromEnd = 16u;
+  static_assert(kStartupOffsetFromEnd > kResetVectorOffsetFromEnd);
+  constexpr uint8_t reset_vector[] = {
+      0xea, 0x00, 0x00, 0xf0, 0xff,       // jmp far 0xfff0:0000
+  };
+  if (boot.size() < kStartupOffsetFromEnd ||
+      std::size(reset_vector) > kResetVectorOffsetFromEnd ||
+      startup.size() > kStartupOffsetFromEnd - kResetVectorOffsetFromEnd) {
+    return {};
+  }
+  std::copy(startup.begin(), startup.end(),
+            boot.end() - kStartupOffsetFromEnd);
+  std::copy(std::begin(reset_vector), std::end(reset_vector),
+            boot.end() - kResetVectorOffsetFromEnd);
   return boot;
 }
 
@@ -133,30 +256,29 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       ares::platform = this;
     }
 
-    const char* selected_model = model_name(config_.preferred_model, info);
+    const auto selected_open_ipl_model =
+        open_ipl_model(config_.preferred_model, info);
+    const char* selected_model = model_name(selected_open_ipl_model);
     const bool is_pocket_challenge =
-        config_.preferred_model == SWAN_MODEL_POCKET_CHALLENGE_V2;
+        selected_open_ipl_model == OpenIPLModel::PocketChallengeV2;
     system_pak_ = std::make_shared<vfs::directory>();
     game_pak_ = std::make_shared<vfs::directory>();
 
-    const bool expects_color_boot = color_model(selected_model);
-    const size_t expected_boot_size = expects_color_boot ? 8192u : 4096u;
-    if (!staged_boot_rom_.empty() && staged_boot_rom_.size() != expected_boot_size) {
-      error = expects_color_boot
-          ? "the selected WonderSwan Color model needs an 8 KiB boot ROM"
-          : is_pocket_challenge
-              ? "the selected Pocket Challenge V2 model needs a 4 KiB boot ROM"
-              : "the selected WonderSwan model needs a 4 KiB boot ROM";
-      release_active();
-      return SWAN_RESULT_INVALID_ARGUMENT;
-    }
+    const bool is_color_hardware = color_model(selected_open_ipl_model);
     const bool word_width = (rom[rom.size() - 4] & 4) != 0;
-    const auto boot = staged_boot_rom_.empty()
-        ? swan_song_open_ipl(expects_color_boot, word_width)
-        : staged_boot_rom_;
+    // Public cartridge metadata assigns footer version bit 7 to software that
+    // intentionally retains write access to the internal owner/telemetry area.
+    const bool protect_owner_area = (rom[rom.size() - 7] & 0x80u) == 0;
+    const auto boot = swan_song_open_ipl(
+        selected_open_ipl_model, word_width, protect_owner_area);
+    if (boot.empty()) {
+      error = "SwanSong Open IPL exceeded its reserved boot-ROM window";
+      release_active();
+      return SWAN_RESULT_INTERNAL_ERROR;
+    }
     system_pak_->append("boot.rom", std::span<const uint8_t>(boot));
     if (!is_pocket_challenge) {
-      const size_t console_size = color_model(selected_model) ? 2048u : 128u;
+      const size_t console_size = is_color_hardware ? 2048u : 128u;
       if (!append_persistence(*system_pak_, "save.eeprom", console_size,
                               SWAN_PERSISTENCE_CONSOLE_EEPROM, error)) {
         release_active();
@@ -385,26 +507,6 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       staged_persistence_[kind] = std::vector<uint8_t>(bytes.begin(), bytes.end());
     } catch (...) {
       error = "could not retain persistent data";
-      return SWAN_RESULT_INTERNAL_ERROR;
-    }
-    error.clear();
-    return SWAN_RESULT_OK;
-  }
-
-  swan_result_t stage_boot_rom(std::span<const uint8_t> bytes,
-                               std::string& error) override {
-    if (loaded_) {
-      error = "boot ROM must be staged before loading a game";
-      return SWAN_RESULT_UNSUPPORTED;
-    }
-    if (bytes.size() != 4096u && bytes.size() != 8192u) {
-      error = "WonderSwan boot ROM must be 4 KiB or 8 KiB";
-      return SWAN_RESULT_INVALID_ARGUMENT;
-    }
-    try {
-      staged_boot_rom_.assign(bytes.begin(), bytes.end());
-    } catch (...) {
-      error = "could not retain boot ROM data";
       return SWAN_RESULT_INTERNAL_ERROR;
     }
     error.clear();
@@ -696,7 +798,6 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
   std::shared_ptr<vfs::directory> system_pak_;
   std::shared_ptr<vfs::directory> game_pak_;
   std::map<swan_persistence_kind_t, std::vector<uint8_t>> staged_persistence_;
-  std::vector<uint8_t> staged_boot_rom_;
   std::atomic<uint32_t> input_mask_{0};
   bool loaded_ = false;
   bool initial_vertical_ = false;

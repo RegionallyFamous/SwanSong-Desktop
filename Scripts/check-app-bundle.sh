@@ -1,11 +1,10 @@
 #!/bin/sh
 set -eu
 
-SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-MACOS_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
-BUILD_DIR=${ARES_BUILD_DIR:-"$MACOS_DIR/.engine/build"}
+SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+MACOS_DIR=$(CDPATH='' cd -- "$SCRIPT_DIR/.." && pwd)
 TEMP_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/swan-song-bundle.XXXXXX")
-TEMP_ROOT=$(CDPATH= cd -- "$TEMP_ROOT" && pwd -P)
+TEMP_ROOT=$(CDPATH='' cd -- "$TEMP_ROOT" && pwd -P)
 APP="$TEMP_ROOT/SwanSong.app"
 ROM="$TEMP_ROOT/80186-quirks.ws"
 COLOR_ROM="$TEMP_ROOT/80186-quirks-color.wsc"
@@ -48,8 +47,37 @@ swift -e '
 icon_name=$(plutil -extract CFBundleIconFile raw "$APP/Contents/Info.plist")
 if [ "$icon_name" != "AppIcon" ] \
   || [ ! -s "$APP/Contents/Resources/AppIcon.icns" ] \
-  || [ ! -s "$APP/Contents/Resources/AppIcon.png" ]; then
+  || [ ! -s "$APP/Contents/Resources/AppIcon.png" ] \
+  || [ ! -s "$APP/Contents/Resources/AppIconCompact.png" ] \
+  || ! cmp -s \
+    "$MACOS_DIR/Packaging/AppIconCompact.png" \
+    "$APP/Contents/Resources/AppIconCompact.png"; then
   echo "the app bundle is missing its SwanSong icon assets" >&2
+  exit 1
+fi
+controller_interaction=$(plutil -extract \
+  GCSupportsControllerUserInteraction raw "$APP/Contents/Info.plist" \
+  2>/dev/null || true)
+multiple_micro_gamepads=$(plutil -extract \
+  GCSupportsMultipleMicroGamepads raw "$APP/Contents/Info.plist" \
+  2>/dev/null || true)
+extended_profile=$(plutil -extract \
+  GCSupportedGameControllers.0.ProfileName raw "$APP/Contents/Info.plist" \
+  2>/dev/null || true)
+micro_profile=$(plutil -extract \
+  GCSupportedGameControllers.1.ProfileName raw "$APP/Contents/Info.plist" \
+  2>/dev/null || true)
+directional_profile=$(plutil -extract \
+  GCSupportedGameControllers.2.ProfileName raw "$APP/Contents/Info.plist" \
+  2>/dev/null || true)
+if [ "$controller_interaction" != "true" ] \
+  || [ "$multiple_micro_gamepads" != "true" ] \
+  || [ "$extended_profile" != "ExtendedGamepad" ] \
+  || [ "$micro_profile" != "MicroGamepad" ] \
+  || [ "$directional_profile" != "DirectionalGamepad" ] \
+  || plutil -extract GCSupportedGameControllers.3 raw \
+    "$APP/Contents/Info.plist" >/dev/null 2>&1; then
+  echo "the app bundle is missing its standard game-controller declarations" >&2
   exit 1
 fi
 iconutil -c iconset "$APP/Contents/Resources/AppIcon.icns" \
@@ -57,6 +85,16 @@ iconutil -c iconset "$APP/Contents/Resources/AppIcon.icns" \
 if [ ! -s "$TEMP_ROOT/AppIcon.iconset/icon_16x16.png" ] \
   || [ ! -s "$TEMP_ROOT/AppIcon.iconset/icon_512x512@2x.png" ]; then
   echo "the app icon does not contain the required small and Retina representations" >&2
+  exit 1
+fi
+compact_width=$(sips -g pixelWidth \
+  "$APP/Contents/Resources/AppIconCompact.png" 2>/dev/null \
+  | awk '/pixelWidth:/ { print $2 }')
+compact_height=$(sips -g pixelHeight \
+  "$APP/Contents/Resources/AppIconCompact.png" 2>/dev/null \
+  | awk '/pixelHeight:/ { print $2 }')
+if [ "$compact_width" != "1024" ] || [ "$compact_height" != "1024" ]; then
+  echo "the compact app icon is not a 1024-pixel source image" >&2
   exit 1
 fi
 if [ ! -s "$APP/Contents/Resources/LICENSE" ] \
@@ -81,16 +119,44 @@ if [ ! -s "$APP/Contents/Resources/LICENSE" ] \
   exit 1
 fi
 
+source_commit=$(git -C "$MACOS_DIR" rev-parse --verify HEAD)
+ares_commit=$(plutil -extract commit raw \
+  "$MACOS_DIR/Dependencies/ares.lock.json")
+"$SCRIPT_DIR/check-app-source-provenance.sh" \
+  "$APP" "$source_commit" "$ares_commit" >/dev/null
+expected_source_tree_dirty=false
+if [ -n "$(git -C "$MACOS_DIR" status --porcelain --untracked-files=all)" ]; then
+  expected_source_tree_dirty=true
+fi
+actual_source_tree_dirty=$(/usr/libexec/PlistBuddy -c \
+  'Print :SwanSongSourceTreeDirty' "$APP/Contents/Info.plist")
+if [ "$actual_source_tree_dirty" != "$expected_source_tree_dirty" ]; then
+  echo "the app bundle source dirty flag does not match its build checkout" >&2
+  exit 1
+fi
+
 "$SCRIPT_DIR/check-app-payload.sh" "$APP" >/dev/null
 
 "$SCRIPT_DIR/verify-app-signature.sh" "$APP" >/dev/null
-if otool -l "$APP/Contents/MacOS/SwanSong" | grep -Fq "path $BUILD_DIR"; then
-  echo "development ares rpath leaked into the app bundle" >&2
+ROUTE_RUNNER="$APP/Contents/Helpers/SwanSongRouteRunner"
+if [ ! -x "$ROUTE_RUNNER" ]; then
+  echo "the app bundle is missing its executable route runner" >&2
   exit 1
 fi
-if list_rpaths "$APP/Contents/MacOS/SwanSong" \
-  | grep -Eq '^/(Library/Developer/CommandLineTools|Applications/.*Xcode[^/]*)/.*swift'; then
-  echo "an absolute developer-toolchain Swift runtime rpath leaked into the app bundle" >&2
+for executable in "$APP/Contents/MacOS/SwanSong" "$ROUTE_RUNNER"; do
+  if list_rpaths "$executable" | grep -Fq "$MACOS_DIR/.engine/"; then
+    echo "development ares rpath leaked into $executable" >&2
+    exit 1
+  fi
+  if list_rpaths "$executable" \
+    | grep -Eq '^/(Library/Developer/CommandLineTools|Applications/.*Xcode[^/]*)/.*swift'; then
+    echo "an absolute developer-toolchain Swift runtime rpath leaked into $executable" >&2
+    exit 1
+  fi
+done
+"$ROUTE_RUNNER" --help >/dev/null
+if "$ROUTE_RUNNER" >/dev/null 2>&1; then
+  echo "the route runner executed without its explicit debug flag" >&2
   exit 1
 fi
 
@@ -201,4 +267,4 @@ if [ "$color_window_name" != "80186-quirks-color" ]; then
   exit 1
 fi
 
-echo "PASS app bundle is portable, signed, licensed, and opens .ws/.wsc files through Launch Services"
+echo "PASS app bundle is portable, signed, licensed, controller-ready, and opens .ws/.wsc files through Launch Services"
