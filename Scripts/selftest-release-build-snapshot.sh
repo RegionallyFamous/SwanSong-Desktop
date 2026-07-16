@@ -121,6 +121,7 @@ esac
 case "$SWAN_UNIVERSAL_SWIFT_DIR" in
   "$SELFTEST_LIVE_REPOSITORY"/*) exit 1 ;;
 esac
+mkdir -p "$SWAN_UNIVERSAL_SWIFT_DIR/arm64/repositories/Sparkle-synthetic"
 
 restore_live_source() {
   cp "$SELFTEST_LIVE_SOURCE_BACKUP" "$SELFTEST_LIVE_SOURCE"

@@ -20,6 +20,10 @@ Release notes and the issue tracker are authoritative for shipped behavior.
   non-empty catalog, and production public key all pass the release gate.
 - Keep SwanSong Desktop and the separate Analogue Pocket `swansong-core`
   release lanes explicit; neither product installs or updates the other.
+- Ship the native Sparkle 2 updater against the signed GitHub-hosted appcast,
+  with manual checks always available, automatic checks/downloads opt-in,
+  system profiling disabled, and stable/beta channel behavior covered by the
+  release gate.
 
 ## 1.0 readiness
 
@@ -27,12 +31,13 @@ Release notes and the issue tracker are authoritative for shipped behavior.
   first frame as a full-game verdict.
 - Complete release testing on supported Apple silicon and Intel hardware.
 - Publish a concise known-limits and compatibility report.
-- Retain and verify the explicit, user-invoked Releases-page update check.
+- Retain and verify manual native update checks, opt-in automatic checks and
+  downloads, stable/beta selection, signed-feed rejection paths, and update
+  installation from immutable GitHub Release assets.
 - Review GPL corresponding-source completeness with a license specialist.
 
 ## Later
 
-- Evaluate a signed Sparkle update feed and update the privacy policy if added.
 - Consider a polished drag-to-Applications disk image.
 - Expand accessibility documentation and community compatibility testing.
 - Add a launch website, rights-safe press kit, and localized onboarding.

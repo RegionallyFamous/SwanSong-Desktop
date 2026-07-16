@@ -34,5 +34,10 @@ verify_binary() {
 verify_binary "Contents/MacOS/SwanSong"
 verify_binary "Contents/Helpers/SwanSongRouteRunner"
 verify_binary "Contents/Frameworks/libSwanAresEngine.dylib"
+verify_binary "Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
+verify_binary "Contents/Frameworks/Sparkle.framework/Versions/B/Autoupdate"
+verify_binary "Contents/Frameworks/Sparkle.framework/Versions/B/Updater.app/Contents/MacOS/Updater"
+verify_binary "Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Installer.xpc/Contents/MacOS/Installer"
+verify_binary "Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Downloader.xpc/Contents/MacOS/Downloader"
 
-echo "PASS app executable, route runner, and ares engine contain: $REQUIRED_ARCHITECTURES"
+echo "PASS app, engine, and Sparkle updater executables contain: $REQUIRED_ARCHITECTURES"

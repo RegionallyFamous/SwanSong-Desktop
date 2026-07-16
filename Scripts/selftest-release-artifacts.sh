@@ -14,8 +14,14 @@ CHECKSUMS="$TEMP_ROOT/SHA256SUMS.txt"
 APP_EXECUTABLE_HASH=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 ROUTE_RUNNER_HASH=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
 ENGINE_HASH=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+SPARKLE_FRAMEWORK_HASH=eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+SPARKLE_AUTOUPDATE_HASH=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+SPARKLE_UPDATER_HASH=9999999999999999999999999999999999999999999999999999999999999999
+SPARKLE_INSTALLER_HASH=8888888888888888888888888888888888888888888888888888888888888888
+SPARKLE_DOWNLOADER_HASH=7777777777777777777777777777777777777777777777777777777777777777
 SOURCE_COMMIT=1111111111111111111111111111111111111111
 ARES_COMMIT=2222222222222222222222222222222222222222
+SPARKLE_COMMIT=4444444444444444444444444444444444444444
 
 cleanup() {
   rm -rf "$TEMP_ROOT"
@@ -28,6 +34,22 @@ write_valid_fixture() {
   mkdir -p "$TEMP_ROOT/archive-payload/SwanSong.app/Contents"
   printf 'synthetic release payload\n' \
     >"$TEMP_ROOT/archive-payload/SwanSong.app/Contents/placeholder"
+  sparkle_framework="$TEMP_ROOT/archive-payload/SwanSong.app/Contents/Frameworks/Sparkle.framework"
+  mkdir -p \
+    "$sparkle_framework/Versions/B/Headers" \
+    "$sparkle_framework/Versions/B/Modules" \
+    "$sparkle_framework/Versions/B/PrivateHeaders" \
+    "$sparkle_framework/Versions/B/Resources" \
+    "$sparkle_framework/Versions/B/Updater.app" \
+    "$sparkle_framework/Versions/B/XPCServices"
+  : >"$sparkle_framework/Versions/B/Autoupdate"
+  : >"$sparkle_framework/Versions/B/Sparkle"
+  ln -s B "$sparkle_framework/Versions/Current"
+  for sparkle_alias in \
+    Autoupdate Headers Modules PrivateHeaders Resources Sparkle Updater.app XPCServices; do
+    ln -s "Versions/Current/$sparkle_alias" \
+      "$sparkle_framework/$sparkle_alias"
+  done
   ditto -c -k --keepParent \
     "$TEMP_ROOT/archive-payload/SwanSong.app" "$ARCHIVE"
   archive_hash=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
@@ -38,8 +60,11 @@ write_valid_fixture() {
     "$SOURCE_ROOT/Dependencies/ares-source/ares/ws/system"
   for source_path in \
     Package.swift \
+    Package.resolved \
     Engine/ares-headless.patch \
     Dependencies/ares.lock.json \
+    Dependencies/sparkle.lock.json \
+    Dependencies/SPARKLE_LICENSE \
     Sources/CSwanEngine/include/swan_engine.h \
     Dependencies/ares-source/LICENSE \
     Dependencies/ares-source/ares/ws/ws.cpp \
@@ -47,22 +72,59 @@ write_valid_fixture() {
     printf 'synthetic corresponding source: %s\n' "$source_path" \
       >"$SOURCE_ROOT/$source_path"
   done
+  for source_path in \
+    Dependencies/sparkle-source/LICENSE \
+    Dependencies/sparkle-source/Package.swift \
+    Dependencies/sparkle-source/Sparkle/Sparkle.h; do
+    mkdir -p "$(dirname -- "$SOURCE_ROOT/$source_path")"
+    printf 'synthetic corresponding source: %s\n' "$source_path" \
+      >"$SOURCE_ROOT/$source_path"
+  done
+  printf 'synthetic Sparkle license\n' \
+    >"$SOURCE_ROOT/Dependencies/SPARKLE_LICENSE"
+  printf 'synthetic Sparkle license\n' \
+    >"$SOURCE_ROOT/Dependencies/sparkle-source/LICENSE"
+  cat >"$SOURCE_ROOT/Dependencies/sparkle-source/Package.swift" <<'EOF'
+let version = "2.9.4"
+let tag = "2.9.4"
+let checksum = "cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"
+let url = "Sparkle-for-Swift-Package-Manager.zip"
+EOF
+  cat >"$SOURCE_ROOT/Package.resolved" <<EOF
+{
+  "pins": [{
+    "identity": "sparkle",
+    "kind": "remoteSourceControl",
+    "location": "https://github.com/sparkle-project/Sparkle.git",
+    "state": {"revision": "$SPARKLE_COMMIT", "version": "2.9.4"}
+  }]
+}
+EOF
   cat >"$SOURCE_ROOT/SOURCE_ARCHIVE_PROVENANCE.json" <<EOF
 {
-  "schema": "swan-song-source-v1",
+  "schema": "swan-song-source-v2",
   "sourceCommit": "$SOURCE_COMMIT",
-  "aresCommit": "$ARES_COMMIT"
+  "aresCommit": "$ARES_COMMIT",
+  "sparkleCommit": "$SPARKLE_COMMIT"
 }
 EOF
   printf '{"commit":"%s"}\n' "$ARES_COMMIT" \
     >"$SOURCE_ROOT/Dependencies/ares.lock.json"
+  cat >"$SOURCE_ROOT/Dependencies/sparkle.lock.json" <<EOF
+{
+  "repository": "https://github.com/sparkle-project/Sparkle.git",
+  "version": "2.9.4",
+  "commit": "$SPARKLE_COMMIT",
+  "swiftPackageArtifactSHA256": "cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"
+}
+EOF
   COPYFILE_DISABLE=1 tar -cJf "$SOURCE_ARCHIVE" \
     -C "$TEMP_ROOT/source-payload" \
     "SwanSong-$VERSION-source"
   source_hash=$(shasum -a 256 "$SOURCE_ARCHIVE" | awk '{ print $1 }')
   cat >"$MANIFEST" <<EOF
 {
-  "schema": "swan-song-release-v1",
+  "schema": "swan-song-release-v2",
   "version": "$VERSION",
   "build": "42",
   "bundleIdentifier": "com.regionallyfamous.swansong",
@@ -72,9 +134,16 @@ EOF
   "notarized": true,
   "sourceCommit": "$SOURCE_COMMIT",
   "aresCommit": "$ARES_COMMIT",
+  "sparkleCommit": "$SPARKLE_COMMIT",
   "appExecutableSHA256": "$APP_EXECUTABLE_HASH",
   "routeRunnerSHA256": "$ROUTE_RUNNER_HASH",
   "engineSHA256": "$ENGINE_HASH",
+  "sparkleVersion": "2.9.4",
+  "sparkleFrameworkExecutableSHA256": "$SPARKLE_FRAMEWORK_HASH",
+  "sparkleAutoupdateSHA256": "$SPARKLE_AUTOUPDATE_HASH",
+  "sparkleUpdaterSHA256": "$SPARKLE_UPDATER_HASH",
+  "sparkleInstallerSHA256": "$SPARKLE_INSTALLER_HASH",
+  "sparkleDownloaderSHA256": "$SPARKLE_DOWNLOADER_HASH",
   "archive": "$ARCHIVE_NAME",
   "sha256": "$archive_hash",
   "sourceArchive": "$SOURCE_ARCHIVE_NAME",
@@ -298,11 +367,32 @@ sed "s/$old_archive_hash/$new_archive_hash/" "$MANIFEST" \
 printf '%s  %s\n%s  %s\n' \
   "$new_archive_hash" "$ARCHIVE_NAME" \
   "$source_hash" "$SOURCE_ARCHIVE_NAME" >"$CHECKSUMS"
-expect_failure "a symbolic-link archive entry" \
+expect_failure "an unapproved symbolic-link archive entry" \
   "$SCRIPT_DIR/verify-release-artifacts.sh" \
     --archive "$ARCHIVE" \
     --source-archive "$SOURCE_ARCHIVE" \
     --manifest "$TEMP_ROOT/unsafe-link.json" \
+    --checksums "$CHECKSUMS"
+
+write_valid_fixture
+old_archive_hash=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
+sparkle_framework="$TEMP_ROOT/archive-payload/SwanSong.app/Contents/Frameworks/Sparkle.framework"
+rm "$sparkle_framework/Sparkle"
+ln -s ../../../../outside "$sparkle_framework/Sparkle"
+rm -f "$ARCHIVE"
+ditto -c -k --keepParent \
+  "$TEMP_ROOT/archive-payload/SwanSong.app" "$ARCHIVE"
+new_archive_hash=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
+sed "s/$old_archive_hash/$new_archive_hash/" "$MANIFEST" \
+  >"$TEMP_ROOT/unsafe-sparkle-link.json"
+printf '%s  %s\n%s  %s\n' \
+  "$new_archive_hash" "$ARCHIVE_NAME" \
+  "$source_hash" "$SOURCE_ARCHIVE_NAME" >"$CHECKSUMS"
+expect_failure "a Sparkle symbolic link with an unsafe target" \
+  "$SCRIPT_DIR/verify-release-artifacts.sh" \
+    --archive "$ARCHIVE" \
+    --source-archive "$SOURCE_ARCHIVE" \
+    --manifest "$TEMP_ROOT/unsafe-sparkle-link.json" \
     --checksums "$CHECKSUMS"
 
 write_valid_fixture

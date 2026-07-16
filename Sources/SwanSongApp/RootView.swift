@@ -10192,12 +10192,18 @@ struct StateTimelineCard: View {
 
 struct SettingsView: View {
     @Bindable var model: AppModel
+    @ObservedObject var updater: SwanSongUpdater
     @AppStorage("automaticallyFitGameOrientation") private var automaticallyFitGameOrientation = true
     @AppStorage("settingsPane") private var selectedTab = 0
     @AppStorage("displayProfile") private var displayProfileRaw = DisplayProfile.purePixels.rawValue
     @AppStorage("lcdResponseScale") private var lcdResponseScale = 1.0
     @AppStorage("pauseWhenInactive") private var pauseWhenInactive = true
     private let backendName = (try? EngineSession().backendName) ?? "Unavailable"
+
+    init(model: AppModel, updater: SwanSongUpdater = .shared) {
+        self.model = model
+        self.updater = updater
+    }
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -10266,6 +10272,12 @@ struct SettingsView: View {
                     Label("Controller", systemImage: "gamecontroller.fill")
                 }
                 .tag(1)
+
+            UpdateSettingsView(updater: updater)
+                .tabItem {
+                    Label("Updates", systemImage: "arrow.down.circle")
+                }
+                .tag(3)
         }
         .tint(SwanTheme.accent)
         .background(SwanTheme.libraryBackground.ignoresSafeArea())
@@ -10278,10 +10290,10 @@ struct SettingsView: View {
     }
 
     /// Startup was tab 2 before the built-in Open IPL made that pane obsolete.
-    /// Clamp persisted legacy or damaged values so existing users never open a
-    /// TabView with no matching selection.
+    /// The Updates pane uses a new tag so an old Startup selection still
+    /// migrates to Display & Player instead of silently changing meaning.
     static func migratedTab(_ storedValue: Int) -> Int {
-        storedValue == 1 ? 1 : 0
+        storedValue == 1 || storedValue == 3 ? storedValue : 0
     }
 
     private var displayProfile: DisplayProfile {

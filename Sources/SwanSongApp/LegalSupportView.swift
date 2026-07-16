@@ -40,6 +40,8 @@ func presentLegalSupport(_ section: LegalSupportSection) {
 }
 
 struct LegalSupportCommands: Commands {
+    @ObservedObject var updater: SwanSongUpdater
+
     var body: some Commands {
         CommandGroup(after: .appInfo) {
             Divider()
@@ -52,7 +54,8 @@ struct LegalSupportCommands: Commands {
         CommandGroup(replacing: .help) {
             Button("SwanSong Help…") { present(.support) }
                 .keyboardShortcut("?", modifiers: .command)
-            Button("Check for Updates…") { present(.updates) }
+            Button("Check for Updates…") { updater.checkForUpdates() }
+                .disabled(updater.isConfigured && !updater.canCheckForUpdates)
             Button("Report a Problem…") { present(.support) }
         }
     }
@@ -90,7 +93,9 @@ private final class LegalSupportWindowController {
         )
         window.title = "Legal & Support"
         window.contentMinSize = CGSize(width: 720, height: 520)
-        window.contentViewController = NSHostingController(rootView: LegalSupportView())
+        window.contentViewController = NSHostingController(
+            rootView: LegalSupportView(updater: .shared)
+        )
         window.isReleasedWhenClosed = false
         window.setFrameAutosaveName("SwanSongLegalSupportWindow")
         window.center()
@@ -100,10 +105,15 @@ private final class LegalSupportWindowController {
 }
 
 struct LegalSupportView: View {
+    @ObservedObject var updater: SwanSongUpdater
     @AppStorage("legalSupportSelectedSection") private var selectedSection =
         LegalSupportSection.overview.rawValue
 
     private let metadata = SwanSongMetadata.current
+
+    init(updater: SwanSongUpdater = .shared) {
+        self.updater = updater
+    }
 
     private var selection: Binding<LegalSupportSection?> {
         Binding(
@@ -230,13 +240,25 @@ struct LegalSupportView: View {
                 .padding(4)
             }
 
-            Link(destination: SwanSongLinks.releases) {
-                Label("Open SwanSong Releases", systemImage: "safari")
+            Button {
+                updater.checkForUpdates()
+            } label: {
+                Label("Check for Updates…", systemImage: "arrow.triangle.2.circlepath")
             }
             .buttonStyle(.borderedProminent)
+            .disabled(updater.isConfigured && !updater.canCheckForUpdates)
+
+            Button {
+                updater.openReleases()
+            } label: {
+                Label("Open SwanSong Releases", systemImage: "safari")
+            }
+            .buttonStyle(.bordered)
 
             Text(
-                "Opening Releases is an explicit network action and uses your default web browser."
+                updater.isConfigured
+                    ? "Checking contacts SwanSong’s GitHub-hosted signed update feed. Automatic checks and downloads remain off until you enable them in Settings."
+                    : "The signed updater is unavailable in this build, so Check for Updates opens GitHub Releases in your default browser."
             )
             .font(.callout)
             .foregroundStyle(.secondary)
@@ -261,18 +283,18 @@ struct LegalSupportView: View {
     var catalogUpdatesDetail: String {
         switch HomebrewCatalogProductionTrust.publicationStatus {
         case .comingSoon:
-            "SwanSong does not check for app updates. The Homebrew Catalog is coming soon and makes no network requests in this release."
+            "SwanSong checks for app updates only when you ask or after you enable automatic checks. The Homebrew Catalog is coming soon and makes no network requests in this release."
         case .published:
-            "SwanSong does not check for app updates or refresh the Homebrew Catalog at launch or in the background. After catalog consent, opening Homebrew can request a missing verified copy; refresh remains an explicit action."
+            "SwanSong checks for app updates only when you ask or after you enable automatic checks. It does not refresh the Homebrew Catalog at launch or in the background. After catalog consent, opening Homebrew can request a missing verified copy; refresh remains an explicit action."
         }
     }
 
     var catalogNetworkDetail: String {
         switch HomebrewCatalogProductionTrust.publicationStatus {
         case .comingSoon:
-            "Opening Releases is the only network action on this page. The unavailable Homebrew Catalog cannot contact GitHub in this release."
+            "Checking for app updates contacts only SwanSong’s GitHub-hosted feed and never sends a system profile. Opening Releases uses your browser. The unavailable Homebrew Catalog cannot contact GitHub in this release."
         case .published:
-            "The Homebrew Catalog uses separate, consented GitHub requests when Homebrew needs a missing verified catalog, when you refresh it, or when you download a listed title. GitHub receives normal connection information and the requested URL; SwanSong does not attach library, save, or Translation Lab data."
+            "App updates and the Homebrew Catalog use separate GitHub requests. The updater never sends a system profile. The catalog contacts GitHub when Homebrew needs a missing verified copy, when you refresh it, or when you download a listed title. SwanSong does not attach library, save, or Translation Lab data."
         }
     }
 

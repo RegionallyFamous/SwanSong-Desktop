@@ -2,3 +2,4 @@
 # Their upstream whitespace is significant provenance and is not normalized.
 Engine/*.patch -whitespace
 testroms/** -whitespace
+Dependencies/SPARKLE_LICENSE -whitespace

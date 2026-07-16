@@ -8,6 +8,9 @@ EXPECTED_TEAM_ID=3J8H48TP7P
 INPUT_APP=${1:-"$MACOS_DIR/.build/app/SwanSong.app"}
 DIST_DIR=${SWAN_RELEASE_OUTPUT_DIR:-"$MACOS_DIR/dist"}
 
+python3 "$SCRIPT_DIR/check-sparkle-dependency-lock.py" \
+  --repository "$MACOS_DIR" >/dev/null
+
 if [ ! -d "$INPUT_APP" ] || [ -L "$INPUT_APP" ]; then
   echo "app bundle not found or is not a regular directory: $INPUT_APP" >&2
   exit 1
@@ -16,7 +19,9 @@ fi
 SOURCE_COMMIT=$(git -C "$MACOS_DIR" rev-parse HEAD)
 ARES_COMMIT=$(plutil -extract commit raw \
   "$MACOS_DIR/Dependencies/ares.lock.json")
-printf '%s\n' "$SOURCE_COMMIT" "$ARES_COMMIT" \
+SPARKLE_COMMIT=$(plutil -extract commit raw \
+  "$MACOS_DIR/Dependencies/sparkle.lock.json")
+printf '%s\n' "$SOURCE_COMMIT" "$ARES_COMMIT" "$SPARKLE_COMMIT" \
   | grep -Eqv '^[0-9a-f]{40}$' && {
   echo "release source provenance contains an invalid commit" >&2
   exit 1
@@ -90,6 +95,21 @@ ROUTE_RUNNER_SHA256=$(shasum -a 256 \
   "$APP/Contents/Helpers/SwanSongRouteRunner" | awk '{ print $1 }')
 ENGINE_SHA256=$(shasum -a 256 \
   "$APP/Contents/Frameworks/libSwanAresEngine.dylib" | awk '{ print $1 }')
+SPARKLE_ROOT="$APP/Contents/Frameworks/Sparkle.framework/Versions/B"
+SPARKLE_VERSION=$(plutil -extract CFBundleShortVersionString raw \
+  "$SPARKLE_ROOT/Resources/Info.plist")
+SPARKLE_FRAMEWORK_SHA256=$(shasum -a 256 \
+  "$SPARKLE_ROOT/Sparkle" | awk '{ print $1 }')
+SPARKLE_AUTOUPDATE_SHA256=$(shasum -a 256 \
+  "$SPARKLE_ROOT/Autoupdate" | awk '{ print $1 }')
+SPARKLE_UPDATER_SHA256=$(shasum -a 256 \
+  "$SPARKLE_ROOT/Updater.app/Contents/MacOS/Updater" | awk '{ print $1 }')
+SPARKLE_INSTALLER_SHA256=$(shasum -a 256 \
+  "$SPARKLE_ROOT/XPCServices/Installer.xpc/Contents/MacOS/Installer" \
+  | awk '{ print $1 }')
+SPARKLE_DOWNLOADER_SHA256=$(shasum -a 256 \
+  "$SPARKLE_ROOT/XPCServices/Downloader.xpc/Contents/MacOS/Downloader" \
+  | awk '{ print $1 }')
 TEAM_ID=$(codesign -dv --verbose=4 "$APP" 2>&1 \
   | awk -F= '$1 == "TeamIdentifier" { print $2; exit }')
 SDK_VERSION=$(xcrun --sdk macosx --show-sdk-version)
@@ -128,17 +148,45 @@ ARES_SOURCE="$PACKAGE_TEMP/ares-source"
 "$SCRIPT_DIR/materialize-ares-source.sh" \
   "$ARES_REPOSITORY" "$ARES_COMMIT" "$ARES_SOURCE" "$ARES_PATCH" >/dev/null
 
+if [ -n "${SPARKLE_SOURCE_REPOSITORY:-}" ]; then
+  SPARKLE_REPOSITORY=$SPARKLE_SOURCE_REPOSITORY
+else
+  SPARKLE_REPOSITORY=$(find "$MACOS_DIR/.build/repositories" \
+    -maxdepth 1 -type d -name 'Sparkle-*' -print -quit 2>/dev/null || true)
+fi
+[ -n "$SPARKLE_REPOSITORY" ] || {
+  echo "the pinned Sparkle Git object repository is required for corresponding source" >&2
+  exit 1
+}
+SPARKLE_SOURCE="$PACKAGE_TEMP/sparkle-source"
+"$SCRIPT_DIR/materialize-sparkle-source.sh" \
+  "$SPARKLE_REPOSITORY" "$SPARKLE_COMMIT" "$SPARKLE_SOURCE" >/dev/null
+python3 "$SCRIPT_DIR/check-sparkle-dependency-lock.py" \
+  --repository "$MACOS_DIR" \
+  --upstream-package "$SPARKLE_SOURCE/Package.swift" >/dev/null
+cmp -s "$SOURCE_ROOT/Dependencies/SPARKLE_LICENSE" "$SPARKLE_SOURCE/LICENSE" || {
+  echo "tracked Sparkle license notice differs from pinned Sparkle source" >&2
+  exit 1
+}
+
 mkdir -p "$SOURCE_ROOT/Dependencies/ares-source"
 (
   cd "$ARES_SOURCE"
   export COPYFILE_DISABLE=1
   tar -cf - --exclude='./.git' --exclude='.git' .
 ) | COPYFILE_DISABLE=1 tar -xf - -C "$SOURCE_ROOT/Dependencies/ares-source"
+mkdir -p "$SOURCE_ROOT/Dependencies/sparkle-source"
+(
+  cd "$SPARKLE_SOURCE"
+  export COPYFILE_DISABLE=1
+  tar -cf - --exclude='./.git' --exclude='.git' .
+) | COPYFILE_DISABLE=1 tar -xf - -C "$SOURCE_ROOT/Dependencies/sparkle-source"
 cat >"$SOURCE_ROOT/SOURCE_ARCHIVE_PROVENANCE.json" <<EOF
 {
-  "schema": "swan-song-source-v1",
+  "schema": "swan-song-source-v2",
   "sourceCommit": "$SOURCE_COMMIT",
-  "aresCommit": "$ARES_COMMIT"
+  "aresCommit": "$ARES_COMMIT",
+  "sparkleCommit": "$SPARKLE_COMMIT"
 }
 EOF
 COPYFILE_DISABLE=1 tar -cJf "$SOURCE_ARCHIVE" -C "$SOURCE_TEMP" \
@@ -146,6 +194,7 @@ COPYFILE_DISABLE=1 tar -cJf "$SOURCE_ARCHIVE" -C "$SOURCE_TEMP" \
 "$SCRIPT_DIR/check-source-archive-payload.sh" \
   --source-commit "$SOURCE_COMMIT" \
   --ares-commit "$ARES_COMMIT" \
+  --sparkle-commit "$SPARKLE_COMMIT" \
   "$SOURCE_ARCHIVE"
 
 verify_source_checkout
@@ -158,7 +207,7 @@ SOURCE_SHA256=$(shasum -a 256 "$SOURCE_ARCHIVE" | awk '{ print $1 }')
 
 cat >"$MANIFEST" <<EOF
 {
-  "schema": "swan-song-release-v1",
+  "schema": "swan-song-release-v2",
   "version": "$VERSION",
   "build": "$BUILD",
   "bundleIdentifier": "$BUNDLE_ID",
@@ -168,11 +217,18 @@ cat >"$MANIFEST" <<EOF
   "notarized": true,
   "sourceCommit": "$SOURCE_COMMIT",
   "aresCommit": "$ARES_COMMIT",
+  "sparkleCommit": "$SPARKLE_COMMIT",
   "macOSSDK": "$SDK_VERSION",
   "swiftVersion": "$SWIFT_VERSION",
   "appExecutableSHA256": "$APP_EXECUTABLE_SHA256",
   "routeRunnerSHA256": "$ROUTE_RUNNER_SHA256",
   "engineSHA256": "$ENGINE_SHA256",
+  "sparkleVersion": "$SPARKLE_VERSION",
+  "sparkleFrameworkExecutableSHA256": "$SPARKLE_FRAMEWORK_SHA256",
+  "sparkleAutoupdateSHA256": "$SPARKLE_AUTOUPDATE_SHA256",
+  "sparkleUpdaterSHA256": "$SPARKLE_UPDATER_SHA256",
+  "sparkleInstallerSHA256": "$SPARKLE_INSTALLER_SHA256",
+  "sparkleDownloaderSHA256": "$SPARKLE_DOWNLOADER_SHA256",
   "archive": "$ARCHIVE_NAME",
   "sha256": "$ARCHIVE_SHA256",
   "sourceArchive": "$SOURCE_ARCHIVE_NAME",

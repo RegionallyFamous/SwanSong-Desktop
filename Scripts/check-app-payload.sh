@@ -15,6 +15,7 @@ unexpected_file=$(find "$APP/Contents" -type f \
   ! -path "$APP/Contents/MacOS/SwanSong" \
   ! -path "$APP/Contents/Helpers/SwanSongRouteRunner" \
   ! -path "$APP/Contents/Frameworks/libSwanAresEngine.dylib" \
+  ! -path "$APP/Contents/Frameworks/Sparkle.framework/*" \
   ! -path "$APP/Contents/Resources/AppIcon.icns" \
   ! -path "$APP/Contents/Resources/AppIcon.png" \
   ! -path "$APP/Contents/Resources/AppIconCompact.png" \
@@ -22,7 +23,9 @@ unexpected_file=$(find "$APP/Contents" -type f \
   ! -path "$APP/Contents/Resources/PRIVACY.md" \
   ! -path "$APP/Contents/Resources/SUPPORT.md" \
   ! -path "$APP/Contents/Resources/THIRD_PARTY_NOTICES.md" \
+  ! -path "$APP/Contents/Resources/SPARKLE_LICENSE" \
   ! -path "$APP/Contents/Resources/ares.lock.json" \
+  ! -path "$APP/Contents/Resources/sparkle.lock.json" \
   ! -path "$APP/Contents/_CodeSignature/CodeResources" \
   -print -quit)
 if [ -n "$unexpected_file" ]; then
@@ -30,11 +33,8 @@ if [ -n "$unexpected_file" ]; then
   exit 1
 fi
 
-unexpected_link=$(find "$APP/Contents" -type l -print -quit)
-if [ -n "$unexpected_link" ]; then
-  echo "the app bundle contains an unexpected symbolic link: $unexpected_link" >&2
-  exit 1
-fi
+"$SCRIPT_DIR/check-sparkle-framework.sh" "$APP" >/dev/null
+"$SCRIPT_DIR/check-sparkle-configuration.sh" "$APP" >/dev/null
 
 if find "$APP/Contents" -type f \
   \( -iname '*boot.rom' \

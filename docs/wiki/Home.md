@@ -13,6 +13,9 @@ Intel.
   imports work from the Mac.
 - The signed first-party Homebrew Catalog installer is implemented but remains
   **Coming Soon**, has no production trust key, and makes no network request.
+- SwanSong app updates use Sparkle 2 with a signed GitHub-hosted feed and
+  immutable GitHub Release assets. Manual checks are available; automatic
+  checks/downloads and beta versions are opt-in, and system profiling is off.
 - Gamepads use the standard controls macOS exposes through GameController. USB
   and Bluetooth work when the device appears as a compatible controller; raw
   vendor-specific HID layouts are not guessed.
@@ -27,10 +30,12 @@ Intel.
   boundary.
 - [[Homebrew Catalog]] distinguishes implemented installer code from the
   deliberately unpublished production catalog.
+- [[App Updates]] documents native GitHub app updates, privacy controls,
+  signature verification, and the separate stable/beta channels.
 - [[Gamepads]] defines what “USB gamepad support” does and does not mean.
 - [[Build and Test]] lists the live app and acceptance commands.
-- [[Release Gates]] defines signing, source, artifact, Homebrew, and beta-channel
-  requirements.
+- [[Release Gates]] defines signing, source, artifact, app-update, Homebrew,
+  and beta-channel requirements.
 - [[0.2 Beta Testing]] is the tester checklist and known-limits page.
 
 Versioned release notes are authoritative for historical behavior. In

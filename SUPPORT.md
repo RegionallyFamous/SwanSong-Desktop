@@ -25,11 +25,30 @@ the private project workspace you link. Back up saves before deleting data.
 
 The current production configuration does not go online through the Homebrew
 page: it says **Coming Soon** and has no production catalog trust key. SwanSong
-makes no request at launch or in the background and has no accounts, analytics,
-telemetry, or automatic update checker. Opening a project, support, or release
-link is an explicit action that uses your default browser. Read
-[PRIVACY.md](PRIVACY.md) for current behavior and the disclosure that applies
-if a future release activates the first-party catalog.
+has no accounts, analytics, telemetry, crash-reporting service, or system
+profiling. **Check for Updates…** contacts SwanSong's signed GitHub-hosted
+Sparkle feed when you invoke it. **Automatically check for updates** and
+**Automatically download and install updates** are separate opt-ins; background
+update requests remain off unless you enable automatic checks. Opening a
+project, support, or **Open SwanSong Releases** link is an explicit action that
+uses your default browser. Read [PRIVACY.md](PRIVACY.md) for the exact
+app-update behavior and the
+disclosure that applies if a future release activates the first-party catalog.
+
+### How do app updates work?
+
+SwanSong's native updater checks a signed feed stored in this repository and
+downloads accepted updates from immutable, exact-tag SwanSong Desktop GitHub
+Release assets. Stable updates are the default. Enable **Include beta versions**
+only if you want prereleases; turning it off returns the updater to the stable
+channel. Sparkle updates SwanSong itself and is unrelated to Homebrew game
+installation or the separate Analogue Pocket core.
+
+If an update fails, leave the current app installed, confirm GitHub is
+reachable, and try **Check for Updates…** again. Do not bypass a signature,
+Developer ID, notarization, or Gatekeeper failure. Include the current version,
+target version, and exact updater error in a report, but never attach private
+games or saves.
 
 ### What can I import?
 

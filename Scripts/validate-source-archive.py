@@ -24,16 +24,27 @@ VERSIONED_ARCHIVE = re.compile(
     r"-source\.tar\.xz$"
 )
 COMMIT = re.compile(r"^[0-9a-f]{40}$")
+SPARKLE_REPOSITORY = "https://github.com/sparkle-project/Sparkle.git"
+SPARKLE_VERSION = "2.9.4"
+SPARKLE_ARTIFACT_SHA256 = (
+    "cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"
+)
 SOURCE_PROVENANCE = "SOURCE_ARCHIVE_PROVENANCE.json"
 REQUIRED_FILES = (
     SOURCE_PROVENANCE,
     "Package.swift",
+    "Package.resolved",
     "Engine/ares-headless.patch",
     "Dependencies/ares.lock.json",
+    "Dependencies/sparkle.lock.json",
+    "Dependencies/SPARKLE_LICENSE",
     "Sources/CSwanEngine/include/swan_engine.h",
     "Dependencies/ares-source/LICENSE",
     "Dependencies/ares-source/ares/ws/ws.cpp",
     "Dependencies/ares-source/ares/ws/system/system.cpp",
+    "Dependencies/sparkle-source/LICENSE",
+    "Dependencies/sparkle-source/Package.swift",
+    "Dependencies/sparkle-source/Sparkle/Sparkle.h",
 )
 
 
@@ -98,11 +109,18 @@ def json_object(payload: bytes, label: str) -> dict[str, object]:
     return value
 
 
-def validate(archive: Path, expected_source_commit: str, expected_ares_commit: str) -> None:
+def validate(
+    archive: Path,
+    expected_source_commit: str,
+    expected_ares_commit: str,
+    expected_sparkle_commit: str,
+) -> None:
     if not COMMIT.fullmatch(expected_source_commit):
         fail("expected source commit is not 40-character lowercase hexadecimal")
     if not COMMIT.fullmatch(expected_ares_commit):
         fail("expected ares commit is not 40-character lowercase hexadecimal")
+    if not COMMIT.fullmatch(expected_sparkle_commit):
+        fail("expected Sparkle commit is not 40-character lowercase hexadecimal")
     match = VERSIONED_ARCHIVE.fullmatch(archive.name)
     if not match:
         fail("archive filename is not a versioned SwanSong source archive")
@@ -128,6 +146,11 @@ def validate(archive: Path, expected_source_commit: str, expected_ares_commit: s
     root_is_directory = False
     source_provenance_payload: bytes | None = None
     ares_lock_payload: bytes | None = None
+    sparkle_lock_payload: bytes | None = None
+    sparkle_license_payload: bytes | None = None
+    sparkle_source_license_payload: bytes | None = None
+    sparkle_package_payload: bytes | None = None
+    package_resolved_payload: bytes | None = None
 
     try:
         with tarfile.open(archive, mode="r:xz") as source_tar:
@@ -173,6 +196,26 @@ def validate(archive: Path, expected_source_commit: str, expected_ares_commit: s
                     ares_lock_payload = bounded_member_payload(
                         source_tar, member, 64 * 1024
                     )
+                elif relative_path == "Dependencies/sparkle.lock.json":
+                    sparkle_lock_payload = bounded_member_payload(
+                        source_tar, member, 64 * 1024
+                    )
+                elif relative_path == "Dependencies/SPARKLE_LICENSE":
+                    sparkle_license_payload = bounded_member_payload(
+                        source_tar, member, 256 * 1024
+                    )
+                elif relative_path == "Dependencies/sparkle-source/LICENSE":
+                    sparkle_source_license_payload = bounded_member_payload(
+                        source_tar, member, 256 * 1024
+                    )
+                elif relative_path == "Dependencies/sparkle-source/Package.swift":
+                    sparkle_package_payload = bounded_member_payload(
+                        source_tar, member, 64 * 1024
+                    )
+                elif relative_path == "Package.resolved":
+                    package_resolved_payload = bounded_member_payload(
+                        source_tar, member, 64 * 1024
+                    )
     except (OSError, EOFError, lzma.LZMAError, tarfile.TarError) as error:
         fail(f"archive could not be parsed: {error}")
 
@@ -189,23 +232,75 @@ def validate(archive: Path, expected_source_commit: str, expected_ares_commit: s
     if missing_files:
         fail(f"archive is missing required source: {missing_files[0]}")
 
-    if source_provenance_payload is None or ares_lock_payload is None:
+    if (
+        source_provenance_payload is None
+        or ares_lock_payload is None
+        or sparkle_lock_payload is None
+        or sparkle_license_payload is None
+        or sparkle_source_license_payload is None
+        or sparkle_package_payload is None
+        or package_resolved_payload is None
+    ):
         fail("archive is missing source provenance metadata")
     source_provenance = json_object(
         source_provenance_payload, SOURCE_PROVENANCE
     )
-    if set(source_provenance) != {"schema", "sourceCommit", "aresCommit"}:
+    if set(source_provenance) != {
+        "schema",
+        "sourceCommit",
+        "aresCommit",
+        "sparkleCommit",
+    }:
         fail("source archive provenance has unexpected or missing fields")
-    if source_provenance.get("schema") != "swan-song-source-v1":
+    if source_provenance.get("schema") != "swan-song-source-v2":
         fail("source archive provenance has an unknown schema")
     if source_provenance.get("sourceCommit") != expected_source_commit:
         fail("source archive provenance does not match the manifest source commit")
     if source_provenance.get("aresCommit") != expected_ares_commit:
         fail("source archive provenance does not match the manifest ares commit")
+    if source_provenance.get("sparkleCommit") != expected_sparkle_commit:
+        fail("source archive provenance does not match the manifest Sparkle commit")
 
     ares_lock = json_object(ares_lock_payload, "Dependencies/ares.lock.json")
     if ares_lock.get("commit") != expected_ares_commit:
         fail("archived ares lock does not match the manifest ares commit")
+    sparkle_lock = json_object(
+        sparkle_lock_payload, "Dependencies/sparkle.lock.json"
+    )
+    expected_sparkle_lock = {
+        "repository": SPARKLE_REPOSITORY,
+        "version": SPARKLE_VERSION,
+        "commit": expected_sparkle_commit,
+        "swiftPackageArtifactSHA256": SPARKLE_ARTIFACT_SHA256,
+    }
+    if sparkle_lock != expected_sparkle_lock:
+        fail("archived Sparkle lock does not match the approved source and artifact")
+    if sparkle_license_payload != sparkle_source_license_payload:
+        fail("tracked Sparkle license differs from archived pinned source")
+    try:
+        sparkle_package = sparkle_package_payload.decode("utf-8")
+    except UnicodeDecodeError:
+        fail("archived Sparkle Package.swift is not UTF-8")
+    expected_package_lines = (
+        f'let version = "{SPARKLE_VERSION}"',
+        f'let tag = "{SPARKLE_VERSION}"',
+        f'let checksum = "{SPARKLE_ARTIFACT_SHA256}"',
+        "Sparkle-for-Swift-Package-Manager.zip",
+    )
+    if any(sparkle_package.count(line) != 1 for line in expected_package_lines):
+        fail("archived Sparkle manifest does not match the artifact checksum lock")
+    package_resolution = json_object(package_resolved_payload, "Package.resolved")
+    expected_pin = {
+        "identity": "sparkle",
+        "kind": "remoteSourceControl",
+        "location": SPARKLE_REPOSITORY,
+        "state": {
+            "revision": expected_sparkle_commit,
+            "version": SPARKLE_VERSION,
+        },
+    }
+    if package_resolution.get("pins") != [expected_pin]:
+        fail("archived Package.resolved does not match the Sparkle source lock")
 
 
 def main(argv: list[str]) -> int:
@@ -214,6 +309,7 @@ def main(argv: list[str]) -> int:
     )
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--ares-commit", required=True)
+    parser.add_argument("--sparkle-commit", required=True)
     parser.add_argument("archive", type=Path)
     arguments = parser.parse_args(argv[1:])
     archive = arguments.archive
@@ -221,7 +317,12 @@ def main(argv: list[str]) -> int:
         print(f"source archive not found: {archive}", file=sys.stderr)
         return 2
     try:
-        validate(archive, arguments.source_commit, arguments.ares_commit)
+        validate(
+            archive,
+            arguments.source_commit,
+            arguments.ares_commit,
+            arguments.sparkle_commit,
+        )
     except ValidationError as error:
         print(f"corresponding-source archive validation failed: {error}", file=sys.stderr)
         return 1

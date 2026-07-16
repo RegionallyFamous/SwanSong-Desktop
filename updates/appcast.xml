@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>SwanSong for macOS Updates</title>
+    <link>https://github.com/RegionallyFamous/SwanSong-Desktop</link>
+    <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
+    <language>en</language>
+  </channel>
+</rss>
+<!-- sparkle-signatures:
+edSignature: fcChPor2QnqAjjE2Rjys44TlxIEv4EU+5OPs7Udtn9SRwC/OVTpkHQ0pbTHTZn+hddYlei9ejnGrqEPis67yCw==
+length: 407
+-->

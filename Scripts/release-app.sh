@@ -123,6 +123,8 @@ RELEASE_ARES_PATCH="$RELEASE_DESKTOP_SOURCE/Engine/ares-headless.patch"
 RELEASE_BUILD_ROOT="$RELEASE_SOURCE_TEMP/build"
 SWAN_SIGNING_MODE="$SIGNING_MODE" \
 SWAN_UNIVERSAL="$UNIVERSAL" \
+SWAN_RELEASE_BUILD=1 \
+SWAN_SPARKLE_FRAMEWORK_SOURCE='' \
 SWAN_APP_OUTPUT_DIR="$OUTPUT_DIR" \
 ARES_SOURCE_DIR="$RELEASE_ARES_SOURCE" \
 ARES_BUILD_DIR="$RELEASE_BUILD_ROOT/ares" \
@@ -141,7 +143,14 @@ SWAN_EXPECTED_TEAM_ID="$EXPECTED_TEAM_ID" \
 
 if [ "$NOTARIZE" = "1" ]; then
   "$RELEASE_SCRIPT_DIR/notarize-app.sh" "$APP"
+  SPARKLE_REPOSITORY=$(find "$RELEASE_BUILD_ROOT/swift" \
+    -path '*/repositories/Sparkle-*' -type d -print -quit 2>/dev/null || true)
+  [ -n "$SPARKLE_REPOSITORY" ] || {
+    echo "the release build did not retain the pinned Sparkle Git objects" >&2
+    exit 1
+  }
   ARES_SOURCE_REPOSITORY="$ARES_REPOSITORY" \
+  SPARKLE_SOURCE_REPOSITORY="$SPARKLE_REPOSITORY" \
   SWAN_RELEASE_OUTPUT_DIR="$RELEASE_OUTPUT_DIR" \
     "$RELEASE_SCRIPT_DIR/package-release.sh" "$APP"
 else

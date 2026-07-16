@@ -27,11 +27,25 @@ a non-empty signed catalog and its public trust key pass the release gate.
 ## Does it collect anything?
 
 SwanSong has no accounts, ads, analytics, telemetry, crash-reporting service,
-or automatic update checks. It makes no request at launch or in the
-background. The current production Homebrew page says **Coming Soon** and makes
-no catalog or game-download request. Read [PRIVACY.md](../PRIVACY.md) for the
-complete current policy and the disclosure that applies if a future release
-activates the catalog.
+or system profiling. A manual update check contacts SwanSong's signed
+GitHub-hosted feed when you ask. Automatic checks and automatic
+download/install are separate opt-ins; background update requests remain off
+unless you enable automatic checks. The current production Homebrew page says
+**Coming Soon** and makes no catalog or game-download request. Read
+[PRIVACY.md](../PRIVACY.md) for the complete network boundary and the
+disclosure that applies if a future release activates the catalog.
+
+## Does the app update itself from GitHub?
+
+Yes. SwanSong uses Sparkle 2 for a native **Check for Updates…** workflow, but
+the signed appcast and all accepted app archives remain on GitHub. Stable is
+the default channel; **Include beta versions** opts into prereleases. Sparkle
+system profiling is disabled. See [App updates](APP_UPDATES.md) for security,
+privacy, and release details.
+
+This updates the macOS application only. Sparkle does not distribute homebrew
+games and does not update the separate Analogue Pocket core. Those are
+independent repositories, trust keys, and release lanes.
 
 ## Which Macs are supported?
 

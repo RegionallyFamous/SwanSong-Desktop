@@ -26,10 +26,11 @@ for WonderSwan's unusual control layout.
 
 ## Built for trust
 
-- **Private by default.** No analytics, ads, accounts, telemetry, automatic
-  update checks, or startup/background network requests. The current
-  fail-closed Homebrew Catalog is not published and makes no request; local
-  imports remain available.
+- **Private by default.** No analytics, ads, accounts, telemetry, crash-reporting
+  service, or system profiling. App-update checks are manual unless you opt in
+  to automatic checks; automatic update downloads are a separate opt-in. The
+  current fail-closed Homebrew Catalog is not published and makes no request;
+  local imports remain available.
 - **No BIOS hunt in 0.2.** SwanSong includes an independently written Open IPL
   for every supported system. The 0.2 app always uses Open IPL and never
   accepts, bundles, or downloads original system firmware. Historical 0.1.x
@@ -136,6 +137,26 @@ activate direct installation until its embedded public trust key validates a
 non-empty signed catalog already published by Regionally Famous; the release
 gate checks that exact production path. See the [privacy policy](PRIVACY.md)
 for the behavior that applies when a future release activates the catalog.
+
+SwanSong uses **Sparkle 2** for native app updates while keeping every public
+release on GitHub. **Check for Updates…** reads the signed production appcast
+at
+[`updates/appcast.xml`](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/updates/appcast.xml),
+and accepted updates download immutable, exact-tag GitHub Release assets. In
+Settings, **Automatically check for updates**, **Automatically download and
+install updates**, and **Include beta versions** are independent choices; the
+two automatic behaviors are off until the user opts in. Sparkle system
+profiling is disabled, and SwanSong sends no library, game, controller, or
+Translation Lab data with an update request. App updates are separate from the
+signed first-party Homebrew Catalog: Sparkle updates SwanSong itself and does
+not distribute games or update the Analogue Pocket core. See [App updates and
+privacy](PRIVACY.md#app-updates) for the exact network boundary.
+
+The tracked Sparkle dependency is fail-closed across `Package.swift`,
+`Package.resolved`, `Dependencies/sparkle.lock.json`, and the upstream binary-
+artifact checksum. Maintainers can verify that agreement with
+`Scripts/check-sparkle-dependency-lock.py` and exercise its drift rejections
+with `Scripts/selftest-sparkle-dependency-lock.sh`.
 
 The app now also includes a native Translation Lab for projects created by the
 private WonderSwan translation toolkit. It links a project without copying its

@@ -5,6 +5,7 @@ SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 TEMP_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/swan-song-package-snapshot.XXXXXX")
 REPOSITORY="$TEMP_ROOT/repository"
 ARES_REPOSITORY="$TEMP_ROOT/ares"
+SPARKLE_REPOSITORY="$TEMP_ROOT/sparkle"
 INPUT_APP="$TEMP_ROOT/input/SwanSong.app"
 DIST_DIR="$TEMP_ROOT/dist"
 STUB_BIN="$TEMP_ROOT/bin"
@@ -38,16 +39,40 @@ git -C "$ARES_REPOSITORY" add .
 git -C "$ARES_REPOSITORY" commit -q -m "Synthetic ares source"
 ARES_COMMIT=$(git -C "$ARES_REPOSITORY" rev-parse HEAD)
 
+git init -q "$SPARKLE_REPOSITORY"
+git -C "$SPARKLE_REPOSITORY" config user.name "SwanSong Selftest"
+git -C "$SPARKLE_REPOSITORY" config user.email "selftest@example.invalid"
+mkdir -p "$SPARKLE_REPOSITORY/Sparkle"
+printf 'synthetic Sparkle license\n' >"$SPARKLE_REPOSITORY/LICENSE"
+printf '// synthetic Sparkle package\n' >"$SPARKLE_REPOSITORY/Package.swift"
+printf '// synthetic Sparkle header\n' >"$SPARKLE_REPOSITORY/Sparkle/Sparkle.h"
+git -C "$SPARKLE_REPOSITORY" add .
+git -C "$SPARKLE_REPOSITORY" commit -q -m "Synthetic Sparkle source"
+SPARKLE_COMMIT=$(git -C "$SPARKLE_REPOSITORY" rev-parse HEAD)
+
 mkdir -p "$REPOSITORY/Scripts" "$REPOSITORY/Dependencies" \
   "$REPOSITORY/Engine" "$STUB_BIN" \
   "$INPUT_APP/Contents/MacOS" \
   "$INPUT_APP/Contents/Helpers" \
-  "$INPUT_APP/Contents/Frameworks"
+  "$INPUT_APP/Contents/Frameworks/Sparkle.framework/Versions/B/Resources" \
+  "$INPUT_APP/Contents/Frameworks/Sparkle.framework/Versions/B/Updater.app/Contents/MacOS" \
+  "$INPUT_APP/Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Installer.xpc/Contents/MacOS" \
+  "$INPUT_APP/Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Downloader.xpc/Contents/MacOS"
 cp "$SCRIPT_DIR/package-release.sh" "$REPOSITORY/Scripts/"
 cp "$SCRIPT_DIR/materialize-ares-source.sh" "$REPOSITORY/Scripts/"
+cp "$SCRIPT_DIR/materialize-sparkle-source.sh" "$REPOSITORY/Scripts/"
+cat >"$REPOSITORY/Scripts/check-sparkle-dependency-lock.py" <<'EOF'
+#!/usr/bin/env python3
+raise SystemExit(0)
+EOF
 cat >"$REPOSITORY/Dependencies/ares.lock.json" <<EOF
 {"commit":"$ARES_COMMIT"}
 EOF
+cat >"$REPOSITORY/Dependencies/sparkle.lock.json" <<EOF
+{"commit":"$SPARKLE_COMMIT"}
+EOF
+printf 'synthetic Sparkle license\n' \
+  >"$REPOSITORY/Dependencies/SPARKLE_LICENSE"
 cat >"$REPOSITORY/Engine/ares-headless.patch" <<'EOF'
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 --- a/CMakeLists.txt
@@ -174,6 +199,22 @@ EOF
 printf 'before concurrent mutation\n' >"$INPUT_APP/Contents/MacOS/SwanSong"
 printf 'route runner\n' >"$INPUT_APP/Contents/Helpers/SwanSongRouteRunner"
 printf 'engine\n' >"$INPUT_APP/Contents/Frameworks/libSwanAresEngine.dylib"
+SPARKLE_ROOT="$INPUT_APP/Contents/Frameworks/Sparkle.framework/Versions/B"
+cat >"$SPARKLE_ROOT/Resources/Info.plist" <<'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>CFBundleShortVersionString</key><string>2.9.4</string>
+</dict></plist>
+EOF
+printf 'sparkle framework\n' >"$SPARKLE_ROOT/Sparkle"
+printf 'sparkle autoupdate\n' >"$SPARKLE_ROOT/Autoupdate"
+printf 'sparkle updater\n' \
+  >"$SPARKLE_ROOT/Updater.app/Contents/MacOS/Updater"
+printf 'sparkle installer\n' \
+  >"$SPARKLE_ROOT/XPCServices/Installer.xpc/Contents/MacOS/Installer"
+printf 'sparkle downloader\n' \
+  >"$SPARKLE_ROOT/XPCServices/Downloader.xpc/Contents/MacOS/Downloader"
 
 git init -q "$REPOSITORY"
 git -C "$REPOSITORY" config user.name "SwanSong Selftest"
@@ -200,6 +241,7 @@ SELFTEST_PATCH_MUTATION_LOG="$PATCH_MUTATION_LOG" \
 SELFTEST_PATCH_RESTORE_PENDING="$TEMP_ROOT/restore-live-patch" \
 SWAN_RELEASE_OUTPUT_DIR="$DIST_DIR" \
 ARES_SOURCE_REPOSITORY="$ARES_REPOSITORY" \
+SPARKLE_SOURCE_REPOSITORY="$SPARKLE_REPOSITORY" \
   "$REPOSITORY/Scripts/package-release.sh" "$INPUT_APP" >/dev/null
 
 [ -f "$VERIFY_LOG" ] || {

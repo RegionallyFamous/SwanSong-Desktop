@@ -649,6 +649,7 @@ final class UISnapshotRegressionTests: XCTestCase {
         XCTAssertEqual(SettingsView.migratedTab(0), 0)
         XCTAssertEqual(SettingsView.migratedTab(1), 1)
         XCTAssertEqual(SettingsView.migratedTab(2), 0)
+        XCTAssertEqual(SettingsView.migratedTab(3), 3)
         XCTAssertEqual(SettingsView.migratedTab(-1), 0)
     }
 
