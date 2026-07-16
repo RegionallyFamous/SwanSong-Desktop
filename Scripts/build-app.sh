@@ -33,6 +33,14 @@ if [ -n "$(git -C "$MACOS_DIR" status --porcelain --untracked-files=all)" ]; the
   SOURCE_TREE_DIRTY=true
 fi
 
+python3 "$SCRIPT_DIR/check-sparkle-dependency-lock.py" \
+  --repository "$MACOS_DIR" >/dev/null
+if [ "${SWAN_RELEASE_BUILD:-0}" = "1" ] \
+  && [ -n "${SWAN_SPARKLE_FRAMEWORK_SOURCE:-}" ]; then
+  echo "release builds cannot override the pinned SwiftPM Sparkle artifact" >&2
+  exit 1
+fi
+
 find_signing_identity() {
   prefix=$1
   security find-identity -v -p codesigning 2>/dev/null | awk -v prefix="$prefix" '
@@ -127,6 +135,27 @@ sign_code() {
   fi
 }
 
+sign_sparkle_code() {
+  path=$1
+  preserve_entitlements=${2:-0}
+  preserve_flags=
+  if [ "$preserve_entitlements" = "1" ]; then
+    preserve_flags=--preserve-metadata=entitlements
+  fi
+  # Follow Sparkle's manual distribution-signing order and preserve metadata
+  # only for Downloader.xpc. In particular, retaining the artifact's ad-hoc
+  # Autoupdate identifier is not part of Sparkle's supported signing recipe.
+  if [ "$SIGNING_IDENTITY" = "-" ]; then
+    codesign --force --options runtime \
+      $preserve_flags \
+      --sign - "$path"
+  else
+    codesign --force --timestamp --options runtime \
+      $preserve_flags \
+      --sign "$SIGNING_IDENTITY" "$path"
+  fi
+}
+
 SWAN_UNIVERSAL="$UNIVERSAL" \
 ARES_BUILD_DIR="$BUILD_DIR" \
   "$SCRIPT_DIR/build-engine.sh" >/dev/null
@@ -192,6 +221,37 @@ else
     --configuration "$CONFIGURATION"
 fi
 
+if [ -n "${SWAN_SPARKLE_FRAMEWORK_SOURCE:-}" ]; then
+  SPARKLE_FRAMEWORK_SOURCE=$SWAN_SPARKLE_FRAMEWORK_SOURCE
+  SPARKLE_UPSTREAM_PACKAGE=
+else
+  if [ "$UNIVERSAL" = "1" ]; then
+    SPARKLE_ARTIFACT_ROOT="$ARM_SCRATCH/artifacts"
+    SPARKLE_CHECKOUT_ROOT="$ARM_SCRATCH/checkouts"
+  else
+    SPARKLE_ARTIFACT_ROOT="$MACOS_DIR/.build/artifacts"
+    SPARKLE_CHECKOUT_ROOT="$MACOS_DIR/.build/checkouts"
+  fi
+  SPARKLE_FRAMEWORK_SOURCE=$(find "$SPARKLE_ARTIFACT_ROOT" \
+    -path '*/Sparkle.xcframework/macos-arm64_x86_64/Sparkle.framework' \
+    -type d -print -quit 2>/dev/null || true)
+  SPARKLE_UPSTREAM_PACKAGE=$(find "$SPARKLE_CHECKOUT_ROOT" \
+    -path '*/Sparkle/Package.swift' -type f -print -quit 2>/dev/null || true)
+fi
+if [ ! -d "$SPARKLE_FRAMEWORK_SOURCE" ] \
+  || [ -L "$SPARKLE_FRAMEWORK_SOURCE" ]; then
+  echo "the Sparkle SwiftPM artifact framework could not be located" >&2
+  exit 1
+fi
+if [ -n "$SPARKLE_UPSTREAM_PACKAGE" ]; then
+  python3 "$SCRIPT_DIR/check-sparkle-dependency-lock.py" \
+    --repository "$MACOS_DIR" \
+    --upstream-package "$SPARKLE_UPSTREAM_PACKAGE" >/dev/null
+elif [ "${SWAN_RELEASE_BUILD:-0}" = "1" ]; then
+  echo "release build could not verify Sparkle's upstream artifact checksum" >&2
+  exit 1
+fi
+
 rm -rf "$APP_DIR"
 mkdir -p "$APP_DIR/Contents/MacOS"
 mkdir -p "$APP_DIR/Contents/Helpers"
@@ -213,6 +273,8 @@ else
     "$APP_DIR/Contents/Helpers/SwanSongRouteRunner"
 fi
 cp "$BUILD_DIR/libSwanAresEngine.dylib" "$APP_DIR/Contents/Frameworks/libSwanAresEngine.dylib"
+ditto "$SPARKLE_FRAMEWORK_SOURCE" \
+  "$APP_DIR/Contents/Frameworks/Sparkle.framework"
 cp "$MACOS_DIR/Packaging/Info.plist" "$APP_DIR/Contents/Info.plist"
 cp "$MACOS_DIR/Packaging/AppIcon.icns" "$APP_DIR/Contents/Resources/AppIcon.icns"
 cp "$MACOS_DIR/Packaging/AppIcon.png" "$APP_DIR/Contents/Resources/AppIcon.png"
@@ -223,8 +285,12 @@ cp "$MACOS_DIR/PRIVACY.md" "$APP_DIR/Contents/Resources/PRIVACY.md"
 cp "$MACOS_DIR/SUPPORT.md" "$APP_DIR/Contents/Resources/SUPPORT.md"
 cp "$MACOS_DIR/Dependencies/THIRD_PARTY_NOTICES.md" \
   "$APP_DIR/Contents/Resources/THIRD_PARTY_NOTICES.md"
+cp "$MACOS_DIR/Dependencies/SPARKLE_LICENSE" \
+  "$APP_DIR/Contents/Resources/SPARKLE_LICENSE"
 cp "$MACOS_DIR/Dependencies/ares.lock.json" \
   "$APP_DIR/Contents/Resources/ares.lock.json"
+cp "$MACOS_DIR/Dependencies/sparkle.lock.json" \
+  "$APP_DIR/Contents/Resources/sparkle.lock.json"
 
 list_rpaths() {
   otool -l "$1" | awk '
@@ -285,6 +351,12 @@ if [ "$UNIVERSAL" = "1" ]; then
   "$SCRIPT_DIR/verify-app-architectures.sh" "$APP_DIR"
 fi
 
+SPARKLE_VERSION_ROOT="$APP_DIR/Contents/Frameworks/Sparkle.framework/Versions/B"
+sign_sparkle_code "$SPARKLE_VERSION_ROOT/XPCServices/Installer.xpc"
+sign_sparkle_code "$SPARKLE_VERSION_ROOT/XPCServices/Downloader.xpc" 1
+sign_sparkle_code "$SPARKLE_VERSION_ROOT/Autoupdate"
+sign_sparkle_code "$SPARKLE_VERSION_ROOT/Updater.app"
+sign_sparkle_code "$APP_DIR/Contents/Frameworks/Sparkle.framework"
 sign_code "$APP_DIR/Contents/Frameworks/libSwanAresEngine.dylib"
 sign_code "$APP_DIR/Contents/Helpers/SwanSongRouteRunner"
 sign_code "$APP_DIR"

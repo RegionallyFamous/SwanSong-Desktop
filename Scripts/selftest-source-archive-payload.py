@@ -18,15 +18,22 @@ ROOT = f"SwanSong-{VERSION}-source"
 ARCHIVE_NAME = f"SwanSong-{VERSION}-source.tar.xz"
 SOURCE_COMMIT = "1" * 40
 ARES_COMMIT = "2" * 40
+SPARKLE_COMMIT = "4" * 40
 REQUIRED_FILES = (
     "SOURCE_ARCHIVE_PROVENANCE.json",
     "Package.swift",
+    "Package.resolved",
     "Engine/ares-headless.patch",
     "Dependencies/ares.lock.json",
+    "Dependencies/sparkle.lock.json",
+    "Dependencies/SPARKLE_LICENSE",
     "Sources/CSwanEngine/include/swan_engine.h",
     "Dependencies/ares-source/LICENSE",
     "Dependencies/ares-source/ares/ws/ws.cpp",
     "Dependencies/ares-source/ares/ws/system/system.cpp",
+    "Dependencies/sparkle-source/LICENSE",
+    "Dependencies/sparkle-source/Package.swift",
+    "Dependencies/sparkle-source/Sparkle/Sparkle.h",
 )
 
 
@@ -73,12 +80,37 @@ def valid_members() -> list[tuple[tarfile.TarInfo, io.BytesIO | None]]:
     for relative_path in REQUIRED_FILES:
         if relative_path == "SOURCE_ARCHIVE_PROVENANCE.json":
             payload = (
-                '{"schema":"swan-song-source-v1",'
+                '{"schema":"swan-song-source-v2",'
                 f'"sourceCommit":"{SOURCE_COMMIT}",'
-                f'"aresCommit":"{ARES_COMMIT}"}}\n'
+                f'"aresCommit":"{ARES_COMMIT}",'
+                f'"sparkleCommit":"{SPARKLE_COMMIT}"}}\n'
             ).encode()
         elif relative_path == "Dependencies/ares.lock.json":
             payload = f'{{"commit":"{ARES_COMMIT}"}}\n'.encode()
+        elif relative_path == "Dependencies/sparkle.lock.json":
+            payload = (
+                '{"repository":"https://github.com/sparkle-project/Sparkle.git",'
+                '"version":"2.9.4",'
+                f'"commit":"{SPARKLE_COMMIT}",'
+                '"swiftPackageArtifactSHA256":'
+                '"cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"}\n'
+            ).encode()
+        elif relative_path == "Dependencies/sparkle-source/Package.swift":
+            payload = (
+                'let version = "2.9.4"\n'
+                'let tag = "2.9.4"\n'
+                'let checksum = "cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"\n'
+                'let url = "Sparkle-for-Swift-Package-Manager.zip"\n'
+            ).encode()
+        elif relative_path == "Package.resolved":
+            payload = (
+                '{"pins":[{"identity":"sparkle",'
+                '"kind":"remoteSourceControl",'
+                '"location":"https://github.com/sparkle-project/Sparkle.git",'
+                '"state":{'
+                f'"revision":"{SPARKLE_COMMIT}",'
+                '"version":"2.9.4"}}]}\n'
+            ).encode()
         else:
             payload = b"source\n"
         members.append(regular(f"{ROOT}/{relative_path}", payload))
@@ -113,6 +145,8 @@ def run_validator(validator: Path, archive: Path) -> subprocess.CompletedProcess
             SOURCE_COMMIT,
             "--ares-commit",
             ARES_COMMIT,
+            "--sparkle-commit",
+            SPARKLE_COMMIT,
             str(archive),
         ],
         check=False,
@@ -185,9 +219,10 @@ def main() -> int:
                     valid_members(),
                     "SOURCE_ARCHIVE_PROVENANCE.json",
                     (
-                        '{"schema":"swan-song-source-v1",'
+                        '{"schema":"swan-song-source-v2",'
                         f'"sourceCommit":"{"3" * 40}",'
-                        f'"aresCommit":"{ARES_COMMIT}"}}\n'
+                        f'"aresCommit":"{ARES_COMMIT}",'
+                        f'"sparkleCommit":"{SPARKLE_COMMIT}"}}\n'
                     ).encode(),
                 ),
             )
@@ -199,6 +234,22 @@ def main() -> int:
                     valid_members(),
                     "Dependencies/ares.lock.json",
                     f'{{"commit":"{"3" * 40}"}}\n'.encode(),
+                ),
+            )
+        )
+        cases.append(
+            (
+                "a mismatched archived Sparkle lock",
+                replace_regular(
+                    valid_members(),
+                    "Dependencies/sparkle.lock.json",
+                    (
+                        '{"repository":"https://github.com/sparkle-project/Sparkle.git",'
+                        '"version":"2.9.4",'
+                        f'"commit":"{"3" * 40}",'
+                        '"swiftPackageArtifactSHA256":'
+                        '"cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"}\n'
+                    ).encode(),
                 ),
             )
         )

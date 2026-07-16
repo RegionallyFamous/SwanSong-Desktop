@@ -20,6 +20,10 @@ The project uses semantic versioning once a release is published.
   into the existing private managed library.
 - Added stable catalog identities so compatible homebrew updates preserve the
   game's library UUID, favorites, artwork, saves, states, and play history.
+- Added a native Sparkle 2 app updater backed by a signed appcast and immutable
+  SwanSong Desktop GitHub Release assets. Manual checks remain available while
+  automatic checks and automatic download/install are separate opt-ins;
+  testers can independently include beta updates.
 
 ### Security
 
@@ -33,12 +37,22 @@ The project uses semantic versioning once a release is published.
 - Blocked in-place updates when save or hardware contracts change, and blocked
   hash-changing Pocket Challenge V2 updates until program-flash migration can
   safely preserve user data.
+- Disabled Sparkle system profiling and bound accepted app updates to EdDSA-
+  signed feed entries, the public key in the signed app, and Developer ID
+  signed/notarized GitHub Release archives. The private update-signing key
+  remains in the trusted release Mac's Keychain and outside the repository.
+- Pinned Sparkle by exact version and source commit, added deterministic
+  signed-appcast publication and verification tools, and included its license
+  and locked source in official corresponding-source archives.
 
 ### Changed
 
 - Removed the remaining original-firmware import, storage, and override paths.
   WonderSwan, WonderSwan Color, SwanCrystal, and Pocket Challenge V2 games now
   use SwanSong Open IPL exclusively across the app and developer tools.
+- Replaced the browser-only Releases-page action with a native **Check for
+  Updates…** workflow. App updating remains independent of the first-party
+  Homebrew Catalog and never installs games or the Analogue Pocket core.
 
 ## [0.1.1] - 2026-07-15
 

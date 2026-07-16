@@ -1,0 +1,111 @@
+name: Publish Sparkle appcast
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version without the leading v (for example, 0.2.0)
+        required: true
+        type: string
+      channel:
+        description: Sparkle update channel
+        required: true
+        default: beta
+        type: choice
+        options:
+          - beta
+          - stable
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-sparkle-appcast
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: >-
+      github.repository == 'RegionallyFamous/SwanSong-Desktop' &&
+      github.ref == 'refs/heads/main'
+    runs-on: macos-15
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out reviewed main
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+
+      - name: Validate release inputs
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_CHANNEL: ${{ inputs.channel }}
+        run: |
+          set -euo pipefail
+          [[ "$RELEASE_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
+            echo "version must use X.Y.Z without a leading v" >&2
+            exit 64
+          }
+          case "$RELEASE_CHANNEL" in
+            stable|beta) ;;
+            *) echo "channel must be stable or beta" >&2; exit 64 ;;
+          esac
+          printf 'RELEASE_VERSION=%s\n' "$RELEASE_VERSION" >>"$GITHUB_ENV"
+          printf 'RELEASE_TAG=v%s\n' "$RELEASE_VERSION" >>"$GITHUB_ENV"
+
+      - name: Download immutable GitHub Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir dist
+          gh release download "$RELEASE_TAG" \
+            --repo RegionallyFamous/SwanSong-Desktop \
+            --dir dist \
+            --pattern "SwanSong-$RELEASE_VERSION-macOS-universal.zip" \
+            --pattern "SwanSong-$RELEASE_VERSION-source.tar.xz" \
+            --pattern "SwanSong-$RELEASE_VERSION-release.json" \
+            --pattern SHA256SUMS.txt
+
+      - name: Resolve the pinned Sparkle signer
+        run: |
+          set -euo pipefail
+          swift package resolve
+
+      - name: Sign and verify the appcast
+        env:
+          SPARKLE_ED25519_PRIVATE_KEY: ${{ secrets.SPARKLE_ED25519_PRIVATE_KEY }}
+          RELEASE_CHANNEL: ${{ inputs.channel }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$SPARKLE_ED25519_PRIVATE_KEY" ]]; then
+            echo "SPARKLE_ED25519_PRIVATE_KEY is not configured" >&2
+            exit 1
+          fi
+          ./Scripts/publish-sparkle-appcast.sh \
+            --archive "dist/SwanSong-$RELEASE_VERSION-macOS-universal.zip" \
+            --source-archive "dist/SwanSong-$RELEASE_VERSION-source.tar.xz" \
+            --manifest "dist/SwanSong-$RELEASE_VERSION-release.json" \
+            --checksums dist/SHA256SUMS.txt \
+            --release-tag "$RELEASE_TAG" \
+            --channel "$RELEASE_CHANNEL"
+
+      - name: Commit the review branch
+        run: |
+          set -euo pipefail
+          status=$(git status --porcelain --untracked-files=all)
+          if [[ "$status" != " M updates/appcast.xml" ]]; then
+            echo "publisher changed files other than updates/appcast.xml" >&2
+            git status --short
+            exit 1
+          fi
+          branch="sparkle-appcast/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git switch -c "$branch"
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -- updates/appcast.xml
+          git diff --cached --check
+          git commit -m "Publish Sparkle $RELEASE_VERSION $RELEASE_CHANNEL appcast"
+          git push origin "HEAD:refs/heads/$branch"
+          echo "Review and merge branch $branch to publish the signed GitHub feed."

@@ -39,6 +39,26 @@ the built-in startup path.
 If macOS identifies the app as unnotarized or asks you to bypass its security
 controls, stop. Development artifacts are not official public releases.
 
+## Updating an installed copy
+
+Choose **Check for Updates…** in SwanSong to use the native Sparkle updater.
+It reads SwanSong's signed appcast from this repository and downloads accepted
+updates only from immutable, exact-tag SwanSong Desktop GitHub Release assets.
+Stable releases are the default; **Include beta versions** is an explicit
+prerelease choice.
+
+**Automatically check for updates** and **Automatically download and install
+updates** are separate opt-ins in Settings. With automatic checks off, SwanSong
+makes no background app-update request. Sparkle system profiling is disabled.
+The existing app remains in place if feed, signature, download, installation,
+or relaunch validation fails. Do not bypass a Developer ID, notarization,
+Gatekeeper, or updater-signature error.
+
+The manual archive-and-checksum installation above remains available for
+offline verification, rollback, and recovery. Sparkle updates SwanSong itself;
+it does not install homebrew or update the separate Analogue Pocket core. See
+[App updates](APP_UPDATES.md) for the full trust and release contract.
+
 ## First game
 
 Choose **File > Open Game…** or drag a supported `.ws`, `.wsc`, `.pc2`,

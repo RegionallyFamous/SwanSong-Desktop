@@ -37,6 +37,24 @@ requires clean matching app provenance, and the source archive contains a
 generated provenance marker; its source and ares commits plus the archived
 ares lock must match the manifest and signed app.
 
+## Application updater
+
+SwanSong links the MIT-licensed Sparkle updater at the exact version, source
+revision, and repository recorded in
+[`Dependencies/sparkle.lock.json`](Dependencies/sparkle.lock.json) and
+`Package.resolved`. The complete upstream license and bundled third-party
+notices are preserved byte-for-byte in
+[`Dependencies/SPARKLE_LICENSE`](Dependencies/SPARKLE_LICENSE) and summarized
+in [`Dependencies/THIRD_PARTY_NOTICES.md`](Dependencies/THIRD_PARTY_NOTICES.md).
+
+Official source packaging materializes Sparkle from the pinned Git commit's
+immutable objects, checks the tracked license against that source, and includes
+the result under `Dependencies/sparkle-source`. The
+`swan-song-source-v2` provenance marker and `swan-song-release-v2` manifest
+record the same Sparkle commit. Validation requires the archived Sparkle lock,
+license, package manifest, public header, executable hashes, and commit to
+agree before the release or update feed can be published.
+
 ## Open test fixtures
 
 The checked-in files under [`testroms/`](testroms/) are the tracked open-source

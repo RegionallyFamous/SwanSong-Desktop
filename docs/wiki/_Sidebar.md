@@ -4,6 +4,7 @@
 - [[Architecture and Source Ownership]]
 - [[Open IPL]]
 - [[Homebrew Catalog]]
+- [[App Updates]]
 - [[Gamepads]]
 - [[Build and Test]]
 - [[Release Gates]]

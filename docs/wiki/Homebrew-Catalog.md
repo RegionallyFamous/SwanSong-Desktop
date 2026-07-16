@@ -10,6 +10,11 @@ authorized local homebrew.
 Direct GitHub installation is therefore not a shipped 0.2 beta feature. The
 installer code being present is not the same as a published, trusted catalog.
 
+SwanSong's Sparkle integration does not change this state. Sparkle updates
+`SwanSong.app` from the Desktop repository; it does not fetch this catalog or
+install WonderSwan software. The two paths use separate keys, schemas, consent,
+storage, validation, and release gates.
+
 ## Implemented installer path
 
 The current source includes:

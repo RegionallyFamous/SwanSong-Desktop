@@ -9,6 +9,7 @@ func appDiagnostic(_ message: String) {
 @MainActor
 private final class SwanSongAppDelegate: NSObject, NSApplicationDelegate {
     let model = AppModel()
+    let updater = SwanSongUpdater.shared
     private var terminationTask: Task<Void, Never>?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -87,7 +88,7 @@ struct SwanSongApp: App {
         .commands {
             SidebarCommands()
 
-            LegalSupportCommands()
+            LegalSupportCommands(updater: appDelegate.updater)
             CommandGroup(after: .toolbar) {
                 Button(showsLibraryInspector ? "Hide Game Inspector" : "Show Game Inspector") {
                     showsLibraryInspector.toggle()
@@ -404,7 +405,7 @@ struct SwanSongApp: App {
         }
 
         Settings {
-            SettingsView(model: model)
+            SettingsView(model: model, updater: appDelegate.updater)
                 .frame(
                     minWidth: 680,
                     idealWidth: 780,

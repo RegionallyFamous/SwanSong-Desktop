@@ -17,6 +17,10 @@ firmware, private screenshots, or Translation Lab evidence to a public report.
 - **Player behavior:** pause, reset, fast-forward, rotation, screenshots,
   saves, states, Time Ribbon, display profiles, and controller reconnection are
   useful beta targets.
+- **Native GitHub updates:** test manual checks, opt-in automatic checks and
+  download/install, stable-only behavior, beta-channel opt-in, cancellation,
+  relaunch, and current-version/no-update behavior. System profiling must
+  remain disabled.
 
 ## Deliberate boundaries
 
@@ -49,6 +53,9 @@ repository.
    it.
 5. Distinguish **Reached Video** from a complete-game **Works** verdict. A first
    rendered frame is not an accuracy or compatibility guarantee.
+6. For an updater result, record the installed version/build, selected channel,
+   automatic-check/download settings, offered version, and exact visible error.
+   Do not attach a downloaded archive that failed verification.
 
 Use the repository's [support guide](../SUPPORT.md) for the reporting checklist
 and [privacy policy](../PRIVACY.md) for the exact data boundary.

@@ -33,6 +33,13 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
 ./Scripts/check-av-soak.sh
 ./Scripts/check-app-runtime.sh
 ./Scripts/check-app-bundle.sh
+python3 ./Scripts/check-sparkle-dependency-lock.py \
+  --repository . \
+  --upstream-package .build/checkouts/Sparkle/Package.swift
+./Scripts/check-sparkle-configuration.sh
+./Scripts/check-sparkle-framework.sh
+./Scripts/selftest-sparkle-dependency-lock.sh
+./Scripts/selftest-sparkle-appcast.sh
 ./Scripts/check-ui-snapshots.sh
 ./Scripts/check-translation-lab.sh
 ./Scripts/check-pcv2-translation-lab.sh
@@ -42,9 +49,22 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
 Use the full Xcode developer directory for the complete Swift/XCTest lane;
 Command Line Tools alone may not provide XCTest.
 
+The Sparkle dependency check binds the exact `Package.swift` requirement,
+`Package.resolved` revision, tracked source lock, and upstream SwiftPM binary-
+artifact checksum. Its self-test proves that manifest, revision, and checksum
+drift fail closed; run `swift package resolve` first so the pinned upstream
+manifest is available under `.build/checkouts/Sparkle/`.
+
 Review changed UI PNGs visually; a script exit alone does not approve a new
 baseline. Fixture results prove bounded execution invariants, not commercial
 game compatibility or original-hardware accuracy.
+
+Updater acceptance additionally requires the production feed URL, public key,
+system-profiling disablement, off-by-default automatic settings, signed
+enclosure, URL policy, and stable/beta channel gates described in [[App Updates]].
+A release candidate must be exercised from the previous supported
+app against the real published GitHub archive. Source-only configuration tests
+cannot prove a complete update installation and relaunch.
 
 ## Private authorized-game gates
 

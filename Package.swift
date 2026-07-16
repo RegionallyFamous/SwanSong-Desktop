@@ -56,6 +56,12 @@ let package = Package(
         ),
         .library(name: "SwanSongKit", targets: ["SwanSongKit"]),
     ],
+    dependencies: [
+        .package(
+            url: "https://github.com/sparkle-project/Sparkle.git",
+            exact: "2.9.4"
+        ),
+    ],
     targets: [
         engineTarget,
         .target(
@@ -64,7 +70,10 @@ let package = Package(
         ),
         .executableTarget(
             name: "SwanSongApp",
-            dependencies: ["SwanSongKit"],
+            dependencies: [
+                "SwanSongKit",
+                .product(name: "Sparkle", package: "Sparkle"),
+            ],
             swiftSettings: [
                 .define("SWAN_SONG_AUTOMATION", .when(configuration: .debug)),
             ],

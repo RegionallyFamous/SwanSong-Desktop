@@ -15,11 +15,44 @@ xcrun notarytool store-credentials swan-song-notary
 The credential is stored in Keychain; it is never committed or passed to an
 agent, environment file, or build log.
 
+Provision the Sparkle EdDSA private seed once as the encrypted GitHub Actions
+repository secret `SPARKLE_ED25519_PRIVATE_KEY`. Commit only the matching
+base64 public key as `SUPublicEDKey` in `Packaging/Info.plist`, then verify that
+the signed app preserves that exact value. The manually dispatched publisher
+passes the masked secret to pinned Sparkle `sign_update` through standard
+input; pull requests and forks cannot trigger it. Never export the private
+update key into the repository, app bundle, source archive, release asset,
+build log, shell history, or workflow artifact. Because GitHub cannot reveal a
+saved secret, keep a separately protected offline recovery copy. Rotate the key
+only after an update authenticated by the existing key ships the replacement
+public key; losing or prematurely replacing it requires a manual app reinstall
+for deployed users.
+
+The production `SUFeedURL` is fixed to:
+
+`https://raw.githubusercontent.com/RegionallyFamous/SwanSong-Desktop/main/updates/appcast.xml`
+
+Sparkle system profiling must remain disabled. Changing the feed host, public
+key, or profiling policy is a security- and privacy-sensitive release change,
+not routine release metadata.
+
 ## Release gates
 
 1. Update `CHANGELOG.md`, versioned release notes, the beta testing guide when
    applicable, version, and build number.
-2. Confirm the bundle identifier and minimum macOS target.
+2. Confirm the bundle identifier, minimum macOS target, Sparkle dependency
+   pin, production feed URL, public update key, system-profiling disablement,
+   and off-by-default automatic check/download settings.
+   Resolve the package once, then bind the project manifest, resolution, source
+   lock, and Sparkle binary-artifact checksum and exercise the fail-closed
+   drift cases:
+
+   ```sh
+   python3 ./Scripts/check-sparkle-dependency-lock.py \
+     --repository . \
+     --upstream-package .build/checkouts/Sparkle/Package.swift
+   ./Scripts/selftest-sparkle-dependency-lock.sh
+   ```
 3. Verify the production Homebrew publication state:
 
    ```sh
@@ -34,7 +67,17 @@ agent, environment file, or build log.
    that advertises it as available. Never put the private signing key in this
    repository or on the catalog host.
 4. Run the engine, Swift, app runtime, UI, translation, architecture, payload,
-   and personally owned acceptance lanes appropriate to the release.
+   embedded-Sparkle-framework, and personally owned acceptance lanes
+   appropriate to the release. After building the app, verify the feed/key,
+   signed-feed and pre-extraction requirements, privacy defaults, build-number
+   policy, pinned framework, updater helper, XPC services, bundle identities,
+   symbolic-link structure, and absence of game/firmware-like payloads:
+
+   ```sh
+   ./Scripts/check-sparkle-configuration.sh .build/app/SwanSong.app
+   ./Scripts/check-sparkle-framework.sh .build/app/SwanSong.app
+   ```
+
    Run the complete Swift/XCTest package lane with full Xcode selected because
    Command Line Tools alone may not provide XCTest:
 
@@ -64,22 +107,27 @@ agent, environment file, or build log.
 
 8. Inspect `dist/`: the universal ZIP, corresponding-source archive,
    `SHA256SUMS.txt`, and release manifest must agree with the tag. The source
-   archive gate must also confirm that the sanitized ares tree contains no
-   upstream firmware binaries or Git metadata. Its Python 3 validator requires
-   one safe versioned root, regular files and directories only, the expected
-   SwanSong and ares source sentinels, unique canonical paths, and bounded
-   compressed size, entry count, per-file size, and total expanded size. It
-   rejects firmware-like binary extensions anywhere in the archive.
+   archive gate must also confirm that the sanitized ares tree and exact locked
+   Sparkle source are present without Git metadata; the Sparkle source must
+   include its license, package manifest, and public header. Its Python 3
+   validator requires one safe versioned root, regular files and directories
+   only, the expected SwanSong, ares, and Sparkle source sentinels, unique
+   canonical paths, and bounded compressed size, entry count, per-file size,
+   and total expanded size. It rejects firmware-like binary extensions
+   anywhere in the archive.
    `build-app.sh` embeds the source commit and dirty flag before signing.
    Packaging rejects a dirty or mismatched app and adds a source-archive
-   provenance marker. The archived marker and ares lock must match the
-   manifest commits and the signed app's metadata.
+   provenance marker. The archived marker plus ares and Sparkle locks must
+   match the manifest commits; the source and ares fields must also match the
+   signed app's metadata and embedded ares lock.
 
    ```sh
    ./Scripts/selftest-release-build-snapshot.sh
    ./Scripts/selftest-package-release-snapshots.sh
    ./Scripts/selftest-release-artifacts.sh
    ./Scripts/selftest-release-installer.sh
+   ./Scripts/selftest-sparkle-dependency-lock.sh
+   ./Scripts/selftest-sparkle-appcast.sh
    ./Scripts/verify-release-artifacts.sh \
      --archive dist/SwanSong-X.Y.Z-macOS-universal.zip \
      --source-archive dist/SwanSong-X.Y.Z-source.tar.xz \
@@ -91,8 +139,10 @@ agent, environment file, or build log.
    The verifier binds both archive names and hashes, app version and build,
    bundle identifier `com.regionallyfamous.swansong`, Developer ID team
    `3J8H48TP7P`, universal architectures, payload allowlist, notarization
-   ticket, Gatekeeper result, clean signed-app source provenance, and archived
-   source/ares commit provenance into one release decision. `release-app.sh`
+   ticket, Gatekeeper result, pinned Sparkle version, hashes of the Sparkle
+   framework/Autoupdate/Updater/Installer/Downloader executables, clean
+   signed-app source provenance, and archived source/ares/Sparkle commit
+   provenance into one release decision. `release-app.sh`
    compiles Engine, Swift package sources, resources, and build helpers from a
    private detached worktree at the captured source commit; private build
    caches and a commit-bound ares materialization prevent transient live-tree
@@ -103,12 +153,56 @@ agent, environment file, or build log.
    on a clean supported Mac before publishing. Mark a beta as a GitHub
    prerelease; do not let a test build replace the stable `/releases/latest`
    destination.
-10. Validate the repo-backed Wiki source, publish it from the merged exact
+10. Publish the GitHub release, download its assets back, and repeat the
+    checksum, manifest, Developer ID, notarization, Gatekeeper, architecture,
+    and source-provenance verification before updating the feed.
+    Manually run **Publish Sparkle appcast** from GitHub Actions on `main`. It
+    downloads all four public artifacts, resolves the pinned Sparkle signer,
+    and calls the tracked publisher with the masked repository secret. The
+    publisher reruns the full artifact verifier, signs the exact published app
+    archive and feed through standard input, verifies both signatures with
+    `SUPublicEDKey`, and atomically updates the tracked feed on a dedicated
+    review branch. A local invocation fails closed unless
+    `SPARKLE_ED25519_PRIVATE_KEY` is present:
+
+    ```sh
+    ./Scripts/publish-sparkle-appcast.sh \
+      --archive dist/SwanSong-X.Y.Z-macOS-universal.zip \
+      --source-archive dist/SwanSong-X.Y.Z-source.tar.xz \
+      --manifest dist/SwanSong-X.Y.Z-release.json \
+      --checksums dist/SHA256SUMS.txt \
+      --release-tag vX.Y.Z \
+      --channel stable
+    ```
+
+    Use `--channel beta` only for a GitHub prerelease. Review version/build,
+    minimum macOS, archive byte length, release notes, enclosure signature,
+    feed signature, and enclosure URL. Every enclosure must be immutable and
+    exact-tagged:
+
+    `https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/<tag>/...`
+
+    Stable releases omit the Sparkle channel. GitHub prereleases must use the
+    `beta` channel. Never reference a draft, branch archive, workflow artifact,
+    mutable `latest` URL, replaced asset, or third-party host. Review the
+    workflow-created branch only after the public enclosure has passed all
+    gates, then merge it to `main` so the production GitHub URL serves it.
+11. From the previous supported stable app, prove manual update discovery,
+    download, installation, relaunch, version transition, library preservation,
+    and current-version/no-update behavior. Prove opted-out clients make no
+    background check. Exercise opt-in automatic checks and automatic
+    download/install separately. For a beta, prove stable-only clients do not
+    offer it and clients with **Include beta versions** do. Also test an
+    unreachable feed, tampered EdDSA signature, interrupted download,
+    cancellation, and failed installation; every failure must retain the prior
+    working app. Confirm update HTTP traffic includes no system profile or
+    per-user/device identifier.
+12. Validate the repo-backed Wiki source, publish it from the merged exact
     `main` revision, then reclone the Wiki and verify every canonical page is
     byte-identical to `docs/wiki/`. Review Home, Sidebar navigation, internal
     links, and external repository links. The documented procedure is in
     `docs/WIKI_PUBLISHING.md`.
-11. Download the published app archive back from GitHub, verify its checksum,
+13. Download the published app archive back from GitHub, verify its checksum,
    install that exact archive on this release Mac, and launch it:
 
    ```sh
@@ -133,11 +227,18 @@ catalog cache without removing installed games. It deliberately retains the
 small Keychain high-water record; deleting that record as part of ordinary
 catalog cleanup would weaken signed-catalog rollback protection.
 
+The Sparkle release key and appcast are independent of the Homebrew Catalog
+key, detached catalog signature, consent, cache, and anti-rollback state.
+Sparkle updates `SwanSong.app` only. It must never be used to distribute games
+or update the separate Analogue Pocket core.
+
 ## Public release contents
 
 - versioned universal app ZIP created after stapling;
 - exact corresponding source archive with pinned ares source and integration
-  patch;
+  patch plus the exact locked Sparkle source and license;
 - SHA-256 checksums;
 - machine-readable version, toolchain, source, signing, and binary hashes;
-- human release notes, known limits, and install requirements.
+- human release notes, known limits, and install requirements; and
+- an EdDSA-signed Sparkle enclosure referenced by the reviewed GitHub-hosted
+  appcast after the immutable release archive is public and reverified.
