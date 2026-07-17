@@ -105,6 +105,10 @@ public struct TranslationFrameInputPlan: Codable, Equatable, Sendable {
         Array(inputMap.keys).sorted()
     }
 
+    public static func engineInput(named names: [String]) throws -> EngineInput {
+        try input(named: names)
+    }
+
     private static func input(named names: [String]) throws -> EngineInput {
         var result: EngineInput = []
         for name in names {
@@ -181,6 +185,47 @@ public struct TranslationVerifiedPairReport: Codable, Equatable, Sendable {
 }
 
 public enum TranslationLabAutomation {
+    /// Runs one exact frame plan from a clean Original boot, replays the
+    /// resulting route against both project roles, and publishes a single
+    /// immutable private pair only after both Capture Intake lanes succeed.
+    public static func capturePlan(
+        project: TranslationProject,
+        plan: TranslationFrameInputPlan
+    ) throws -> TranslationPersistedCaptureReport {
+        let recorded = try recordRoute(project: project, plan: plan)
+        let routeURL = URL(fileURLWithPath: recorded.routePath).standardizedFileURL
+        let routeData = try Data(contentsOf: routeURL, options: [.mappedIfSafe])
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let route = try decoder.decode(TranslationRoute.self, from: routeData)
+        let verified = try verifyPair(
+            project: project,
+            route: route,
+            routeURL: routeURL
+        )
+        let evidence = try TranslationEvidenceStore().listEvidence(project: project)
+        guard
+            let original = evidence.first(where: {
+                $0.artifact.name == verified.original.evidenceName
+            }),
+            let patched = evidence.first(where: {
+                $0.artifact.name == verified.patched.evidenceName
+            })
+        else {
+            throw TranslationLabError.invalidProject(
+                "the verified evidence pair disappeared before private pair publication"
+            )
+        }
+        return try TranslationPersistedCaptureStore.save(
+            project: project,
+            plan: plan,
+            route: route,
+            routeData: routeData,
+            original: original,
+            patched: patched
+        )
+    }
+
     public static func recordRoute(
         project: TranslationProject,
         plan: TranslationFrameInputPlan

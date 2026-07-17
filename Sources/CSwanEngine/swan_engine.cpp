@@ -2,7 +2,7 @@
 #include "swan_engine_backend.hpp"
 
 #ifndef SWAN_ENGINE_BUILD_ID
-#define SWAN_ENGINE_BUILD_ID "inspection-stub-swan-abi5"
+#define SWAN_ENGINE_BUILD_ID "inspection-stub-swan-abi6"
 #endif
 
 #include <algorithm>
@@ -467,6 +467,39 @@ swan_result_t swan_engine_restore_state(swan_engine_t* engine,
   return finish_backend_call(
       engine,
       engine->backend->restore_state(std::span<const uint8_t>(bytes, size), error),
+      std::move(error));
+}
+
+swan_result_t swan_engine_display_owner_probe(
+    swan_engine_t* engine,
+    const swan_display_rectangle_t* rectangle,
+    swan_display_owner_sample_t* out_samples,
+    size_t capacity,
+    size_t* out_count) {
+  if (!engine || !rectangle || !out_count ||
+      (!out_samples && capacity != 0) ||
+      rectangle->struct_size < sizeof(swan_display_rectangle_t) ||
+      rectangle->width == 0 || rectangle->height == 0) {
+    return SWAN_RESULT_INVALID_ARGUMENT;
+  }
+  if (!engine->loaded) return SWAN_RESULT_NOT_LOADED;
+  const size_t width = rectangle->width;
+  const size_t height = rectangle->height;
+  if (height > 4096u / width) return SWAN_RESULT_INVALID_ARGUMENT;
+  const size_t expected = width * height;
+  *out_count = 0;
+  if (out_samples && capacity < expected) {
+    engine->last_error = "display-provenance output buffer is too small";
+    return SWAN_RESULT_INVALID_ARGUMENT;
+  }
+  std::string error;
+  const auto output = out_samples
+      ? std::span<swan_display_owner_sample_t>(out_samples, capacity)
+      : std::span<swan_display_owner_sample_t>();
+  return finish_backend_call(
+      engine,
+      engine->backend->display_owner_probe(
+          *rectangle, output, *out_count, error),
       std::move(error));
 }
 

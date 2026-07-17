@@ -302,8 +302,16 @@ private struct SwanSongChecks {
                 engine.capabilities.contains(.pocketChallengeV2),
                 "ares Pocket Challenge V2 capability is missing"
             )
+            try expect(
+                engine.capabilities.contains(.displayProvenance),
+                "ares display provenance capability is missing"
+            )
         } else {
             try expect(!engine.capabilities.contains(.execution), "stub must not claim execution")
+            try expect(
+                !engine.capabilities.contains(.displayProvenance),
+                "stub must not claim display provenance"
+            )
             try expect(
                 engine.backendName == "inspection-only fallback",
                 "backend name mismatch"
@@ -1161,6 +1169,24 @@ private struct SwanSongChecks {
             try expect(frame.width > 0 && frame.height > 0, "live backend returned an empty frame")
             try expect(frame.pixels.count == frame.strideBytes * frame.height, "video byte count mismatch")
             try expect(audio.channels == 2 && audio.sampleRate == 48_000, "audio format mismatch")
+            let owner = try engine.displayOwnerProbe(
+                rectangle: EngineDisplayRectangle(x: 0, y: 0, width: 1, height: 1)
+            )
+            try expect(owner.count == 1, "display-owner probe returned the wrong sample count")
+            try expect(
+                owner[0].x == 0 && owner[0].y == 0,
+                "display-owner probe changed native coordinates"
+            )
+            for writer in [
+                owner[0].cellWriterPC,
+                owner[0].rasterWriterPC,
+                owner[0].paletteWriterPC,
+            ] {
+                try expect(
+                    writer == UInt32.max || writer <= 0x0f_ffff,
+                    "display-owner probe returned an invalid CPU writer"
+                )
+            }
             let ram = try engine.captureMemory(.internalRAM)
             try expect(ram.count == 16 * 1024, "mono internal RAM capture size mismatch")
             let persistence = try engine.capturePersistence()
@@ -1179,6 +1205,19 @@ private struct SwanSongChecks {
                 contentPixels(expectedReplay) == contentPixels(actualReplay),
                 "save-state replay changed the game framebuffer"
             )
+            do {
+                _ = try engine.displayOwnerProbe(
+                    rectangle: EngineDisplayRectangle(x: 0, y: 0, width: 1, height: 1)
+                )
+                throw CheckFailure(
+                    message: "display-owner probe claimed writer identity after save-state restore"
+                )
+            } catch let error as SwanEngineError {
+                try expect(
+                    error.code == Int32(SWAN_RESULT_UNSUPPORTED.rawValue),
+                    "restored display-owner probe returned the wrong error"
+                )
+            }
             var incompatible = state
             incompatible[5] ^= 0xff
             do {
@@ -3393,6 +3432,38 @@ private struct SwanSongChecks {
                 && canonicalRail.bgra8888.count == 224 * 144 * 4,
             "canonical game raster retained the hardware indicator rail"
         )
+        func makeVerticalRailFrame(railByte: UInt8) -> EngineVideoFrame {
+            let width = 144
+            let height = 237
+            let stride = width * 4
+            var pixels = Data(repeating: 0x42, count: stride * height)
+            for row in 0..<13 {
+                pixels.replaceSubrange(
+                    (row * stride)..<((row + 1) * stride),
+                    with: repeatElement(railByte, count: stride)
+                )
+            }
+            return EngineVideoFrame(
+                pixels: pixels,
+                width: width,
+                height: height,
+                strideBytes: stride,
+                isVertical: true,
+                number: 1
+            )
+        }
+        let verticalRailA = try TranslationRouteCheckpoint.canonicalGameRaster(
+            makeVerticalRailFrame(railByte: 0x11)
+        )
+        let verticalRailB = try TranslationRouteCheckpoint.canonicalGameRaster(
+            makeVerticalRailFrame(railByte: 0xee)
+        )
+        try expect(
+            verticalRailA.descriptor.width == 144
+                && verticalRailA.descriptor.height == 224
+                && verticalRailA.bgra8888 == verticalRailB.bgra8888,
+            "vertical canonical game raster retained the rotated hardware rail"
+        )
 
         let oneFrameRoute = try makeRoute(totalFrames: 1)
         let dimensionResult = try TranslationVisualDivergenceAnalyzer.analyze(
@@ -3665,7 +3736,7 @@ private struct SwanSongChecks {
             ),
             engine: TranslationRouteEngineIdentity(
                 backend: "ares",
-                buildID: "ares-public-fixture-swan-abi5"
+                buildID: "ares-public-fixture-swan-abi6"
             )
         )
         var recorder = TranslationRouteRecorder(

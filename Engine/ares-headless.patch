@@ -53,19 +53,45 @@ index 0c5247e..6cc4d77 100644
  add_subdirectory(cmake)
  return()
 diff --git a/ares/ares/platform.hpp b/ares/ares/platform.hpp
-index 029c8de9..c87a3238 100644
+index 029c8de9..1e49dd27 100644
 --- a/ares/ares/platform.hpp
 +++ b/ares/ares/platform.hpp
-@@ -25,6 +25,7 @@ struct Platform {
+@@ -13,6 +13,23 @@ enum class Event : u32 {
+   Shutdown
+ };
+ 
++struct WonderSwanDisplayProvenance {
++  u32 x;
++  u32 y;
++  u32 layer;
++  u32 sourceKind;
++  u32 cellAddress;
++  u32 cellAttributes;
++  u32 cellByteCount;
++  u32 tile;
++  u32 rasterAddress;
++  u32 rasterByteCount;
++  u32 palette;
++  u32 paletteColor;
++  u32 paletteAddress;
++  u32 paletteByteCount;
++};
++
+ struct Platform {
+   virtual auto attach(Node::Object) -> void {}
+   virtual auto detach(Node::Object) -> void {}
+@@ -25,6 +42,9 @@ struct Platform {
    virtual auto audio(Node::Audio::Stream) -> void {}
    virtual auto input(Node::Input::Input) -> void {}
    virtual auto cheat(u32 addr) -> maybe<u32> { return nothing; }
 +  virtual auto rtcTime() -> u64 { return chrono::timestamp(); }
++  virtual auto wonderSwanSourceWrite(u32 kind, u32 address, u32 writer) -> void {}
++  virtual auto wonderSwanDisplayProvenance(const WonderSwanDisplayProvenance&) -> void {}
  };
  
  extern Platform* platform;
 diff --git a/ares/ws/cartridge/rtc.cpp b/ares/ws/cartridge/rtc.cpp
-index f4ca9df5..8944ac3e 100644
+index f4ca9df5..df0fbb59 100644
 --- a/ares/ws/cartridge/rtc.cpp
 +++ b/ares/ws/cartridge/rtc.cpp
 @@ -11,7 +11,7 @@ auto Cartridge::RTC::load() -> void {
@@ -86,3 +112,245 @@ index f4ca9df5..8944ac3e 100644
    for(auto n : range(8)) ram.write(8 + n, timestamp.byte(n));
  }
  
+diff --git a/ares/ws/memory/memory.cpp b/ares/ws/memory/memory.cpp
+index 758e46f3..f0b373df 100644
+--- a/ares/ws/memory/memory.cpp
++++ b/ares/ws/memory/memory.cpp
+@@ -5,6 +5,14 @@ namespace ares::WonderSwan {
+ InternalRAM iram;
+ Bus bus;
+ 
++auto recordInternalRAMWrite(n16 address) -> void {
++  if(platform) {
++    platform->wonderSwanSourceWrite(
++      1, address, ((u32)cpu.PS << 4 | cpu.PC) & 0xfffff
++    );
++  }
++}
++
+ auto InternalRAM::power() -> void {
+   for(auto& byte : memory) byte = 0x00;
+   size = SoC::ASWAN() ? 16_KiB : 64_KiB;
+diff --git a/ares/ws/memory/memory.hpp b/ares/ws/memory/memory.hpp
+index 60d658ca..9d12588e 100644
+--- a/ares/ws/memory/memory.hpp
++++ b/ares/ws/memory/memory.hpp
+@@ -3,6 +3,8 @@ struct IO {
+   virtual auto writeIO(n16 address, n8 data) -> void = 0;
+ };
+ 
++auto recordInternalRAMWrite(n16 address) -> void;
++
+ struct InternalRAM {
+   auto power() -> void;
+   auto serialize(serializer&) -> void;
+@@ -14,6 +16,7 @@ struct InternalRAM {
+ 
+   auto write(n16 address, n8 data) -> void {
+     if(address >= size) return;
++    recordInternalRAMWrite(address);
+     memory[address & maskByte] = data;
+   }
+ 
+diff --git a/ares/ws/ppu/dac.cpp b/ares/ws/ppu/dac.cpp
+index eed6533a..5449a571 100644
+--- a/ares/ws/ppu/dac.cpp
++++ b/ares/ws/ppu/dac.cpp
+@@ -7,11 +7,19 @@ auto PPU::DAC::scanline(n8 y) -> void {
+ 
+ auto PPU::DAC::pixel(n8 x, n8 y) -> void {
+   n12 color = self.backdrop(backdrop[0]);
++  Output provenance{};
++  provenance.layer = 0;
++  provenance.sourceKind = 0;
++  provenance.cellAddress = 0xffff;
++  provenance.palette = backdrop[0];
++  provenance.paletteColor = backdrop[0];
++  provenance.paletteAddress = self.grayscale() ? 0x10001 : 0xfe00 + (backdrop[0] << 1);
++  provenance.paletteByteCount = self.grayscale() ? 1 : 2;
+ 
+   if(enable[0]) {
+-    if(screen1.output.valid) color = screen1.output.color;
+-    if(screen2.output.valid) color = screen2.output.color;
+-    if( sprite.output.valid) color =  sprite.output.color;
++    if(screen1.output.valid) color = screen1.output.color, provenance = screen1.output;
++    if(screen2.output.valid) color = screen2.output.color, provenance = screen2.output;
++    if( sprite.output.valid) color =  sprite.output.color, provenance = sprite.output;
+     if(Model::WonderSwanColor() && contrast[0] == 1) {
+       n4 b = color.bit(0, 3);
+       n4 g = color.bit(4, 7);
+@@ -24,6 +32,24 @@ auto PPU::DAC::pixel(n8 x, n8 y) -> void {
+   }
+ 
+   output[x] = color;
++  if(platform) {
++    platform->wonderSwanDisplayProvenance({
++      x,
++      y,
++      provenance.layer,
++      provenance.sourceKind,
++      provenance.cellAddress,
++      provenance.cellAttributes,
++      provenance.cellByteCount,
++      provenance.tile,
++      provenance.rasterAddress,
++      provenance.rasterByteCount,
++      provenance.palette,
++      provenance.paletteColor,
++      provenance.paletteAddress,
++      provenance.paletteByteCount,
++    });
++  }
+ }
+ 
+ auto PPU::DAC::power() -> void {
+diff --git a/ares/ws/ppu/io.cpp b/ares/ws/ppu/io.cpp
+index 10fe8446..6e8ac9d4 100644
+--- a/ares/ws/ppu/io.cpp
++++ b/ares/ws/ppu/io.cpp
+@@ -169,6 +169,11 @@ auto PPU::readIO(n16 address) -> n8 {
+ }
+ 
+ auto PPU::writeIO(n16 address, n8 data) -> void {
++  if(platform) {
++    platform->wonderSwanSourceWrite(
++      2, address, ((u32)cpu.PS << 4 | cpu.PC) & 0xfffff
++    );
++  }
+   switch(address) {
+ 
+   case 0x0000:  //DISP_CTRL
+diff --git a/ares/ws/ppu/memory.cpp b/ares/ws/ppu/memory.cpp
+index b3b48ff9..60c0ad24 100644
+--- a/ares/ws/ppu/memory.cpp
++++ b/ares/ws/ppu/memory.cpp
+@@ -30,6 +30,32 @@ auto PPU::fetch(n10 tile, n3 x, n3 y) -> n4 {
+   return color;
+ }
+ 
++auto PPU::rasterAddress(n10 tile, n3 x, n3 y) -> u32 {
++  tile &= grayscale() ? 0x1ff : 0x3ff;
++  if(depth() == 2) {
++    auto address = 0x2000 + (tile << 4) + (y << 1);
++    return packed() ? address + (x >> 2) : address;
++  }
++  auto address = 0x4000 + (tile << 5) + (y << 2);
++  return packed() ? address + (x >> 1) : address;
++}
++
++auto PPU::rasterByteCount() -> u32 {
++  if(packed()) return 1;
++  return depth() == 2 ? 2 : 4;
++}
++
++auto PPU::paletteAddress(n4 palette, n4 color) -> u32 {
++  if(grayscale()) {
++    return 0x10000 + 0x20 + (palette << 1) + ((color & 3) >> 1);
++  }
++  return 0xfe00 + (palette << 5) + (color << 1);
++}
++
++auto PPU::paletteByteCount() -> u32 {
++  return grayscale() ? 1 : 2;
++}
++
+ auto PPU::backdrop(n8 color) -> n12 {
+   if(grayscale()) {
+     n4 luma = 15 - pram.pool[color & 7];
+diff --git a/ares/ws/ppu/ppu.hpp b/ares/ws/ppu/ppu.hpp
+index fc612faa..79708002 100644
+--- a/ares/ws/ppu/ppu.hpp
++++ b/ares/ws/ppu/ppu.hpp
+@@ -74,6 +74,10 @@ struct PPU : Thread, IO {
+ 
+   //memory.cpp
+   auto fetch(n10 tile, n3 x, n3 y) -> n4;
++  auto rasterAddress(n10 tile, n3 x, n3 y) -> u32;
++  auto rasterByteCount() -> u32;
++  auto paletteAddress(n4 palette, n4 color) -> u32;
++  auto paletteByteCount() -> u32;
+   auto backdrop(n8 color) -> n12;
+   auto palette(n4 palette, n4 color) -> n12;
+   auto opaque(n4 palette, n4 color) -> n1;
+@@ -88,6 +92,18 @@ struct PPU : Thread, IO {
+   struct Output {
+     n1  valid;
+     n12 color;
++    u32 layer;
++    u32 sourceKind;
++    u32 cellAddress;
++    u32 cellAttributes;
++    u32 cellByteCount;
++    u32 tile;
++    u32 rasterAddress;
++    u32 rasterByteCount;
++    u32 palette;
++    u32 paletteColor;
++    u32 paletteAddress;
++    u32 paletteByteCount;
+   };
+ 
+   struct Window {
+diff --git a/ares/ws/ppu/screen.cpp b/ares/ws/ppu/screen.cpp
+index bd4931a0..aa1f0a69 100644
+--- a/ares/ws/ppu/screen.cpp
++++ b/ares/ws/ppu/screen.cpp
+@@ -29,6 +29,17 @@ auto PPU::Screen::screenPixel(n8 x, n8 y, Output& output) -> void {
+   if(self.opaque(palette, color)) {
+     output.valid = 1;
+     output.color = self.palette(palette, color);
++    output.sourceKind = 1;
++    output.cellAddress = address;
++    output.cellAttributes = attributes;
++    output.cellByteCount = 2;
++    output.tile = tile;
++    output.rasterAddress = self.rasterAddress(tile, x ^ hflip, y ^ vflip);
++    output.rasterByteCount = self.rasterByteCount();
++    output.palette = palette;
++    output.paletteColor = color;
++    output.paletteAddress = self.paletteAddress(palette, color);
++    output.paletteByteCount = self.paletteByteCount();
+   }
+ }
+ 
+@@ -44,6 +55,7 @@ auto PPU::Screen::pixel(n8 x, n8 y) -> void {
+ 
+ auto PPU::Screen1::pixel(n8 x, n8 y) -> void {
+   Screen::pixel(x, y);
++  if(output.valid) output.layer = 1;
+ }
+ 
+ auto PPU::Screen2::pixel(n8 x, n8 y) -> void {
+@@ -52,6 +64,7 @@ auto PPU::Screen2::pixel(n8 x, n8 y) -> void {
+     if(window.invert[0] == 0 && window.outside(x, y)) output = {};
+     if(window.invert[0] == 1 && window.inside (x, y)) output = {};
+   }
++  if(output.valid) output.layer = 2;
+ }
+ 
+ auto PPU::Screen::power() -> void {
+diff --git a/ares/ws/ppu/sprite.cpp b/ares/ws/ppu/sprite.cpp
+index b3fe3578..fb907b5b 100644
+--- a/ares/ws/ppu/sprite.cpp
++++ b/ares/ws/ppu/sprite.cpp
+@@ -58,6 +58,20 @@ auto PPU::Sprite::pixel(n8 x, n8 y) -> void {
+       if(!priority && screen2.output.valid) continue;
+       output.valid = 1;
+       output.color = self.palette(palette, color);
++      output.layer = 3;
++      output.sourceKind = 2;
++      output.cellAddress = 0xffff;
++      output.cellAttributes = attributes;
++      output.cellByteCount = 0;
++      output.tile = tile;
++      output.rasterAddress = self.rasterAddress(
++        tile, x - hoffset ^ hflip, y - voffset ^ vflip
++      );
++      output.rasterByteCount = self.rasterByteCount();
++      output.palette = palette;
++      output.paletteColor = color;
++      output.paletteAddress = self.paletteAddress(palette, color);
++      output.paletteByteCount = self.paletteByteCount();
+       break;
+     }
+   }

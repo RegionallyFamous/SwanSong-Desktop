@@ -37,6 +37,12 @@ The main execution path is:
 3. `CSwanEngine` is the backend-neutral C ABI between Swift and the engine.
 4. The live release backend links the pinned ares WonderSwan engine.
 
+ABI 6 adds one narrow display-provenance capability. During a clean replay the
+renderer can describe the final owner of a bounded native rectangle—layer,
+map/tile/raster/palette source, and last CPU writer—without exposing a general
+trace API. Writer history is intentionally not serialized in save states, so a
+restored session cannot claim provenance and must replay from boot.
+
 A stub backend exists for UI-only contributor work. It is not evidence that a
 game boots, that audio/video timing is healthy, or that a release is valid.
 Compatibility and release claims require the live ares backend.

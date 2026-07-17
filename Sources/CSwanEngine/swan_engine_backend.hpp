@@ -47,6 +47,11 @@ class SwanEngineBackend {
                                       std::string& error) = 0;
   virtual swan_result_t restore_state(std::span<const uint8_t> state,
                                       std::string& error) = 0;
+  virtual swan_result_t display_owner_probe(
+      const swan_display_rectangle_t& rectangle,
+      std::span<swan_display_owner_sample_t> samples,
+      size_t& count,
+      std::string& error) const = 0;
 };
 
 std::unique_ptr<SwanEngineBackend> create_swan_engine_backend(

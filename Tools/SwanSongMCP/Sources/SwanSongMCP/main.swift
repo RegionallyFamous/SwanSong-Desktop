@@ -93,11 +93,98 @@ private final class LiveAppClient: @unchecked Sendable {
     }
 }
 
+private final class ObservedPlayRegistry: @unchecked Sendable {
+    private let lock = NSLock()
+    private var session: TranslationObservedPlaySession?
+
+    func start(
+        project: TranslationProject,
+        role: TranslationROMRole
+    ) throws -> TranslationObservedPlayStartReport {
+        lock.lock()
+        defer { lock.unlock() }
+        guard session == nil else {
+            throw SwanSongMCPError(
+                message: "An observed-play session is already active. Finish or cancel it first."
+            )
+        }
+        try TranslationObservedPlaySession.markAbandonedSessionsInterrupted(
+            project: project
+        )
+        let created = try TranslationObservedPlaySession(project: project, role: role)
+        let report = try created.startReport()
+        session = created
+        return report
+    }
+
+    func resume(
+        project: TranslationProject,
+        sessionID: String
+    ) throws -> TranslationObservedPlayResumeReport {
+        lock.lock()
+        defer { lock.unlock() }
+        guard session == nil else {
+            throw SwanSongMCPError(
+                message: "An observed-play session is already active. Finish or cancel it first."
+            )
+        }
+        try TranslationObservedPlaySession.markAbandonedSessionsInterrupted(
+            project: project
+        )
+        let recovered = try TranslationObservedPlaySession.resume(
+            project: project,
+            sessionID: sessionID
+        )
+        let report = try recovered.resumeReport()
+        session = recovered
+        return report
+    }
+
+    func step(
+        sessionID: String,
+        inputs: [String],
+        frames: UInt64
+    ) throws -> TranslationObservedPlayStepCapture {
+        lock.lock()
+        defer { lock.unlock() }
+        let current = try requireSession(sessionID)
+        return try current.step(inputs: inputs, frames: frames)
+    }
+
+    func finish(sessionID: String) throws -> TranslationObservedPlayFinishReport {
+        lock.lock()
+        defer { lock.unlock() }
+        let current = try requireSession(sessionID)
+        let report = try current.finish()
+        session = nil
+        return report
+    }
+
+    func cancel(sessionID: String) throws -> TranslationObservedPlayCancelReport {
+        lock.lock()
+        defer { lock.unlock() }
+        let current = try requireSession(sessionID)
+        let report = try current.cancel()
+        session = nil
+        return report
+    }
+
+    private func requireSession(
+        _ sessionID: String
+    ) throws -> TranslationObservedPlaySession {
+        guard let session, session.id == sessionID else {
+            throw SwanSongMCPError(message: "That observed-play session is not active.")
+        }
+        return session
+    }
+}
+
 @main
 private enum SwanSongMCPServer {
     private static let protocolVersion = "2025-11-25"
     private static let liveApp = LiveAppClient()
-    private static let instructions = "Controls a running SwanSong app through its opt-in local bridge, runs guarded Translation Lab evidence workflows, and can execute bounded deterministic homebrew playtest plans through SwanSong's own engine. The playtest tool returns one rendered game frame and its final audio window only when confirmShareCapture=true. The server must never expose ROM, save, state, persistence, or RAM bytes. Translation tools only accept project-contained files and require confirmProjectWrites=true. A successful execution is observation evidence, not proof that a game mechanic passed; inspect the frame, listen to relevant audio, and exercise the declared game contract."
+    private static let observedPlay = ObservedPlayRegistry()
+    private static let instructions = "Controls a running SwanSong app through its opt-in local bridge, runs guarded Translation Lab evidence workflows, and can execute bounded deterministic homebrew playtest plans through SwanSong's own engine. Playtest and observed-step tools return a rendered game frame and audio window only when confirmShareCapture=true. The server must never expose ROM, save, state, persistence, RAM, tile, palette, map-cell, or CPU-writer values. Translation tools only accept project-contained files and require confirmProjectWrites=true. Persisted translation captures privately retain both native frames, the exact plan, deterministic context hashes, and pixel-diff evidence inside the selected project. Display-owner probes retain detailed source evidence privately and return only hashes and aggregate counts. Observed play holds a private ownership lease, atomically saves its cumulative from-boot plan after every step, marks crash-abandoned sessions interrupted, recovers only by clean-boot plan replay, and creates final evidence only by another clean-boot replay. A successful execution is observation evidence, not proof that a game mechanic passed; inspect the frame, listen to relevant audio, and exercise the declared game contract."
 
     static func main() {
         while let line = readLine(strippingNewline: true) {
@@ -234,6 +321,69 @@ private enum SwanSongMCPServer {
                 idempotent: true
             ),
             tool(
+                name: "swansong_observed_play_start",
+                title: "Start Observed Play",
+                description: "Start one isolated project-bound local play session using clean power-on, fixed RTC, and empty persistence. SwanSong creates a private cumulative from-boot plan immediately.",
+                inputSchema: observedPlayStartSchema(),
+                readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
+                name: "swansong_observed_play_resume",
+                title: "Resume Observed Play",
+                description: "Recover an interrupted private observed-play session by validating its saved manifest and exact cumulative plan, then replaying that plan from clean boot under the original fixed engine, RTC, ROM, and empty-persistence bindings.",
+                inputSchema: observedPlayResumeSchema(),
+                readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
+                name: "swansong_observed_play_step",
+                title: "Step Observed Play",
+                description: "Hold one visible native input combination for a bounded number of frames, return the resulting frame and audio window, and atomically extend the private cumulative from-boot plan. The cumulative session may exceed the one-shot 12,000-frame limit.",
+                inputSchema: observedPlayStepSchema(),
+                readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
+                name: "swansong_observed_play_finish",
+                title: "Finish Observed Play",
+                description: "Close the retained live state and replay its exact cumulative plan from clean boot against Original and Patched, producing the normal immutable paired capture evidence.",
+                inputSchema: observedPlayCloseSchema(),
+                readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
+                name: "swansong_observed_play_cancel",
+                title: "Cancel Observed Play",
+                description: "Close the retained live state without generating paired proof. The cumulative private plan and cancelled session manifest remain in the project.",
+                inputSchema: observedPlayCloseSchema(),
+                readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
+                name: "swansong_translation_capture_plan",
+                title: "Persist Translation Capture",
+                description: "Run one project-contained frame/input plan from Original, replay it against Patched, run Capture Intake for both roles, then privately persist both native frames, the exact plan, deterministic ROM/engine/RTC/persistence bindings, and the pixel-diff report as one immutable project pair.",
+                inputSchema: projectWriteSchema(fileKey: "planPath"),
+                readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
+                name: "swansong_translation_probe_rectangle",
+                title: "Probe Display Rectangle Owner",
+                description: "Replay a project-contained exact frame/input plan from clean power-on to one frame, privately retain per-pixel layer, map-cell, tile/raster, palette, and CPU-writer provenance, and return only source-free hashes and aggregate counts.",
+                inputSchema: displayOwnerProbeSchema(),
+                readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
                 name: "swansong_translation_record_route",
                 title: "Record Translation Route",
                 description: "Create an immutable route-v3 proof from a project-contained frame/input plan using Original, clean power-on, empty persistence, and SwanSong's fixed proof RTC. Writes a new route inside the project.",
@@ -297,6 +447,20 @@ private enum SwanSongMCPServer {
                 return try liveResult(method: "player", arguments: ["action": action])
             case "swansong_playtest_plan":
                 return try playtest(arguments: arguments)
+            case "swansong_observed_play_start":
+                return try observedPlayStart(arguments: arguments)
+            case "swansong_observed_play_resume":
+                return try observedPlayResume(arguments: arguments)
+            case "swansong_observed_play_step":
+                return try observedPlayStep(arguments: arguments)
+            case "swansong_observed_play_finish":
+                return try observedPlayFinish(arguments: arguments)
+            case "swansong_observed_play_cancel":
+                return try observedPlayCancel(arguments: arguments)
+            case "swansong_translation_capture_plan":
+                return try capturePlan(arguments: arguments)
+            case "swansong_translation_probe_rectangle":
+                return try probeRectangle(arguments: arguments)
             case "swansong_translation_record_route":
                 return try recordRoute(arguments: arguments)
             case "swansong_translation_verify_pair":
@@ -333,6 +497,62 @@ private enum SwanSongMCPServer {
         let plan = try JSONDecoder().decode(TranslationFrameInputPlan.self, from: planData)
         return try reportResult(
             TranslationLabAutomation.recordRoute(project: project, plan: plan)
+        )
+    }
+
+    private static func capturePlan(arguments: JSONDictionary) throws -> JSONDictionary {
+        let (project, fileURL) = try projectWriteArguments(
+            arguments,
+            fileKey: "planPath"
+        )
+        let planData = try readProjectFile(fileURL, project: project, maximumBytes: 1_048_576)
+        let plan = try JSONDecoder().decode(TranslationFrameInputPlan.self, from: planData)
+        return try reportResult(
+            TranslationLabAutomation.capturePlan(project: project, plan: plan)
+        )
+    }
+
+    private static func probeRectangle(arguments: JSONDictionary) throws -> JSONDictionary {
+        let (project, fileURL) = try projectWriteArguments(
+            arguments,
+            fileKey: "planPath"
+        )
+        guard let roleValue = arguments["role"] as? String,
+              let role = TranslationROMRole(rawValue: roleValue),
+              let frameNumber = arguments["frameIndex"] as? NSNumber,
+              let rectangle = arguments["rectangle"] as? JSONDictionary,
+              let x = rectangle["x"] as? NSNumber,
+              let y = rectangle["y"] as? NSNumber,
+              let width = rectangle["width"] as? NSNumber,
+              let height = rectangle["height"] as? NSNumber else {
+            throw SwanSongMCPError(
+                message: "role, frameIndex, and a complete rectangle are required"
+            )
+        }
+        let integers = [frameNumber, x, y, width, height].map(\.int64Value)
+        guard integers.allSatisfy({ $0 >= 0 }),
+              integers[1...].allSatisfy({ $0 <= Int64(UInt16.max) }) else {
+            throw SwanSongMCPError(message: "Probe coordinates and frameIndex are out of range.")
+        }
+        let planData = try readProjectFile(
+            fileURL,
+            project: project,
+            maximumBytes: 1_048_576
+        )
+        let plan = try JSONDecoder().decode(TranslationFrameInputPlan.self, from: planData)
+        return try reportResult(
+            TranslationDisplayOwnerProbe.run(
+                project: project,
+                role: role,
+                plan: plan,
+                frameIndex: UInt64(integers[0]),
+                rectangle: EngineDisplayRectangle(
+                    x: UInt16(integers[1]),
+                    y: UInt16(integers[2]),
+                    width: UInt16(integers[3]),
+                    height: UInt16(integers[4])
+                )
+            )
         )
     }
 
@@ -393,6 +613,112 @@ private enum SwanSongMCPServer {
             "structuredContent": reportObject,
             "isError": false,
         ]
+    }
+
+    private static func observedPlayStart(
+        arguments: JSONDictionary
+    ) throws -> JSONDictionary {
+        guard arguments["confirmProjectWrites"] as? Bool == true else {
+            throw SwanSongMCPError(
+                message: "Set confirmProjectWrites to true after confirming the selected project may receive a private observed-play session."
+            )
+        }
+        guard let projectPath = arguments["projectPath"] as? String,
+              let roleValue = arguments["role"] as? String,
+              let role = TranslationROMRole(rawValue: roleValue) else {
+            throw SwanSongMCPError(message: "projectPath and role are required")
+        }
+        let project = try TranslationProject(
+            projectDirectory: URL(fileURLWithPath: projectPath, isDirectory: true)
+        )
+        return try reportResult(observedPlay.start(project: project, role: role))
+    }
+
+    private static func observedPlayStep(
+        arguments: JSONDictionary
+    ) throws -> JSONDictionary {
+        guard arguments["confirmShareCapture"] as? Bool == true else {
+            throw SwanSongMCPError(
+                message: "Set confirmShareCapture to true after confirming that the observed frame and audio window may be shared with this MCP client."
+            )
+        }
+        guard let sessionID = arguments["sessionID"] as? String,
+              let inputs = arguments["inputs"] as? [String],
+              let frameNumber = arguments["frames"] as? NSNumber,
+              frameNumber.int64Value >= 1 else {
+            throw SwanSongMCPError(message: "sessionID, inputs, and frames are required")
+        }
+        let capture = try observedPlay.step(
+            sessionID: sessionID,
+            inputs: inputs,
+            frames: UInt64(frameNumber.int64Value)
+        )
+        let (reportText, reportObject) = try encodedReport(capture.report)
+        return [
+            "content": [
+                ["type": "text", "text": reportText],
+                [
+                    "type": "image",
+                    "data": capture.png.base64EncodedString(),
+                    "mimeType": "image/png",
+                ],
+                [
+                    "type": "audio",
+                    "data": capture.audioWAV.base64EncodedString(),
+                    "mimeType": "audio/wav",
+                ],
+            ],
+            "structuredContent": reportObject,
+            "isError": false,
+        ]
+    }
+
+    private static func observedPlayResume(
+        arguments: JSONDictionary
+    ) throws -> JSONDictionary {
+        guard arguments["confirmProjectWrites"] as? Bool == true else {
+            throw SwanSongMCPError(
+                message: "Set confirmProjectWrites to true before recovering and updating the private session."
+            )
+        }
+        guard let projectPath = arguments["projectPath"] as? String,
+              let sessionID = arguments["sessionID"] as? String else {
+            throw SwanSongMCPError(message: "projectPath and sessionID are required")
+        }
+        let project = try TranslationProject(
+            projectDirectory: URL(fileURLWithPath: projectPath, isDirectory: true)
+        )
+        return try reportResult(
+            observedPlay.resume(project: project, sessionID: sessionID)
+        )
+    }
+
+    private static func observedPlayFinish(
+        arguments: JSONDictionary
+    ) throws -> JSONDictionary {
+        guard arguments["confirmProjectWrites"] as? Bool == true else {
+            throw SwanSongMCPError(
+                message: "Set confirmProjectWrites to true before creating final paired evidence."
+            )
+        }
+        guard let sessionID = arguments["sessionID"] as? String else {
+            throw SwanSongMCPError(message: "sessionID is required")
+        }
+        return try reportResult(observedPlay.finish(sessionID: sessionID))
+    }
+
+    private static func observedPlayCancel(
+        arguments: JSONDictionary
+    ) throws -> JSONDictionary {
+        guard arguments["confirmProjectWrites"] as? Bool == true else {
+            throw SwanSongMCPError(
+                message: "Set confirmProjectWrites to true before closing the private session."
+            )
+        }
+        guard let sessionID = arguments["sessionID"] as? String else {
+            throw SwanSongMCPError(message: "sessionID is required")
+        }
+        return try reportResult(observedPlay.cancel(sessionID: sessionID))
     }
 
     private static func verifyPair(arguments: JSONDictionary) throws -> JSONDictionary {
@@ -525,6 +851,140 @@ private enum SwanSongMCPServer {
                 ],
             ],
             required: ["projectPath", fileKey, "confirmProjectWrites"]
+        )
+    }
+
+    private static func displayOwnerProbeSchema() -> JSONDictionary {
+        objectSchema(
+            properties: [
+                "projectPath": [
+                    "type": "string",
+                    "description": "Absolute path to a WonderSwan translation project.",
+                ],
+                "planPath": [
+                    "type": "string",
+                    "description": "Absolute path to an exact project-contained frame/input plan.",
+                ],
+                "role": enumSchema(
+                    TranslationROMRole.allCases.map(\.rawValue),
+                    description: "Project ROM role to replay privately."
+                ),
+                "frameIndex": [
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": Int(TranslationFrameInputPlan.maximumFrames - 1),
+                    "description": "Zero-based plan frame to probe after it is presented.",
+                ],
+                "rectangle": [
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": [
+                        "x": ["type": "integer", "minimum": 0, "maximum": 223],
+                        "y": ["type": "integer", "minimum": 0, "maximum": 223],
+                        "width": ["type": "integer", "minimum": 1, "maximum": 224],
+                        "height": ["type": "integer", "minimum": 1, "maximum": 224],
+                    ],
+                    "required": ["x", "y", "width", "height"],
+                ],
+                "confirmProjectWrites": [
+                    "type": "boolean",
+                    "description": "Must be true to permit private provenance artifacts inside this project.",
+                ],
+            ],
+            required: [
+                "projectPath",
+                "planPath",
+                "role",
+                "frameIndex",
+                "rectangle",
+                "confirmProjectWrites",
+            ]
+        )
+    }
+
+    private static func observedPlayStartSchema() -> JSONDictionary {
+        objectSchema(
+            properties: [
+                "projectPath": [
+                    "type": "string",
+                    "description": "Absolute path to a WonderSwan translation project.",
+                ],
+                "role": enumSchema(
+                    TranslationROMRole.allCases.map(\.rawValue),
+                    description: "Project ROM role visible during the retained session."
+                ),
+                "confirmProjectWrites": [
+                    "type": "boolean",
+                    "description": "Must be true to create and continuously update the private session plan.",
+                ],
+            ],
+            required: ["projectPath", "role", "confirmProjectWrites"]
+        )
+    }
+
+    private static func observedPlayStepSchema() -> JSONDictionary {
+        objectSchema(
+            properties: [
+                "sessionID": [
+                    "type": "string",
+                    "description": "Identifier returned by observed-play start.",
+                ],
+                "inputs": [
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": enumSchema(
+                        TranslationFrameInputPlan.acceptedInputNames,
+                        description: "Native input held for this visible step."
+                    ),
+                ],
+                "frames": [
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": Int(TranslationObservedPlaySession.maximumStepFrames),
+                    "description": "Frames to advance while holding this input combination.",
+                ],
+                "confirmShareCapture": [
+                    "type": "boolean",
+                    "description": "Must be true to return the resulting rendered frame and audio window.",
+                ],
+            ],
+            required: ["sessionID", "inputs", "frames", "confirmShareCapture"]
+        )
+    }
+
+    private static func observedPlayResumeSchema() -> JSONDictionary {
+        objectSchema(
+            properties: [
+                "projectPath": [
+                    "type": "string",
+                    "description": "Absolute path to the WonderSwan translation project containing the interrupted session.",
+                ],
+                "sessionID": [
+                    "type": "string",
+                    "description": "Identifier of a project-contained interrupted observed-play session.",
+                ],
+                "confirmProjectWrites": [
+                    "type": "boolean",
+                    "description": "Must be true to mark abandonment, replay the saved plan, and reactivate the private session.",
+                ],
+            ],
+            required: ["projectPath", "sessionID", "confirmProjectWrites"]
+        )
+    }
+
+    private static func observedPlayCloseSchema() -> JSONDictionary {
+        objectSchema(
+            properties: [
+                "sessionID": [
+                    "type": "string",
+                    "description": "Identifier returned by observed-play start.",
+                ],
+                "confirmProjectWrites": [
+                    "type": "boolean",
+                    "description": "Must be true to update the private session and, when finishing, emit paired evidence.",
+                ],
+            ],
+            required: ["sessionID", "confirmProjectWrites"]
         )
     }
 

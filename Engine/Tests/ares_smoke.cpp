@@ -1,5 +1,6 @@
 #include "swan_engine.h"
 
+#include <array>
 #include <cstdio>
 #include <cstring>
 #include <fstream>
@@ -38,15 +39,31 @@ int main(int argc, char** argv) {
   const uint64_t capabilities = swan_engine_capabilities(engine);
   const bool execution_ok = (capabilities & SWAN_CAPABILITY_EXECUTION) != 0;
   const bool audio_ok = (capabilities & SWAN_CAPABILITY_AUDIO) != 0;
+  const bool provenance_ok =
+      (capabilities & SWAN_CAPABILITY_DISPLAY_PROVENANCE) != 0;
 
-  if (!backend_ok || !execution_ok || !audio_ok) {
+  if (!backend_ok || !execution_ok || !audio_ok || !provenance_ok) {
     std::fputs("ares backend did not advertise the expected live capabilities\n", stderr);
     swan_engine_destroy(engine);
     return 1;
   }
 
-  if (argc > 1) {
-    std::ifstream input(argv[1], std::ios::binary);
+  const bool provenance_fixture =
+      argc == 4 && std::strcmp(argv[1], "--provenance-fixture") == 0;
+  const char* rom_path = provenance_fixture ? argv[2] : (argc > 1 ? argv[1] : nullptr);
+  const uint8_t expected_raster_bytes = provenance_fixture
+      ? static_cast<uint8_t>(std::strcmp(argv[3], "packed") == 0 ? 1 : 4)
+      : 0;
+  if (provenance_fixture &&
+      std::strcmp(argv[3], "packed") != 0 &&
+      std::strcmp(argv[3], "planar") != 0) {
+    std::fputs("provenance fixture mode must be planar or packed\n", stderr);
+    swan_engine_destroy(engine);
+    return 1;
+  }
+
+  if (rom_path) {
+    std::ifstream input(rom_path, std::ios::binary);
     std::vector<uint8_t> rom((std::istreambuf_iterator<char>(input)),
                              std::istreambuf_iterator<char>());
     if (rom.empty()) {
@@ -107,6 +124,108 @@ int main(int argc, char** argv) {
       }
     }
 
+    swan_display_rectangle_t rectangle{};
+    rectangle.struct_size = sizeof(rectangle);
+    rectangle.width = 2;
+    rectangle.height = 2;
+    std::array<swan_display_owner_sample_t, 4> owners{};
+    size_t owner_count = 0;
+    result = swan_engine_display_owner_probe(
+        engine, &rectangle, owners.data(), owners.size(), &owner_count);
+    if (result != SWAN_RESULT_OK || owner_count != owners.size()) {
+      std::fputs("ares did not return bounded display provenance\n", stderr);
+      swan_engine_destroy(engine);
+      return 1;
+    }
+    for (const auto& owner : owners) {
+      if (owner.struct_size != sizeof(owner) || owner.x >= 2 || owner.y >= 2 ||
+          owner.layer > SWAN_DISPLAY_LAYER_SPRITE ||
+          owner.source_kind > SWAN_DISPLAY_SOURCE_SPRITE) {
+        std::fputs("ares returned invalid display provenance\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+    }
+
+    if (provenance_fixture) {
+      const bool vertical = frame_width < frame_height;
+      struct ExpectedOwner {
+        uint16_t x;
+        uint16_t y;
+        swan_display_layer_t layer;
+        swan_display_source_kind_t source;
+        uint16_t cell;
+        uint16_t tile;
+        uint16_t raster;
+        uint8_t palette;
+        uint8_t color;
+        uint32_t palette_address;
+      };
+      const std::array<ExpectedOwner, 3> expected = vertical
+          ? std::array<ExpectedOwner, 3>{
+                ExpectedOwner{8, 215, SWAN_DISPLAY_LAYER_SCREEN_1,
+                              SWAN_DISPLAY_SOURCE_TILEMAP, 0x1842, 1,
+                              0x4020, 0, 1, 0xfe02},
+                ExpectedOwner{48, 159, SWAN_DISPLAY_LAYER_SCREEN_2,
+                              SWAN_DISPLAY_SOURCE_TILEMAP, 0x1190, 2,
+                              0x4040, 1, 2, 0xfe24},
+                ExpectedOwner{48, 95, SWAN_DISPLAY_LAYER_SPRITE,
+                              SWAN_DISPLAY_SOURCE_SPRITE, 0xffff, 3,
+                              0x4060, 8, 3, 0xff06},
+            }
+          : std::array<ExpectedOwner, 3>{
+                ExpectedOwner{8, 8, SWAN_DISPLAY_LAYER_SCREEN_1,
+                              SWAN_DISPLAY_SOURCE_TILEMAP, 0x1842, 1,
+                              0x4020, 0, 1, 0xfe02},
+                ExpectedOwner{64, 48, SWAN_DISPLAY_LAYER_SCREEN_2,
+                              SWAN_DISPLAY_SOURCE_TILEMAP, 0x1190, 2,
+                              0x4040, 1, 2, 0xfe24},
+                ExpectedOwner{128, 48, SWAN_DISPLAY_LAYER_SPRITE,
+                              SWAN_DISPLAY_SOURCE_SPRITE, 0xffff, 3,
+                              0x4060, 8, 3, 0xff06},
+            };
+
+      for (const auto& item : expected) {
+        swan_display_rectangle_t fixture_rectangle{};
+        fixture_rectangle.struct_size = sizeof(fixture_rectangle);
+        fixture_rectangle.x = item.x;
+        fixture_rectangle.y = item.y;
+        fixture_rectangle.width = 1;
+        fixture_rectangle.height = 1;
+        swan_display_owner_sample_t owner{};
+        size_t fixture_count = 0;
+        result = swan_engine_display_owner_probe(
+            engine, &fixture_rectangle, &owner, 1, &fixture_count);
+        const bool cell_writer_ok = item.source == SWAN_DISPLAY_SOURCE_SPRITE
+            ? owner.cell_writer_pc == UINT32_MAX
+            : owner.cell_writer_pc != UINT32_MAX;
+        if (result != SWAN_RESULT_OK || fixture_count != 1 ||
+            owner.x != item.x || owner.y != item.y ||
+            owner.layer != item.layer || owner.source_kind != item.source ||
+            owner.cell_address != item.cell || owner.tile_index != item.tile ||
+            owner.raster_address != item.raster ||
+            owner.raster_byte_count != expected_raster_bytes ||
+            owner.palette_index != item.palette ||
+            owner.palette_color != item.color ||
+            owner.palette_address != item.palette_address ||
+            owner.palette_byte_count != 2 || !cell_writer_ok ||
+            owner.raster_writer_pc == UINT32_MAX ||
+            owner.palette_writer_pc == UINT32_MAX) {
+          std::fprintf(
+              stderr,
+              "fixture provenance mismatch at %u,%u layer=%u source=%u cell=%04x tile=%u raster=%04x/%u palette=%u:%u@%05x writers=%05x/%05x/%05x\n",
+              item.x, item.y, owner.layer, owner.source_kind,
+              owner.cell_address, owner.tile_index, owner.raster_address,
+              owner.raster_byte_count, owner.palette_index,
+              owner.palette_color, owner.palette_address,
+              owner.cell_writer_pc, owner.raster_writer_pc,
+              owner.palette_writer_pc);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+      }
+    }
+
     size_t state_size = 0;
     result = swan_engine_capture_state(engine, nullptr, 0, &state_size);
     std::vector<uint8_t> state(state_size);
@@ -143,6 +262,14 @@ int main(int argc, char** argv) {
     (void)run_and_hash();
     const uint64_t expected_replay = run_and_hash();
     result = swan_engine_restore_state(engine, state.data(), state.size());
+    owner_count = 0;
+    const auto restored_probe = swan_engine_display_owner_probe(
+        engine, &rectangle, owners.data(), owners.size(), &owner_count);
+    if (result == SWAN_RESULT_OK && restored_probe != SWAN_RESULT_UNSUPPORTED) {
+      std::fputs("restored state incorrectly retained CPU-writer provenance\n", stderr);
+      swan_engine_destroy(engine);
+      return 1;
+    }
     if (result == SWAN_RESULT_OK) (void)run_and_hash();
     const uint64_t actual_replay = result == SWAN_RESULT_OK ? run_and_hash() : 0;
     if (!expected_replay || actual_replay != expected_replay) {

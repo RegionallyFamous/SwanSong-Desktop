@@ -94,6 +94,13 @@ expected = {
     "swansong_navigate",
     "swansong_player",
     "swansong_playtest_plan",
+    "swansong_observed_play_start",
+    "swansong_observed_play_resume",
+    "swansong_observed_play_step",
+    "swansong_observed_play_finish",
+    "swansong_observed_play_cancel",
+    "swansong_translation_capture_plan",
+    "swansong_translation_probe_rectangle",
     "swansong_translation_record_route",
     "swansong_translation_verify_pair",
 }
@@ -107,10 +114,25 @@ for name in expected - {"swansong_status"}:
 playtest_required = set(by_name["swansong_playtest_plan"]["inputSchema"].get("required", []))
 if playtest_required != {"romPath", "plan", "confirmShareCapture"}:
     raise SystemExit("SwanSong playtest tool lost its explicit capture-sharing contract")
-for name in ("swansong_translation_record_route", "swansong_translation_verify_pair"):
+for name in (
+    "swansong_observed_play_start",
+    "swansong_observed_play_resume",
+    "swansong_observed_play_finish",
+    "swansong_observed_play_cancel",
+    "swansong_translation_capture_plan",
+    "swansong_translation_probe_rectangle",
+    "swansong_translation_record_route",
+    "swansong_translation_verify_pair",
+):
     required = set(by_name[name]["inputSchema"].get("required", []))
     if "confirmProjectWrites" not in required:
         raise SystemExit(f"Translation MCP tool lost its explicit write confirmation: {name}")
+
+observed_step_required = set(
+    by_name["swansong_observed_play_step"]["inputSchema"].get("required", [])
+)
+if observed_step_required != {"sessionID", "inputs", "frames", "confirmShareCapture"}:
+    raise SystemExit("observed-play step lost its explicit capture-sharing contract")
 
 send({
     "jsonrpc": "2.0",
@@ -123,7 +145,16 @@ if playtest_guard.get("isError") is not True or "confirmShareCapture" not in jso
     raise SystemExit("SwanSong playtest runtime lost its capture-sharing guard")
 
 for request_id, name in enumerate(
-    ("swansong_translation_record_route", "swansong_translation_verify_pair"),
+    (
+        "swansong_observed_play_start",
+        "swansong_observed_play_resume",
+        "swansong_observed_play_finish",
+        "swansong_observed_play_cancel",
+        "swansong_translation_capture_plan",
+        "swansong_translation_probe_rectangle",
+        "swansong_translation_record_route",
+        "swansong_translation_verify_pair",
+    ),
     start=4,
 ):
     send({
@@ -136,6 +167,16 @@ for request_id, name in enumerate(
     if guard.get("isError") is not True or "confirmProjectWrites" not in json.dumps(guard):
         raise SystemExit(f"Translation MCP runtime lost its write guard: {name}")
 
+send({
+    "jsonrpc": "2.0",
+    "id": 20,
+    "method": "tools/call",
+    "params": {"name": "swansong_observed_play_step", "arguments": {}},
+})
+observed_step_guard = receive(20)["result"]
+if observed_step_guard.get("isError") is not True or "confirmShareCapture" not in json.dumps(observed_step_guard):
+    raise SystemExit("observed-play step runtime lost its capture-sharing guard")
+
 process.stdin.close()
 process.wait(timeout=5)
 if process.returncode != 0:
@@ -143,4 +184,4 @@ if process.returncode != 0:
     raise SystemExit(f"MCP server exited {process.returncode}: {stderr}")
 PY
 
-echo "PASS SwanSong MCP initializes with six scoped, correctly annotated tools"
+echo "PASS SwanSong MCP initializes with thirteen scoped, correctly annotated tools"

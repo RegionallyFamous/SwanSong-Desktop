@@ -159,9 +159,15 @@ remain private project analysis. Do not attach them to public issues.
 ## Automation and tests
 
 The signed app includes a deterministic `SwanSongRouteRunner`. Its legacy form
-replays an existing route and rejects route-bound identity drift. Two guarded
-project-writing commands close the autonomous evidence gap:
+replays an existing route and rejects route-bound identity drift. Four guarded
+project-writing commands close the autonomous evidence and diagnosis gaps:
 
+- `capture-plan` records and verifies a plan, then privately persists the exact
+  plan, both native endpoints, deterministic context bindings, and pixel diff
+  as one immutable pair;
+- `probe-rectangle` replays one role to an exact plan frame and privately saves
+  per-pixel layer, map-cell, tile/raster, palette, and CPU-writer provenance,
+  while its report exposes only hashes and counts;
 - `record-route` converts a versioned frame/input plan into route-v3 using
   Original, empty isolated persistence, the fixed proof RTC, and a native
   endpoint checkpoint; and
@@ -169,11 +175,27 @@ project-writing commands close the autonomous evidence gap:
   native endpoints, runs Capture Intake twice, re-indexes both immutable
   manifests, and returns their bound identities.
 
-Both commands require `--enable-debug-tools` and
+All four commands require `--enable-debug-tools` and
 `--allow-project-writes`. Inputs and optional report outputs must remain inside
 the project. They are also exposed by the opt-in local MCP server with an
 explicit `confirmProjectWrites` argument. Full schemas, commands, privacy
 boundaries, and failure behavior are in [[Local MCP and Automation]].
+
+The MCP server also supports one retained observed-play session for long
+tactical sequences. Each visible bounded step atomically extends a private
+from-boot plan. If the MCP host exits, Resume Observed Play validates the
+private bindings and replays that plan from boot before accepting another
+step. Finishing unloads the live session and sends that exact plan through
+`capture-plan`; live state or a save-state shortcut is never accepted as final
+evidence.
+
+The Evidence page also indexes these durable automation artifacts separately
+from ordinary checkpoint captures. It verifies paired captures, private
+display-owner probes, and observed sessions; reports their local size and
+integrity; can reveal or safely delete an inactive artifact; and exports a
+source-free JSON summary without frames, map/tile/palette sources, or writer
+identities. A low-disk warning appears before the hard safety reserve is
+reached, and every new durable artifact runs a free-space preflight.
 
 Translation Lab, Pocket Challenge V2, differential, route-runner, and
 focus/input test commands are documented in [[Build and Test]].
