@@ -17,13 +17,22 @@ BIN_DIR=$("$SCRIPT_DIR/swift-package.sh" build \
   --scratch-path "$MCP_BUILD" \
   --show-bin-path)
 
-python3 - "$BIN_DIR/SwanSongPlaytestMCP" <<'PY'
+python3 - \
+  "$BIN_DIR/SwanSongPlaytestMCP" \
+  "$MCP_PACKAGE/Package.resolved" \
+  "$ROOT/Package.resolved" <<'PY'
 import json
 import pathlib
 import subprocess
 import sys
 
 binary = pathlib.Path(sys.argv[1])
+resolution = json.loads(pathlib.Path(sys.argv[2]).read_text())
+root_resolution = json.loads(pathlib.Path(sys.argv[3]).read_text())
+pins = {pin.get("identity"): pin for pin in resolution.get("pins", [])}
+root_pins = {pin.get("identity"): pin for pin in root_resolution.get("pins", [])}
+if set(pins) != {"sparkle"} or pins["sparkle"].get("state") != root_pins.get("sparkle", {}).get("state"):
+    raise SystemExit("SwanSong playtest MCP gained a divergent remote dependency")
 process = subprocess.Popen(
     [str(binary)], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
     stderr=subprocess.PIPE, text=True,
@@ -46,6 +55,8 @@ initialized = exchange({
     "params": {"protocolVersion": "2025-11-25", "capabilities": {},
                "clientInfo": {"name": "SwanSongPlaytestSelfTest", "version": "1"}},
 })["result"]
+if initialized.get("protocolVersion") != "2025-11-25":
+    raise SystemExit("SwanSong playtest MCP protocol version changed")
 if initialized["serverInfo"]["name"] != "swansong-playtester":
     raise SystemExit("unexpected SwanSong playtest MCP identity")
 tools = exchange({
@@ -53,6 +64,9 @@ tools = exchange({
 })["result"]["tools"]
 if [tool["name"] for tool in tools] != ["swansong_playtest_plan"]:
     raise SystemExit("unexpected SwanSong playtest tool set")
+annotations = tools[0].get("annotations", {})
+if annotations.get("readOnlyHint") is not False or annotations.get("destructiveHint") is not False:
+    raise SystemExit("SwanSong playtest MCP annotations changed")
 required = set(tools[0]["inputSchema"].get("required", []))
 if required != {"romPath", "plan", "confirmShareCapture"}:
     raise SystemExit("playtest tool lost its explicit media-sharing contract")

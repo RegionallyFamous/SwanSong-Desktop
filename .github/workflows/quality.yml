@@ -55,7 +55,10 @@ jobs:
         run: ./Scripts/swift-package.sh run --package-path . SwanSongChecks
 
       - name: Check local MCP protocol surface
-        run: ./Scripts/check-mcp-server.sh
+        run: |
+          set -eu
+          ./Scripts/check-mcp-server.sh
+          ./Scripts/check-playtest-mcp-server.sh
 
       - name: Check fail-closed production configuration
         run: |
@@ -94,7 +97,10 @@ jobs:
         run: ./Scripts/check-compatibility-matrix.sh
 
       - name: Run guarded Translation Lab automation CLI
-        run: ./Scripts/check-translation-automation-cli.sh
+        run: |
+          set -eu
+          ./Scripts/check-playtest-cli.sh
+          ./Scripts/check-translation-automation-cli.sh
 
       - name: Build and inspect universal application
         run: |

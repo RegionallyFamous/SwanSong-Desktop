@@ -9,6 +9,9 @@ The server uses stdio and is intended for local Codex playtesting. It never
 returns ROM, save, state, persistence, or RAM bytes. Media is returned only
 when `confirmShareCapture` is `true`.
 
+Its small STDIO JSON-RPC adapter has no separate runtime dependency, so it
+builds with SwanSong's Xcode 16.2 release floor as well as current Xcode.
+
 Run the protocol check from the repository root:
 
 ```sh
