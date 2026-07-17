@@ -6,6 +6,17 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.3.1</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.3.1</link>
+      <description>This signed update is distributed through the official SwanSong GitHub release. Open the release page for complete notes and checksums.</description>
+      <pubDate>Fri, 17 Jul 2026 09:49:11 -0500</pubDate>
+      <sparkle:version>5</sparkle:version>
+      <sparkle:shortVersionString>0.3.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:channel>beta</sparkle:channel>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.3.1/SwanSong-0.3.1-macOS-universal.zip" length="19330110" type="application/octet-stream" sparkle:edSignature="i17F7tAlVtN/7ab7JzfZ0OKpf6mwhrM7B6EJTilRyd9IZTKjkQaTcbYe0mx+oP3yhvscE+YUJkfaQ6NiKs0WCw==" />
+    </item>
+    <item>
       <title>SwanSong 0.3.0</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.3.0</link>
       <description>This signed update is distributed through the official SwanSong GitHub release. Open the release page for complete notes and checksums.</description>
@@ -30,6 +41,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: u8eeq3GDKUuYXLD8uiGiiH9LQRQDzNuauegH+XBDSFR7AJX4mOBUIJ49IdeX1xuy/2tphbf0F5t7uYN5ZUgMBw==
-length: 2221
+edSignature: UGKKBwvKppmA1J1qycAGyTxcAHV0TuXTTEh37OCua0/sqXRf0KLGWPeLzhmKHvlEuYPrGt0zc8EoSNQ2PjSuAg==
+length: 3128
 -->
