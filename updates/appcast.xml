@@ -1,13 +1,24 @@
 <?xml version='1.0' encoding='utf-8'?>
-<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
   <channel>
     <title>SwanSong for macOS Updates</title>
     <link>https://github.com/RegionallyFamous/SwanSong-Desktop</link>
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
+    <item>
+      <title>SwanSong 0.2.0</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.2.0</link>
+      <description>This signed update is distributed through the official SwanSong GitHub release. Open the release page for complete notes and checksums.</description>
+      <pubDate>Thu, 16 Jul 2026 18:15:32 -0500</pubDate>
+      <sparkle:version>3</sparkle:version>
+      <sparkle:shortVersionString>0.2.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:channel>beta</sparkle:channel>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.2.0/SwanSong-0.2.0-macOS-universal.zip" length="14569902" type="application/octet-stream" sparkle:edSignature="3TlLRr8Ujzj/bVkH9X8Mdme1kkjEutr3u7RIEyRUJ68mUwK+afqMmerPfm1RHzqefJeRNlKGb6r0xmPvHWkvAg==" />
+    </item>
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: fcChPor2QnqAjjE2Rjys44TlxIEv4EU+5OPs7Udtn9SRwC/OVTpkHQ0pbTHTZn+hddYlei9ejnGrqEPis67yCw==
-length: 407
+edSignature: 0eBQWAIhpxjXeWO4ZQJgVrCKBj4m9DUxIgy/whWzFK1+7eo2Q5QsyLGRlniktkRhs6KDrKzYoGc/hLDxgiH/Dw==
+length: 1314
 -->
