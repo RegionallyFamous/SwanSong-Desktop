@@ -3,6 +3,7 @@
 - [[Home]]
 - [[Playing and Library]]
 - [[Translation Lab]]
+- [[Local MCP and Automation]]
 - [[Analogue Pocket SD Setup]]
 - [[Gamepads]]
 - [[Open IPL]]

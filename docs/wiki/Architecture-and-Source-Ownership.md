@@ -71,3 +71,16 @@ deterministic regeneration script all live in this repository:
 
 Generated icon outputs are reviewed and committed so release builds do not
 depend on an untracked design file or an external asset service.
+
+## Local MCP boundary
+
+`SwanSongMCP` is a separate local STDIO executable built with the official,
+pinned Swift MCP SDK. It has no inbound network listener. Live-app requests
+cross a token-authenticated Distributed Notification Center bridge and are
+handled on SwanSong's main actor through a fixed method allowlist.
+
+The bridge returns coarse app state and accepts only navigation or playback of
+the already selected game. Translation automation bypasses the UI bridge and
+calls `SwanSongKit` proof/evidence primitives directly, but restricts every
+input to the selected project and requires an explicit project-write
+confirmation. See [[Local MCP and Automation]].

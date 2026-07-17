@@ -41,6 +41,9 @@ from the running app with open or clean-room fixtures.
 - Empty states contain one title, one sentence, and one primary action.
 - Test Dark, Light, Increase Contrast, Reduce Transparency, VoiceOver, Full
   Keyboard Access, 820/1040/1440-point widths, and inactive-window appearance.
+- Keep the system app-icon master and every ICNS representation opaque and
+  full-bleed. macOS owns the rounded mask. Pre-masked transparency is reserved
+  for the separate compact mark used inside SwanSong.
 
 ## Apple references
 

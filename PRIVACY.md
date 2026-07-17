@@ -43,6 +43,26 @@ app/engine identity, controller name, frame numbers and geometry, input masks,
 focus state, and timing. It does not contain ROM, save, RAM, persistence, or
 framebuffer bytes.
 
+Optional local MCP control is also off by default. When enabled, SwanSong
+creates a random bearer token in its Application Support folder with
+user-only permissions and accepts a small allowlist of messages within the
+current macOS login session. The live bridge can return section, library
+count, and playback readiness or control navigation and the already-selected
+game. It does not return game titles, paths, ROMs, saves, states, RAM,
+screenshots, inputs, or logs. Turning the setting off revokes the token. The
+separate headless playtest tool can return one rendered game screenshot, audio
+activity and fingerprints, exact input-plan metadata, the ROM digest and
+checksum, and engine identity only when the caller explicitly sets
+`confirmShareCapture: true`; it never returns ROM, save, state, persistence, or
+RAM bytes and does not require the live app bridge.
+
+The separate Translation Lab MCP tools can create route and evidence files
+only inside an explicitly supplied project and return project paths, digests,
+and evidence identifiers to the connected MCP client. They do not return ROM,
+state, RAM, persistence, or framebuffer bytes. SwanSong makes no network
+request for MCP, but an AI client may transmit tool arguments and results to
+its own service under that client's privacy policy.
+
 ## Files you provide
 
 The SwanSong app bundle contains no games. SwanSong Open IPL is built-in

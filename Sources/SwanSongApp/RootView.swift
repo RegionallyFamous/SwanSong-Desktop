@@ -10271,6 +10271,16 @@ struct SettingsView: View {
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
                 }
+                Section("Local Automation") {
+                    Toggle("Allow local MCP control", isOn: localMCPControlBinding)
+                        .accessibilityIdentifier("settings-enable-local-mcp")
+                    Text(
+                        "Off by default. Trusted local tools can read limited app status and control navigation or playback. ROMs, saves, memory, screenshots, and file contents are never exposed through the live-app bridge."
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                }
             }
             .formStyle(.grouped)
             .padding()
@@ -10323,6 +10333,13 @@ struct SettingsView: View {
         Binding(
             get: { model.debugToolsEnabled },
             set: { model.setDebugToolsEnabled($0) }
+        )
+    }
+
+    private var localMCPControlBinding: Binding<Bool> {
+        Binding(
+            get: { model.localMCPControlEnabled },
+            set: { model.setLocalMCPControlEnabled($0) }
         )
     }
 }

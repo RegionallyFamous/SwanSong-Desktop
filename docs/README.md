@@ -94,6 +94,8 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
 ./Scripts/check-compatibility-matrix.sh
 ./Scripts/check-app-runtime.sh
 ./Scripts/check-app-bundle.sh
+./Scripts/check-mcp-server.sh
+./Scripts/check-translation-automation-cli.sh
 python3 ./Scripts/check-sparkle-dependency-lock.py \
   --repository . \
   --upstream-package .build/checkouts/Sparkle/Package.swift
@@ -154,6 +156,7 @@ tester-facing boundaries are in the [0.2 beta guide](BETA_TESTING.md).
 - [SwanSong Wiki](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki)
 - [Playing and library](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
 - [Translation Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
+- [Local MCP and automation](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
 - [Analogue Pocket SD setup](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
 - [Build and test](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Build-and-Test)
 - [Install](INSTALL.md)

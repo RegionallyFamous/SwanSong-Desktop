@@ -34,6 +34,8 @@ silicon and Intel.
   profiles, Time Ribbon, visual save states, Game Confidence, and save exchange.
 - [[Translation Lab]] documents deterministic route tests, paired evidence,
   on-device text intake, batch verification, First Visual Change, and privacy.
+- [[Local MCP and Automation]] documents the opt-in Codex bridge and guarded
+  route/evidence commands.
 - [[Analogue Pocket SD Setup]] documents release trust, card eligibility,
   transactional writes, rollback, and preserved content.
 - [[Open IPL]] documents the BIOS-free 0.2 startup contract and historical

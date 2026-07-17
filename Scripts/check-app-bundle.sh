@@ -50,6 +50,12 @@ if [ "$icon_name" != "AppIcon" ] \
   || [ ! -s "$APP/Contents/Resources/AppIcon.png" ] \
   || [ ! -s "$APP/Contents/Resources/AppIconCompact.png" ] \
   || ! cmp -s \
+    "$MACOS_DIR/Packaging/AppIcon.icns" \
+    "$APP/Contents/Resources/AppIcon.icns" \
+  || ! cmp -s \
+    "$MACOS_DIR/Packaging/AppIcon.png" \
+    "$APP/Contents/Resources/AppIcon.png" \
+  || ! cmp -s \
     "$MACOS_DIR/Packaging/AppIconCompact.png" \
     "$APP/Contents/Resources/AppIconCompact.png"; then
   echo "the app bundle is missing its SwanSong icon assets" >&2
@@ -87,6 +93,9 @@ if [ ! -s "$TEMP_ROOT/AppIcon.iconset/icon_16x16.png" ] \
   echo "the app icon does not contain the required small and Retina representations" >&2
   exit 1
 fi
+"$SCRIPT_DIR/check-image-opacity.swift" \
+  "$APP/Contents/Resources/AppIcon.png" \
+  "$TEMP_ROOT"/AppIcon.iconset/*.png
 compact_width=$(sips -g pixelWidth \
   "$APP/Contents/Resources/AppIconCompact.png" 2>/dev/null \
   | awk '/pixelWidth:/ { print $2 }')

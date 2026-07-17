@@ -27,6 +27,20 @@ enum SwanTheme {
         return nil
     }
 
+    /// SwiftPM launches the executable outside an application bundle, so
+    /// AppKit would otherwise use its generic rocket icon. Production app
+    /// bundles continue to use the opaque ICNS declared by Info.plist.
+    @MainActor
+    static var unbundledApplicationIcon: NSImage? {
+        let renderer = ImageRenderer(
+            content: SwanSongFallbackMark()
+                .frame(width: 512, height: 512)
+        )
+        renderer.proposedSize = ProposedViewSize(width: 512, height: 512)
+        renderer.scale = 2
+        return renderer.nsImage
+    }
+
     static var libraryBackground: LinearGradient {
         LinearGradient(
             colors: [
@@ -113,7 +127,7 @@ struct SwanSongWordmark: View {
     }
 }
 
-private struct SwanSongFallbackMark: View {
+struct SwanSongFallbackMark: View {
     var body: some View {
         GeometryReader { proxy in
             let side = min(proxy.size.width, proxy.size.height)
