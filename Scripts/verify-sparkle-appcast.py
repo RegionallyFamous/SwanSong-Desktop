@@ -12,6 +12,12 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from urllib.parse import urlparse
 
+from sparkle_release_notes import (
+    MAXIMUM_RELEASE_NOTES_BYTES,
+    load_release_notes_fragment,
+    validate_release_notes_fragment,
+)
+
 
 SPARKLE_NAMESPACE = "http://www.andymatuschak.org/xml-namespaces/sparkle"
 SIGNING_BLOCK = re.compile(
@@ -35,6 +41,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--expected-build")
     result.add_argument("--expected-channel", choices=("stable", "beta"))
     result.add_argument("--expected-archive-signature")
+    result.add_argument("--expected-release-notes", type=Path)
     result.add_argument("--content-output", type=Path, required=True)
     result.add_argument("--signature-output", type=Path, required=True)
     return result
@@ -93,6 +100,28 @@ def main() -> int:
             )
             if item.findtext("link") != expected_link:
                 fail("an appcast item has an unexpected release link")
+            description_element = item.find("description")
+            if description_element is None:
+                fail("an appcast item is missing its update message")
+            description = (description_element.text or "").strip()
+            if not description:
+                fail("an appcast item is missing its update message")
+            if len(description.encode("utf-8")) > MAXIMUM_RELEASE_NOTES_BYTES:
+                fail("an appcast update message exceeds the size limit")
+            if any(
+                ord(character) < 0x20 and character not in "\t\n\r"
+                for character in description
+            ):
+                fail("an appcast update message contains a control character")
+            if "<" in description or ">" in description:
+                if description_element.get(sparkle("format")) != "html":
+                    fail("a formatted appcast update message is not declared as HTML")
+                validate_release_notes_fragment(description, expected_link)
+            elif description_element.get(sparkle("format")) not in (
+                None,
+                "plain-text",
+            ):
+                fail("a plain appcast update message has an unexpected format")
             enclosure = item.find("enclosure")
             if enclosure is None:
                 fail("an appcast item is missing its enclosure")
@@ -131,6 +160,18 @@ def main() -> int:
             )
             if actual_channel != expected_channel:
                 fail("expected appcast channel does not match")
+            if arguments.expected_release_notes is not None:
+                description_element = expected_item.find("description")
+                assert description_element is not None
+                if description_element.get(sparkle("format")) != "html":
+                    fail("expected appcast update message is not declared as HTML")
+                expected_notes = load_release_notes_fragment(
+                    arguments.expected_release_notes,
+                    "https://github.com/RegionallyFamous/SwanSong-Desktop/"
+                    f"releases/tag/v{version}",
+                )
+                if expected_item.findtext("description", "").strip() != expected_notes:
+                    fail("expected appcast update message does not match")
             if arguments.archive is None:
                 fail("an archive is required when verifying an expected build")
             enclosure = expected_item.find("enclosure")
