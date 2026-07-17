@@ -86,5 +86,7 @@ import or override. Add only authorized game and homebrew images.
 
 ## Build from source
 
-See the build section in [README.md](../README.md). Local contributor builds are
-ad-hoc signed and are intentionally different from an official release.
+See the Wiki's
+[Build and Test](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Build-and-Test)
+page. Local contributor builds are ad-hoc signed and are intentionally
+different from an official release.

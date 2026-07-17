@@ -149,7 +149,8 @@ immutable authorized Core fixture and rejection cases for release policy,
 manifest/checksum drift, unsafe ZIP paths, symlinks, wrong filesystems, and
 insufficient space, post-write mismatch, and write rollback. Every managed file
 must read back exactly. Games, saves, Memories, Settings, Presets, and unrelated
-cores must remain byte-unchanged.
+cores must remain byte-unchanged. The complete installer contract is in
+[[Analogue Pocket SD Setup]].
 
 The detailed operator checklist remains tracked at
 [`docs/RELEASE_PROCESS.md`](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/RELEASE_PROCESS.md).

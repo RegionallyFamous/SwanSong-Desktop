@@ -151,6 +151,11 @@ tester-facing boundaries are in the [0.2 beta guide](BETA_TESTING.md).
 
 ## More documentation
 
+- [SwanSong Wiki](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki)
+- [Playing and library](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
+- [Translation Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
+- [Analogue Pocket SD setup](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
+- [Build and test](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Build-and-Test)
 - [Install](INSTALL.md)
 - [App updates](APP_UPDATES.md)
 - [Frequently asked questions](FAQ.md)

@@ -30,7 +30,9 @@ are ad-hoc signed; contributors do not need an Apple account.
 ## Verify a change
 
 Run the smallest relevant checks while iterating, then run the affected app,
-engine, and UI gates described in [README.md](README.md). At minimum:
+engine, and UI gates described in the Wiki's
+[Build and Test](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Build-and-Test)
+page. At minimum:
 
 ```sh
 swift test

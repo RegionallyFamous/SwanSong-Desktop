@@ -1,5 +1,9 @@
 # Build and Test
 
+This page is the technical command reference for contributors and release
+operators. Product documentation lives in [[Playing and Library]],
+[[Translation Lab]], and [[Analogue Pocket SD Setup]].
+
 ## Requirements
 
 - macOS 14 or later;
@@ -8,9 +12,12 @@
 - CMake 3.28 or later; and
 - Git.
 
-## Live local app
+The full Swift/XCTest lane requires the full Xcode developer directory.
+Command Line Tools alone may not provide XCTest.
 
-From the SwanSong Desktop repository root:
+## Build the live local app
+
+From the repository root:
 
 ```sh
 ./Scripts/build-engine.sh
@@ -19,11 +26,36 @@ export SWAN_ARES_ENGINE_DIR="$PWD/.engine/build"
 open ".build/app/SwanSong.app"
 ```
 
-The default local app is ad-hoc signed. It is not an official distributable
-release. A plain SwiftPM build can use the stub backend for UI work, but it is
-not live-engine or compatibility evidence.
+For direct SwiftPM execution instead of a Finder-style bundle:
 
-## Source-free gates
+```sh
+./Scripts/build-engine.sh
+export SWAN_ARES_ENGINE_DIR="$PWD/.engine/build"
+swift run SwanSong
+```
+
+The local app is ad-hoc signed and is not an official distributable release.
+The bundle embeds the WonderSwan-family ares dylib and declares `.ws`, `.wsc`,
+`.pc2`, and `.pcv2` document types. ZIPs are accepted by the open panel,
+drag-and-drop, and folder import without claiming every ZIP in Launch Services.
+
+A plain `swift build` uses the inspection-only stub backend for UI work. It
+must not be presented as gameplay, compatibility, or release evidence.
+
+## Universal development build
+
+```sh
+SWAN_UNIVERSAL=1 ./Scripts/build-app.sh
+./Scripts/verify-app-architectures.sh ".build/app/SwanSong.app"
+```
+
+The universal engine uses `.engine/build-app-universal`. Apple-silicon and
+Intel Swift slices use separate scratch directories so a host-native cache
+cannot leak into the other architecture.
+
+Official signing and notarization are documented in [[Signing and Notarization]].
+
+## Core source-free gates
 
 ```sh
 DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
@@ -46,53 +78,227 @@ python3 ./Scripts/check-sparkle-dependency-lock.py \
 ./Scripts/check-homebrew-production-readiness.sh
 ```
 
-Use the full Xcode developer directory for the complete Swift/XCTest lane;
-Command Line Tools alone may not provide XCTest.
+Fixture results prove bounded execution invariants. They are not commercial-
+game compatibility results or original-hardware accuracy evidence.
 
-The Sparkle dependency check binds the exact `Package.swift` requirement,
-`Package.resolved` revision, tracked source lock, and upstream SwiftPM binary-
-artifact checksum. Its self-test proves that manifest, revision, and checksum
-drift fail closed; run `swift package resolve` first so the pinned upstream
-manifest is available under `.build/checkouts/Sparkle/`.
+## Live engine probe
 
-Review changed UI PNGs visually; a script exit alone does not approve a new
-baseline. Fixture results prove bounded execution invariants, not commercial
-game compatibility or original-hardware accuracy.
+For an authorized local game, the headless probe runs the same ares engine and
+Open IPL path without opening a macOS window:
 
-Updater acceptance additionally requires the production feed URL, public key,
-system-profiling disablement, off-by-default automatic settings, signed
-enclosure, URL policy, and stable/beta channel gates described in [[App Updates]].
-A release candidate must be exercised from the previous supported
-app against the real published GitHub archive. Source-only configuration tests
-cannot prove a complete update installation and relaunch.
+```sh
+swift run SwanSongProbe \
+  --rom "/path/to/game.wsc" \
+  --frames 600 \
+  --report probe.json \
+  --capture probe.ppm \
+  --require-video-activity
+```
 
-## Private authorized-game gates
+The report records first non-uniform video, distinct native-raster frames,
+longest flat-color run, final-frame hash, audio activity, state size, and
+first-batch replay behavior. Its outputs contain rendered pixels and
+measurements, never ROM, state, persistence, or memory bytes.
 
-Keep private ROMs outside the checkout. The aggregate Open IPL lane emits only
-source-free counts:
+## Private owned-game smoke
+
+Build a matched debug automation app in an isolated output directory, then
+provide an authorized private input explicitly:
+
+```sh
+CONFIGURATION=debug \
+SWAN_APP_OUTPUT_DIR="$PWD/.build/owned-smoke-app" \
+./Scripts/build-app.sh
+
+./Scripts/check-owned-rom-smoke.sh \
+  --app "$PWD/.build/owned-smoke-app/SwanSong.app" \
+  --rom "$OWNED_GAME_ZIP"
+```
+
+The checked executable and debug runner must share a Mach-O build UUID. The
+lane uses a unique private home/data directory to test import, Open IPL launch,
+native frame activity, saves, and states. It removes private artifacts, proves
+the app bundle is byte-identical before/after, and never prints private paths,
+names, hashes, frames, or diagnostics.
+
+For a privacy-safe aggregate over an authorized directory:
 
 ```sh
 ./Scripts/check-owned-rom-open-ipl.sh \
-  --rom-dir "/path/to/authorized-rom-directory" \
+  --rom-dir "/path/to/owned-rom-directory" \
   --report .build/compatibility/owned-open-ipl-summary.json
 ```
 
-The live focus/input lane requires a logged-in GUI session and an authorized
-game:
+This lane accepts direct games and one-game ZIPs, rejects firmware-shaped
+inputs, binds Open IPL and deterministic RTC, and writes only source-free case
+counts.
+
+## Public compatibility matrix
 
 ```sh
-./Scripts/check-player-input.sh "/path/to/authorized-game.wsc"
+./Scripts/check-compatibility-matrix.sh
 ```
 
-Exit 77 means the WindowServer or Accessibility environment was unavailable.
-It is not a pass. Never copy private inputs or generated evidence into Git.
+The matrix builds the Probe in an isolated live-ares scratch directory and
+runs every checked-in `.ws`/`.wsc` fixture plus a clean-room generated `.pc2`
+fixture. The JSON report records video activity, nonzero audio, state capture,
+and first replay behavior. It labels static output and settle-required replay
+instead of inflating them into compatibility claims.
 
-## Universal build check
+## A/V soak
+
+The release-default source-free soak runs the checked-in open fixture at strict
+wall-clock speed for 30 minutes:
 
 ```sh
-SWAN_UNIVERSAL=1 ./Scripts/build-app.sh
-./Scripts/verify-app-architectures.sh ".build/app/SwanSong.app"
+./Scripts/check-av-soak.sh
 ```
 
-Official release signing and notarization are separate trusted-machine gates;
-see [[Release Gates]].
+Its sorted-key JSON tracks sequential/invalid frames, delivery stalls, 48 kHz
+stereo stability, virtual-queue depth, underruns, dropped batches, transport
+drift, pacing rate, and bounded host-discontinuity recovery without including
+source bytes, paths, frames, or timestamps.
+
+Production pacing targets five audio batches (about 66 ms nominal) under a 180
+ms hard cap. A transport epoch is recovered only after a primed queue drains
+beyond the full four-batch horizon: the obsolete schedule is cleared, five
+batches are re-primed, and the first 5 ms fades in. Ordinary sub-horizon
+starvation remains an underrun and fails the gate. Reports count recoveries
+separately and allow at most one per requested minute.
+
+Short local and scheduler-neutral hosted-CI lanes are explicit:
+
+```sh
+SWAN_AV_SOAK_SECONDS=5 ./Scripts/check-av-soak.sh
+SWAN_AV_SOAK_SECONDS=5 SWAN_AV_SOAK_CLOCK_MODE=media-time \
+  ./Scripts/check-av-soak.sh .build/av-soak/ci-integrity.json
+```
+
+Focused injection proves recovery and its disabled control:
+
+```sh
+SWAN_AV_SOAK_SECONDS=3 SWAN_AV_SOAK_INJECT_HOST_GAP_MS=120 \
+  ./Scripts/check-av-soak.sh .build/av-soak/recovery.json
+SWAN_AV_SOAK_SECONDS=3 SWAN_AV_SOAK_INJECT_HOST_GAP_MS=120 \
+  SWAN_AV_SOAK_DISABLE_DISCONTINUITY_RECOVERY=1 \
+  SWAN_AV_SOAK_EXPECT_STATUS=fail \
+  ./Scripts/check-av-soak.sh .build/av-soak/recovery-disabled.json
+```
+
+The virtual sink is a queue model, not Core Audio hardware. Physical device
+latency and owned-game audio remain separate release evidence.
+
+## App runtime and bundle gates
+
+```sh
+./Scripts/check-app-runtime.sh
+./Scripts/check-app-bundle.sh
+```
+
+The runtime smoke launches the actual SwiftUI app with isolated data and open
+fixtures. It exercises Open IPL launch, library import, atomic autosave,
+versioned visual states, byte-identical preview restore, memory-only rewind,
+and generated Pocket Challenge V2 flash persistence.
+
+The rewind lane captures frame 90, advances to frame 450, restores the nearest
+five-second checkpoint, replays frame 90 exactly, and proves no `.state` file
+was created.
+
+The bundle smoke verifies self-contained dylib resolution, ad-hoc signing,
+Finder-style document opening, and absence of game/firmware payloads.
+
+## UI snapshots
+
+```sh
+./Scripts/check-ui-snapshots.sh
+```
+
+The gate renders real AppKit/SwiftUI surfaces offscreen across compact/wide,
+Light/Dark, horizontal/vertical, player, library, controller, Translation Lab,
+and Analogue Pocket states. It checks blank regions, framebuffer corners,
+interaction targets, accessibility labels, scrolling, and reviewed perceptual
+baselines.
+
+After visually reviewing every generated PNG under `.build/ui-regression/`,
+refresh a deliberately changed baseline with:
+
+```sh
+./Scripts/check-ui-snapshots.sh --update-baselines
+```
+
+Normal checks are read-only and never approve or rewrite a baseline.
+
+## Translation Lab gates
+
+```sh
+./Scripts/check-translation-lab.sh
+./Scripts/check-pcv2-translation-lab.sh
+```
+
+The general smoke builds a synthetic private project, records immutable
+route-v3 tests, captures digest-bound Original/Patched evidence, exercises
+guarded packing and batch verification, rejects unsafe readiness and legacy
+routes, and proves the normal library and save store remain untouched.
+
+The Pocket Challenge V2 lane proves project/startup identity, all nine keypad
+inputs, 16 KiB internal RAM, route replay, and First Visual Change hardware
+routing.
+
+## Deterministic route runner
+
+Signed bundles include a separately gated command-line runner:
+
+```sh
+/Applications/SwanSong.app/Contents/Helpers/SwanSongRouteRunner \
+  --enable-debug-tools \
+  --rom "/path/to/game.wsc" \
+  --route "/path/to/route.json" \
+  --output "/path/to/route-report.json" \
+  --capture "/path/to/final-frame.png"
+```
+
+The runner requires the route-bound ROM digest, hardware, Open IPL context,
+RTC seed, and bundled engine build to agree. It exits nonzero when the final
+native-raster checkpoint differs.
+
+## Live focus/input regression
+
+```sh
+./Scripts/check-player-input.sh "/path/to/game.wsc"
+```
+
+The gate posts a physical keyboard event, requires active gameplay focus and
+the expected effective WonderSwan input, and proves canonical game-raster
+fingerprints change. Exit 77 means the host lacks WindowServer or Accessibility
+permission; it is not a pass. Grant the invoking Terminal or Codex app access
+under System Settings → Privacy & Security → Accessibility and rerun.
+
+## Emulator/RTL differential
+
+```sh
+SWAN_ARES_ENGINE_DIR="$PWD/.engine/build" swift run SwanSongDifferential \
+  --rom testroms/ws-test-suite/80186_quirks/80186_quirks.ws \
+  --rtl /path/to/swan-song-rtl-frames \
+  --frames 360 \
+  --out .build/differential/80186_quirks.json
+```
+
+The differential compares the live ares framebuffer with raw 224×144 RTL
+frames. Mono reports preserve the raw result and add a separately labeled
+four-luminance structural comparison. Every report states that emulator/RTL
+agreement is not original-hardware evidence.
+
+## Release-only acceptance
+
+Updater acceptance requires the signed production feed, public key, disabled
+system profiling, off-by-default automation, signed enclosure, immutable URL,
+and stable/beta behavior in [[App Updates]]. A source configuration test cannot
+replace installation/relaunch from the previous supported app.
+
+Pocket release acceptance includes the adversarial fixture suite plus real
+cards, readers, filesystems, eject behavior, and hardware; see [[Analogue Pocket SD Setup]].
+Complete artifact, owned-game, physical-controller, signing, and
+publication requirements are in [[Release Gates]].
+
+Keep all private ROMs, saves, captures, and Translation Lab evidence outside
+Git. Never attach them to a public issue or CI artifact.

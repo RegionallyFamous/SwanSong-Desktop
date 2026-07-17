@@ -1,0 +1,164 @@
+# Translation Lab
+
+Translation Lab is an optional native workspace for private WonderSwan
+translation projects created by the SwanSong translation toolkit. It links a
+project without copying its ROM into the normal game library.
+
+## Workspace and readiness
+
+Open **Translation Lab** in the sidebar and choose **Add Project or Toolkit…**,
+or drag a project, `project.json`, or private toolkit folder into the window.
+Adding a toolkit discovers its immediate projects. The project switcher keeps
+each game's status, routes, captures, and reviews separate.
+
+Toolkit status is presented as a structured readiness dashboard with corpus
+coverage, pipeline phases, and explicit next actions. Commands suggested by a
+project are shown for reference but are never run automatically.
+
+Every action that can reach Strict Pack uses one fail-closed sequence:
+
+1. fresh Status;
+2. QA;
+3. validation;
+4. Strict Pack; and
+5. final Status.
+
+PENDING is allowed before a project's first pack. BLOCKED, UNKNOWN, malformed
+output, or a failed command stops before mutation. The linked project identity
+is pinned across asynchronous stages, and every successful Status re-indexes
+route, evidence, baseline, and suite history so externally changed artifacts
+cannot keep a stale integrity label.
+
+## Deterministic route tests
+
+Choose **Record New Test…** from the Translation menu. SwanSong cold-launches
+the Original image with empty isolated persistence, fixes the emulated RTC at
+`2000-01-01T00:00:00Z`, and arms recording before the first frame. Normal
+library play continues to use the Mac's clock.
+
+At the target screen, choose **Save at Frame N**, use **Save Test Case at This
+Frame…**, or press Option-Command-R. Name the route and optionally add a review
+note. **Verify Selected Route** then runs the guarded build sequence and replays
+the exact route against Original and Patched outputs.
+
+New routes use `swan-song-input-route-v3`. Each route binds:
+
+- source ROM digest and byte count;
+- clean-power-on and empty-isolated-persistence policy;
+- WonderSwan model and Open IPL identity;
+- engine backend and build;
+- deterministic RTC mode and seed;
+- target frame and compact input changes; and
+- a canonical native game-raster checkpoint.
+
+Replay rejects any changed execution context. Route-v2 files remain visible
+with a **v2 · Re-record RTC** badge because they did not bind RTC policy.
+Route-v1 files remain visible with a **v1 · Re-record** badge because their
+starting state is unknowable. Neither version is silently upgraded or accepted
+as deterministic evidence.
+
+## Captures and paired review
+
+A capture writes the native emulator framebuffer PNG together with its
+game-raster fingerprint, internal RAM, engine state, route, and SHA-256-bound
+manifest. These artifacts remain under `analysis/swan-song-lab/` in the linked,
+ignored private project.
+
+Original and Patched captures pair only when they share the same immutable
+route digest. The evidence desk supports:
+
+- Side-by-Side review;
+- opacity-controlled Overlay;
+- Difference heatmap;
+- exact 1×, 2×, and 4× pixel zoom; and
+- changed-pixel count, percentage, channel deltas, and bounds.
+
+Comparison metrics exclude the 13-pixel WonderSwan hardware-icon strip and all
+macOS player chrome, scaling, display profiles, and LCD effects. A visual
+change is a review target, not an automatic failure.
+
+Reviews are mutable project-local sidecars with Unreviewed, Approved, and
+Needs Work verdicts plus notes. Changing a review never rewrites the immutable
+capture manifest.
+
+## Capture and Draft Translation
+
+Choose **Extract Source Text…** from an intact capture. Full Frame and Dialogue
+Band provide keyboard-accessible region presets; a pointer can draw a tighter
+rectangle.
+
+Apple Vision recognition runs on-device and is always treated as a draft. The
+reviewer corrects or manually enters only visible source text, confirms each
+line, then saves the intake before drafting target-language text.
+
+SwanSong writes deterministic private sidecars:
+
+- `text-intake.json` records reviewed text, pixel bounds, quantized confidence,
+  and the capture hash; and
+- `translation-draft.json` binds the exact intake bytes by SHA-256, keeps source
+  IDs/text immutable, permits unfinished target lines, and records manual entry
+  and review state.
+
+Neither file embeds screenshot pixels, filesystem paths, ROM data, timestamps,
+cloud requests, generated-translation claims, or unreviewed OCR output. The
+source intake is evidence of reviewed visible text, not a glyph-table or ROM-
+pointer claim. The draft is manual user-authored target text and does not alter
+the ROM.
+
+## Batch verification
+
+**Run All Cases** performs the guarded build sequence once, then advances
+through every proof-ready route and captures fresh Original/Patched endpoints.
+A legacy route blocks the suite until it is re-recorded from boot.
+
+Completed runs are immutable project-local `suite-runs` reports with exact
+route/evidence references and changed-versus-identical counts. The UI keeps
+overall progress and the current case visible, and completed history survives
+relaunch.
+
+## First Visual Change
+
+**First Visual Change** replays Original and Patched with identical inputs,
+fixed RTC, and empty isolated persistence. It first confirms that Original
+still reaches the recorded endpoint, then locates the earliest changed
+canonical game-raster frame.
+
+The single-instance engine is respected through sequential deterministic
+passes. Only compact Original fingerprints are retained during the search.
+When a difference is found, SwanSong briefly reconstructs the exact Original
+frame and opens the native comparison desk. **Create Test at This Frame** saves
+a new immutable, event-filtered route prefix for focused regression testing.
+
+This process never enters the normal library and never writes its cartridge
+saves, save states, or ROMs.
+
+## RAM inspection and pointer leads
+
+The paired evidence desk includes a private checkpoint-RAM inspector with:
+
+- changed ranges;
+- bounded search;
+- ASCII and Shift-JIS text-buffer analysis; and
+- bounded Pointer Leads.
+
+Pointer Leads identifies 16-bit little-endian RAM values matching changed
+text-buffer addresses, classifies stable/added/removed reference sites, and
+jumps to the corresponding Bytes row. These are heuristic debugging leads,
+not proof of a ROM pointer or bank.
+
+## Source-free diagnostics
+
+**Export Source-Free Diagnostic…** creates a `.swsdiag` package from an
+allowlist: rendered frame, verified input route, hashes, metadata, and saved
+review. The exporter never opens or copies ROM, boot ROM, RAM, save-state, or
+cartridge/console-save bytes.
+
+RAM, decoded text, pointer reports, captures, draft artifacts, and project paths
+remain private project analysis. Do not attach them to public issues.
+
+## Automation and tests
+
+The signed app includes a deterministic `SwanSongRouteRunner` that is gated by
+an explicit debug flag and rejects route-bound identity drift. Translation Lab,
+Pocket Challenge V2, differential, route-runner, and focus/input commands are
+documented in [[Build and Test]].

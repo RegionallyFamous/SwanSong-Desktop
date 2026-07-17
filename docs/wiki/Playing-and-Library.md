@@ -1,0 +1,126 @@
+# Playing and Library
+
+This page documents the technical behavior behind SwanSong's normal library
+and player. For the short product tour, start with the repository README.
+
+## Supported software
+
+SwanSong 0.2 opens authorized:
+
+- WonderSwan `.ws` images;
+- WonderSwan Color `.wsc` images;
+- Pocket Challenge V2 `.pc2` and `.pcv2` images; and
+- ZIP archives containing exactly one supported game.
+
+Every game starts through [[Open IPL]]. The app contains no original system
+firmware and has no BIOS import or override path.
+
+## Library imports
+
+Imports are validated away from the main UI thread, then copied into a private,
+content-addressed game store. Moving or deleting the original file does not
+break the managed library copy. Folder imports and one-game ZIPs use the same
+validation path as direct files.
+
+Library cards support favorites, recent play, search, procedural artwork, and
+player-selected artwork. After a meaningful gameplay frame appears, a card can
+adopt a local pixel-perfect capture automatically. Portrait games remain
+uncropped. The player can replace that image or return to procedural artwork.
+
+The managed store, persistence, states, artwork, compatibility notes, and
+play history remain local. They are not included in update requests or public
+diagnostics.
+
+## Player behavior
+
+Play mode collapses library chrome into a focused one-game surface. The native
+game framebuffer stays square-cornered and unmodified; pause, focus, warning,
+and recovery UI remain outside the game pixels. Horizontal and vertical games
+are presented without cropping.
+
+The live ares backend produces deterministic video and 48 kHz stereo audio.
+Metal presents the native raster with true integer scaling. Four display
+profiles can be changed while playing, including a pure-pixel presentation and
+LCD-style profiles with tunable motion response.
+
+The player supports pause, reset, fast-forward, rotation, PNG screenshots, and
+single-frame advance while paused. If the engine continues to run while the
+game raster remains nearly blank, SwanSong presents a nonblocking recovery
+card rather than covering the framebuffer.
+
+Keyboard and controller input are merged into the WonderSwan's X/Y direction
+clusters, A, B, and Start. See [[Gamepads]] for mapping, hotplug, limited-profile,
+and raw-HID boundaries.
+
+## Time Ribbon
+
+Time Ribbon is a memory-only rewind surface:
+
+- an exact state-and-frame checkpoint is captured every 15 emulated frames;
+- up to 30 seconds are retained under a hard 48 MiB memory cap;
+- the player can preview recent checkpoints before choosing **Resume Here**;
+- restoring a checkpoint truncates only the abandoned in-memory future;
+- the ares frontend is settled before play resumes; and
+- the restore registers native Undo.
+
+Time Ribbon never creates a save-state file. Closing the game discards its
+history.
+
+## Persistence and visual save states
+
+Cartridge and console persistence are written atomically under the app's
+private Application Support storage. Pocket Challenge V2 uses its flash-only
+persistence contract.
+
+Save states appear as a screenshot-backed timeline. A state load:
+
+1. creates a rollback point;
+2. quiesces any in-flight frame;
+3. verifies and restores the byte-lossless saved preview;
+4. settles the engine's frontend history; and
+5. registers native Undo.
+
+A missing or damaged preview is reported as damaged evidence. SwanSong does
+not replace it with whatever transient frame happens to be visible.
+
+## Game Confidence
+
+The selected-game inspector keeps three different questions separate:
+
+- **Launch Readiness** reports whether the managed game copy and execution
+  engine are ready.
+- **Compatibility Evidence** distinguishes Untested, Reached Video, Confirmed
+  Works, and Reported Issues.
+- **ROM Integrity** reports managed-copy and footer-checksum health.
+
+Normal play records **Reached Video** only after the native game raster becomes
+non-uniform, excluding the WonderSwan hardware-icon rail. A rendered frame is
+not a full-game works verdict, an accuracy claim, or proof against original
+hardware. Confirmed Works, Reported Issues, and the optional note are the
+player's editable local report. [[Translation Lab]] runs never change this
+normal-library evidence.
+
+## Pocket save exchange
+
+Canonical SwanSong Pocket `.sav` files can be imported and exported with exact
+SRAM/EEPROM sizing, semantic real-time-clock translation, legacy-layout
+recognition, and a human-readable format report. Back up important saves before
+moving or replacing them.
+
+The save exchange feature is separate from [[Analogue Pocket SD Setup]]. SD
+setup installs only a verified Core package and does not copy or alter saves.
+
+## Debug tools
+
+Game-testing surfaces are off by default. Enable **Debug Tools** in Settings to
+show the live focus/input overlay, player diagnostics, and bounded input/frame
+recorder.
+
+The recorder exports source-free `swan-song-input-frame-log-v2` JSON containing
+frame geometry and timing, separate keyboard and controller masks, effective
+input, focus state, runtime mode, and a SHA-256 fingerprint of the canonical
+native game raster. It does not include ROM, save, persistence, RAM,
+save-state, or framebuffer bytes.
+
+The live AppKit focus/input regression command and deterministic route runner
+are documented in [[Build and Test]].
