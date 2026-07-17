@@ -9,8 +9,11 @@ MCP_PACKAGE="$ROOT/Tools/SwanSongPlaytestMCP"
 # engine twice in parallel-sized clean trees on the hosted Apple silicon runner.
 MCP_BUILD="$ROOT/.build/mcp-swift"
 
-SWAN_ARES_ENGINE_DIR=${SWAN_ARES_ENGINE_DIR:-"$ROOT/.engine/build"}
-export SWAN_ARES_ENGINE_DIR
+if [ -z "${SWAN_ARES_ENGINE_DIR:-}" ] \
+  && [ -f "$ROOT/.engine/build/libSwanAresEngine.dylib" ]; then
+  SWAN_ARES_ENGINE_DIR="$ROOT/.engine/build"
+  export SWAN_ARES_ENGINE_DIR
+fi
 "$SCRIPT_DIR/swift-package.sh" build \
   --package-path "$MCP_PACKAGE" \
   --scratch-path "$MCP_BUILD" \
