@@ -8,7 +8,15 @@
     <item>
       <title>SwanSong 0.3.1</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.3.1</link>
-      <description>This signed update is distributed through the official SwanSong GitHub release. Open the release page for complete notes and checksums.</description>
+      <description sparkle:format="html">&lt;h2&gt;See exactly what changed.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.3.1 turns Translation Lab into a workspace that remembers the whole investigation.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Keep every comparison.&lt;/strong&gt; Original and Patched frames, replay plans, bindings, and pixel differences stay together inside your project.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Trace the pixels.&lt;/strong&gt; Select a rectangle to learn which layer, map cells, tiles, palette, and final writer produced it.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Play at your pace.&lt;/strong&gt; Observed sessions advance one visible step at a time while preserving clean from-boot proof.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Read without squinting.&lt;/strong&gt; Support, Privacy, and Acknowledgements now use real headings, lists, links, and spacing.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Private by design. Detailed evidence stays in the project you choose.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.3.1"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
       <pubDate>Fri, 17 Jul 2026 09:49:11 -0500</pubDate>
       <sparkle:version>5</sparkle:version>
       <sparkle:shortVersionString>0.3.1</sparkle:shortVersionString>
@@ -41,6 +49,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: UGKKBwvKppmA1J1qycAGyTxcAHV0TuXTTEh37OCua0/sqXRf0KLGWPeLzhmKHvlEuYPrGt0zc8EoSNQ2PjSuAg==
-length: 3128
+edSignature: FFz2givus+Drz5G2KmdiGg6pIeUpIBdYEenT9vLs+ueKrQicTxzS0YzGUvCUCYOB3CwxghYiItqg8jzLIGX6Ag==
+length: 4117
 -->
