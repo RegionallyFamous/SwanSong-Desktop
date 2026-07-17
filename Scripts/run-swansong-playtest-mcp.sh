@@ -13,4 +13,5 @@ fi
 
 exec "$SCRIPT_DIR/swift-package.sh" run \
   --package-path "$ROOT/Tools/SwanSongPlaytestMCP" \
+  --scratch-path "$ROOT/.build/mcp-swift" \
   SwanSongPlaytestMCP

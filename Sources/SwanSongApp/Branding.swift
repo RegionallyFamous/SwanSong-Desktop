@@ -32,6 +32,19 @@ enum SwanTheme {
     /// bundles continue to use the opaque ICNS declared by Info.plist.
     @MainActor
     static var unbundledApplicationIcon: NSImage? {
+        // A direct `swift run` still has the checkout beside its build output.
+        // Prefer the real compact artwork both for fidelity and so Intel CI
+        // does not need SwiftUI's GPU-backed ImageRenderer just to verify it.
+        let sourceURL = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Packaging/AppIconCompact.png")
+        if let image = NSImage(contentsOf: sourceURL) {
+            image.size = NSSize(width: 512, height: 512)
+            return image
+        }
+
         let renderer = ImageRenderer(
             content: SwanSongFallbackMark()
                 .frame(width: 512, height: 512)
