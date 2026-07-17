@@ -1,12 +1,19 @@
 **SwanSong Desktop**
 
 - [[Home]]
-- [[Architecture and Source Ownership]]
+- [[Playing and Library]]
+- [[Translation Lab]]
+- [[Analogue Pocket SD Setup]]
+- [[Gamepads]]
 - [[Open IPL]]
 - [[Homebrew Catalog]]
 - [[App Updates]]
-- [[Gamepads]]
+
+**Contributors and releases**
+
+- [[Architecture and Source Ownership]]
 - [[Build and Test]]
+- [[Signing and Notarization]]
 - [[Release Gates]]
 - [[0.2 Beta Testing]]
 

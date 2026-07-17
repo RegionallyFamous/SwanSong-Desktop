@@ -1,9 +1,12 @@
 # SwanSong Desktop Wiki
 
-SwanSong Desktop is a native macOS player and translation workbench for
-WonderSwan, WonderSwan Color, SwanCrystal, and Pocket Challenge V2. The current
-source line is the 0.2 beta and requires macOS 14 or later on Apple silicon or
-Intel.
+This is the detailed guide to SwanSong: playing and organizing games,
+Translation Lab, Analogue Pocket setup, privacy boundaries, architecture,
+testing, and releases. The repository README is the short product tour; the
+wiki is where the technical detail lives.
+
+The current source line is the 0.2 beta. It supports macOS 14 or later on Apple
+silicon and Intel.
 
 ## Current 0.2 beta status
 
@@ -19,23 +22,33 @@ Intel.
 - Gamepads use the standard controls macOS exposes through GameController. USB
   and Bluetooth work when the device appears as a compatible controller; raw
   vendor-specific HID layouts are not guessed.
-- SwanSong Desktop and SwanSong for Analogue Pocket are separate products and
-  release lanes. Neither installs or updates the other.
+- The Analogue Pocket SD tool can install only an authorized stable SwanSong
+  Core release. None is currently published, so the tool performs no package
+  download or card write.
+- SwanSong Desktop and SwanSong Core remain separate products and release
+  lanes. Sparkle never invokes the Pocket installer.
 
 ## Start here
 
-- [[Architecture and Source Ownership]] explains which repository owns each
-  product and how the macOS app reaches the pinned ares engine.
+- [[Playing and Library]] covers imports, the managed library, player, display
+  profiles, Time Ribbon, visual save states, Game Confidence, and save exchange.
+- [[Translation Lab]] documents deterministic route tests, paired evidence,
+  on-device text intake, batch verification, First Visual Change, and privacy.
+- [[Analogue Pocket SD Setup]] documents release trust, card eligibility,
+  transactional writes, rollback, and preserved content.
 - [[Open IPL]] documents the BIOS-free 0.2 startup contract and historical
   boundary.
+- [[Gamepads]] defines controller discovery, mapping, hotplug, and USB limits.
 - [[Homebrew Catalog]] distinguishes implemented installer code from the
   deliberately unpublished production catalog.
 - [[App Updates]] documents native GitHub app updates, privacy controls,
-  signature verification, and the separate stable/beta channels.
-- [[Gamepads]] defines what “USB gamepad support” does and does not mean.
-- [[Build and Test]] lists the live app and acceptance commands.
-- [[Release Gates]] defines signing, source, artifact, app-update, Homebrew,
-  and beta-channel requirements.
+  signatures, and stable/beta channels.
+- [[Architecture and Source Ownership]] explains repository and engine
+  boundaries.
+- [[Build and Test]] is the contributor command and acceptance reference.
+- [[Signing and Notarization]] covers the trusted Mac and Apple tooling.
+- [[Release Gates]] defines source, artifact, app-update, Homebrew, Pocket, and
+  publication requirements.
 - [[0.2 Beta Testing]] is the tester checklist and known-limits page.
 
 Versioned release notes are authoritative for historical behavior. In

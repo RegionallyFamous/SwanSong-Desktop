@@ -16,7 +16,8 @@ Installing SwanSong Desktop does not touch a card. A user may separately invoke
 Desktop's Analogue Pocket tool, which trusts only an immutable authorized
 `swansong-core` stable release and scopes its merge to that package's managed
 Core/platform files. Installing or updating the Pocket core does not modify the
-Mac app.
+Mac app. The full card eligibility, package trust, transaction, and rollback
+contract is documented in [[Analogue Pocket SD Setup]].
 
 The app-update and Homebrew trust paths are also independent. Sparkle verifies
 SwanSong app enclosures with the public update key in the signed app. The
