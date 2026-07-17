@@ -27,6 +27,33 @@ enum SwanTheme {
         return nil
     }
 
+    /// SwiftPM launches the executable outside an application bundle, so
+    /// AppKit would otherwise use its generic rocket icon. Production app
+    /// bundles continue to use the opaque ICNS declared by Info.plist.
+    @MainActor
+    static var unbundledApplicationIcon: NSImage? {
+        // A direct `swift run` still has the checkout beside its build output.
+        // Prefer the real compact artwork both for fidelity and so Intel CI
+        // does not need SwiftUI's GPU-backed ImageRenderer just to verify it.
+        let sourceURL = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Packaging/AppIconCompact.png")
+        if let image = NSImage(contentsOf: sourceURL) {
+            image.size = NSSize(width: 512, height: 512)
+            return image
+        }
+
+        let renderer = ImageRenderer(
+            content: SwanSongFallbackMark()
+                .frame(width: 512, height: 512)
+        )
+        renderer.proposedSize = ProposedViewSize(width: 512, height: 512)
+        renderer.scale = 2
+        return renderer.nsImage
+    }
+
     static var libraryBackground: LinearGradient {
         LinearGradient(
             colors: [
@@ -113,7 +140,7 @@ struct SwanSongWordmark: View {
     }
 }
 
-private struct SwanSongFallbackMark: View {
+struct SwanSongFallbackMark: View {
     var body: some View {
         GeometryReader { proxy in
             let side = min(proxy.size.width, proxy.size.height)

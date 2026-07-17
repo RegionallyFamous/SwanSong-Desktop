@@ -158,7 +158,22 @@ remain private project analysis. Do not attach them to public issues.
 
 ## Automation and tests
 
-The signed app includes a deterministic `SwanSongRouteRunner` that is gated by
-an explicit debug flag and rejects route-bound identity drift. Translation Lab,
-Pocket Challenge V2, differential, route-runner, and focus/input commands are
-documented in [[Build and Test]].
+The signed app includes a deterministic `SwanSongRouteRunner`. Its legacy form
+replays an existing route and rejects route-bound identity drift. Two guarded
+project-writing commands close the autonomous evidence gap:
+
+- `record-route` converts a versioned frame/input plan into route-v3 using
+  Original, empty isolated persistence, the fixed proof RTC, and a native
+  endpoint checkpoint; and
+- `verify-pair` runs the route against Original and Patched, captures both
+  native endpoints, runs Capture Intake twice, re-indexes both immutable
+  manifests, and returns their bound identities.
+
+Both commands require `--enable-debug-tools` and
+`--allow-project-writes`. Inputs and optional report outputs must remain inside
+the project. They are also exposed by the opt-in local MCP server with an
+explicit `confirmProjectWrites` argument. Full schemas, commands, privacy
+boundaries, and failure behavior are in [[Local MCP and Automation]].
+
+Translation Lab, Pocket Challenge V2, differential, route-runner, and
+focus/input test commands are documented in [[Build and Test]].

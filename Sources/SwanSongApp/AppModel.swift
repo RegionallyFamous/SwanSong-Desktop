@@ -4552,6 +4552,37 @@ final class AppModel {
         }
     }
 
+    var localMCPControlEnabled: Bool {
+        UserDefaults.standard.bool(forKey: SwanSongLocalMCPAccess.enabledDefaultsKey)
+    }
+
+    func setLocalMCPControlEnabled(_ enabled: Bool) {
+        guard localMCPControlEnabled != enabled else { return }
+        do {
+            if enabled {
+                _ = try SwanSongLocalMCPAccess.ensureToken()
+                UserDefaults.standard.set(
+                    true,
+                    forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
+                )
+                presentedNotice = "Local MCP control is ready for trusted tools on this Mac."
+            } else {
+                UserDefaults.standard.set(
+                    false,
+                    forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
+                )
+                try SwanSongLocalMCPAccess.revokeToken()
+                presentedNotice = "Local MCP control is off and its access token was revoked."
+            }
+        } catch {
+            UserDefaults.standard.set(
+                false,
+                forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
+            )
+            presentedError = "Local MCP control could not be changed: \(error.localizedDescription)"
+        }
+    }
+
     func setDebugOverlayVisible(_ visible: Bool) {
         guard debugToolsEnabled else {
             debugOverlayIsVisible = false

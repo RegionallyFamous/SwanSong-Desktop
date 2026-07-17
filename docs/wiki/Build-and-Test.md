@@ -73,6 +73,8 @@ python3 ./Scripts/check-sparkle-dependency-lock.py \
 ./Scripts/selftest-sparkle-dependency-lock.sh
 ./Scripts/selftest-sparkle-appcast.sh
 ./Scripts/check-ui-snapshots.sh
+./Scripts/check-mcp-server.sh
+./Scripts/check-translation-automation-cli.sh
 ./Scripts/check-translation-lab.sh
 ./Scripts/check-pcv2-translation-lab.sh
 ./Scripts/check-homebrew-production-readiness.sh
@@ -80,6 +82,31 @@ python3 ./Scripts/check-sparkle-dependency-lock.py \
 
 Fixture results prove bounded execution invariants. They are not commercial-
 game compatibility results or original-hardware accuracy evidence.
+
+## Local MCP and guarded route automation
+
+The trusted project config starts the local STDIO server through:
+
+```sh
+./Scripts/run-swansong-mcp.sh
+```
+
+Run the protocol-surface check without enabling live app control:
+
+```sh
+./Scripts/check-mcp-server.sh
+```
+
+Run the live-ares route creation and paired-evidence check:
+
+```sh
+./Scripts/check-translation-automation-cli.sh
+```
+
+The latter test proves both write guards, route-v3, empty persistence, fixed
+RTC, native checkpoint capture, Original/Patched endpoint parity, two Capture
+Intake runs, and manifest digest revalidation. See [[Local MCP and Automation]]
+for tool schemas and the direct CLI.
 
 ## Live engine probe
 

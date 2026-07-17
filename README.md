@@ -1,7 +1,7 @@
 # SwanSong
 
 <p align="center">
-  <img src="Packaging/AppIcon.png" width="150" alt="SwanSong app icon">
+  <img src="Packaging/AppIconCompact.png" width="150" alt="SwanSong app icon">
 </p>
 
 <h2 align="center">Your WonderSwan library, finally at home on the Mac.</h2>
@@ -18,10 +18,6 @@ a really nice place to play them.
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases">All releases</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
-</p>
-
-<p align="center">
-  <img src="Design/SwanSong-Library-Populated.png" width="920" alt="A WonderSwan game library in SwanSong">
 </p>
 
 ## Made for playing
@@ -75,6 +71,10 @@ SwanSong Core project publishes its first verified stable release.
 and install authorized homebrew. It remains Coming Soon in 0.2; local imports
 already work.
 
+**Local automation** lets a trusted Codex session check SwanSong, move around
+the app, control the selected game, and run proof-grade Translation Lab routes.
+It is off by default, stays on your Mac, and never exposes ROM or save bytes.
+
 <!-- homebrew-catalog-status: coming-soon -->
 
 ## Private on purpose
@@ -93,6 +93,7 @@ The technical documentation lives in the
 
 - [Playing, library, saves, and Time Ribbon](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
 - [Translation Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
+- [Local MCP and automation](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
 - [Analogue Pocket SD setup](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
 - [Controllers and mapping](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Gamepads)
 - [Open IPL](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Open-IPL)

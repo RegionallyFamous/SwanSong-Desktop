@@ -1,4 +1,5 @@
 import AppKit
+import SwanSongKit
 import SwiftUI
 
 func appDiagnostic(_ message: String) {
@@ -11,13 +12,31 @@ private final class SwanSongAppDelegate: NSObject, NSApplicationDelegate {
     let model = AppModel()
     let updater = SwanSongUpdater.shared
     private var terminationTask: Task<Void, Never>?
+    private var localMCPBridge: SwanSongLocalMCPBridge?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         appDiagnostic("applicationDidFinishLaunching windows=\(NSApp.windows.count) bundle=\(Bundle.main.bundleIdentifier ?? "nil")")
         NSApp.setActivationPolicy(.regular)
-        if let icon = SwanTheme.applicationIcon {
+        if Bundle.main.bundleURL.pathExtension.lowercased() != "app",
+           let icon = SwanTheme.unbundledApplicationIcon {
             NSApp.applicationIconImage = icon
         }
+        if UserDefaults.standard.bool(
+            forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
+        ) {
+            do {
+                _ = try SwanSongLocalMCPAccess.ensureToken()
+            } catch {
+                UserDefaults.standard.set(
+                    false,
+                    forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
+                )
+                model.presentedError = "Local MCP control was turned off because its private token could not be prepared: \(error.localizedDescription)"
+            }
+        }
+        let localMCPBridge = SwanSongLocalMCPBridge(model: model)
+        localMCPBridge.start()
+        self.localMCPBridge = localMCPBridge
         if ProcessInfo.processInfo.environment["SWAN_SONG_HEADLESS"] != "1" {
             NSApp.activate(ignoringOtherApps: true)
         }

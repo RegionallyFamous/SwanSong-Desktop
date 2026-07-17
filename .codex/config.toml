@@ -1,0 +1,9 @@
+[mcp_servers.swansong]
+command = "./Scripts/run-swansong-mcp.sh"
+cwd = "."
+startup_timeout_sec = 120
+tool_timeout_sec = 1800
+default_tools_approval_mode = "prompt"
+
+[mcp_servers.swansong.tools.swansong_status]
+approval_mode = "auto"
