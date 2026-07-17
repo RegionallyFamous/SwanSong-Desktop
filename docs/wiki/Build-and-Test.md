@@ -2,7 +2,7 @@
 
 This page is the technical command reference for contributors and release
 operators. Product documentation lives in [[Playing and Library]],
-[[Translation Lab]], and [[Analogue Pocket SD Setup]].
+[[Translation Lab]], [[Game Studio]], and [[Analogue Pocket SD Setup]].
 
 ## Requirements
 
@@ -86,9 +86,42 @@ python3 ./Scripts/check-sparkle-dependency-lock.py \
 
 Fixture results prove bounded execution invariants. They are not commercial-
 game compatibility results or original-hardware accuracy evidence.
-`check-live-engine.sh` also pins two clean-room ABI 6 fixtures: horizontal
+`check-live-engine.sh` also pins two clean-room display-provenance fixtures
+(introduced with ABI 6 and retained by ABI 7): horizontal
 planar and vertical packed output with exact Screen 1, Screen 2, sprite,
 palette, raster-width, rotation, and non-unknown CPU-writer assertions.
+
+ABI 7 extends those fixtures with a transformed ROM-resident source table. The
+live `TranslationDisplaySourceProbeTests` lane must prove an exact transformed
+selected range, an outside consumer, source-free public output, and intact
+private artifact validation. Inspection-only stub runs skip that one live test;
+the separate live-engine invocation is mandatory for release evidence.
+
+## Game Studio and SDK boundary
+
+Game Studio's Swift tests cover exact `swan` arguments, checkout and bundled
+runtime resolution, process environment/result capture, stable Play Contract
+and resource-report decoding, evidence/WAV intake, package/schema/toolchain
+identity, and command overlap guards.
+
+For the 0.4 developer preview, select a local `swansong-sdk` checkout and run a
+real smoke project through:
+
+```sh
+PYTHONPATH=/path/to/swansong-sdk/python \
+SWANSONG_SDK_DIR=/path/to/swansong-sdk \
+python3 -m swansong_sdk.cli new smoke-game \
+  --template menu-puzzle --directory /tmp/smoke-game
+
+PYTHONPATH=/path/to/swansong-sdk/python \
+SWANSONG_SDK_DIR=/path/to/swansong-sdk \
+python3 -m swansong_sdk.cli assets --project /tmp/smoke-game/swan.toml
+```
+
+Continue with `test`, `build`, `play`, and `report --json` when the pinned
+Wonderful toolchain and SwanSong play executor are available. Desktop must not
+replace any failed SDK command with a second parser, converter, builder, or
+emulator path.
 
 ## Local MCP and guarded route automation
 

@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-#define SWAN_ENGINE_ABI_VERSION 6u
+#define SWAN_ENGINE_ABI_VERSION 7u
 
 typedef struct swan_engine swan_engine_t;
 
@@ -99,6 +99,7 @@ enum {
   SWAN_CAPABILITY_STRUCTURED_TRACE = 1ull << 6,
   SWAN_CAPABILITY_POCKET_CHALLENGE_V2 = 1ull << 7,
   SWAN_CAPABILITY_DISPLAY_PROVENANCE = 1ull << 8,
+  SWAN_CAPABILITY_DISPLAY_SOURCE_PROVENANCE = 1ull << 9,
 };
 
 typedef enum swan_display_layer {
@@ -141,6 +142,52 @@ typedef struct swan_display_owner_sample {
   uint32_t raster_writer_pc;
   uint32_t palette_writer_pc;
 } swan_display_owner_sample_t;
+
+typedef enum swan_display_source_component {
+  SWAN_DISPLAY_SOURCE_COMPONENT_MAP_CELL = 1,
+  SWAN_DISPLAY_SOURCE_COMPONENT_RASTER = 2,
+  SWAN_DISPLAY_SOURCE_COMPONENT_PALETTE = 3,
+} swan_display_source_component_t;
+
+typedef enum swan_display_source_scope {
+  SWAN_DISPLAY_SOURCE_SCOPE_SELECTED = 1,
+  SWAN_DISPLAY_SOURCE_SCOPE_OUTSIDE_CONSUMER = 2,
+} swan_display_source_scope_t;
+
+enum {
+  /* The cartridge range is an exact dependency, never a collapsed superset. */
+  SWAN_DISPLAY_SOURCE_FLAG_EXACT = 1u << 0,
+  /* At least one CPU dataflow instruction separates cartridge and display RAM. */
+  SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED = 1u << 1,
+  /* Some dependency was not cartridge/IRAM/I/O and could not be traced. */
+  SWAN_DISPLAY_SOURCE_FLAG_UNKNOWN_DEPENDENCY = 1u << 2,
+  /* A fixed per-byte source set overflowed. No affected range is called exact. */
+  SWAN_DISPLAY_SOURCE_FLAG_RANGE_OVERFLOW = 1u << 3,
+  /* The observed instruction was traced conservatively, so the set may over-include. */
+  SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW = 1u << 4,
+};
+
+/**
+ * One bounded upstream dataflow edge retained privately by Translation Lab.
+ * cartridge_offset + cartridge_length is a half-open range in the original
+ * project ROM file (not the rounded mapper aperture). source_address is an
+ * emulated RAM/I/O address and must never be returned through public MCP.
+ */
+typedef struct swan_display_source_trace {
+  uint32_t struct_size;
+  uint16_t x;
+  uint16_t y;
+  swan_display_source_scope_t scope;
+  swan_display_source_component_t component;
+  uint32_t source_address;
+  uint16_t source_byte_count;
+  uint16_t minimum_instruction_hops;
+  uint16_t maximum_instruction_hops;
+  uint16_t reserved;
+  uint32_t cartridge_offset;
+  uint32_t cartridge_length;
+  uint32_t flags;
+} swan_display_source_trace_t;
 
 typedef struct swan_engine_config {
   uint32_t struct_size;
@@ -265,6 +312,12 @@ SWAN_ENGINE_API swan_result_t swan_engine_display_owner_probe(
     swan_engine_t* engine,
     const swan_display_rectangle_t* rectangle,
     swan_display_owner_sample_t* out_samples,
+    size_t capacity,
+    size_t* out_count);
+SWAN_ENGINE_API swan_result_t swan_engine_display_source_probe(
+    swan_engine_t* engine,
+    const swan_display_rectangle_t* rectangle,
+    swan_display_source_trace_t* out_traces,
     size_t capacity,
     size_t* out_count);
 

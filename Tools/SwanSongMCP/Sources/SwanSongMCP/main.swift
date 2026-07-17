@@ -384,6 +384,15 @@ private enum SwanSongMCPServer {
                 idempotent: false
             ),
             tool(
+                name: "swansong_translation_probe_rectangle_source",
+                title: "Trace Display Rectangle to Cartridge Sources",
+                description: "Replay a project-contained exact frame/input plan from clean power-on, privately trace the selected native rectangle through final display RAM and CPU dataflow to bounded exact cartridge ranges plus outside display consumers, and return only source-free hashes, counts, and explicit completeness flags.",
+                inputSchema: displayOwnerProbeSchema(),
+                readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
                 name: "swansong_translation_record_route",
                 title: "Record Translation Route",
                 description: "Create an immutable route-v3 proof from a project-contained frame/input plan using Original, clean power-on, empty persistence, and SwanSong's fixed proof RTC. Writes a new route inside the project.",
@@ -461,6 +470,8 @@ private enum SwanSongMCPServer {
                 return try capturePlan(arguments: arguments)
             case "swansong_translation_probe_rectangle":
                 return try probeRectangle(arguments: arguments)
+            case "swansong_translation_probe_rectangle_source":
+                return try probeRectangleSource(arguments: arguments)
             case "swansong_translation_record_route":
                 return try recordRoute(arguments: arguments)
             case "swansong_translation_verify_pair":
@@ -513,6 +524,44 @@ private enum SwanSongMCPServer {
     }
 
     private static func probeRectangle(arguments: JSONDictionary) throws -> JSONDictionary {
+        let input = try rectangleProbeArguments(arguments)
+        return try reportResult(
+            TranslationDisplayOwnerProbe.run(
+                project: input.project,
+                role: input.role,
+                plan: input.plan,
+                frameIndex: input.frameIndex,
+                rectangle: input.rectangle
+            )
+        )
+    }
+
+    private static func probeRectangleSource(
+        arguments: JSONDictionary
+    ) throws -> JSONDictionary {
+        let input = try rectangleProbeArguments(arguments)
+        return try reportResult(
+            TranslationDisplaySourceProbe.run(
+                project: input.project,
+                role: input.role,
+                plan: input.plan,
+                frameIndex: input.frameIndex,
+                rectangle: input.rectangle
+            )
+        )
+    }
+
+    private struct RectangleProbeInput {
+        let project: TranslationProject
+        let role: TranslationROMRole
+        let plan: TranslationFrameInputPlan
+        let frameIndex: UInt64
+        let rectangle: EngineDisplayRectangle
+    }
+
+    private static func rectangleProbeArguments(
+        _ arguments: JSONDictionary
+    ) throws -> RectangleProbeInput {
         let (project, fileURL) = try projectWriteArguments(
             arguments,
             fileKey: "planPath"
@@ -540,18 +589,16 @@ private enum SwanSongMCPServer {
             maximumBytes: 1_048_576
         )
         let plan = try JSONDecoder().decode(TranslationFrameInputPlan.self, from: planData)
-        return try reportResult(
-            TranslationDisplayOwnerProbe.run(
-                project: project,
-                role: role,
-                plan: plan,
-                frameIndex: UInt64(integers[0]),
-                rectangle: EngineDisplayRectangle(
-                    x: UInt16(integers[1]),
-                    y: UInt16(integers[2]),
-                    width: UInt16(integers[3]),
-                    height: UInt16(integers[4])
-                )
+        return RectangleProbeInput(
+            project: project,
+            role: role,
+            plan: plan,
+            frameIndex: UInt64(integers[0]),
+            rectangle: EngineDisplayRectangle(
+                x: UInt16(integers[1]),
+                y: UInt16(integers[2]),
+                width: UInt16(integers[3]),
+                height: UInt16(integers[4])
             )
         )
     }

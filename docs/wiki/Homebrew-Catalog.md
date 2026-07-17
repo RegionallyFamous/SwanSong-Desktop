@@ -2,12 +2,12 @@
 
 ## Current publication state
 
-The SwanSong 0.3 beta Homebrew Catalog is **Coming Soon**. The app embeds no
+The SwanSong 0.4 beta Homebrew Catalog is **Coming Soon**. The app embeds no
 production catalog trust key, displays the Coming Soon state, and makes no
 catalog or game-download request. **Add From Mac** remains available for
 authorized local homebrew.
 
-Direct GitHub installation is therefore not a shipped 0.3 beta feature. The
+Direct GitHub installation is therefore not a shipped 0.4 beta feature. The
 installer code being present is not the same as a published, trusted catalog.
 
 SwanSong's Sparkle integration does not change this state. Sparkle updates

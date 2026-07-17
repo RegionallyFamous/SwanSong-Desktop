@@ -42,7 +42,7 @@ public distribution.
 - Run the live player input/focus lane from a logged-in GUI session. Exit 77 is
   not a pass.
 - Visually review every changed screenshot and UI baseline.
-- Run `./Scripts/check-homebrew-production-readiness.sh`. For 0.3 beta,
+- Run `./Scripts/check-homebrew-production-readiness.sh`. For 0.4 beta,
   `comingSoon` must mean no production key and no catalog network request.
 - Verify manual **Check for Updates…**, off-by-default automatic checks and
   automatic download/install, beta-channel opt-in, no system profile, and the

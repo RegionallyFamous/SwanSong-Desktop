@@ -3,12 +3,14 @@ import Foundation
 public enum TranslationPrivateArtifactKind: String, CaseIterable, Codable, Sendable {
     case pair
     case displayOwnerProbe = "display-owner-probe"
+    case displaySourceProbe = "display-source-probe"
     case observedSession = "observed-session"
 
     public var title: String {
         switch self {
         case .pair: "Paired Capture"
         case .displayOwnerProbe: "Display Owner Probe"
+        case .displaySourceProbe: "Upstream Source Probe"
         case .observedSession: "Observed Session"
         }
     }
@@ -192,6 +194,8 @@ public struct TranslationPrivateArtifactStore: Sendable {
                 return try inspectPair(directory, project: project)
             case .displayOwnerProbe:
                 return try inspectProbe(directory, project: project)
+            case .displaySourceProbe:
+                return try inspectSourceProbe(directory, project: project)
             case .observedSession:
                 return try inspectSession(directory, project: project)
             }
@@ -338,6 +342,134 @@ public struct TranslationPrivateArtifactStore: Sendable {
         )
     }
 
+    private func inspectSourceProbe(
+        _ directory: URL,
+        project: TranslationProject
+    ) throws -> TranslationPrivateArtifactSummary {
+        try requireFiles(
+            ["details.json", "plan.json"],
+            allowing: [],
+            in: directory,
+            project: project
+        )
+        let detailsData = try read(
+            "details.json",
+            in: directory,
+            maximumBytes: 16 * 1_024 * 1_024,
+            project: project
+        )
+        let details = try decoder.decode(
+            TranslationDisplaySourceProbeDetails.self,
+            from: detailsData
+        )
+        guard details.schema == TranslationDisplaySourceProbeDetails.currentSchema else {
+            throw TranslationLabError.invalidProject(
+                "the upstream display-source probe schema is unsupported"
+            )
+        }
+        try requireDigest(details.plan, file: "plan.json", in: directory, project: project)
+        let expectedSamples = Int(details.rectangle.width) * Int(details.rectangle.height)
+        guard expectedSamples > 0, expectedSamples == details.ownerSamples.count,
+              details.traces.count <= details.completeness.traceRecordLimit else {
+            throw TranslationLabError.invalidProject(
+                "the upstream display-source probe is incomplete or unbounded"
+            )
+        }
+        let unknownCount = details.traces.filter(\.hasUnknownDependency).count
+        let overflowCount = details.traces.filter(\.rangeSetOverflowed).count
+        let conservativeCount = details.traces.filter(\.usesConservativeDataflow).count
+        guard details.completeness.unknownDependencyTraceCount == unknownCount,
+              details.completeness.rangeOverflowTraceCount == overflowCount,
+              details.completeness.conservativeDataflowTraceCount == conservativeCount,
+              details.completeness.isComplete
+                == (unknownCount == 0 && overflowCount == 0 && conservativeCount == 0)
+        else {
+            throw TranslationLabError.invalidProject(
+                "the upstream source completeness summary does not match its traces"
+            )
+        }
+        let left = UInt32(details.rectangle.x)
+        let top = UInt32(details.rectangle.y)
+        let right = left + UInt32(details.rectangle.width)
+        let bottom = top + UInt32(details.rectangle.height)
+        let romBytes = UInt64(details.rom.byteCount)
+        for trace in details.traces {
+            let inside = UInt32(trace.x) >= left && UInt32(trace.x) < right
+                && UInt32(trace.y) >= top && UInt32(trace.y) < bottom
+            guard trace.sourceByteCount > 0,
+                  trace.sourceAddress <= 0x100ff,
+                  (trace.scope == .selected ? inside : !inside),
+                  !(trace.hasExactRange && (
+                    trace.hasUnknownDependency
+                        || trace.rangeSetOverflowed
+                        || trace.usesConservativeDataflow
+                  )) else {
+                throw TranslationLabError.invalidProject(
+                    "an upstream source trace has invalid scope, source, or confidence"
+                )
+            }
+            if trace.cartridgeLength == 0 {
+                guard trace.scope == .selected, trace.hasExactRange else {
+                    throw TranslationLabError.invalidProject(
+                        "an upstream source trace has an invalid empty cartridge range"
+                    )
+                }
+            } else {
+                let upper = UInt64(trace.cartridgeOffset) + UInt64(trace.cartridgeLength)
+                guard upper <= romBytes else {
+                    throw TranslationLabError.invalidProject(
+                        "an upstream source trace exceeds the bound project ROM"
+                    )
+                }
+            }
+        }
+        let expectedCoverage = Set(details.ownerSamples.flatMap { sample -> [String] in
+            var components: [EngineDisplaySourceComponent] = []
+            if sample.sourceKind == .tilemap { components.append(.mapCell) }
+            if sample.sourceKind != .none { components.append(.raster) }
+            components.append(.palette)
+            return components.map { "\(sample.x):\(sample.y):\($0.rawValue)" }
+        })
+        let actualCoverage = Set(details.traces.filter {
+            $0.scope == .selected
+        }.map { "\($0.x):\($0.y):\($0.component.rawValue)" })
+        guard actualCoverage == expectedCoverage else {
+            throw TranslationLabError.invalidProject(
+                "the upstream source probe does not cover every selected display source"
+            )
+        }
+        let expectedRanges = normalizedSourceRanges(details.traces.filter {
+            $0.scope == .selected && $0.hasExactRange && $0.cartridgeLength > 0
+        })
+        let expectedCandidateRanges = normalizedSourceRanges(details.traces.filter {
+            $0.scope == .selected && $0.cartridgeLength > 0
+        })
+        guard expectedRanges == details.cartridgeRanges,
+              expectedCandidateRanges == details.candidateCartridgeRanges else {
+            throw TranslationLabError.invalidProject(
+                "the upstream source probe cartridge ranges are not normalized from its traces"
+            )
+        }
+        return try summary(
+            kind: .displaySourceProbe,
+            directory: directory,
+            createdAt: details.createdAt,
+            updatedAt: details.createdAt,
+            status: details.completeness.isComplete ? details.role.rawValue : "incomplete",
+            manifestData: detailsData,
+            metrics: [
+                "samples": details.ownerSamples.count,
+                "sourceRanges": details.cartridgeRanges.count,
+                "candidateRanges": details.candidateCartridgeRanges.count,
+                "traces": details.traces.count,
+                "outsideConsumers": Set(details.traces.filter {
+                    $0.scope == .outsideConsumer
+                }.map { "\($0.x):\($0.y):\($0.component.rawValue)" }).count,
+            ],
+            project: project
+        )
+    }
+
     private func summary(
         kind: TranslationPrivateArtifactKind,
         directory: URL,
@@ -364,6 +496,32 @@ public struct TranslationPrivateArtifactStore: Sendable {
         )
     }
 
+    private func normalizedSourceRanges(
+        _ traces: [EngineDisplaySourceTrace]
+    ) -> [TranslationCartridgeSourceRange] {
+        let sorted = traces.map {
+            TranslationCartridgeSourceRange(
+                lowerBound: $0.cartridgeOffset,
+                upperBound: $0.cartridgeOffset + $0.cartridgeLength
+            )
+        }.sorted {
+            ($0.lowerBound, $0.upperBound) < ($1.lowerBound, $1.upperBound)
+        }
+        var result: [TranslationCartridgeSourceRange] = []
+        for range in sorted {
+            guard let previous = result.last,
+                  range.lowerBound <= previous.upperBound else {
+                result.append(range)
+                continue
+            }
+            result[result.count - 1] = TranslationCartridgeSourceRange(
+                lowerBound: previous.lowerBound,
+                upperBound: max(previous.upperBound, range.upperBound)
+            )
+        }
+        return result
+    }
+
     private var decoder: JSONDecoder {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
@@ -380,6 +538,7 @@ public struct TranslationPrivateArtifactStore: Sendable {
         switch kind {
         case .pair: return lab.appendingPathComponent("pairs", isDirectory: true).standardizedFileURL
         case .displayOwnerProbe: return lab.appendingPathComponent("display-owner-probes", isDirectory: true).standardizedFileURL
+        case .displaySourceProbe: return lab.appendingPathComponent("display-source-probes", isDirectory: true).standardizedFileURL
         case .observedSession: return lab.appendingPathComponent("observed-sessions", isDirectory: true).standardizedFileURL
         }
     }
@@ -391,6 +550,7 @@ public struct TranslationPrivateArtifactStore: Sendable {
         switch kind {
         case .pair: name.hasPrefix("pair-")
         case .displayOwnerProbe: name.hasPrefix("probe-")
+        case .displaySourceProbe: name.hasPrefix("source-probe-")
         case .observedSession: name.hasPrefix("session-")
         }
     }

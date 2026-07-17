@@ -27,6 +27,30 @@ enum SwanTheme {
         return nil
     }
 
+    /// Monochrome template artwork for SwanSong's menu-bar status item.
+    /// AppKit applies the appropriate light/dark appearance to template images.
+    static var menuBarIcon: NSImage? {
+        let sourceURL = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Packaging/MenuBarSwan.png")
+        let candidateURLs = [
+            Bundle.main.url(forResource: "MenuBarSwan", withExtension: "png"),
+            sourceURL,
+        ].compactMap { $0 }
+
+        for url in candidateURLs {
+            if let image = NSImage(contentsOf: url) {
+                image.isTemplate = true
+                image.size = NSSize(width: 18, height: 18)
+                image.accessibilityDescription = "SwanSong"
+                return image
+            }
+        }
+        return nil
+    }
+
     /// SwiftPM launches the executable outside an application bundle, so
     /// AppKit would otherwise use its generic rocket icon. Production app
     /// bundles continue to use the opaque ICNS declared by Info.plist.

@@ -2,7 +2,7 @@
 
 Effective July 17, 2026
 
-This policy describes SwanSong 0.3.1. The versioned release notes document
+This policy describes SwanSong 0.4.0. The versioned release notes document
 earlier 0.1.x and 0.2.0 behavior.
 
 <!-- homebrew-catalog-status: coming-soon -->
@@ -72,10 +72,20 @@ may export a source-free JSON summary containing only artifact status, size,
 integrity, hashes, and counts. Rectangle display-owner probes keep
 map-cell addresses, tile/raster sources, palette values, and CPU-writer
 identities only in private project files and return only hashes and aggregate
-counts to the MCP client. These tools do not return ROM, state, RAM, or
+counts to the MCP client. Upstream source probes additionally keep exact and
+candidate cartridge ranges, emulated source addresses, per-display chains, and
+outside-consumer coordinates private while returning only hashes, counts, and
+completeness. These tools do not return ROM, state, RAM, or
 persistence bytes. SwanSong makes no network request for MCP, but an AI client
 may transmit tool arguments and results to its own service under that client's
 privacy policy.
+
+Game Studio reads and writes only the SDK and project folders you explicitly
+select. It launches the selected local SwanSong SDK command-line tool for New,
+Assets, Build, Test, Play, and Report, and keeps compiler, generator, resource,
+frame-plan, PNG, WAV, and structured evidence output on the Mac. Those commands
+may invoke the locally installed Wonderful toolchain and SwanSong deterministic
+play executor; Desktop does not upload project source, assets, ROMs, or evidence.
 
 ## Files you provide
 

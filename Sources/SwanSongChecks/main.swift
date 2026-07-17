@@ -306,11 +306,19 @@ private struct SwanSongChecks {
                 engine.capabilities.contains(.displayProvenance),
                 "ares display provenance capability is missing"
             )
+            try expect(
+                engine.capabilities.contains(.displaySourceProvenance),
+                "ares upstream display-source provenance capability is missing"
+            )
         } else {
             try expect(!engine.capabilities.contains(.execution), "stub must not claim execution")
             try expect(
                 !engine.capabilities.contains(.displayProvenance),
                 "stub must not claim display provenance"
+            )
+            try expect(
+                !engine.capabilities.contains(.displaySourceProvenance),
+                "stub must not claim upstream display-source provenance"
             )
             try expect(
                 engine.backendName == "inspection-only fallback",
@@ -3736,7 +3744,7 @@ private struct SwanSongChecks {
             ),
             engine: TranslationRouteEngineIdentity(
                 backend: "ares",
-                buildID: "ares-public-fixture-swan-abi6"
+                buildID: "ares-public-fixture-swan-abi7"
             )
         )
         var recorder = TranslationRouteRecorder(

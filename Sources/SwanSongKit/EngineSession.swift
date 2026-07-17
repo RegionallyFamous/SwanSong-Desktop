@@ -34,6 +34,9 @@ public struct EngineCapabilities: OptionSet, Sendable {
     public static let displayProvenance = Self(
         rawValue: UInt64(SWAN_CAPABILITY_DISPLAY_PROVENANCE)
     )
+    public static let displaySourceProvenance = Self(
+        rawValue: UInt64(SWAN_CAPABILITY_DISPLAY_SOURCE_PROVENANCE)
+    )
 }
 
 public struct EngineInput: OptionSet, Sendable {
@@ -216,6 +219,83 @@ public struct EngineDisplayOwnerSample: Codable, Equatable, Sendable {
         cellWriterPC = cValue.cell_writer_pc
         rasterWriterPC = cValue.raster_writer_pc
         paletteWriterPC = cValue.palette_writer_pc
+    }
+}
+
+public enum EngineDisplaySourceComponent: String, Codable, Sendable {
+    case mapCell
+    case raster
+    case palette
+
+    fileprivate init(cValue: swan_display_source_component_t) throws {
+        switch cValue {
+        case SWAN_DISPLAY_SOURCE_COMPONENT_MAP_CELL: self = .mapCell
+        case SWAN_DISPLAY_SOURCE_COMPONENT_RASTER: self = .raster
+        case SWAN_DISPLAY_SOURCE_COMPONENT_PALETTE: self = .palette
+        default:
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned an unknown upstream source component."
+            )
+        }
+    }
+}
+
+public enum EngineDisplaySourceScope: String, Codable, Sendable {
+    case selected
+    case outsideConsumer
+
+    fileprivate init(cValue: swan_display_source_scope_t) throws {
+        switch cValue {
+        case SWAN_DISPLAY_SOURCE_SCOPE_SELECTED: self = .selected
+        case SWAN_DISPLAY_SOURCE_SCOPE_OUTSIDE_CONSUMER: self = .outsideConsumer
+        default:
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned an unknown upstream source scope."
+            )
+        }
+    }
+}
+
+/// One private dataflow edge from a final display byte to a half-open range in
+/// the original cartridge file. Emulated addresses and exact ROM offsets must
+/// remain inside the translation project.
+public struct EngineDisplaySourceTrace: Codable, Equatable, Sendable {
+    public let x: UInt16
+    public let y: UInt16
+    public let scope: EngineDisplaySourceScope
+    public let component: EngineDisplaySourceComponent
+    public let sourceAddress: UInt32
+    public let sourceByteCount: UInt16
+    public let minimumInstructionHops: UInt16
+    public let maximumInstructionHops: UInt16
+    public let cartridgeOffset: UInt32
+    public let cartridgeLength: UInt32
+    public let hasExactRange: Bool
+    public let isTransformed: Bool
+    public let hasUnknownDependency: Bool
+    public let rangeSetOverflowed: Bool
+    public let usesConservativeDataflow: Bool
+
+    fileprivate init(cValue: swan_display_source_trace_t) throws {
+        x = cValue.x
+        y = cValue.y
+        scope = try EngineDisplaySourceScope(cValue: cValue.scope)
+        component = try EngineDisplaySourceComponent(cValue: cValue.component)
+        sourceAddress = cValue.source_address
+        sourceByteCount = cValue.source_byte_count
+        minimumInstructionHops = cValue.minimum_instruction_hops
+        maximumInstructionHops = cValue.maximum_instruction_hops
+        cartridgeOffset = cValue.cartridge_offset
+        cartridgeLength = cValue.cartridge_length
+        let flags = cValue.flags
+        hasExactRange = flags & UInt32(SWAN_DISPLAY_SOURCE_FLAG_EXACT) != 0
+        isTransformed = flags & UInt32(SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED) != 0
+        hasUnknownDependency = flags & UInt32(SWAN_DISPLAY_SOURCE_FLAG_UNKNOWN_DEPENDENCY) != 0
+        rangeSetOverflowed = flags & UInt32(SWAN_DISPLAY_SOURCE_FLAG_RANGE_OVERFLOW) != 0
+        usesConservativeDataflow = flags
+            & UInt32(SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW) != 0
     }
 }
 
@@ -496,6 +576,60 @@ public final class EngineSession: @unchecked Sendable {
             )
         }
         return try raw.prefix(count).map(EngineDisplayOwnerSample.init(cValue:))
+    }
+
+    public func displaySourceProbe(
+        rectangle: EngineDisplayRectangle
+    ) throws -> [EngineDisplaySourceTrace] {
+        guard capabilities.contains(.displaySourceProvenance) else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_UNSUPPORTED.rawValue),
+                detail: "The active engine does not support upstream display-source provenance."
+            )
+        }
+        var cRectangle = swan_display_rectangle_t(
+            struct_size: UInt32(MemoryLayout<swan_display_rectangle_t>.size),
+            x: rectangle.x,
+            y: rectangle.y,
+            width: rectangle.width,
+            height: rectangle.height
+        )
+        var count = 0
+        try check(swan_engine_display_source_probe(
+            handle,
+            &cRectangle,
+            nil,
+            0,
+            &count
+        ))
+        guard count <= 262_144 else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine exceeded the bounded upstream source-trace limit."
+            )
+        }
+        var raw = [swan_display_source_trace_t](
+            repeating: swan_display_source_trace_t(),
+            count: count
+        )
+        var written = 0
+        let result = raw.withUnsafeMutableBufferPointer { buffer in
+            swan_engine_display_source_probe(
+                handle,
+                &cRectangle,
+                buffer.baseAddress,
+                buffer.count,
+                &written
+            )
+        }
+        try check(result)
+        guard written == count else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned incomplete upstream source provenance."
+            )
+        }
+        return try raw.prefix(written).map(EngineDisplaySourceTrace.init(cValue:))
     }
 
     public func stagePersistence(_ persistence: EnginePersistence) throws {

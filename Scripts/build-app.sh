@@ -280,6 +280,8 @@ cp "$MACOS_DIR/Packaging/AppIcon.icns" "$APP_DIR/Contents/Resources/AppIcon.icns
 cp "$MACOS_DIR/Packaging/AppIcon.png" "$APP_DIR/Contents/Resources/AppIcon.png"
 cp "$MACOS_DIR/Packaging/AppIconCompact.png" \
   "$APP_DIR/Contents/Resources/AppIconCompact.png"
+cp "$MACOS_DIR/Packaging/MenuBarSwan.png" \
+  "$APP_DIR/Contents/Resources/MenuBarSwan.png"
 cp "$MACOS_DIR/LICENSE" "$APP_DIR/Contents/Resources/LICENSE"
 cp "$MACOS_DIR/PRIVACY.md" "$APP_DIR/Contents/Resources/PRIVACY.md"
 cp "$MACOS_DIR/SUPPORT.md" "$APP_DIR/Contents/Resources/SUPPORT.md"

@@ -5,6 +5,7 @@
 #include <cstring>
 #include <fstream>
 #include <iterator>
+#include <optional>
 #include <vector>
 
 int main(int argc, char** argv) {
@@ -41,8 +42,11 @@ int main(int argc, char** argv) {
   const bool audio_ok = (capabilities & SWAN_CAPABILITY_AUDIO) != 0;
   const bool provenance_ok =
       (capabilities & SWAN_CAPABILITY_DISPLAY_PROVENANCE) != 0;
+  const bool source_provenance_ok =
+      (capabilities & SWAN_CAPABILITY_DISPLAY_SOURCE_PROVENANCE) != 0;
 
-  if (!backend_ok || !execution_ok || !audio_ok || !provenance_ok) {
+  if (!backend_ok || !execution_ok || !audio_ok || !provenance_ok ||
+      !source_provenance_ok) {
     std::fputs("ares backend did not advertise the expected live capabilities\n", stderr);
     swan_engine_destroy(engine);
     return 1;
@@ -147,8 +151,71 @@ int main(int argc, char** argv) {
       }
     }
 
+    size_t source_trace_count = 0;
+    result = swan_engine_display_source_probe(
+        engine, &rectangle, nullptr, 0, &source_trace_count);
+    if (result != SWAN_RESULT_OK || source_trace_count > 262'144u) {
+      std::fputs("ares did not return bounded upstream source provenance\n", stderr);
+      swan_engine_destroy(engine);
+      return 1;
+    }
+    std::vector<swan_display_source_trace_t> source_traces(source_trace_count);
+    size_t written_source_traces = 0;
+    result = swan_engine_display_source_probe(
+        engine, &rectangle, source_traces.data(), source_traces.size(),
+        &written_source_traces);
+    if (result != SWAN_RESULT_OK || written_source_traces != source_trace_count) {
+      std::fputs("ares returned incomplete upstream source provenance\n", stderr);
+      swan_engine_destroy(engine);
+      return 1;
+    }
+    for (const auto& trace : source_traces) {
+      if (trace.struct_size != sizeof(trace) || trace.x >= frame_width ||
+          trace.y >= frame_height ||
+          trace.scope < SWAN_DISPLAY_SOURCE_SCOPE_SELECTED ||
+          trace.scope > SWAN_DISPLAY_SOURCE_SCOPE_OUTSIDE_CONSUMER ||
+          trace.component < SWAN_DISPLAY_SOURCE_COMPONENT_MAP_CELL ||
+          trace.component > SWAN_DISPLAY_SOURCE_COMPONENT_PALETTE ||
+          trace.cartridge_length > rom.size() ||
+          trace.cartridge_offset > rom.size() - trace.cartridge_length) {
+        std::fputs("ares returned invalid upstream source provenance\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+    }
+
     if (provenance_fixture) {
       const bool vertical = frame_width < frame_height;
+      const std::array<uint8_t, 32> planar_source_tile = {
+          0xa5, 0x5a, 0x5a, 0x5a, 0xdb, 0x18, 0x7e, 0x42,
+          0xe7, 0x42, 0x18, 0x7e, 0xff, 0x00, 0x66, 0x99,
+          0xbd, 0xdb, 0x42, 0x18, 0x81, 0x7e, 0x18, 0x42,
+          0xc3, 0x3c, 0x66, 0x99, 0xaa, 0x55, 0xf0, 0x0f,
+      };
+      const std::array<uint8_t, 32> packed_source_tile = {
+          0x4b, 0x4b, 0x4b, 0x4b, 0x48, 0x7b, 0x48, 0x7b,
+          0x49, 0x6b, 0x49, 0x6b, 0x4e, 0x1b, 0x4e, 0x1b,
+          0x4f, 0x0b, 0x4f, 0x0b, 0x4c, 0x3b, 0x4c, 0x3b,
+          0x4d, 0x2b, 0x4d, 0x2b, 0x42, 0xdb, 0x42, 0xdb,
+      };
+      const auto& source_tile = expected_raster_bytes == 1
+          ? packed_source_tile : planar_source_tile;
+      const auto marker = std::search(
+          rom.begin(), rom.end(), source_tile.begin(), source_tile.end());
+      if (marker == rom.end() ||
+          std::search(std::next(marker), rom.end(),
+                      source_tile.begin(), source_tile.end()) != rom.end()) {
+        std::fputs("upstream source fixture table is missing or ambiguous\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      const uint32_t marker_offset = static_cast<uint32_t>(
+          std::distance(rom.begin(), marker));
+      // On the 16-bit cartridge bus, the packed byte arrives through a
+      // byte-register chain whose observed upstream read covers its aligned
+      // two-byte bus unit. Planar pixels consume all four row bytes.
+      const uint32_t expected_source_bytes =
+          expected_raster_bytes == 1 ? 2u : 4u;
       struct ExpectedOwner {
         uint16_t x;
         uint16_t y;
@@ -223,6 +290,77 @@ int main(int argc, char** argv) {
           swan_engine_destroy(engine);
           return 1;
         }
+      }
+
+      swan_display_rectangle_t source_rectangle{};
+      source_rectangle.struct_size = sizeof(source_rectangle);
+      source_rectangle.x = 8;
+      source_rectangle.y = vertical ? 215 : 8;
+      source_rectangle.width = 1;
+      source_rectangle.height = 1;
+      size_t fixture_source_count = 0;
+      result = swan_engine_display_source_probe(
+          engine, &source_rectangle, nullptr, 0, &fixture_source_count);
+      if (result != SWAN_RESULT_OK || fixture_source_count == 0 ||
+          fixture_source_count > 262'144u) {
+        std::fputs("fixture did not expose bounded upstream source records\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      std::vector<swan_display_source_trace_t> fixture_sources(
+          fixture_source_count);
+      size_t fixture_source_written = 0;
+      result = swan_engine_display_source_probe(
+          engine, &source_rectangle, fixture_sources.data(),
+          fixture_sources.size(), &fixture_source_written);
+      if (result != SWAN_RESULT_OK ||
+          fixture_source_written != fixture_sources.size()) {
+        std::fputs("fixture upstream source records were incomplete\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      const auto exact_raster = std::find_if(
+          fixture_sources.begin(), fixture_sources.end(),
+          [&](const auto& trace) {
+            return trace.scope == SWAN_DISPLAY_SOURCE_SCOPE_SELECTED &&
+                   trace.component == SWAN_DISPLAY_SOURCE_COMPONENT_RASTER &&
+                   (trace.flags & SWAN_DISPLAY_SOURCE_FLAG_EXACT) != 0 &&
+                   (trace.flags & SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED) != 0 &&
+                   trace.cartridge_offset == marker_offset &&
+                   trace.cartridge_length == expected_source_bytes &&
+                   trace.minimum_instruction_hops > 0;
+          });
+      if (exact_raster == fixture_sources.end()) {
+        std::fprintf(
+            stderr,
+            "fixture lost exact raster source %08x/%u across %zu records\n",
+            marker_offset, expected_source_bytes, fixture_sources.size());
+        for (const auto& trace : fixture_sources) {
+          if (trace.scope == SWAN_DISPLAY_SOURCE_SCOPE_SELECTED) {
+            std::fprintf(
+                stderr,
+                "selected component=%u address=%05x range=%08x/%u hops=%u-%u flags=%x\n",
+                trace.component, trace.source_address, trace.cartridge_offset,
+                trace.cartridge_length, trace.minimum_instruction_hops,
+                trace.maximum_instruction_hops, trace.flags);
+          }
+        }
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      const auto outside_consumer = std::find_if(
+          fixture_sources.begin(), fixture_sources.end(),
+          [&](const auto& trace) {
+            return trace.scope == SWAN_DISPLAY_SOURCE_SCOPE_OUTSIDE_CONSUMER &&
+                   trace.component == SWAN_DISPLAY_SOURCE_COMPONENT_RASTER &&
+                   trace.cartridge_offset == marker_offset &&
+                   trace.cartridge_length == expected_source_bytes &&
+                   (trace.flags & SWAN_DISPLAY_SOURCE_FLAG_EXACT) != 0;
+          });
+      if (outside_consumer == fixture_sources.end()) {
+        std::fputs("fixture lost its outside consumer of the exact raster source\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
       }
     }
 

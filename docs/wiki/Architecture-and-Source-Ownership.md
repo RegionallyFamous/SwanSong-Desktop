@@ -37,7 +37,10 @@ The main execution path is:
 3. `CSwanEngine` is the backend-neutral C ABI between Swift and the engine.
 4. The live release backend links the pinned ares WonderSwan engine.
 
-ABI 6 adds one narrow display-provenance capability. During a clean replay the
+ABI 6 introduced the narrow final-writer display-provenance capability. ABI 7
+adds bounded upstream CPU dataflow from those final display bytes to exact
+half-open cartridge ranges, with explicit unknown/overflow completeness flags
+and private outside-consumer records. During a clean replay the
 renderer can describe the final owner of a bounded native rectangle—layer,
 map/tile/raster/palette source, and last CPU writer—without exposing a general
 trace API. Writer history is intentionally not serialized in save states, so a

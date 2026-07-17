@@ -101,6 +101,7 @@ expected = {
     "swansong_observed_play_cancel",
     "swansong_translation_capture_plan",
     "swansong_translation_probe_rectangle",
+    "swansong_translation_probe_rectangle_source",
     "swansong_translation_record_route",
     "swansong_translation_verify_pair",
 }
@@ -121,6 +122,7 @@ for name in (
     "swansong_observed_play_cancel",
     "swansong_translation_capture_plan",
     "swansong_translation_probe_rectangle",
+    "swansong_translation_probe_rectangle_source",
     "swansong_translation_record_route",
     "swansong_translation_verify_pair",
 ):
@@ -152,6 +154,7 @@ for request_id, name in enumerate(
         "swansong_observed_play_cancel",
         "swansong_translation_capture_plan",
         "swansong_translation_probe_rectangle",
+        "swansong_translation_probe_rectangle_source",
         "swansong_translation_record_route",
         "swansong_translation_verify_pair",
     ),
@@ -184,4 +187,4 @@ if process.returncode != 0:
     raise SystemExit(f"MCP server exited {process.returncode}: {stderr}")
 PY
 
-echo "PASS SwanSong MCP initializes with thirteen scoped, correctly annotated tools"
+echo "PASS SwanSong MCP initializes with fourteen scoped, correctly annotated tools"

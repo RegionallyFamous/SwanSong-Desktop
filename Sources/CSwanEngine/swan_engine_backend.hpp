@@ -52,6 +52,11 @@ class SwanEngineBackend {
       std::span<swan_display_owner_sample_t> samples,
       size_t& count,
       std::string& error) const = 0;
+  virtual swan_result_t display_source_probe(
+      const swan_display_rectangle_t& rectangle,
+      std::span<swan_display_source_trace_t> traces,
+      size_t& count,
+      std::string& error) const = 0;
 };
 
 std::unique_ptr<SwanEngineBackend> create_swan_engine_backend(

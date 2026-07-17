@@ -13,6 +13,7 @@ private final class SwanSongAppDelegate: NSObject, NSApplicationDelegate {
     let updater = SwanSongUpdater.shared
     private var terminationTask: Task<Void, Never>?
     private var localMCPBridge: SwanSongLocalMCPBridge?
+    private var statusItemController: SwanSongStatusItemController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         appDiagnostic("applicationDidFinishLaunching windows=\(NSApp.windows.count) bundle=\(Bundle.main.bundleIdentifier ?? "nil")")
@@ -38,6 +39,7 @@ private final class SwanSongAppDelegate: NSObject, NSApplicationDelegate {
         localMCPBridge.start()
         self.localMCPBridge = localMCPBridge
         if ProcessInfo.processInfo.environment["SWAN_SONG_HEADLESS"] != "1" {
+            statusItemController = SwanSongStatusItemController()
             NSApp.activate(ignoringOtherApps: true)
         }
         model.handleInitialLaunchArguments()
@@ -118,6 +120,7 @@ struct SwanSongApp: App {
                         || model.section == .homebrew
                         || model.section == .pocketCore
                         || model.section == .translationLab
+                        || model.section == .gameStudio
                         || model.selectedGame == nil
                 )
 

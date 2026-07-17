@@ -423,6 +423,7 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents/Resources/AppIcon.icns" \
     ! -path "$APP/Contents/Resources/AppIcon.png" \
     ! -path "$APP/Contents/Resources/AppIconCompact.png" \
+    ! -path "$APP/Contents/Resources/MenuBarSwan.png" \
     ! -path "$APP/Contents/Resources/LICENSE" \
     ! -path "$APP/Contents/Resources/PRIVACY.md" \
     ! -path "$APP/Contents/Resources/SUPPORT.md" \

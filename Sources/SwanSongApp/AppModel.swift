@@ -187,6 +187,7 @@ final class AppModel {
         case homebrew = "Homebrew"
         case pocketCore = "Analogue Pocket"
         case translationLab = "Translation Lab"
+        case gameStudio = "Game Studio"
 
         var id: Self { self }
 
@@ -198,6 +199,7 @@ final class AppModel {
             case .homebrew: "shippingbox"
             case .pocketCore: "sdcard"
             case .translationLab: "character.book.closed"
+            case .gameStudio: "hammer"
             }
         }
     }
@@ -788,6 +790,8 @@ final class AppModel {
         case .pocketCore:
             []
         case .translationLab:
+            []
+        case .gameStudio:
             []
         }
     }

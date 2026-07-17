@@ -1,11 +1,20 @@
-# SwanSong 0.3 beta testing
+# SwanSong 0.4 beta testing
 
-This guide covers the SwanSong Desktop 0.3 beta. Test only game and homebrew
+This guide covers the SwanSong Desktop 0.4 beta. Test only game and homebrew
 images you own or are authorized to use. Never attach ROMs, saves, original
 firmware, private screenshots, audio captures, or Translation Lab evidence to
 a public report.
 
 ## What this beta is testing
+
+- **Game Studio:** choose a local SwanSong SDK checkout, create all three recipe
+  types, edit `swan.toml`, and run Assets, Build, Test, Play, and Report. Confirm
+  the app uses the exact SDK commands, retains diagnostics, and shows generated
+  controls, assets, budgets, evidence, and resolved tool identities.
+- **Upstream source provenance:** probe a small native rectangle and confirm the
+  private artifact contains exact or conservative cartridge ranges, selected
+  display chains, and outside consumers while MCP returns only hashes, counts,
+  and an honest completeness result.
 
 - **Repeatable Translation Lab routes:** record an exact frame/input plan into
   route-v3, replay it against Original and Patched, and confirm native
@@ -31,17 +40,29 @@ a public report.
   requests fail. Restart the MCP client if it was already open when the project
   configuration was added.
 - **Swan icon packaging:** inspect the installed app in Finder and the Dock,
-  plus a direct SwiftPM launch. No surface should show the old gray surround or
-  AppKit rocket.
+  plus SwanSong's own menu-bar status item. The status item must use the swan
+  template in light and dark appearances and expose only Show and Quit.
 - **Open IPL and normal play:** WonderSwan, WonderSwan Color, SwanCrystal, and
   Pocket Challenge V2 still launch without an original BIOS. Exercise imports,
   player controls, saves, states, Time Ribbon, display profiles, rotation, and
   controller reconnection.
-- **0.2-to-0.3 updating:** stable-only clients must not offer this prerelease;
+- **0.3-to-0.4 updating:** stable-only clients must not offer this prerelease;
   beta-enabled clients should discover, verify, install, relaunch, and preserve
   the library and private project data.
 
 ## Guardrails to test
+
+- Game Studio must pass the exact destination to `swan new`, must not fork SDK
+  manifest/build rules inside Desktop, must save manifest changes before a
+  project command, and must show rather than discard compiler/generator output.
+  Previously saved evidence must not claim a replay comparison that was not
+  persisted. The developer preview must disclose that its tagged SDK, Python
+  runtime, and deterministic play executor are not yet bundled.
+- `probe-rectangle-source` must reject invalid, out-of-raster, or oversized
+  rectangles. Exact and candidate cartridge ranges, emulated addresses,
+  display coordinates, per-display chains, and outside consumers must remain
+  private. Carry-dependent, ambiguous, unknown, or overflowing dataflow must
+  be marked incomplete instead of exact.
 
 - `record-route` must require both debug-tools and project-write authorization,
   reject out-of-project or symlinked plans, use Original with empty persistence
@@ -73,7 +94,7 @@ The first-party Homebrew Catalog remains fail-closed. Its page must say
 **Coming Soon**, contain no production trust key, and make no catalog or game
 download request. Use **Add From Mac** for authorized local homebrew.
 
-The 0.3 feature set is frozen. During beta, accept only release-blocking fixes,
+The 0.4 feature set is frozen. During beta, accept only release-blocking fixes,
 test corrections, documentation, signing, notarization, and publication work;
 schedule new subsystems for a later version.
 
@@ -90,7 +111,7 @@ automated.
 
 ## Before reporting a result
 
-1. Confirm **SwanSong 0.3.1 (5)** in **SwanSong > About SwanSong**.
+1. Confirm **SwanSong 0.4.0 (6)** in **SwanSong > About SwanSong**.
 2. Record the Mac model, macOS version, Apple silicon or Intel architecture,
    and controller name when relevant.
 3. State whether the issue reproduces with an open-source fixture.

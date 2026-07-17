@@ -2,7 +2,7 @@
 
 This is the canonical documentation home for the native macOS application.
 Versioned release notes remain authoritative for historical behavior; the
-current source line is the 0.3 beta.
+current source line is the 0.4 beta.
 
 ## Product and source ownership
 
@@ -10,7 +10,7 @@ current source line is the 0.3 beta.
 | --- | --- | --- |
 | SwanSong Desktop for macOS | [`RegionallyFamous/SwanSong-Desktop`](https://github.com/RegionallyFamous/SwanSong-Desktop) | This repository: SwiftUI app, library, translation workbench, C ABI, release tooling, and tests. |
 | SwanSong for Analogue Pocket | [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core) | Separate FPGA project, artifacts, hardware qualification, and release lane. Desktop can merge only an immutable, authorized stable Core release onto a user-selected card; it does not build or publish the FPGA product. |
-| First-party homebrew catalog and ROM releases | [`RegionallyFamous/swansong-story-forge`](https://github.com/RegionallyFamous/swansong-story-forge) | Separate publication repository. The 0.3 Desktop catalog remains unpublished and network-silent. |
+| First-party homebrew catalog and ROM releases | [`RegionallyFamous/swansong-story-forge`](https://github.com/RegionallyFamous/swansong-story-forge) | Separate publication repository. The 0.4 Desktop catalog remains unpublished and network-silent. |
 | WonderSwan software engine | Upstream ares at the revision in [`Dependencies/ares.lock.json`](../Dependencies/ares.lock.json) | Prepared into ignored `.engine/` build storage; official source archives include the exact sanitized corresponding source and integration patch. |
 | SwanSong Desktop update feed and app releases | This repository's [`updates/appcast.xml`](../updates/appcast.xml) and [GitHub Releases](https://github.com/RegionallyFamous/SwanSong-Desktop/releases) | Sparkle updates the macOS app only. It does not distribute homebrew or invoke the separate Pocket installer. |
 | Native updater framework | Sparkle at the exact version and commit in [`Package.swift`](../Package.swift), [`Package.resolved`](../Package.resolved), and [`Dependencies/sparkle.lock.json`](../Dependencies/sparkle.lock.json) | Third-party framework embedded in the signed app. Official corresponding-source archives include the locked Sparkle source and license; SwanSong owns its integration, policy, feed, release tooling, and tests in this repository. |
@@ -36,7 +36,7 @@ download transport, verified cache, anti-rollback state, and transactional
 library update path are implemented. Production publication is deliberately
 `comingSoon`: no production public key is embedded, the Homebrew page says
 **Coming Soon**, and it makes no catalog or game-download request. **Add From
-Mac** remains available. Direct GitHub installation is not a 0.3 beta feature.
+Mac** remains available. Direct GitHub installation is not a 0.4 beta feature.
 
 Activation requires all of the following before the app is built: a production
 Ed25519 public key, a reachable non-empty signed catalog, immutable exact-tag
@@ -154,13 +154,14 @@ select the stable channel and must use Sparkle's beta channel so stable-only
 clients do not offer them. Appcast publication follows uploaded-asset
 verification and requires its own signed-feed and previous-version update
 tests. The complete operator procedure is in the [release process](RELEASE_PROCESS.md);
-tester-facing boundaries are in the [0.3 beta guide](BETA_TESTING.md).
+tester-facing boundaries are in the [0.4 beta guide](BETA_TESTING.md).
 
 ## More documentation
 
 - [SwanSong Wiki](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki)
 - [Playing and library](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
 - [Translation Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
+- [Game Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Game-Studio)
 - [Local MCP and automation](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
 - [Analogue Pocket SD setup](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
 - [Build and test](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Build-and-Test)
@@ -171,6 +172,7 @@ tester-facing boundaries are in the [0.3 beta guide](BETA_TESTING.md).
 - [Privacy](../PRIVACY.md)
 - [Support](../SUPPORT.md)
 - [Source and fixture provenance](../SOURCE_PROVENANCE.md)
+- [0.4.0 beta release notes](releases/0.4.0.md)
 - [0.3.1 beta release notes](releases/0.3.1.md)
 - [0.3.0 beta release notes](releases/0.3.0.md)
 - [0.2.0 beta release notes](releases/0.2.0.md)

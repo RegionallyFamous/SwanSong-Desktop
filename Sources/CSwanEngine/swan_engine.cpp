@@ -2,7 +2,7 @@
 #include "swan_engine_backend.hpp"
 
 #ifndef SWAN_ENGINE_BUILD_ID
-#define SWAN_ENGINE_BUILD_ID "inspection-stub-swan-abi6"
+#define SWAN_ENGINE_BUILD_ID "inspection-stub-swan-abi7"
 #endif
 
 #include <algorithm>
@@ -499,6 +499,34 @@ swan_result_t swan_engine_display_owner_probe(
   return finish_backend_call(
       engine,
       engine->backend->display_owner_probe(
+          *rectangle, output, *out_count, error),
+      std::move(error));
+}
+
+swan_result_t swan_engine_display_source_probe(
+    swan_engine_t* engine,
+    const swan_display_rectangle_t* rectangle,
+    swan_display_source_trace_t* out_traces,
+    size_t capacity,
+    size_t* out_count) {
+  if (!engine || !rectangle || !out_count ||
+      (!out_traces && capacity != 0) ||
+      rectangle->struct_size < sizeof(swan_display_rectangle_t) ||
+      rectangle->width == 0 || rectangle->height == 0) {
+    return SWAN_RESULT_INVALID_ARGUMENT;
+  }
+  if (!engine->loaded) return SWAN_RESULT_NOT_LOADED;
+  const size_t width = rectangle->width;
+  const size_t height = rectangle->height;
+  if (height > 4096u / width) return SWAN_RESULT_INVALID_ARGUMENT;
+  *out_count = 0;
+  std::string error;
+  const auto output = out_traces
+      ? std::span<swan_display_source_trace_t>(out_traces, capacity)
+      : std::span<swan_display_source_trace_t>();
+  return finish_backend_call(
+      engine,
+      engine->backend->display_source_probe(
           *rectangle, output, *out_count, error),
       std::move(error));
 }

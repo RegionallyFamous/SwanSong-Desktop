@@ -1,7 +1,7 @@
 # Local MCP and Automation
 
 SwanSong includes a local Model Context Protocol server for trusted Codex and
-other MCP clients. It has three deliberately separate surfaces:
+other MCP clients. It has four deliberately separate surfaces:
 
 - a live-app bridge for small, allowlisted status, navigation, and playback
   actions;
@@ -117,14 +117,15 @@ recover the endpoint or construct the final route.
 
 ## Translation Lab tools
 
-The same MCP server exposes four project-writing tools:
+The same MCP server exposes five project-writing tools:
 
 - `swansong_translation_capture_plan`;
 - `swansong_translation_probe_rectangle`;
+- `swansong_translation_probe_rectangle_source`;
 - `swansong_translation_record_route`; and
 - `swansong_translation_verify_pair`.
 
-Both require absolute project-contained input paths and
+All five require absolute project-contained input paths and
 `confirmProjectWrites: true`. Codex is configured to treat non-read-only tools
 as write operations requiring approval. The server rejects symlinks,
 out-of-project inputs, oversized JSON, unsupported schemas, missing live ares
@@ -136,13 +137,20 @@ runs, and then publishes one private pair under
 native PNGs, ROM/engine/RTC/persistence hashes, evidence bindings, and an exact
 native-raster pixel-diff report.
 
-`probe-rectangle` uses engine ABI 6 to replay one project role from clean boot
+`probe-rectangle` uses the ABI 6 final-writer capability, retained in ABI 7,
+to replay one project role from clean boot
 to an exact zero-based plan frame. Its private artifact records the active
 layer, map cell, tile/raster source, palette source, and last CPU writer for
 each requested native pixel. The MCP result contains only source-free hashes,
 counts, geometry, and deterministic context hashes—never addresses, tile or
 palette values, or program counters. Writer provenance is intentionally
 invalid after a save-state restore, so the probe accepts only clean replay.
+
+`probe-rectangle-source` adds ABI 7's bounded upstream dataflow. It privately
+retains exact half-open cartridge ranges, per-display-source instruction-hop
+chains, completeness/overflow flags, and visible consumers outside the chosen
+rectangle. Its MCP response remains source-free: only range/chain/consumer
+counts and hashes plus explicit completeness status leave the project.
 
 The other Translation tools return project paths and immutable evidence
 identifiers to the MCP client, but never ROM, state, RAM, persistence, or
@@ -174,9 +182,13 @@ WonderSwan controls are `x1`–`x4`, `y1`–`y4`, `a`, `b`, `start`, `volume`, a
 `pocket-down`, `pocket-left`, `pocket-pass`, `pocket-circle`, `pocket-clear`,
 `pocket-view`, and `pocket-escape`. Mixing hardware control sets is rejected.
 
-## Direct CLI
+## Direct runner fallback
 
-The exact MCP operations are also available from the signed route runner:
+Existing MCP clients and tasks must restart to negotiate newly added tools.
+The four guarded project operations are also available from SwanSong's bundled
+route runner; retained observed play is MCP-only. A source-built app may be
+ad-hoc signed, so distinguish a verified local development build from an
+installed Developer-ID-signed release.
 
 ```sh
 SwanSongRouteRunner record-route \

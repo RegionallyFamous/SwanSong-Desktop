@@ -5,6 +5,47 @@ The project uses semantic versioning once a release is published.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-07-17
+
+### Added
+
+- Added a native Game Studio developer preview with New, Assets, Build, Test,
+  Play, and Report workspaces backed by the exact SwanSong SDK CLI contracts.
+  It includes manifest editing, generated controls and asset previews, resource
+  budgets, retained diagnostics, Play Contract selection, native PNG/WAV
+  evidence review, and resolved SDK/toolchain/engine identity.
+- Added ABI 7 upstream display-source provenance. A bounded native rectangle
+  can now be traced through common copies and transforms to exact or honest
+  conservative cartridge ranges, with outside consumers retained privately.
+- Added the guarded `swansong_translation_probe_rectangle_source` MCP tool.
+  Public automation receives only source-free hashes, counts, and completeness;
+  exact offsets, emulated addresses, per-display chains, and coordinates stay
+  inside the private Translation Lab project.
+- Added a SwanSong-owned menu-bar status item using generated swan artwork, with
+  quick Show SwanSong and Quit SwanSong actions.
+- Added clean-room transformed provenance fixtures for both horizontal-planar
+  and vertical-packed display paths.
+
+### Changed
+
+- Bumped the narrow engine ABI from 6 to 7 for upstream source provenance while
+  retaining ABI 6's final-writer ownership contract.
+- Expanded the full SwanSong MCP server to fourteen guarded tools, including
+  persisted capture, both rectangle probes, record/verify, and the complete
+  observed-play lifecycle.
+- Game Studio delegates project creation, validation, asset conversion,
+  Wonderful builds, tests, reports, and play contracts to the separately
+  testable SDK instead of forking those rules in Desktop.
+
+### Fixed
+
+- Corrected the Game Studio `swan new --directory` integration to pass the exact
+  destination project directory required by the SDK.
+- Kept replay-verification copy honest: previously saved evidence is not called
+  replay-matched unless the comparison succeeded during the current UI run.
+- Made the live provenance integration test skip cleanly in inspection-only
+  stub builds while still requiring a separate passing ABI 7 live-engine lane.
+
 ## [0.3.1] - 2026-07-17
 
 ### Added
@@ -205,7 +246,8 @@ The project uses semantic versioning once a release is published.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.1.1...v0.2.0

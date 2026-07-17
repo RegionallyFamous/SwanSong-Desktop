@@ -15,7 +15,7 @@ a really nice place to play them.
 
 <p align="center">
   <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases"><strong>Download the latest SwanSong beta</strong></a>
-  · <a href="docs/releases/0.3.1.md">What's new in 0.3.1</a>
+  · <a href="docs/releases/0.4.0.md">What's new in 0.4.0</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -62,13 +62,18 @@ SwanSong is also built for the wonderfully obsessive side of WonderSwan.
 workspace. Record a route, compare original and patched frames, inspect visual
 changes, capture text on-device, and keep review evidence beside the project.
 
+**Game Studio** brings New, Assets, Build, Test, Play, and Report into one
+native workspace for SwanSong SDK projects. The 0.4 beta is a developer preview
+that uses an explicitly selected local SDK checkout; the tagged SDK/runtime
+bundle is still being prepared for a later self-contained build.
+
 **Analogue Pocket setup** prepares an SD card for SwanSong Core from inside the
 app. It is designed to preserve games, saves, Memories, settings, and unrelated
 cores. The screen is included now and will unlock installation when the separate
 SwanSong Core project publishes its first verified stable release.
 
 **Homebrew Catalog** is being built as a signed, first-party way to discover
-and install authorized homebrew. It remains Coming Soon in 0.3; local imports
+and install authorized homebrew. It remains Coming Soon in 0.4; local imports
 already work.
 
 **Local automation** lets a trusted Codex session check SwanSong, move around
@@ -93,6 +98,7 @@ The technical documentation lives in the
 
 - [Playing, library, saves, and Time Ribbon](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
 - [Translation Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
+- [Game Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Game-Studio)
 - [Local MCP and automation](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
 - [Analogue Pocket SD setup](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
 - [Controllers and mapping](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Gamepads)
@@ -104,7 +110,7 @@ The technical documentation lives in the
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.3.1 release notes](docs/releases/0.3.1.md).
+[0.4.0 release notes](docs/releases/0.4.0.md).
 
 ## Free, open, and independent
 

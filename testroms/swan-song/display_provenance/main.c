@@ -11,9 +11,10 @@
 #endif
 
 /*
- * Clean-room ABI 6 display-provenance fixture. The horizontal build uses
- * planar 4bpp tiles; the vertical build uses packed 4bpp tiles. Both expose
- * isolated final pixels from Screen 1, Screen 2, and a priority sprite.
+ * Clean-room display-provenance fixture introduced for ABI 6 and extended for
+ * ABI 7 upstream cartridge-source tracing. The horizontal build uses planar
+ * 4bpp tiles; the vertical build uses packed 4bpp tiles. Both expose isolated
+ * final pixels from Screen 1, Screen 2, and a priority sprite.
  */
 
 __attribute__((section(".iramcx_1800")))
@@ -24,6 +25,36 @@ ws_screen_t screen_2;
 
 __attribute__((section(".iramcx_0e00")))
 ws_sprite_table_t sprites;
+
+/*
+ * A deliberately distinctive ROM-resident tile. Tile 1 is reused across the
+ * Screen 1 background so one selected pixel and pixels outside the requested
+ * rectangle consume the same exact cartridge bytes.
+ */
+#if PROVENANCE_PACKED
+static const volatile uint8_t source_tile_one[32] = {
+    0x4b, 0x4b, 0x4b, 0x4b, 0x48, 0x7b, 0x48, 0x7b,
+    0x49, 0x6b, 0x49, 0x6b, 0x4e, 0x1b, 0x4e, 0x1b,
+    0x4f, 0x0b, 0x4f, 0x0b, 0x4c, 0x3b, 0x4c, 0x3b,
+    0x4d, 0x2b, 0x4d, 0x2b, 0x42, 0xdb, 0x42, 0xdb,
+};
+#else
+static const volatile uint8_t source_tile_one[32] = {
+    0xa5, 0x5a, 0x5a, 0x5a, 0xdb, 0x18, 0x7e, 0x42,
+    0xe7, 0x42, 0x18, 0x7e, 0xff, 0x00, 0x66, 0x99,
+    0xbd, 0xdb, 0x42, 0x18, 0x81, 0x7e, 0x18, 0x42,
+    0xc3, 0x3c, 0x66, 0x99, 0xaa, 0x55, 0xf0, 0x0f,
+};
+#endif
+
+__attribute__((noinline))
+static void copy_source_tile_one(void) {
+    volatile uint8_t ws_iram *destination =
+        (volatile uint8_t ws_iram *)WS_TILE_4BPP_MEM(1);
+    for (uint8_t index = 0; index < sizeof(source_tile_one); index++) {
+        destination[index] = source_tile_one[index] ^ 0x5a;
+    }
+}
 
 static void fill_solid_tile(uint16_t tile_index, uint8_t color) {
     uint8_t ws_iram *bytes = (uint8_t ws_iram *)WS_TILE_4BPP_MEM(tile_index);
@@ -56,7 +87,7 @@ int main(void) {
     memset(&sprites, 0, sizeof(sprites));
     memset(WS_TILE_4BPP_MEM(0), 0, 4 * sizeof(ws_display_tile_4bpp_t));
 
-    fill_solid_tile(1, 1); /* Screen 1, palette 0, red. */
+    copy_source_tile_one(); /* Screen 1, palette 0, ROM-sourced red row. */
     fill_solid_tile(2, 2); /* Screen 2, palette 1, green. */
     fill_solid_tile(3, 3); /* Sprite palette 8, blue. */
 

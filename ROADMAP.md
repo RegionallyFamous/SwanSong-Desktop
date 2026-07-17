@@ -3,12 +3,12 @@
 This roadmap describes intended outcomes, not promises or compatibility claims.
 Release notes and the issue tracker are authoritative for shipped behavior.
 
-## 0.3 beta closure
+## 0.4 beta closure
 
-- Publish guarded route recording, Original/Patched paired verification, and
-  deterministic homebrew playtesting as an explicitly marked GitHub
+- Publish Game Studio, ABI 7 upstream source provenance, the complete installed
+  plugin surface, and the SwanSong status item as an explicitly marked GitHub
   prerelease built from its exact signed source tag.
-- Prove the 0.2-to-0.3 Sparkle update on beta-enabled clients while stable-only
+- Prove the 0.3-to-0.4 Sparkle update on beta-enabled clients while stable-only
   clients remain on their selected channel and all private library and project
   data survives the transition.
 - Keep local MCP off by default, token-authenticated, session-local, and limited
@@ -30,6 +30,9 @@ Release notes and the issue tracker are authoritative for shipped behavior.
 - Retain Open IPL, controller, save/state, portrait, accessibility,
   minimum-macOS, A/V soak, and physical input acceptance from 0.2 without
   treating a successful boot or automation command as a compatibility verdict.
+- Keep Game Studio clearly labeled as a developer preview until the tagged SDK,
+  Python runtime, and deterministic play executor are bundled and independently
+  verified in the signed application payload.
 
 ## 1.0 readiness
 
