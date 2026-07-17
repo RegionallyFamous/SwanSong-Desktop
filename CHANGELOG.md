@@ -39,6 +39,12 @@ The project uses semantic versioning once a release is published.
 - Bumped the narrow SwanSong engine ABI from 5 to 6 for renderer provenance;
   restored save states explicitly cannot claim CPU-writer provenance.
 
+### Fixed
+
+- Rendered bundled Support, Privacy, and Acknowledgements Markdown as spaced
+  native headings, paragraphs, and lists instead of one flattened text run;
+  internal release-status comments are no longer visible in the app.
+
 ## [0.3.0] - 2026-07-17
 
 ### Added

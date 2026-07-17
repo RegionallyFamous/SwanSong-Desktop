@@ -24,6 +24,45 @@ final class HomebrewProductionReadinessTests: XCTestCase {
         }
     }
 
+    func testBundledMarkdownKeepsDocumentStructureAndHidesReleaseComments() {
+        let blocks = BundledLegalDocument.markdownBlocks(
+            """
+            # SwanSong support
+
+            Intro line one
+            continues with **emphasis**.
+
+            <!-- homebrew-catalog-status: coming-soon -->
+
+            ## Questions
+
+            - First answer;
+            - Second answer.
+
+            1. First condition,
+               continued on the next line.
+            2. Second condition.
+            """
+        )
+
+        XCTAssertEqual(
+            blocks,
+            [
+                .heading(level: 1, source: "SwanSong support"),
+                .paragraph("Intro line one continues with **emphasis**."),
+                .heading(level: 2, source: "Questions"),
+                .unorderedList(["First answer;", "Second answer."]),
+                .orderedList([
+                    "First condition, continued on the next line.",
+                    "Second condition.",
+                ]),
+            ]
+        )
+        XCTAssertFalse(
+            blocks.contains { String(describing: $0).contains("homebrew-catalog-status") }
+        )
+    }
+
     @MainActor
     func testComingSoonLegalSupportCopyDoesNotAdvertiseAnActiveCatalog() {
         guard case .comingSoon = HomebrewCatalogProductionTrust.publicationStatus else {

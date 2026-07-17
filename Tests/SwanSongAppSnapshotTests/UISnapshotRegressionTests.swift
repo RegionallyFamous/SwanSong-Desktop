@@ -412,6 +412,47 @@ final class UISnapshotRegressionTests: XCTestCase {
         XCTAssertLessThan(signature.yellowPlaceholderFraction, 0.08)
     }
 
+    func testBundledSupportMarkdownRendersAsStructuredDocument() throws {
+        let repositoryRoot = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+        let source = try String(
+            contentsOf: repositoryRoot.appendingPathComponent("SUPPORT.md"),
+            encoding: .utf8
+        )
+        let size = CGSize(width: 720, height: 1_000)
+        let rendered = try render(
+            AnyView(
+                ScrollView {
+                    BundledMarkdownDocument(source: source)
+                        .padding(32)
+                }
+                .background(Color(nsColor: .textBackgroundColor))
+            ),
+            size: size,
+            scheme: .dark
+        )
+        let signature = imageSignature(
+            name: "legal-support-formatted",
+            scheme: .dark,
+            bitmap: rendered.bitmap,
+            png: rendered.png
+        )
+
+        XCTAssertEqual(signature.width, Int(size.width))
+        XCTAssertEqual(signature.height, Int(size.height))
+        XCTAssertGreaterThan(signature.pngByteCount, 8_000)
+        XCTAssertGreaterThan(signature.sampledColorCount, 8)
+        XCTAssertGreaterThan(signature.opaqueSampleFraction, 0.98)
+        XCTAssertLessThan(signature.centralDominantColorFraction, 0.96)
+        XCTAssertLessThan(signature.yellowPlaceholderFraction, 0.08)
+
+        let output = try snapshotOutputDirectory()
+            .appendingPathComponent("legal-support-formatted-dark.png")
+        try rendered.png.write(to: output, options: .atomic)
+    }
+
     func testCoreSurfaceAccessibilityContracts() throws {
         let root = try temporaryRoot()
         defer { try? FileManager.default.removeItem(at: root) }
