@@ -5,10 +5,10 @@ Translation Lab, Analogue Pocket setup, privacy boundaries, architecture,
 testing, and releases. The repository README is the short product tour; the
 wiki is where the technical detail lives.
 
-The current source line is the 0.2 beta. It supports macOS 14 or later on Apple
+The current source line is the 0.3 beta. It supports macOS 14 or later on Apple
 silicon and Intel.
 
-## Current 0.2 beta status
+## Current 0.3 beta status
 
 - SwanSong Open IPL is the only startup path. There is no BIOS picker or
   original-firmware import, storage, download, or override.
@@ -22,6 +22,11 @@ silicon and Intel.
 - Gamepads use the standard controls macOS exposes through GameController. USB
   and Bluetooth work when the device appears as a compatible controller; raw
   vendor-specific HID layouts are not guessed.
+- Translation Lab can record route-v3 proofs from exact frame/input plans and
+  verify one stored route against Original and Patched into immutable paired
+  Capture Intake evidence.
+- Local MCP is off by default and exposes only allowlisted live controls,
+  bounded homebrew playtesting, and guarded Translation Lab automation.
 - The Analogue Pocket SD tool can install only an authorized stable SwanSong
   Core release. None is currently published, so the tool performs no package
   download or card write.
@@ -38,8 +43,8 @@ silicon and Intel.
   route/evidence commands.
 - [[Analogue Pocket SD Setup]] documents release trust, card eligibility,
   transactional writes, rollback, and preserved content.
-- [[Open IPL]] documents the BIOS-free 0.2 startup contract and historical
-  boundary.
+- [[Open IPL]] documents the BIOS-free 0.2-and-later startup contract and
+  historical boundary.
 - [[Gamepads]] defines controller discovery, mapping, hotplug, and USB limits.
 - [[Homebrew Catalog]] distinguishes implemented installer code from the
   deliberately unpublished production catalog.
@@ -51,7 +56,7 @@ silicon and Intel.
 - [[Signing and Notarization]] covers the trusted Mac and Apple tooling.
 - [[Release Gates]] defines source, artifact, app-update, Homebrew, Pocket, and
   publication requirements.
-- [[0.2 Beta Testing]] is the tester checklist and known-limits page.
+- [[0.3 Beta Testing]] is the current tester checklist and known-limits page.
 
 Versioned release notes are authoritative for historical behavior. In
 particular, 0.1.0 required user-supplied startup files and 0.1.1 made Open IPL

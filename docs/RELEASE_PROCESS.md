@@ -39,7 +39,13 @@ not routine release metadata.
 ## Release gates
 
 1. Update `CHANGELOG.md`, versioned release notes, the beta testing guide when
-   applicable, version, and build number.
+   applicable, version, and build number. Confirm the staged metadata and
+   repo-backed Wiki agree before building:
+
+   ```sh
+   ./Scripts/check-release-metadata.sh
+   ./Scripts/prepare-wiki-sync.sh --check
+   ```
 2. Confirm the bundle identifier, minimum macOS target, Sparkle dependency
    pin, production feed URL, public update key, system-profiling disablement,
    and off-by-default automatic check/download settings.

@@ -7,6 +7,8 @@ Apple notarization credentials.
 ## Source and version
 
 1. Update the changelog, versioned notes, beta guide, version, and build number.
+   Run `./Scripts/check-release-metadata.sh` and
+   `./Scripts/prepare-wiki-sync.sh --check` before building.
 2. Confirm bundle identifier `com.regionallyfamous.swansong`, minimum macOS 14,
    universal `arm64` + `x86_64` policy, pinned Sparkle dependency, production
    feed URL, tracked public update key, and disabled system profiling.
@@ -40,7 +42,7 @@ public distribution.
 - Run the live player input/focus lane from a logged-in GUI session. Exit 77 is
   not a pass.
 - Visually review every changed screenshot and UI baseline.
-- Run `./Scripts/check-homebrew-production-readiness.sh`. For 0.2 beta,
+- Run `./Scripts/check-homebrew-production-readiness.sh`. For 0.3 beta,
   `comingSoon` must mean no production key and no catalog network request.
 - Verify manual **Check for Updates…**, off-by-default automatic checks and
   automatic download/install, beta-channel opt-in, no system profile, and the

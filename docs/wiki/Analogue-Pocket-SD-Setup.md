@@ -11,7 +11,7 @@ Sparkle never invokes the Pocket workflow.
 
 ## Current availability
 
-No authorized stable SwanSong Core release is currently published. The 0.2
+No authorized stable SwanSong Core release is currently published. The 0.3
 tool reports that state and performs no package download or card write.
 
 The workflow unlocks only after `swansong-core` publishes an immutable stable
@@ -109,4 +109,4 @@ rollback, cleanup, and preservation of unrelated card content.
 
 Physical beta coverage still requires real SD cards, readers, exFAT/FAT32
 volumes, Finder eject behavior, and a published Core package exercised on
-Analogue Pocket hardware. See [[0.2 Beta Testing]] and [[Release Gates]].
+Analogue Pocket hardware. See [[0.3 Beta Testing]] and [[Release Gates]].

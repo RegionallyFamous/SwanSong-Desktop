@@ -1,9 +1,9 @@
 # SwanSong privacy policy
 
-Effective July 16, 2026
+Effective July 17, 2026
 
-This policy describes SwanSong 0.2.0. The versioned release notes document
-earlier 0.1.x behavior.
+This policy describes SwanSong 0.3.0. The versioned release notes document
+earlier 0.1.x and 0.2.0 behavior.
 
 <!-- homebrew-catalog-status: coming-soon -->
 
@@ -66,7 +66,8 @@ its own service under that client's privacy policy.
 ## Files you provide
 
 The SwanSong app bundle contains no games. SwanSong Open IPL is built-in
-project code, and SwanSong 0.2 does not accept an external startup image.
+project code, and SwanSong 0.2 and later do not accept an external startup
+image.
 You may import an authorized local game or homebrew image. SwanSong does not
 search the web, GitHub, or your Mac for ROMs. Imported games are validated and
 copied into SwanSong's private Application Support directory so the library

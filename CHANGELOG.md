@@ -5,6 +5,50 @@ The project uses semantic versioning once a release is published.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-07-17
+
+### Added
+
+- Added guarded Translation Lab commands that record a route-v3 proof from an
+  explicit frame/input plan and replay it against Original and Patched to
+  produce immutable paired Capture Intake evidence.
+- Added bounded deterministic playtesting that returns a native frame, final
+  audio window, input trace, and engine identity without exposing ROM, save,
+  state, persistence, or RAM bytes.
+- Added an opt-in local MCP bridge for limited app status, navigation, playback
+  control, playtesting, and Translation Lab automation. Live control uses a
+  user-only bearer token and an explicit tool allowlist.
+- Added project MCP configuration plus separate general and playtest MCP
+  servers that work with SwanSong's supported Swift release toolchain.
+
+### Security
+
+- Translation automation now requires explicit debug and project-write flags,
+  accepts only project-contained nonsymlink inputs, bounds file and frame
+  counts, uses empty persistence and a fixed proof RTC, and finishes both
+  replays before writing paired evidence.
+- Hardened Sparkle appcast publication by downloading immutable release assets,
+  authenticating release metadata, and preserving the validated release
+  channel through signed feed generation.
+- Kept local MCP disabled by default, limited the live bridge to the current
+  macOS login session, and revoked its token immediately when disabled.
+
+### Changed
+
+- Reframed the repository README as a product introduction and moved detailed
+  operation, privacy, automation, build, signing, and release material into the
+  repo-backed GitHub Wiki.
+- Expanded hosted release preflight coverage to exercise playtest plans,
+  route recording, paired verification, both MCP protocol surfaces, and exact
+  app-icon packaging.
+
+### Fixed
+
+- Rebuilt the production icon from full-bleed opaque artwork so Finder no
+  longer adds the unintended gray surround.
+- Replaced AppKit's generic rocket during direct SwiftPM launches with the
+  compact SwanSong swan artwork, including a software-safe Intel test path.
+
 ## [0.2.0] - 2026-07-16
 
 ### Added
@@ -121,7 +165,8 @@ The project uses semantic versioning once a release is published.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.1.0

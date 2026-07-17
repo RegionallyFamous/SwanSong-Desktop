@@ -80,9 +80,9 @@ no verified release exists and performs no write.
 ## First game
 
 Choose **File > Open Game…** or drag a supported `.ws`, `.wsc`, `.pc2`,
-`.pcv2`, or single-game ZIP into SwanSong. In version 0.2 it launches through
-SwanSong Open IPL without asking for a BIOS; there is no external-firmware
-import or override. Add only authorized game and homebrew images.
+`.pcv2`, or single-game ZIP into SwanSong. In version 0.2 and later it launches
+through SwanSong Open IPL without asking for a BIOS; there is no external
+firmware import or override. Add only authorized game and homebrew images.
 
 ## Build from source
 

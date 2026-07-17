@@ -3,18 +3,23 @@
 This roadmap describes intended outcomes, not promises or compatibility claims.
 Release notes and the issue tracker are authoritative for shipped behavior.
 
-## 0.2 beta closure
+## 0.3 beta closure
 
-- Publish the Open-IPL-only 0.2 build as an explicitly marked GitHub
-  prerelease, built from its exact signed source tag on a clean signing Mac.
-- Developer ID sign, notarize, staple, and pass Gatekeeper assessment for the
-  universal Apple silicon and Intel archive.
+- Publish guarded route recording, Original/Patched paired verification, and
+  deterministic homebrew playtesting as an explicitly marked GitHub
+  prerelease built from its exact signed source tag.
+- Prove the 0.2-to-0.3 Sparkle update on beta-enabled clients while stable-only
+  clients remain on their selected channel and all private library and project
+  data survives the transition.
+- Keep local MCP off by default, token-authenticated, session-local, and limited
+  to its documented tool and data allowlists. Exercise enable, control, revoke,
+  and denied-request paths on a clean supported Mac.
+- Developer ID sign, notarize, staple, Gatekeeper-assess, and inspect the
+  universal Apple silicon and Intel archive, including the corrected Finder,
+  Dock, and direct-launch icon behavior.
 - Publish the exact corresponding-source archive, SHA-256 checksums,
-  machine-readable manifest, human release notes, and beta testing guide.
-- Complete install, Open IPL, keyboard, standard GameController, save/state,
-  portrait, accessibility, and minimum-macOS acceptance passes. Treat devices
-  that macOS does not expose through GameController as unsupported, not as
-  silently guessed raw HID layouts.
+  machine-readable manifest, human release notes, beta testing guide, and
+  matching repo-backed Wiki revision.
 - Keep the Homebrew Catalog visibly **Coming Soon** and network-silent until the
   first explicitly licensed Story Forge ROM, immutable release asset, signed
   non-empty catalog, and production public key all pass the release gate.
@@ -22,10 +27,9 @@ Release notes and the issue tracker are authoritative for shipped behavior.
   release lanes explicit. Desktop's manual SD-card tool may install only an
   immutable, authorized stable Core release after its manifest and checksum
   agree; it must not build, publish, or silently update the FPGA product.
-- Ship the native Sparkle 2 updater against the signed GitHub-hosted appcast,
-  with manual checks always available, automatic checks/downloads opt-in,
-  system profiling disabled, and stable/beta channel behavior covered by the
-  release gate.
+- Retain Open IPL, controller, save/state, portrait, accessibility,
+  minimum-macOS, A/V soak, and physical input acceptance from 0.2 without
+  treating a successful boot or automation command as a compatibility verdict.
 
 ## 1.0 readiness
 

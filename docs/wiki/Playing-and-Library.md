@@ -5,7 +5,7 @@ and player. For the short product tour, start with the repository README.
 
 ## Supported software
 
-SwanSong 0.2 opens authorized:
+SwanSong 0.2 and later open authorized:
 
 - WonderSwan `.ws` images;
 - WonderSwan Color `.wsc` images;
