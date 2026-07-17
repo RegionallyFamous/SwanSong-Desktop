@@ -380,6 +380,8 @@ public struct TranslationPrivateArtifactStore: Sendable {
         guard expectedSamples > 0,
               expectedSamples <= 4_096,
               expectedSamples == details.ownerSamples.count,
+              details.rom.byteCount > 0,
+              details.rom.byteCount <= 16 * 1_024 * 1_024,
               details.completeness.traceRecordLimit > 0,
               details.completeness.traceRecordLimit
                 <= TranslationDisplaySourcePartitioner.traceRecordLimit,
@@ -446,7 +448,9 @@ public struct TranslationPrivateArtifactStore: Sendable {
                 }
             }
         }
-        let expectedCoverage = Set(details.ownerSamples.flatMap(sourceCoverageKeys))
+        let expectedCoverage = Set(details.ownerSamples.flatMap { sample in
+            isAdaptive ? sourceCoverageKeys(sample) : legacySourceCoverageKeys(sample)
+        })
         let actualCoverage = Set(details.traces.filter {
             $0.scope == .selected
         }.map { "\($0.x):\($0.y):\($0.component.rawValue)" })
@@ -734,6 +738,16 @@ public struct TranslationPrivateArtifactStore: Sendable {
         engineDisplaySourceComponents(for: sample).map {
             "\(sample.x):\(sample.y):\($0.rawValue)"
         }
+    }
+
+    private func legacySourceCoverageKeys(
+        _ sample: EngineDisplayOwnerSample
+    ) -> [String] {
+        var components: [EngineDisplaySourceComponent] = []
+        if sample.sourceKind == .tilemap { components.append(.mapCell) }
+        if sample.sourceKind != .none { components.append(.raster) }
+        components.append(.palette)
+        return components.map { "\(sample.x):\(sample.y):\($0.rawValue)" }
     }
 
     private func sourceCoverageKey(_ trace: EngineDisplaySourceTrace) -> String {

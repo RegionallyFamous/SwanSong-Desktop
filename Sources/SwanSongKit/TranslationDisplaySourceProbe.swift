@@ -711,9 +711,14 @@ public enum TranslationDisplaySourceProbe {
             runtimeGeneratedSelectedTraceCount: runtimeGeneratedSelected.count,
             runtimeGeneratedRasterTraceCount: runtimeGeneratedRaster.count,
             runtimeGeneratedSelectedSHA256: hashCanonical(runtimeGeneratedSelectedStrings),
-            sameFrameConsumerIsolationApplicable: runtimeGeneratedRaster.isEmpty,
-            sameFrameOutsideRootConsumersAbsent: runtimeGeneratedRaster.isEmpty
-                && outsideConsumers.isEmpty,
+            sameFrameConsumerIsolationApplicable: consumerIsolation(
+                runtimeGeneratedRasterCount: runtimeGeneratedRaster.count,
+                outsideRootConsumerCount: outsideConsumers.count
+            ).applicable,
+            sameFrameOutsideRootConsumersAbsent: consumerIsolation(
+                runtimeGeneratedRasterCount: runtimeGeneratedRaster.count,
+                outsideRootConsumerCount: outsideConsumers.count
+            ).outsideRootConsumersAbsent,
             prototypeAuthorized: false,
             isComplete: completeness.isComplete,
             unknownDependencyTraceCount: unknownCount,
@@ -730,7 +735,7 @@ public enum TranslationDisplaySourceProbe {
         )
     }
 
-    private static func validateLeaf(
+    static func validateLeaf(
         rectangle: EngineDisplayRectangle,
         ownerSamples: [EngineDisplayOwnerSample],
         selected: [EngineDisplaySourceTrace],
@@ -835,6 +840,14 @@ public enum TranslationDisplaySourceProbe {
         let rhsUpper = UInt64(rhs.cartridgeOffset) + UInt64(rhs.cartridgeLength)
         return UInt64(lhs.cartridgeOffset) < rhsUpper
             && UInt64(rhs.cartridgeOffset) < lhsUpper
+    }
+
+    static func consumerIsolation(
+        runtimeGeneratedRasterCount: Int,
+        outsideRootConsumerCount: Int
+    ) -> (applicable: Bool, outsideRootConsumersAbsent: Bool) {
+        let applicable = runtimeGeneratedRasterCount == 0
+        return (applicable, applicable && outsideRootConsumerCount == 0)
     }
 
     private static func expectedComponents(
