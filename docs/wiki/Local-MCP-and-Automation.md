@@ -146,9 +146,12 @@ either intake or either manifest integrity check fails.
 
 ```sh
 ./Scripts/check-mcp-server.sh
+./Scripts/check-playtest-cli.sh
 ./Scripts/check-translation-automation-cli.sh
 ```
 
 The first test performs an MCP initialize/list-tools exchange and checks tool
-annotations and write confirmation. The second uses the public fixture and
-live ares engine to record a route and produce a complete Capture Intake pair.
+annotations and confirmation contracts. The second runs the public fixture
+twice through SwanSong's live playtest path and requires bit-exact image and
+audio evidence. The third uses the public fixture and live ares engine to record
+a route and produce a complete Capture Intake pair.
