@@ -4,10 +4,7 @@ set -eu
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 MCP_PACKAGE="$ROOT/Tools/SwanSongPlaytestMCP"
-# Share the general MCP scratch tree. CI runs that protocol check first, so this
-# preserves the already-built SwanSongKit objects instead of compiling the full
-# engine twice in parallel-sized clean trees on the hosted Apple silicon runner.
-MCP_BUILD="$ROOT/.build/mcp-swift"
+MCP_BUILD="$ROOT/.build/playtest-mcp-swift"
 
 if [ -z "${SWAN_ARES_ENGINE_DIR:-}" ] \
   && [ -f "$ROOT/.engine/build/libSwanAresEngine.dylib" ]; then
