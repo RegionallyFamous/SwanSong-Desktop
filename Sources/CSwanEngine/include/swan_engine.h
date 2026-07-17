@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-#define SWAN_ENGINE_ABI_VERSION 5u
+#define SWAN_ENGINE_ABI_VERSION 6u
 
 typedef struct swan_engine swan_engine_t;
 
@@ -98,7 +98,49 @@ enum {
   SWAN_CAPABILITY_DEBUGGER = 1ull << 5,
   SWAN_CAPABILITY_STRUCTURED_TRACE = 1ull << 6,
   SWAN_CAPABILITY_POCKET_CHALLENGE_V2 = 1ull << 7,
+  SWAN_CAPABILITY_DISPLAY_PROVENANCE = 1ull << 8,
 };
+
+typedef enum swan_display_layer {
+  SWAN_DISPLAY_LAYER_BACKDROP = 0,
+  SWAN_DISPLAY_LAYER_SCREEN_1 = 1,
+  SWAN_DISPLAY_LAYER_SCREEN_2 = 2,
+  SWAN_DISPLAY_LAYER_SPRITE = 3,
+} swan_display_layer_t;
+
+typedef enum swan_display_source_kind {
+  SWAN_DISPLAY_SOURCE_NONE = 0,
+  SWAN_DISPLAY_SOURCE_TILEMAP = 1,
+  SWAN_DISPLAY_SOURCE_SPRITE = 2,
+} swan_display_source_kind_t;
+
+typedef struct swan_display_rectangle {
+  uint32_t struct_size;
+  uint16_t x;
+  uint16_t y;
+  uint16_t width;
+  uint16_t height;
+} swan_display_rectangle_t;
+
+typedef struct swan_display_owner_sample {
+  uint32_t struct_size;
+  uint16_t x;
+  uint16_t y;
+  swan_display_layer_t layer;
+  swan_display_source_kind_t source_kind;
+  uint16_t cell_address;
+  uint16_t tile_index;
+  uint32_t cell_attributes;
+  uint16_t raster_address;
+  uint8_t raster_byte_count;
+  uint8_t palette_index;
+  uint8_t palette_color;
+  uint8_t palette_byte_count;
+  uint32_t palette_address;
+  uint32_t cell_writer_pc;
+  uint32_t raster_writer_pc;
+  uint32_t palette_writer_pc;
+} swan_display_owner_sample_t;
 
 typedef struct swan_engine_config {
   uint32_t struct_size;
@@ -219,6 +261,12 @@ SWAN_ENGINE_API swan_result_t swan_engine_restore_state(
     swan_engine_t* engine,
     const uint8_t* bytes,
     size_t size);
+SWAN_ENGINE_API swan_result_t swan_engine_display_owner_probe(
+    swan_engine_t* engine,
+    const swan_display_rectangle_t* rectangle,
+    swan_display_owner_sample_t* out_samples,
+    size_t capacity,
+    size_t* out_count);
 
 #ifdef __cplusplus
 }

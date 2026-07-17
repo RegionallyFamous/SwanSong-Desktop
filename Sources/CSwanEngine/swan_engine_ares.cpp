@@ -6,6 +6,7 @@
 #include <ws/ws.hpp>
 
 #include <algorithm>
+#include <array>
 #include <atomic>
 #include <chrono>
 #include <condition_variable>
@@ -237,7 +238,8 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
            SWAN_CAPABILITY_SAVE_STATES |
            SWAN_CAPABILITY_PERSISTENCE |
            SWAN_CAPABILITY_DEBUGGER |
-           SWAN_CAPABILITY_POCKET_CHALLENGE_V2;
+           SWAN_CAPABILITY_POCKET_CHALLENGE_V2 |
+           SWAN_CAPABILITY_DISPLAY_PROVENANCE;
   }
 
   swan_result_t load(std::span<const uint8_t> rom,
@@ -375,6 +377,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
 
     loaded_ = true;
     staged_persistence_.clear();
+    reset_provenance_tracking();
     root_->power();
     initialize_frontend_presentation();
     return SWAN_RESULT_OK;
@@ -401,6 +404,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       std::lock_guard lock(audio_mutex_);
       audio_.clear();
     }
+    reset_provenance_tracking();
     release_active();
     error.clear();
     return SWAN_RESULT_OK;
@@ -409,6 +413,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
   swan_result_t reset(std::string& error) override {
     if (!loaded_ || !root_) return SWAN_RESULT_NOT_LOADED;
     input_mask_.store(0, std::memory_order_relaxed);
+    reset_provenance_tracking();
     root_->power(true);
     initialize_frontend_presentation();
     {
@@ -444,6 +449,8 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       std::lock_guard lock(audio_mutex_);
       audio_.clear();
     }
+    provenance_ready_ = false;
+    for (auto& sample : raw_provenance_) sample.struct_size = 0;
 
     root_->run();
 
@@ -619,6 +626,63 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       std::lock_guard lock(audio_mutex_);
       audio_.clear();
     }
+    // Writer identities are intentionally not serialized by ares. A caller
+    // must replay from boot before requesting an honest owner probe.
+    writers_valid_ = false;
+    provenance_ready_ = false;
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t display_owner_probe(
+      const swan_display_rectangle_t& rectangle,
+      std::span<swan_display_owner_sample_t> samples,
+      size_t& count,
+      std::string& error) const override {
+    if (!loaded_) return SWAN_RESULT_NOT_LOADED;
+    if (!writers_valid_) {
+      error = "display-writer provenance requires replay from clean power-on";
+      return SWAN_RESULT_UNSUPPORTED;
+    }
+    if (!provenance_ready_) {
+      error = "the current frame has no display-provenance observation";
+      return SWAN_RESULT_INTERNAL_ERROR;
+    }
+    const uint32_t display_width = provenance_vertical_ ? 144u : 224u;
+    const uint32_t display_height = provenance_vertical_ ? 224u : 144u;
+    const uint32_t right = static_cast<uint32_t>(rectangle.x) + rectangle.width;
+    const uint32_t bottom = static_cast<uint32_t>(rectangle.y) + rectangle.height;
+    if (right > display_width || bottom > display_height) {
+      error = "the display-provenance rectangle is outside the native game raster";
+      return SWAN_RESULT_INVALID_ARGUMENT;
+    }
+    count = static_cast<size_t>(rectangle.width) * rectangle.height;
+    if (samples.empty()) {
+      error.clear();
+      return SWAN_RESULT_OK;
+    }
+    if (samples.size() < count) {
+      error = "display-provenance output buffer is too small";
+      return SWAN_RESULT_INVALID_ARGUMENT;
+    }
+    size_t output_index = 0;
+    for (uint32_t local_y = 0; local_y < rectangle.height; ++local_y) {
+      for (uint32_t local_x = 0; local_x < rectangle.width; ++local_x) {
+        const uint32_t x = rectangle.x + local_x;
+        const uint32_t y = rectangle.y + local_y;
+        const uint32_t source_x = provenance_vertical_ ? 223u - y : x;
+        const uint32_t source_y = provenance_vertical_ ? x : y;
+        const auto& raw = raw_provenance_[source_y * 224u + source_x];
+        if (raw.struct_size != sizeof(swan_display_owner_sample_t)) {
+          error = "the current frame has incomplete display-provenance coverage";
+          return SWAN_RESULT_INTERNAL_ERROR;
+        }
+        auto sample = raw;
+        sample.x = static_cast<uint16_t>(x);
+        sample.y = static_cast<uint16_t>(y);
+        samples[output_index++] = sample;
+      }
+    }
     error.clear();
     return SWAN_RESULT_OK;
   }
@@ -708,6 +772,45 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     return chrono::timestamp();
   }
 
+  void wonderSwanSourceWrite(u32 kind, u32 address, u32 writer) override {
+    WriterRecord* record = nullptr;
+    if (kind == 1 && address < iram_writers_.size()) {
+      record = &iram_writers_[address];
+    } else if (kind == 2 && address < io_writers_.size()) {
+      record = &io_writers_[address];
+    }
+    if (!record) return;
+    record->sequence = ++writer_sequence_;
+    record->program_counter = writer & 0xfffffu;
+  }
+
+  void wonderSwanDisplayProvenance(
+      const ares::WonderSwanDisplayProvenance& input) override {
+    if (input.x >= 224 || input.y >= 144) return;
+    auto& sample = raw_provenance_[input.y * 224u + input.x];
+    std::memset(&sample, 0, sizeof(sample));
+    sample.struct_size = sizeof(sample);
+    sample.x = static_cast<uint16_t>(input.x);
+    sample.y = static_cast<uint16_t>(input.y);
+    sample.layer = static_cast<swan_display_layer_t>(input.layer);
+    sample.source_kind = static_cast<swan_display_source_kind_t>(input.sourceKind);
+    sample.cell_address = static_cast<uint16_t>(input.cellAddress);
+    sample.tile_index = static_cast<uint16_t>(input.tile);
+    sample.cell_attributes = input.cellAttributes;
+    sample.raster_address = static_cast<uint16_t>(input.rasterAddress);
+    sample.raster_byte_count = static_cast<uint8_t>(input.rasterByteCount);
+    sample.palette_index = static_cast<uint8_t>(input.palette);
+    sample.palette_color = static_cast<uint8_t>(input.paletteColor);
+    sample.palette_byte_count = static_cast<uint8_t>(input.paletteByteCount);
+    sample.palette_address = input.paletteAddress;
+    sample.cell_writer_pc = writer_for(
+        input.cellAddress, input.cellByteCount);
+    sample.raster_writer_pc = writer_for(
+        input.rasterAddress, input.rasterByteCount);
+    sample.palette_writer_pc = writer_for(
+        input.paletteAddress, input.paletteByteCount);
+  }
+
   void attach(ares::Node::Object node) override {
     if (auto stream = node->cast<ares::Node::Audio::Stream>()) {
       stream->setResamplerFrequency(output_sample_rate());
@@ -730,6 +833,8 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
                       static_cast<size_t>(row) * pitch,
                   video_stride_);
     }
+    provenance_vertical_ = height > width;
+    provenance_ready_ = true;
     ++frame_number_;
     video_ready_.notify_all();
   }
@@ -793,6 +898,45 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
   inline static std::mutex active_mutex_;
   inline static AresBackend* active_ = nullptr;
 
+  struct WriterRecord {
+    uint64_t sequence = 0;
+    uint32_t program_counter = 0xffffffffu;
+  };
+
+  void reset_provenance_tracking() {
+    writer_sequence_ = 0;
+    iram_writers_.fill({});
+    io_writers_.fill({});
+    for (auto& record : iram_writers_) {
+      record.program_counter = 0xffffffffu;
+    }
+    for (auto& record : io_writers_) {
+      record.program_counter = 0xffffffffu;
+    }
+    for (auto& sample : raw_provenance_) {
+      std::memset(&sample, 0, sizeof(sample));
+    }
+    writers_valid_ = true;
+    provenance_ready_ = false;
+    provenance_vertical_ = false;
+  }
+
+  uint32_t writer_for(uint32_t address, uint32_t byte_count) const {
+    if (byte_count == 0) return 0xffffffffu;
+    const bool io = address >= 0x10000u;
+    const uint32_t base = io ? address - 0x10000u : address;
+    const size_t limit = io ? io_writers_.size() : iram_writers_.size();
+    if (base >= limit || byte_count > limit - base) return 0xffffffffu;
+    WriterRecord latest;
+    for (uint32_t index = 0; index < byte_count; ++index) {
+      const auto& candidate = io
+          ? io_writers_[base + index]
+          : iram_writers_[base + index];
+      if (candidate.sequence > latest.sequence) latest = candidate;
+    }
+    return latest.sequence == 0 ? 0xffffffffu : latest.program_counter;
+  }
+
   swan_engine_config_t config_{};
   ares::Node::System root_;
   std::shared_ptr<vfs::directory> system_pak_;
@@ -801,6 +945,13 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
   std::atomic<uint32_t> input_mask_{0};
   bool loaded_ = false;
   bool initial_vertical_ = false;
+  uint64_t writer_sequence_ = 0;
+  std::array<WriterRecord, 65'536> iram_writers_{};
+  std::array<WriterRecord, 256> io_writers_{};
+  std::array<swan_display_owner_sample_t, 224u * 144u> raw_provenance_{};
+  bool writers_valid_ = false;
+  bool provenance_ready_ = false;
+  bool provenance_vertical_ = false;
 
   mutable std::mutex video_mutex_;
   mutable std::condition_variable video_ready_;

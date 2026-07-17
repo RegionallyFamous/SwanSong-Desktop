@@ -2902,6 +2902,7 @@ private struct TranslationLabView: View {
         return value
     }()
     @State private var evidenceOverlayAmount = 0.5
+    @State private var pendingPrivateArtifactDeletionID: TranslationPrivateArtifactSummary.ID?
 
     private var translationLabPage: TranslationLabPage {
         TranslationLabPage(rawValue: translationLabPageRaw) ?? .overview
@@ -3053,6 +3054,28 @@ private struct TranslationLabView: View {
         ) {
             TranslationVisualDivergenceView(model: model)
         }
+        .confirmationDialog(
+            "Delete this private artifact?",
+            isPresented: Binding(
+                get: { pendingPrivateArtifactDeletionID != nil },
+                set: { if !$0 { pendingPrivateArtifactDeletionID = nil } }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button("Delete Permanently", role: .destructive) {
+                guard
+                    let id = pendingPrivateArtifactDeletionID,
+                    let artifact = model.translationPrivateArtifacts.first(where: { $0.id == id })
+                else { return }
+                pendingPrivateArtifactDeletionID = nil
+                model.deleteTranslationPrivateArtifact(artifact)
+            }
+            Button("Cancel", role: .cancel) {
+                pendingPrivateArtifactDeletionID = nil
+            }
+        } message: {
+            Text("This removes the selected project-contained capture, probe, or session. It cannot be undone and never deletes a live observed-play session.")
+        }
         .sheet(
             isPresented: Binding(
                 get: { model.isTranslationTextIntakePresented },
@@ -3175,7 +3198,8 @@ private struct TranslationLabView: View {
 
         case .evidence:
             VStack(alignment: .leading, spacing: 20) {
-                if model.translationEvidence.isEmpty {
+                if model.translationEvidence.isEmpty,
+                   model.translationPrivateArtifacts.isEmpty {
                     ContentUnavailableView {
                         Label("No Evidence Yet", systemImage: "camera.viewfinder")
                     } description: {
@@ -3187,10 +3211,14 @@ private struct TranslationLabView: View {
                         .buttonStyle(.borderedProminent)
                     }
                     .frame(maxWidth: .infinity, minHeight: 360)
-                } else {
+                } else if !model.translationEvidence.isEmpty {
                     evidenceHistory
                     evidenceReviewDesk
                         .id("translation-evidence-review")
+                }
+
+                if !model.translationPrivateArtifacts.isEmpty {
+                    privateArtifactBrowser(project)
                 }
             }
             .accessibilityIdentifier("translation-evidence-page")
@@ -4130,6 +4158,221 @@ private struct TranslationLabView: View {
                 .scrollIndicators(.hidden)
             }
         }
+    }
+
+    private func privateArtifactBrowser(_ project: TranslationProject) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(alignment: .top, spacing: 12) {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Private automation evidence")
+                        .font(.title3.weight(.semibold))
+                        .accessibilityAddTraits(.isHeader)
+                    Text("Durable paired captures, display-owner probes, and observed sessions. Detailed pixels and source ownership stay inside this project.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Label(
+                    "\(model.translationPrivateArtifacts.count)",
+                    systemImage: "lock.doc.fill"
+                )
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+            }
+
+            if model.translationPrivateStorageStatus?.isLow == true {
+                Label {
+                    Text("Disk space is running low. Export any source-free summaries you need, then delete old private artifacts here before recording more evidence.")
+                } icon: {
+                    Image(systemName: "externaldrive.badge.exclamationmark")
+                }
+                .font(.callout.weight(.medium))
+                .foregroundStyle(.orange)
+                .padding(12)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(.orange.opacity(0.09), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            }
+
+            ScrollView(.horizontal) {
+                HStack(spacing: 12) {
+                    ForEach(model.translationPrivateArtifacts) { artifact in
+                        privateArtifactCard(artifact)
+                    }
+                }
+            }
+            .scrollIndicators(.hidden)
+
+            if let selected = model.selectedTranslationPrivateArtifact {
+                privateArtifactDetail(selected)
+            }
+        }
+        .padding(18)
+        .background(.background, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .stroke(.separator.opacity(0.5))
+        }
+        .accessibilityIdentifier("translation-private-artifact-browser")
+    }
+
+    private func privateArtifactCard(
+        _ artifact: TranslationPrivateArtifactSummary
+    ) -> some View {
+        let selected = model.selectedTranslationPrivateArtifactID == artifact.id
+        return Button {
+            model.selectTranslationPrivateArtifact(artifact.id)
+        } label: {
+            VStack(alignment: .leading, spacing: 9) {
+                HStack {
+                    Image(systemName: privateArtifactSymbol(artifact.kind))
+                        .foregroundStyle(privateArtifactColor(artifact.kind))
+                    Spacer()
+                    Image(
+                        systemName: artifact.isIntact
+                            ? "checkmark.shield.fill"
+                            : "exclamationmark.shield.fill"
+                    )
+                    .foregroundStyle(artifact.isIntact ? Color.green : Color.orange)
+                }
+                Text(artifact.kind.title)
+                    .font(.subheadline.weight(.semibold))
+                Text(privateArtifactStatus(artifact.status))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                Text(formatPrivateArtifactBytes(artifact.byteCount))
+                    .font(.caption2.monospacedDigit())
+                    .foregroundStyle(.tertiary)
+                if let date = artifact.updatedAt ?? artifact.createdAt {
+                    Text(date.formatted(date: .abbreviated, time: .shortened))
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .padding(12)
+            .frame(width: 190, alignment: .leading)
+            .background(.quaternary.opacity(0.45), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .stroke(selected ? Color.accentColor.opacity(0.8) : .clear, lineWidth: 2)
+            }
+        }
+        .buttonStyle(.plain)
+        .help(artifact.integrityIssue ?? "Inspect this private artifact")
+        .accessibilityLabel("\(artifact.kind.title), \(privateArtifactStatus(artifact.status))")
+        .accessibilityValue(artifact.isIntact ? "Integrity verified" : "Integrity problem")
+        .accessibilityAddTraits(selected ? .isSelected : [])
+        .contextMenu {
+            Button("Show in Finder", systemImage: "folder") {
+                model.revealTranslationPrivateArtifact(artifact)
+            }
+            Button("Export Source-Free Summary…", systemImage: "square.and.arrow.up") {
+                model.exportTranslationPrivateArtifactSummary(artifact)
+            }
+            Divider()
+            Button("Delete…", systemImage: "trash", role: .destructive) {
+                pendingPrivateArtifactDeletionID = artifact.id
+            }
+        }
+    }
+
+    private func privateArtifactDetail(
+        _ artifact: TranslationPrivateArtifactSummary
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 13) {
+            HStack(alignment: .firstTextBaseline) {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(artifact.kind.title)
+                        .font(.headline)
+                    Text(artifact.name)
+                        .font(.caption.monospaced())
+                        .foregroundStyle(.secondary)
+                        .textSelection(.enabled)
+                }
+                Spacer()
+                Label(
+                    artifact.isIntact ? "Integrity verified" : "Integrity problem",
+                    systemImage: artifact.isIntact
+                        ? "checkmark.shield.fill"
+                        : "exclamationmark.shield.fill"
+                )
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(artifact.isIntact ? Color.green : Color.orange)
+            }
+
+            if let issue = artifact.integrityIssue {
+                Text(issue)
+                    .font(.callout)
+                    .foregroundStyle(.orange)
+                    .textSelection(.enabled)
+            }
+
+            HStack(spacing: 18) {
+                artifactMetric("Status", privateArtifactStatus(artifact.status))
+                artifactMetric("Size", formatPrivateArtifactBytes(artifact.byteCount))
+                ForEach(artifact.metrics.keys.sorted(), id: \.self) { key in
+                    artifactMetric(privateArtifactMetricTitle(key), "\(artifact.metrics[key] ?? 0)")
+                }
+            }
+
+            HStack {
+                Button("Show in Finder", systemImage: "folder") {
+                    model.revealTranslationPrivateArtifact(artifact)
+                }
+                Button("Export Source-Free Summary…", systemImage: "square.and.arrow.up") {
+                    model.exportTranslationPrivateArtifactSummary(artifact)
+                }
+                Spacer()
+                Button("Delete…", systemImage: "trash", role: .destructive) {
+                    pendingPrivateArtifactDeletionID = artifact.id
+                }
+            }
+        }
+        .padding(15)
+        .background(.quaternary.opacity(0.28), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+    }
+
+    private func artifactMetric(_ title: String, _ value: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title)
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(.secondary)
+            Text(value)
+                .font(.caption.monospacedDigit())
+        }
+    }
+
+    private func privateArtifactSymbol(_ kind: TranslationPrivateArtifactKind) -> String {
+        switch kind {
+        case .pair: "rectangle.on.rectangle.angled"
+        case .displayOwnerProbe: "scope"
+        case .observedSession: "gamecontroller.fill"
+        }
+    }
+
+    private func privateArtifactColor(_ kind: TranslationPrivateArtifactKind) -> Color {
+        switch kind {
+        case .pair: .cyan
+        case .displayOwnerProbe: .purple
+        case .observedSession: .indigo
+        }
+    }
+
+    private func privateArtifactStatus(_ status: String) -> String {
+        status.replacingOccurrences(of: "-", with: " ").capitalized
+    }
+
+    private func privateArtifactMetricTitle(_ key: String) -> String {
+        switch key {
+        case "changedPixels": "Changed pixels"
+        case "inputFrames": "Input frames"
+        case "inputTransitions": "Transitions"
+        default: key.capitalized
+        }
+    }
+
+    private func formatPrivateArtifactBytes(_ bytes: Int64) -> String {
+        ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
     }
 
     private func evidenceCard(_ summary: TranslationEvidenceSummary) -> some View {

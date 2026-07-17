@@ -57,14 +57,17 @@ agree before the release or update feed can be published.
 
 ## Open test fixtures
 
-The checked-in files under [`testroms/`](testroms/) are the tracked open-source
-fixtures from the original SwanSong source tree. Their source, READMEs, and
-upstream license notices are kept together. The seven small `.ws`/`.wsc` files
-are reproducible emulator tests, not commercial games or firmware:
+The checked-in files under [`testroms/`](testroms/) are tracked open-source and
+clean-room fixtures. Their source, READMEs, and upstream license notices are
+kept together. The nine small `.ws`/`.wsc` files are reproducible emulator
+tests, not commercial games or firmware:
 
 - five targeted `ws-test-suite` fixtures, with both suite and syslib notices;
 - the SJIS glyph-provenance fixture, including the Misaki font notice;
-- the Wonderful medium-SRAM probe, with its example and syslib notices.
+- the Wonderful medium-SRAM probe, with its example and syslib notices; and
+- two CC0 ABI 6 display-provenance fixtures covering horizontal planar and
+  vertical packed pixels across both screen layers, sprites, palettes, and
+  known CPU writers, with the linked syslib notice.
 
 The WonderWitch/Athena example is source-only and retains its AthenaOS notice;
 building it requires a separately installed Wonderful toolchain.

@@ -86,6 +86,9 @@ python3 ./Scripts/check-sparkle-dependency-lock.py \
 
 Fixture results prove bounded execution invariants. They are not commercial-
 game compatibility results or original-hardware accuracy evidence.
+`check-live-engine.sh` also pins two clean-room ABI 6 fixtures: horizontal
+planar and vertical packed output with exact Screen 1, Screen 2, sprite,
+palette, raster-width, rotation, and non-unknown CPU-writer assertions.
 
 ## Local MCP and guarded route automation
 

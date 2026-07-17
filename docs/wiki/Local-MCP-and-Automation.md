@@ -5,8 +5,11 @@ other MCP clients. It has three deliberately separate surfaces:
 
 - a live-app bridge for small, allowlisted status, navigation, and playback
   actions;
-- a bounded headless playtest tool that returns one rendered frame and final
-  audio window from SwanSong's own engine after an exact input plan;
+- bounded headless playtest tools that return one rendered frame and final
+  audio window, or a deterministic Original/Patched pair, from SwanSong's own
+  engine after an exact input plan;
+- a retained observed-play session that advances through visible, bounded
+  input steps while saving one cumulative from-boot plan; and
 - guarded Translation Lab tools that create route and evidence artifacts only
   inside an explicitly selected translation project.
 
@@ -50,11 +53,24 @@ input-frame count, frame number, native-raster hash, audio metrics, and media
 hashes.
 
 The caller must set `confirmShareCapture: true`, because the returned game frame
-and audio are visible to the connected MCP client. ROM, save, state, persistence, and RAM
-bytes are never returned. The tool is deterministic and non-destructive, but a
-successful execution only proves that SwanSong produced that observation. An
-agent must inspect the frame and exercise the game's declared mechanic before
+and audio are visible to the connected MCP client. ROM, save, state, persistence,
+and RAM bytes are never returned. The tool is deterministic and non-destructive,
+but a successful execution only proves that SwanSong produced that observation.
+An agent must inspect the frame and exercise the game's declared mechanic before
 calling it a gameplay pass.
+
+`swansong_compare_playtest_plan` accepts different authorized absolute
+`originalROMPath` and `patchedROMPath` files plus the same plan contract. It
+reads both inputs before execution, rejects symlinks, changed files, identical
+normalized paths, physical files or ROM digests, and different hardware models,
+then runs each image independently with the fixed proof RTC and empty isolated
+persistence. Results and guarded failures contain no local paths or basenames:
+the successful result returns the source-free per-ROM reports,
+a plan digest, a bounded visual/audio delta classification, exact
+whole-native-frame pixel counts, fraction, channel error, and changed bounds
+when geometry matches, then Original image and audio followed by Patched image
+and audio. It does not create Translation Lab evidence files; use the guarded
+project tools when durable route-v3 evidence is required.
 
 The same observation path is available without MCP:
 
@@ -70,10 +86,41 @@ SwanSongRouteRunner playtest-plan \
 The report includes deterministic video and audio fingerprints, the exact
 input plan, fixed RTC and empty-persistence declarations, and engine identity.
 
+## Observed play
+
+Long tactical games do not fit comfortably in a single 12,000-frame request.
+The observed-play tools retain one isolated local ares session while the MCP
+server remains running:
+
+- `swansong_observed_play_start` selects one project role and creates a private
+  session at clean frame zero;
+- `swansong_observed_play_resume` validates an interrupted session's saved
+  manifest and exact cumulative plan, then reconstructs the live endpoint by
+  replaying from clean boot under the original ROM, engine, RTC, and empty-
+  persistence bindings;
+- `swansong_observed_play_step` holds one native input combination for 1–600
+  frames, returns that visible endpoint and audio window only with
+  `confirmShareCapture: true`, and atomically extends the cumulative plan;
+- `swansong_observed_play_finish` closes the live engine, replays the exact
+  plan from boot, and produces the normal immutable Original/Patched persisted
+  capture; and
+- `swansong_observed_play_cancel` closes the live engine without proof while
+  retaining the private plan and cancelled manifest.
+
+The cumulative plan may reach 1,000,000 frames; the smaller per-step bound
+keeps each observation reviewable. Session files live under
+`analysis/swan-song-lab/observed-sessions/` with owner-only permissions. The
+private ownership lease distinguishes a live session from one abandoned by a
+crashed MCP host. Abandoned `active` manifests are marked `interrupted` before
+recovery. The live session is never final proof, and save state is not used to
+recover the endpoint or construct the final route.
+
 ## Translation Lab tools
 
-The same MCP server exposes two project-writing tools:
+The same MCP server exposes four project-writing tools:
 
+- `swansong_translation_capture_plan`;
+- `swansong_translation_probe_rectangle`;
 - `swansong_translation_record_route`; and
 - `swansong_translation_verify_pair`.
 
@@ -83,12 +130,26 @@ as write operations requiring approval. The server rejects symlinks,
 out-of-project inputs, oversized JSON, unsupported schemas, missing live ares
 capabilities, and changed proof identities.
 
-These tools return project paths and immutable evidence identifiers to the MCP
-client, but never ROM, state, RAM, persistence, or framebuffer bytes. SwanSong
-itself makes no network request for MCP. A connected AI client may send tool
-arguments and results to its service under that client's privacy policy, so use
-Translation automation only for a project whose path and evidence metadata you
-are comfortable sharing with that client.
+`capture-plan` performs route recording, both replays, both Capture Intake
+runs, and then publishes one private pair under
+`analysis/swan-song-lab/pairs/`. It contains the canonical exact plan, both
+native PNGs, ROM/engine/RTC/persistence hashes, evidence bindings, and an exact
+native-raster pixel-diff report.
+
+`probe-rectangle` uses engine ABI 6 to replay one project role from clean boot
+to an exact zero-based plan frame. Its private artifact records the active
+layer, map cell, tile/raster source, palette source, and last CPU writer for
+each requested native pixel. The MCP result contains only source-free hashes,
+counts, geometry, and deterministic context hashes—never addresses, tile or
+palette values, or program counters. Writer provenance is intentionally
+invalid after a save-state restore, so the probe accepts only clean replay.
+
+The other Translation tools return project paths and immutable evidence
+identifiers to the MCP client, but never ROM, state, RAM, persistence, or
+unapproved framebuffer bytes. SwanSong itself makes no network request for MCP.
+A connected AI client may send tool arguments and results to its service under
+that client's privacy policy, so use Translation automation only for a project
+whose path and evidence metadata you are comfortable sharing with that client.
 
 ## Frame/input plan
 
@@ -129,6 +190,21 @@ SwanSongRouteRunner verify-pair \
   --allow-project-writes \
   --project "/path/to/project" \
   --route "/path/to/project/analysis/swan-song-lab/routes/route-….json"
+
+SwanSongRouteRunner capture-plan \
+  --enable-debug-tools \
+  --allow-project-writes \
+  --project "/path/to/project" \
+  --plan "/path/to/project/automation/opening-plan.json"
+
+SwanSongRouteRunner probe-rectangle \
+  --enable-debug-tools \
+  --allow-project-writes \
+  --project "/path/to/project" \
+  --plan "/path/to/project/automation/opening-plan.json" \
+  --role original \
+  --frame 179 \
+  --rect 24,40,96,32
 ```
 
 `record-route` always boots Original with empty isolated persistence, the
@@ -142,6 +218,11 @@ write the two immutable evidence directories, run Capture Intake for both, and
 re-index the pair. It returns failure rather than claiming verification if
 either intake or either manifest integrity check fails.
 
+`capture-plan` combines both commands and publishes the durable private pair
+only after both evidence lanes and Capture Intake outputs re-index intact.
+`probe-rectangle` saves detailed owner evidence privately and prints only the
+source-free summary.
+
 ## Tests
 
 ```sh
@@ -153,5 +234,7 @@ either intake or either manifest integrity check fails.
 The first test performs an MCP initialize/list-tools exchange and checks tool
 annotations and confirmation contracts. The second runs the public fixture
 twice through SwanSong's live playtest path and requires bit-exact image and
-audio evidence. The third uses the public fixture and live ares engine to record
-a route and produce a complete Capture Intake pair.
+audio evidence. The third uses the public fixture and live ares engine to
+record a route, publish a durable Capture Intake pair, validate a source-free
+private rectangle probe, then run observed play through start, multiple visible
+steps, and a final clean-boot paired replay.

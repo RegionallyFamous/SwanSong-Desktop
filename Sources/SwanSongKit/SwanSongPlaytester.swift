@@ -54,7 +54,7 @@ public struct SwanSongPlaytestCapture: Sendable {
     }
 }
 
-private struct PlaytestAudioAccumulator {
+struct PlaytestAudioAccumulator {
     static let finalWindowEmulatedFrames = 30
 
     var channels = 0

@@ -12,6 +12,8 @@ private struct RouteRunnerOptions {
 }
 
 private enum AutomationCommand: String {
+    case capturePlan = "capture-plan"
+    case probeRectangle = "probe-rectangle"
     case recordRoute = "record-route"
     case verifyPair = "verify-pair"
 }
@@ -35,6 +37,9 @@ private struct AutomationOptions {
     var planURL: URL?
     var routeURL: URL?
     var outputURL: URL?
+    var role: TranslationROMRole?
+    var frameIndex: UInt64?
+    var rectangle: EngineDisplayRectangle?
 }
 
 private struct RouteRunReport: Codable {
@@ -80,14 +85,21 @@ private struct SwanSongRouteRunner {
     Usage:
       SwanSongRouteRunner --enable-debug-tools --rom GAME.wsc --route ROUTE.json [--output REPORT.json] [--capture FINAL.png]
       SwanSongRouteRunner playtest-plan --enable-debug-tools --rom GAME.wsc --plan PLAN.json [--output REPORT.json] [--capture FINAL.png]
+      SwanSongRouteRunner capture-plan --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json [--output REPORT.json]
+      SwanSongRouteRunner probe-rectangle --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original|patched --frame INDEX --rect X,Y,WIDTH,HEIGHT [--output REPORT.json]
       SwanSongRouteRunner record-route --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json [--output REPORT.json]
       SwanSongRouteRunner verify-pair --enable-debug-tools --allow-project-writes --project PROJECT --route ROUTE.json [--output REPORT.json]
 
     The legacy form replays an existing deterministic route. playtest-plan
     runs a bounded visual/audio observation without writing game state.
-    record-route turns a declarative frame/input plan into a route-v3 proof
-    from Original. verify-pair replays that route against Original and Patched,
-    runs Capture Intake, and emits both immutable evidence manifests.
+    capture-plan privately persists the exact plan, both native frames, all
+    deterministic context bindings, and a pixel-diff report after Capture
+    Intake succeeds. probe-rectangle replays one project role from clean boot,
+    saves detailed display-owner provenance privately, and emits only hashes
+    and counts. record-route turns a declarative frame/input plan into a
+    route-v3 proof from Original. verify-pair replays that route against
+    Original and Patched, runs Capture Intake, and emits both immutable
+    evidence manifests.
     Project-writing commands require both explicit guard flags and only accept
     project-scoped input and output paths.
     """
@@ -298,6 +310,52 @@ private struct SwanSongRouteRunner {
         }
 
         switch command {
+        case .capturePlan:
+            guard let planURL = options.planURL else {
+                throw RouteRunnerError(message: "Missing --plan.\n\n\(usage)")
+            }
+            let planData = try readProjectFile(
+                planURL,
+                project: project,
+                maximumBytes: 1_048_576,
+                label: "frame/input plan"
+            )
+            let plan = try JSONDecoder().decode(
+                TranslationFrameInputPlan.self,
+                from: planData
+            )
+            let report = try TranslationLabAutomation.capturePlan(
+                project: project,
+                plan: plan
+            )
+            try emit(report, to: options.outputURL)
+        case .probeRectangle:
+            guard let planURL = options.planURL,
+                  let role = options.role,
+                  let frameIndex = options.frameIndex,
+                  let rectangle = options.rectangle else {
+                throw RouteRunnerError(
+                    message: "Missing --plan, --role, --frame, or --rect.\n\n\(usage)"
+                )
+            }
+            let planData = try readProjectFile(
+                planURL,
+                project: project,
+                maximumBytes: 1_048_576,
+                label: "frame/input plan"
+            )
+            let plan = try JSONDecoder().decode(
+                TranslationFrameInputPlan.self,
+                from: planData
+            )
+            let report = try TranslationDisplayOwnerProbe.run(
+                project: project,
+                role: role,
+                plan: plan,
+                frameIndex: frameIndex,
+                rectangle: rectangle
+            )
+            try emit(report, to: options.outputURL)
         case .recordRoute:
             guard let planURL = options.planURL else {
                 throw RouteRunnerError(message: "Missing --plan.\n\n\(usage)")
@@ -393,11 +451,55 @@ private struct SwanSongRouteRunner {
                 default: break
                 }
                 index += 2
+            case "--role":
+                guard index + 1 < CommandLine.arguments.count,
+                      let role = TranslationROMRole(
+                        rawValue: CommandLine.arguments[index + 1]
+                      ) else {
+                    throw RouteRunnerError(
+                        message: "--role must be original or patched.\n\n\(usage)"
+                    )
+                }
+                options.role = role
+                index += 2
+            case "--frame":
+                guard index + 1 < CommandLine.arguments.count,
+                      let frame = UInt64(CommandLine.arguments[index + 1]) else {
+                    throw RouteRunnerError(
+                        message: "--frame must be a nonnegative integer.\n\n\(usage)"
+                    )
+                }
+                options.frameIndex = frame
+                index += 2
+            case "--rect":
+                guard index + 1 < CommandLine.arguments.count else {
+                    throw RouteRunnerError(message: "Missing value for --rect.\n\n\(usage)")
+                }
+                options.rectangle = try parseRectangle(
+                    CommandLine.arguments[index + 1]
+                )
+                index += 2
             default:
                 throw RouteRunnerError(message: "Unknown option \(argument).\n\n\(usage)")
             }
         }
         return options
+    }
+
+    private static func parseRectangle(_ value: String) throws -> EngineDisplayRectangle {
+        let parts = value.split(separator: ",", omittingEmptySubsequences: false)
+        guard parts.count == 4,
+              let x = UInt16(parts[0]),
+              let y = UInt16(parts[1]),
+              let width = UInt16(parts[2]),
+              let height = UInt16(parts[3]),
+              width > 0,
+              height > 0 else {
+            throw RouteRunnerError(
+                message: "--rect must be X,Y,WIDTH,HEIGHT using native nonnegative coordinates.\n\n\(usage)"
+            )
+        }
+        return EngineDisplayRectangle(x: x, y: y, width: width, height: height)
     }
 
     private static func parsePlaytestOptions() throws -> PlaytestOptions {

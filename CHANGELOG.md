@@ -5,6 +5,46 @@ The project uses semantic versioning once a release is published.
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-07-17
+
+### Added
+
+- Added a guarded paired playtest MCP tool that replays one exact deterministic
+  plan against disjoint Original and Patched ROMs, returns labeled native
+  captures, and reports exact whole-frame pixel and audio differences without
+  exposing local paths or private emulator data.
+- Added persisted Translation Capture: one guarded plan now produces a private,
+  immutable project pair containing the exact plan, both native frames,
+  ROM/engine/RTC/persistence bindings, and an exact pixel-diff report.
+- Added ABI 6 display-owner provenance for exact native rectangles. Detailed
+  layer, map-cell, tile/raster, palette, and CPU-writer observations remain
+  private in the project; MCP receives only aggregate counts and hashes.
+- Added retained observed-play MCP sessions with visible bounded steps, an
+  atomically updated cumulative from-boot plan, a 1,000,000-frame cumulative
+  ceiling, and final Original/Patched proof replayed from clean boot.
+- Added crash-safe observed-play recovery. A private ownership lease marks
+  abandoned sessions interrupted, and resume reconstructs the endpoint only
+  by validating and replaying the saved plan from clean boot.
+- Added a private automation-evidence browser for persisted pairs, owner
+  probes, and observed sessions, with integrity and size reporting, Finder
+  reveal, source-free JSON export, guarded deletion, and low-disk warnings.
+- Added free-space preflight protection for new durable Translation Lab
+  captures, probes, and observed sessions.
+- Added clean-room horizontal-planar and vertical-packed provenance ROMs that
+  assert both screen layers, sprites, palette sources, native rotation, raster
+  widths, and known CPU writers in the live-engine gate.
+
+### Changed
+
+- Bumped the narrow SwanSong engine ABI from 5 to 6 for renderer provenance;
+  restored save states explicitly cannot claim CPU-writer provenance.
+
+### Fixed
+
+- Rendered bundled Support, Privacy, and Acknowledgements Markdown as spaced
+  native headings, paragraphs, and lists instead of one flattened text run;
+  internal release-status comments are no longer visible in the app.
+
 ## [0.3.0] - 2026-07-17
 
 ### Added
@@ -165,7 +205,8 @@ The project uses semantic versioning once a release is published.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.1.0...v0.1.1

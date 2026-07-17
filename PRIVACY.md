@@ -2,7 +2,7 @@
 
 Effective July 17, 2026
 
-This policy describes SwanSong 0.3.0. The versioned release notes document
+This policy describes SwanSong 0.3.1. The versioned release notes document
 earlier 0.1.x and 0.2.0 behavior.
 
 <!-- homebrew-catalog-status: coming-soon -->
@@ -50,18 +50,32 @@ current macOS login session. The live bridge can return section, library
 count, and playback readiness or control navigation and the already-selected
 game. It does not return game titles, paths, ROMs, saves, states, RAM,
 screenshots, inputs, or logs. Turning the setting off revokes the token. The
-separate headless playtest tool can return one rendered game screenshot, audio
-activity and fingerprints, exact input-plan metadata, the ROM digest and
-checksum, and engine identity only when the caller explicitly sets
-`confirmShareCapture: true`; it never returns ROM, save, state, persistence, or
-RAM bytes and does not require the live app bridge.
+separate headless playtest tools can return one rendered game screenshot and
+audio window, a sequence of explicitly requested observed-play screenshots and
+audio windows, or a paired Original/Patched capture and source-free delta report.
+They include audio activity and fingerprints, exact input-plan metadata, ROM
+digests and checksums, and engine identity only when the caller explicitly sets
+`confirmShareCapture: true`; they never return local paths or ROM, save, state,
+persistence, or RAM bytes and do not require the live app bridge.
 
 The separate Translation Lab MCP tools can create route and evidence files
 only inside an explicitly supplied project and return project paths, digests,
-and evidence identifiers to the connected MCP client. They do not return ROM,
-state, RAM, persistence, or framebuffer bytes. SwanSong makes no network
-request for MCP, but an AI client may transmit tool arguments and results to
-its own service under that client's privacy policy.
+and evidence identifiers to the connected MCP client. Persisted capture pairs
+keep their exact plan, Original and Patched native frames, deterministic
+context bindings, and pixel-diff report inside that project. Observed-play
+sessions keep an isolated live engine locally and atomically replace a private
+cumulative from-boot plan after every successful step; final proof closes the
+live state and replays that plan from boot. If the MCP host exits, SwanSong
+marks the abandoned session interrupted and can recover it only by validating
+and replaying that private plan from boot. The app's private evidence browser
+may export a source-free JSON summary containing only artifact status, size,
+integrity, hashes, and counts. Rectangle display-owner probes keep
+map-cell addresses, tile/raster sources, palette values, and CPU-writer
+identities only in private project files and return only hashes and aggregate
+counts to the MCP client. These tools do not return ROM, state, RAM, or
+persistence bytes. SwanSong makes no network request for MCP, but an AI client
+may transmit tool arguments and results to its own service under that client's
+privacy policy.
 
 ## Files you provide
 

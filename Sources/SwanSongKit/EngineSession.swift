@@ -31,6 +31,9 @@ public struct EngineCapabilities: OptionSet, Sendable {
     public static let debugger = Self(rawValue: UInt64(SWAN_CAPABILITY_DEBUGGER))
     public static let structuredTrace = Self(rawValue: UInt64(SWAN_CAPABILITY_STRUCTURED_TRACE))
     public static let pocketChallengeV2 = Self(rawValue: UInt64(SWAN_CAPABILITY_POCKET_CHALLENGE_V2))
+    public static let displayProvenance = Self(
+        rawValue: UInt64(SWAN_CAPABILITY_DISPLAY_PROVENANCE)
+    )
 }
 
 public struct EngineInput: OptionSet, Sendable {
@@ -118,6 +121,101 @@ public struct EngineAudioBatch: Sendable {
     public var frameCount: Int {
         guard channels > 0 else { return 0 }
         return interleavedSamples.count / channels
+    }
+}
+
+public struct EngineDisplayRectangle: Codable, Equatable, Sendable {
+    public let x: UInt16
+    public let y: UInt16
+    public let width: UInt16
+    public let height: UInt16
+
+    public init(x: UInt16, y: UInt16, width: UInt16, height: UInt16) {
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+    }
+}
+
+public enum EngineDisplayLayer: String, Codable, Sendable {
+    case backdrop
+    case screen1
+    case screen2
+    case sprite
+
+    fileprivate init(cValue: swan_display_layer_t) throws {
+        switch cValue {
+        case SWAN_DISPLAY_LAYER_BACKDROP: self = .backdrop
+        case SWAN_DISPLAY_LAYER_SCREEN_1: self = .screen1
+        case SWAN_DISPLAY_LAYER_SCREEN_2: self = .screen2
+        case SWAN_DISPLAY_LAYER_SPRITE: self = .sprite
+        default:
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned an unknown display layer."
+            )
+        }
+    }
+}
+
+public enum EngineDisplaySourceKind: String, Codable, Sendable {
+    case none
+    case tilemap
+    case sprite
+
+    fileprivate init(cValue: swan_display_source_kind_t) throws {
+        switch cValue {
+        case SWAN_DISPLAY_SOURCE_NONE: self = .none
+        case SWAN_DISPLAY_SOURCE_TILEMAP: self = .tilemap
+        case SWAN_DISPLAY_SOURCE_SPRITE: self = .sprite
+        default:
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned an unknown display source kind."
+            )
+        }
+    }
+}
+
+/// One private renderer observation for a native game-raster pixel. Addresses
+/// and CPU writer identities must stay inside the translation project; public
+/// automation surfaces expose only hashes and aggregate counts.
+public struct EngineDisplayOwnerSample: Codable, Equatable, Sendable {
+    public let x: UInt16
+    public let y: UInt16
+    public let layer: EngineDisplayLayer
+    public let sourceKind: EngineDisplaySourceKind
+    public let cellAddress: UInt16
+    public let tileIndex: UInt16
+    public let cellAttributes: UInt32
+    public let rasterAddress: UInt16
+    public let rasterByteCount: UInt8
+    public let paletteIndex: UInt8
+    public let paletteColor: UInt8
+    public let paletteByteCount: UInt8
+    public let paletteAddress: UInt32
+    public let cellWriterPC: UInt32
+    public let rasterWriterPC: UInt32
+    public let paletteWriterPC: UInt32
+
+    fileprivate init(cValue: swan_display_owner_sample_t) throws {
+        x = cValue.x
+        y = cValue.y
+        layer = try EngineDisplayLayer(cValue: cValue.layer)
+        sourceKind = try EngineDisplaySourceKind(cValue: cValue.source_kind)
+        cellAddress = cValue.cell_address
+        tileIndex = cValue.tile_index
+        cellAttributes = cValue.cell_attributes
+        rasterAddress = cValue.raster_address
+        rasterByteCount = cValue.raster_byte_count
+        paletteIndex = cValue.palette_index
+        paletteColor = cValue.palette_color
+        paletteByteCount = cValue.palette_byte_count
+        paletteAddress = cValue.palette_address
+        cellWriterPC = cValue.cell_writer_pc
+        rasterWriterPC = cValue.raster_writer_pc
+        paletteWriterPC = cValue.palette_writer_pc
     }
 }
 
@@ -357,6 +455,47 @@ public final class EngineSession: @unchecked Sendable {
             channels: Int(audio.channels),
             sampleRate: Int(audio.sample_rate)
         )
+    }
+
+    public func displayOwnerProbe(
+        rectangle: EngineDisplayRectangle
+    ) throws -> [EngineDisplayOwnerSample] {
+        guard capabilities.contains(.displayProvenance) else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_UNSUPPORTED.rawValue),
+                detail: "The active engine does not support display provenance."
+            )
+        }
+        var cRectangle = swan_display_rectangle_t(
+            struct_size: UInt32(MemoryLayout<swan_display_rectangle_t>.size),
+            x: rectangle.x,
+            y: rectangle.y,
+            width: rectangle.width,
+            height: rectangle.height
+        )
+        let expected = Int(rectangle.width) * Int(rectangle.height)
+        var raw = [swan_display_owner_sample_t](
+            repeating: swan_display_owner_sample_t(),
+            count: expected
+        )
+        var count = 0
+        let result = raw.withUnsafeMutableBufferPointer { buffer in
+            swan_engine_display_owner_probe(
+                handle,
+                &cRectangle,
+                buffer.baseAddress,
+                buffer.count,
+                &count
+            )
+        }
+        try check(result)
+        guard count == expected else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned incomplete display provenance."
+            )
+        }
+        return try raw.prefix(count).map(EngineDisplayOwnerSample.init(cValue:))
     }
 
     public func stagePersistence(_ persistence: EnginePersistence) throws {

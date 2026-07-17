@@ -342,9 +342,7 @@ struct LegalSupportView: View {
     @ViewBuilder
     private func bundledMarkdown(named name: String) -> some View {
         if let text = BundledLegalDocument.text(named: name, extension: "md") {
-            Text(BundledLegalDocument.markdown(text))
-                .textSelection(.enabled)
-                .lineSpacing(3)
+            BundledMarkdownDocument(source: text)
         } else {
             unavailableDocument
         }
@@ -371,7 +369,89 @@ struct LegalSupportView: View {
     }
 }
 
-private enum BundledLegalDocument {
+struct BundledMarkdownDocument: View {
+    let blocks: [BundledLegalDocument.MarkdownBlock]
+
+    init(source: String) {
+        blocks = BundledLegalDocument.markdownBlocks(source)
+    }
+
+    var body: some View {
+        LazyVStack(alignment: .leading, spacing: 14) {
+            ForEach(Array(blocks.enumerated()), id: \.offset) { _, block in
+                blockView(block)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .textSelection(.enabled)
+    }
+
+    @ViewBuilder
+    private func blockView(_ block: BundledLegalDocument.MarkdownBlock) -> some View {
+        switch block {
+        case let .heading(level, source):
+            Text(BundledLegalDocument.inlineMarkdown(source))
+                .font(headingFont(level))
+                .padding(.top, level == 1 ? 0 : 8)
+                .fixedSize(horizontal: false, vertical: true)
+        case let .paragraph(source):
+            Text(BundledLegalDocument.inlineMarkdown(source))
+                .font(.body)
+                .lineSpacing(3)
+                .fixedSize(horizontal: false, vertical: true)
+        case let .unorderedList(items):
+            VStack(alignment: .leading, spacing: 8) {
+                ForEach(Array(items.enumerated()), id: \.offset) { _, item in
+                    HStack(alignment: .firstTextBaseline, spacing: 10) {
+                        Image(systemName: "circle.fill")
+                            .font(.system(size: 5, weight: .bold))
+                            .foregroundStyle(.secondary)
+                            .frame(width: 10)
+                        Text(BundledLegalDocument.inlineMarkdown(item))
+                            .lineSpacing(3)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+            }
+            .padding(.leading, 6)
+        case let .orderedList(items):
+            VStack(alignment: .leading, spacing: 8) {
+                ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+                    HStack(alignment: .firstTextBaseline, spacing: 10) {
+                        Text("\(index + 1).")
+                            .font(.body.monospacedDigit())
+                            .foregroundStyle(.secondary)
+                            .frame(width: 22, alignment: .trailing)
+                        Text(BundledLegalDocument.inlineMarkdown(item))
+                            .lineSpacing(3)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+            }
+        case .divider:
+            Divider()
+                .padding(.vertical, 4)
+        }
+    }
+
+    private func headingFont(_ level: Int) -> Font {
+        switch level {
+        case 1: .largeTitle.bold()
+        case 2: .title2.weight(.semibold)
+        default: .title3.weight(.semibold)
+        }
+    }
+}
+
+enum BundledLegalDocument {
+    enum MarkdownBlock: Equatable {
+        case heading(level: Int, source: String)
+        case paragraph(String)
+        case unorderedList([String])
+        case orderedList([String])
+        case divider
+    }
+
     static func text(named name: String, extension fileExtension: String? = nil) -> String? {
         guard let url = Bundle.main.url(forResource: name, withExtension: fileExtension) else {
             return nil
@@ -379,11 +459,131 @@ private enum BundledLegalDocument {
         return try? String(contentsOf: url, encoding: .utf8)
     }
 
-    static func markdown(_ source: String) -> AttributedString {
+    static func inlineMarkdown(_ source: String) -> AttributedString {
         (try? AttributedString(
             markdown: source,
-            options: AttributedString.MarkdownParsingOptions(interpretedSyntax: .full)
+            options: AttributedString.MarkdownParsingOptions(
+                interpretedSyntax: .inlineOnlyPreservingWhitespace
+            )
         )) ?? AttributedString(source)
+    }
+
+    static func markdownBlocks(_ source: String) -> [MarkdownBlock] {
+        let lines = removingHTMLComments(from: source)
+            .replacingOccurrences(of: "\r\n", with: "\n")
+            .replacingOccurrences(of: "\r", with: "\n")
+            .components(separatedBy: "\n")
+
+        var blocks: [MarkdownBlock] = []
+        var paragraph: [String] = []
+        var listItems: [String] = []
+        var listIsOrdered: Bool?
+
+        func flushParagraph() {
+            guard !paragraph.isEmpty else { return }
+            blocks.append(.paragraph(paragraph.joined(separator: " ")))
+            paragraph.removeAll(keepingCapacity: true)
+        }
+
+        func flushList() {
+            guard let ordered = listIsOrdered, !listItems.isEmpty else { return }
+            blocks.append(ordered ? .orderedList(listItems) : .unorderedList(listItems))
+            listItems.removeAll(keepingCapacity: true)
+            listIsOrdered = nil
+        }
+
+        func startListItem(_ item: String, ordered: Bool) {
+            flushParagraph()
+            if let listIsOrdered, listIsOrdered != ordered {
+                flushList()
+            }
+            listIsOrdered = ordered
+            listItems.append(item)
+        }
+
+        for rawLine in lines {
+            let trimmed = rawLine.trimmingCharacters(in: .whitespaces)
+            if trimmed.isEmpty {
+                flushParagraph()
+                flushList()
+                continue
+            }
+
+            if let heading = heading(in: trimmed) {
+                flushParagraph()
+                flushList()
+                blocks.append(.heading(level: heading.level, source: heading.source))
+                continue
+            }
+
+            if trimmed == "---" || trimmed == "***" || trimmed == "___" {
+                flushParagraph()
+                flushList()
+                blocks.append(.divider)
+                continue
+            }
+
+            if trimmed.hasPrefix("- ") || trimmed.hasPrefix("* ") {
+                startListItem(String(trimmed.dropFirst(2)), ordered: false)
+                continue
+            }
+
+            if let item = orderedListItem(in: trimmed) {
+                startListItem(item, ordered: true)
+                continue
+            }
+
+            if listIsOrdered != nil, rawLine.first?.isWhitespace == true,
+                !listItems.isEmpty
+            {
+                listItems[listItems.count - 1] += " " + trimmed
+                continue
+            }
+
+            flushList()
+            paragraph.append(trimmed)
+        }
+
+        flushParagraph()
+        flushList()
+        return blocks
+    }
+
+    private static func heading(in line: String) -> (level: Int, source: String)? {
+        let level = line.prefix(while: { $0 == "#" }).count
+        guard (1 ... 6).contains(level) else { return nil }
+        let markerEnd = line.index(line.startIndex, offsetBy: level)
+        guard markerEnd < line.endIndex, line[markerEnd] == " " else { return nil }
+        return (
+            min(level, 3),
+            String(line[line.index(after: markerEnd)...])
+        )
+    }
+
+    private static func orderedListItem(in line: String) -> String? {
+        guard let period = line.firstIndex(of: "."), period > line.startIndex else {
+            return nil
+        }
+        let number = line[..<period]
+        guard number.allSatisfy(\.isNumber) else { return nil }
+        let contentStart = line.index(after: period)
+        guard contentStart < line.endIndex, line[contentStart] == " " else { return nil }
+        return String(line[line.index(after: contentStart)...])
+    }
+
+    private static func removingHTMLComments(from source: String) -> String {
+        var result = ""
+        var remainder = source[...]
+
+        while let opening = remainder.range(of: "<!--") {
+            result += remainder[..<opening.lowerBound]
+            guard let closing = remainder[opening.upperBound...].range(of: "-->") else {
+                return result
+            }
+            remainder = remainder[closing.upperBound...]
+        }
+        result += remainder
+        return result
     }
 }
 

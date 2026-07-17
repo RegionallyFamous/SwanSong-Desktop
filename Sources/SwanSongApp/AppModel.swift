@@ -414,6 +414,9 @@ final class AppModel {
     var translationEvidenceReviewNote = ""
     var translationEvidenceFrameComparison: TranslationEvidenceFrameComparison?
     var translationEvidenceFrameComparisonIssue: String?
+    var translationPrivateArtifacts: [TranslationPrivateArtifactSummary] = []
+    var selectedTranslationPrivateArtifactID: TranslationPrivateArtifactSummary.ID?
+    var translationPrivateStorageStatus: TranslationPrivateStorageStatus?
     var isTranslationTextIntakePresented = false
     var translationTextIntakeIsRecognizing = false
     var translationTextIntakeIssue: String?
@@ -470,6 +473,7 @@ final class AppModel {
     private let controllerProfileStore: ControllerProfileStore
     private let translationWorkspaceStore: TranslationWorkspaceStore
     private let translationEvidenceStore = TranslationEvidenceStore()
+    private let translationPrivateArtifactStore = TranslationPrivateArtifactStore()
     private let importer = GameImporter()
     private let gameImportPlanner = GameImportPlanner()
     private let batchImporter: GameBatchImporter
@@ -1551,6 +1555,12 @@ final class AppModel {
         translationEvidence.first { $0.id == selectedTranslationEvidenceID }
     }
 
+    var selectedTranslationPrivateArtifact: TranslationPrivateArtifactSummary? {
+        translationPrivateArtifacts.first {
+            $0.id == selectedTranslationPrivateArtifactID
+        }
+    }
+
     var canStartTranslationTextIntake: Bool {
         guard let evidence = selectedTranslationEvidence else { return false }
         return evidence.isIntact
@@ -2205,6 +2215,61 @@ final class AppModel {
 
     func revealTranslationEvidence(_ summary: TranslationEvidenceSummary) {
         NSWorkspace.shared.activateFileViewerSelecting([summary.artifact.directoryURL])
+    }
+
+    func selectTranslationPrivateArtifact(
+        _ id: TranslationPrivateArtifactSummary.ID
+    ) {
+        guard translationPrivateArtifacts.contains(where: { $0.id == id }) else { return }
+        selectedTranslationPrivateArtifactID = id
+    }
+
+    func revealTranslationPrivateArtifact(
+        _ summary: TranslationPrivateArtifactSummary
+    ) {
+        NSWorkspace.shared.activateFileViewerSelecting([summary.directoryURL])
+    }
+
+    func exportTranslationPrivateArtifactSummary(
+        _ summary: TranslationPrivateArtifactSummary
+    ) {
+        let panel = NSSavePanel()
+        panel.title = "Export Source-Free Artifact Summary"
+        panel.message = "Exports integrity, size, status, hashes, and counts only. Captured pixels and display-owner source details stay private in the project."
+        panel.prompt = "Export Summary"
+        panel.canCreateDirectories = true
+        panel.nameFieldStringValue = "\(summary.name)-source-free.json"
+        panel.allowedContentTypes = [.json]
+        guard panel.runModal() == .OK, var destination = panel.url else { return }
+        if destination.pathExtension.lowercased() != "json" {
+            destination.appendPathExtension("json")
+        }
+        do {
+            let output = try translationPrivateArtifactStore.exportSourceFreeSummary(
+                summary,
+                to: destination
+            )
+            NSWorkspace.shared.activateFileViewerSelecting([output])
+            presentedNotice = "Exported a source-free private-artifact summary. Captures and owner details stayed in the project."
+        } catch {
+            presentedError = "The private-artifact summary could not be exported: \(error.localizedDescription)"
+        }
+    }
+
+    func deleteTranslationPrivateArtifact(
+        _ summary: TranslationPrivateArtifactSummary
+    ) {
+        guard let project = translationProject else { return }
+        do {
+            try translationPrivateArtifactStore.remove(summary, project: project)
+            if selectedTranslationPrivateArtifactID == summary.id {
+                selectedTranslationPrivateArtifactID = nil
+            }
+            refreshTranslationHistory()
+            presentedNotice = "Deleted the selected private Translation Lab artifact."
+        } catch {
+            presentedError = "The private artifact could not be deleted: \(error.localizedDescription)"
+        }
     }
 
     func beginTranslationTextIntake() {
@@ -6402,6 +6467,9 @@ final class AppModel {
         translationEvidenceReviewNote = ""
         translationEvidenceFrameComparison = nil
         translationEvidenceFrameComparisonIssue = nil
+        translationPrivateArtifacts = []
+        selectedTranslationPrivateArtifactID = nil
+        translationPrivateStorageStatus = nil
         translationRAMComparison = nil
         translationRAMInspectionIssue = nil
         translationRAMTextReport = nil
@@ -6431,9 +6499,11 @@ final class AppModel {
         for expectedProject: TranslationProject?
     ) throws {
         let preferredEvidenceID = selectedTranslationEvidenceID
+        let preferredPrivateArtifactID = selectedTranslationPrivateArtifactID
         let preferredRoutePath = latestTranslationRouteURL?.standardizedFileURL.path
         translationRoutes = []
         translationEvidence = []
+        translationPrivateArtifacts = []
         translationBaselines = []
         translationSuiteRuns = []
         translationEvidenceFrameComparison = nil
@@ -6451,6 +6521,7 @@ final class AppModel {
         translationTestCaseName = ""
         translationTestCaseNote = ""
         lastTranslationEvidenceURL = nil
+        translationPrivateStorageStatus = nil
         guard let project = expectedProject else { return }
         guard translationPipelineProjectIsCurrent(project) else {
             throw TranslationLabError.invalidProject(
@@ -6465,6 +6536,8 @@ final class AppModel {
             selectTranslationRoute(routeSelection.id)
         }
         translationEvidence = try translationEvidenceStore.listEvidence(project: project)
+        translationPrivateArtifacts = try translationPrivateArtifactStore.list(project: project)
+        translationPrivateStorageStatus = TranslationPrivateStorage.status(for: project)
         translationBaselines = try translationEvidenceStore.listBaselines(project: project)
         translationSuiteRuns = try translationEvidenceStore.listSuiteRuns(project: project)
         guard translationPipelineProjectIsCurrent(project) else {
@@ -6484,6 +6557,9 @@ final class AppModel {
             translationEvidenceFrameComparison = nil
             translationEvidenceFrameComparisonIssue = nil
         }
+        selectedTranslationPrivateArtifactID = translationPrivateArtifacts.first {
+            $0.id == preferredPrivateArtifactID
+        }?.id ?? translationPrivateArtifacts.first?.id
     }
 
     private func refreshTranslationEvidenceFrameComparison() {

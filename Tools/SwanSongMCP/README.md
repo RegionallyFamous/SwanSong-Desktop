@@ -9,7 +9,10 @@ initialize, ping, list tools, and call tools. Keeping that protocol adapter in
 this developer package avoids adding a second runtime dependency graph to the
 signed app and keeps it buildable across SwanSong's Xcode 16.2 release floor
 and current Xcode. Protocol behavior is exercised by a real initialize/list/
-call exchange in `Scripts/check-mcp-server.sh`.
+call exchange in `Scripts/check-mcp-server.sh`. The current thirteen-tool
+allowlist includes recoverable observed-play sessions, private persisted capture,
+and source-free display-owner probing in addition to the original live-app,
+one-shot playtest, and route/evidence operations.
 
 From the SwanSong Desktop repository root:
 

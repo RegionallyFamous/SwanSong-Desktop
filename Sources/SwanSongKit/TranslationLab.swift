@@ -1014,6 +1014,13 @@ public struct TranslationRouteCheckpoint: Codable, Equatable, Sendable {
     ) throws -> TranslationGameRaster {
         let contentWidth = frame.isVertical ? min(frame.width, 144) : min(frame.width, 224)
         let contentHeight = frame.isVertical ? min(frame.height, 224) : min(frame.height, 144)
+        // A 13-pixel hardware-indicator rail sits at the right in horizontal
+        // Color output. ares rotates left for vertical play, moving that rail
+        // to the top; skip it so native coordinates remain the 144x224 game
+        // raster used by display provenance.
+        let contentOriginY = frame.isVertical
+            ? max(0, frame.height - contentHeight)
+            : 0
         let (visibleRowBytes, rowBytesOverflow) = contentWidth.multipliedReportingOverflow(by: 4)
         let (requiredByteCount, requiredByteCountOverflow) = frame.strideBytes
             .multipliedReportingOverflow(by: frame.height)
@@ -1029,7 +1036,7 @@ public struct TranslationRouteCheckpoint: Codable, Equatable, Sendable {
         }
         var pixels = Data(capacity: visibleRowBytes * contentHeight)
         for row in 0..<contentHeight {
-            let start = row * frame.strideBytes
+            let start = (row + contentOriginY) * frame.strideBytes
             pixels.append(contentsOf: frame.pixels[start..<(start + visibleRowBytes)])
         }
         return TranslationGameRaster(
