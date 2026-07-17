@@ -118,7 +118,10 @@ Create a draft, attach every artifact, and verify names, sizes, and hashes. A
 beta must be marked **prerelease** so `/releases/latest` continues to select the
 stable channel. Download the published assets back from GitHub, verify them,
 install that exact archive into `/Applications`, launch it, and repeat final
-path verification before calling the release complete.
+path verification before calling the release complete. Every release also has
+a short, reviewed in-app update card at `docs/releases/appcast/X.Y.Z.html`.
+The publisher rejects oversized cards, active content, images, styling,
+trackers, and links anywhere except that version's exact GitHub release page.
 
 Only after that verification, manually run **Publish Sparkle appcast** from
 GitHub Actions on `main`. The workflow obtains the private EdDSA seed only from

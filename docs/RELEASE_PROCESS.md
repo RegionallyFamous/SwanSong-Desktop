@@ -38,9 +38,12 @@ not routine release metadata.
 
 ## Release gates
 
-1. Update `CHANGELOG.md`, versioned release notes, the beta testing guide when
-   applicable, version, and build number. Confirm the staged metadata and
-   repo-backed Wiki agree before building:
+1. Update `CHANGELOG.md`, versioned release notes, the concise updater card at
+   `docs/releases/appcast/X.Y.Z.html`, the beta testing guide when applicable,
+   version, and build number. The updater card should lead with user benefits;
+   its validator permits only a small set of formatting tags and the exact
+   GitHub release link. Confirm the staged metadata and repo-backed Wiki agree
+   before building:
 
    ```sh
    ./Scripts/check-release-metadata.sh
@@ -178,7 +181,8 @@ not routine release metadata.
       --manifest dist/SwanSong-X.Y.Z-release.json \
       --checksums dist/SHA256SUMS.txt \
       --release-tag vX.Y.Z \
-      --channel stable
+      --channel stable \
+      --release-notes docs/releases/appcast/X.Y.Z.html
     ```
 
     Use `--channel beta` only for a GitHub prerelease. Review version/build,

@@ -75,7 +75,10 @@ the installed app.
 ## Release procedure
 
 1. Complete SwanSong's normal clean-tag build, test, signing, notarization,
-   packaging, manifest, checksum, and corresponding-source gates.
+   packaging, manifest, checksum, and corresponding-source gates. Add the
+   concise in-app update card at `docs/releases/appcast/X.Y.Z.html`; it must
+   summarize benefits rather than release mechanics and pass the strict local
+   markup, length, and exact-release-link validator.
 2. Create the GitHub Release and upload every required artifact. Mark a beta as
    a GitHub prerelease.
 3. Download the published assets back from GitHub and repeat checksum,
@@ -102,7 +105,8 @@ the installed app.
      --manifest dist/SwanSong-X.Y.Z-release.json \
      --checksums dist/SHA256SUMS.txt \
      --release-tag vX.Y.Z \
-     --channel stable
+     --channel stable \
+     --release-notes docs/releases/appcast/X.Y.Z.html
    ```
 
    Export the private seed from a protected input before a local fallback; do
@@ -130,7 +134,8 @@ to already-installed apps. Key rotation therefore requires shipping the new
 public key through an update authenticated by the current key before the
 signing secret is replaced; otherwise users need a new manual app install.
 
-The source-free appcast lane exercises deterministic feed generation,
+The source-free appcast lane exercises deterministic feed generation, concise
+and restricted update-card markup, safe exact-release note republication,
 stable/beta metadata policy, rejection of mutable enclosure URLs, signed-feed
 extraction, and native Ed25519 verification:
 

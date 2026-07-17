@@ -18,9 +18,10 @@ MANIFEST=
 CHECKSUMS=
 RELEASE_TAG=
 CHANNEL=
+RELEASE_NOTES=
 
 usage() {
-  echo "usage: $0 --archive RELEASE.zip --source-archive SOURCE.tar.xz --manifest RELEASE.json --checksums SHA256SUMS.txt --release-tag vX.Y.Z --channel stable|beta [--feed updates/appcast.xml]" >&2
+  echo "usage: $0 --archive RELEASE.zip --source-archive SOURCE.tar.xz --manifest RELEASE.json --checksums SHA256SUMS.txt --release-tag vX.Y.Z --channel stable|beta --release-notes NOTES.html [--feed updates/appcast.xml]" >&2
   exit 64
 }
 
@@ -37,6 +38,7 @@ while [ "$#" -gt 0 ]; do
     --checksums) [ "$#" -ge 2 ] || usage; CHECKSUMS=$2; shift 2 ;;
     --release-tag) [ "$#" -ge 2 ] || usage; RELEASE_TAG=$2; shift 2 ;;
     --channel) [ "$#" -ge 2 ] || usage; CHANNEL=$2; shift 2 ;;
+    --release-notes) [ "$#" -ge 2 ] || usage; RELEASE_NOTES=$2; shift 2 ;;
     --feed) [ "$#" -ge 2 ] || usage; FEED=$2; shift 2 ;;
     *) usage ;;
   esac
@@ -46,6 +48,7 @@ done
 [ -f "$SOURCE_ARCHIVE" ] || fail "source archive not found"
 [ -f "$MANIFEST" ] || fail "release manifest not found"
 [ -f "$CHECKSUMS" ] || fail "release checksums not found"
+[ -f "$RELEASE_NOTES" ] || fail "reviewed appcast release notes not found"
 [ -f "$FEED" ] || fail "tracked appcast not found"
 case "$CHANNEL" in stable|beta) ;; *) usage ;; esac
 [ -n "$PRIVATE_KEY" ] \
@@ -69,6 +72,10 @@ MANIFEST_SOURCE=$(plutil -extract sourceArchive raw "$MANIFEST" 2>/dev/null) \
   || fail "manifest sourceArchive is missing"
 [ "$RELEASE_TAG" = "v$VERSION" ] \
   || fail "release tag must exactly match v$VERSION"
+python3 "$SCRIPT_DIR/sparkle_release_notes.py" \
+  --file "$RELEASE_NOTES" \
+  --release-url "https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/$RELEASE_TAG" \
+  >/dev/null || fail "reviewed appcast release notes are unsafe or malformed"
 [ "$(basename -- "$ARCHIVE")" = "$MANIFEST_ARCHIVE" ] \
   || fail "archive filename does not match manifest"
 [ "$(basename -- "$SOURCE_ARCHIVE")" = "$MANIFEST_SOURCE" ] \
@@ -247,7 +254,8 @@ UNSIGNED_FEED="$TEMP_ROOT/appcast.xml"
   --archive-signature "$ARCHIVE_SIGNATURE" \
   --release-tag "$RELEASE_TAG" \
   --published-at "$PUBLISHED_AT" \
-  --channel "$CHANNEL"
+  --channel "$CHANNEL" \
+  --release-notes "$RELEASE_NOTES"
 
 sign_with_private_key --disable-signing-warning \
   "$UNSIGNED_FEED" >/dev/null
@@ -260,6 +268,7 @@ FEED_SIGNATURE_FILE="$TEMP_ROOT/appcast-signature.txt"
   --expected-build "$BUILD" \
   --expected-channel "$CHANNEL" \
   --expected-archive-signature "$ARCHIVE_SIGNATURE" \
+  --expected-release-notes "$RELEASE_NOTES" \
   --content-output "$FEED_CONTENT" \
   --signature-output "$FEED_SIGNATURE_FILE"
 FEED_SIGNATURE=$(tr -d '\r\n' <"$FEED_SIGNATURE_FILE")

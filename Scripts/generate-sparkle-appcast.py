@@ -9,6 +9,8 @@ import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+from sparkle_release_notes import load_release_notes_fragment
+
 
 SPARKLE_NAMESPACE = "http://www.andymatuschak.org/xml-namespaces/sparkle"
 SIGNING_BLOCK = re.compile(
@@ -40,6 +42,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--release-tag", required=True)
     result.add_argument("--published-at", required=True)
     result.add_argument("--channel", choices=("stable", "beta"), required=True)
+    result.add_argument("--release-notes", type=Path, required=True)
     return result
 
 
@@ -99,35 +102,52 @@ def main() -> int:
         document, channel = make_document(unsigned_feed_bytes(arguments.feed))
 
         new_build = int(arguments.build)
-        for existing_item in channel.findall("item"):
-            existing_build = existing_item.findtext(sparkle("version"), "")
-            if not re.fullmatch(r"[1-9][0-9]*", existing_build):
-                raise ValueError("existing appcast contains an invalid build")
-            if int(existing_build) >= new_build:
-                raise ValueError(
-                    "new CFBundleVersion must be greater than every preserved build"
-                )
-
-        for item in list(channel.findall("item")):
-            build = item.findtext(sparkle("version"))
-            enclosure = item.find("enclosure")
-            enclosure_url = "" if enclosure is None else enclosure.get("url", "")
-            if build == arguments.build or enclosure_url.endswith(
-                f"/{arguments.archive_name}"
-            ):
-                channel.remove(item)
-
-        item = ET.Element("item")
-        ET.SubElement(item, "title").text = f"SwanSong {arguments.version}"
         release_url = (
             "https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/"
             f"{arguments.release_tag}"
         )
-        ET.SubElement(item, "link").text = release_url
-        ET.SubElement(item, "description").text = (
-            "This signed update is distributed through the official SwanSong "
-            "GitHub release. Open the release page for complete notes and checksums."
+        release_notes = load_release_notes_fragment(
+            arguments.release_notes, release_url
         )
+        download_url = (
+            "https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/"
+            f"{arguments.release_tag}/{arguments.archive_name}"
+        )
+        replacement: ET.Element | None = None
+        for existing_item in channel.findall("item"):
+            existing_build = existing_item.findtext(sparkle("version"), "")
+            if not re.fullmatch(r"[1-9][0-9]*", existing_build):
+                raise ValueError("existing appcast contains an invalid build")
+            existing_version = existing_item.findtext(
+                sparkle("shortVersionString"), ""
+            )
+            enclosure = existing_item.find("enclosure")
+            enclosure_url = "" if enclosure is None else enclosure.get("url", "")
+            exact_release = (
+                existing_build == arguments.build
+                and existing_version == arguments.version
+                and enclosure_url == download_url
+            )
+            if int(existing_build) > new_build:
+                raise ValueError(
+                    "new CFBundleVersion must be greater than every preserved build"
+                )
+            if int(existing_build) == new_build:
+                if not exact_release or replacement is not None:
+                    raise ValueError("CFBundleVersion is already used by another release")
+                replacement = existing_item
+            elif existing_version == arguments.version or enclosure_url == download_url:
+                raise ValueError("an immutable release identity cannot be reused")
+
+        if replacement is not None:
+            channel.remove(replacement)
+
+        item = ET.Element("item")
+        ET.SubElement(item, "title").text = f"SwanSong {arguments.version}"
+        ET.SubElement(item, "link").text = release_url
+        ET.SubElement(
+            item, "description", {sparkle("format"): "html"}
+        ).text = release_notes
         ET.SubElement(item, "pubDate").text = arguments.published_at
         ET.SubElement(item, sparkle("version")).text = arguments.build
         ET.SubElement(item, sparkle("shortVersionString")).text = arguments.version
@@ -137,10 +157,6 @@ def main() -> int:
         if arguments.channel == "beta":
             ET.SubElement(item, sparkle("channel")).text = "beta"
 
-        download_url = (
-            "https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/"
-            f"{arguments.release_tag}/{arguments.archive_name}"
-        )
         ET.SubElement(
             item,
             "enclosure",
