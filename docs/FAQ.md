@@ -10,15 +10,15 @@ WonderSwan engine. It also includes an optional local Translation Lab.
 
 The app bundle includes no games and no original system firmware. Normal play
 uses the independently written SwanSong Open IPL, so a BIOS is not required.
-SwanSong 0.2 always uses Open IPL and never accepts, searches for, or downloads
-original firmware. Import only game and homebrew images you are authorized to
-use. Historical 0.1.x behavior remains documented in its versioned release
-notes.
+SwanSong 0.2 and later always use Open IPL and never accept, search for, or
+download original firmware. Import only game and homebrew images you are
+authorized to use. Historical 0.1.x behavior remains documented in its
+versioned release notes.
 
 ## Can SwanSong install homebrew directly from GitHub?
 
-The signed, first-party Homebrew Catalog installer is implemented in the 0.2
-source, but it is not available in the current production configuration. The
+The signed, first-party Homebrew Catalog installer is implemented, but it is
+not available in the current production configuration. The
 Homebrew page says **Coming Soon**, contains no production trust key, and makes
 no catalog or game-download request. **Add From Mac** remains available for
 authorized local homebrew. A future build can activate the catalog only after

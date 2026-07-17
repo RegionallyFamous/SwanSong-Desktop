@@ -10,9 +10,9 @@ build.
 
 ### Do I need a BIOS?
 
-Not in SwanSong 0.2. Normal gameplay uses the independently written SwanSong
-Open IPL included with the app. Version 0.2 always uses Open IPL and does not
-accept original BIOS files. The historical 0.1.x release notes document those
+Not in SwanSong 0.2 or later. Normal gameplay uses the independently written
+SwanSong Open IPL included with the app. Current releases do not accept
+original BIOS files. The historical 0.1.x release notes document those
 versions' earlier startup-file behavior.
 
 ### Where is my data?

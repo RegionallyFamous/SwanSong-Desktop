@@ -18,6 +18,7 @@ validate_source() {
   [ -d "$SOURCE_DIR" ] || fail "docs/wiki source directory is missing"
 
   required_pages='0.2-Beta-Testing.md
+0.3-Beta-Testing.md
 Architecture-and-Source-Ownership.md
 Build-and-Test.md
 Gamepads.md

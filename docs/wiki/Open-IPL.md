@@ -4,17 +4,17 @@ SwanSong Open IPL is the project's independently written minimal startup
 implementation for the WonderSwan family. It contains no bytes copied from an
 original Bandai system ROM.
 
-## 0.2 contract
+## 0.2 and later contract
 
-SwanSong 0.2 uses Open IPL for:
+SwanSong 0.2 and later use Open IPL for:
 
 - WonderSwan;
 - WonderSwan Color;
 - SwanCrystal; and
 - Pocket Challenge V2.
 
-The 0.2 app has no BIOS picker, original-firmware importer, firmware store, or
-compatibility override. The app never searches for, downloads, uploads, or
+The current app has no BIOS picker, original-firmware importer, firmware store,
+or compatibility override. The app never searches for, downloads, uploads, or
 shares an original startup image. Opening a supported authorized game is the
 only startup input required.
 
@@ -44,5 +44,5 @@ Do not rewrite history when describing this change:
   original firmware as an optional private compatibility override.
 - SwanSong 0.2 removes that import, storage, and override path completely.
 
-Historical details remain in each version's release notes. Current 0.2 policy
+Historical details remain in each version's release notes. Current 0.3 policy
 must not be presented as behavior that already existed in 0.1.x.

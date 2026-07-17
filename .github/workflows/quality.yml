@@ -63,6 +63,8 @@ jobs:
       - name: Check fail-closed production configuration
         run: |
           set -eu
+          ./Scripts/check-release-metadata.sh
+          ./Scripts/prepare-wiki-sync.sh --check
           ./Scripts/check-homebrew-production-readiness.sh
           python3 ./Scripts/check-sparkle-dependency-lock.py --repository .
 

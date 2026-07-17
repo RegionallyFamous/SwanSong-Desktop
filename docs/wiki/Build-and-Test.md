@@ -65,6 +65,8 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
 ./Scripts/check-av-soak.sh
 ./Scripts/check-app-runtime.sh
 ./Scripts/check-app-bundle.sh
+./Scripts/check-release-metadata.sh
+./Scripts/prepare-wiki-sync.sh --check
 python3 ./Scripts/check-sparkle-dependency-lock.py \
   --repository . \
   --upstream-package .build/checkouts/Sparkle/Package.swift
@@ -74,6 +76,8 @@ python3 ./Scripts/check-sparkle-dependency-lock.py \
 ./Scripts/selftest-sparkle-appcast.sh
 ./Scripts/check-ui-snapshots.sh
 ./Scripts/check-mcp-server.sh
+./Scripts/check-playtest-mcp-server.sh
+./Scripts/check-playtest-cli.sh
 ./Scripts/check-translation-automation-cli.sh
 ./Scripts/check-translation-lab.sh
 ./Scripts/check-pcv2-translation-lab.sh
@@ -95,11 +99,13 @@ Run the protocol-surface check without enabling live app control:
 
 ```sh
 ./Scripts/check-mcp-server.sh
+./Scripts/check-playtest-mcp-server.sh
 ```
 
-Run the live-ares route creation and paired-evidence check:
+Run the live-ares playtest, route creation, and paired-evidence checks:
 
 ```sh
+./Scripts/check-playtest-cli.sh
 ./Scripts/check-translation-automation-cli.sh
 ```
 
