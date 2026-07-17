@@ -447,10 +447,6 @@ final class UISnapshotRegressionTests: XCTestCase {
         XCTAssertGreaterThan(signature.opaqueSampleFraction, 0.98)
         XCTAssertLessThan(signature.centralDominantColorFraction, 0.96)
         XCTAssertLessThan(signature.yellowPlaceholderFraction, 0.08)
-
-        let output = try snapshotOutputDirectory()
-            .appendingPathComponent("legal-support-formatted-dark.png")
-        try rendered.png.write(to: output, options: .atomic)
     }
 
     func testCoreSurfaceAccessibilityContracts() throws {
