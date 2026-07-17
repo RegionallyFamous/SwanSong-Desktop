@@ -810,7 +810,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
 
     if (selected_ranges.overflow) {
       error = "selected display bytes exceeded the exact cartridge-range bound";
-      return SWAN_RESULT_UNSUPPORTED;
+      return SWAN_RESULT_SOURCE_RANGE_OVERFLOW;
     }
 
     for_each_display_sample([&](uint16_t x, uint16_t y,

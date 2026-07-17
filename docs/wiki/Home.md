@@ -27,9 +27,10 @@ silicon and Intel.
   Capture Intake evidence.
 - Local MCP is off by default and exposes only allowlisted live controls,
   bounded homebrew playtesting, and guarded Translation Lab automation.
-- Game Studio provides native New, Assets, Build, Test, Play, and Report views
-  backed by an explicitly selected SwanSong SDK checkout. The tagged SDK,
-  Python runtime, and deterministic play executor are not yet bundled.
+- SwanSong Studio provides native New, Assets, Build, Test, Play, Profile,
+  Evidence, and Release views backed by an explicitly selected SwanSong SDK
+  checkout. The tagged SDK, Python runtime, and deterministic play executor are
+  not yet bundled.
 - ABI 7 can trace a bounded visible rectangle upstream to private exact or
   conservative cartridge ranges while returning only source-free aggregates.
 - The Analogue Pocket SD tool can install only an authorized stable SwanSong
@@ -44,8 +45,8 @@ silicon and Intel.
   profiles, Time Ribbon, visual save states, Game Confidence, and save exchange.
 - [[Translation Lab]] documents deterministic route tests, paired evidence,
   on-device text intake, batch verification, First Visual Change, and privacy.
-- [[Game Studio]] documents the SDK-backed New, Assets, Build, Test, Play, and
-  Report workflow and its current developer-preview packaging boundary.
+- [[SwanSong Studio|Game Studio]] documents the complete SDK-backed developer
+  preview and its current packaging boundary.
 - [[Local MCP and Automation]] documents the opt-in Codex bridge and guarded
   route/evidence commands.
 - [[Analogue Pocket SD Setup]] documents release trust, card eligibility,

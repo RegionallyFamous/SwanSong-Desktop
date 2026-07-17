@@ -33,7 +33,9 @@ public enum SwanSDKWorkspaceAction: String, CaseIterable, Codable, Identifiable,
     case build = "Build"
     case test = "Test"
     case play = "Play"
-    case report = "Report"
+    case profile = "Profile"
+    case evidence = "Evidence"
+    case release = "Release"
 
     public var id: String { rawValue }
 }
@@ -45,6 +47,15 @@ public enum SwanSDKCommand: Equatable, Sendable {
     case test(manifest: URL)
     case play(manifest: URL, scenario: String)
     case report(manifest: URL)
+    case doctor(manifest: URL?, timeoutSeconds: Int? = nil)
+    case optimize(manifest: URL, assetID: String? = nil)
+    case fuzz(manifest: URL, seed: UInt64, cases: Int, frames: Int)
+    case laboratory(manifest: URL, testCase: String, rtcSeed: Int64? = nil)
+    case scenarioRecord(manifest: URL, inputLog: URL, outputPlan: URL)
+    case dev(manifest: URL, scenario: String?, once: Bool)
+    case profile(manifest: URL, trace: URL? = nil)
+    case evidenceDiff(before: URL, after: URL)
+    case release(manifest: URL, output: URL?, notes: URL?, timeoutSeconds: Int? = nil)
 
     public var action: SwanSDKWorkspaceAction? {
         switch self {
@@ -53,44 +64,128 @@ public enum SwanSDKCommand: Equatable, Sendable {
         case .build: .build
         case .test: .test
         case .play: .play
-        case .report: .report
+        case .report, .profile: .profile
+        case .doctor: nil
+        case .optimize: .assets
+        case .fuzz, .laboratory: .test
+        case .scenarioRecord, .dev: .play
+        case .evidenceDiff: .evidence
+        case .release: .release
         }
     }
 
     public var arguments: [String] {
         switch self {
         case let .newProject(name, recipe, parentDirectory):
-            [
+            return [
                 "new", name,
                 "--template", recipe.rawValue,
                 "--directory", parentDirectory.appendingPathComponent(name, isDirectory: true).path,
             ]
         case let .assets(manifest):
-            ["assets", "--project", manifest.path]
+            return ["assets", "--project", manifest.path]
         case let .build(manifest, target):
             if let target, !target.isEmpty {
-                ["build", "--project", manifest.path, "--target", target]
+                return ["build", "--project", manifest.path, "--target", target]
             } else {
-                ["build", "--project", manifest.path]
+                return ["build", "--project", manifest.path]
             }
         case let .test(manifest):
-            ["test", "--project", manifest.path]
+            return ["test", "--project", manifest.path]
         case let .play(manifest, scenario):
-            ["play", scenario, "--project", manifest.path]
+            return ["play", scenario, "--project", manifest.path]
         case let .report(manifest):
-            ["report", "--project", manifest.path, "--json"]
+            return ["report", "--project", manifest.path, "--json"]
+        case let .doctor(manifest, timeoutSeconds):
+            var arguments = ["doctor"]
+            if let manifest { arguments += ["--project", manifest.path] }
+            if let timeoutSeconds { arguments += ["--timeout", String(timeoutSeconds)] }
+            arguments.append("--json")
+            return arguments
+        case let .optimize(manifest, assetID):
+            var arguments = ["optimize", "--project", manifest.path]
+            if let assetID, !assetID.isEmpty { arguments += ["--asset", assetID] }
+            arguments.append("--json")
+            return arguments
+        case let .fuzz(manifest, seed, cases, frames):
+            return [
+                "fuzz", "--project", manifest.path,
+                "--seed", String(seed), "--cases", String(cases),
+                "--frames", String(frames), "--json",
+            ]
+        case let .laboratory(manifest, testCase, rtcSeed):
+            var arguments = ["lab", "--project", manifest.path, "--case", testCase]
+            if let rtcSeed { arguments += ["--rtc-seed", String(rtcSeed)] }
+            arguments.append("--json")
+            return arguments
+        case let .scenarioRecord(manifest, inputLog, outputPlan):
+            return [
+                "scenario-record", "--project", manifest.path,
+                "--input-log", inputLog.path, "--output", outputPlan.path,
+                "--json",
+            ]
+        case let .dev(manifest, scenario, once):
+            var arguments = ["dev", "--project", manifest.path]
+            if let scenario, !scenario.isEmpty { arguments += ["--scenario", scenario] }
+            if once { arguments.append("--once") }
+            arguments.append("--json")
+            return arguments
+        case let .profile(manifest, trace):
+            var arguments = ["profile", "--project", manifest.path]
+            if let trace { arguments += ["--trace", trace.path] }
+            arguments.append("--json")
+            return arguments
+        case let .evidenceDiff(before, after):
+            return [
+                "evidence-diff", "--before", before.path,
+                "--after", after.path, "--json",
+            ]
+        case let .release(manifest, output, notes, timeoutSeconds):
+            var arguments = ["release", "--project", manifest.path]
+            if let output { arguments += ["--output", output.path] }
+            if let notes { arguments += ["--notes", notes.path] }
+            if let timeoutSeconds { arguments += ["--timeout", String(timeoutSeconds)] }
+            arguments.append("--json")
+            return arguments
         }
     }
 
-    public var workingDirectory: URL {
+    public var workingDirectory: URL? {
         switch self {
         case let .newProject(_, _, parentDirectory):
             parentDirectory
         case let .assets(manifest), let .build(manifest, _),
              let .test(manifest), let .play(manifest, _),
-             let .report(manifest):
+             let .report(manifest), let .optimize(manifest, _),
+             let .fuzz(manifest, _, _, _), let .laboratory(manifest, _, _),
+             let .scenarioRecord(manifest, _, _), let .dev(manifest, _, _),
+             let .profile(manifest, _), let .release(manifest, _, _, _):
             manifest.deletingLastPathComponent()
+        case let .doctor(manifest, _):
+            manifest?.deletingLastPathComponent()
+        case let .evidenceDiff(before, _):
+            before.deletingLastPathComponent()
         }
+    }
+
+    public var expectedJSONSchema: String? {
+        switch self {
+        case .report: "swansong-resource-report-v1"
+        case .doctor: "swansong-doctor-report-v1"
+        case .optimize: "swansong-asset-optimization-report-v1"
+        case .fuzz: "swansong-fuzz-report-v1"
+        case .laboratory: "swansong-laboratory-report-v1"
+        case .scenarioRecord: "swansong-scenario-record-report-v1"
+        case .dev: "swansong-dev-event-v1"
+        case .profile: "swansong-profile-report-v1"
+        case .evidenceDiff: "swansong-evidence-diff-v1"
+        case .release: "swansong-release-report-v1"
+        case .newProject, .assets, .build, .test, .play: nil
+        }
+    }
+
+    public var emitsJSONLines: Bool {
+        if case .dev = self { true } else { false }
     }
 }
 
@@ -189,7 +284,7 @@ public struct SwanSDKCLIResolution: Equatable, Sendable {
         SwanSDKCommandInvocation(
             executableURL: executableURL,
             arguments: argumentPrefix + command.arguments,
-            workingDirectory: command.workingDirectory,
+            workingDirectory: command.workingDirectory ?? sdkRoot,
             environment: environment
         )
     }
@@ -222,12 +317,18 @@ public struct SwanSDKCommandResult: Equatable, Sendable {
     }
 }
 
+public enum SwanSDKOutputStream: String, Sendable {
+    case standardOutput
+    case standardError
+}
+
 public final class SwanSDKSubprocessRunner: @unchecked Sendable {
     public init() {}
 
     public func run(
         _ invocation: SwanSDKCommandInvocation,
-        inheritedEnvironment: [String: String] = ProcessInfo.processInfo.environment
+        inheritedEnvironment: [String: String] = ProcessInfo.processInfo.environment,
+        onOutput: (@Sendable (SwanSDKOutputStream, String) -> Void)? = nil
     ) async throws -> SwanSDKCommandResult {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(
             "SwanSong-SDK-\(UUID().uuidString)",
@@ -260,30 +361,107 @@ public final class SwanSDKSubprocessRunner: @unchecked Sendable {
         process.standardOutput = stdout
         process.standardError = stderr
 
-        let status: Int32 = try await withTaskCancellationHandler {
-            try await withCheckedThrowingContinuation { continuation in
-                process.terminationHandler = { finished in
-                    continuation.resume(returning: finished.terminationStatus)
-                }
-                do {
-                    try process.run()
-                } catch {
-                    process.terminationHandler = nil
-                    continuation.resume(throwing: error)
-                }
+        let statuses = AsyncStream<Int32> { continuation in
+            process.terminationHandler = { finished in
+                continuation.yield(finished.terminationStatus)
+                continuation.finish()
             }
+        }
+        try process.run()
+        // Keep the termination wait outside the caller's cancellation tree.
+        // AsyncStream.next() is itself cancellation-aware; awaiting it directly
+        // can return nil while Process is still exiting, at which point reading
+        // terminationStatus raises an Objective-C exception.
+        let terminationWaiter = Task.detached { () -> Int32? in
+            var iterator = statuses.makeAsyncIterator()
+            return await iterator.next()
+        }
+        let monitor = Task.detached {
+            await Self.monitor(
+                standardOutput: stdoutURL,
+                standardError: stderrURL,
+                onOutput: onOutput
+            )
+        }
+        let status = await withTaskCancellationHandler {
+            await terminationWaiter.value
         } onCancel: {
             if process.isRunning { process.terminate() }
         }
+        guard let status else {
+            throw SwanSDKIntegrationError.commandFailed(
+                status: -1,
+                detail: "The SDK process ended without a termination status."
+            )
+        }
+        monitor.cancel()
+        _ = await monitor.value
         try stdout.synchronize()
         try stderr.synchronize()
         let output = (try? String(contentsOf: stdoutURL, encoding: .utf8)) ?? ""
         let error = (try? String(contentsOf: stderrURL, encoding: .utf8)) ?? ""
+        if Task.isCancelled { throw CancellationError() }
         return SwanSDKCommandResult(
             status: status,
             standardOutput: output,
             standardError: error
         )
+    }
+
+    private static func monitor(
+        standardOutput: URL,
+        standardError: URL,
+        onOutput: (@Sendable (SwanSDKOutputStream, String) -> Void)?
+    ) async {
+        var outputOffset: UInt64 = 0
+        var errorOffset: UInt64 = 0
+        repeat {
+            outputOffset = readNewText(
+                at: standardOutput,
+                offset: outputOffset,
+                stream: .standardOutput,
+                onOutput: onOutput
+            )
+            errorOffset = readNewText(
+                at: standardError,
+                offset: errorOffset,
+                stream: .standardError,
+                onOutput: onOutput
+            )
+            if !Task.isCancelled {
+                try? await Task.sleep(for: .milliseconds(75))
+            }
+        } while !Task.isCancelled
+        _ = readNewText(
+            at: standardOutput,
+            offset: outputOffset,
+            stream: .standardOutput,
+            onOutput: onOutput
+        )
+        _ = readNewText(
+            at: standardError,
+            offset: errorOffset,
+            stream: .standardError,
+            onOutput: onOutput
+        )
+    }
+
+    private static func readNewText(
+        at url: URL,
+        offset: UInt64,
+        stream: SwanSDKOutputStream,
+        onOutput: (@Sendable (SwanSDKOutputStream, String) -> Void)?
+    ) -> UInt64 {
+        guard let handle = try? FileHandle(forReadingFrom: url) else { return offset }
+        defer { try? handle.close() }
+        do {
+            try handle.seek(toOffset: offset)
+            guard let data = try handle.readToEnd(), !data.isEmpty else { return offset }
+            onOutput?(stream, String(decoding: data, as: UTF8.self))
+            return offset + UInt64(data.count)
+        } catch {
+            return offset
+        }
     }
 }
 
@@ -515,6 +693,94 @@ public enum SwanSDKJSONValue: Codable, Equatable, Sendable {
         case let .bool(value): value ? "true" : "false"
         case .object, .array, .null: nil
         }
+    }
+}
+
+public struct SwanSDKStructuredReport: Equatable, Sendable {
+    public let schema: String
+    public let documents: [SwanSDKJSONValue]
+    public let formattedJSON: String
+
+    public static func decode(
+        _ data: Data,
+        expectedSchema: String,
+        jsonLines: Bool = false
+    ) throws -> Self {
+        let payloads: [Data]
+        if jsonLines {
+            payloads = data.split(separator: 0x0a).compactMap { line in
+                let text = String(decoding: line, as: UTF8.self)
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                return text.isEmpty ? nil : Data(text.utf8)
+            }
+        } else {
+            payloads = [data]
+        }
+        guard !payloads.isEmpty else {
+            throw SwanSDKIntegrationError.malformedContract(
+                "The SDK returned no structured JSON."
+            )
+        }
+        let documents = try payloads.map {
+            try JSONDecoder().decode(SwanSDKJSONValue.self, from: $0)
+        }
+        for document in documents {
+            guard document["schema"]?.displayString == expectedSchema else {
+                let found = document["schema"]?.displayString ?? "missing"
+                throw SwanSDKIntegrationError.malformedContract(
+                    "Unsupported SDK report schema: \(found); expected \(expectedSchema)."
+                )
+            }
+        }
+        return Self(
+            schema: expectedSchema,
+            documents: documents,
+            formattedJSON: try payloads.map(prettyJSON).joined(separator: "\n")
+        )
+    }
+}
+
+public struct SwanSDKFrameInputPlan: Codable, Equatable, Sendable {
+    public struct Event: Codable, Equatable, Sendable {
+        public let frameIndex: UInt64
+        public let inputs: [String]
+
+        public init(frameIndex: UInt64, inputs: [String]) {
+            self.frameIndex = frameIndex
+            self.inputs = inputs
+        }
+    }
+
+    public static let currentSchema = "swan-song-frame-input-plan-v1"
+
+    public let schema: String
+    public let totalFrames: UInt64
+    public let events: [Event]
+
+    public init(
+        schema: String = Self.currentSchema,
+        totalFrames: UInt64,
+        events: [Event]
+    ) {
+        self.schema = schema
+        self.totalFrames = totalFrames
+        self.events = events
+    }
+
+    public static func decode(_ data: Data) throws -> Self {
+        let plan = try JSONDecoder().decode(Self.self, from: data)
+        guard plan.schema == Self.currentSchema else {
+            throw SwanSDKIntegrationError.malformedContract(
+                "Unsupported scenario plan schema: \(plan.schema)."
+            )
+        }
+        return plan
+    }
+
+    public func formattedJSON() throws -> String {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+        return String(decoding: try encoder.encode(self), as: UTF8.self) + "\n"
     }
 }
 

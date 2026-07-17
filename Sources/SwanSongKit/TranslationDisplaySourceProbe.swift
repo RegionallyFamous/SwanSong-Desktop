@@ -15,8 +15,43 @@ public struct TranslationDisplaySourceCompleteness: Codable, Equatable, Sendable
     public let traceRecordLimit: Int
 }
 
+public struct TranslationDisplaySourcePartitionLeaf: Codable, Equatable, Sendable {
+    public let rectangle: EngineDisplayRectangle
+    public let depth: Int
+    public let selectedTraceCount: Int
+    public let consumerTraceCount: Int
+    public let selectedTraceIndices: [Int]
+    public let consumerTraceIndices: [Int]
+}
+
+public struct TranslationDisplaySourcePartition: Codable, Equatable, Sendable {
+    public static let currentAlgorithm = "tile8-balanced-bisection-v1"
+
+    public let algorithm: String
+    public let atomicCellWidth: Int
+    public let atomicCellHeight: Int
+    public let maximumDepth: Int
+    public let terminalLeafLimit: Int
+    public let attemptedNodeLimit: Int
+    public let normalizedRangeLimit: Int
+    public let attemptCount: Int
+    public let splitCount: Int
+    public let maximumObservedDepth: Int
+    public let executedFrames: UInt64
+    public let nativeFrameNumberBeforeQueries: UInt64
+    public let nativeFrameNumberAfterQueries: UInt64
+    public let nativeFrameSHA256BeforeQueries: String
+    public let nativeFrameSHA256AfterQueries: String
+    public let leaves: [TranslationDisplaySourcePartitionLeaf]
+    public let withinRootConsumerTraceCount: Int
+    public let withinRootConsumersSHA256: String
+    public let outsideRootSameFrameConsumerTraceCount: Int
+    public let outsideRootSameFrameConsumersSHA256: String
+}
+
 public struct TranslationDisplaySourceProbeDetails: Codable, Equatable, Sendable {
-    public static let currentSchema = "swan-song-display-source-probe-v1"
+    public static let currentSchema = "swan-song-display-source-probe-v2"
+    public static let legacySchema = "swan-song-display-source-probe-v1"
 
     public let schema: String
     public let createdAt: Date
@@ -25,6 +60,7 @@ public struct TranslationDisplaySourceProbeDetails: Codable, Equatable, Sendable
     public let nativeFrameNumber: UInt64
     public let rectangle: EngineDisplayRectangle
     public let plan: TranslationArtifactDigest
+    public let project: TranslationArtifactDigest?
     public let rom: TranslationArtifactDigest
     public let romFooterChecksum: UInt16
     public let engine: TranslationRouteEngineIdentity
@@ -41,13 +77,14 @@ public struct TranslationDisplaySourceProbeDetails: Codable, Equatable, Sendable
     public let candidateCartridgeRanges: [TranslationCartridgeSourceRange]
     public let traces: [EngineDisplaySourceTrace]
     public let completeness: TranslationDisplaySourceCompleteness
+    public let partition: TranslationDisplaySourcePartition?
 }
 
 /// Source-free automation response. Exact cartridge offsets, emulated source
 /// addresses, per-pixel chains, and outside-consumer coordinates remain only
 /// in the private project details artifact.
 public struct TranslationDisplaySourceProbeReport: Codable, Equatable, Sendable {
-    public static let currentSchema = "swan-song-display-source-probe-report-v1"
+    public static let currentSchema = "swan-song-display-source-probe-report-v2"
 
     public let schema: String
     public let role: TranslationROMRole
@@ -66,17 +103,252 @@ public struct TranslationDisplaySourceProbeReport: Codable, Equatable, Sendable 
     public let chainsSHA256: String
     public let outsideConsumerCount: Int
     public let outsideConsumersSHA256: String
+    public let withinRootConsumerCount: Int
+    public let withinRootConsumersSHA256: String
+    public let partitionAlgorithm: String
+    public let partitionAttemptCount: Int
+    public let partitionLeafCount: Int
+    public let partitionSplitCount: Int
+    public let partitionMaximumDepth: Int
+    public let executedFrames: UInt64
+    public let nativeFrameStableAcrossQueries: Bool
+    public let lineageComplete: Bool
+    public let runtimeGeneratedSelectedTraceCount: Int
+    public let runtimeGeneratedRasterTraceCount: Int
+    public let runtimeGeneratedSelectedSHA256: String
+    public let sameFrameConsumerIsolationApplicable: Bool
+    public let sameFrameOutsideRootConsumersAbsent: Bool
+    public let prototypeAuthorized: Bool
     public let isComplete: Bool
     public let unknownDependencyTraceCount: Int
     public let rangeOverflowTraceCount: Int
     public let conservativeDataflowTraceCount: Int
     public let planSHA256: String
+    public let projectSHA256: String
     public let romSHA256: String
     public let engineSHA256: String
     public let rtcSHA256: String
     public let persistenceSHA256: String
     public let nativeFrameSHA256: String
     public let privateDetailsSHA256: String
+}
+
+struct TranslationDisplaySourcePartitionPayload<Element> {
+    let selected: [Element]
+    let consumers: [Element]
+}
+
+struct TranslationDisplaySourcePartitionTerminal<Element> {
+    let rectangle: EngineDisplayRectangle
+    let depth: Int
+    let payload: TranslationDisplaySourcePartitionPayload<Element>
+}
+
+struct TranslationDisplaySourcePartitionResult<Element> {
+    let terminals: [TranslationDisplaySourcePartitionTerminal<Element>]
+    let attemptCount: Int
+    let splitCount: Int
+    let maximumObservedDepth: Int
+}
+
+enum TranslationDisplaySourcePartitioner {
+    static let atomicCellWidth = 8
+    static let atomicCellHeight = 8
+    static let maximumDepth = 5
+    static let terminalLeafLimit = 32
+    static let attemptedNodeLimit = 64
+    static let normalizedRangeLimit = 256
+    static let traceRecordLimit = 262_144
+
+    struct TreeStatistics: Equatable {
+        let attemptCount: Int
+        let splitCount: Int
+        let maximumObservedDepth: Int
+    }
+
+    static func run<Element>(
+        rectangle: EngineDisplayRectangle,
+        probe: (EngineDisplayRectangle) throws -> TranslationDisplaySourcePartitionPayload<Element>
+    ) throws -> TranslationDisplaySourcePartitionResult<Element> {
+        var pending = [(rectangle: rectangle, depth: 0)]
+        var terminals: [TranslationDisplaySourcePartitionTerminal<Element>] = []
+        var attemptCount = 0
+        var splitCount = 0
+        var maximumObservedDepth = 0
+
+        while let current = pending.popLast() {
+            guard attemptCount < attemptedNodeLimit else {
+                throw TranslationLabError.invalidRoute(
+                    "the adaptive upstream source probe exceeded its 64-node bound"
+                )
+            }
+            attemptCount += 1
+            maximumObservedDepth = max(maximumObservedDepth, current.depth)
+            do {
+                let payload = try probe(current.rectangle)
+                guard terminals.count < terminalLeafLimit else {
+                    throw TranslationLabError.invalidRoute(
+                        "the adaptive upstream source probe exceeded its 32-leaf bound"
+                    )
+                }
+                terminals.append(TranslationDisplaySourcePartitionTerminal(
+                    rectangle: current.rectangle,
+                    depth: current.depth,
+                    payload: payload
+                ))
+            } catch let error as SwanEngineError
+                where error.displaySourceProbeFailure == .selectedRangeUnionOverflow {
+                guard current.depth < maximumDepth,
+                      let children = split(current.rectangle) else {
+                    throw TranslationLabError.invalidRoute(
+                        "an atomic 8-by-8 display cell still exceeds the exact cartridge-range bound"
+                    )
+                }
+                guard attemptCount + pending.count + 2 <= attemptedNodeLimit else {
+                    throw TranslationLabError.invalidRoute(
+                        "the adaptive upstream source probe would exceed its 64-node bound"
+                    )
+                }
+                splitCount += 1
+                pending.append((children.1, current.depth + 1))
+                pending.append((children.0, current.depth + 1))
+            }
+        }
+
+        return TranslationDisplaySourcePartitionResult(
+            terminals: terminals.sorted {
+                rectangleOrder($0.rectangle, $1.rectangle)
+            },
+            attemptCount: attemptCount,
+            splitCount: splitCount,
+            maximumObservedDepth: maximumObservedDepth
+        )
+    }
+
+    static func validateTerminalTree(
+        root: EngineDisplayRectangle,
+        terminals: [(rectangle: EngineDisplayRectangle, depth: Int)]
+    ) throws -> TreeStatistics {
+        guard !terminals.isEmpty, terminals.count <= terminalLeafLimit else {
+            throw TranslationLabError.invalidRoute(
+                "the adaptive upstream source leaf partition is empty or unbounded"
+            )
+        }
+        var terminalKeys = Set<String>()
+        for terminal in terminals {
+            guard terminal.depth >= 0, terminal.depth <= maximumDepth else {
+                throw TranslationLabError.invalidRoute(
+                    "an adaptive upstream source leaf has an invalid depth"
+                )
+            }
+            guard terminalKeys.insert(treeKey(terminal.rectangle, terminal.depth)).inserted else {
+                throw TranslationLabError.invalidRoute(
+                    "the adaptive upstream source leaf partition contains a duplicate leaf"
+                )
+            }
+        }
+
+        var consumed = Set<String>()
+        var attemptCount = 0
+        var splitCount = 0
+        var maximumObservedDepth = 0
+        func visit(_ rectangle: EngineDisplayRectangle, depth: Int) throws {
+            guard attemptCount < attemptedNodeLimit else {
+                throw TranslationLabError.invalidRoute(
+                    "the adaptive upstream source tree exceeds its node bound"
+                )
+            }
+            attemptCount += 1
+            maximumObservedDepth = max(maximumObservedDepth, depth)
+            let key = treeKey(rectangle, depth)
+            if terminalKeys.contains(key) {
+                consumed.insert(key)
+                return
+            }
+            guard depth < maximumDepth, let children = split(rectangle) else {
+                throw TranslationLabError.invalidRoute(
+                    "the adaptive upstream source leaves are not a pruned tree of the named splitter"
+                )
+            }
+            splitCount += 1
+            try visit(children.0, depth: depth + 1)
+            try visit(children.1, depth: depth + 1)
+        }
+        try visit(root, depth: 0)
+        guard consumed == terminalKeys,
+              attemptCount == terminals.count + splitCount else {
+            throw TranslationLabError.invalidRoute(
+                "the adaptive upstream source leaves are not a complete deterministic tree"
+            )
+        }
+        return TreeStatistics(
+            attemptCount: attemptCount,
+            splitCount: splitCount,
+            maximumObservedDepth: maximumObservedDepth
+        )
+    }
+
+    static func split(
+        _ rectangle: EngineDisplayRectangle
+    ) -> (EngineDisplayRectangle, EngineDisplayRectangle)? {
+        guard Int(rectangle.x) % atomicCellWidth == 0,
+              Int(rectangle.y) % atomicCellHeight == 0,
+              Int(rectangle.width) % atomicCellWidth == 0,
+              Int(rectangle.height) % atomicCellHeight == 0 else {
+            return nil
+        }
+        let widthCells = Int(rectangle.width) / atomicCellWidth
+        let heightCells = Int(rectangle.height) / atomicCellHeight
+        guard widthCells > 1 || heightCells > 1 else { return nil }
+
+        if widthCells >= heightCells, widthCells > 1 {
+            let firstWidth = (widthCells / 2) * atomicCellWidth
+            return (
+                EngineDisplayRectangle(
+                    x: rectangle.x,
+                    y: rectangle.y,
+                    width: UInt16(firstWidth),
+                    height: rectangle.height
+                ),
+                EngineDisplayRectangle(
+                    x: rectangle.x + UInt16(firstWidth),
+                    y: rectangle.y,
+                    width: rectangle.width - UInt16(firstWidth),
+                    height: rectangle.height
+                )
+            )
+        }
+
+        let firstHeight = (heightCells / 2) * atomicCellHeight
+        return (
+            EngineDisplayRectangle(
+                x: rectangle.x,
+                y: rectangle.y,
+                width: rectangle.width,
+                height: UInt16(firstHeight)
+            ),
+            EngineDisplayRectangle(
+                x: rectangle.x,
+                y: rectangle.y + UInt16(firstHeight),
+                width: rectangle.width,
+                height: rectangle.height - UInt16(firstHeight)
+            )
+        )
+    }
+
+    private static func rectangleOrder(
+        _ lhs: EngineDisplayRectangle,
+        _ rhs: EngineDisplayRectangle
+    ) -> Bool {
+        if lhs.y != rhs.y { return lhs.y < rhs.y }
+        if lhs.x != rhs.x { return lhs.x < rhs.x }
+        if lhs.height != rhs.height { return lhs.height < rhs.height }
+        return lhs.width < rhs.width
+    }
+
+    private static func treeKey(_ rectangle: EngineDisplayRectangle, _ depth: Int) -> String {
+        "\(rectangle.x):\(rectangle.y):\(rectangle.width):\(rectangle.height):\(depth)"
+    }
 }
 
 public enum TranslationDisplaySourceProbe {
@@ -105,6 +377,20 @@ public enum TranslationDisplaySourceProbe {
         }
 
         let planData = try encoded(plan)
+        let projectURL = project.rootURL.appendingPathComponent(
+            "project.json",
+            isDirectory: false
+        )
+        let projectData = try Data(contentsOf: projectURL)
+        guard projectData.count <= 1_048_576 else {
+            throw TranslationLabError.invalidProject(
+                "project.json exceeds the bounded upstream source-probe input limit"
+            )
+        }
+        let projectDigest = TranslationArtifactDigest(
+            byteCount: projectData.count,
+            sha256: sha256(projectData)
+        )
         let romURL = try project.romURL(for: role)
         let rom = try Data(contentsOf: romURL, options: [.mappedIfSafe])
         let romDigest = TranslationArtifactDigest(
@@ -156,25 +442,113 @@ public enum TranslationDisplaySourceProbe {
                 "the engine returned incomplete display-owner provenance"
             )
         }
-        let traces = try engine.displaySourceProbe(rectangle: rectangle)
+        let nativeFrameNumberBeforeQueries = frame.number
+        let nativeFrameSHA256BeforeQueries = try TranslationRouteCheckpoint.fingerprint(frame)
+        var traceByToken: [EngineDisplaySourceTrace] = []
+        var tokenByCanonical: [String: Int] = [:]
+        let partitionResult = try TranslationDisplaySourcePartitioner.run(
+            rectangle: rectangle
+        ) { leafRectangle in
+            let leafTraces = try engine.displaySourceProbe(rectangle: leafRectangle)
+            let selected = leafTraces.filter { $0.scope == .selected }
+            let consumers = leafTraces.filter { $0.scope == .outsideConsumer }
+            try validateLeaf(
+                rectangle: leafRectangle,
+                ownerSamples: ownerSamples,
+                selected: selected,
+                consumers: consumers
+            )
+            let selectedTokens = try recordTraceTokens(
+                selected,
+                traceByToken: &traceByToken,
+                tokenByCanonical: &tokenByCanonical
+            )
+            let consumerTokens = try recordTraceTokens(
+                consumers,
+                traceByToken: &traceByToken,
+                tokenByCanonical: &tokenByCanonical
+            )
+            return TranslationDisplaySourcePartitionPayload(
+                selected: selectedTokens,
+                consumers: consumerTokens
+            )
+        }
+        let treeStatistics = try TranslationDisplaySourcePartitioner.validateTerminalTree(
+            root: rectangle,
+            terminals: partitionResult.terminals.map {
+                (rectangle: $0.rectangle, depth: $0.depth)
+            }
+        )
+        guard treeStatistics.attemptCount == partitionResult.attemptCount,
+              treeStatistics.splitCount == partitionResult.splitCount,
+              treeStatistics.maximumObservedDepth == partitionResult.maximumObservedDepth else {
+            throw TranslationLabError.invalidRoute(
+                "the adaptive upstream source traversal does not match its deterministic tree"
+            )
+        }
+        let sortedOldTokens = traceByToken.indices.sorted {
+            canonicalTrace(traceByToken[$0]) < canonicalTrace(traceByToken[$1])
+        }
+        var finalIndexByOldToken: [Int: Int] = [:]
+        let traces = sortedOldTokens.enumerated().map { finalIndex, oldToken in
+            finalIndexByOldToken[oldToken] = finalIndex
+            return traceByToken[oldToken]
+        }
         let unknownCount = traces.filter(\.hasUnknownDependency).count
         let overflowCount = traces.filter(\.rangeSetOverflowed).count
         let conservativeCount = traces.filter(\.usesConservativeDataflow).count
+        guard unknownCount == 0,
+              overflowCount == 0,
+              conservativeCount == 0 else {
+            throw TranslationLabError.invalidRoute(
+                "an adaptive upstream source leaf returned incomplete or conservative lineage"
+            )
+        }
+        let selected = traces.filter { $0.scope == .selected }
+        let rasterSelected = selected.filter { $0.component == .raster }
+        guard !rasterSelected.isEmpty,
+              selected.allSatisfy(\.hasExactRange) else {
+            throw TranslationLabError.invalidRoute(
+                "the selected rectangle has incomplete exact source lineage"
+            )
+        }
         let completeness = TranslationDisplaySourceCompleteness(
-            isComplete: unknownCount == 0
-                && overflowCount == 0
-                && conservativeCount == 0,
+            isComplete: true,
             unknownDependencyTraceCount: unknownCount,
             rangeOverflowTraceCount: overflowCount,
             conservativeDataflowTraceCount: conservativeCount,
             traceRecordLimit: 262_144
         )
         let ranges = normalizedRanges(
-            traces.filter { $0.scope == .selected && $0.hasExactRange }
+            selected.filter(\.hasExactRange)
         )
         let candidateRanges = normalizedRanges(
-            traces.filter { $0.scope == .selected }
+            selected
         )
+        guard ranges == candidateRanges,
+              ranges.count <= TranslationDisplaySourcePartitioner.normalizedRangeLimit else {
+            throw TranslationLabError.invalidRoute(
+                "the adaptive upstream source probe did not produce a bounded exact range union"
+            )
+        }
+
+        let frameAfterQueries = try engine.videoFrame()
+        let nativeFrameNumberAfterQueries = frameAfterQueries.number
+        let nativeFrameSHA256AfterQueries = try TranslationRouteCheckpoint.fingerprint(
+            frameAfterQueries
+        )
+        guard nativeFrameNumberAfterQueries == nativeFrameNumberBeforeQueries,
+              nativeFrameSHA256AfterQueries == nativeFrameSHA256BeforeQueries else {
+            throw TranslationLabError.invalidRoute(
+                "the native frame drifted while adaptive upstream source leaves were queried"
+            )
+        }
+        let currentProjectData = try Data(contentsOf: projectURL)
+        guard currentProjectData == projectData else {
+            throw TranslationLabError.invalidProject(
+                "project.json drifted while adaptive upstream source leaves were queried"
+            )
+        }
 
         let engineIdentity = TranslationRouteEngineIdentity(
             backend: engine.backendName,
@@ -184,10 +558,69 @@ public enum TranslationDisplaySourceProbe {
         let engineSHA256 = sha256(try encoded(engineIdentity))
         let rtcSHA256 = sha256(try encoded(rtc))
         let persistenceSHA256 = sha256(Data(persistencePolicy.utf8))
-        let nativeFrameSHA256 = try TranslationRouteCheckpoint.fingerprint(frame)
+        let nativeFrameSHA256 = nativeFrameSHA256BeforeQueries
         let planDigest = TranslationArtifactDigest(
             byteCount: planData.count,
             sha256: sha256(planData)
+        )
+        let withinRootConsumers = traces.filter {
+            $0.scope == .outsideConsumer && contains(rectangle, x: $0.x, y: $0.y)
+        }
+        let outsideRootConsumers = traces.filter {
+            $0.scope == .outsideConsumer && !contains(rectangle, x: $0.x, y: $0.y)
+        }
+        let selectedLineages = Set(selected.map(canonicalLineage))
+        guard withinRootConsumers.allSatisfy({
+            selectedLineages.contains(canonicalLineage($0))
+        }) else {
+            throw TranslationLabError.invalidRoute(
+                "an adaptive sibling consumer lacks an exact selected lineage match"
+            )
+        }
+        let withinRootConsumerStrings = withinRootConsumers.map(canonicalTrace)
+        let outsideRootConsumerStrings = outsideRootConsumers.map(canonicalTrace)
+        let runtimeGeneratedSelected = selected.filter { $0.cartridgeLength == 0 }
+        let runtimeGeneratedRaster = rasterSelected.filter { $0.cartridgeLength == 0 }
+        let runtimeGeneratedSelectedStrings = runtimeGeneratedSelected.map(canonicalTrace)
+        let partitionLeaves = try partitionResult.terminals.map { terminal in
+            let selectedIndices = try remappedTraceIndices(
+                terminal.payload.selected,
+                index: finalIndexByOldToken
+            )
+            let consumerIndices = try remappedTraceIndices(
+                terminal.payload.consumers,
+                index: finalIndexByOldToken
+            )
+            return TranslationDisplaySourcePartitionLeaf(
+                rectangle: terminal.rectangle,
+                depth: terminal.depth,
+                selectedTraceCount: selectedIndices.count,
+                consumerTraceCount: consumerIndices.count,
+                selectedTraceIndices: selectedIndices,
+                consumerTraceIndices: consumerIndices
+            )
+        }
+        let partition = TranslationDisplaySourcePartition(
+            algorithm: TranslationDisplaySourcePartition.currentAlgorithm,
+            atomicCellWidth: TranslationDisplaySourcePartitioner.atomicCellWidth,
+            atomicCellHeight: TranslationDisplaySourcePartitioner.atomicCellHeight,
+            maximumDepth: TranslationDisplaySourcePartitioner.maximumDepth,
+            terminalLeafLimit: TranslationDisplaySourcePartitioner.terminalLeafLimit,
+            attemptedNodeLimit: TranslationDisplaySourcePartitioner.attemptedNodeLimit,
+            normalizedRangeLimit: TranslationDisplaySourcePartitioner.normalizedRangeLimit,
+            attemptCount: partitionResult.attemptCount,
+            splitCount: partitionResult.splitCount,
+            maximumObservedDepth: partitionResult.maximumObservedDepth,
+            executedFrames: frameIndex + 1,
+            nativeFrameNumberBeforeQueries: nativeFrameNumberBeforeQueries,
+            nativeFrameNumberAfterQueries: nativeFrameNumberAfterQueries,
+            nativeFrameSHA256BeforeQueries: nativeFrameSHA256BeforeQueries,
+            nativeFrameSHA256AfterQueries: nativeFrameSHA256AfterQueries,
+            leaves: partitionLeaves,
+            withinRootConsumerTraceCount: withinRootConsumers.count,
+            withinRootConsumersSHA256: hashCanonical(withinRootConsumerStrings),
+            outsideRootSameFrameConsumerTraceCount: outsideRootConsumers.count,
+            outsideRootSameFrameConsumersSHA256: hashCanonical(outsideRootConsumerStrings)
         )
         let details = TranslationDisplaySourceProbeDetails(
             schema: TranslationDisplaySourceProbeDetails.currentSchema,
@@ -197,6 +630,7 @@ public enum TranslationDisplaySourceProbe {
             nativeFrameNumber: frame.number,
             rectangle: rectangle,
             plan: planDigest,
+            project: projectDigest,
             rom: romDigest,
             romFooterChecksum: metadata.computedChecksum,
             engine: engineIdentity,
@@ -210,7 +644,8 @@ public enum TranslationDisplaySourceProbe {
             cartridgeRanges: ranges,
             candidateCartridgeRanges: candidateRanges,
             traces: traces,
-            completeness: completeness
+            completeness: completeness,
+            partition: partition
         )
         let detailsData = try encoded(details)
         guard detailsData.count <= 16 * 1_024 * 1_024 else {
@@ -224,8 +659,6 @@ public enum TranslationDisplaySourceProbe {
         )
         try publish(project: project, planData: planData, detailsData: detailsData)
 
-        let selected = traces.filter { $0.scope == .selected }
-        let outside = traces.filter { $0.scope == .outsideConsumer }
         let componentCounts = counts(selected.map(\.component.rawValue))
         let chainKinds = selected.map { trace in
             if trace.rangeSetOverflowed { return "overflow" }
@@ -240,8 +673,10 @@ public enum TranslationDisplaySourceProbe {
             String(format: "%08x-%08x", $0.lowerBound, $0.upperBound)
         }
         let privateChainStrings = selected.map(canonicalTrace)
-        let privateOutsideStrings = outside.map(canonicalTrace)
-        let outsideConsumers = Set(outside.map {
+        let outsideConsumers = Set(outsideRootConsumers.map {
+            "\($0.x):\($0.y):\($0.component.rawValue)"
+        })
+        let withinRootConsumerComponents = Set(withinRootConsumers.map {
             "\($0.x):\($0.y):\($0.component.rawValue)"
         })
 
@@ -262,12 +697,30 @@ public enum TranslationDisplaySourceProbe {
             chainKindCounts: counts(chainKinds),
             chainsSHA256: hashCanonical(privateChainStrings),
             outsideConsumerCount: outsideConsumers.count,
-            outsideConsumersSHA256: hashCanonical(privateOutsideStrings),
+            outsideConsumersSHA256: hashCanonical(outsideRootConsumerStrings),
+            withinRootConsumerCount: withinRootConsumerComponents.count,
+            withinRootConsumersSHA256: hashCanonical(withinRootConsumerStrings),
+            partitionAlgorithm: partition.algorithm,
+            partitionAttemptCount: partition.attemptCount,
+            partitionLeafCount: partition.leaves.count,
+            partitionSplitCount: partition.splitCount,
+            partitionMaximumDepth: partition.maximumObservedDepth,
+            executedFrames: partition.executedFrames,
+            nativeFrameStableAcrossQueries: true,
+            lineageComplete: true,
+            runtimeGeneratedSelectedTraceCount: runtimeGeneratedSelected.count,
+            runtimeGeneratedRasterTraceCount: runtimeGeneratedRaster.count,
+            runtimeGeneratedSelectedSHA256: hashCanonical(runtimeGeneratedSelectedStrings),
+            sameFrameConsumerIsolationApplicable: runtimeGeneratedRaster.isEmpty,
+            sameFrameOutsideRootConsumersAbsent: runtimeGeneratedRaster.isEmpty
+                && outsideConsumers.isEmpty,
+            prototypeAuthorized: false,
             isComplete: completeness.isComplete,
             unknownDependencyTraceCount: unknownCount,
             rangeOverflowTraceCount: overflowCount,
             conservativeDataflowTraceCount: conservativeCount,
             planSHA256: planDigest.sha256,
+            projectSHA256: projectDigest.sha256,
             romSHA256: romDigest.sha256,
             engineSHA256: engineSHA256,
             rtcSHA256: rtcSHA256,
@@ -275,6 +728,138 @@ public enum TranslationDisplaySourceProbe {
             nativeFrameSHA256: nativeFrameSHA256,
             privateDetailsSHA256: sha256(detailsData)
         )
+    }
+
+    private static func validateLeaf(
+        rectangle: EngineDisplayRectangle,
+        ownerSamples: [EngineDisplayOwnerSample],
+        selected: [EngineDisplaySourceTrace],
+        consumers: [EngineDisplaySourceTrace]
+    ) throws {
+        let expectedCoverage = Set(ownerSamples.filter {
+            contains(rectangle, x: $0.x, y: $0.y)
+        }.flatMap(expectedComponents))
+        let actualCoverage = Set(selected.map(coverageKey))
+        guard actualCoverage == expectedCoverage,
+              selected.allSatisfy({
+                  $0.scope == .selected && contains(rectangle, x: $0.x, y: $0.y)
+              }),
+              consumers.allSatisfy({
+                  $0.scope == .outsideConsumer && !contains(rectangle, x: $0.x, y: $0.y)
+              }) else {
+            throw TranslationLabError.invalidRoute(
+                "an adaptive upstream source leaf did not exactly cover its display sources"
+            )
+        }
+        let all = selected + consumers
+        guard all.allSatisfy({
+            !$0.hasUnknownDependency
+                && !$0.rangeSetOverflowed
+                && !$0.usesConservativeDataflow
+        }) else {
+            throw TranslationLabError.invalidRoute(
+                "an adaptive upstream source leaf returned incomplete or conservative lineage"
+            )
+        }
+        guard selected.allSatisfy(\.hasExactRange) else {
+            throw TranslationLabError.invalidRoute(
+                "an adaptive upstream source leaf has incomplete exact source lineage"
+            )
+        }
+        let exactRanges = normalizedRanges(selected.filter(\.hasExactRange))
+        let candidateRanges = normalizedRanges(selected)
+        guard exactRanges == candidateRanges,
+              exactRanges.count <= 8 else {
+            throw TranslationLabError.invalidRoute(
+                "an adaptive upstream source leaf exceeded its exact eight-range contract"
+            )
+        }
+        let selectedNonempty = selected.filter { $0.cartridgeLength > 0 }
+        guard consumers.allSatisfy({ consumer in
+            consumer.hasExactRange
+                && consumer.cartridgeLength > 0
+                && selectedNonempty.contains(where: { rangesOverlap($0, consumer) })
+        }) else {
+            throw TranslationLabError.invalidRoute(
+                "an adaptive upstream consumer lacks exact overlap with its selected leaf"
+            )
+        }
+    }
+
+    private static func recordTraceTokens(
+        _ traces: [EngineDisplaySourceTrace],
+        traceByToken: inout [EngineDisplaySourceTrace],
+        tokenByCanonical: inout [String: Int]
+    ) throws -> [Int] {
+        var result = Set<Int>()
+        for trace in traces {
+            let canonical = canonicalTrace(trace)
+            let token: Int
+            if let existing = tokenByCanonical[canonical] {
+                token = existing
+            } else {
+                guard traceByToken.count < TranslationDisplaySourcePartitioner.traceRecordLimit else {
+                    throw TranslationLabError.invalidRoute(
+                        "the adaptive upstream source probe exceeded its 262144-trace bound"
+                    )
+                }
+                token = traceByToken.count
+                traceByToken.append(trace)
+                tokenByCanonical[canonical] = token
+            }
+            result.insert(token)
+        }
+        return result.sorted()
+    }
+
+    private static func remappedTraceIndices(
+        _ tokens: [Int],
+        index: [Int: Int]
+    ) throws -> [Int] {
+        try tokens.map { token in
+            guard let value = index[token] else {
+                throw TranslationLabError.invalidRoute(
+                    "an adaptive upstream source leaf lost its trace grouping"
+                )
+            }
+            return value
+        }.sorted()
+    }
+
+    private static func rangesOverlap(
+        _ lhs: EngineDisplaySourceTrace,
+        _ rhs: EngineDisplaySourceTrace
+    ) -> Bool {
+        guard lhs.cartridgeLength > 0, rhs.cartridgeLength > 0 else { return false }
+        let lhsUpper = UInt64(lhs.cartridgeOffset) + UInt64(lhs.cartridgeLength)
+        let rhsUpper = UInt64(rhs.cartridgeOffset) + UInt64(rhs.cartridgeLength)
+        return UInt64(lhs.cartridgeOffset) < rhsUpper
+            && UInt64(rhs.cartridgeOffset) < lhsUpper
+    }
+
+    private static func expectedComponents(
+        _ sample: EngineDisplayOwnerSample
+    ) -> [String] {
+        engineDisplaySourceComponents(for: sample).map {
+            "\(sample.x):\(sample.y):\($0.rawValue)"
+        }
+    }
+
+    private static func coverageKey(_ trace: EngineDisplaySourceTrace) -> String {
+        "\(trace.x):\(trace.y):\(trace.component.rawValue)"
+    }
+
+    private static func contains(
+        _ rectangle: EngineDisplayRectangle,
+        x: UInt16,
+        y: UInt16
+    ) -> Bool {
+        let right = UInt32(rectangle.x) + UInt32(rectangle.width)
+        let bottom = UInt32(rectangle.y) + UInt32(rectangle.height)
+        return UInt32(x) >= UInt32(rectangle.x)
+            && UInt32(x) < right
+            && UInt32(y) >= UInt32(rectangle.y)
+            && UInt32(y) < bottom
     }
 
     private static func normalizedRanges(
@@ -311,6 +896,26 @@ public enum TranslationDisplaySourceProbe {
             trace.x,
             trace.y,
             trace.scope.rawValue,
+            trace.component.rawValue,
+            trace.sourceAddress,
+            trace.sourceByteCount,
+            trace.minimumInstructionHops,
+            trace.maximumInstructionHops,
+            trace.cartridgeOffset,
+            trace.cartridgeLength,
+            trace.hasExactRange ? 1 : 0,
+            trace.isTransformed ? 1 : 0,
+            trace.hasUnknownDependency ? 1 : 0,
+            trace.rangeSetOverflowed ? 1 : 0,
+            trace.usesConservativeDataflow ? 1 : 0
+        )
+    }
+
+    private static func canonicalLineage(_ trace: EngineDisplaySourceTrace) -> String {
+        String(
+            format: "%04x:%04x:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d",
+            trace.x,
+            trace.y,
             trace.component.rawValue,
             trace.sourceAddress,
             trace.sourceByteCount,

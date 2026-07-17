@@ -187,7 +187,7 @@ final class AppModel {
         case homebrew = "Homebrew"
         case pocketCore = "Analogue Pocket"
         case translationLab = "Translation Lab"
-        case gameStudio = "Game Studio"
+        case gameStudio = "SwanSong Studio"
 
         var id: Self { self }
 

@@ -62,10 +62,11 @@ SwanSong is also built for the wonderfully obsessive side of WonderSwan.
 workspace. Record a route, compare original and patched frames, inspect visual
 changes, capture text on-device, and keep review evidence beside the project.
 
-**Game Studio** brings New, Assets, Build, Test, Play, and Report into one
-native workspace for SwanSong SDK projects. The 0.4 beta is a developer preview
-that uses an explicitly selected local SDK checkout; the tagged SDK/runtime
-bundle is still being prepared for a later self-contained build.
+**SwanSong Studio** brings New, Assets, Build, Test, Play, Profile, Evidence,
+and Release into one native workspace for SwanSong SDK projects. The 0.4 beta
+is a developer preview that uses an explicitly selected local SDK checkout;
+the tagged SDK/runtime bundle is still being prepared for a later
+self-contained build.
 
 **Analogue Pocket setup** prepares an SD card for SwanSong Core from inside the
 app. It is designed to preserve games, saves, Memories, settings, and unrelated
@@ -98,7 +99,7 @@ The technical documentation lives in the
 
 - [Playing, library, saves, and Time Ribbon](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
 - [Translation Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
-- [Game Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Game-Studio)
+- [SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Game-Studio)
 - [Local MCP and automation](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
 - [Analogue Pocket SD setup](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
 - [Controllers and mapping](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Gamepads)

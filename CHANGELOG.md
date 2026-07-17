@@ -9,11 +9,12 @@ The project uses semantic versioning once a release is published.
 
 ### Added
 
-- Added a native Game Studio developer preview with New, Assets, Build, Test,
-  Play, and Report workspaces backed by the exact SwanSong SDK CLI contracts.
-  It includes manifest editing, generated controls and asset previews, resource
-  budgets, retained diagnostics, Play Contract selection, native PNG/WAV
-  evidence review, and resolved SDK/toolchain/engine identity.
+- Added the native SwanSong Studio developer preview with New, Assets, Build,
+  Test, Play, Profile, Evidence, and Release workspaces backed by exact SwanSong
+  SDK CLI contracts. It includes Doctor, Optimizer, Fuzzer, Save/RTC Lab,
+  Scenario Recorder, Dev, profiler, evidence-diff, and release commands;
+  streaming diagnostics and cancellation; native PNG/WAV evidence; and resolved
+  SDK, toolchain, and engine identity.
 - Added ABI 7 upstream display-source provenance. A bounded native rectangle
   can now be traced through common copies and transforms to exact or honest
   conservative cartridge ranges, with outside consumers retained privately.
@@ -33,13 +34,13 @@ The project uses semantic versioning once a release is published.
 - Expanded the full SwanSong MCP server to fourteen guarded tools, including
   persisted capture, both rectangle probes, record/verify, and the complete
   observed-play lifecycle.
-- Game Studio delegates project creation, validation, asset conversion,
+- SwanSong Studio delegates project creation, validation, asset conversion,
   Wonderful builds, tests, reports, and play contracts to the separately
   testable SDK instead of forking those rules in Desktop.
 
 ### Fixed
 
-- Corrected the Game Studio `swan new --directory` integration to pass the exact
+- Corrected the SwanSong Studio `swan new --directory` integration to pass the exact
   destination project directory required by the SDK.
 - Kept replay-verification copy honest: previously saved evidence is not called
   replay-matched unless the comparison succeeded during the current UI run.

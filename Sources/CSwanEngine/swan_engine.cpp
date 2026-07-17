@@ -180,6 +180,8 @@ const char* swan_result_message(swan_result_t result) {
     case SWAN_RESULT_NOT_LOADED: return "no game is loaded";
     case SWAN_RESULT_UNSUPPORTED: return "operation is unsupported";
     case SWAN_RESULT_INTERNAL_ERROR: return "internal engine error";
+    case SWAN_RESULT_SOURCE_RANGE_OVERFLOW:
+      return "display source exceeded the exact cartridge-range bound";
   }
   return "unknown engine result";
 }

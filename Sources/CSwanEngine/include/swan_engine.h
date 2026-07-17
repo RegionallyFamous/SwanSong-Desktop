@@ -28,6 +28,7 @@ typedef enum swan_result {
   SWAN_RESULT_NOT_LOADED = 6,
   SWAN_RESULT_UNSUPPORTED = 7,
   SWAN_RESULT_INTERNAL_ERROR = 8,
+  SWAN_RESULT_SOURCE_RANGE_OVERFLOW = 9,
 } swan_result_t;
 
 typedef enum swan_model {

@@ -5,7 +5,7 @@ Release notes and the issue tracker are authoritative for shipped behavior.
 
 ## 0.4 beta closure
 
-- Publish Game Studio, ABI 7 upstream source provenance, the complete installed
+- Publish SwanSong Studio, ABI 7 upstream source provenance, the complete installed
   plugin surface, and the SwanSong status item as an explicitly marked GitHub
   prerelease built from its exact signed source tag.
 - Prove the 0.3-to-0.4 Sparkle update on beta-enabled clients while stable-only
@@ -30,7 +30,7 @@ Release notes and the issue tracker are authoritative for shipped behavior.
 - Retain Open IPL, controller, save/state, portrait, accessibility,
   minimum-macOS, A/V soak, and physical input acceptance from 0.2 without
   treating a successful boot or automation command as a compatibility verdict.
-- Keep Game Studio clearly labeled as a developer preview until the tagged SDK,
+- Keep SwanSong Studio clearly labeled as a developer preview until the tagged SDK,
   Python runtime, and deterministic play executor are bundled and independently
   verified in the signed application payload.
 

@@ -19,10 +19,27 @@ final class SwanSDKWorkspaceModel {
     var selectedScenarioID: String?
     var evidence: SwanSDKEvidence?
     var currentEvidenceReplayWasVerified = false
+    var scenarioPlanText = ""
+    var scenarioPlanHasUnsavedChanges = false
+    var scenarioInputLogURL: URL?
+    var optimizerAssetID = ""
+    var fuzzSeed: UInt64 = 1
+    var fuzzCases = 32
+    var fuzzFrames = 600
+    var laboratoryCase = "all"
+    var laboratoryRTCSeed = ""
+    var profileTraceURL: URL?
+    var evidenceBeforeURL: URL?
+    var evidenceAfterURL: URL?
+    var releaseOutputURL: URL?
+    var releaseNotesURL: URL?
+    var structuredReport: SwanSDKStructuredReport?
+    var structuredReportTitle = ""
     var diagnostics = ""
     var diagnosticsAreVisible = true
     var issue: String?
     var stateMachine = SwanSDKWorkspaceStateMachine()
+    var activeCommandName: String?
     var sdkPackage: SwanSDKPackageSummary?
     var schema: SwanSDKSchemaSummary?
     var toolchain: SwanSDKToolchainSummary?
@@ -162,7 +179,9 @@ final class SwanSDKWorkspaceModel {
         case .build: runProjectCommand(.build)
         case .test: runProjectCommand(.test)
         case .play: runProjectCommand(.play)
-        case .report: runProjectCommand(.report)
+        case .profile: runProjectCommand(.profile)
+        case .evidence: reloadEvidence()
+        case .release: runRelease()
         }
     }
 
@@ -204,9 +223,11 @@ final class SwanSDKWorkspaceModel {
         if let data = try? Data(contentsOf: generated.appendingPathComponent("asset-report.json")) {
             resourceReport = try? SwanSDKResourceReport.decode(data)
         }
-        if selectedScenarioID == nil {
+        if selectedScenarioID == nil
+            || playContract?.scenarios.contains(where: { $0.id == selectedScenarioID }) == false {
             selectedScenarioID = playContract?.scenarios.first?.id
         }
+        reloadScenarioPlan()
         reloadEvidence()
     }
 
@@ -221,6 +242,183 @@ final class SwanSDKWorkspaceModel {
 
     var selectedScenario: SwanSDKPlayContract.Scenario? {
         playContract?.scenarios.first { $0.id == selectedScenarioID }
+    }
+
+    func reloadScenarioPlan() {
+        guard let projectRoot, let scenario = selectedScenario else {
+            scenarioPlanText = ""
+            scenarioPlanHasUnsavedChanges = false
+            return
+        }
+        let url = projectRoot.appendingPathComponent(scenario.plan)
+        guard let data = try? Data(contentsOf: url) else {
+            scenarioPlanText = ""
+            scenarioPlanHasUnsavedChanges = false
+            return
+        }
+        if let plan = try? SwanSDKFrameInputPlan.decode(data),
+           let formatted = try? plan.formattedJSON() {
+            scenarioPlanText = formatted
+        } else {
+            scenarioPlanText = String(decoding: data, as: UTF8.self)
+        }
+        scenarioPlanHasUnsavedChanges = false
+    }
+
+    func updateScenarioPlan(_ text: String) {
+        scenarioPlanText = text
+        scenarioPlanHasUnsavedChanges = true
+    }
+
+    func saveScenarioPlan() throws {
+        guard let projectRoot, let scenario = selectedScenario else {
+            throw SwanSDKIntegrationError.malformedContract(
+                "Select a generated scenario before saving a plan."
+            )
+        }
+        let plan = try SwanSDKFrameInputPlan.decode(Data(scenarioPlanText.utf8))
+        let text = try plan.formattedJSON()
+        let url = projectRoot.appendingPathComponent(scenario.plan)
+        try Data(text.utf8).write(to: url, options: .atomic)
+        scenarioPlanText = text
+        scenarioPlanHasUnsavedChanges = false
+        currentEvidenceReplayWasVerified = false
+    }
+
+    func runDoctor() {
+        runStructuredCommand(
+            .doctor(manifest: manifestURL),
+            action: selectedAction,
+            title: "Doctor"
+        )
+    }
+
+    func runOptimizer() {
+        guard let manifestURL else {
+            issue = "Open a SwanSong SDK project first."
+            return
+        }
+        let asset = optimizerAssetID.trimmingCharacters(in: .whitespacesAndNewlines)
+        runStructuredCommand(
+            .optimize(manifest: manifestURL, assetID: asset.isEmpty ? nil : asset),
+            action: .assets,
+            title: "Asset Optimizer"
+        ) { [weak self] in self?.reloadGeneratedArtifacts() }
+    }
+
+    func runFuzzer() {
+        guard let manifestURL else {
+            issue = "Open a SwanSong SDK project first."
+            return
+        }
+        runStructuredCommand(
+            .fuzz(
+                manifest: manifestURL,
+                seed: fuzzSeed,
+                cases: max(1, fuzzCases),
+                frames: max(3, fuzzFrames)
+            ),
+            action: .test,
+            title: "Deterministic Fuzzer"
+        )
+    }
+
+    func runLaboratory() {
+        guard let manifestURL else {
+            issue = "Open a SwanSong SDK project first."
+            return
+        }
+        let seedText = laboratoryRTCSeed.trimmingCharacters(in: .whitespacesAndNewlines)
+        let seed: Int64?
+        if seedText.isEmpty {
+            seed = nil
+        } else if let parsed = Int64(seedText) {
+            seed = parsed
+        } else {
+            issue = "RTC seed must be a Unix timestamp integer."
+            return
+        }
+        runStructuredCommand(
+            .laboratory(manifest: manifestURL, testCase: laboratoryCase, rtcSeed: seed),
+            action: .test,
+            title: "Save & RTC Lab"
+        )
+    }
+
+    func runScenarioRecorder() {
+        guard let manifestURL, let projectRoot, let scenario = selectedScenario else {
+            issue = "Generate assets and select a scenario first."
+            return
+        }
+        guard let inputLog = scenarioInputLogURL else {
+            issue = "Choose an exported SwanSong input/frame log first."
+            return
+        }
+        let output = projectRoot.appendingPathComponent(scenario.plan)
+        runStructuredCommand(
+            .scenarioRecord(
+                manifest: manifestURL,
+                inputLog: inputLog,
+                outputPlan: output
+            ),
+            action: .play,
+            title: "Scenario Recorder"
+        ) { [weak self] in
+            self?.reloadScenarioPlan()
+            self?.currentEvidenceReplayWasVerified = false
+        }
+    }
+
+    func runDev(once: Bool) {
+        guard let manifestURL else {
+            issue = "Open a SwanSong SDK project first."
+            return
+        }
+        runStructuredCommand(
+            .dev(manifest: manifestURL, scenario: selectedScenarioID, once: once),
+            action: .play,
+            title: once ? "Dev Cycle" : "Dev Watch"
+        ) { [weak self] in self?.reloadGeneratedArtifacts() }
+    }
+
+    func runProfiler() {
+        guard let manifestURL else {
+            issue = "Open a SwanSong SDK project first."
+            return
+        }
+        runStructuredCommand(
+            .profile(manifest: manifestURL, trace: profileTraceURL),
+            action: .profile,
+            title: "Sprite & VRAM Profiler"
+        )
+    }
+
+    func runEvidenceDiff() {
+        guard let before = evidenceBeforeURL, let after = evidenceAfterURL else {
+            issue = "Choose both SwanSong evidence folders first."
+            return
+        }
+        runStructuredCommand(
+            .evidenceDiff(before: before, after: after),
+            action: .evidence,
+            title: "Evidence Diff"
+        )
+    }
+
+    func runRelease() {
+        guard let manifestURL else {
+            issue = "Open a SwanSong SDK project first."
+            return
+        }
+        runStructuredCommand(
+            .release(
+                manifest: manifestURL,
+                output: releaseOutputURL,
+                notes: releaseNotesURL
+            ),
+            action: .release,
+            title: "Release"
+        ) { [weak self] in self?.reloadGeneratedArtifacts() }
     }
 
     private func runProjectCommand(_ action: SwanSDKWorkspaceAction) {
@@ -249,14 +447,14 @@ final class SwanSDKWorkspaceModel {
                 return
             }
             command = .play(manifest: manifestURL, scenario: scenario.id)
-        case .report:
+        case .profile:
             command = .report(manifest: manifestURL)
-        case .newProject:
+        case .newProject, .evidence, .release:
             return
         }
         start(command, action: action) { [weak self] result in
             guard let self else { return }
-            if action == .report,
+            if action == .profile,
                let data = result.standardOutput.data(using: .utf8) {
                 self.resourceReport = try SwanSDKResourceReport.decode(data)
             }
@@ -268,9 +466,42 @@ final class SwanSDKWorkspaceModel {
         }
     }
 
+    private func runStructuredCommand(
+        _ command: SwanSDKCommand,
+        action: SwanSDKWorkspaceAction,
+        title: String,
+        onSuccess: (@MainActor () throws -> Void)? = nil
+    ) {
+        if manifestHasUnsavedChanges {
+            do { try saveManifest() }
+            catch {
+                issue = error.localizedDescription
+                return
+            }
+        }
+        start(
+            command,
+            action: action,
+            commandName: title,
+            processResultOnFailure: true
+        ) { [weak self] result in
+            guard let self, let schema = command.expectedJSONSchema else { return }
+            let report = try SwanSDKStructuredReport.decode(
+                Data(result.standardOutput.utf8),
+                expectedSchema: schema,
+                jsonLines: command.emitsJSONLines
+            )
+            self.structuredReport = report
+            self.structuredReportTitle = title
+            try onSuccess?()
+        }
+    }
+
     private func start(
         _ command: SwanSDKCommand,
         action: SwanSDKWorkspaceAction,
+        commandName: String? = nil,
+        processResultOnFailure: Bool = false,
         onSuccess: @escaping @MainActor (SwanSDKCommandResult) throws -> Void
     ) {
         guard let cli else {
@@ -280,6 +511,7 @@ final class SwanSDKWorkspaceModel {
         do {
             let commandID = try stateMachine.start(action)
             issue = nil
+            activeCommandName = commandName ?? action.rawValue
             diagnosticsAreVisible = true
             let invocation = cli.invocation(for: command)
             appendDiagnostic(
@@ -295,13 +527,18 @@ final class SwanSDKWorkspaceModel {
                     }
                     let result = try await runner.run(
                         invocation,
-                        inheritedEnvironment: inherited
+                        inheritedEnvironment: inherited,
+                        onOutput: { [weak self] _, text in
+                            Task { @MainActor [weak self] in
+                                self?.appendDiagnostic(text)
+                            }
+                        }
                     )
-                    appendDiagnostic(result.diagnostics)
                     try stateMachine.finish(id: commandID, succeeded: result.succeeded)
-                    if result.succeeded {
+                    if result.succeeded || processResultOnFailure {
                         try onSuccess(result)
-                    } else {
+                    }
+                    if !result.succeeded {
                         let detail = result.standardError
                             .trimmingCharacters(in: .whitespacesAndNewlines)
                         issue = SwanSDKIntegrationError.commandFailed(
@@ -317,6 +554,7 @@ final class SwanSDKWorkspaceModel {
                     issue = error.localizedDescription
                     appendDiagnostic("\(error.localizedDescription)\n")
                 }
+                activeCommandName = nil
                 commandTask = nil
             }
         } catch {
@@ -327,6 +565,5 @@ final class SwanSDKWorkspaceModel {
     private func appendDiagnostic(_ text: String) {
         guard !text.isEmpty else { return }
         diagnostics += text
-        if !diagnostics.hasSuffix("\n") { diagnostics += "\n" }
     }
 }

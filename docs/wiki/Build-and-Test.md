@@ -2,7 +2,8 @@
 
 This page is the technical command reference for contributors and release
 operators. Product documentation lives in [[Playing and Library]],
-[[Translation Lab]], [[Game Studio]], and [[Analogue Pocket SD Setup]].
+[[Translation Lab]], [[SwanSong Studio|Game Studio]], and
+[[Analogue Pocket SD Setup]].
 
 ## Requirements
 
@@ -97,12 +98,15 @@ selected range, an outside consumer, source-free public output, and intact
 private artifact validation. Inspection-only stub runs skip that one live test;
 the separate live-engine invocation is mandatory for release evidence.
 
-## Game Studio and SDK boundary
+## SwanSong Studio and SDK boundary
 
-Game Studio's Swift tests cover exact `swan` arguments, checkout and bundled
+SwanSong Studio's Swift tests cover exact `swan` arguments—including Doctor,
+Optimizer, Fuzzer, Save/RTC Lab, Scenario Recorder, Dev, Profile, Evidence
+Diff, and Release—plus checkout and bundled
 runtime resolution, process environment/result capture, stable Play Contract
-and resource-report decoding, evidence/WAV intake, package/schema/toolchain
-identity, and command overlap guards.
+and resource-report decoding, structured JSON/JSONL schema rejection,
+evidence/WAV and editable-plan intake, package/schema/toolchain identity,
+streamed output, cancellation, and command overlap guards.
 
 For the 0.4 developer preview, select a local `swansong-sdk` checkout and run a
 real smoke project through:

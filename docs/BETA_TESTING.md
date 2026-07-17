@@ -7,10 +7,11 @@ a public report.
 
 ## What this beta is testing
 
-- **Game Studio:** choose a local SwanSong SDK checkout, create all three recipe
-  types, edit `swan.toml`, and run Assets, Build, Test, Play, and Report. Confirm
-  the app uses the exact SDK commands, retains diagnostics, and shows generated
-  controls, assets, budgets, evidence, and resolved tool identities.
+- **SwanSong Studio:** choose a local SwanSong SDK checkout, create all three
+  recipe types, edit `swan.toml`, and exercise New, Assets, Build, Test, Play,
+  Profile, Evidence, and Release. Confirm Doctor, Optimizer, Fuzzer, Save/RTC
+  Lab, Scenario Recorder, Dev, profiler, evidence-diff, and release all use the
+  exact SDK commands, retain diagnostics, and reject unexpected result schemas.
 - **Upstream source provenance:** probe a small native rectangle and confirm the
   private artifact contains exact or conservative cartridge ranges, selected
   display chains, and outside consumers while MCP returns only hashes, counts,
@@ -52,12 +53,14 @@ a public report.
 
 ## Guardrails to test
 
-- Game Studio must pass the exact destination to `swan new`, must not fork SDK
+- SwanSong Studio must pass the exact destination to `swan new`, must not fork SDK
   manifest/build rules inside Desktop, must save manifest changes before a
   project command, and must show rather than discard compiler/generator output.
   Previously saved evidence must not claim a replay comparison that was not
-  persisted. The developer preview must disclose that its tagged SDK, Python
-  runtime, and deterministic play executor are not yet bundled.
+  persisted. Scenario Recorder must import only an exported input log and must
+  not be described as live recording. Structured SDK tools must fail closed on
+  unknown schemas. The developer preview must disclose that its tagged SDK,
+  Python runtime, and deterministic play executor are not yet bundled.
 - `probe-rectangle-source` must reject invalid, out-of-raster, or oversized
   rectangles. Exact and candidate cartridge ranges, emulated addresses,
   display coordinates, per-display chains, and outside consumers must remain

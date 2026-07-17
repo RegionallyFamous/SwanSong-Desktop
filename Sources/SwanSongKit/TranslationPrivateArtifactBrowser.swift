@@ -362,17 +362,44 @@ public struct TranslationPrivateArtifactStore: Sendable {
             TranslationDisplaySourceProbeDetails.self,
             from: detailsData
         )
-        guard details.schema == TranslationDisplaySourceProbeDetails.currentSchema else {
+        let isAdaptive = details.schema == TranslationDisplaySourceProbeDetails.currentSchema
+        guard isAdaptive
+                || details.schema == TranslationDisplaySourceProbeDetails.legacySchema else {
             throw TranslationLabError.invalidProject(
                 "the upstream display-source probe schema is unsupported"
             )
         }
         try requireDigest(details.plan, file: "plan.json", in: directory, project: project)
+        let planData = try read(
+            "plan.json",
+            in: directory,
+            maximumBytes: 1_048_576,
+            project: project
+        )
         let expectedSamples = Int(details.rectangle.width) * Int(details.rectangle.height)
-        guard expectedSamples > 0, expectedSamples == details.ownerSamples.count,
+        guard expectedSamples > 0,
+              expectedSamples <= 4_096,
+              expectedSamples == details.ownerSamples.count,
+              details.completeness.traceRecordLimit > 0,
+              details.completeness.traceRecordLimit
+                <= TranslationDisplaySourcePartitioner.traceRecordLimit,
               details.traces.count <= details.completeness.traceRecordLimit else {
             throw TranslationLabError.invalidProject(
                 "the upstream display-source probe is incomplete or unbounded"
+            )
+        }
+        let left = UInt32(details.rectangle.x)
+        let top = UInt32(details.rectangle.y)
+        let right = left + UInt32(details.rectangle.width)
+        let bottom = top + UInt32(details.rectangle.height)
+        let ownerCoordinates = Set(details.ownerSamples.map { "\($0.x):\($0.y)" })
+        guard ownerCoordinates.count == expectedSamples,
+              details.ownerSamples.allSatisfy({ sample in
+                  UInt32(sample.x) >= left && UInt32(sample.x) < right
+                      && UInt32(sample.y) >= top && UInt32(sample.y) < bottom
+              }) else {
+            throw TranslationLabError.invalidProject(
+                "the upstream display-owner grid is not exact and bounded"
             )
         }
         let unknownCount = details.traces.filter(\.hasUnknownDependency).count
@@ -388,17 +415,13 @@ public struct TranslationPrivateArtifactStore: Sendable {
                 "the upstream source completeness summary does not match its traces"
             )
         }
-        let left = UInt32(details.rectangle.x)
-        let top = UInt32(details.rectangle.y)
-        let right = left + UInt32(details.rectangle.width)
-        let bottom = top + UInt32(details.rectangle.height)
         let romBytes = UInt64(details.rom.byteCount)
         for trace in details.traces {
             let inside = UInt32(trace.x) >= left && UInt32(trace.x) < right
                 && UInt32(trace.y) >= top && UInt32(trace.y) < bottom
             guard trace.sourceByteCount > 0,
                   trace.sourceAddress <= 0x100ff,
-                  (trace.scope == .selected ? inside : !inside),
+                  (trace.scope == .selected ? inside : (isAdaptive || !inside)),
                   !(trace.hasExactRange && (
                     trace.hasUnknownDependency
                         || trace.rangeSetOverflowed
@@ -423,13 +446,7 @@ public struct TranslationPrivateArtifactStore: Sendable {
                 }
             }
         }
-        let expectedCoverage = Set(details.ownerSamples.flatMap { sample -> [String] in
-            var components: [EngineDisplaySourceComponent] = []
-            if sample.sourceKind == .tilemap { components.append(.mapCell) }
-            if sample.sourceKind != .none { components.append(.raster) }
-            components.append(.palette)
-            return components.map { "\(sample.x):\(sample.y):\($0.rawValue)" }
-        })
+        let expectedCoverage = Set(details.ownerSamples.flatMap(sourceCoverageKeys))
         let actualCoverage = Set(details.traces.filter {
             $0.scope == .selected
         }.map { "\($0.x):\($0.y):\($0.component.rawValue)" })
@@ -438,16 +455,93 @@ public struct TranslationPrivateArtifactStore: Sendable {
                 "the upstream source probe does not cover every selected display source"
             )
         }
-        let expectedRanges = normalizedSourceRanges(details.traces.filter {
+        let expectedRanges = try normalizedSourceRanges(details.traces.filter {
             $0.scope == .selected && $0.hasExactRange && $0.cartridgeLength > 0
         })
-        let expectedCandidateRanges = normalizedSourceRanges(details.traces.filter {
+        let expectedCandidateRanges = try normalizedSourceRanges(details.traces.filter {
             $0.scope == .selected && $0.cartridgeLength > 0
         })
         guard expectedRanges == details.cartridgeRanges,
               expectedCandidateRanges == details.candidateCartridgeRanges else {
             throw TranslationLabError.invalidProject(
                 "the upstream source probe cartridge ranges are not normalized from its traces"
+            )
+        }
+        if isAdaptive {
+            guard let projectDigest = details.project,
+                  let partition = details.partition else {
+                throw TranslationLabError.invalidProject(
+                    "the adaptive upstream source probe is missing bound project or partition evidence"
+                )
+            }
+            let currentProjectData = try readProjectFile(
+                project.rootURL.appendingPathComponent("project.json", isDirectory: false),
+                maximumBytes: 1_048_576,
+                project: project
+            )
+            guard digest(currentProjectData) == projectDigest else {
+                throw TranslationLabError.invalidProject(
+                    "project.json changed after the adaptive upstream source probe"
+                )
+            }
+            let frameAfterProbe = details.planFrameIndex.addingReportingOverflow(1)
+            guard !frameAfterProbe.overflow,
+                  partition.executedFrames == frameAfterProbe.partialValue else {
+                throw TranslationLabError.invalidProject(
+                    "the adaptive upstream source probe has an invalid frame bound"
+                )
+            }
+            let plan = try decoder.decode(TranslationFrameInputPlan.self, from: planData)
+            try plan.validate(for: project.routeHardwareModel)
+            guard details.planFrameIndex < plan.totalFrames else {
+                throw TranslationLabError.invalidProject(
+                    "the adaptive upstream source probe frame is outside its bound plan"
+                )
+            }
+            let romURL = try project.romURL(for: details.role)
+            let currentROM = try readProjectFile(
+                romURL,
+                maximumBytes: 16 * 1_024 * 1_024,
+                project: project
+            )
+            let currentMetadata = try EngineSession.inspect(rom: currentROM)
+            let hardware = try project.routeHardwareModel
+            let currentEngine = try EngineSession(
+                rtcMode: .deterministic(
+                    seedUnixSeconds: TranslationRouteRTCContext.proofSeedUnixSeconds
+                ),
+                hardwareModel: hardware.engineHardwareModel
+            )
+            let currentEngineIdentity = TranslationRouteEngineIdentity(
+                backend: currentEngine.backendName,
+                buildID: currentEngine.buildID
+            )
+            let currentEngineSHA256 = TranslationEvidenceStore.sha256(
+                try encoded(currentEngineIdentity)
+            )
+            let currentRTCSHA256 = TranslationEvidenceStore.sha256(
+                try encoded(TranslationRouteRTCContext.proof)
+            )
+            let currentPersistenceSHA256 = TranslationEvidenceStore.sha256(
+                Data(TranslationRouteStartContext.isolatedPersistencePolicy.utf8)
+            )
+            guard digest(currentROM) == details.rom,
+                  currentMetadata.computedChecksum == details.romFooterChecksum,
+                  details.engine == currentEngineIdentity,
+                  details.engineSHA256 == currentEngineSHA256,
+                  details.rtc == .proof,
+                  details.rtcSHA256 == currentRTCSHA256,
+                  details.persistencePolicy
+                    == TranslationRouteStartContext.isolatedPersistencePolicy,
+                  details.persistenceSHA256 == currentPersistenceSHA256 else {
+                throw TranslationLabError.invalidProject(
+                    "the adaptive upstream source probe no longer matches its ROM or deterministic runtime"
+                )
+            }
+            try validateAdaptiveSourceProbe(details, partition: partition)
+        } else if details.project != nil || details.partition != nil {
+            throw TranslationLabError.invalidProject(
+                "a legacy upstream source probe contains partial adaptive evidence"
             )
         }
         return try summary(
@@ -462,12 +556,259 @@ public struct TranslationPrivateArtifactStore: Sendable {
                 "sourceRanges": details.cartridgeRanges.count,
                 "candidateRanges": details.candidateCartridgeRanges.count,
                 "traces": details.traces.count,
-                "outsideConsumers": Set(details.traces.filter {
-                    $0.scope == .outsideConsumer
+                "outsideConsumers": Set(details.traces.filter { trace in
+                    guard trace.scope == .outsideConsumer else { return false }
+                    return !isAdaptive || !contains(details.rectangle, x: trace.x, y: trace.y)
                 }.map { "\($0.x):\($0.y):\($0.component.rawValue)" }).count,
             ],
             project: project
         )
+    }
+
+    private func validateAdaptiveSourceProbe(
+        _ details: TranslationDisplaySourceProbeDetails,
+        partition: TranslationDisplaySourcePartition
+    ) throws {
+        guard partition.algorithm == TranslationDisplaySourcePartition.currentAlgorithm,
+              partition.atomicCellWidth == 8,
+              partition.atomicCellHeight == 8,
+              partition.maximumDepth == 5,
+              partition.terminalLeafLimit == 32,
+              partition.attemptedNodeLimit == 64,
+              partition.normalizedRangeLimit == 256,
+              !partition.leaves.isEmpty,
+              partition.leaves.count <= partition.terminalLeafLimit,
+              partition.attemptCount <= partition.attemptedNodeLimit,
+              partition.splitCount == partition.leaves.count - 1,
+              partition.attemptCount == partition.leaves.count + partition.splitCount,
+              partition.maximumObservedDepth <= partition.maximumDepth,
+              partition.nativeFrameNumberBeforeQueries == details.nativeFrameNumber,
+              partition.nativeFrameNumberAfterQueries == details.nativeFrameNumber,
+              partition.nativeFrameSHA256BeforeQueries == details.nativeFrameSHA256,
+              partition.nativeFrameSHA256AfterQueries == details.nativeFrameSHA256,
+              details.cartridgeRanges.count <= partition.normalizedRangeLimit,
+              details.cartridgeRanges == details.candidateCartridgeRanges,
+              details.completeness.isComplete else {
+            throw TranslationLabError.invalidProject(
+                "the adaptive upstream source partition identity or bounds are invalid"
+            )
+        }
+        let treeStatistics = try TranslationDisplaySourcePartitioner.validateTerminalTree(
+            root: details.rectangle,
+            terminals: partition.leaves.map {
+                (rectangle: $0.rectangle, depth: $0.depth)
+            }
+        )
+        guard treeStatistics.attemptCount == partition.attemptCount,
+              treeStatistics.splitCount == partition.splitCount,
+              treeStatistics.maximumObservedDepth == partition.maximumObservedDepth else {
+            throw TranslationLabError.invalidProject(
+                "the adaptive upstream source partition is not the recorded deterministic tree"
+            )
+        }
+
+        let canonicalTraces = details.traces.map(canonicalSourceTrace)
+        guard canonicalTraces == canonicalTraces.sorted(),
+              Set(canonicalTraces).count == canonicalTraces.count else {
+            throw TranslationLabError.invalidProject(
+                "the adaptive upstream source traces are not canonical and unique"
+            )
+        }
+
+        let selectedIndexSet = Set(details.traces.indices.filter {
+            details.traces[$0].scope == .selected
+        })
+        let consumerIndexSet = Set(details.traces.indices.filter {
+            details.traces[$0].scope == .outsideConsumer
+        })
+        var groupedSelected = Set<Int>()
+        var groupedConsumers = Set<Int>()
+        for leaf in partition.leaves {
+            guard leaf.depth >= 0,
+                  leaf.depth <= partition.maximumDepth,
+                  leaf.selectedTraceCount == leaf.selectedTraceIndices.count,
+                  leaf.consumerTraceCount == leaf.consumerTraceIndices.count,
+                  Set(leaf.selectedTraceIndices).count == leaf.selectedTraceIndices.count,
+                  Set(leaf.consumerTraceIndices).count == leaf.consumerTraceIndices.count else {
+                throw TranslationLabError.invalidProject(
+                    "an adaptive upstream source leaf has invalid trace grouping"
+                )
+            }
+            let selected = try leaf.selectedTraceIndices.map { index -> EngineDisplaySourceTrace in
+                guard details.traces.indices.contains(index) else {
+                    throw TranslationLabError.invalidProject(
+                        "an adaptive upstream source leaf references an invalid selected trace"
+                    )
+                }
+                let trace = details.traces[index]
+                guard trace.scope == .selected,
+                      contains(leaf.rectangle, x: trace.x, y: trace.y) else {
+                    throw TranslationLabError.invalidProject(
+                        "an adaptive upstream selected trace escaped its leaf"
+                    )
+                }
+                groupedSelected.insert(index)
+                return trace
+            }
+            let consumers = try leaf.consumerTraceIndices.map { index -> EngineDisplaySourceTrace in
+                guard details.traces.indices.contains(index) else {
+                    throw TranslationLabError.invalidProject(
+                        "an adaptive upstream source leaf references an invalid consumer trace"
+                    )
+                }
+                let trace = details.traces[index]
+                guard trace.scope == .outsideConsumer,
+                      !contains(leaf.rectangle, x: trace.x, y: trace.y) else {
+                    throw TranslationLabError.invalidProject(
+                        "an adaptive upstream consumer trace does not leave its leaf"
+                    )
+                }
+                groupedConsumers.insert(index)
+                return trace
+            }
+            let expectedCoverage = Set(details.ownerSamples.filter {
+                contains(leaf.rectangle, x: $0.x, y: $0.y)
+            }.flatMap(sourceCoverageKeys))
+            let actualCoverage = Set(selected.map(sourceCoverageKey))
+            let exactRanges = try normalizedSourceRanges(selected.filter {
+                $0.hasExactRange && $0.cartridgeLength > 0
+            })
+            let candidateRanges = try normalizedSourceRanges(selected.filter {
+                $0.cartridgeLength > 0
+            })
+            guard expectedCoverage == actualCoverage,
+                  selected.allSatisfy(\.hasExactRange),
+                  exactRanges == candidateRanges,
+                  exactRanges.count <= 8,
+                  consumers.allSatisfy({ consumer in
+                      consumer.hasExactRange
+                          && consumer.cartridgeLength > 0
+                          && selected.contains(where: {
+                              rangesOverlap($0, consumer)
+                          })
+                  }) else {
+                throw TranslationLabError.invalidProject(
+                    "an adaptive upstream source leaf has incomplete coverage or lineage"
+                )
+            }
+        }
+        guard groupedSelected == selectedIndexSet,
+              groupedConsumers == consumerIndexSet,
+              details.traces.contains(where: {
+                  $0.scope == .selected && $0.component == .raster
+              }) else {
+            throw TranslationLabError.invalidProject(
+                "the adaptive upstream source partition lost trace-level leaf grouping"
+            )
+        }
+
+        let withinRoot = details.traces.filter {
+            $0.scope == .outsideConsumer
+                && contains(details.rectangle, x: $0.x, y: $0.y)
+        }
+        let outsideRoot = details.traces.filter {
+            $0.scope == .outsideConsumer
+                && !contains(details.rectangle, x: $0.x, y: $0.y)
+        }
+        let selectedLineages = Set(details.traces.filter {
+            $0.scope == .selected
+        }.map(canonicalSourceLineage))
+        guard partition.withinRootConsumerTraceCount == withinRoot.count,
+              partition.withinRootConsumersSHA256
+                == hashCanonicalSourceTraces(withinRoot),
+              partition.outsideRootSameFrameConsumerTraceCount == outsideRoot.count,
+              partition.outsideRootSameFrameConsumersSHA256
+                == hashCanonicalSourceTraces(outsideRoot),
+              withinRoot.allSatisfy({
+                  selectedLineages.contains(canonicalSourceLineage($0))
+              }) else {
+            throw TranslationLabError.invalidProject(
+                "the adaptive upstream consumer partition does not match its traces"
+            )
+        }
+    }
+
+    private func sourceCoverageKeys(
+        _ sample: EngineDisplayOwnerSample
+    ) -> [String] {
+        engineDisplaySourceComponents(for: sample).map {
+            "\(sample.x):\(sample.y):\($0.rawValue)"
+        }
+    }
+
+    private func sourceCoverageKey(_ trace: EngineDisplaySourceTrace) -> String {
+        "\(trace.x):\(trace.y):\(trace.component.rawValue)"
+    }
+
+    private func contains(
+        _ rectangle: EngineDisplayRectangle,
+        x: UInt16,
+        y: UInt16
+    ) -> Bool {
+        UInt32(x) >= UInt32(rectangle.x)
+            && UInt32(x) < UInt32(rectangle.x) + UInt32(rectangle.width)
+            && UInt32(y) >= UInt32(rectangle.y)
+            && UInt32(y) < UInt32(rectangle.y) + UInt32(rectangle.height)
+    }
+
+    private func hashCanonicalSourceTraces(
+        _ traces: [EngineDisplaySourceTrace]
+    ) -> String {
+        TranslationEvidenceStore.sha256(Data(
+            traces.map(canonicalSourceTrace).sorted().joined(separator: "\n").utf8
+        ))
+    }
+
+    private func canonicalSourceTrace(_ trace: EngineDisplaySourceTrace) -> String {
+        String(
+            format: "%04x:%04x:%@:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d",
+            trace.x,
+            trace.y,
+            trace.scope.rawValue,
+            trace.component.rawValue,
+            trace.sourceAddress,
+            trace.sourceByteCount,
+            trace.minimumInstructionHops,
+            trace.maximumInstructionHops,
+            trace.cartridgeOffset,
+            trace.cartridgeLength,
+            trace.hasExactRange ? 1 : 0,
+            trace.isTransformed ? 1 : 0,
+            trace.hasUnknownDependency ? 1 : 0,
+            trace.rangeSetOverflowed ? 1 : 0,
+            trace.usesConservativeDataflow ? 1 : 0
+        )
+    }
+
+    private func canonicalSourceLineage(_ trace: EngineDisplaySourceTrace) -> String {
+        String(
+            format: "%04x:%04x:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d",
+            trace.x,
+            trace.y,
+            trace.component.rawValue,
+            trace.sourceAddress,
+            trace.sourceByteCount,
+            trace.minimumInstructionHops,
+            trace.maximumInstructionHops,
+            trace.cartridgeOffset,
+            trace.cartridgeLength,
+            trace.hasExactRange ? 1 : 0,
+            trace.isTransformed ? 1 : 0,
+            trace.hasUnknownDependency ? 1 : 0,
+            trace.rangeSetOverflowed ? 1 : 0,
+            trace.usesConservativeDataflow ? 1 : 0
+        )
+    }
+
+    private func rangesOverlap(
+        _ lhs: EngineDisplaySourceTrace,
+        _ rhs: EngineDisplaySourceTrace
+    ) -> Bool {
+        guard lhs.cartridgeLength > 0, rhs.cartridgeLength > 0 else { return false }
+        let lhsUpper = UInt64(lhs.cartridgeOffset) + UInt64(lhs.cartridgeLength)
+        let rhsUpper = UInt64(rhs.cartridgeOffset) + UInt64(rhs.cartridgeLength)
+        return UInt64(lhs.cartridgeOffset) < rhsUpper
+            && UInt64(rhs.cartridgeOffset) < lhsUpper
     }
 
     private func summary(
@@ -498,11 +839,17 @@ public struct TranslationPrivateArtifactStore: Sendable {
 
     private func normalizedSourceRanges(
         _ traces: [EngineDisplaySourceTrace]
-    ) -> [TranslationCartridgeSourceRange] {
-        let sorted = traces.map {
-            TranslationCartridgeSourceRange(
-                lowerBound: $0.cartridgeOffset,
-                upperBound: $0.cartridgeOffset + $0.cartridgeLength
+    ) throws -> [TranslationCartridgeSourceRange] {
+        let sorted = try traces.map { trace -> TranslationCartridgeSourceRange in
+            let upper = trace.cartridgeOffset.addingReportingOverflow(trace.cartridgeLength)
+            guard !upper.overflow else {
+                throw TranslationLabError.invalidProject(
+                    "an upstream source trace has an overflowing cartridge range"
+                )
+            }
+            return TranslationCartridgeSourceRange(
+                lowerBound: trace.cartridgeOffset,
+                upperBound: upper.partialValue
             )
         }.sorted {
             ($0.lowerBound, $0.upperBound) < ($1.lowerBound, $1.upperBound)
@@ -520,6 +867,42 @@ public struct TranslationPrivateArtifactStore: Sendable {
             )
         }
         return result
+    }
+
+    private func readProjectFile(
+        _ url: URL,
+        maximumBytes: Int,
+        project: TranslationProject
+    ) throws -> Data {
+        let standardized = url.standardizedFileURL
+        let values = try standardized.resourceValues(forKeys: [
+            .isRegularFileKey,
+            .isSymbolicLinkKey,
+            .fileSizeKey,
+        ])
+        guard project.contains(standardized),
+              standardized.resolvingSymlinksInPath().standardizedFileURL == standardized,
+              values.isRegularFile == true,
+              values.isSymbolicLink != true,
+              let size = values.fileSize,
+              size > 0,
+              size <= maximumBytes else {
+            throw TranslationLabError.unsafePath(standardized.path)
+        }
+        let data = try Data(contentsOf: standardized, options: [.mappedIfSafe])
+        guard data.count == size else {
+            throw TranslationLabError.invalidProject(
+                "a bound project file changed while SwanSong read it"
+            )
+        }
+        return data
+    }
+
+    private func encoded<T: Encodable>(_ value: T) throws -> Data {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+        encoder.dateEncodingStrategy = .iso8601
+        return try encoder.encode(value)
     }
 
     private var decoder: JSONDecoder {

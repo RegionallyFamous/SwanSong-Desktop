@@ -42,9 +42,13 @@ _Sidebar.md'
 
   find "$SOURCE_DIR" -maxdepth 1 -type f -name '*.md' -print | sort |
     while IFS= read -r page; do
-      { grep -Eo '\[\[[^]|]+' "$page" || true; } |
-        sed 's/^\[\[//' |
-        while IFS= read -r title; do
+      { grep -Eo '\[\[[^]]+\]\]' "$page" || true; } |
+        sed -e 's/^\[\[//' -e 's/\]\]$//' |
+        while IFS= read -r link; do
+          case "$link" in
+            *'|'*) title=${link##*|} ;;
+            *) title=$link ;;
+          esac
           slug=$(printf '%s' "$title" | tr ' ' '-')
           [ -f "$SOURCE_DIR/$slug.md" ] ||
             fail "$(basename "$page") links to missing wiki page: $title"

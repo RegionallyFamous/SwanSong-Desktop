@@ -3,7 +3,7 @@
 - [[Home]]
 - [[Playing and Library]]
 - [[Translation Lab]]
-- [[Game Studio]]
+- [[SwanSong Studio|Game-Studio]]
 - [[Local MCP and Automation]]
 - [[Analogue Pocket SD Setup]]
 - [[Gamepads]]

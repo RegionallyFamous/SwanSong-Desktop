@@ -39,7 +39,7 @@ struct SwanSDKWorkspaceView: View {
             diagnostics
         }
         .background(SwanTheme.libraryBackground.ignoresSafeArea())
-        .navigationTitle("Game Studio")
+        .navigationTitle("SwanSong Studio")
         .toolbar {
             ToolbarItemGroup {
                 Button("Choose SDK…", systemImage: "shippingbox") {
@@ -57,7 +57,7 @@ struct SwanSDKWorkspaceView: View {
             }
         }
         .alert(
-            "Game Studio",
+            "SwanSong Studio",
             isPresented: Binding(
                 get: { workspace.issue != nil },
                 set: { if !$0 { workspace.issue = nil } }
@@ -69,6 +69,7 @@ struct SwanSDKWorkspaceView: View {
         }
         .onChange(of: workspace.selectedScenarioID) { _, _ in
             workspace.currentEvidenceReplayWasVerified = false
+            workspace.reloadScenarioPlan()
             workspace.reloadEvidence()
             audioPlayer.stop()
         }
@@ -81,7 +82,7 @@ struct SwanSDKWorkspaceView: View {
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(SwanTheme.cyan)
             VStack(alignment: .leading, spacing: 3) {
-                Text(workspace.playContract?.game.title ?? "SwanSong Game Studio")
+                Text(workspace.playContract?.game.title ?? "SwanSong Studio")
                     .font(.title2.bold())
                 Text(workspace.projectRoot?.path ?? workspace.resolvedSDKDescription)
                     .font(.caption)
@@ -94,7 +95,7 @@ struct SwanSDKWorkspaceView: View {
             if workspace.isRunning {
                 ProgressView()
                     .controlSize(.small)
-                Text("\(workspace.activeAction?.rawValue ?? "Working")…")
+                Text("\(workspace.activeCommandName ?? workspace.activeAction?.rawValue ?? "Working")…")
                     .font(.callout.weight(.medium))
                 Button("Cancel", role: .cancel) { workspace.cancel() }
             } else if workspace.projectRoot != nil {
@@ -108,7 +109,7 @@ struct SwanSDKWorkspaceView: View {
     }
 
     private var actionPicker: some View {
-        Picker("Game Studio action", selection: $workspace.selectedAction) {
+        Picker("SwanSong Studio action", selection: $workspace.selectedAction) {
             ForEach(SwanSDKWorkspaceAction.allCases) { action in
                 Label(action.rawValue, systemImage: action.symbol)
                     .tag(action)
@@ -129,7 +130,9 @@ struct SwanSDKWorkspaceView: View {
         case .build: build
         case .test: test
         case .play: play
-        case .report: report
+        case .profile: profile
+        case .evidence: evidence
+        case .release: release
         }
     }
 
@@ -149,15 +152,21 @@ struct SwanSDKWorkspaceView: View {
     }
 
     private var projectSetup: some View {
-        ContentUnavailableView {
-            Label("Open a Game Project", systemImage: "folder.badge.plus")
-        } description: {
-            Text("Open a folder containing swan.toml, or start with New.")
-        } actions: {
-            Button("Open Project…", action: chooseProject)
-                .buttonStyle(.borderedProminent)
-            Button("Create New") { workspace.selectedAction = .newProject }
-                .buttonStyle(.bordered)
+        VStack(spacing: 16) {
+            ContentUnavailableView {
+                Label("Open a Game Project", systemImage: "folder.badge.plus")
+            } description: {
+                Text("Open a folder containing swan.toml, or start with New.")
+            } actions: {
+                Button("Open Project…", action: chooseProject)
+                    .buttonStyle(.borderedProminent)
+                Button("Create New") { workspace.selectedAction = .newProject }
+                    .buttonStyle(.bordered)
+                Button("Run Doctor") { workspace.runDoctor() }
+                    .buttonStyle(.bordered)
+                    .disabled(workspace.isRunning)
+            }
+            structuredReportCard(ifTitle: "Doctor")
         }
         .frame(maxWidth: 560)
     }
@@ -287,6 +296,25 @@ struct SwanSDKWorkspaceView: View {
                 if let resourceReport = workspace.resourceReport {
                     assetPreview(resourceReport)
                 }
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Asset Optimizer", systemImage: "wand.and.stars")
+                            .font(.headline)
+                        Text(
+                            "Ask the SDK for deterministic asset recommendations. Leave the asset ID empty to inspect the whole project."
+                        )
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        HStack {
+                            TextField("Optional asset ID", text: $workspace.optimizerAssetID)
+                                .textFieldStyle(.roundedBorder)
+                            Button("Analyze") { workspace.runOptimizer() }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(workspace.isRunning)
+                        }
+                    }
+                }
+                structuredReportCard(ifTitle: "Asset Optimizer")
             }
             .padding(24)
             .frame(maxWidth: 1_080)
@@ -331,6 +359,45 @@ struct SwanSDKWorkspaceView: View {
                     symbol: "checkmark.diamond.fill",
                     button: "Run Tests"
                 )
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Deterministic Fuzzer", systemImage: "dice.fill")
+                            .font(.headline)
+                        Text("The SDK owns seeds, cases, frame bounds, and the structured result.")
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                        HStack {
+                            TextField("Seed", value: $workspace.fuzzSeed, format: .number)
+                            TextField("Cases", value: $workspace.fuzzCases, format: .number)
+                            TextField("Frames", value: $workspace.fuzzFrames, format: .number)
+                            Button("Run Fuzzer") { workspace.runFuzzer() }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(workspace.isRunning)
+                        }
+                        .textFieldStyle(.roundedBorder)
+                    }
+                }
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Save & RTC Lab", systemImage: "clock.badge.checkmark")
+                            .font(.headline)
+                        HStack {
+                            Picker("Case", selection: $workspace.laboratoryCase) {
+                                Text("All").tag("all")
+                                Text("Save").tag("save")
+                                Text("RTC").tag("rtc")
+                            }
+                            .pickerStyle(.segmented)
+                            TextField("Optional Unix RTC seed", text: $workspace.laboratoryRTCSeed)
+                                .textFieldStyle(.roundedBorder)
+                            Button("Run Lab") { workspace.runLaboratory() }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(workspace.isRunning)
+                        }
+                    }
+                }
+                structuredReportCard(ifTitle: "Deterministic Fuzzer")
+                structuredReportCard(ifTitle: "Save & RTC Lab")
             }
             .padding(24)
             .frame(maxWidth: 820)
@@ -342,8 +409,8 @@ struct SwanSDKWorkspaceView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 sectionHeading(
-                    "Play a deterministic contract",
-                    detail: "Every run starts from boot, uses SwanSong's native executor, captures PNG and WAV evidence, and verifies an identical second replay."
+                    "Play & iterate",
+                    detail: "Run checked-in scenarios through SwanSong, convert an actual-play input log into a plan, or let the SDK watch one development cycle."
                 )
                 if let contract = workspace.playContract, !contract.scenarios.isEmpty {
                     StudioCard {
@@ -372,9 +439,87 @@ struct SwanSDKWorkspaceView: View {
                         }
                     }
                     identityCard(title: "Evidence identity")
-                    if let evidence = workspace.evidence {
-                        evidenceReview(evidence)
+                    StudioCard {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Label("Dev", systemImage: "arrow.triangle.2.circlepath")
+                                .font(.headline)
+                            Text(
+                                "The SDK watches sources, rebuilds, tests, and optionally replays the selected scenario. Watch continues until Cancel."
+                            )
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                            HStack {
+                                Spacer()
+                                Button("Run One Cycle") { workspace.runDev(once: true) }
+                                Button("Start Watch") { workspace.runDev(once: false) }
+                                    .buttonStyle(.borderedProminent)
+                            }
+                            .disabled(workspace.isRunning)
+                        }
                     }
+                    StudioCard {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Label("Scenario Recorder", systemImage: "record.circle")
+                                .font(.headline)
+                            Text(
+                                "Choose an exported swan-song-input-frame-log-v2 from actual SwanSong play. The SDK converts it into the selected scenario plan. Studio does not claim to record live play here."
+                            )
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                            Text(workspace.scenarioInputLogURL?.path ?? "No input/frame log selected")
+                                .font(.caption.monospaced())
+                                .foregroundStyle(.secondary)
+                                .lineLimit(2)
+                                .textSelection(.enabled)
+                            HStack {
+                                Button("Choose Input Log…", action: chooseScenarioInputLog)
+                                Spacer()
+                                Button("Convert to Scenario Plan") {
+                                    workspace.runScenarioRecorder()
+                                }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(workspace.isRunning || workspace.scenarioInputLogURL == nil)
+                            }
+                        }
+                    }
+                    StudioCard {
+                        VStack(alignment: .leading, spacing: 10) {
+                            HStack {
+                                Label("Exact scenario plan", systemImage: "list.number")
+                                    .font(.headline)
+                                if workspace.scenarioPlanHasUnsavedChanges {
+                                    Text("Edited").font(.caption).foregroundStyle(.orange)
+                                }
+                                Spacer()
+                                Button("Reload") { workspace.reloadScenarioPlan() }
+                                    .disabled(workspace.isRunning)
+                                Button("Save Plan") { saveScenarioPlan() }
+                                    .buttonStyle(.borderedProminent)
+                                    .disabled(
+                                        workspace.isRunning
+                                            || !workspace.scenarioPlanHasUnsavedChanges
+                                    )
+                            }
+                            TextEditor(
+                                text: Binding(
+                                    get: { workspace.scenarioPlanText },
+                                    set: { workspace.updateScenarioPlan($0) }
+                                )
+                            )
+                            .font(.system(.body, design: .monospaced))
+                            .frame(minHeight: 220)
+                            .scrollContentBackground(.hidden)
+                            .padding(8)
+                            .background(
+                                .background.opacity(0.72),
+                                in: RoundedRectangle(cornerRadius: 8)
+                            )
+                            .accessibilityIdentifier("swan-song-studio-plan-editor")
+                        }
+                    }
+                    structuredReportCard(ifTitle: "Scenario Recorder")
+                    structuredReportCard(ifTitle: "Dev Cycle")
+                    structuredReportCard(ifTitle: "Dev Watch")
                 } else {
                     ContentUnavailableView {
                         Label("No Play Contracts Yet", systemImage: "gamecontroller")
@@ -392,16 +537,16 @@ struct SwanSDKWorkspaceView: View {
         }
     }
 
-    private var report: some View {
+    private var profile: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 sectionHeading(
-                    "Cartridge resource report",
+                    "Cartridge profile",
                     detail: "Inspect ROM, internal RAM, scene tiles, palettes, sprites, scanline pressure, and audio against declared and hardware ceilings."
                 )
                 HStack {
                     Spacer()
-                    Button("Refresh Report") { workspace.runSelectedAction() }
+                    Button("Refresh Resource Report") { workspace.runSelectedAction() }
                         .buttonStyle(.borderedProminent)
                         .disabled(workspace.isRunning)
                 }
@@ -414,9 +559,122 @@ struct SwanSDKWorkspaceView: View {
                         description: Text("Run Report after opening or building a project.")
                     )
                 }
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Sprite & VRAM Profiler", systemImage: "waveform.path.ecg.rectangle")
+                            .font(.headline)
+                        Text(workspace.profileTraceURL?.path ?? "No optional runtime trace selected")
+                            .font(.caption.monospaced())
+                            .foregroundStyle(.secondary)
+                            .lineLimit(2)
+                        HStack {
+                            Button("Choose Trace…", action: chooseProfileTrace)
+                            Button("Clear Trace") { workspace.profileTraceURL = nil }
+                                .disabled(workspace.profileTraceURL == nil)
+                            Spacer()
+                            Button("Run Profiler") { workspace.runProfiler() }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(workspace.isRunning)
+                        }
+                    }
+                }
+                structuredReportCard(ifTitle: "Sprite & VRAM Profiler")
             }
             .padding(24)
             .frame(maxWidth: 1_020)
+            .frame(maxWidth: .infinity)
+        }
+    }
+
+    private var evidence: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                sectionHeading(
+                    "Evidence",
+                    detail: "Review SwanSong's native PNG, WAV, exact plan, and structured result separately from execution."
+                )
+                if let contract = workspace.playContract, !contract.scenarios.isEmpty {
+                    Picker("Scenario", selection: $workspace.selectedScenarioID) {
+                        ForEach(contract.scenarios) { scenario in
+                            Text(scenario.title).tag(Optional(scenario.id))
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    if let evidence = workspace.evidence {
+                        evidenceReview(evidence)
+                    } else {
+                        ContentUnavailableView(
+                            "No Evidence Yet",
+                            systemImage: "checkmark.seal",
+                            description: Text("Run this scenario from Play first.")
+                        )
+                    }
+                }
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Evidence Diff", systemImage: "square.split.2x1")
+                            .font(.headline)
+                        evidenceFolderRow("Before", url: workspace.evidenceBeforeURL) {
+                            chooseEvidenceFolder(before: true)
+                        }
+                        evidenceFolderRow("After", url: workspace.evidenceAfterURL) {
+                            chooseEvidenceFolder(before: false)
+                        }
+                        HStack {
+                            Spacer()
+                            Button("Compare Evidence") { workspace.runEvidenceDiff() }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(
+                                    workspace.isRunning
+                                        || workspace.evidenceBeforeURL == nil
+                                        || workspace.evidenceAfterURL == nil
+                                )
+                        }
+                    }
+                }
+                structuredReportCard(ifTitle: "Evidence Diff")
+            }
+            .padding(24)
+            .frame(maxWidth: 1_080)
+            .frame(maxWidth: .infinity)
+        }
+    }
+
+    private var release: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                sectionHeading(
+                    "Release",
+                    detail: "Delegate the complete release gate and deterministic package report to the SDK. Studio does not reimplement readiness policy."
+                )
+                identityCard(title: "Release identity")
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        fileChoiceRow(
+                            "Output",
+                            value: workspace.releaseOutputURL?.path ?? "SDK default",
+                            button: "Choose Folder…",
+                            action: chooseReleaseOutput
+                        )
+                        fileChoiceRow(
+                            "Notes",
+                            value: workspace.releaseNotesURL?.path ?? "No release notes selected",
+                            button: "Choose File…",
+                            action: chooseReleaseNotes
+                        )
+                        HStack {
+                            Spacer()
+                            Button("Run Release Gates") { workspace.runRelease() }
+                                .buttonStyle(.borderedProminent)
+                                .controlSize(.large)
+                                .disabled(workspace.isRunning)
+                        }
+                    }
+                }
+                structuredReportCard(ifTitle: "Release")
+            }
+            .padding(24)
+            .frame(maxWidth: 980)
             .frame(maxWidth: .infinity)
         }
     }
@@ -524,6 +782,21 @@ struct SwanSDKWorkspaceView: View {
                     )
                     .font(.caption)
                     .foregroundStyle(.orange)
+                }
+                HStack {
+                    Spacer()
+                    Button("Run Doctor") { workspace.runDoctor() }
+                        .disabled(workspace.isRunning)
+                }
+                if workspace.structuredReportTitle == "Doctor",
+                   let report = workspace.structuredReport {
+                    DisclosureGroup("Doctor report · \(report.schema)") {
+                        Text(report.formattedJSON)
+                            .font(.system(size: 11, design: .monospaced))
+                            .textSelection(.enabled)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.top, 8)
+                    }
                 }
             }
         }
@@ -665,6 +938,58 @@ struct SwanSDKWorkspaceView: View {
         }
     }
 
+    @ViewBuilder
+    private func structuredReportCard(ifTitle title: String) -> some View {
+        if workspace.structuredReportTitle == title,
+           let report = workspace.structuredReport {
+            StudioCard {
+                DisclosureGroup("\(title) · \(report.schema)") {
+                    ScrollView([.horizontal, .vertical]) {
+                        Text(report.formattedJSON)
+                            .font(.system(size: 11, design: .monospaced))
+                            .textSelection(.enabled)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.top, 10)
+                    }
+                    .frame(minHeight: 140, maxHeight: 320)
+                }
+                .font(.headline)
+            }
+        }
+    }
+
+    private func evidenceFolderRow(
+        _ title: String,
+        url: URL?,
+        action: @escaping () -> Void
+    ) -> some View {
+        fileChoiceRow(
+            title,
+            value: url?.path ?? "No evidence folder selected",
+            button: "Choose…",
+            action: action
+        )
+    }
+
+    private func fileChoiceRow(
+        _ title: String,
+        value: String,
+        button: String,
+        action: @escaping () -> Void
+    ) -> some View {
+        HStack {
+            Text(title).font(.callout.weight(.semibold)).frame(width: 62, alignment: .leading)
+            Text(value)
+                .font(.caption.monospaced())
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+                .truncationMode(.middle)
+                .textSelection(.enabled)
+            Spacer()
+            Button(button, action: action)
+        }
+    }
+
     private func resourceReportView(_ report: SwanSDKResourceReport) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             resourceSummary(report)
@@ -762,8 +1087,69 @@ struct SwanSDKWorkspaceView: View {
         if panel.runModal() == .OK { workspace.newProjectParent = panel.url }
     }
 
+    private func chooseScenarioInputLog() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose SwanSong Input/Frame Log"
+        panel.prompt = "Use Log"
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        panel.allowedContentTypes = [.json]
+        if panel.runModal() == .OK { workspace.scenarioInputLogURL = panel.url }
+    }
+
+    private func chooseProfileTrace() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose SwanSong Runtime Trace"
+        panel.prompt = "Use Trace"
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        panel.allowedContentTypes = [.json]
+        if panel.runModal() == .OK { workspace.profileTraceURL = panel.url }
+    }
+
+    private func chooseEvidenceFolder(before: Bool) {
+        let panel = NSOpenPanel()
+        panel.title = before ? "Choose Earlier Evidence" : "Choose Later Evidence"
+        panel.prompt = "Choose Evidence"
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = false
+        if panel.runModal() == .OK {
+            if before { workspace.evidenceBeforeURL = panel.url }
+            else { workspace.evidenceAfterURL = panel.url }
+        }
+    }
+
+    private func chooseReleaseOutput() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose Release Output Folder"
+        panel.prompt = "Choose Output"
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.canCreateDirectories = true
+        panel.allowsMultipleSelection = false
+        if panel.runModal() == .OK { workspace.releaseOutputURL = panel.url }
+    }
+
+    private func chooseReleaseNotes() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose Release Notes"
+        panel.prompt = "Use Notes"
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        if panel.runModal() == .OK { workspace.releaseNotesURL = panel.url }
+    }
+
     private func saveManifest() {
         do { try workspace.saveManifest() }
+        catch { workspace.issue = error.localizedDescription }
+    }
+
+    private func saveScenarioPlan() {
+        do { try workspace.saveScenarioPlan() }
         catch { workspace.issue = error.localizedDescription }
     }
 }
@@ -834,7 +1220,9 @@ private extension SwanSDKWorkspaceAction {
         case .build: "hammer"
         case .test: "checkmark.diamond"
         case .play: "play.rectangle"
-        case .report: "chart.bar.doc.horizontal"
+        case .profile: "chart.bar.doc.horizontal"
+        case .evidence: "checkmark.seal"
+        case .release: "shippingbox.and.arrow.backward"
         }
     }
 }

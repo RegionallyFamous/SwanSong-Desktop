@@ -80,7 +80,7 @@ persistence bytes. SwanSong makes no network request for MCP, but an AI client
 may transmit tool arguments and results to its own service under that client's
 privacy policy.
 
-Game Studio reads and writes only the SDK and project folders you explicitly
+SwanSong Studio reads and writes only the SDK and project folders you explicitly
 select. It launches the selected local SwanSong SDK command-line tool for New,
 Assets, Build, Test, Play, and Report, and keeps compiler, generator, resource,
 frame-plan, PNG, WAV, and structured evidence output on the Mac. Those commands

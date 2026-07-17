@@ -222,7 +222,7 @@ public struct EngineDisplayOwnerSample: Codable, Equatable, Sendable {
     }
 }
 
-public enum EngineDisplaySourceComponent: String, Codable, Sendable {
+public enum EngineDisplaySourceComponent: String, Codable, Equatable, Sendable {
     case mapCell
     case raster
     case palette
@@ -239,6 +239,28 @@ public enum EngineDisplaySourceComponent: String, Codable, Sendable {
             )
         }
     }
+}
+
+func engineDisplaySourceComponents(
+    sourceKind: EngineDisplaySourceKind,
+    rasterByteCount: UInt8,
+    paletteByteCount: UInt8
+) -> [EngineDisplaySourceComponent] {
+    var components: [EngineDisplaySourceComponent] = []
+    if sourceKind == .tilemap { components.append(.mapCell) }
+    if sourceKind != .none, rasterByteCount > 0 { components.append(.raster) }
+    if paletteByteCount > 0 { components.append(.palette) }
+    return components
+}
+
+func engineDisplaySourceComponents(
+    for sample: EngineDisplayOwnerSample
+) -> [EngineDisplaySourceComponent] {
+    engineDisplaySourceComponents(
+        sourceKind: sample.sourceKind,
+        rasterByteCount: sample.rasterByteCount,
+        paletteByteCount: sample.paletteByteCount
+    )
 }
 
 public enum EngineDisplaySourceScope: String, Codable, Sendable {
@@ -340,6 +362,16 @@ public struct SwanEngineError: LocalizedError, Equatable, Sendable {
     public let detail: String
 
     public var errorDescription: String? { detail }
+
+    var displaySourceProbeFailure: EngineDisplaySourceProbeFailure? {
+        code == Int32(SWAN_RESULT_SOURCE_RANGE_OVERFLOW.rawValue)
+            ? .selectedRangeUnionOverflow
+            : nil
+    }
+}
+
+enum EngineDisplaySourceProbeFailure: Equatable, Sendable {
+    case selectedRangeUnionOverflow
 }
 
 /// Selects how a WonderSwan cartridge's real-time clock observes host time.

@@ -43,6 +43,57 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
             SwanSDKCommand.report(manifest: manifest).arguments,
             ["report", "--project", "/tmp/lamp-game/swan.toml", "--json"]
         )
+        XCTAssertEqual(
+            SwanSDKCommand.doctor(manifest: manifest, timeoutSeconds: 30).arguments,
+            ["doctor", "--project", "/tmp/lamp-game/swan.toml", "--timeout", "30", "--json"]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.optimize(manifest: manifest, assetID: "hero").arguments,
+            ["optimize", "--project", "/tmp/lamp-game/swan.toml", "--asset", "hero", "--json"]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.fuzz(manifest: manifest, seed: 7, cases: 12, frames: 900).arguments,
+            ["fuzz", "--project", "/tmp/lamp-game/swan.toml", "--seed", "7", "--cases", "12", "--frames", "900", "--json"]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.laboratory(manifest: manifest, testCase: "rtc", rtcSeed: 42).arguments,
+            ["lab", "--project", "/tmp/lamp-game/swan.toml", "--case", "rtc", "--rtc-seed", "42", "--json"]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.scenarioRecord(
+                manifest: manifest,
+                inputLog: root.appendingPathComponent("input.json"),
+                outputPlan: root.appendingPathComponent("tests/play/neutral.json")
+            ).arguments,
+            ["scenario-record", "--project", "/tmp/lamp-game/swan.toml", "--input-log", "/tmp/lamp-game/input.json", "--output", "/tmp/lamp-game/tests/play/neutral.json", "--json"]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.dev(manifest: manifest, scenario: "neutral", once: true).arguments,
+            ["dev", "--project", "/tmp/lamp-game/swan.toml", "--scenario", "neutral", "--once", "--json"]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.profile(
+                manifest: manifest,
+                trace: root.appendingPathComponent("trace.json")
+            ).arguments,
+            ["profile", "--project", "/tmp/lamp-game/swan.toml", "--trace", "/tmp/lamp-game/trace.json", "--json"]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.evidenceDiff(
+                before: root.appendingPathComponent("before"),
+                after: root.appendingPathComponent("after")
+            ).arguments,
+            ["evidence-diff", "--before", "/tmp/lamp-game/before", "--after", "/tmp/lamp-game/after", "--json"]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.release(
+                manifest: manifest,
+                output: root.appendingPathComponent("release"),
+                notes: root.appendingPathComponent("NOTES.md"),
+                timeoutSeconds: 120
+            ).arguments,
+            ["release", "--project", "/tmp/lamp-game/swan.toml", "--output", "/tmp/lamp-game/release", "--notes", "/tmp/lamp-game/NOTES.md", "--timeout", "120", "--json"]
+        )
     }
 
     func testResolverAcceptsCurrentCheckoutShapeWithoutInventingShellCommands() throws {
@@ -92,7 +143,7 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
 
         let resolution = try SwanSDKCLIResolution.resolve(sdkRoot: sdkRoot)
         XCTAssertEqual(resolution.sdkRoot, sdkRoot.resolvingSymlinksInPath())
-        XCTAssertEqual(try SwanSDKPackageSummary.load(from: sdkRoot).version, "0.1.0")
+        XCTAssertEqual(try SwanSDKPackageSummary.load(from: sdkRoot).version, "0.2.0")
         XCTAssertEqual(try SwanSDKSchemaSummary.load(from: sdkRoot).version, 1)
         let toolchain = try SwanSDKToolchainSummary.load(from: sdkRoot)
         XCTAssertTrue(toolchain.nativePackages.contains { $0.hasPrefix("target-wswan ") })
@@ -136,6 +187,31 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         XCTAssertEqual(report.romBytes, 8192)
     }
 
+    func testStructuredToolReportsAndScenarioPlansEnforceSchemaBoundaries() throws {
+        let report = try SwanSDKStructuredReport.decode(
+            Data("""
+            {"schema":"swansong-dev-event-v1","sequence":1,"extra":true}
+            {"schema":"swansong-dev-event-v1","sequence":2}
+            """.utf8),
+            expectedSchema: "swansong-dev-event-v1",
+            jsonLines: true
+        )
+        XCTAssertEqual(report.documents.count, 2)
+        XCTAssertTrue(report.formattedJSON.contains("\"sequence\" : 2"))
+        XCTAssertThrowsError(
+            try SwanSDKStructuredReport.decode(
+                Data(#"{"schema":"future-report-v2"}"#.utf8),
+                expectedSchema: "swansong-doctor-report-v1"
+            )
+        )
+
+        let plan = try SwanSDKFrameInputPlan.decode(
+            Data(#"{"schema":"swan-song-frame-input-plan-v1","totalFrames":120,"events":[{"frameIndex":0,"inputs":[]},{"frameIndex":60,"inputs":["a"]}]}"#.utf8)
+        )
+        XCTAssertEqual(plan.events.last?.inputs, ["a"])
+        XCTAssertTrue(try plan.formattedJSON().contains("\"totalFrames\" : 120"))
+    }
+
     func testWorkspaceStateRejectsOverlapAndStaleCompletion() throws {
         var state = SwanSDKWorkspaceStateMachine()
         let id = try state.start(.build)
@@ -158,14 +234,39 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
             workingDirectory: directory,
             environment: ["SWANSONG_SDK_TEST_VALUE": "sdk-visible"]
         )
+        let streamed = LockedText()
         let result = try await SwanSDKSubprocessRunner().run(
             invocation,
-            inheritedEnvironment: ["PATH": "/usr/bin:/bin"]
+            inheritedEnvironment: ["PATH": "/usr/bin:/bin"],
+            onOutput: { _, text in streamed.append(text) }
         )
         XCTAssertTrue(result.succeeded)
         XCTAssertTrue(result.standardOutput.contains("SWANSONG_SDK_TEST_VALUE=sdk-visible"))
         XCTAssertTrue(result.standardOutput.contains("PATH=/usr/bin:/bin"))
         XCTAssertTrue(result.standardError.isEmpty)
+        XCTAssertTrue(streamed.value.contains("SWANSONG_SDK_TEST_VALUE=sdk-visible"))
+    }
+
+    func testSubprocessRunnerCancellationTerminatesTheActiveCommand() async throws {
+        let directory = try temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let invocation = SwanSDKCommandInvocation(
+            executableURL: URL(fileURLWithPath: "/usr/bin/tail"),
+            arguments: ["-f", "/dev/null"],
+            workingDirectory: directory,
+            environment: [:]
+        )
+        let task = Task {
+            try await SwanSDKSubprocessRunner().run(invocation)
+        }
+        try await Task.sleep(for: .milliseconds(100))
+        task.cancel()
+        do {
+            _ = try await task.value
+            XCTFail("A cancelled SDK command unexpectedly completed successfully")
+        } catch is CancellationError {
+            // Expected: the runner terminates Process and waits for its exit.
+        }
     }
 
     func testPackageSchemaToolchainAndWAVIdentityReaders() throws {
@@ -279,5 +380,18 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         append32(16)
         bytes += Array(repeating: 0, count: 16)
         return Data(bytes)
+    }
+}
+
+private final class LockedText: @unchecked Sendable {
+    private let lock = NSLock()
+    private var storage = ""
+
+    var value: String {
+        lock.withLock { storage }
+    }
+
+    func append(_ text: String) {
+        lock.withLock { storage += text }
     }
 }

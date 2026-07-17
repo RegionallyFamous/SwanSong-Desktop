@@ -3,6 +3,86 @@ import Foundation
 import XCTest
 
 final class TranslationDisplaySourceProbeTests: XCTestCase {
+    func testAdaptivePartitionUsesTileAlignedOverflowOnlyBisection() throws {
+        var attempts = 0
+        let result = try TranslationDisplaySourcePartitioner.run(
+            rectangle: EngineDisplayRectangle(x: 48, y: 96, width: 120, height: 16)
+        ) { rectangle in
+            attempts += 1
+            if rectangle.width > 8 || rectangle.height > 8 {
+                throw SwanEngineError(
+                    code: 9,
+                    detail: "typed source-range overflow"
+                )
+            }
+            return TranslationDisplaySourcePartitionPayload(
+                selected: [attempts],
+                consumers: []
+            )
+        }
+
+        XCTAssertEqual(result.terminals.count, 30)
+        XCTAssertEqual(result.attemptCount, 59)
+        XCTAssertEqual(result.splitCount, 29)
+        XCTAssertEqual(result.maximumObservedDepth, 5)
+        XCTAssertTrue(result.terminals.allSatisfy {
+            $0.rectangle.width == 8 && $0.rectangle.height == 8
+        })
+    }
+
+    func testAdaptivePartitionDoesNotSplitGenericUnsupportedByMessage() {
+        var attempts = 0
+        XCTAssertThrowsError(try TranslationDisplaySourcePartitioner.run(
+            rectangle: EngineDisplayRectangle(x: 88, y: 32, width: 56, height: 16)
+        ) { _ -> TranslationDisplaySourcePartitionPayload<Int> in
+            attempts += 1
+            throw SwanEngineError(
+                code: 7,
+                detail: "selected display bytes exceeded the exact cartridge-range bound"
+            )
+        }) { error in
+            XCTAssertEqual((error as? SwanEngineError)?.code, 7)
+        }
+        XCTAssertEqual(attempts, 1)
+    }
+
+    func testAdaptivePartitionStopsAtAtomicTile() {
+        XCTAssertThrowsError(try TranslationDisplaySourcePartitioner.run(
+            rectangle: EngineDisplayRectangle(x: 88, y: 32, width: 8, height: 8)
+        ) { _ -> TranslationDisplaySourcePartitionPayload<Int> in
+            throw SwanEngineError(code: 9, detail: "typed source-range overflow")
+        }) { error in
+            XCTAssertTrue(error.localizedDescription.contains("atomic 8-by-8"))
+        }
+    }
+
+    func testExpectedComponentsMatchEngineByteCountPredicates() {
+        XCTAssertEqual(
+            engineDisplaySourceComponents(
+                sourceKind: .tilemap,
+                rasterByteCount: 0,
+                paletteByteCount: 0
+            ),
+            [.mapCell]
+        )
+        XCTAssertEqual(
+            engineDisplaySourceComponents(
+                sourceKind: .sprite,
+                rasterByteCount: 2,
+                paletteByteCount: 0
+            ),
+            [.raster]
+        )
+        XCTAssertEqual(
+            engineDisplaySourceComponents(
+                sourceKind: .none,
+                rasterByteCount: 0,
+                paletteByteCount: 2
+            ),
+            [.palette]
+        )
+    }
+
     func testLiveProbeKeepsSourcesPrivateAndBrowserValidatesArtifact() throws {
         let availability = try EngineSession()
         guard availability.backendName == "ares",
