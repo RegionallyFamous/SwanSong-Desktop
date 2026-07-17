@@ -56,6 +56,29 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         }
     }
 
+    func testAdaptivePartitionRejectsAlignedTilingOutsideNamedSplitTree() {
+        XCTAssertThrowsError(try TranslationDisplaySourcePartitioner.validateTerminalTree(
+            root: EngineDisplayRectangle(x: 0, y: 0, width: 32, height: 16),
+            terminals: [
+                (EngineDisplayRectangle(x: 0, y: 0, width: 16, height: 8), 2),
+                (EngineDisplayRectangle(x: 16, y: 0, width: 16, height: 8), 2),
+                (EngineDisplayRectangle(x: 0, y: 8, width: 16, height: 8), 2),
+                (EngineDisplayRectangle(x: 16, y: 8, width: 16, height: 8), 2),
+            ]
+        )) { error in
+            XCTAssertTrue(error.localizedDescription.contains("named splitter"))
+        }
+    }
+
+    func testRuntimeGeneratedRasterDisablesConsumerIsolationInference() {
+        let result = TranslationDisplaySourceProbe.consumerIsolation(
+            runtimeGeneratedRasterCount: 1,
+            outsideRootConsumerCount: 0
+        )
+        XCTAssertFalse(result.applicable)
+        XCTAssertFalse(result.outsideRootConsumersAbsent)
+    }
+
     func testExpectedComponentsMatchEngineByteCountPredicates() {
         XCTAssertEqual(
             engineDisplaySourceComponents(
@@ -150,6 +173,17 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         )
 
         XCTAssertTrue(report.isComplete)
+        XCTAssertEqual(report.schema, TranslationDisplaySourceProbeReport.currentSchema)
+        XCTAssertEqual(report.partitionAttemptCount, 1)
+        XCTAssertEqual(report.partitionLeafCount, 1)
+        XCTAssertEqual(report.partitionSplitCount, 0)
+        XCTAssertEqual(report.partitionMaximumDepth, 0)
+        XCTAssertEqual(report.executedFrames, 3)
+        XCTAssertTrue(report.nativeFrameStableAcrossQueries)
+        XCTAssertTrue(report.lineageComplete)
+        XCTAssertFalse(report.projectSHA256.isEmpty)
+        XCTAssertTrue(report.sameFrameConsumerIsolationApplicable)
+        XCTAssertFalse(report.prototypeAuthorized)
         XCTAssertGreaterThan(report.sourceRangeCount, 0)
         XCTAssertGreaterThan(report.candidateSourceRangeCount, 0)
         XCTAssertGreaterThan(report.outsideConsumerCount, 0)
@@ -164,6 +198,7 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         ] {
             XCTAssertFalse(publicText.contains(forbidden), forbidden)
         }
+        XCTAssertFalse(publicText.contains("prototypeeligible"))
 
         let store = TranslationPrivateArtifactStore()
         let artifacts = try store.list(project: project)
@@ -181,6 +216,17 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         XCTAssertFalse(details.cartridgeRanges.isEmpty)
         XCTAssertFalse(details.candidateCartridgeRanges.isEmpty)
         XCTAssertTrue(details.completeness.isComplete)
+        XCTAssertEqual(details.schema, TranslationDisplaySourceProbeDetails.currentSchema)
+        XCTAssertEqual(details.project?.sha256, report.projectSHA256)
+        let partition = try XCTUnwrap(details.partition)
+        XCTAssertEqual(partition.attemptCount, 1)
+        XCTAssertEqual(partition.leaves.count, 1)
+        XCTAssertEqual(partition.splitCount, 0)
+        XCTAssertEqual(partition.executedFrames, 3)
+        XCTAssertEqual(
+            partition.nativeFrameSHA256BeforeQueries,
+            partition.nativeFrameSHA256AfterQueries
+        )
         XCTAssertTrue(details.traces.contains {
             $0.scope == .selected
                 && $0.component == .raster
@@ -194,5 +240,24 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
                 && $0.hasExactRange
                 && $0.cartridgeLength > 0
         })
+
+        var hostile = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: Data(contentsOf: detailsURL))
+                as? [String: Any]
+        )
+        hostile["rectangle"] = [
+            "x": 0,
+            "y": 0,
+            "width": Int(UInt16.max),
+            "height": Int(UInt16.max),
+        ]
+        let originalDetailsData = try Data(contentsOf: detailsURL)
+        defer { try? originalDetailsData.write(to: detailsURL, options: [.atomic]) }
+        try JSONSerialization.data(withJSONObject: hostile, options: [.sortedKeys])
+            .write(to: detailsURL, options: [.atomic])
+        let tampered = try XCTUnwrap(try store.list(project: project).first {
+            $0.directoryURL == artifact.directoryURL
+        })
+        XCTAssertFalse(tampered.isIntact)
     }
 }
