@@ -2,15 +2,14 @@
 
 This separate Swift package keeps the local MCP server and its dependencies
 outside SwanSong Desktop's signed application dependency graph. The official
-app bundle does not embed this executable, the MCP SDK, SwiftNIO, or their
-transitive products.
+app bundle does not embed this executable or another MCP runtime.
 
-The package pins the official
-[`modelcontextprotocol/swift-sdk`](https://github.com/modelcontextprotocol/swift-sdk)
-at 0.12.1 in `Package.resolved`. That project is published under Apache-2.0
-for new contributions with existing MIT-licensed code; its fetched source
-retains the authoritative license and notices. Transitive dependency versions
-are recorded in the same package-local resolution.
+The executable implements only the small STDIO JSON-RPC surface SwanSong needs:
+initialize, ping, list tools, and call tools. Keeping that protocol adapter in
+this developer package avoids adding a second runtime dependency graph to the
+signed app and keeps it buildable across SwanSong's Xcode 16.2 release floor
+and current Xcode. Protocol behavior is exercised by a real initialize/list/
+call exchange in `Scripts/check-mcp-server.sh`.
 
 From the SwanSong Desktop repository root:
 

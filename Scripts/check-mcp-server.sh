@@ -22,7 +22,8 @@ BIN_DIR=$("$SCRIPT_DIR/swift-package.sh" build \
 python3 - \
   "$BIN_DIR/SwanSongMCP" \
   "$ROOT/.codex/config.toml" \
-  "$MCP_PACKAGE/Package.resolved" <<'PY'
+  "$MCP_PACKAGE/Package.resolved" \
+  "$ROOT/Package.resolved" <<'PY'
 import json
 import pathlib
 import subprocess
@@ -31,13 +32,15 @@ import sys
 binary = pathlib.Path(sys.argv[1])
 config = pathlib.Path(sys.argv[2])
 resolution = json.loads(pathlib.Path(sys.argv[3]).read_text())
+root_resolution = json.loads(pathlib.Path(sys.argv[4]).read_text())
 if not binary.is_file():
     raise SystemExit("SwanSong MCP product was not linked")
 if "default_tools_approval_mode = \"prompt\"" not in config.read_text():
     raise SystemExit("project MCP config lost its write-tool approval guard")
-sdk = next((pin for pin in resolution.get("pins", []) if pin.get("identity") == "swift-sdk"), None)
-if sdk is None or sdk.get("state", {}).get("version") != "0.12.1":
-    raise SystemExit("SwanSong MCP lost its exact official Swift SDK resolution")
+pins = {pin.get("identity"): pin for pin in resolution.get("pins", [])}
+root_pins = {pin.get("identity"): pin for pin in root_resolution.get("pins", [])}
+if set(pins) != {"sparkle"} or pins["sparkle"].get("state") != root_pins.get("sparkle", {}).get("state"):
+    raise SystemExit("SwanSong MCP developer package gained a divergent remote dependency")
 
 process = subprocess.Popen(
     [str(binary)],
@@ -73,6 +76,10 @@ send({
     },
 })
 initialized = receive(1)["result"]
+if initialized.get("protocolVersion") != "2025-11-25":
+    raise SystemExit("MCP server did not negotiate the current protocol version")
+if initialized.get("serverInfo") != {"name": "swansong", "version": "1.0.0"}:
+    raise SystemExit("MCP server identity changed")
 if initialized.get("capabilities", {}).get("tools", {}).get("listChanged") is not False:
     raise SystemExit("MCP server did not advertise its stable tools capability")
 if "never expose ROM" not in initialized.get("instructions", ""):

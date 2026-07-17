@@ -74,8 +74,9 @@ depend on an untracked design file or an external asset service.
 
 ## Local MCP boundary
 
-`SwanSongMCP` is a separate local STDIO executable built with the official,
-pinned Swift MCP SDK. It has no inbound network listener. Live-app requests
+`SwanSongMCP` is a separate local STDIO executable with a small JSON-RPC
+adapter for the MCP methods SwanSong exposes. It has no inbound network
+listener. Live-app requests
 cross a token-authenticated Distributed Notification Center bridge and are
 handled on SwanSong's main actor through a fixed method allowlist.
 
