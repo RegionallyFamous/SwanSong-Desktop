@@ -56,7 +56,7 @@ diff --git a/ares/ares/platform.hpp b/ares/ares/platform.hpp
 index 029c8de9..5e33c8a5 100644
 --- a/ares/ares/platform.hpp
 +++ b/ares/ares/platform.hpp
-@@ -13,6 +13,23 @@ enum class Event : u32 {
+@@ -13,6 +13,25 @@ enum class Event : u32 {
    Shutdown
  };
  
@@ -75,12 +75,14 @@ index 029c8de9..5e33c8a5 100644
 +  u32 paletteColor;
 +  u32 paletteAddress;
 +  u32 paletteByteCount;
++  u32 oamAddress;
++  u32 oamByteCount;
 +};
 +
  struct Platform {
    virtual auto attach(Node::Object) -> void {}
    virtual auto detach(Node::Object) -> void {}
-@@ -25,6 +42,16 @@ struct Platform {
+@@ -25,6 +44,16 @@ struct Platform {
    virtual auto audio(Node::Audio::Stream) -> void {}
    virtual auto input(Node::Input::Input) -> void {}
    virtual auto cheat(u32 addr) -> maybe<u32> { return nothing; }
@@ -802,7 +804,7 @@ index 50e94ec5..bb3851c3 100644
    poll();
    debugger.instruction();
 +  if(platform) platform->wonderSwanInstructionBegin(
-+    ((u32)PS << 4 | PC) & 0xfffff, PS, PC
++    (((u32)PS << 4) + PC) & 0xfffff, PS, PC
 +  );
    instruction();
 +  if(platform) platform->wonderSwanInstructionEnd();
@@ -885,7 +887,7 @@ index 267a30e6..b24553d4 100644
      //once DMA is started; SRAM reads still incur time penalty, but do not transfer
      if(valid(source)) {
 +      if(platform) platform->wonderSwanInstructionBegin(
-+        ((u32)cpu.PS << 4 | cpu.PC) & 0xfffff, cpu.PS, cpu.PC
++        (((u32)cpu.PS << 4) + cpu.PC) & 0xfffff, cpu.PS, cpu.PC
 +      );
 +      if(platform) platform->wonderSwanInstructionDataflow(1);
 +      self.provenanceDataRead(source + 0, source >> 4, source & 15);
@@ -909,7 +911,7 @@ index 758e46f3..f0b373df 100644
 +auto recordInternalRAMWrite(n16 address) -> void {
 +  if(platform) {
 +    platform->wonderSwanSourceWrite(
-+      1, address, ((u32)cpu.PS << 4 | cpu.PC) & 0xfffff
++      1, address, (((u32)cpu.PS << 4) + cpu.PC) & 0xfffff
 +    );
 +  }
 +}
@@ -942,7 +944,7 @@ diff --git a/ares/ws/ppu/dac.cpp b/ares/ws/ppu/dac.cpp
 index eed6533a..5449a571 100644
 --- a/ares/ws/ppu/dac.cpp
 +++ b/ares/ws/ppu/dac.cpp
-@@ -7,11 +7,19 @@ auto PPU::DAC::scanline(n8 y) -> void {
+@@ -7,11 +7,21 @@ auto PPU::DAC::scanline(n8 y) -> void {
  
  auto PPU::DAC::pixel(n8 x, n8 y) -> void {
    n12 color = self.backdrop(backdrop[0]);
@@ -954,6 +956,8 @@ index eed6533a..5449a571 100644
 +  provenance.paletteColor = backdrop[0];
 +  provenance.paletteAddress = self.grayscale() ? 0x10001 : 0xfe00 + (backdrop[0] << 1);
 +  provenance.paletteByteCount = self.grayscale() ? 1 : 2;
++  provenance.oamAddress = 0xffff;
++  provenance.oamByteCount = 0;
  
    if(enable[0]) {
 -    if(screen1.output.valid) color = screen1.output.color;
@@ -965,7 +969,7 @@ index eed6533a..5449a571 100644
      if(Model::WonderSwanColor() && contrast[0] == 1) {
        n4 b = color.bit(0, 3);
        n4 g = color.bit(4, 7);
-@@ -24,6 +32,24 @@ auto PPU::DAC::pixel(n8 x, n8 y) -> void {
+@@ -24,6 +34,26 @@ auto PPU::DAC::pixel(n8 x, n8 y) -> void {
    }
  
    output[x] = color;
@@ -985,6 +989,8 @@ index eed6533a..5449a571 100644
 +      provenance.paletteColor,
 +      provenance.paletteAddress,
 +      provenance.paletteByteCount,
++      provenance.oamAddress,
++      provenance.oamByteCount,
 +    });
 +  }
  }
@@ -1000,7 +1006,7 @@ index 10fe8446..6e8ac9d4 100644
  auto PPU::writeIO(n16 address, n8 data) -> void {
 +  if(platform) {
 +    platform->wonderSwanSourceWrite(
-+      2, address, ((u32)cpu.PS << 4 | cpu.PC) & 0xfffff
++      2, address, (((u32)cpu.PS << 4) + cpu.PC) & 0xfffff
 +    );
 +  }
    switch(address) {
@@ -1058,7 +1064,7 @@ index fc612faa..79708002 100644
    auto backdrop(n8 color) -> n12;
    auto palette(n4 palette, n4 color) -> n12;
    auto opaque(n4 palette, n4 color) -> n1;
-@@ -88,6 +92,18 @@ struct PPU : Thread, IO {
+@@ -88,6 +92,20 @@ struct PPU : Thread, IO {
    struct Output {
      n1  valid;
      n12 color;
@@ -1074,14 +1080,39 @@ index fc612faa..79708002 100644
 +    u32 paletteColor;
 +    u32 paletteAddress;
 +    u32 paletteByteCount;
++    u32 oamAddress;
++    u32 oamByteCount;
    };
  
    struct Window {
+@@ -152,14 +170,20 @@ struct PPU : Thread, IO {
+     n1 enable[2];
+     n6 oamBase;
+     n7 first;
+     n8 count;  //0 - 128
+     n8 valid;  //0 - 32
+ 
+     Output output;
+     Window window;
+ 
+-    queue<n32[128]> oam[2];
+-    queue<n32[32]> objects;
++    struct Object {
++      n32 attributes;
++      n16 address;
++      auto serialize(serializer& s) -> void { s(attributes); s(address); }
++    };
++
++    queue<Object[128]> oam[2];
++    queue<Object[32]> objects;
+   } sprite{*this, screen2};
+ 
+   struct DAC {
 diff --git a/ares/ws/ppu/screen.cpp b/ares/ws/ppu/screen.cpp
 index bd4931a0..aa1f0a69 100644
 --- a/ares/ws/ppu/screen.cpp
 +++ b/ares/ws/ppu/screen.cpp
-@@ -29,6 +29,17 @@ auto PPU::Screen::screenPixel(n8 x, n8 y, Output& output) -> void {
+@@ -29,6 +29,19 @@ auto PPU::Screen::screenPixel(n8 x, n8 y, Output& output) -> void {
    if(self.opaque(palette, color)) {
      output.valid = 1;
      output.color = self.palette(palette, color);
@@ -1096,10 +1127,12 @@ index bd4931a0..aa1f0a69 100644
 +    output.paletteColor = color;
 +    output.paletteAddress = self.paletteAddress(palette, color);
 +    output.paletteByteCount = self.paletteByteCount();
++    output.oamAddress = 0xffff;
++    output.oamByteCount = 0;
    }
  }
  
-@@ -44,6 +55,7 @@ auto PPU::Screen::pixel(n8 x, n8 y) -> void {
+@@ -44,6 +57,7 @@ auto PPU::Screen::pixel(n8 x, n8 y) -> void {
  
  auto PPU::Screen1::pixel(n8 x, n8 y) -> void {
    Screen::pixel(x, y);
@@ -1107,7 +1140,7 @@ index bd4931a0..aa1f0a69 100644
  }
  
  auto PPU::Screen2::pixel(n8 x, n8 y) -> void {
-@@ -52,6 +64,7 @@ auto PPU::Screen2::pixel(n8 x, n8 y) -> void {
+@@ -52,6 +66,7 @@ auto PPU::Screen2::pixel(n8 x, n8 y) -> void {
      if(window.invert[0] == 0 && window.outside(x, y)) output = {};
      if(window.invert[0] == 1 && window.inside (x, y)) output = {};
    }
@@ -1119,7 +1152,60 @@ diff --git a/ares/ws/ppu/sprite.cpp b/ares/ws/ppu/sprite.cpp
 index b3fe3578..fb907b5b 100644
 --- a/ares/ws/ppu/sprite.cpp
 +++ b/ares/ws/ppu/sprite.cpp
-@@ -58,6 +58,20 @@ auto PPU::Sprite::pixel(n8 x, n8 y) -> void {
+@@ -5,19 +5,23 @@ auto PPU::Sprite::oamSyncScanline() -> void {
+   if(self.accurate) {
+     for(auto object : range(min(128, count))) {
+       auto addr = base + index++ * 4;
+-      n32 data;
++      Object entry;
++      entry.address = addr;
+ 
+-      data.bit(0, 15) = iram.read16(addr);
++      entry.attributes.bit(0, 15) = iram.read16(addr);
+       self.step(1);
+-      data.bit(16, 31) = iram.read16(addr + 2);
++      entry.attributes.bit(16, 31) = iram.read16(addr + 2);
+       self.step(1);
+ 
+-      oam[self.field()].write(data);
++      oam[self.field()].write(entry);
+     }
+     self.step((128 - count) * 2);
+   } else {
+     for(auto object : range(min(128, count))) {
+-      oam[self.field()].write(iram.read32(base + index++ * 4));
++      Object entry;
++      entry.address = base + index++ * 4;
++      entry.attributes = iram.read32(entry.address);
++      oam[self.field()].write(entry);
+     }
+     self.step(256);
+   }
+@@ -28,10 +32,11 @@ auto PPU::Sprite::scanline(n8 y) -> void {
+   window.scanline(y);
+   objects.flush();
+   if(!enable[0]) return;
+-  for(auto attributes : oam[!self.field()]) {
++  for(auto object : oam[!self.field()]) {
++    auto attributes = object.attributes;
+     n8 voffset = attributes.bit(16,23);
+     if(n8(y - voffset) > 7) continue;
+-    objects.write(attributes);
++    objects.write(object);
+     if(objects.full()) break;
+   }
+ }
+@@ -40,7 +45,8 @@ auto PPU::Sprite::pixel(n8 x, n8 y) -> void {
+   output = {};
+   if(!enable[0]) return;
+   auto outside = window.outside(x, y);
+-  for(auto attributes : objects) {
++  for(auto object : objects) {
++    auto attributes = object.attributes;
+     n9 tile     = attributes.bit( 0, 8);
+     n4 palette  = attributes.bit( 9,11) | 8;
+     n1 region   = attributes.bit(12);
+@@ -58,6 +64,22 @@ auto PPU::Sprite::pixel(n8 x, n8 y) -> void {
        if(!priority && screen2.output.valid) continue;
        output.valid = 1;
        output.color = self.palette(palette, color);
@@ -1137,6 +1223,8 @@ index b3fe3578..fb907b5b 100644
 +      output.paletteColor = color;
 +      output.paletteAddress = self.paletteAddress(palette, color);
 +      output.paletteByteCount = self.paletteByteCount();
++      output.oamAddress = object.address;
++      output.oamByteCount = 4;
        break;
      }
    }

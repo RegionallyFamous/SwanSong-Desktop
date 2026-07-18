@@ -1,8 +1,9 @@
 # Display provenance fixtures
 
 These two clean-room WonderSwan Color ROMs provide known final-display owners
-from engine ABI 6 plus exact upstream cartridge sources and outside consumers
-for ABI 8. They contain no commercial game material.
+from engine ABI 6 plus the current ABI 9 exact upstream cartridge sources,
+outside consumers, private sprite/OAM ownership, and conservative source-origin
+classification. They contain no commercial game material.
 
 - `display_provenance_horizontal.wsc` is horizontal and uses planar 4bpp tile
   raster data.
@@ -16,9 +17,13 @@ from all three final layers and requires exact cell, tile, raster width,
 palette source, and non-unknown final-writer results. The vertical assertions
 also exercise canonical native rotation. Tile 1 is copied from a distinctive
 ROM-resident 32-byte table, XOR-decoded through the CPU, and reused across
-Screen 1, allowing the ABI 8 smoke test to locate its linked offset, require an
-exact transformed raster trace, and
+Screen 1, allowing the source-provenance smoke test to locate its linked offset,
+require an exact transformed raster trace, and
 require at least one outside-rectangle consumer of the same source bytes.
+The current ABI 9 smoke lane also requires the sprite's complete OAM range and
+writer privately, validates `spriteAttribute` selection, and accepts a
+conservative trace only when its private reason and V30 origin are internally
+consistent. Public automation receives only source-free counts and hashes.
 
 The fixture source is CC0-1.0. The linked Wonderful target-wswan runtime keeps
 its zlib-style notice in `LICENSE.target-wswan-syslibs`.

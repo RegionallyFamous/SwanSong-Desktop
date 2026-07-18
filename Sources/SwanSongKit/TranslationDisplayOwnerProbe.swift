@@ -1,7 +1,8 @@
 import Foundation
 
 public struct TranslationDisplayOwnerProbeDetails: Codable, Equatable, Sendable {
-    public static let currentSchema = "swan-song-display-owner-probe-v1"
+    public static let currentSchema = "swan-song-display-owner-probe-v2"
+    public static let legacySchema = "swan-song-display-owner-probe-v1"
 
     public let schema: String
     public let createdAt: Date
@@ -26,7 +27,7 @@ public struct TranslationDisplayOwnerProbeDetails: Codable, Equatable, Sendable 
 /// indices, palette values, and CPU writer identities remain only in the
 /// project-contained private details artifact.
 public struct TranslationDisplayOwnerProbeReport: Codable, Equatable, Sendable {
-    public static let currentSchema = "swan-song-display-owner-probe-report-v1"
+    public static let currentSchema = "swan-song-display-owner-probe-report-v2"
 
     public let schema: String
     public let role: TranslationROMRole
@@ -44,6 +45,8 @@ public struct TranslationDisplayOwnerProbeReport: Codable, Equatable, Sendable {
     public let tileRasterSourcesSHA256: String
     public let paletteSourceCount: Int
     public let paletteSourcesSHA256: String
+    public let spriteAttributeSourceCount: Int
+    public let spriteAttributeSourcesSHA256: String
     public let finalWriterCount: Int
     public let finalWritersSHA256: String
     public let unknownWriterReferenceCount: Int
@@ -98,6 +101,7 @@ public enum TranslationDisplayOwnerProbe {
         )
         guard engine.capabilities.contains(.execution),
               engine.capabilities.contains(.displayProvenance),
+              engine.capabilities.contains(.displaySpriteAttributeProvenance),
               engine.backendName == "ares" else {
             throw TranslationLabError.invalidRoute(
                 "the bundled live engine cannot produce display-owner provenance"
@@ -128,9 +132,10 @@ public enum TranslationDisplayOwnerProbe {
             )
         }
         let samples = try engine.displayOwnerProbe(rectangle: rectangle)
-        guard samples.count == sampleCount else {
+        guard samples.count == sampleCount,
+              samples.allSatisfy(validCurrentOwnerSample) else {
             throw TranslationLabError.invalidRoute(
-                "the engine returned incomplete display-owner provenance"
+                "the engine returned incomplete ABI-9 display-owner provenance"
             )
         }
 
@@ -197,14 +202,25 @@ public enum TranslationDisplayOwnerProbe {
                 sample.paletteColor
             )
         })
-        let writerReferences = samples.flatMap {
-            [$0.cellWriterPC, $0.rasterWriterPC, $0.paletteWriterPC]
+        let spriteAttributeSources = Set(samples.compactMap { sample -> String? in
+            guard let address = sample.oamAddress,
+                  let byteCount = sample.oamByteCount else { return nil }
+            return String(format: "%04x:%02x", address, byteCount)
+        })
+        let writerReferences = samples.flatMap { sample -> [UInt32] in
+            var writers = [
+                sample.cellWriterPC,
+                sample.rasterWriterPC,
+                sample.paletteWriterPC,
+            ]
+            if let oamWriterPC = sample.oamWriterPC { writers.append(oamWriterPC) }
+            return writers
         }
         let finalWriters = Set(writerReferences.filter { $0 != unknownWriter })
             .map { String(format: "%05x", $0) }
         let ownerGridSHA256 = sha256(Data(samples.map { sample in
             String(
-                format: "%04x:%04x:%@:%@:%04x:%04x:%08x:%04x:%02x:%02x:%02x:%02x:%08x:%08x:%08x:%08x",
+                format: "%04x:%04x:%@:%@:%04x:%04x:%08x:%04x:%02x:%02x:%02x:%02x:%08x:%08x:%08x:%08x:%04x:%02x:%08x",
                 sample.x,
                 sample.y,
                 sample.layer.rawValue,
@@ -220,7 +236,10 @@ public enum TranslationDisplayOwnerProbe {
                 sample.paletteAddress,
                 sample.cellWriterPC,
                 sample.rasterWriterPC,
-                sample.paletteWriterPC
+                sample.paletteWriterPC,
+                sample.oamAddress ?? UInt16.max,
+                sample.oamByteCount ?? 0,
+                sample.oamWriterPC ?? UInt32.max
             )
         }.joined(separator: "\n").utf8))
 
@@ -241,6 +260,8 @@ public enum TranslationDisplayOwnerProbe {
             tileRasterSourcesSHA256: hashCanonical(tileRasterSources),
             paletteSourceCount: paletteSources.count,
             paletteSourcesSHA256: hashCanonical(paletteSources),
+            spriteAttributeSourceCount: spriteAttributeSources.count,
+            spriteAttributeSourcesSHA256: hashCanonical(spriteAttributeSources),
             finalWriterCount: finalWriters.count,
             finalWritersSHA256: hashCanonical(finalWriters),
             unknownWriterReferenceCount: writerReferences.filter {
@@ -258,6 +279,22 @@ public enum TranslationDisplayOwnerProbe {
 
     private static func counts(_ values: [String]) -> [String: Int] {
         values.reduce(into: [:]) { result, value in result[value, default: 0] += 1 }
+    }
+
+    private static func validCurrentOwnerSample(
+        _ sample: EngineDisplayOwnerSample
+    ) -> Bool {
+        if sample.sourceKind == .sprite {
+            guard let address = sample.oamAddress,
+                  let byteCount = sample.oamByteCount,
+                  let writer = sample.oamWriterPC else { return false }
+            return byteCount > 0
+                && UInt32(address) + UInt32(byteCount) <= 65_536
+                && writer <= 0xF_FFFF
+        }
+        return sample.oamAddress == nil
+            && sample.oamByteCount == nil
+            && sample.oamWriterPC == nil
     }
 
     private static func hashCanonical<S: Sequence>(_ values: S) -> String

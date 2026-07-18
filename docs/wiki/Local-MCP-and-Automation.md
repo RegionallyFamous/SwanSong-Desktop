@@ -138,27 +138,36 @@ runs, and then publishes one private pair under
 native PNGs, ROM/engine/RTC/persistence hashes, evidence bindings, and an exact
 native-raster pixel-diff report.
 
-`probe-rectangle` uses the ABI 6 final-writer capability, retained in ABI 8,
+`probe-rectangle` uses the ABI 6 final-writer capability, retained in ABI 9,
 to replay one project role from clean boot
 to an exact zero-based plan frame. Its private artifact records the active
-layer, map cell, tile/raster source, palette source, and last CPU writer for
-each requested native pixel. The MCP result contains only source-free hashes,
-counts, geometry, and deterministic context hashes—never addresses, tile or
-palette values, or program counters. Writer provenance is intentionally
+layer, map cell, tile/raster source, palette source, sprite OAM source, and last
+CPU writer for each requested native pixel. The MCP result contains only
+source-free hashes, counts, geometry, and deterministic context hashes—never
+addresses, tile or palette values, OAM details, or program counters. Writer provenance is intentionally
 invalid after a save-state restore, so the probe accepts only clean replay.
 
-`probe-rectangle-source` uses ABI 8's bounded upstream dataflow and accepts an
-optional nonempty `components` selector (`mapCell`, `raster`, `palette`). The
+`probe-rectangle-source` uses ABI 9's bounded upstream dataflow and accepts an
+optional nonempty `components` selector (`mapCell`, `raster`, `palette`,
+`spriteAttribute`). The
 selector limits only the in-rectangle source seeds; every outside display
 component sharing those ranges is still discovered. It privately retains exact
 half-open cartridge ranges, per-display-source instruction-hop chains, executed
-caller, operand, and mapper context, completeness/overflow flags, and visible consumers
+caller, operand, and mapper context, completeness/overflow flags, private
+conservative-dataflow reason and origin, and visible consumers
 outside the chosen rectangle. Its MCP response remains source-free: only
 range/chain/context/consumer counts and hashes plus explicit completeness status
 leave the project.
 
+Current source probes use private/report schema v4 and tile-aligned adaptive
+partition v2. A complete artifact may contain up to 256 normalized disjoint
+ranges and the shared private evidence file bound is 64 MiB. Any true per-byte
+range overflow, unknown dependency, or conservative origin still stops that
+leaf. The Evidence browser continues to read legacy v1-v3 artifacts under their
+original contracts.
+
 `swansong_translation_export_static_analysis_seed` accepts only the exact private `details.json`
-from one current, complete ABI 8 source probe. It revalidates the probe's
+from one current, complete ABI 9/v4 source probe. It revalidates the probe's
 project, ROM, plan, engine, RTC, persistence, native frame, lineage, ranges,
 executed caller arithmetic, and outside-consumer scope before atomically
 writing a deterministic private seed under
@@ -166,6 +175,8 @@ writing a deterministic private seed under
 cartridge ranges and caller, operand, and mapper anchors for a private Ghidra or
 pypcode workflow. Its MCP receipt contains only counts, completeness flags,
 binding hashes, and content hashes. It never authorizes a patch.
+The private seed and its source-free report remain schema v1; conservative or
+incomplete v4 lineage is rejected rather than serialized into an analyzer seed.
 
 The other Translation tools return project paths and immutable evidence
 identifiers to the MCP client, but never ROM, state, RAM, persistence, or

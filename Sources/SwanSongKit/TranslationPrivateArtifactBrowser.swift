@@ -273,12 +273,32 @@ public struct TranslationPrivateArtifactStore: Sendable {
         )
         let detailsData = try read("details.json", in: directory, maximumBytes: 16_777_216, project: project)
         let details = try decoder.decode(TranslationDisplayOwnerProbeDetails.self, from: detailsData)
-        guard details.schema == TranslationDisplayOwnerProbeDetails.currentSchema else {
+        let isCurrent = details.schema == TranslationDisplayOwnerProbeDetails.currentSchema
+        guard isCurrent || details.schema == TranslationDisplayOwnerProbeDetails.legacySchema else {
             throw TranslationLabError.invalidProject("the display-owner probe schema is unsupported")
         }
         try requireDigest(details.plan, file: "plan.json", in: directory, project: project)
         let expectedSamples = Int(details.rectangle.width) * Int(details.rectangle.height)
-        guard expectedSamples > 0, expectedSamples == details.samples.count else {
+        guard expectedSamples > 0,
+              expectedSamples == details.samples.count,
+              details.samples.allSatisfy({ sample in
+                  if isCurrent {
+                      if sample.sourceKind == .sprite {
+                          guard let address = sample.oamAddress,
+                                let byteCount = sample.oamByteCount,
+                                let writer = sample.oamWriterPC else { return false }
+                          return byteCount > 0
+                              && UInt32(address) + UInt32(byteCount) <= 65_536
+                              && writer <= 0xF_FFFF
+                      }
+                      return sample.oamAddress == nil
+                          && sample.oamByteCount == nil
+                          && sample.oamWriterPC == nil
+                  }
+                  return sample.oamAddress == nil
+                      && sample.oamByteCount == nil
+                      && sample.oamWriterPC == nil
+              }) else {
             throw TranslationLabError.invalidProject("the display-owner probe sample grid is incomplete")
         }
         return try summary(
@@ -350,12 +370,13 @@ public struct TranslationPrivateArtifactStore: Sendable {
             ["details.json", "plan.json"],
             allowing: [],
             in: directory,
+            maximumBytes: TranslationPrivateSourceEvidenceLimits.maximumByteCount,
             project: project
         )
         let detailsData = try read(
             "details.json",
             in: directory,
-            maximumBytes: 16 * 1_024 * 1_024,
+            maximumBytes: TranslationPrivateSourceEvidenceLimits.maximumByteCount,
             project: project
         )
         let details = try decoder.decode(
@@ -363,6 +384,7 @@ public struct TranslationPrivateArtifactStore: Sendable {
             from: detailsData
         )
         let isAdaptive = details.schema == TranslationDisplaySourceProbeDetails.currentSchema
+            || details.schema == TranslationDisplaySourceProbeDetails.legacyExecutedReadSchema
             || details.schema == TranslationDisplaySourceProbeDetails.legacyAdaptiveSchema
         guard isAdaptive
                 || details.schema == TranslationDisplaySourceProbeDetails.legacySchema else {
@@ -405,6 +427,29 @@ public struct TranslationPrivateArtifactStore: Sendable {
                 "the upstream display-owner grid is not exact and bounded"
             )
         }
+        let isCurrent = details.schema == TranslationDisplaySourceProbeDetails.currentSchema
+        guard details.ownerSamples.allSatisfy({ sample in
+            if isCurrent {
+                if sample.sourceKind == .sprite {
+                    guard let address = sample.oamAddress,
+                          let byteCount = sample.oamByteCount,
+                          let writer = sample.oamWriterPC else { return false }
+                    return byteCount > 0
+                        && UInt32(address) + UInt32(byteCount) <= 65_536
+                        && writer <= 0xF_FFFF
+                }
+                return sample.oamAddress == nil
+                    && sample.oamByteCount == nil
+                    && sample.oamWriterPC == nil
+            }
+            return sample.oamAddress == nil
+                && sample.oamByteCount == nil
+                && sample.oamWriterPC == nil
+        }) else {
+            throw TranslationLabError.invalidProject(
+                "the upstream display-owner grid has invalid sprite-attribute ownership"
+            )
+        }
         let unknownCount = details.traces.filter(\.hasUnknownDependency).count
         let overflowCount = details.traces.filter(\.rangeSetOverflowed).count
         let conservativeCount = details.traces.filter(\.usesConservativeDataflow).count
@@ -425,6 +470,9 @@ public struct TranslationPrivateArtifactStore: Sendable {
             guard trace.sourceByteCount > 0,
                   trace.sourceAddress <= 0x100ff,
                   (trace.scope == .selected ? inside : (isAdaptive || !inside)),
+                  (isCurrent
+                    ? validConservativeOrigin(trace)
+                    : trace.conservativeOrigin == nil),
                   !(trace.hasExactRange && (
                     trace.hasUnknownDependency
                         || trace.rangeSetOverflowed
@@ -587,6 +635,9 @@ public struct TranslationPrivateArtifactStore: Sendable {
             ?? EngineDisplaySourceComponent.allCases
         let includesABI8ReadContext =
             details.schema == TranslationDisplaySourceProbeDetails.currentSchema
+                || details.schema == TranslationDisplaySourceProbeDetails.legacyExecutedReadSchema
+        let includesABI9ConservativeOrigin =
+            details.schema == TranslationDisplaySourceProbeDetails.currentSchema
         guard !selectedComponents.isEmpty,
               Set(selectedComponents).count == selectedComponents.count,
               details.schema != TranslationDisplaySourceProbeDetails.currentSchema
@@ -598,15 +649,18 @@ public struct TranslationPrivateArtifactStore: Sendable {
             )
         }
         let selectedComponentSet = Set(selectedComponents)
-        if details.schema == TranslationDisplaySourceProbeDetails.currentSchema,
+        if includesABI8ReadContext,
            details.traces.contains(where: {
                $0.cartridgeLength > 0 && $0.executedReadContext == nil
            }) {
             throw TranslationLabError.invalidProject(
-                "an ABI-8 upstream source lineage is missing executed-read context"
+                "an ABI-8-or-newer upstream source lineage is missing executed-read context"
             )
         }
-        guard partition.algorithm == TranslationDisplaySourcePartition.currentAlgorithm,
+        let expectedAlgorithm = includesABI9ConservativeOrigin
+            ? TranslationDisplaySourcePartition.currentAlgorithm
+            : TranslationDisplaySourcePartition.legacyAlgorithm
+        guard partition.algorithm == expectedAlgorithm,
               partition.atomicCellWidth == 8,
               partition.atomicCellHeight == 8,
               partition.maximumDepth == 5,
@@ -645,7 +699,11 @@ public struct TranslationPrivateArtifactStore: Sendable {
         }
 
         let canonicalTraces = details.traces.map {
-            canonicalSourceTrace($0, includeReadContext: includesABI8ReadContext)
+            canonicalSourceTrace(
+                $0,
+                includeReadContext: includesABI8ReadContext,
+                includeConservativeOrigin: includesABI9ConservativeOrigin
+            )
         }
         guard canonicalTraces == canonicalTraces.sorted(),
               Set(canonicalTraces).count == canonicalTraces.count else {
@@ -720,7 +778,9 @@ public struct TranslationPrivateArtifactStore: Sendable {
             guard expectedCoverage == actualCoverage,
                   selected.allSatisfy(\.hasExactRange),
                   exactRanges == candidateRanges,
-                  exactRanges.count <= 8,
+                  exactRanges.count <= (includesABI9ConservativeOrigin
+                    ? partition.normalizedRangeLimit
+                    : 8),
                   consumers.allSatisfy({ consumer in
                       consumer.hasExactRange
                           && consumer.cartridgeLength > 0
@@ -752,24 +812,31 @@ public struct TranslationPrivateArtifactStore: Sendable {
         let selectedLineages = Set(details.traces.filter {
             $0.scope == .selected
         }.map {
-            canonicalSourceLineage($0, includeReadContext: includesABI8ReadContext)
+            canonicalSourceLineage(
+                $0,
+                includeReadContext: includesABI8ReadContext,
+                includeConservativeOrigin: includesABI9ConservativeOrigin
+            )
         })
         guard partition.withinRootConsumerTraceCount == withinRoot.count,
               partition.withinRootConsumersSHA256
                 == hashCanonicalSourceTraces(
                     withinRoot,
-                    includeReadContext: includesABI8ReadContext
+                    includeReadContext: includesABI8ReadContext,
+                    includeConservativeOrigin: includesABI9ConservativeOrigin
                 ),
               partition.outsideRootSameFrameConsumerTraceCount == outsideRoot.count,
               partition.outsideRootSameFrameConsumersSHA256
                 == hashCanonicalSourceTraces(
                     outsideRoot,
-                    includeReadContext: includesABI8ReadContext
+                    includeReadContext: includesABI8ReadContext,
+                    includeConservativeOrigin: includesABI9ConservativeOrigin
                 ),
               withinRoot.allSatisfy({
                   selectedLineages.contains(canonicalSourceLineage(
                       $0,
-                      includeReadContext: includesABI8ReadContext
+                      includeReadContext: includesABI8ReadContext,
+                      includeConservativeOrigin: includesABI9ConservativeOrigin
                   ))
               }) else {
             throw TranslationLabError.invalidProject(
@@ -818,18 +885,24 @@ public struct TranslationPrivateArtifactStore: Sendable {
 
     private func hashCanonicalSourceTraces(
         _ traces: [EngineDisplaySourceTrace],
-        includeReadContext: Bool = true
+        includeReadContext: Bool = true,
+        includeConservativeOrigin: Bool = true
     ) -> String {
         TranslationEvidenceStore.sha256(Data(
             traces.map {
-                canonicalSourceTrace($0, includeReadContext: includeReadContext)
+                canonicalSourceTrace(
+                    $0,
+                    includeReadContext: includeReadContext,
+                    includeConservativeOrigin: includeConservativeOrigin
+                )
             }.sorted().joined(separator: "\n").utf8
         ))
     }
 
     private func canonicalSourceTrace(
         _ trace: EngineDisplaySourceTrace,
-        includeReadContext: Bool = true
+        includeReadContext: Bool = true,
+        includeConservativeOrigin: Bool = true
     ) -> String {
         let base = String(
             format: "%04x:%04x:%@:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d",
@@ -849,13 +922,20 @@ public struct TranslationPrivateArtifactStore: Sendable {
             trace.rangeSetOverflowed ? 1 : 0,
             trace.usesConservativeDataflow ? 1 : 0
         )
-        guard includeReadContext else { return base }
-        return base + ":" + (canonicalSourceReadContext(trace) ?? "none")
+        var result = base
+        if includeReadContext {
+            result += ":" + (canonicalSourceReadContext(trace) ?? "none")
+        }
+        if includeConservativeOrigin {
+            result += ":" + (canonicalConservativeOrigin(trace) ?? "none")
+        }
+        return result
     }
 
     private func canonicalSourceLineage(
         _ trace: EngineDisplaySourceTrace,
-        includeReadContext: Bool = true
+        includeReadContext: Bool = true,
+        includeConservativeOrigin: Bool = true
     ) -> String {
         let base = String(
             format: "%04x:%04x:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d",
@@ -874,8 +954,14 @@ public struct TranslationPrivateArtifactStore: Sendable {
             trace.rangeSetOverflowed ? 1 : 0,
             trace.usesConservativeDataflow ? 1 : 0
         )
-        guard includeReadContext else { return base }
-        return base + ":" + (canonicalSourceReadContext(trace) ?? "none")
+        var result = base
+        if includeReadContext {
+            result += ":" + (canonicalSourceReadContext(trace) ?? "none")
+        }
+        if includeConservativeOrigin {
+            result += ":" + (canonicalConservativeOrigin(trace) ?? "none")
+        }
+        return result
     }
 
     private func canonicalSourceReadContext(
@@ -892,6 +978,30 @@ public struct TranslationPrivateArtifactStore: Sendable {
             context.mapperWindow,
             context.mapperBank,
             context.resolvedCartridgeOperand
+        )
+    }
+
+    private func validConservativeOrigin(_ trace: EngineDisplaySourceTrace) -> Bool {
+        guard trace.usesConservativeDataflow else {
+            return trace.conservativeOrigin == nil
+        }
+        guard let origin = trace.conservativeOrigin,
+              origin.origin20Bit <= 0xF_FFFF else { return false }
+        return origin.origin20Bit == UInt32(
+            ((UInt64(origin.segment) << 4) + UInt64(origin.offset)) & 0xF_FFFF
+        )
+    }
+
+    private func canonicalConservativeOrigin(
+        _ trace: EngineDisplaySourceTrace
+    ) -> String? {
+        guard let origin = trace.conservativeOrigin else { return nil }
+        return String(
+            format: "%@:%08x:%04x:%04x",
+            origin.reason.rawValue,
+            origin.origin20Bit,
+            origin.segment,
+            origin.offset
         )
     }
 
@@ -1056,6 +1166,7 @@ public struct TranslationPrivateArtifactStore: Sendable {
         _ required: Set<String>,
         allowing optional: Set<String>,
         in directory: URL,
+        maximumBytes: Int = 16_777_216,
         project: TranslationProject
     ) throws {
         let entries = try FileManager.default.contentsOfDirectory(
@@ -1068,7 +1179,13 @@ public struct TranslationPrivateArtifactStore: Sendable {
             throw TranslationLabError.invalidProject("the private artifact file set is incomplete or unexpected")
         }
         for entry in entries {
-            _ = try read(entry.lastPathComponent, in: directory, maximumBytes: 16_777_216, allowEmpty: optional.contains(entry.lastPathComponent), project: project)
+            _ = try read(
+                entry.lastPathComponent,
+                in: directory,
+                maximumBytes: maximumBytes,
+                allowEmpty: optional.contains(entry.lastPathComponent),
+                project: project
+            )
         }
     }
 

@@ -7,12 +7,27 @@ The project uses semantic versioning once a release is published.
 
 ### Added
 
-- Added guarded export of a current complete ABI 8 source probe into a
+- Added ABI 9 private sprite-attribute provenance. Clean-replay owner artifacts
+  retain the selected sprite's OAM address, byte count, and final CPU writer;
+  upstream probes can select `spriteAttribute` independently and preserve the
+  first conservative-dataflow reason and origin without exposing either
+  through MCP.
+- Added guarded export of a current complete ABI 9/v4 source probe into a
   deterministic, analyzer-neutral private seed for Ghidra or pypcode. MCP
   receives only source-free counts, completeness flags, and hashes; exact
   cartridge ranges, executed caller/operand/mapper context, and output paths
   remain inside the translation project, and the export never authorizes a
   patch.
+
+### Changed
+
+- Raised the shared private source-evidence artifact bound to 64 MiB and the
+  normalized selected-range contract to 256 disjoint ranges. Genuine per-byte
+  range overflow, unknown lineage, and conservative lineage still fail closed.
+- Bumped current private source-probe and source-free report schemas to v4 for
+  ABI 9. The Evidence browser retains v1-v3 compatibility, while static seed
+  export requires a complete v4 artifact and keeps its deterministic v1 seed
+  schema. The guarded MCP allowlist remains fifteen tools.
 
 ## [0.4.0] - 2026-07-17
 

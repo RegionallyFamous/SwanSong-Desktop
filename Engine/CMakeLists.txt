@@ -37,7 +37,7 @@ target_compile_definitions(
   SwanAresEngine
   PRIVATE
     SWAN_ENABLE_ARES=1
-    SWAN_ENGINE_BUILD_ID="ares-${SWAN_ARES_COMMIT}-swan-abi8"
+    SWAN_ENGINE_BUILD_ID="ares-${SWAN_ARES_COMMIT}-swan-abi9"
 )
 set_target_properties(SwanAresEngine PROPERTIES
   CXX_VISIBILITY_PRESET default

@@ -49,9 +49,13 @@ int main(int argc, char** argv) {
       (capabilities & SWAN_CAPABILITY_DISPLAY_SOURCE_COMPONENT_SELECTION) != 0;
   const bool source_read_context_ok =
       (capabilities & SWAN_CAPABILITY_EXECUTED_SOURCE_READ_CONTEXT) != 0;
+  const bool sprite_attribute_provenance_ok =
+      (capabilities &
+       SWAN_CAPABILITY_DISPLAY_SPRITE_ATTRIBUTE_PROVENANCE) != 0;
 
   if (!backend_ok || !execution_ok || !audio_ok || !provenance_ok ||
-      !source_provenance_ok || !source_selection_ok || !source_read_context_ok) {
+      !source_provenance_ok || !source_selection_ok || !source_read_context_ok ||
+      !sprite_attribute_provenance_ok) {
     std::fputs("ares backend did not advertise the expected live capabilities\n", stderr);
     swan_engine_destroy(engine);
     return 1;
@@ -184,7 +188,16 @@ int main(int argc, char** argv) {
           trace.scope < SWAN_DISPLAY_SOURCE_SCOPE_SELECTED ||
           trace.scope > SWAN_DISPLAY_SOURCE_SCOPE_OUTSIDE_CONSUMER ||
           trace.component < SWAN_DISPLAY_SOURCE_COMPONENT_MAP_CELL ||
-          trace.component > SWAN_DISPLAY_SOURCE_COMPONENT_PALETTE ||
+          trace.component > SWAN_DISPLAY_SOURCE_COMPONENT_SPRITE_ATTRIBUTE ||
+          (trace.conservative_reason == SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE) !=
+              ((trace.flags &
+                SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW) == 0) ||
+          (trace.conservative_reason != SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE &&
+           (trace.flags & SWAN_DISPLAY_SOURCE_FLAG_EXACT) != 0) ||
+          (trace.conservative_reason != SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE &&
+           trace.conservative_origin !=
+               ((((uint32_t)trace.conservative_origin_segment << 4) +
+                 trace.conservative_origin_offset) & 0xfffffu)) ||
           trace.cartridge_length > rom.size() ||
           trace.cartridge_offset > rom.size() - trace.cartridge_length) {
         std::fputs("ares returned invalid upstream source provenance\n", stderr);
@@ -236,29 +249,30 @@ int main(int argc, char** argv) {
         uint8_t palette;
         uint8_t color;
         uint32_t palette_address;
+        uint16_t oam_address;
       };
       const std::array<ExpectedOwner, 3> expected = vertical
           ? std::array<ExpectedOwner, 3>{
                 ExpectedOwner{8, 215, SWAN_DISPLAY_LAYER_SCREEN_1,
                               SWAN_DISPLAY_SOURCE_TILEMAP, 0x1842, 1,
-                              0x4020, 0, 1, 0xfe02},
+                              0x4020, 0, 1, 0xfe02, 0xffff},
                 ExpectedOwner{48, 159, SWAN_DISPLAY_LAYER_SCREEN_2,
                               SWAN_DISPLAY_SOURCE_TILEMAP, 0x1190, 2,
-                              0x4040, 1, 2, 0xfe24},
+                              0x4040, 1, 2, 0xfe24, 0xffff},
                 ExpectedOwner{48, 95, SWAN_DISPLAY_LAYER_SPRITE,
                               SWAN_DISPLAY_SOURCE_SPRITE, 0xffff, 3,
-                              0x4060, 8, 3, 0xff06},
+                              0x4060, 8, 3, 0xff06, 0x0e00},
             }
           : std::array<ExpectedOwner, 3>{
                 ExpectedOwner{8, 8, SWAN_DISPLAY_LAYER_SCREEN_1,
                               SWAN_DISPLAY_SOURCE_TILEMAP, 0x1842, 1,
-                              0x4020, 0, 1, 0xfe02},
+                              0x4020, 0, 1, 0xfe02, 0xffff},
                 ExpectedOwner{64, 48, SWAN_DISPLAY_LAYER_SCREEN_2,
                               SWAN_DISPLAY_SOURCE_TILEMAP, 0x1190, 2,
-                              0x4040, 1, 2, 0xfe24},
+                              0x4040, 1, 2, 0xfe24, 0xffff},
                 ExpectedOwner{128, 48, SWAN_DISPLAY_LAYER_SPRITE,
                               SWAN_DISPLAY_SOURCE_SPRITE, 0xffff, 3,
-                              0x4060, 8, 3, 0xff06},
+                              0x4060, 8, 3, 0xff06, 0x0e00},
             };
 
       for (const auto& item : expected) {
@@ -275,6 +289,12 @@ int main(int argc, char** argv) {
         const bool cell_writer_ok = item.source == SWAN_DISPLAY_SOURCE_SPRITE
             ? owner.cell_writer_pc == UINT32_MAX
             : owner.cell_writer_pc != UINT32_MAX;
+        const bool oam_writer_ok = item.source == SWAN_DISPLAY_SOURCE_SPRITE
+            ? owner.oam_address == item.oam_address &&
+                owner.oam_byte_count == 4 &&
+                owner.oam_writer_pc != UINT32_MAX
+            : owner.oam_address == 0xffff && owner.oam_byte_count == 0 &&
+                owner.oam_writer_pc == UINT32_MAX;
         if (result != SWAN_RESULT_OK || fixture_count != 1 ||
             owner.x != item.x || owner.y != item.y ||
             owner.layer != item.layer || owner.source_kind != item.source ||
@@ -285,20 +305,72 @@ int main(int argc, char** argv) {
             owner.palette_color != item.color ||
             owner.palette_address != item.palette_address ||
             owner.palette_byte_count != 2 || !cell_writer_ok ||
+            !oam_writer_ok ||
             owner.raster_writer_pc == UINT32_MAX ||
             owner.palette_writer_pc == UINT32_MAX) {
           std::fprintf(
               stderr,
-              "fixture provenance mismatch at %u,%u layer=%u source=%u cell=%04x tile=%u raster=%04x/%u palette=%u:%u@%05x writers=%05x/%05x/%05x\n",
+              "fixture provenance mismatch at %u,%u layer=%u source=%u cell=%04x tile=%u raster=%04x/%u palette=%u:%u@%05x oam=%04x/%u writers=%05x/%05x/%05x/%05x\n",
               item.x, item.y, owner.layer, owner.source_kind,
               owner.cell_address, owner.tile_index, owner.raster_address,
               owner.raster_byte_count, owner.palette_index,
               owner.palette_color, owner.palette_address,
+              owner.oam_address, owner.oam_byte_count,
               owner.cell_writer_pc, owner.raster_writer_pc,
-              owner.palette_writer_pc);
+              owner.palette_writer_pc, owner.oam_writer_pc);
           swan_engine_destroy(engine);
           return 1;
         }
+      }
+
+      swan_display_rectangle_t sprite_rectangle{};
+      sprite_rectangle.struct_size = sizeof(sprite_rectangle);
+      sprite_rectangle.x = expected[2].x;
+      sprite_rectangle.y = expected[2].y;
+      sprite_rectangle.width = 1;
+      sprite_rectangle.height = 1;
+      swan_display_source_probe_options_t oam_options{};
+      oam_options.struct_size = sizeof(oam_options);
+      oam_options.selected_component_mask =
+          SWAN_DISPLAY_SOURCE_COMPONENT_MASK_SPRITE_ATTRIBUTE;
+      size_t oam_source_count = 0;
+      result = swan_engine_display_source_probe(
+          engine, &sprite_rectangle, &oam_options,
+          nullptr, 0, &oam_source_count);
+      std::vector<swan_display_source_trace_t> oam_sources(oam_source_count);
+      size_t oam_source_written = 0;
+      if (result == SWAN_RESULT_OK) {
+        result = swan_engine_display_source_probe(
+            engine, &sprite_rectangle, &oam_options,
+            oam_sources.data(), oam_sources.size(), &oam_source_written);
+      }
+      const auto selected_oam = std::find_if(
+          oam_sources.begin(), oam_sources.end(), [&](const auto& trace) {
+            return trace.scope == SWAN_DISPLAY_SOURCE_SCOPE_SELECTED &&
+                   trace.component ==
+                       SWAN_DISPLAY_SOURCE_COMPONENT_SPRITE_ATTRIBUTE &&
+                   trace.source_address == expected[2].oam_address &&
+                   trace.source_byte_count == 4 &&
+                   (trace.conservative_reason ==
+                        SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE ||
+                    ((trace.flags &
+                      SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW) != 0 &&
+                     (trace.flags & SWAN_DISPLAY_SOURCE_FLAG_EXACT) == 0 &&
+                     trace.conservative_origin ==
+                         ((((uint32_t)trace.conservative_origin_segment << 4) +
+                           trace.conservative_origin_offset) & 0xfffffu)));
+          });
+      if (result != SWAN_RESULT_OK || oam_source_count == 0 ||
+          oam_source_written != oam_sources.size() ||
+          selected_oam == oam_sources.end() ||
+          std::any_of(oam_sources.begin(), oam_sources.end(), [](const auto& trace) {
+            return trace.scope == SWAN_DISPLAY_SOURCE_SCOPE_SELECTED &&
+                   trace.component !=
+                       SWAN_DISPLAY_SOURCE_COMPONENT_SPRITE_ATTRIBUTE;
+          })) {
+        std::fputs("sprite-attribute source selection was invalid\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
       }
 
       swan_display_rectangle_t source_rectangle{};

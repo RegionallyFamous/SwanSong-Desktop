@@ -1,8 +1,19 @@
+import CryptoKit
 import Foundation
 @testable import SwanSongKit
 import XCTest
 
 final class TranslationDisplaySourceProbeTests: XCTestCase {
+    func testPrivateSourceEvidenceLimitIsInclusiveAtSixtyFourMiB() {
+        let maximum = 64 * 1_024 * 1_024
+
+        XCTAssertEqual(TranslationPrivateSourceEvidenceLimits.maximumByteCount, maximum)
+        XCTAssertFalse(TranslationPrivateSourceEvidenceLimits.contains(byteCount: 0))
+        XCTAssertTrue(TranslationPrivateSourceEvidenceLimits.contains(byteCount: maximum - 1))
+        XCTAssertTrue(TranslationPrivateSourceEvidenceLimits.contains(byteCount: maximum))
+        XCTAssertFalse(TranslationPrivateSourceEvidenceLimits.contains(byteCount: maximum + 1))
+    }
+
     func testAdaptivePartitionUsesTileAlignedOverflowOnlyBisection() throws {
         var attempts = 0
         let result = try TranslationDisplaySourcePartitioner.run(
@@ -104,6 +115,110 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
             ),
             [.palette]
         )
+        XCTAssertEqual(
+            engineDisplaySourceComponents(
+                sourceKind: .sprite,
+                rasterByteCount: 0,
+                paletteByteCount: 0,
+                oamByteCount: 4
+            ),
+            [.spriteAttribute]
+        )
+    }
+
+    func testLeafAcceptsNineDisjointExactRangesButStillRejectsTrueOverflow() throws {
+        let rectangle = EngineDisplayRectangle(x: 0, y: 0, width: 16, height: 8)
+        let owners = try (0..<9).map { try decodedOwnerSample(x: $0) }
+        let selected = try (0..<9).map {
+            try decodedTrace(
+                scope: "selected",
+                component: "mapCell",
+                x: $0,
+                cartridgeOffset: 0x100 + $0 * 0x10
+            )
+        }
+
+        XCTAssertNoThrow(try TranslationDisplaySourceProbe.validateLeaf(
+            rectangle: rectangle,
+            ownerSamples: owners,
+            selected: selected,
+            consumers: [],
+            components: [.mapCell]
+        ))
+
+        var overflowed = selected
+        overflowed[8] = try decodedTrace(
+            scope: "selected",
+            component: "mapCell",
+            x: 8,
+            cartridgeOffset: 0x180,
+            overflow: true
+        )
+        XCTAssertThrowsError(try TranslationDisplaySourceProbe.validateLeaf(
+            rectangle: rectangle,
+            ownerSamples: owners,
+            selected: overflowed,
+            consumers: [],
+            components: [.mapCell]
+        )) { error in
+            XCTAssertTrue(error.localizedDescription.contains("incomplete"))
+        }
+    }
+
+    func testABI9SpriteOAMAndConservativeOriginStayInPrivateTypes() throws {
+        let legacyOwner = try decodedOwnerSample(x: 0)
+        XCTAssertNil(legacyOwner.oamAddress)
+        XCTAssertNil(legacyOwner.oamByteCount)
+        XCTAssertNil(legacyOwner.oamWriterPC)
+
+        let spriteOwner = try decodedOwnerSample(x: 0, spriteOAM: true)
+        XCTAssertNotNil(spriteOwner.oamAddress)
+        XCTAssertEqual(spriteOwner.oamByteCount, 4)
+        XCTAssertNotNil(spriteOwner.oamWriterPC)
+        XCTAssertEqual(engineDisplaySourceComponents(for: spriteOwner), [
+            .raster, .palette, .spriteAttribute,
+        ])
+
+        let conservative = try decodedTrace(
+            scope: "selected",
+            component: "spriteAttribute",
+            exact: false,
+            conservative: true,
+            conservativeOrigin: true
+        )
+        XCTAssertEqual(conservative.conservativeOrigin?.reason, .unclassifiedInstruction)
+        XCTAssertEqual(conservative.conservativeOrigin?.origin20Bit, 0x179B8)
+        XCTAssertEqual(conservative.conservativeOrigin?.segment, 0x1234)
+        XCTAssertEqual(conservative.conservativeOrigin?.offset, 0x5678)
+
+        let diagnostic = try XCTUnwrap(TranslationDisplaySourceProbe.blockedDiagnostic(
+            role: .patched,
+            frameIndex: 2,
+            nativeFrameNumber: 3,
+            rectangle: EngineDisplayRectangle(x: 0, y: 0, width: 8, height: 8),
+            depth: 0,
+            traces: [conservative],
+            planSHA256: "plan",
+            projectSHA256: "project",
+            romSHA256: "rom",
+            engineSHA256: "engine",
+            rtcSHA256: "rtc",
+            persistenceSHA256: "persistence",
+            nativeFrameSHA256: "frame"
+        ))
+        XCTAssertEqual(diagnostic.counts.selected.spriteAttribute.conservative, 1)
+        XCTAssertEqual(diagnostic.counts.selected.spriteAttribute.nonexact, 1)
+        let publicText = String(
+            decoding: try JSONEncoder().encode(diagnostic),
+            as: UTF8.self
+        ).lowercased()
+        for forbidden in [
+            "oamaddress", "oambytecount", "oamwriterpc", "conservativeorigin",
+            "origin20bit", "unclassifiedinstruction", "sourceaddress",
+            "cartridgeoffset",
+        ] {
+            XCTAssertFalse(publicText.contains(forbidden), forbidden)
+        }
     }
 
     func testBlockedLeafDiagnosticGroupsMultiReasonCountsWithoutPrivateCoordinates() throws {
@@ -151,6 +266,12 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         for forbidden in [
             "\"x\"",
             "\"y\"",
+            "oamAddress",
+            "oamByteCount",
+            "oamWriterPC",
+            "conservativeOrigin",
+            "origin20Bit",
+            "unclassifiedInstruction",
             "sourceAddress",
             "cartridgeOffset",
             "cartridgeLength",
@@ -213,8 +334,9 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         guard availability.backendName == "ares",
               availability.capabilities.contains(.displaySourceProvenance),
               availability.capabilities.contains(.displaySourceComponentSelection),
-              availability.capabilities.contains(.executedSourceReadContext) else {
-            throw XCTSkip("requires the live ABI 8 ares display-source provenance engine")
+              availability.capabilities.contains(.executedSourceReadContext),
+              availability.capabilities.contains(.displaySpriteAttributeProvenance) else {
+            throw XCTSkip("requires the live ABI 9 ares display-source provenance engine")
         }
 
         let root = FileManager.default.temporaryDirectory.appendingPathComponent(
@@ -308,6 +430,12 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
             "mapperbank",
             "operandsegment",
             "operandoffset",
+            "oamaddress",
+            "oambytecount",
+            "oamwriterpc",
+            "conservativeorigin",
+            "origin20bit",
+            "unclassifiedinstruction",
             projectRoot.path.lowercased(),
         ] {
             XCTAssertFalse(publicText.contains(forbidden), forbidden)
@@ -315,14 +443,54 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         XCTAssertFalse(publicText.contains("prototypeeligible"))
 
         let store = TranslationPrivateArtifactStore()
+        let spriteOwnerReport = try TranslationDisplayOwnerProbe.run(
+            project: project,
+            role: .original,
+            plan: plan,
+            frameIndex: 2,
+            rectangle: EngineDisplayRectangle(x: 128, y: 48, width: 1, height: 1)
+        )
+        let publicSpriteText = String(
+            decoding: try JSONEncoder().encode(spriteOwnerReport),
+            as: UTF8.self
+        ).lowercased()
+        for forbidden in [
+            "oamaddress", "oambytecount", "oamwriterpc", "sourceaddress",
+            "cartridgeoffset", projectRoot.path.lowercased(),
+        ] {
+            XCTAssertFalse(publicSpriteText.contains(forbidden), forbidden)
+        }
+
         let artifacts = try store.list(project: project)
+        let spriteArtifact = try XCTUnwrap(
+            artifacts.first {
+                $0.kind == .displayOwnerProbe
+                    && $0.manifestSHA256 == spriteOwnerReport.privateDetailsSHA256
+            }
+        )
+        XCTAssertTrue(spriteArtifact.isIntact, spriteArtifact.integrityIssue ?? "")
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let spriteDetails = try decoder.decode(
+            TranslationDisplayOwnerProbeDetails.self,
+            from: Data(contentsOf: spriteArtifact.directoryURL.appendingPathComponent(
+                "details.json"
+            ))
+        )
+        let spriteSample = try XCTUnwrap(spriteDetails.samples.first)
+        XCTAssertEqual(spriteSample.sourceKind.rawValue, "sprite")
+        XCTAssertNotNil(spriteSample.oamAddress)
+        XCTAssertEqual(spriteSample.oamByteCount, 4)
+        XCTAssertNotNil(spriteSample.oamWriterPC)
+
         let artifact = try XCTUnwrap(
-            artifacts.first { $0.kind == .displaySourceProbe }
+            artifacts.first {
+                $0.kind == .displaySourceProbe
+                    && $0.manifestSHA256 == report.privateDetailsSHA256
+            }
         )
         XCTAssertTrue(artifact.isIntact, artifact.integrityIssue ?? "")
         let detailsURL = artifact.directoryURL.appendingPathComponent("details.json")
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
         let details = try decoder.decode(
             TranslationDisplaySourceProbeDetails.self,
             from: Data(contentsOf: detailsURL)
@@ -488,6 +656,34 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         XCTAssertFalse(contextTampered.isIntact)
         try originalDetailsData.write(to: detailsURL, options: [.atomic])
 
+        var legacyV3 = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: originalDetailsData)
+                as? [String: Any]
+        )
+        legacyV3["schema"] = TranslationDisplaySourceProbeDetails.legacyExecutedReadSchema
+        var legacyPartition = try XCTUnwrap(legacyV3["partition"] as? [String: Any])
+        legacyPartition["algorithm"] = TranslationDisplaySourcePartition.legacyAlgorithm
+        let legacyWithin = details.traces.filter {
+            $0.scope == .outsideConsumer
+                && rectangleContains(details.rectangle, x: $0.x, y: $0.y)
+        }
+        let legacyOutside = details.traces.filter {
+            $0.scope == .outsideConsumer
+                && !rectangleContains(details.rectangle, x: $0.x, y: $0.y)
+        }
+        legacyPartition["withinRootConsumersSHA256"] = legacyV3TraceHash(legacyWithin)
+        legacyPartition["outsideRootSameFrameConsumersSHA256"] = legacyV3TraceHash(
+            legacyOutside
+        )
+        legacyV3["partition"] = legacyPartition
+        try JSONSerialization.data(withJSONObject: legacyV3, options: [.sortedKeys])
+            .write(to: detailsURL, options: [.atomic])
+        let legacyV3Artifact = try XCTUnwrap(try store.list(project: project).first {
+            $0.directoryURL == artifact.directoryURL
+        })
+        XCTAssertTrue(legacyV3Artifact.isIntact, legacyV3Artifact.integrityIssue ?? "")
+        try originalDetailsData.write(to: detailsURL, options: [.atomic])
+
         var hostile = try XCTUnwrap(
             JSONSerialization.jsonObject(with: Data(contentsOf: detailsURL))
                 as? [String: Any]
@@ -527,22 +723,25 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
     private func decodedTrace(
         scope: String,
         component: String,
+        x: Int = 0,
+        cartridgeOffset: Int = 0x100,
         length: Int,
         exact: Bool,
         unknown: Bool,
         overflow: Bool,
-        conservative: Bool
+        conservative: Bool,
+        conservativeOrigin: Bool = false
     ) throws -> EngineDisplaySourceTrace {
-        let object: [String: Any] = [
-            "x": 0,
+        var object: [String: Any] = [
+            "x": x,
             "y": 0,
             "scope": scope,
             "component": component,
-            "sourceAddress": 0x4000,
+            "sourceAddress": 0x4000 + x,
             "sourceByteCount": 2,
             "minimumInstructionHops": 1,
             "maximumInstructionHops": 2,
-            "cartridgeOffset": 0x100,
+            "cartridgeOffset": cartridgeOffset,
             "cartridgeLength": length,
             "hasExactRange": exact,
             "isTransformed": false,
@@ -550,9 +749,138 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
             "rangeSetOverflowed": overflow,
             "usesConservativeDataflow": conservative,
         ]
+        if conservativeOrigin {
+            object["conservativeOrigin"] = [
+                "reason": "unclassifiedInstruction",
+                "origin20Bit": 0x179B8,
+                "segment": 0x1234,
+                "offset": 0x5678,
+            ]
+        }
         return try JSONDecoder().decode(
             EngineDisplaySourceTrace.self,
             from: JSONSerialization.data(withJSONObject: object)
         )
+    }
+
+    private func decodedTrace(
+        scope: String,
+        component: String,
+        x: Int,
+        cartridgeOffset: Int,
+        overflow: Bool = false
+    ) throws -> EngineDisplaySourceTrace {
+        try decodedTrace(
+            scope: scope,
+            component: component,
+            x: x,
+            cartridgeOffset: cartridgeOffset,
+            length: 1,
+            exact: true,
+            unknown: false,
+            overflow: overflow,
+            conservative: false
+        )
+    }
+
+    private func decodedTrace(
+        scope: String,
+        component: String,
+        exact: Bool,
+        conservative: Bool,
+        conservativeOrigin: Bool
+    ) throws -> EngineDisplaySourceTrace {
+        try decodedTrace(
+            scope: scope,
+            component: component,
+            length: 4,
+            exact: exact,
+            unknown: false,
+            overflow: false,
+            conservative: conservative,
+            conservativeOrigin: conservativeOrigin
+        )
+    }
+
+    private func decodedOwnerSample(
+        x: Int,
+        spriteOAM: Bool = false
+    ) throws -> EngineDisplayOwnerSample {
+        var object: [String: Any] = [
+            "x": x,
+            "y": 0,
+            "layer": spriteOAM ? "sprite" : "screen1",
+            "sourceKind": spriteOAM ? "sprite" : "tilemap",
+            "cellAddress": spriteOAM ? 0xFFFF : 0x1800 + x * 2,
+            "tileIndex": x,
+            "cellAttributes": 0,
+            "rasterAddress": spriteOAM ? 0x4000 : 0,
+            "rasterByteCount": spriteOAM ? 2 : 0,
+            "paletteIndex": 0,
+            "paletteColor": 0,
+            "paletteByteCount": spriteOAM ? 2 : 0,
+            "paletteAddress": spriteOAM ? 0xFE00 : 0,
+            "cellWriterPC": 0x100,
+            "rasterWriterPC": 0x200,
+            "paletteWriterPC": 0x300,
+        ]
+        if spriteOAM {
+            object["oamAddress"] = 0x100
+            object["oamByteCount"] = 4
+            object["oamWriterPC"] = 0x400
+        }
+        return try JSONDecoder().decode(
+            EngineDisplayOwnerSample.self,
+            from: JSONSerialization.data(withJSONObject: object)
+        )
+    }
+
+    private func rectangleContains(
+        _ rectangle: EngineDisplayRectangle,
+        x: UInt16,
+        y: UInt16
+    ) -> Bool {
+        UInt32(x) >= UInt32(rectangle.x)
+            && UInt32(x) < UInt32(rectangle.x) + UInt32(rectangle.width)
+            && UInt32(y) >= UInt32(rectangle.y)
+            && UInt32(y) < UInt32(rectangle.y) + UInt32(rectangle.height)
+    }
+
+    private func legacyV3TraceHash(_ traces: [EngineDisplaySourceTrace]) -> String {
+        let canonical = traces.map { trace in
+            let base = String(
+                format: "%04x:%04x:%@:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d",
+                trace.x,
+                trace.y,
+                trace.scope.rawValue,
+                trace.component.rawValue,
+                trace.sourceAddress,
+                trace.sourceByteCount,
+                trace.minimumInstructionHops,
+                trace.maximumInstructionHops,
+                trace.cartridgeOffset,
+                trace.cartridgeLength,
+                trace.hasExactRange ? 1 : 0,
+                trace.isTransformed ? 1 : 0,
+                trace.hasUnknownDependency ? 1 : 0,
+                trace.rangeSetOverflowed ? 1 : 0,
+                trace.usesConservativeDataflow ? 1 : 0
+            )
+            guard let context = trace.executedReadContext else { return base + ":none" }
+            return base + String(
+                format: ":%08x:%04x:%04x:%04x:%04x:%04x:%04x:%08x",
+                context.immediateCaller,
+                context.callerSegment,
+                context.callerOffset,
+                context.operandSegment,
+                context.operandOffset,
+                context.mapperWindow,
+                context.mapperBank,
+                context.resolvedCartridgeOperand
+            )
+        }.sorted().joined(separator: "\n")
+        return SHA256.hash(data: Data(canonical.utf8)).map {
+            String(format: "%02x", $0)
+        }.joined()
     }
 }

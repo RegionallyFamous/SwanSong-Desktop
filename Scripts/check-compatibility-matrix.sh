@@ -58,7 +58,7 @@ if [ -n "$(git -C "$MACOS_DIR" status --porcelain --untracked-files=normal)" ]; 
   SOURCE_TREE_DIRTY=true
 fi
 if ! printf '%s\n' "$ENGINE_BUILD_ID" \
-    | grep -Eq '^ares-[0-9a-f]{40}-swan-abi8$'; then
+    | grep -Eq '^ares-[0-9a-f]{40}-swan-abi9$'; then
   echo "live engine exposed an invalid build ID" >&2
   exit 1
 fi
@@ -124,7 +124,7 @@ source_tree_dirty = sys.argv[10] == "true"
 entries = []
 failures = []
 
-if not re.fullmatch(r"ares-[0-9a-f]{40}-swan-abi8", engine_build_id):
+if not re.fullmatch(r"ares-[0-9a-f]{40}-swan-abi9", engine_build_id):
     raise SystemExit("invalid engine build evidence")
 for digest in (engine_dylib_sha256, probe_executable_sha256, probe_source_sha256):
     if not re.fullmatch(r"[0-9a-f]{64}", digest):

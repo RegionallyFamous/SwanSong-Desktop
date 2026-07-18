@@ -34,13 +34,14 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
         for schema in [
             TranslationDisplaySourceProbeDetails.legacySchema,
             TranslationDisplaySourceProbeDetails.legacyAdaptiveSchema,
+            TranslationDisplaySourceProbeDetails.legacyExecutedReadSchema,
         ] {
             let details = try fixtureDetails(schema: schema)
             XCTAssertThrowsError(try TranslationStaticAnalysisSeedExporter.makeSeed(
                 details: details,
                 detailsData: try encoded(details)
             )) { error in
-                XCTAssertTrue(error.localizedDescription.contains("ABI-8/v3"))
+                XCTAssertTrue(error.localizedDescription.contains("ABI-9/v4"))
             }
         }
 
@@ -56,6 +57,24 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
                 XCTAssertTrue(error.localizedDescription.contains("mapper arithmetic"))
             }
         }
+    }
+
+    func testSeedAcceptsFullWidthMapperStateWhenFixedWindowResolutionIsExact() throws {
+        let details = try fixtureDetails(
+            mutation: "fullWidthFixedWindow",
+            romByteCount: 0x1_0000
+        )
+        let seed = try TranslationStaticAnalysisSeedExporter.makeSeed(
+            details: details,
+            detailsData: try encoded(details)
+        )
+
+        XCTAssertTrue(seed.anchors.contains {
+            $0.scope == "selected"
+                && $0.mapperWindow == 15
+                && $0.mapperBank == 0xFFFF
+                && $0.resolvedMapperApertureOperand == 0x100
+        })
     }
 
     func testSeedRejectsIncompleteOrOutOfRangeLineage() throws {
@@ -94,6 +113,34 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
             "upperbound", "immediatecaller", "callersegment", "calleroffset",
             "operandsegment", "operandoffset", "mapperwindow", "mapperbank",
             "resolvedmapperapertureoperand", "instructionhops", "0x100",
+        ] {
+            XCTAssertFalse(publicText.contains(forbidden), forbidden)
+        }
+    }
+
+    func testSpriteAttributeSeedKeepsV1PrivateSchemaAndSourceFreeCounts() throws {
+        let details = try fixtureDetails(component: "spriteAttribute")
+        let detailsData = try encoded(details)
+        let seed = try TranslationStaticAnalysisSeedExporter.makeSeed(
+            details: details,
+            detailsData: detailsData
+        )
+        let report = TranslationStaticAnalysisSeedExporter.makeReport(
+            seed: seed,
+            seedData: try encoded(seed)
+        )
+
+        XCTAssertEqual(seed.schema, "swan-song-static-analysis-seed-v1")
+        XCTAssertEqual(seed.sourceProbeSchema, TranslationDisplaySourceProbeDetails.currentSchema)
+        XCTAssertEqual(seed.selectedComponents, ["spriteAttribute"])
+        XCTAssertTrue(seed.anchors.allSatisfy { $0.component == "spriteAttribute" })
+        XCTAssertEqual(report.componentCounts, ["spriteAttribute": 2])
+        XCTAssertFalse(report.prototypeAuthorized)
+
+        let publicText = String(decoding: try encoded(report), as: UTF8.self).lowercased()
+        for forbidden in [
+            "oam", "sourceaddress", "cartridgeoffset", "cartridgerange",
+            "conservativeorigin", "origin20bit", "mapperwindow", "mapperbank",
         ] {
             XCTAssertFalse(publicText.contains(forbidden), forbidden)
         }
@@ -156,12 +203,19 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
 
     private func fixtureDetails(
         schema: String = TranslationDisplaySourceProbeDetails.currentSchema,
-        mutation: String? = nil
+        component: String = "raster",
+        mutation: String? = nil,
+        romByteCount: Int = 0x4_0000
     ) throws -> TranslationDisplaySourceProbeDetails {
-        var selected = trace(scope: "selected", x: 0)
-        let duplicate = trace(scope: "selected", x: 1)
-        let consumer = trace(scope: "outsideConsumer", x: 16)
-        var runtimeGenerated = trace(scope: "selected", x: 2, length: 0)
+        var selected = trace(scope: "selected", component: component, x: 0)
+        let duplicate = trace(scope: "selected", component: component, x: 1)
+        let consumer = trace(scope: "outsideConsumer", component: component, x: 16)
+        var runtimeGenerated = trace(
+            scope: "selected",
+            component: component,
+            x: 2,
+            length: 0
+        )
         runtimeGenerated.removeValue(forKey: "executedReadContext")
 
         switch mutation {
@@ -171,6 +225,10 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
             mutateContext(&selected, key: "mapperWindow", value: 3)
         case "mapperBank":
             mutateContext(&selected, key: "mapperBank", value: 1)
+        case "fullWidthFixedWindow":
+            mutateContext(&selected, key: "operandSegment", value: 0xF000)
+            mutateContext(&selected, key: "mapperWindow", value: 15)
+            mutateContext(&selected, key: "mapperBank", value: 0xFFFF)
         case "resolvedOperand":
             mutateContext(&selected, key: "resolvedCartridgeOperand", value: 0x101)
         case "resolvedAlias":
@@ -198,12 +256,12 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
             "planFrameIndex": 2,
             "nativeFrameNumber": 3,
             "rectangle": ["x": 0, "y": 0, "width": 8, "height": 8],
-            "selectedComponents": ["raster"],
+            "selectedComponents": [component],
             "plan": digest(byteCount: 64, value: "11"),
             "project": digest(byteCount: 128, value: "22"),
-            "rom": digest(byteCount: 0x4_0000, value: "33"),
+            "rom": digest(byteCount: romByteCount, value: "33"),
             "romFooterChecksum": 0x1234,
-            "engine": ["backend": "ares", "buildID": "fixture-abi8"],
+            "engine": ["backend": "ares", "buildID": "fixture-abi9"],
             "engineSHA256": String(repeating: "4", count: 64),
             "rtc": ["mode": "deterministic", "seedUnixSeconds": 946_684_800],
             "rtcSHA256": String(repeating: "5", count: 64),
@@ -222,7 +280,7 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
                 "traceRecordLimit": 4_096,
             ],
             "partition": [
-                "algorithm": "tile8-balanced-bisection-v1",
+                "algorithm": TranslationDisplaySourcePartition.currentAlgorithm,
                 "atomicCellWidth": 8,
                 "atomicCellHeight": 8,
                 "maximumDepth": 5,
@@ -252,6 +310,7 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
 
     private func trace(
         scope: String,
+        component: String,
         x: Int,
         length: Int = 4
     ) -> [String: Any] {
@@ -259,7 +318,7 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
             "x": x,
             "y": 0,
             "scope": scope,
-            "component": "raster",
+            "component": component,
             "sourceAddress": 0x4000 + x,
             "sourceByteCount": 4,
             "minimumInstructionHops": 1,

@@ -246,7 +246,11 @@ struct SourceSet {
   uint8_t count = 0;
   bool unknown = false;
   bool overflow = false;
-  bool conservative = false;
+  swan_display_source_conservative_reason_t conservative_reason =
+      SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE;
+  uint32_t conservative_origin = 0xffffffffu;
+  uint16_t conservative_origin_segment = 0;
+  uint16_t conservative_origin_offset = 0;
   uint16_t minimum_hops = 0;
   uint16_t maximum_hops = 0;
 
@@ -335,7 +339,7 @@ struct SourceSet {
   void merge(const SourceSet& other) {
     unknown = unknown || other.unknown;
     overflow = overflow || other.overflow;
-    conservative = conservative || other.conservative;
+    inherit_conservative_origin(other);
     if (count == 0) {
       minimum_hops = other.minimum_hops;
       maximum_hops = other.maximum_hops;
@@ -352,7 +356,7 @@ struct SourceSet {
   void merge_ranges_only(const SourceSet& other) {
     unknown = unknown || other.unknown;
     overflow = overflow || other.overflow;
-    conservative = conservative || other.conservative;
+    inherit_conservative_origin(other);
     for (size_t index = 0; index < other.count && !overflow; ++index) {
       add(other.ranges[index].lower, other.ranges[index].upper);
     }
@@ -372,7 +376,104 @@ struct SourceSet {
     }
     return false;
   }
+
+  void mark_conservative(
+      swan_display_source_conservative_reason_t reason,
+      uint32_t origin,
+      uint16_t segment,
+      uint16_t offset) {
+    if (reason == SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE ||
+        conservative_reason != SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE) return;
+    conservative_reason = reason;
+    conservative_origin = origin & 0xfffffu;
+    conservative_origin_segment = segment;
+    conservative_origin_offset = offset;
+  }
+
+  void inherit_conservative_origin(const SourceSet& other) {
+    if (conservative_reason != SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE ||
+        other.conservative_reason == SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE) {
+      return;
+    }
+    conservative_reason = other.conservative_reason;
+    conservative_origin = other.conservative_origin;
+    conservative_origin_segment = other.conservative_origin_segment;
+    conservative_origin_offset = other.conservative_origin_offset;
+  }
 };
+
+static_assert(SourceSet::capacity == 8);
+
+struct SelectedRangeUnion {
+  struct Range {
+    uint32_t lower = 0;
+    uint32_t upper = 0;
+  };
+
+  static constexpr size_t capacity = 256;
+  std::array<Range, capacity> ranges{};
+  uint16_t count = 0;
+  bool overflow = false;
+
+  constexpr void add(uint32_t lower, uint32_t upper) {
+    if (lower >= upper || overflow) return;
+    Range inserted{lower, upper};
+    for (size_t index = 0; index < count;) {
+      if (ranges[index].lower <= inserted.upper &&
+          inserted.lower <= ranges[index].upper) {
+        inserted.lower = std::min(inserted.lower, ranges[index].lower);
+        inserted.upper = std::max(inserted.upper, ranges[index].upper);
+        for (size_t move = index + 1; move < count; ++move) {
+          ranges[move - 1] = ranges[move];
+        }
+        --count;
+        continue;
+      }
+      ++index;
+    }
+    if (count >= capacity) {
+      overflow = true;
+      return;
+    }
+    size_t index = 0;
+    while (index < count && ranges[index].lower < inserted.lower) ++index;
+    for (size_t move = count; move > index; --move) {
+      ranges[move] = ranges[move - 1];
+    }
+    ranges[index] = inserted;
+    ++count;
+  }
+
+  void merge(const SourceSet& sources) {
+    overflow = overflow || sources.overflow;
+    for (size_t index = 0; index < sources.count && !overflow; ++index) {
+      add(sources.ranges[index].lower, sources.ranges[index].upper);
+    }
+  }
+
+  bool intersects(const SourceSet& sources) const {
+    for (size_t left = 0; left < count; ++left) {
+      for (size_t right = 0; right < sources.count; ++right) {
+        if (ranges[left].lower < sources.ranges[right].upper &&
+            sources.ranges[right].lower < ranges[left].upper) return true;
+      }
+    }
+    return false;
+  }
+};
+
+static_assert(SelectedRangeUnion::capacity == 256);
+static_assert([]() consteval {
+  SelectedRangeUnion selected;
+  for (uint32_t index = 0; index < SelectedRangeUnion::capacity; ++index) {
+    selected.add(index * 2u, index * 2u + 1u);
+  }
+  if (selected.overflow || selected.count != SelectedRangeUnion::capacity) {
+    return false;
+  }
+  selected.add(0x10000u, 0x10001u);
+  return selected.overflow;
+}());
 
 class AresBackend final : public SwanEngineBackend, private ares::Platform {
  public:
@@ -397,7 +498,8 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
            SWAN_CAPABILITY_DISPLAY_PROVENANCE |
            SWAN_CAPABILITY_DISPLAY_SOURCE_PROVENANCE |
            SWAN_CAPABILITY_DISPLAY_SOURCE_COMPONENT_SELECTION |
-           SWAN_CAPABILITY_EXECUTED_SOURCE_READ_CONTEXT;
+           SWAN_CAPABILITY_EXECUTED_SOURCE_READ_CONTEXT |
+           SWAN_CAPABILITY_DISPLAY_SPRITE_ATTRIBUTE_PROVENANCE;
   }
 
   swan_result_t load(std::span<const uint8_t> rom,
@@ -879,7 +981,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
 
     std::vector<swan_display_source_trace_t> collected;
     collected.reserve(static_cast<size_t>(rectangle.width) * rectangle.height * 6u);
-    SourceSet selected_ranges;
+    SelectedRangeUnion selected_ranges;
     for_each_display_sample([&](uint16_t x, uint16_t y,
                                 const swan_display_owner_sample_t& sample) {
       if (x < rectangle.x || x >= right || y < rectangle.y || y >= bottom) return;
@@ -888,7 +990,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
                                      const SourceSet& sources) {
         const uint32_t component_bit = 1u << (static_cast<uint32_t>(component) - 1u);
         if ((selected_component_mask & component_bit) == 0) return;
-        selected_ranges.merge_ranges_only(sources);
+        selected_ranges.merge(sources);
         append_source_traces(collected, x, y, SWAN_DISPLAY_SOURCE_SCOPE_SELECTED,
                              component, address, byte_count, sources);
       });
@@ -905,7 +1007,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       for_each_component(sample, [&](swan_display_source_component_t component,
                                      uint32_t address, uint16_t byte_count,
                                      const SourceSet& sources) {
-        if (!sources.intersects(selected_ranges)) return;
+        if (!selected_ranges.intersects(sources)) return;
         append_source_traces(
             collected, x, y, SWAN_DISPLAY_SOURCE_SCOPE_OUTSIDE_CONSUMER,
             component, address, byte_count, sources, &selected_ranges);
@@ -1036,7 +1138,9 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     if (sources) {
       *sources = instruction_active_ ? instruction_sources_ : SourceSet{};
       if (instruction_active_ && !instruction_precise_copy_) {
-        sources->conservative = true;
+        sources->mark_conservative(
+            SWAN_DISPLAY_SOURCE_CONSERVATIVE_UNCLASSIFIED_INSTRUCTION,
+            instruction_caller_, instruction_segment_, instruction_offset_);
       }
       if (instruction_active_ && !sources->empty()) sources->increment_hops();
     }
@@ -1059,7 +1163,11 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
   void wonderSwanInstructionEnd() override {
     if (!instruction_active_) return;
     if (!instruction_sources_.empty()) instruction_sources_.increment_hops();
-    if (!instruction_precise_copy_) instruction_sources_.conservative = true;
+    if (!instruction_precise_copy_) {
+      instruction_sources_.mark_conservative(
+          SWAN_DISPLAY_SOURCE_CONSERVATIVE_UNCLASSIFIED_INSTRUCTION,
+          instruction_caller_, instruction_segment_, instruction_offset_);
+    }
     for (uint32_t index = 0; index < register_sources_.size(); ++index) {
       if (instruction_written_registers_ & (1u << index)) {
         register_sources_[index] = instruction_sources_;
@@ -1146,12 +1254,16 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     sample.palette_color = static_cast<uint8_t>(input.paletteColor);
     sample.palette_byte_count = static_cast<uint8_t>(input.paletteByteCount);
     sample.palette_address = input.paletteAddress;
+    sample.oam_address = static_cast<uint16_t>(input.oamAddress);
+    sample.oam_byte_count = static_cast<uint8_t>(input.oamByteCount);
     sample.cell_writer_pc = writer_for(
         input.cellAddress, input.cellByteCount);
     sample.raster_writer_pc = writer_for(
         input.rasterAddress, input.rasterByteCount);
     sample.palette_writer_pc = writer_for(
         input.paletteAddress, input.paletteByteCount);
+    sample.oam_writer_pc = writer_for(
+        input.oamAddress, input.oamByteCount);
   }
 
   void attach(ares::Node::Object node) override {
@@ -1280,6 +1392,12 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
                sample.palette_byte_count,
                source_set_for(sample.palette_address, sample.palette_byte_count));
     }
+    if (sample.source_kind == SWAN_DISPLAY_SOURCE_SPRITE &&
+        sample.oam_byte_count) {
+      callback(SWAN_DISPLAY_SOURCE_COMPONENT_SPRITE_ATTRIBUTE,
+               sample.oam_address, sample.oam_byte_count,
+               source_set_for(sample.oam_address, sample.oam_byte_count));
+    }
   }
 
   template<typename Callback>
@@ -1302,11 +1420,12 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       uint16_t x, uint16_t y, swan_display_source_scope_t scope,
       swan_display_source_component_t component, uint32_t address,
       uint16_t byte_count, const SourceSet& sources,
-      const SourceSet* intersection = nullptr) {
+      const SelectedRangeUnion* intersection = nullptr) {
     const uint32_t base_flags =
         (sources.unknown ? SWAN_DISPLAY_SOURCE_FLAG_UNKNOWN_DEPENDENCY : 0u) |
         (sources.overflow ? SWAN_DISPLAY_SOURCE_FLAG_RANGE_OVERFLOW : 0u) |
-        (sources.conservative ? SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW : 0u) |
+        (sources.conservative_reason != SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE
+            ? SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW : 0u) |
         (sources.maximum_hops > 0 ? SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED : 0u);
     bool emitted = false;
     for (size_t index = 0; index < sources.count; ++index) {
@@ -1333,8 +1452,16 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       trace.cartridge_offset = range.lower;
       trace.cartridge_length = range.upper - range.lower;
       trace.flags = base_flags |
-          ((!sources.unknown && !sources.overflow && !sources.conservative)
+          ((!sources.unknown && !sources.overflow &&
+            sources.conservative_reason == SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE)
               ? SWAN_DISPLAY_SOURCE_FLAG_EXACT : 0u);
+      trace.conservative_reason = sources.conservative_reason;
+      if (sources.conservative_reason !=
+          SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE) {
+        trace.conservative_origin = sources.conservative_origin;
+        trace.conservative_origin_segment = sources.conservative_origin_segment;
+        trace.conservative_origin_offset = sources.conservative_origin_offset;
+      }
       if (range.read_context.executed) {
         trace.read_context_flags = SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED;
         trace.immediate_caller = range.read_context.immediate_caller;
@@ -1351,7 +1478,9 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       emitted = true;
     }
     if (!emitted && (scope == SWAN_DISPLAY_SOURCE_SCOPE_SELECTED ||
-                     sources.unknown || sources.overflow || sources.conservative)) {
+                     sources.unknown || sources.overflow ||
+                     sources.conservative_reason !=
+                         SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE)) {
       swan_display_source_trace_t trace{};
       trace.struct_size = sizeof(trace);
       trace.x = x;
@@ -1363,7 +1492,15 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       trace.minimum_instruction_hops = sources.minimum_hops;
       trace.maximum_instruction_hops = sources.maximum_hops;
       trace.flags = base_flags;
-      if (!sources.unknown && !sources.overflow && !sources.conservative) {
+      trace.conservative_reason = sources.conservative_reason;
+      if (sources.conservative_reason !=
+          SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE) {
+        trace.conservative_origin = sources.conservative_origin;
+        trace.conservative_origin_segment = sources.conservative_origin_segment;
+        trace.conservative_origin_offset = sources.conservative_origin_offset;
+      }
+      if (!sources.unknown && !sources.overflow &&
+          sources.conservative_reason == SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE) {
         trace.flags |= SWAN_DISPLAY_SOURCE_FLAG_EXACT;
       }
       output.push_back(trace);

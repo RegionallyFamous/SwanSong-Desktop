@@ -1,5 +1,14 @@
 import Foundation
 
+enum TranslationPrivateSourceEvidenceLimits {
+    static let maximumByteCount = 64 * 1_024 * 1_024
+    static let maximumNormalizedRangeCount = 256
+
+    static func contains(byteCount: Int) -> Bool {
+        byteCount > 0 && byteCount <= maximumByteCount
+    }
+}
+
 public struct TranslationCartridgeSourceRange: Codable, Equatable, Sendable {
     /// Inclusive byte offset in the exact project ROM file.
     public let lowerBound: UInt32
@@ -25,7 +34,8 @@ public struct TranslationDisplaySourcePartitionLeaf: Codable, Equatable, Sendabl
 }
 
 public struct TranslationDisplaySourcePartition: Codable, Equatable, Sendable {
-    public static let currentAlgorithm = "tile8-balanced-bisection-v1"
+    public static let currentAlgorithm = "tile8-balanced-bisection-v2"
+    public static let legacyAlgorithm = "tile8-balanced-bisection-v1"
 
     public let algorithm: String
     public let atomicCellWidth: Int
@@ -50,7 +60,8 @@ public struct TranslationDisplaySourcePartition: Codable, Equatable, Sendable {
 }
 
 public struct TranslationDisplaySourceProbeDetails: Codable, Equatable, Sendable {
-    public static let currentSchema = "swan-song-display-source-probe-v3"
+    public static let currentSchema = "swan-song-display-source-probe-v4"
+    public static let legacyExecutedReadSchema = "swan-song-display-source-probe-v3"
     public static let legacyAdaptiveSchema = "swan-song-display-source-probe-v2"
     public static let legacySchema = "swan-song-display-source-probe-v1"
 
@@ -87,7 +98,7 @@ public struct TranslationDisplaySourceProbeDetails: Codable, Equatable, Sendable
 /// addresses, per-pixel chains, and outside-consumer coordinates remain only
 /// in the private project details artifact.
 public struct TranslationDisplaySourceProbeReport: Codable, Equatable, Sendable {
-    public static let currentSchema = "swan-song-display-source-probe-report-v3"
+    public static let currentSchema = "swan-song-display-source-probe-report-v4"
 
     public let schema: String
     public let role: TranslationROMRole
@@ -153,6 +164,7 @@ public struct TranslationDisplaySourceBlockedComponentCounts: Codable, Equatable
     public let mapCell: TranslationDisplaySourceBlockedReasonCounts
     public let raster: TranslationDisplaySourceBlockedReasonCounts
     public let palette: TranslationDisplaySourceBlockedReasonCounts
+    public let spriteAttribute: TranslationDisplaySourceBlockedReasonCounts
 }
 
 public struct TranslationDisplaySourceBlockedScopeCounts: Codable, Equatable, Sendable {
@@ -169,7 +181,7 @@ public struct TranslationDisplaySourceBlockedLeafGeometry: Codable, Equatable, S
 public struct TranslationDisplaySourceProbeBlockedDiagnostic:
     Codable, Equatable, Error, LocalizedError, Sendable
 {
-    public static let currentSchema = "swan-song-display-source-probe-blocked-leaf-v1"
+    public static let currentSchema = "swan-song-display-source-probe-blocked-leaf-v2"
 
     public let schema: String
     public let errorCode: String
@@ -221,7 +233,8 @@ enum TranslationDisplaySourcePartitioner {
     static let maximumDepth = 5
     static let terminalLeafLimit = 32
     static let attemptedNodeLimit = 64
-    static let normalizedRangeLimit = 256
+    static let normalizedRangeLimit =
+        TranslationPrivateSourceEvidenceLimits.maximumNormalizedRangeCount
     static let traceRecordLimit = 262_144
 
     struct TreeStatistics: Equatable {
@@ -483,6 +496,7 @@ public enum TranslationDisplaySourceProbe {
               engine.capabilities.contains(.displaySourceProvenance),
               engine.capabilities.contains(.displaySourceComponentSelection),
               engine.capabilities.contains(.executedSourceReadContext),
+              engine.capabilities.contains(.displaySpriteAttributeProvenance),
               engine.backendName == "ares" else {
             throw TranslationLabError.invalidRoute(
                 "the bundled live engine cannot produce upstream display-source provenance"
@@ -514,9 +528,10 @@ public enum TranslationDisplaySourceProbe {
         }
 
         let ownerSamples = try engine.displayOwnerProbe(rectangle: rectangle)
-        guard ownerSamples.count == pixelCount else {
+        guard ownerSamples.count == pixelCount,
+              ownerSamples.allSatisfy(validCurrentOwnerSample) else {
             throw TranslationLabError.invalidRoute(
-                "the engine returned incomplete display-owner provenance"
+                "the engine returned incomplete ABI-9 display-owner provenance"
             )
         }
         let nativeFrameNumberBeforeQueries = frame.number
@@ -762,9 +777,11 @@ public enum TranslationDisplaySourceProbe {
             partition: partition
         )
         let detailsData = try encoded(details)
-        guard detailsData.count <= 16 * 1_024 * 1_024 else {
+        guard TranslationPrivateSourceEvidenceLimits.contains(
+            byteCount: detailsData.count
+        ) else {
             throw TranslationLabError.invalidRoute(
-                "the bounded upstream source artifact exceeded its 16 MiB private evidence limit"
+                "the bounded upstream source artifact exceeded its private evidence limit"
             )
         }
         try TranslationPrivateStorage.preflightWrite(
@@ -918,7 +935,12 @@ public enum TranslationDisplaySourceProbe {
         TranslationDisplaySourceBlockedComponentCounts(
             mapCell: blockedReasonCounts(scope: scope, component: .mapCell, traces: traces),
             raster: blockedReasonCounts(scope: scope, component: .raster, traces: traces),
-            palette: blockedReasonCounts(scope: scope, component: .palette, traces: traces)
+            palette: blockedReasonCounts(scope: scope, component: .palette, traces: traces),
+            spriteAttribute: blockedReasonCounts(
+                scope: scope,
+                component: .spriteAttribute,
+                traces: traces
+            )
         )
     }
 
@@ -987,6 +1009,7 @@ public enum TranslationDisplaySourceProbe {
             !$0.hasUnknownDependency
                 && !$0.rangeSetOverflowed
                 && !$0.usesConservativeDataflow
+                && $0.conservativeOrigin == nil
         }) else {
             throw TranslationLabError.invalidRoute(
                 "an adaptive upstream source leaf returned incomplete or conservative lineage"
@@ -1000,9 +1023,9 @@ public enum TranslationDisplaySourceProbe {
         let exactRanges = normalizedRanges(selected.filter(\.hasExactRange))
         let candidateRanges = normalizedRanges(selected)
         guard exactRanges == candidateRanges,
-              exactRanges.count <= 8 else {
+              exactRanges.count <= TranslationDisplaySourcePartitioner.normalizedRangeLimit else {
             throw TranslationLabError.invalidRoute(
-                "an adaptive upstream source leaf exceeded its exact eight-range contract"
+                "an adaptive upstream source leaf exceeded its normalized-range contract"
             )
         }
         let selectedNonempty = selected.filter { $0.cartridgeLength > 0 }
@@ -1084,6 +1107,22 @@ public enum TranslationDisplaySourceProbe {
         }
     }
 
+    private static func validCurrentOwnerSample(
+        _ sample: EngineDisplayOwnerSample
+    ) -> Bool {
+        if sample.sourceKind == .sprite {
+            guard let address = sample.oamAddress,
+                  let byteCount = sample.oamByteCount,
+                  let writer = sample.oamWriterPC else { return false }
+            return byteCount > 0
+                && UInt32(address) + UInt32(byteCount) <= 65_536
+                && writer <= 0xF_FFFF
+        }
+        return sample.oamAddress == nil
+            && sample.oamByteCount == nil
+            && sample.oamWriterPC == nil
+    }
+
     private static func coverageKey(_ trace: EngineDisplaySourceTrace) -> String {
         "\(trace.x):\(trace.y):\(trace.component.rawValue)"
     }
@@ -1131,7 +1170,7 @@ public enum TranslationDisplaySourceProbe {
 
     private static func canonicalTrace(_ trace: EngineDisplaySourceTrace) -> String {
         String(
-            format: "%04x:%04x:%@:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d:%@",
+            format: "%04x:%04x:%@:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d:%@:%@",
             trace.x,
             trace.y,
             trace.scope.rawValue,
@@ -1147,13 +1186,14 @@ public enum TranslationDisplaySourceProbe {
             trace.hasUnknownDependency ? 1 : 0,
             trace.rangeSetOverflowed ? 1 : 0,
             trace.usesConservativeDataflow ? 1 : 0,
-            canonicalReadContext(trace) ?? "none"
+            canonicalReadContext(trace) ?? "none",
+            canonicalConservativeOrigin(trace) ?? "none"
         )
     }
 
     private static func canonicalLineage(_ trace: EngineDisplaySourceTrace) -> String {
         String(
-            format: "%04x:%04x:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d:%@",
+            format: "%04x:%04x:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d:%@:%@",
             trace.x,
             trace.y,
             trace.component.rawValue,
@@ -1168,7 +1208,8 @@ public enum TranslationDisplaySourceProbe {
             trace.hasUnknownDependency ? 1 : 0,
             trace.rangeSetOverflowed ? 1 : 0,
             trace.usesConservativeDataflow ? 1 : 0,
-            canonicalReadContext(trace) ?? "none"
+            canonicalReadContext(trace) ?? "none",
+            canonicalConservativeOrigin(trace) ?? "none"
         )
     }
 
@@ -1186,6 +1227,19 @@ public enum TranslationDisplaySourceProbe {
             context.mapperWindow,
             context.mapperBank,
             context.resolvedCartridgeOperand
+        )
+    }
+
+    private static func canonicalConservativeOrigin(
+        _ trace: EngineDisplaySourceTrace
+    ) -> String? {
+        guard let origin = trace.conservativeOrigin else { return nil }
+        return String(
+            format: "%@:%08x:%04x:%04x",
+            origin.reason.rawValue,
+            origin.origin20Bit,
+            origin.segment,
+            origin.offset
         )
     }
 

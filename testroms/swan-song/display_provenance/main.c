@@ -11,10 +11,11 @@
 #endif
 
 /*
- * Clean-room display-provenance fixture introduced for ABI 6 and extended for
- * ABI 8 upstream cartridge-source tracing. The horizontal build uses planar
- * 4bpp tiles; the vertical build uses packed 4bpp tiles. Both expose isolated
- * final pixels from Screen 1, Screen 2, and a priority sprite.
+ * Clean-room display-provenance fixture introduced for ABI 6 and extended
+ * through ABI 9 upstream source and sprite/OAM provenance. The horizontal
+ * build uses planar 4bpp tiles; the vertical build uses packed 4bpp tiles.
+ * Both expose isolated final pixels from Screen 1, Screen 2, and a priority
+ * sprite.
  */
 
 __attribute__((section(".iramcx_1800")))
