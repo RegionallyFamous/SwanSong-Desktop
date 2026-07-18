@@ -5,6 +5,8 @@ The project uses semantic versioning once a release is published.
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-07-18
+
 ### Added
 
 - Added ABI 9 private sprite-attribute provenance. Clean-replay owner artifacts
@@ -28,6 +30,11 @@ The project uses semantic versioning once a release is published.
   ABI 9. The Evidence browser retains v1-v3 compatibility, while static seed
   export requires a complete v4 artifact and keeps its deterministic v1 seed
   schema. The guarded MCP allowlist remains fifteen tools.
+
+### Fixed
+
+- Static-analysis seed validation now accepts the engine's full-width 16-bit
+  mapper state when the resolved fixed-window cartridge operand is exact.
 
 ## [0.4.0] - 2026-07-17
 
@@ -280,7 +287,8 @@ The project uses semantic versioning once a release is published.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.2.0...v0.3.0
