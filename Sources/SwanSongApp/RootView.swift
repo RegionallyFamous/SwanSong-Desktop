@@ -745,21 +745,7 @@ private struct AppSidebar: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 10) {
-                SwanSongIcon(size: 34)
-                VStack(alignment: .leading, spacing: 1) {
-                    Text("SwanSong")
-                        .font(.headline)
-                    Text("FOR WONDERSWAN")
-                        .font(.system(size: 9, weight: .bold))
-                        .tracking(1.25)
-                        .foregroundStyle(.secondary)
-                }
-                Spacer(minLength: 0)
-            }
-            .padding(.horizontal, 14)
-            .padding(.top, 14)
-            .padding(.bottom, 8)
+            SwanSidebarBrand()
 
             List(selection: $model.section) {
                 Section("Browse") {
@@ -812,21 +798,7 @@ private struct TranslationOverviewSnapshotSidebar: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 10) {
-                SwanSongIcon(size: 34)
-                VStack(alignment: .leading, spacing: 1) {
-                    Text("SwanSong")
-                        .font(.headline)
-                    Text("FOR WONDERSWAN")
-                        .font(.system(size: 9, weight: .bold))
-                        .tracking(1.25)
-                        .foregroundStyle(.secondary)
-                }
-                Spacer(minLength: 0)
-            }
-            .padding(.horizontal, 14)
-            .padding(.top, 14)
-            .padding(.bottom, 12)
+            SwanSidebarBrand()
 
             VStack(alignment: .leading, spacing: 8) {
                 snapshotGroup(
@@ -1000,16 +972,20 @@ private struct HomebrewCatalogView: View {
             disclosure
         } else if model.homebrewCatalog == nil,
                   model.homebrewCatalogIsLoading {
-            VStack(spacing: 14) {
+            VStack(spacing: 20) {
+                SwanEmptyState(
+                    title: "Loading the Homebrew Catalog",
+                    description: "Requesting SwanSong’s signed first-party catalog from GitHub.",
+                    symbol: "shippingbox.fill",
+                    tint: SwanTheme.cyan
+                )
                 ProgressView()
-                Text("Loading the Homebrew Catalog…")
-                    .font(.headline)
-                Text("Requesting the first-party catalog from GitHub.")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
+                    .controlSize(.large)
+                    .accessibilityLabel("Loading the Homebrew Catalog")
             }
+            .swanEmptyStateContainer(tint: SwanTheme.cyan)
+            .padding(40)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .accessibilityElement(children: .combine)
             .accessibilityIdentifier("homebrew-loading")
         } else if model.homebrewCatalog == nil {
             unavailable
@@ -1019,32 +995,36 @@ private struct HomebrewCatalogView: View {
     }
 
     private var notPublished: some View {
-        ContentUnavailableView {
-            Label("Homebrew Catalog Coming Soon", systemImage: "shippingbox")
-        } description: {
-            Text(
-                "Direct Homebrew installation is built in, but this SwanSong build does not yet contain a production catalog signing key. No network request will be made."
+        VStack(spacing: 20) {
+            SwanEmptyState(
+                title: "Homebrew Catalog Coming Soon",
+                description: "Direct Homebrew installation is built in, but this SwanSong build does not yet contain a production catalog signing key. No network request will be made.",
+                symbol: "shippingbox.fill",
+                tint: SwanTheme.cyan
             )
-        } actions: {
-            Button("Add From Mac…", action: model.chooseGames)
-                .buttonStyle(.borderedProminent)
-            Button("Open SwanSong Releases") {
-                openURL(SwanSongLinks.releases)
+            HStack(spacing: 10) {
+                Button("Add From Mac…", action: model.chooseGames)
+                    .buttonStyle(.borderedProminent)
+                Button("Open SwanSong Releases") {
+                    openURL(SwanSongLinks.releases)
+                }
+                .buttonStyle(.bordered)
             }
-            .buttonStyle(.bordered)
         }
-        .frame(maxWidth: 620)
+        .swanEmptyStateContainer(tint: SwanTheme.cyan)
+        .padding(40)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accessibilityIdentifier("homebrew-not-published")
     }
 
     private var disclosure: some View {
-        ContentUnavailableView {
-            Label("Explore SwanSong Homebrew", systemImage: "shippingbox")
-        } description: {
-            Text(
-                "SwanSong can load its curated homebrew catalog from GitHub. No library, game, save, or translation data is sent. GitHub receives ordinary connection information and can see which catalog item you download."
+        VStack(spacing: 20) {
+            SwanEmptyState(
+                title: "Explore SwanSong Homebrew",
+                description: "SwanSong can load its curated homebrew catalog from GitHub. No library, game, save, or translation data is sent. GitHub receives ordinary connection information and can see which catalog item you download.",
+                symbol: "shippingbox.fill",
+                tint: SwanTheme.cyan
             )
-        } actions: {
             HStack(spacing: 10) {
                 Button("Load Catalog", action: model.enableHomebrewCatalog)
                     .buttonStyle(.borderedProminent)
@@ -1057,27 +1037,34 @@ private struct HomebrewCatalogView: View {
                 }
                 .buttonStyle(.link)
                 .frame(minWidth: 28, minHeight: 28)
-                .contentShape(Rectangle())
+                    .contentShape(Rectangle())
             }
         }
-        .frame(maxWidth: 620)
+        .swanEmptyStateContainer(tint: SwanTheme.cyan)
+        .padding(40)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accessibilityIdentifier("homebrew-disclosure")
     }
 
     private var unavailable: some View {
-        ContentUnavailableView {
-            Label("Catalog Unavailable", systemImage: "wifi.exclamationmark")
-        } description: {
-            Text(
-                model.homebrewCatalogIssue
-                    ?? "SwanSong could not load the first-party catalog from GitHub."
+        VStack(spacing: 20) {
+            SwanEmptyState(
+                title: "Catalog Unavailable",
+                description: model.homebrewCatalogIssue
+                    ?? "SwanSong could not load the first-party catalog from GitHub.",
+                symbol: "wifi.exclamationmark",
+                tint: .orange
             )
-        } actions: {
-            Button("Try Again", action: model.refreshHomebrewCatalog)
-                .buttonStyle(.borderedProminent)
-            Button("Add From Mac…", action: model.chooseGames)
-                .buttonStyle(.bordered)
+            HStack(spacing: 10) {
+                Button("Try Again", action: model.refreshHomebrewCatalog)
+                    .buttonStyle(.borderedProminent)
+                Button("Add From Mac…", action: model.chooseGames)
+                    .buttonStyle(.bordered)
+            }
         }
+        .swanEmptyStateContainer(tint: .orange)
+        .padding(40)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accessibilityIdentifier("homebrew-unavailable")
     }
 
@@ -1207,19 +1194,12 @@ private struct HomebrewCatalogCard: View {
                 .frame(maxWidth: .infinity)
         }
         .padding(12)
-        .background(
-            isSelected ? Color.accentColor.opacity(0.14) : Color(nsColor: .controlBackgroundColor),
-            in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+        .swanSurface(
+            .elevated,
+            tint: SwanTheme.accent,
+            cornerRadius: 16,
+            emphasized: isSelected
         )
-        .overlay {
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(
-                    isSelected
-                        ? Color.accentColor.opacity(0.75)
-                        : Color(nsColor: .separatorColor),
-                    lineWidth: isSelected ? 2 : 1
-                )
-        }
         .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .onTapGesture(perform: onSelect)
         .focusable()
@@ -1701,42 +1681,17 @@ private struct LibraryEmptyState: View {
     let onOpen: () -> Void
 
     var body: some View {
-        ZStack {
-            RadialGradient(
-                colors: [SwanTheme.violet.opacity(0.09), SwanTheme.cyan.opacity(0.025), .clear],
-                center: .center,
-                startRadius: 0,
-                endRadius: 260
+        let tint = showsOpenAction ? SwanTheme.accent : SwanTheme.violet
+        VStack(spacing: 20) {
+            SwanEmptyState(
+                title: title,
+                description: description,
+                symbol: symbol,
+                tint: tint,
+                showsBrandMark: showsOpenAction
             )
-            .frame(width: 560, height: 460)
-            .accessibilityHidden(true)
-
-            VStack(spacing: 16) {
-                if showsOpenAction {
-                    SwanSongIcon(size: 86)
-                } else {
-                    Image(systemName: symbol)
-                        .font(.system(size: 40, weight: .medium))
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(.secondary)
-                        .frame(width: 86, height: 86)
-                        .background(.quaternary.opacity(0.55), in: Circle())
-                        .accessibilityHidden(true)
-                }
-
-                VStack(spacing: 6) {
-                    Text(title)
-                        .font(.title2.weight(.semibold))
-                        .multilineTextAlignment(.center)
-                    Text(description)
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .frame(maxWidth: 430)
-                }
-
-                if showsOpenAction {
+            if showsOpenAction {
+                VStack(spacing: 14) {
                     Button("Open a Game…", systemImage: "plus", action: onOpen)
                         .buttonStyle(.borderedProminent)
                         .controlSize(.large)
@@ -1752,10 +1707,10 @@ private struct LibraryEmptyState: View {
                     .foregroundStyle(.secondary)
                 }
             }
-            .padding(40)
         }
+        .swanEmptyStateContainer(tint: tint)
+        .padding(36)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .accessibilityElement(children: .contain)
     }
 
     private func formatPill(_ text: String) -> some View {
@@ -2932,19 +2887,25 @@ private struct TranslationLabView: View {
             if let project = model.translationProject {
                 translationProjectWorkspace(project)
             } else {
-                ContentUnavailableView {
-                    Label("Add Translation Projects", systemImage: "character.book.closed")
-                } description: {
-                    Text("Choose one project or link an entire private toolkit. SwanSong will keep every game’s status, test routes, and captures together.")
-                } actions: {
+                VStack(spacing: 20) {
+                    SwanEmptyState(
+                        title: "Add Translation Projects",
+                        description: "Choose one project or link an entire private toolkit. SwanSong will keep every game’s status, test routes, and captures together.",
+                        symbol: "character.book.closed.fill",
+                        tint: SwanTheme.translationAccent
+                    )
                     Button("Add Project or Toolkit…", action: model.chooseTranslationProject)
                         .buttonStyle(.borderedProminent)
                         .controlSize(.large)
                 }
+                .swanEmptyStateContainer(tint: SwanTheme.translationAccent)
+                .padding(40)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .navigationTitle("Translation Lab")
         .tint(SwanTheme.translationAccent)
+        .background(SwanTheme.libraryBackground.ignoresSafeArea())
         .toolbar {
             if model.translationProject != nil {
                 ToolbarItem(placement: .principal) {
@@ -3321,20 +3282,11 @@ private struct TranslationLabView: View {
     private func projectHeader(_ project: TranslationProject) -> some View {
         VStack(alignment: .leading, spacing: 18) {
             HStack(alignment: .top, spacing: 18) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .fill(
-                            LinearGradient(
-                                colors: [.indigo, .purple.opacity(0.78)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                    Image(systemName: "character.book.closed.fill")
-                        .font(.system(size: 34, weight: .light))
-                        .foregroundStyle(.white)
-                }
-                .frame(width: 76, height: 76)
+                SwanIconTile(
+                    symbol: "character.book.closed.fill",
+                    tint: SwanTheme.translationAccent,
+                    size: 76
+                )
 
                 VStack(alignment: .leading, spacing: 5) {
                     HStack(spacing: 9) {
@@ -3357,11 +3309,7 @@ private struct TranslationLabView: View {
             }
         }
         .padding(22)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .stroke(.separator.opacity(0.45))
-        }
+        .swanSurface(.elevated, tint: SwanTheme.translationAccent, cornerRadius: 24)
     }
 
     private var readinessOverview: some View {
@@ -3459,7 +3407,7 @@ private struct TranslationLabView: View {
                     }
                 }
                 .padding(20)
-                .background(.background.secondary, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .swanSurface(.recessed, tint: SwanTheme.translationAccent, cornerRadius: 20)
             } else if model.translationToolIsRunning {
                 HStack(spacing: 12) {
                     ProgressView()
@@ -3470,7 +3418,7 @@ private struct TranslationLabView: View {
                 }
                 .padding(18)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.background.secondary, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .swanSurface(.recessed, tint: SwanTheme.translationAccent, cornerRadius: 20)
             } else {
                 HStack(spacing: 12) {
                     Image(systemName: "questionmark.circle")
@@ -3490,7 +3438,7 @@ private struct TranslationLabView: View {
                     .accessibilityIdentifier(TranslationLabOverviewAccessibility.refreshReadiness)
                 }
                 .padding(18)
-                .background(.background.secondary, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .swanSurface(.recessed, tint: SwanTheme.translationAccent, cornerRadius: 20)
             }
         }
     }
@@ -3510,7 +3458,7 @@ private struct TranslationLabView: View {
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.background, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .swanSurface(.standard, tint: SwanTheme.translationAccent, cornerRadius: 14)
     }
 
     private func readinessPhase(_ phase: TranslationReadinessPhase) -> some View {
@@ -3536,7 +3484,7 @@ private struct TranslationLabView: View {
         }
         .padding(12)
         .frame(maxWidth: .infinity, minHeight: 78, alignment: .topLeading)
-        .background(.background, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .swanSurface(.standard, tint: SwanTheme.translationAccent, cornerRadius: 14)
     }
 
     @ViewBuilder
@@ -3549,14 +3497,7 @@ private struct TranslationLabView: View {
             VStack(spacing: 10) {
                 if model.translationRoutes.isEmpty {
                     HStack(spacing: 14) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 13, style: .continuous)
-                                .fill(Color.orange.opacity(0.12))
-                            Image(systemName: "record.circle")
-                                .font(.title2)
-                                .foregroundStyle(.orange)
-                        }
-                        .frame(width: 48, height: 48)
+                        SwanIconTile(symbol: "record.circle", tint: .orange, size: 48)
                         VStack(alignment: .leading, spacing: 3) {
                             Text("No route tests yet")
                                 .font(.headline)
@@ -3577,7 +3518,7 @@ private struct TranslationLabView: View {
                         )
                     }
                     .padding(14)
-                    .background(.background, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .swanSurface(.standard, tint: .orange, cornerRadius: 16)
                 } else {
                     translationSuiteDashboard
                     ForEach(model.translationRoutes) { summary in
@@ -3802,14 +3743,12 @@ private struct TranslationLabView: View {
             }
         }
         .padding(12)
-        .background(.background, in: RoundedRectangle(cornerRadius: 15, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                .stroke(
-                    selected ? SwanTheme.translationAccent.opacity(0.65) : Color.clear,
-                    lineWidth: 1.5
-                )
-        }
+        .swanSurface(
+            .standard,
+            tint: SwanTheme.translationAccent,
+            cornerRadius: 15,
+            emphasized: selected
+        )
         .help(selected ? "Selected test case" : "Select this route test case")
         .accessibilityElement(children: .contain)
         .accessibilityAddTraits(selected ? .isSelected : [])
@@ -6754,13 +6693,11 @@ private struct GameCard: View {
             cardOverlayControls
         }
         .padding(8)
-        .background(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .fill(isSelected ? Color.accentColor.opacity(0.14) : .clear)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(isSelected ? Color.accentColor.opacity(0.5) : .clear, lineWidth: 1)
+        .swanSurface(
+            .standard,
+            tint: SwanTheme.accent,
+            cornerRadius: 18,
+            emphasized: isSelected
         )
         .scaleEffect(isHovering && !reduceMotion ? 1.018 : 1)
         .shadow(
@@ -6855,6 +6792,7 @@ private struct GameCard: View {
                 .buttonStyle(.borderedProminent)
                 .controlSize(.small)
                 .tint(SwanTheme.accent)
+                .foregroundStyle(.white)
                 .frame(minHeight: 28)
                 .contentShape(Rectangle())
                 .disabled(cardPrimaryActionIsDisabled)
@@ -10116,7 +10054,7 @@ struct StateTimelineView: View {
             }
         }
         .padding(24)
-        .background(.regularMaterial)
+        .background(SwanTheme.libraryBackground)
         .accessibilityIdentifier(Self.accessibilityIdentifier)
         .alert(
             "Delete Saved State?",
@@ -10320,14 +10258,12 @@ struct StateTimelineCard: View {
         }
         .padding(12)
         .frame(width: 256)
-        .background(
-            Color(nsColor: .controlBackgroundColor),
-            in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+        .swanSurface(
+            .elevated,
+            tint: compatibilityColor,
+            cornerRadius: 14,
+            emphasized: isQuickState
         )
-        .overlay {
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .stroke(compatibilityColor.opacity(0.42), lineWidth: 1)
-        }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(accessibilityContractLabel)
         .accessibilityIdentifier("state-card-\(state.id.uuidString.lowercased())")
@@ -10732,7 +10668,7 @@ private struct ControllerSettingsView: View {
                     }
                 }
                 .padding(12)
-                .background(.background.secondary, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .swanSurface(.standard, tint: SwanTheme.accent, cornerRadius: 14)
                 .accessibilityIdentifier(SettingsSurfaceAccessibility.controllerLiveInput)
             }
             .padding(22)
@@ -10743,21 +10679,7 @@ private struct ControllerSettingsView: View {
 
     private var controllerHeader: some View {
         HStack(alignment: .top, spacing: 14) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 15, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [.indigo, .cyan.opacity(0.72)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                Image(systemName: "gamecontroller.fill")
-                    .font(.system(size: 28, weight: .medium))
-                    .foregroundStyle(.white)
-            }
-            .frame(width: 58, height: 58)
-            .accessibilityHidden(true)
+            SwanIconTile(symbol: "gamecontroller.fill", tint: SwanTheme.accent, size: 58)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("WonderSwan Controller")
@@ -10916,7 +10838,7 @@ private struct ControllerClusterMappingView: View {
         }
         .padding(14)
         .frame(maxWidth: .infinity, minHeight: 268, maxHeight: 268)
-        .background(.background.secondary, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .swanSurface(.standard, tint: SwanTheme.accent, cornerRadius: 18)
     }
 }
 
@@ -10943,7 +10865,7 @@ private struct ControllerActionMappingView: View {
         }
         .padding(14)
         .frame(maxWidth: .infinity, minHeight: 268, maxHeight: 268, alignment: .top)
-        .background(.background.secondary, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .swanSurface(.standard, tint: SwanTheme.accent, cornerRadius: 18)
     }
 }
 

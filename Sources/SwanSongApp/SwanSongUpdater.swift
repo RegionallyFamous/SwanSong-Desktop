@@ -256,87 +256,177 @@ struct UpdateSettingsView: View {
     @ObservedObject var updater: SwanSongUpdater
 
     var body: some View {
-        Form {
-            Section {
-                Label("SwanSong Updates", systemImage: "arrow.down.circle")
-                    .font(.title3.weight(.semibold))
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                updateHeader
 
+                if updater.isConfigured {
+                    settingsCard(
+                        title: "Automatic Updates",
+                        symbol: "arrow.triangle.2.circlepath"
+                    ) {
+                        Toggle(
+                            "Automatically check for updates",
+                            isOn: Binding(
+                                get: { updater.automaticallyChecksForUpdates },
+                                set: { updater.setAutomaticallyChecksForUpdates($0) }
+                            )
+                        )
+
+                        Toggle(
+                            "Automatically download and install updates",
+                            isOn: Binding(
+                                get: { updater.automaticallyDownloadsUpdates },
+                                set: { updater.setAutomaticallyDownloadsUpdates($0) }
+                            )
+                        )
+                        .disabled(
+                            !updater.automaticallyChecksForUpdates
+                                || !updater.allowsAutomaticDownloads
+                        )
+
+                        Text(
+                            "Both options are off until you enable them. SwanSong never sends a system profile with update requests."
+                        )
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    }
+
+                    settingsCard(
+                        title: "Release Channel",
+                        symbol: "point.3.connected.trianglepath.dotted"
+                    ) {
+                        Toggle(
+                            "Include beta versions",
+                            isOn: Binding(
+                                get: { updater.includesBetaUpdates },
+                                set: { updater.setIncludesBetaUpdates($0) }
+                            )
+                        )
+                        Text(
+                            "Stable releases are always included. Beta versions may be less reliable."
+                        )
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    }
+                } else {
+                    HStack(alignment: .top, spacing: 14) {
+                        SwanIconTile(
+                            symbol: "exclamationmark.triangle.fill",
+                            tint: .orange,
+                            size: 48
+                        )
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("Built-in Updater Unavailable")
+                                .font(.headline)
+                            Text(
+                                updater.configurationIssue
+                                    ?? "The signed updater is unavailable in this build."
+                            )
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .padding(18)
+                    .swanSurface(.standard, tint: .orange, cornerRadius: 16)
+                }
+
+                settingsCard(title: "Update Actions", symbol: "arrow.down.circle.fill") {
+                    ViewThatFits(in: .horizontal) {
+                        HStack(spacing: 10) {
+                            updateButtons
+                            Spacer(minLength: 0)
+                        }
+                        VStack(alignment: .leading, spacing: 10) {
+                            updateButtons
+                        }
+                    }
+
+                    Divider()
+
+                    Label(
+                        "Checking uses SwanSong’s GitHub-hosted feed. Opening Releases uses your default browser.",
+                        systemImage: "network"
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                }
+
+                HStack(alignment: .top, spacing: 12) {
+                    Image(systemName: "hand.raised.fill")
+                        .font(.title3)
+                        .foregroundStyle(SwanTheme.accent)
+                        .accessibilityHidden(true)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Private by design")
+                            .font(.callout.weight(.semibold))
+                        Text(
+                            "SwanSong never sends a system profile with update requests. Automatic checks and downloads stay off until you enable them."
+                        )
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    }
+                }
+                .padding(16)
+                .swanSurface(.recessed, tint: SwanTheme.accent, cornerRadius: 15)
+            }
+            .padding(24)
+            .frame(maxWidth: 780, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .top)
+        }
+        .background(SwanTheme.libraryBackground.ignoresSafeArea())
+    }
+
+    private var updateHeader: some View {
+        HStack(alignment: .top, spacing: 14) {
+            SwanIconTile(
+                symbol: "arrow.down.circle.fill",
+                tint: SwanTheme.accent,
+                size: 56
+            )
+            VStack(alignment: .leading, spacing: 4) {
+                Text("SwanSong Updates")
+                    .font(.title2.weight(.bold))
+                    .accessibilityAddTraits(.isHeader)
                 Text(
                     "Updates stay on GitHub and are verified with SwanSong’s update-signing key before installation."
                 )
                 .font(.callout)
                 .foregroundStyle(.secondary)
             }
-
-            if updater.isConfigured {
-                Section("Automatic Updates") {
-                    Toggle(
-                        "Automatically check for updates",
-                        isOn: Binding(
-                            get: { updater.automaticallyChecksForUpdates },
-                            set: { updater.setAutomaticallyChecksForUpdates($0) }
-                        )
-                    )
-
-                    Toggle(
-                        "Automatically download and install updates",
-                        isOn: Binding(
-                            get: { updater.automaticallyDownloadsUpdates },
-                            set: { updater.setAutomaticallyDownloadsUpdates($0) }
-                        )
-                    )
-                    .disabled(
-                        !updater.automaticallyChecksForUpdates
-                            || !updater.allowsAutomaticDownloads
-                    )
-
-                    Text(
-                        "Both options are off until you enable them. SwanSong never sends a system profile with update requests."
-                    )
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                }
-
-                Section("Release Channel") {
-                    Toggle(
-                        "Include beta versions",
-                        isOn: Binding(
-                            get: { updater.includesBetaUpdates },
-                            set: { updater.setIncludesBetaUpdates($0) }
-                        )
-                    )
-                    Text(
-                        "Stable releases are always included. Beta versions may be less reliable."
-                    )
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                }
-            } else {
-                Section("Built-in Updater Unavailable") {
-                    Text(
-                        updater.configurationIssue
-                            ?? "The signed updater is unavailable in this build."
-                    )
-                    .foregroundStyle(.secondary)
-                }
-            }
-
-            Section {
-                Button("Check for Updates…") {
-                    updater.checkForUpdates()
-                }
-                .disabled(updater.isConfigured && !updater.canCheckForUpdates)
-
-                Button("Open SwanSong Releases") {
-                    updater.openReleases()
-                }
-            } footer: {
-                Text(
-                    "Checking uses SwanSong’s GitHub-hosted feed. Opening Releases uses your default browser."
-                )
-            }
+            Spacer(minLength: 0)
         }
-        .formStyle(.grouped)
-        .padding()
+        .padding(18)
+        .swanSurface(.elevated, tint: SwanTheme.accent, cornerRadius: 18)
+    }
+
+    @ViewBuilder
+    private var updateButtons: some View {
+        Button("Check for Updates…") {
+            updater.checkForUpdates()
+        }
+        .disabled(updater.isConfigured && !updater.canCheckForUpdates)
+        .buttonStyle(.borderedProminent)
+
+        Button("Open SwanSong Releases") {
+            updater.openReleases()
+        }
+        .buttonStyle(.bordered)
+    }
+
+    private func settingsCard<Content: View>(
+        title: String,
+        symbol: String,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 13) {
+            Label(title, systemImage: symbol)
+                .font(.headline)
+            Divider()
+            content()
+        }
+        .padding(18)
+        .swanSurface(.standard, tint: SwanTheme.accent, cornerRadius: 16)
     }
 }

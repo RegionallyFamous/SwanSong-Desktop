@@ -41,28 +41,14 @@ struct TranslationVisualDivergenceView: View {
             }
         }
         .frame(minWidth: 760, idealWidth: 980, minHeight: 560, idealHeight: 700)
-        .background(.regularMaterial)
+        .background(SwanTheme.libraryBackground)
         .accessibilityIdentifier(Self.accessibilityIdentifier)
         .accessibilityElement(children: .contain)
     }
 
     private var header: some View {
         HStack(spacing: 14) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [.cyan.opacity(0.9), .purple.opacity(0.9)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                Image(systemName: "scope")
-                    .font(.title2.weight(.semibold))
-                    .foregroundStyle(.white)
-            }
-            .frame(width: 46, height: 46)
-            .accessibilityHidden(true)
+            SwanIconTile(symbol: "scope", tint: SwanTheme.translationAccent, size: 46)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text("First Visual Change")
@@ -85,6 +71,7 @@ struct TranslationVisualDivergenceView: View {
         }
         .padding(.horizontal, 22)
         .padding(.vertical, 16)
+        .background(.bar)
     }
 
     private var progressWorkspace: some View {
@@ -365,7 +352,7 @@ struct TranslationVisualDivergenceView: View {
             }
         }
         .padding(10)
-        .background(Color.primary.opacity(0.035), in: RoundedRectangle(cornerRadius: 12))
+        .swanSurface(.standard, tint: color, cornerRadius: 12)
     }
 
     @ViewBuilder
@@ -423,7 +410,7 @@ struct TranslationVisualDivergenceView: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 7)
-        .background(Color.primary.opacity(0.055), in: RoundedRectangle(cornerRadius: 9))
+        .swanSurface(.recessed, tint: SwanTheme.translationAccent, cornerRadius: 9)
     }
 
     private var progressDetail: String {

@@ -128,8 +128,12 @@ struct SwanSongIcon: View {
                     .resizable()
                     .interpolation(.high)
                     .antialiased(true)
+                    .frame(width: size, height: size)
             } else {
                 SwanSongFallbackMark()
+                    // GeometryReader can otherwise accept an undersized proposal
+                    // when the view is rendered offscreen in Light Mode.
+                    .frame(width: size, height: size)
             }
         }
         .frame(width: size, height: size)

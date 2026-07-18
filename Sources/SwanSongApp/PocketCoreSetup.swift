@@ -1069,11 +1069,7 @@ struct PocketCoreSetupView: View {
 
     private var header: some View {
         HStack(alignment: .top, spacing: 18) {
-            Image(systemName: "sdcard.fill")
-                .font(.system(size: 38, weight: .semibold))
-                .foregroundStyle(SwanTheme.cyan)
-                .frame(width: 56, height: 56)
-                .background(SwanTheme.cyan.opacity(0.12), in: RoundedRectangle(cornerRadius: 14))
+            SwanIconTile(symbol: "sdcard.fill", tint: SwanTheme.cyan, size: 58)
             VStack(alignment: .leading, spacing: 6) {
                 Text("Put SwanSong on your Pocket")
                     .font(.largeTitle.bold())
@@ -1204,7 +1200,7 @@ struct PocketCoreSetupView: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(18)
-        .background(.quaternary.opacity(0.45), in: RoundedRectangle(cornerRadius: 14))
+        .swanSurface(.recessed, tint: SwanTheme.cyan, cornerRadius: 14)
     }
 
     private func stepCard<Content: View>(
@@ -1226,11 +1222,7 @@ struct PocketCoreSetupView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(20)
-        .background(.background.opacity(0.82), in: RoundedRectangle(cornerRadius: 16))
-        .overlay {
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(.separator.opacity(0.55), lineWidth: 1)
-        }
+        .swanSurface(.elevated, tint: SwanTheme.accent, cornerRadius: 16)
     }
 
     private func statusRow(
