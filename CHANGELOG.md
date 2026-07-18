@@ -1,17 +1,26 @@
 # Changelog
 
-All notable user-visible changes to SwanSong Desktop will be recorded here.
-The project uses semantic versioning once a release is published.
+Every SwanSong release should make the app nicer to play, safer to trust, or
+more useful to people building and translating WonderSwan software. This file
+records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+Work accepted on `main` after the latest public beta will be listed here.
+
 ## [0.4.2] - 2026-07-18
+
+**Make, Replay, Refine.** This prepared beta makes SwanSong feel more complete
+before you ever press Play: the main screens are calmer, the game owns the
+player window, Studio carries its verified SDK, and trusted homebrew is ready
+when you choose to open it.
 
 ### Added
 
-- Published the first-party Homebrew Catalog with its purpose-specific
-  Ed25519 public key. Catalog requests remain explicit; signed bytes, rights
-  attestations, immutable provenance, asset size, and SHA-256 all fail closed.
+- Published the signed first-party Homebrew Catalog. SwanSong can now show
+  authorized original homebrew and add a selected release directly to the
+  managed library. Loading, refreshing, and downloading remain explicit
+  actions; nothing is fetched at launch or merely because Homebrew is open.
 - Added SwanSong Studio's bounded USB Hardware Lab for Doctor, update planning,
   digest-and-reset-confirmed install, and physical control QA. USB device writes
   are intentionally not exposed through local MCP automation. Studio accepts
@@ -31,19 +40,29 @@ The project uses semantic versioning once a release is published.
   timeout while version, identity, protocol, and redaction checks stay strict.
 - Refined the shared app visual system and screen-level snapshots while keeping
   Studio's SDK-owned build, gameplay, evidence, and release boundaries intact.
+- Reworked the updater into a clear settings dashboard that distinguishes the
+  installed version, update channel, automatic checks, and automatic install.
+- Made the game canvas keep the native framebuffer ratio in wide windows, then
+  taught automatic window fitting to size around the 224×157 surface. The game
+  fills its space cleanly without cropping horizontal or vertical play.
+
+### Security
+
+- Homebrew Catalog bytes now require the purpose-specific Ed25519 key,
+  publisher rights attestations, immutable provenance, exact asset size, and
+  ROM SHA-256 before an entry can enter the library.
+- Build, packaging, runtime, and release checks bind every bundled SDK file and
+  reject missing, modified, extra, or identity-mismatched payloads.
+- Studio accepts only the content-pinned SwanSong USB
+  `0.1.0-prototype.1` tools, stages its three verified files in isolation, and
+  rejects unknown report fields or shapes.
 
 ## [0.4.1] - 2026-07-18
 
-### Added
+**Follow the Source.** This release turns a selected sprite or rectangle into
+better private provenance and a guarded starting point for deeper analysis.
 
-- Bundled the complete, tagged SwanSong SDK 0.2.0 runtime, schema, recipes,
-  Python package, and `swan` entry point inside the signed app. A per-file
-  content manifest, SDK revision lock, app runtime verifier, and packaging gates
-  reject incomplete, modified, extra, or identity-mismatched payloads.
-- Added two opt-in Studio MCP tools: path-free status for the single already-open
-  project slot, and a confirmation-gated fixed action allowlist for Doctor,
-  Assets, Build, Test, Play, and Profile. Neither surface accepts a path, shell
-  command, direct edit, project creation, or Release request.
+### Added
 
 - Added ABI 9 private sprite-attribute provenance. Clean-replay owner artifacts
   retain the selected sprite's OAM address, byte count, and final CPU writer;
@@ -59,19 +78,13 @@ The project uses semantic versioning once a release is published.
 
 ### Changed
 
-- Studio now prefers the verified bundled SDK, retains an explicit external
-  development override, and shows resolved SDK, Python, Wonderful, schema, and
-  SwanSong identities. Python 3.11+ and Wonderful remain honest local
-  prerequisites checked by Doctor.
-
 - Raised the shared private source-evidence artifact bound to 64 MiB and the
   normalized selected-range contract to 256 disjoint ranges. Genuine per-byte
   range overflow, unknown lineage, and conservative lineage still fail closed.
 - Bumped current private source-probe and source-free report schemas to v4 for
   ABI 9. The Evidence browser retains v1-v3 compatibility, while static seed
   export requires a complete v4 artifact and keeps its deterministic v1 seed
-  schema. The guarded MCP allowlist now contains seventeen tools after adding
-  the bounded Studio status and action contracts.
+  schema. The guarded MCP allowlist contains fifteen tools in this release.
 
 ### Fixed
 
@@ -79,6 +92,9 @@ The project uses semantic versioning once a release is published.
   mapper state when the resolved fixed-window cartridge operand is exact.
 
 ## [0.4.0] - 2026-07-17
+
+**Build Where You Play.** SwanSong Studio arrives, and Translation Lab learns
+to follow visible results back toward the cartridge data that produced them.
 
 ### Added
 
@@ -131,6 +147,9 @@ The project uses semantic versioning once a release is published.
 
 ## [0.3.1] - 2026-07-17
 
+**Make the Evidence Last.** Captures, observed play, and private display
+provenance become durable project artifacts instead of one-off screenshots.
+
 ### Added
 
 - Added a guarded paired playtest MCP tool that replays one exact deterministic
@@ -170,6 +189,9 @@ The project uses semantic versioning once a release is published.
   internal release-status comments are no longer visible in the app.
 
 ## [0.3.0] - 2026-07-17
+
+**Let SwanSong Drive.** Guarded local automation can now record, replay, and
+compare deterministic routes while private game data stays on the Mac.
 
 ### Added
 
@@ -214,6 +236,10 @@ The project uses semantic versioning once a release is published.
   compact SwanSong swan artwork, including a software-safe Intel test path.
 
 ## [0.2.0] - 2026-07-16
+
+**The Mac beta takes shape.** Native updates, a real Homebrew path, Analogue
+Pocket preparation, stronger controller diagnostics, and BIOS-free startup
+turn the early player into a much more complete app.
 
 ### Added
 
@@ -293,6 +319,9 @@ The project uses semantic versioning once a release is published.
 
 ## [0.1.1] - 2026-07-15
 
+**The swan lands.** SwanSong gets its own unmistakable identity, a native
+support window, and Open IPL as the normal startup path.
+
 ### Changed
 
 - Made SwanSong Open IPL the production startup path for WonderSwan,
@@ -313,6 +342,9 @@ The project uses semantic versioning once a release is published.
   Xcode is the Mac's default application for Markdown or plain-text files.
 
 ## [0.1.0] - 2026-07-15
+
+**First flight.** A private, native WonderSwan library and player for Apple
+silicon and Intel Macs, with the first local Translation workflow built in.
 
 ### Added
 

@@ -1,74 +1,104 @@
-# SwanSong Desktop Wiki
+# Welcome to SwanSong
 
-This is the detailed guide to SwanSong: playing and organizing games,
-Translation Lab, Analogue Pocket setup, privacy boundaries, architecture,
-testing, and releases. The repository README is the short product tour; the
-wiki is where the technical detail lives.
+The WonderSwan is small, strange, clever, and still full of surprises. SwanSong
+gives it a home on the Mac: a visual game library, a focused native player, and
+serious tools for the people translating, testing, and making new software for
+it.
 
-The current source line is the 0.4 beta. It supports macOS 14 or later on Apple
-silicon and Intel.
+This wiki is the deeper companion to the repository README. You do not need to
+read it before playing. Come here when you want to tune a controller, move a
+save, understand an update, build a game, prove a translation change, or see
+exactly where SwanSong draws a privacy and trust boundary.
 
-## Current 0.4 beta status
+SwanSong requires macOS 14 or later and supports Apple silicon and Intel Macs.
+No games or original system firmware are included.
 
-- SwanSong Open IPL is the only startup path. There is no BIOS picker or
-  original-firmware import, storage, download, or override.
-- Local authorized `.ws`, `.wsc`, `.pc2`, `.pcv2`, and supported one-game ZIP
-  imports work from the Mac.
-- The signed first-party Homebrew Catalog installer is implemented but remains
-  **Coming Soon**, has no production trust key, and makes no network request.
-- SwanSong app updates use Sparkle 2 with a signed GitHub-hosted feed and
-  immutable GitHub Release assets. Manual checks are available; automatic
-  checks/downloads and beta versions are opt-in, and system profiling is off.
-- Gamepads use the standard controls macOS exposes through GameController. USB
-  and Bluetooth work when the device appears as a compatible controller; raw
-  vendor-specific HID layouts are not guessed.
-- Translation Lab can record route-v3 proofs from exact frame/input plans and
-  verify one stored route against Original and Patched into immutable paired
-  Capture Intake evidence.
-- Local MCP is off by default and exposes only allowlisted live controls,
-  bounded homebrew playtesting, and guarded Translation Lab automation.
-- SwanSong Studio provides native New, Assets, Build, Test, Play, Profile,
-  Evidence, and Release views backed by its content-verified SwanSong SDK 0.3.1
-  payload or an explicitly selected 0.3.1-or-newer development checkout.
-  Python and Wonderful remain resolved local prerequisites; deterministic play
-  continues to use SwanSong exclusively.
-- ABI 9 can selectively trace map, raster, palette, or sprite-attribute sources
-  to private exact cartridge ranges and executed-read context while retaining
-  sprite/OAM ownership and conservative origins only inside the project.
-- The Analogue Pocket SD tool can install only an authorized stable SwanSong
-  Core release. None is currently published, so the tool performs no package
-  download or card write.
-- SwanSong Desktop and SwanSong Core remain separate products and release
-  lanes. Sparkle never invokes the Pocket installer.
+## Pick your path
 
-## Start here
+### I want to play
 
-- [[Playing and Library]] covers imports, the managed library, player, display
-  profiles, Time Ribbon, visual save states, Game Confidence, and save exchange.
-- [[Translation Lab]] documents deterministic route tests, paired evidence,
-  on-device text intake, batch verification, First Visual Change, and privacy.
-- [[SwanSong Studio]] documents the SDK-backed game-development
-  workflow and its current local-toolchain boundary.
-- [[Local MCP and Automation]] documents the opt-in Codex bridge and guarded
-  route/evidence commands.
-- [[Analogue Pocket SD Setup]] documents release trust, card eligibility,
-  transactional writes, rollback, and preserved content.
-- [[Open IPL]] documents the BIOS-free 0.2-and-later startup contract and
-  historical boundary.
-- [[Gamepads]] defines controller discovery, mapping, hotplug, and USB limits.
-- [[Homebrew Catalog]] distinguishes implemented installer code from the
-  deliberately unpublished production catalog.
-- [[App Updates]] documents native GitHub app updates, privacy controls,
-  signatures, and stable/beta channels.
-- [[Architecture and Source Ownership]] explains repository and engine
-  boundaries.
-- [[Build and Test]] is the contributor command and acceptance reference.
-- [[Signing and Notarization]] covers the trusted Mac and Apple tooling.
-- [[Release Gates]] defines source, artifact, app-update, Homebrew, Pocket, and
-  publication requirements.
-- [[0.4 Beta Testing]] is the current tester checklist and known-limits page.
+Start with [[Playing and Library]]. It covers adding games, artwork, favorites,
+the native player, display choices, Time Ribbon, visual save states, Game
+Confidence, and Pocket save exchange. [[Gamepads]] explains presets, custom
+mapping, hotplug, battery status, and the limits of macOS controller support.
 
-Versioned release notes are authoritative for historical behavior. In
-particular, 0.1.0 required user-supplied startup files and 0.1.1 made Open IPL
-the default while retaining optional private original-firmware overrides. The
-override is removed only in 0.2.
+There is no BIOS setup. [[Open IPL]] explains the independent startup system
+included with SwanSong 0.2 and later.
+
+### I want to translate a game
+
+[[Translation Lab]] is the complete guide to deterministic routes, Original
+and Patched frame pairs, First Visual Change, on-device text intake, observed
+play, private display provenance, and durable evidence review.
+
+If a trusted local agent will help with a long route or evidence task, read
+[[Local MCP and Automation]] before enabling anything.
+
+### I want to make a game
+
+[[SwanSong Studio]] puts New, Assets, Build, Test, Play, Profile, Evidence, and
+Release in one native workspace backed by SwanSong SDK. The prepared 0.4.2
+source carries a content-verified SDK 0.3.1 payload, typed visual-authoring
+tools, replay timelines, and deterministic failing-plan minimization. Python
+3.11+ and the pinned Wonderful packages remain honest local prerequisites
+checked by Doctor.
+
+### I want homebrew or Analogue Pocket
+
+[[Homebrew Catalog]] explains the signed first-party catalog now enabled in
+current source. It never loads at launch or merely because you opened Homebrew;
+Load, Refresh, and Add to Library are choices you make.
+
+[[Analogue Pocket SD Setup]] explains how SwanSong can merge an authorized Core
+release onto a selected card without formatting it or touching games, saves,
+Memories, settings, Presets, or unrelated cores. The workflow remains locked
+until the separate SwanSong Core project publishes a verified stable release.
+
+### I want to contribute or release SwanSong
+
+Start with [[Architecture and Source Ownership]], then use [[Build and Test]]
+as the command reference. [[Signing and Notarization]] and [[Release Gates]]
+document the trusted-Mac path from a clean source tag to a signed, notarized,
+checksummed public build.
+
+## Public beta and what comes next
+
+The latest public download is **SwanSong 0.4.1 beta**. It includes the native
+library and player, Open IPL, Translation Lab, ABI 9 private provenance,
+guarded local automation, SwanSong Studio, and native Sparkle updates.
+
+The prepared **0.4.2** source on `main` adds the verified SDK 0.3.1, published
+Homebrew Catalog, typed visual-authoring tools, replay timelines, failing-plan
+minimization, bounded USB Hardware Lab, broader native design pass, clearer
+updater dashboard, and game/window fitting built around the native 224×157
+display. It becomes a public feature set only after the signed, notarized
+0.4.2 release is published.
+
+Use [[0.4 Beta Testing]] for the current tester checklist and the repository
+[changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md#unreleased)
+for the exact source status.
+
+## Private by default, explicit when online
+
+SwanSong has no accounts, ads, analytics, telemetry, crash-reporting service,
+or system profiling. Your games, saves, states, screenshots, controller setup,
+translation evidence, and Studio projects stay on the Mac.
+
+Three separate features can contact GitHub, and only under their own rules:
+
+- the app updater checks when you ask or after you enable automatic checks;
+- the Homebrew Catalog loads, refreshes, or downloads a selected title when
+  you choose that action; and
+- the Analogue Pocket page checks for a Core release only when you ask.
+
+Read [[App Updates]], the
+[privacy policy](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/PRIVACY.md),
+and the relevant feature page for the exact data and trust boundary.
+
+## A note about historical releases
+
+Versioned notes remain authoritative for old behavior. SwanSong 0.1.0 used
+user-supplied startup files. Version 0.1.1 made Open IPL the normal path while
+retaining a private compatibility override. Version 0.2 removed original
+firmware import, storage, and override completely. Current policy should not be
+retroactively described as behavior that existed in 0.1.x.

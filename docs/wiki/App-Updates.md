@@ -1,5 +1,10 @@
 # App Updates
 
+SwanSong updates like a native Mac app without hiding where the new build came
+from. The feed is public, every accepted archive is an immutable GitHub Release
+asset, and you decide whether checks happen manually, automatically, or on the
+beta channel.
+
 ## GitHub-hosted native updates
 
 SwanSong Desktop uses Sparkle 2 for native macOS app updates while keeping the
@@ -89,5 +94,6 @@ manually.
 
 The first-party Homebrew Catalog has its own repository, public key, signature,
 schema, user consent, verified cache, anti-rollback state, ROM validation, and
-release gate. Its production state remains **Coming Soon** and network-silent.
-Sparkle neither activates nor bypasses it.
+release gate. Current source enables the catalog; the public 0.4.1 beta still
+shows **Coming Soon**. Sparkle neither activates nor bypasses it. App updates
+and game downloads remain separate choices with separate trust rules.

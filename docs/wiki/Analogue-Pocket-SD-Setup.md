@@ -1,8 +1,11 @@
 # Analogue Pocket SD Setup
 
-SwanSong Desktop includes an explicit workflow for preparing an Analogue
-Pocket SD card with SwanSong Core. The FPGA project, packages, release policy,
-and hardware qualification remain owned by the separate
+Putting a Core on an SD card should not feel like gambling with everything
+already on it. SwanSong Desktop includes a careful, explicit workflow for
+adding SwanSong Core while preserving the rest of the card.
+
+The FPGA project, packages, release policy, and hardware qualification remain
+owned by the separate
 [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core)
 repository.
 

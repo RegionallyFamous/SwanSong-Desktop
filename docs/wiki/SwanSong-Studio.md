@@ -1,9 +1,25 @@
 # SwanSong Studio
 
-SwanSong Studio is SwanSong Desktop's native workspace for making WonderSwan
-Color games with SwanSong SDK. It puts New, Assets, Build, Test, Play, Profile,
-Evidence, and Release beside the player and Translation Lab without creating a
-second build system.
+SwanSong Studio keeps the whole “make it, run it, prove it” loop inside the Mac
+app. Start from a real WonderSwan Color recipe, build with SwanSong SDK, play in
+SwanSong, inspect the evidence, and package only when the project has earned a
+release verdict.
+
+New, Assets, Build, Test, Play, Profile, Evidence, and Release each get a
+focused native workspace. Studio does not invent a second build system: the SDK
+still owns manifests, assets, Wonderful builds, budgets, scenarios, and release
+policy, while SwanSong remains the deterministic gameplay and evidence backend.
+
+## Your first project
+
+1. Open **Studio** and let **Doctor** check the bundled SDK, Python, Wonderful,
+   schema, and SwanSong identities.
+2. Choose **New** and start with Arcade Action, Menu Puzzle, or Grid Tactics.
+3. Move through Assets, Build, Test, and Play; each workspace makes the next
+   useful action visible.
+4. Inspect the native frame, audio, plan, and observations in Evidence.
+5. Use Release only after every required scenario has current, hash-bound
+   review evidence.
 
 ## Bundled SDK
 

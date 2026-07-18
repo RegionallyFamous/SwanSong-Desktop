@@ -4,123 +4,145 @@
   <img src="Packaging/AppIconCompact.png" width="150" alt="SwanSong app icon">
 </p>
 
-<h2 align="center">Your WonderSwan library, finally at home on the Mac.</h2>
+<h2 align="center">The WonderSwan deserved a great Mac app.</h2>
 
-SwanSong is a native macOS player for the WonderSwan family. Drop in a game,
-watch your collection turn into a beautiful library, and play in a focused Mac
-app built around the handheld's wonderfully unusual personality.
+SwanSong turns your WonderSwan collection into a beautiful, private library
+and gets out of the way when it is time to play. It feels like a Mac app
+because it is one: fast, focused, keyboard-friendly, controller-ready, and
+built around the handheld's wonderfully unusual personality.
 
 No account. No ads. No telemetry. No BIOS scavenger hunt. Just your games and
 a really nice place to play them.
 
 <p align="center">
   <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases"><strong>Download the latest SwanSong beta</strong></a>
-  · <a href="docs/releases/0.4.2.md">What's new in 0.4.2</a>
+  · <a href="docs/releases/0.4.2.md">Preview what is next in 0.4.2</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
 
-## Made for playing
+## Your collection, ready when you are
 
-SwanSong treats your collection like a collection. Games live on a visual
-shelf with favorites, recent play, custom artwork, and a clear path back to
-whatever you were playing last.
+Add a game and SwanSong gives it a proper home: artwork, favorites, recent
+play, compatibility notes, visual save states, and a clear path back to your
+last session. The original file can move; SwanSong keeps a validated private
+copy in its managed library.
 
-Once a game starts, the library melts away. The player gives the pixels room,
-handles horizontal and vertical games naturally, and keeps the controls you
-actually need close by.
+Start playing and the library melts away. Horizontal and vertical games fit
+their native shape, the pixels stay crisp, and the controls you need remain
+close without crowding the screen.
 
-- **Rewind the moment.** Time Ribbon keeps the last 30 seconds of play ready
-  to preview and resume, without filling your Mac with extra save files.
-- **Recognize every save.** Save states have screenshots, so finding the right
-  moment does not become a guessing game.
-- **Choose your screen.** Go razor-sharp with Pure Pixels or give the image a
-  little LCD motion and character.
-- **Play your way.** Use the keyboard or connect a controller, then map the
-  WonderSwan's two direction clusters in a way that makes sense to you.
-- **Bring your saves along.** Import and export SwanSong Pocket `.sav` files
-  when moving between your Mac and compatible Pocket setups.
+- **Rewind the last 30 seconds.** Time Ribbon lets you preview a recent moment
+  and jump back in without creating a pile of save files.
+- **Find the right save at a glance.** Every save state carries its own
+  screenshot-backed place in the timeline.
+- **Choose the screen you remember.** Keep the image razor-sharp with Pure
+  Pixels or add a little LCD motion and character.
+- **Play your way.** Use the keyboard or map a controller to the WonderSwan's
+  two direction clusters, A, B, and Start.
+- **Move saves between setups.** Import and export SwanSong Pocket `.sav`
+  files without turning your whole library inside out.
+- **Know what “works” means.** SwanSong keeps “reached video” separate from a
+  player-confirmed compatibility verdict instead of pretending one frame
+  proves an entire game.
 
-## Open a game. That's it.
+## Open a game. That is the setup.
 
-SwanSong includes its own independently written startup system, SwanSong Open
-IPL. You do not need to find or import a console BIOS.
+SwanSong includes SwanSong Open IPL, an independently written startup system.
+You do not need to find, import, or configure an original console BIOS.
 
-1. Download the ZIP, open it, and move SwanSong to Applications.
-2. Open an authorized `.ws`, `.wsc`, `.pc2`, `.pcv2`, or single-game ZIP.
+1. Download the universal Mac ZIP, open it, and move SwanSong to Applications.
+2. Add an authorized `.ws`, `.wsc`, `.pc2`, `.pcv2`, or supported one-game ZIP.
 3. Press Play.
 
 SwanSong requires macOS 14 or newer and runs natively on Apple silicon and
 Intel Macs. Games are not included; use only files you own or are authorized
 to use.
 
-## A home for the people who go deeper
+## Go deeper without leaving the app
 
-SwanSong is also built for the wonderfully obsessive side of WonderSwan.
+SwanSong has a second life for people who make, translate, test, and preserve
+WonderSwan software.
 
-**Translation Lab** turns a private fan-translation project into a native Mac
-workspace. Record a route, compare original and patched frames, inspect visual
-changes, capture text on-device, and keep review evidence beside the project.
+### Translation Lab
 
-**SwanSong Studio** brings New, Assets, Build, Test, Play, Profile, Evidence,
-and Release into one native workspace for SwanSong SDK projects. Current builds
-embed and content-verify the complete SwanSong SDK 0.3.1 runtime, schema,
-recipes, Python package, and `swan` entry point. Studio includes typed visual
-authoring, replay-timeline, and failing-plan minimization tools alongside the
-existing workflow. An explicit external SDK
-override remains available for framework development. Python 3.11+ and the
-pinned Wonderful packages are resolved locally and checked by Doctor; Studio
-continues to delegate toolchain, deterministic play, profiling, and release
-policy to the SDK.
+Record an exact route, replay it against Original and Patched builds, compare
+native frames, find the first visual change, review text on-device, and keep
+the evidence beside the private project that produced it. Long observed-play
+sessions and bounded source probes help answer difficult questions without
+exposing cartridge addresses or private project data through automation.
 
-**Analogue Pocket setup** prepares an SD card for SwanSong Core from inside the
-app. It is designed to preserve games, saves, Memories, settings, and unrelated
-cores. The screen is included now and will unlock installation when the separate
-SwanSong Core project publishes its first verified stable release.
+### SwanSong Studio
 
-**Homebrew Catalog** verifies a purpose-specific Ed25519 signature, publisher
-rights attestations, immutable release links, exact sizes, and ROM SHA-256
-digests before a listed game can enter the managed library. It never requests
-the catalog at launch or merely because Homebrew was opened; Load, Refresh,
-and Add to Library are explicit network actions.
+Move a SwanSong SDK project through New, Assets, Build, Test, Play, Profile,
+Evidence, and Release in one native workspace. Studio keeps the SDK in charge
+of builds and release policy while SwanSong provides the deterministic player
+and evidence desk. The prepared 0.4.2 source includes the content-verified SDK
+0.3.1, typed visual-authoring tools, replay timelines, and deterministic
+failing-plan minimization. An explicit external SDK override remains available
+for framework development; Doctor checks the local Python and Wonderful
+prerequisites.
 
-**Local automation** lets a trusted Codex session check SwanSong, move around
-the app, control the selected game, inspect path-free Studio readiness, invoke a
-fixed set of existing SDK actions with confirmation, and run proof-grade
-Translation Lab routes. It is off by default, stays on your Mac, and never
-exposes ROM or save bytes.
+### Homebrew and Analogue Pocket
+
+Current source includes the published, signed first-party Homebrew Catalog.
+It loads only when you ask, verifies publisher rights and the exact listed
+release, and checks the ROM size and SHA-256 before adding anything to your
+library.
+
+The Analogue Pocket workflow can safely merge a verified SwanSong Core onto a
+selected SD card without formatting it or disturbing games, saves, Memories,
+settings, Presets, or unrelated cores. It remains locked until the separate
+SwanSong Core project publishes an authorized stable release.
 
 <!-- homebrew-catalog-status: published -->
 
 ## Private on purpose
 
 Your library stays on your Mac. SwanSong has no accounts, advertising,
-analytics, telemetry, crash-reporting service, or system profiling. Update
-checks happen when you ask unless you explicitly turn on automatic checks.
+analytics, telemetry, crash-reporting service, or system profiling.
+
+App updates, Homebrew Catalog access, and Analogue Pocket release checks are
+three separate actions with separate trust rules. None runs simply because you
+opened SwanSong. Automatic app-update checks and automatic installation remain
+choices you control.
 
 Official downloads are universal, Developer ID signed, notarized by Apple,
-and distributed with matching checksums and source.
+and published with matching checksums, a release manifest, and corresponding
+source.
 
-## Want the details?
+## Coming next: SwanSong 0.4.2 beta
 
-The technical documentation lives in the
-[SwanSong Wiki](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki):
+The latest public beta is **0.4.1**. The prepared **0.4.2** source on `main`
+brings together the work that makes SwanSong feel like a real WonderSwan home
+instead of a collection of utilities:
 
-- [Playing, library, saves, and Time Ribbon](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
-- [Translation Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
-- [SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/SwanSong-Studio)
-- [Local MCP and automation](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
-- [Analogue Pocket SD setup](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
-- [Controllers and mapping](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Gamepads)
-- [Open IPL](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Open-IPL)
-- [App updates and privacy](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/App-Updates)
-- [Build and test](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Build-and-Test)
-- [Signing and notarization](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Signing-and-Notarization)
-- [Release gates](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Release-Gates)
+- the verified SwanSong SDK 0.3.1 and Studio hardware-lab integration;
+- typed visual authoring, replay timelines, and failing-plan minimization;
+- the published, signed first-party Homebrew Catalog;
+- a cleaner, more consistent native design across SwanSong's main screens;
+- a clearer updater dashboard; and
+- player canvas and window fitting built around the native 224×157 display.
+
+Read the [0.4.2 preview notes](docs/releases/0.4.2.md) for the guided tour or
+the [changelog](CHANGELOG.md) for the complete history. These additions become
+a public download only after the signed, notarized 0.4.2 release is published.
+
+## Start exploring
+
+The [SwanSong Wiki](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki)
+keeps the deeper guides out of your way until you need them:
+
+- [Play, organize, rewind, and manage saves](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
+- [Build deterministic translation evidence](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
+- [Make games in SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/SwanSong-Studio)
+- [Prepare an Analogue Pocket SD card safely](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
+- [Understand local automation and privacy](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
+- [Build, test, sign, and release SwanSong](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Build-and-Test)
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.4.2 release notes](docs/releases/0.4.2.md).
+[0.4.2 preview notes](docs/releases/0.4.2.md).
 
 ## Free, open, and independent
 

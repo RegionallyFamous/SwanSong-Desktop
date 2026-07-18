@@ -1,7 +1,12 @@
 # Gamepads
 
-SwanSong maps both of the WonderSwan's direction clusters plus Start through
-Apple's GameController framework. Keyboard input remains available.
+The WonderSwan has two direction clusters, which makes a good controller setup
+feel personal. SwanSong gives you useful presets, full remapping, live input
+feedback, hotplug support, and the keyboard as a dependable fallback.
+
+Controller input runs through Apple's GameController framework. USB and
+Bluetooth are equally welcome when macOS exposes the device through a supported
+profile.
 
 ## Supported macOS surfaces
 

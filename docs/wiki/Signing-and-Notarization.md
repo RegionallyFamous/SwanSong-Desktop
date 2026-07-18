@@ -4,6 +4,11 @@ Official SwanSong releases are built only on the trusted signing Mac. Routine
 CI, pull requests, and forks do not receive the Developer ID private key or
 Apple notarization credentials.
 
+This page is intentionally operational. Its job is to turn a reviewed source
+tag into a Mac app that identifies its publisher, survives Gatekeeper, carries
+its notarization ticket, and can be independently matched to the published
+checksums and source.
+
 Apple's reference pages cover
 [Developer ID certificate creation](https://developer.apple.com/help/account/certificates/create-developer-id-certificates/)
 and the

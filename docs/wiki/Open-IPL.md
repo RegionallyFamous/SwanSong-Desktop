@@ -1,8 +1,10 @@
 # Open IPL
 
-SwanSong Open IPL is the project's independently written minimal startup
-implementation for the WonderSwan family. It contains no bytes copied from an
-original Bandai system ROM.
+Open a game and play. That is the promise behind SwanSong Open IPL.
+
+Open IPL is the project's independently written minimal startup implementation
+for the WonderSwan family. It removes the BIOS hunt from current SwanSong
+releases and contains no bytes copied from an original Bandai system ROM.
 
 ## 0.2 and later contract
 

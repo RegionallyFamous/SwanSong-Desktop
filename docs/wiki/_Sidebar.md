@@ -1,17 +1,23 @@
-**SwanSong Desktop**
+**Start here**
 
 - [[Home]]
 - [[Playing and Library]]
+- [[Gamepads]]
+- [[App Updates]]
+
+**Create and translate**
+
 - [[Translation Lab]]
 - [[SwanSong Studio]]
 - [[Local MCP and Automation]]
-- [[Analogue Pocket SD Setup]]
-- [[Gamepads]]
-- [[Open IPL]]
-- [[Homebrew Catalog]]
-- [[App Updates]]
 
-**Contributors and releases**
+**Homebrew and hardware**
+
+- [[Homebrew Catalog]]
+- [[Analogue Pocket SD Setup]]
+- [[Open IPL]]
+
+**Build and release**
 
 - [[Architecture and Source Ownership]]
 - [[Build and Test]]
@@ -19,10 +25,10 @@
 - [[Release Gates]]
 - [[0.4 Beta Testing]]
 
-**Policies and reference**
+**Help and policies**
 
 - [Install](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/INSTALL.md)
 - [FAQ](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/FAQ.md)
 - [Privacy](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/PRIVACY.md)
 - [Support](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/SUPPORT.md)
-- [Source provenance](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/SOURCE_PROVENANCE.md)
+- [Changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md)
