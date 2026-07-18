@@ -94,6 +94,9 @@ game compatibility results or original-hardware accuracy evidence.
 (introduced with ABI 6 and retained by ABI 9): horizontal
 planar and vertical packed output with exact Screen 1, Screen 2, sprite,
 palette, raster-width, rotation, and non-unknown CPU-writer assertions.
+The same lane runs a clean-room input-frame fixture that samples once per
+VBlank and requires adjacent A/X1/A transitions plus repeated A release/press
+cycles without a stale cached button frame between them.
 
 ABI 8 extends those fixtures with raster-only selection, component-complete
 consumer discovery, and executed caller/mapper context for the transformed

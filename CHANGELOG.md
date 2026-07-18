@@ -18,6 +18,13 @@ records those user-visible changes. Published releases use semantic versioning.
   and Support screens, matched Settings to its real window size, and replaced
   misleading offscreen sidebar/tab artifacts with faithful deterministic views.
 
+### Fixed
+
+- Propagate standard and Pocket Challenge keypad changes into ares' cached
+  Button nodes immediately, so a one-frame press or release is visible to the
+  game instead of waiting for a later frontend poll. Volume and Power retain
+  ares' edge-triggered callback handling.
+
 ## [0.4.2] - 2026-07-18
 
 **Make, Replay, Refine.** This prepared beta makes SwanSong feel more complete

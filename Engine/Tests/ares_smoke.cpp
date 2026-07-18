@@ -63,7 +63,10 @@ int main(int argc, char** argv) {
 
   const bool provenance_fixture =
       argc == 4 && std::strcmp(argv[1], "--provenance-fixture") == 0;
-  const char* rom_path = provenance_fixture ? argv[2] : (argc > 1 ? argv[1] : nullptr);
+  const bool input_frame_fixture =
+      argc == 3 && std::strcmp(argv[1], "--input-frame-fixture") == 0;
+  const char* rom_path = provenance_fixture || input_frame_fixture
+      ? argv[2] : (argc > 1 ? argv[1] : nullptr);
   const uint8_t expected_raster_bytes = provenance_fixture
       ? static_cast<uint8_t>(std::strcmp(argv[3], "packed") == 0 ? 1 : 4)
       : 0;
@@ -134,6 +137,90 @@ int main(int argc, char** argv) {
       for (size_t offset = 0; offset < frame.byte_count; ++offset) {
         video_hash ^= frame.pixels[offset];
         video_hash *= 1099511628211ull;
+      }
+    }
+
+    if (input_frame_fixture) {
+      constexpr size_t kTraceAddress = 0x1000;
+      constexpr uint16_t kTraceMagic = 0x5349;
+      constexpr uint16_t kTraceReady = 0xa55a;
+      const auto read_word = [](const std::vector<uint8_t>& bytes,
+                                size_t address) -> uint16_t {
+        return static_cast<uint16_t>(bytes[address]) |
+               static_cast<uint16_t>(bytes[address + 1]) << 8;
+      };
+      const auto read_memory = [&]() -> std::optional<std::vector<uint8_t>> {
+        size_t size = 0;
+        auto memory_result = swan_engine_memory_size(
+            engine, SWAN_MEMORY_INTERNAL_RAM, &size);
+        std::vector<uint8_t> bytes(size);
+        size_t written = 0;
+        if (memory_result == SWAN_RESULT_OK) {
+          memory_result = swan_engine_read_memory(
+              engine, SWAN_MEMORY_INTERNAL_RAM,
+              bytes.data(), bytes.size(), &written);
+        }
+        if (memory_result != SWAN_RESULT_OK || written != bytes.size()) {
+          return std::nullopt;
+        }
+        return bytes;
+      };
+
+      const auto before = read_memory();
+      if (!before || before->size() < kTraceAddress + 12 ||
+          read_word(*before, kTraceAddress) != kTraceMagic ||
+          read_word(*before, kTraceAddress + 2) != kTraceReady) {
+        std::fputs("input-frame fixture did not reach its ready boundary\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      const uint16_t first_sample = read_word(*before, kTraceAddress + 4);
+      if (first_sample > 13) {
+        std::fputs("input-frame fixture trace did not have room for the exercise\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      constexpr std::array<uint32_t, 8> input_masks = {
+          SWAN_INPUT_A, SWAN_INPUT_X1, SWAN_INPUT_A, 0,
+          SWAN_INPUT_A, 0, SWAN_INPUT_A, 0,
+      };
+      for (const uint32_t input_mask : input_masks) {
+        result = swan_engine_set_input(engine, input_mask);
+        if (result == SWAN_RESULT_OK) result = swan_engine_run_frame(engine);
+        if (result != SWAN_RESULT_OK) {
+          std::fputs("adjacent-frame input exercise could not run\n", stderr);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+      }
+
+      const auto after = read_memory();
+      const std::array<uint16_t, 8> expected = {
+          0x0004, 0x0010, 0x0004, 0x0000,
+          0x0004, 0x0000, 0x0004, 0x0000,
+      };
+      const uint16_t final_sample = after
+          ? read_word(*after, kTraceAddress + 4) : 0xffff;
+      bool exact = after && final_sample == first_sample + expected.size();
+      for (size_t index = 0; exact && index < expected.size(); ++index) {
+        exact = read_word(
+            *after, kTraceAddress + 6 + (first_sample + index) * 2) ==
+            expected[index];
+      }
+      if (!exact) {
+        std::fprintf(
+            stderr,
+            "adjacent-frame input was stale: samples=%u..%u expected=A,X1,A,release,A,release,A,release\n",
+            first_sample, final_sample);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      result = swan_engine_set_input(engine, 0);
+      if (result != SWAN_RESULT_OK) {
+        std::fputs("could not release input after frame exercise\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
       }
     }
 
