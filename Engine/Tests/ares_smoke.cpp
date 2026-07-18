@@ -260,6 +260,9 @@ int main(int argc, char** argv) {
         swan_engine_destroy(engine);
         return 1;
       }
+      std::puts("PASS scheduled input transitions reached their exact game frames");
+      swan_engine_destroy(engine);
+      return 0;
     }
 
     swan_display_rectangle_t rectangle{};
