@@ -1060,14 +1060,14 @@ struct SwanSDKWorkspaceView: View {
                 }
                 if workspace.usesVerifiedBundledSDK {
                     Label(
-                        "The signed SDK 0.3.1 payload is verified. Python 3.11+ and the Wonderful packages shown above are resolved locally; Run Doctor checks their installed versions and SwanSong connectivity.",
+                        "The signed SDK 0.4.0 payload is verified. Python 3.11+ and the Wonderful packages shown above are resolved locally; Run Doctor checks their installed versions and SwanSong connectivity.",
                         systemImage: "checkmark.shield.fill"
                     )
                     .font(.caption)
                     .foregroundStyle(.green)
                 } else {
                     Label(
-                        "An explicit external SDK override is active. Use Bundled SDK to return to the signed, content-verified 0.3.1 payload.",
+                        "An explicit external SDK override is active. Use Bundled SDK to return to the signed, content-verified 0.4.0 payload.",
                         systemImage: "exclamationmark.triangle"
                     )
                     .font(.caption)

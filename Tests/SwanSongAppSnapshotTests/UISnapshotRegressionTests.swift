@@ -1407,7 +1407,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             encoding: .utf8
         )
         let supportMetadata = SwanSongMetadata(
-            version: "0.4.2",
+            version: "0.4.3",
             build: "8",
             bundleIdentifier: "com.regionallyfamous.swansong",
             aresRevision: nil

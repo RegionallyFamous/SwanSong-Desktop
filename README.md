@@ -15,8 +15,8 @@ No account. No ads. No telemetry. No BIOS scavenger hunt. Just your games and
 a really nice place to play them.
 
 <p align="center">
-  <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases"><strong>Download SwanSong 0.4.2 beta</strong></a>
-  · <a href="docs/releases/0.4.2.md">See what’s new</a>
+  <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases"><strong>Download SwanSong 0.4.3 beta</strong></a>
+  · <a href="docs/releases/0.4.3.md">See what’s new</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -77,8 +77,8 @@ exposing cartridge addresses or private project data through automation.
 Move a SwanSong SDK project through New, Assets, Build, Test, Play, Profile,
 Evidence, and Release in one native workspace. Studio keeps the SDK in charge
 of builds and release policy while SwanSong provides the deterministic player
-and evidence desk. SwanSong 0.4.2 includes the content-verified SDK
-0.3.1, typed visual-authoring tools, replay timelines, and deterministic
+and evidence desk. SwanSong 0.4.3 includes the content-verified SDK
+0.4.0, typed visual-authoring tools, replay timelines, and deterministic
 failing-plan minimization. An explicit external SDK override remains available
 for framework development; Doctor checks the local Python and Wonderful
 prerequisites.
@@ -111,19 +111,20 @@ Official downloads are universal, Developer ID signed, notarized by Apple,
 and published with matching checksums, a release manifest, and corresponding
 source.
 
-## The latest beta: SwanSong 0.4.2
+## The latest beta: SwanSong 0.4.3
 
-The public **0.4.2 beta** brings together the work that makes SwanSong feel like
+The public **0.4.3 beta** brings together the work that makes SwanSong feel like
 a real WonderSwan home instead of a collection of utilities:
 
-- the verified SwanSong SDK 0.3.1 and Studio hardware-lab integration;
+- the verified SwanSong SDK 0.4.0 and Studio hardware-lab integration;
+- exact-frame keypad delivery for short presses and releases;
 - typed visual authoring, replay timelines, and failing-plan minimization;
 - the published, signed first-party Homebrew Catalog;
 - a cleaner, more consistent native design across SwanSong's main screens;
 - a clearer updater dashboard; and
 - player canvas and window fitting built around the native 224×157 display.
 
-Read the [0.4.2 release notes](docs/releases/0.4.2.md) for the guided tour or
+Read the [0.4.3 release notes](docs/releases/0.4.3.md) for the guided tour or
 the [changelog](CHANGELOG.md) for the complete history.
 
 ## Start exploring
@@ -140,7 +141,7 @@ keeps the deeper guides out of your way until you need them:
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.4.2 release notes](docs/releases/0.4.2.md).
+[0.4.3 release notes](docs/releases/0.4.3.md).
 
 ## Free, open, and independent
 

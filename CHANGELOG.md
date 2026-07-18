@@ -6,8 +6,18 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+## [0.4.3] - 2026-07-18
+
+**Every Press Counts.** This beta makes short, exact game inputs reliable,
+brings the released SwanSong SDK 0.4.0 into Studio, and makes the app's main
+screens easier to understand at a glance.
+
 ### Changed
 
+- Updated the signed, content-verified embedded framework to SwanSong SDK 0.4.0
+  at its exact tagged commit and payload revision. SDK 0.4.0 removes expensive
+  resource scans from ordinary frame presentation, improves utility rendering,
+  and strengthens generated build dependencies and play contracts.
 - Rewrote the Library, Homebrew, Translation Lab, Analogue Pocket, Studio,
   Settings, Updates, and Support screens around plain-language headlines and
   obvious next actions. Technical proof and safety details remain available
@@ -378,7 +388,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.2...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.3...HEAD
+[0.4.3]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.1...v0.4.0

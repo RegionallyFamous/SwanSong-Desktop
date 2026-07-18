@@ -232,7 +232,7 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         try writeBundleManifest(at: root)
 
         let resolution = try SwanSDKCLIResolution.resolve(sdkRoot: root)
-        XCTAssertEqual(resolution.bundleSummary?.version, "0.3.1")
+        XCTAssertEqual(resolution.bundleSummary?.version, "0.4.0")
         XCTAssertEqual(resolution.bundleSummary?.fileCount, 2)
 
         try Data("# changed\n".utf8).write(to: module)
@@ -258,7 +258,7 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         let resolution = try SwanSDKCLIResolution.resolve(sdkRoot: sdkRoot)
         XCTAssertEqual(resolution.sdkRoot, sdkRoot.resolvingSymlinksInPath())
         let package = try SwanSDKPackageSummary.load(from: sdkRoot)
-        XCTAssertEqual(package.version, "0.3.1")
+        XCTAssertEqual(package.version, "0.4.0")
         XCTAssertTrue(package.supportsStudioTools)
         XCTAssertEqual(try SwanSDKSchemaSummary.load(from: sdkRoot).version, 1)
         let toolchain = try SwanSDKToolchainSummary.load(from: sdkRoot)
@@ -463,14 +463,14 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
     }
 
     func testStudioToolsVersionBoundaryUsesStableSemanticVersions() {
-        for version in ["0.3.1", "0.3.1+build.8", "0.3.2-beta.1", "0.10.0", "1.0.0"] {
+        for version in ["0.4.0", "0.4.0+build.9", "0.4.1-beta.1", "0.10.0", "1.0.0"] {
             XCTAssertTrue(
                 SwanSDKPackageSummary(version: version).supportsStudioTools,
                 version
             )
         }
         for version in [
-            "0.3.0", "0.3.1-beta.1", "0.3", "0.3.1.1", "0.nope.3.1", "invalid",
+            "0.3.1", "0.4.0-beta.1", "0.4", "0.4.0.1", "0.nope.4.0", "invalid",
         ] {
             XCTAssertFalse(
                 SwanSDKPackageSummary(version: version).supportsStudioTools,

@@ -17,7 +17,7 @@ versioned release notes.
 
 ## Can SwanSong install homebrew directly from GitHub?
 
-Yes. SwanSong 0.4.2 can browse its signed first-party Homebrew Catalog and add
+Yes. SwanSong 0.4.3 can browse its signed first-party Homebrew Catalog and add
 an authorized original game to your private library. It connects only after
 you choose **Browse Games**, **Refresh**, or a specific download. **Add From
 Mac** remains available for local homebrew.

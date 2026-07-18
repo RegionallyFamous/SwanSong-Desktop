@@ -6,7 +6,7 @@ Release notes and the issue tracker are authoritative for shipped behavior.
 ## 0.4 beta closure
 
 - Validate SwanSong Studio's New, Assets, Build, Test, Play, Profile, Evidence,
-  and Release workspaces against SwanSong SDK 0.3.1-or-newer projects.
+  and Release workspaces against SwanSong SDK 0.4.0-or-newer projects.
 - Exercise Doctor, Dev, Scenario Recorder, Evidence Diff, deterministic input
   fuzzing, Sprite/VRAM profiling, Asset Optimizer, and Save/RTC Laboratory with
   both successful projects and bounded failure cases.

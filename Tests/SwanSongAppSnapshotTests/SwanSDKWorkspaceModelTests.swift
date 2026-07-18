@@ -12,7 +12,7 @@ final class SwanSDKWorkspaceModelTests: XCTestCase {
         let model = makeModel()
 
         XCTAssertThrowsError(try model.configureSDK(at: root, remember: false)) { error in
-            XCTAssertTrue(error.localizedDescription.contains("0.3.1 or newer"))
+            XCTAssertTrue(error.localizedDescription.contains("0.4.0 or newer"))
         }
         XCTAssertNil(model.sdkRoot)
         XCTAssertNil(model.sdkPackage)
