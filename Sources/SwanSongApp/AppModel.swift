@@ -462,6 +462,7 @@ final class AppModel {
     let engineBackendName: String
     let engineBuildID: String
     let engineCanExecute: Bool
+    let studioWorkspace: SwanSDKWorkspaceModel
 
     private let store: GameLibraryStore
     private let saveStore: GameSaveStore
@@ -638,7 +639,8 @@ final class AppModel {
         artworkStore: GameArtworkStore = .defaultStore(),
         controllerProfileStore: ControllerProfileStore = .defaultStore(),
         translationWorkspaceStore: TranslationWorkspaceStore = .defaultStore(),
-        engineCanExecuteOverride: Bool? = nil
+        engineCanExecuteOverride: Bool? = nil,
+        studioWorkspaceOverride: SwanSDKWorkspaceModel? = nil
     ) {
         self.store = store
         self.saveStore = saveStore
@@ -685,6 +687,10 @@ final class AppModel {
             engineBuildID = "unavailable"
             engineCanExecute = false
         }
+        studioWorkspace = studioWorkspaceOverride ?? SwanSDKWorkspaceModel(
+            engineName: engineBackendName,
+            engineBuildID: engineBuildID
+        )
         controllerProfile = (try? controllerProfileStore.load()) ?? .default
         controller.onChange = { [weak self] elements in
             self?.handleControllerElements(elements)
@@ -904,11 +910,9 @@ final class AppModel {
     }
 
     func loadHomebrewCatalogIfNeeded() {
-        guard homebrewCatalogIsConfigured,
-              homebrewCatalogConsentGranted,
-              homebrewCatalog == nil,
-              !homebrewCatalogRefreshAttemptedThisSession else { return }
-        refreshHomebrewCatalog()
+        // Catalog network access is always attached to an explicit Load or
+        // Refresh action. Launch and navigation may use a locally cached,
+        // reverified catalog but never create a request on their own.
     }
 
     func refreshHomebrewCatalog() {
@@ -1083,6 +1087,7 @@ final class AppModel {
                     try HomebrewCatalogInstaller(assetData: data).install(
                         entry: entry,
                         release: release,
+                        catalogID: catalog.catalogID,
                         into: previousGames,
                         managedStore: managedGameStore
                     )
@@ -7332,7 +7337,13 @@ final class AppModel {
         _ data: Data,
         sourceURL: URL
     ) throws -> HomebrewCatalog {
-        try HomebrewCatalogValidator.decode(data, sourceURL: sourceURL)
+        if sourceURL == PublishedHomebrewCatalogDecoder.sourceURL {
+            return try PublishedHomebrewCatalogDecoder.decode(
+                data,
+                sourceURL: sourceURL
+            )
+        }
+        return try HomebrewCatalogValidator.decode(data, sourceURL: sourceURL)
     }
 
     nonisolated private static func shouldRetryHomebrewCatalogPair(

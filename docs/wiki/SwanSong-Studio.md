@@ -5,13 +5,20 @@ Color games with SwanSong SDK. It puts New, Assets, Build, Test, Play, Profile,
 Evidence, and Release beside the player and Translation Lab without creating a
 second build system.
 
-## Developer preview
+## Bundled SDK
 
-Choose a local SwanSong SDK 0.2.0-or-newer checkout when Studio opens. SwanSong
-remembers the SDK and project folders for the current macOS user. This preview
-does not yet bundle Python, Wonderful, or the SDK runtime inside the signed app.
-The workspace shows that boundary rather than presenting the public app as a
-self-contained SDK distribution.
+SwanSong embeds the complete SwanSong SDK 0.2.0 runtime, schema, three recipes,
+Python package, and `swan` entry point. The bundle is pinned to the tagged Git
+commit and SDK content revision; build, packaging, runtime, and release checks
+reject missing, modified, extra, or identity-mismatched files. Studio selects
+this signed payload by default. **Choose SDK…** remains an explicit development
+override, and **Use Bundled SDK** returns to the verified copy.
+
+Python 3.11+ and Wonderful are still resolved from the Mac in this milestone;
+they are not silently described as bundled. The identity panel shows the
+resolved Python version, Wonderful package pins, SDK revision, schema, and
+SwanSong engine. Doctor validates the installed Python and Wonderful packages
+and the SwanSong connection before a production workflow.
 
 ## The eight workspaces
 
@@ -40,6 +47,60 @@ Doctor is available beside the resolved SDK, schema, toolchain, and SwanSong
 identity. Diagnostics stream while commands run, Cancel terminates the command
 process group, and Studio permits only one SDK command at a time.
 
+## USB Hardware Lab
+
+The toolbar's **USB Hardware Lab** connects Studio to an explicitly selected
+SwanSong USB `0.1.0-prototype.1` checkout. Studio pins commit
+`e39980a1148623ed13f55c2677bccde24fef865f` and the exact SHA-256 of its three
+Python tools. It reads those verified bytes once and stages only those three
+files in a private, read-only execution directory, so extra checkout modules
+cannot shadow standard or pinned imports. A missing, changed, symlinked, or
+incomplete tool set is never executed.
+
+The adapter has four typed operations only: Doctor, Update Plan, Install, and
+bounded Physical Control QA. It resolves Python 3.11+ only from the fixed
+Homebrew, `/usr/local`, or system tool locations and invokes the isolated fixed
+entry point with `-P` and an argument array; there is no shell string,
+arbitrary executable field, or development override.
+
+Doctor and Update Plan are read-only. An install is unavailable until the plan
+returns a valid lowercase SHA-256, the user accepts a controller reset, and a
+second dialog repeats the exact digest. The hardware tool then verifies
+readback before restart. Every report schema has an exact allowed key set,
+nested shape, type, size, integer bound, and digest/version format. Unknown
+fields fail closed; local firmware paths are stripped before Studio retains the
+formatted report. The engineering VID/PID warning remains visible and cannot
+be waived by the app.
+
+USB hardware mutation is intentionally absent from local MCP automation. A
+person at the Mac must select the tools and image and confirm the physical
+reset. This keeps device writes out of path-free unattended automation.
+
+## Next tagged SDK authoring seam
+
+Desktop remains pinned to released SDK 0.2.0 for this build. Once the next SDK
+tag includes them, Studio can add adapters without inventing private models:
+
+- `swan replay --json` → `swansong-replay-report-v1`, with optional
+  `swansong-replay-checkpoints-v1` input;
+- `swan minimize --json` → `swansong-minimize-report-v1`, using the public
+  `swansong-failure-predicate-v1` contract;
+- `swan author create|validate|report|export --json` →
+  `swansong-author-operation-report-v1`, editing the six public v1 documents
+  for tilemaps, sprites/hitboxes, palettes/mono, collision/paths, scene flow,
+  and audio timelines.
+
+The future UI must preserve unknown files, validate before export, show
+warnings and capacity estimates, and keep the authoring handoff's gameplay
+evidence fields visible. These commands stay hidden until those schemas ship in
+a reviewed tagged SDK payload and Desktop updates its content-verified pin.
+
+Opt-in local MCP automation exposes two Studio contracts. One returns only the
+single already-open project slot, readiness, counts, and tool versions without
+its name or path. The other requires `confirmProjectWrites: true` and invokes
+only Doctor, Assets, Build, Test, Play, or Profile. It cannot select a path,
+create or edit a project directly, run Release, or execute an arbitrary command.
+
 In **Settings → Display & Player**, you can opt in to a local notification when
 a Studio task finishes while SwanSong is in the background. The notification
 contains only the task name and whether it finished or needs attention. Project
@@ -64,7 +125,9 @@ schemas. Gameplay and release evidence run through SwanSong only. Studio does
 not add another emulator, asset compiler, manifest interpretation, or release
 policy.
 
-The workspace reads and writes only the SDK and project folders you choose.
+The workspace reads its signed SDK resources and reads and writes only project
+folders you choose. An explicit external SDK override is treated as a chosen
+development folder.
 Project source, ROMs, diagnostics, frames, audio, plans, and reports stay on the
 Mac.
 

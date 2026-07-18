@@ -4,7 +4,7 @@ SwanSong Desktop is early 0.x software for macOS 14 and newer. Before filing an
 issue, check the release notes and try the newest appropriate stable or beta
 build.
 
-<!-- homebrew-catalog-status: coming-soon -->
+<!-- homebrew-catalog-status: published -->
 
 ## Common setup questions
 
@@ -23,17 +23,19 @@ the private project workspace you link. Back up saves before deleting data.
 
 ### Does SwanSong go online?
 
-The current production configuration does not go online through the Homebrew
-page: it says **Coming Soon** and has no production catalog trust key. SwanSong
-has no accounts, analytics, telemetry, crash-reporting service, or system
-profiling. **Check for Updates…** contacts SwanSong's signed GitHub-hosted
+The Homebrew page never goes online at launch or simply because you open it.
+**Load Catalog**, **Refresh**, and **Add to Library** are explicit GitHub
+requests. Catalog bytes must have a trusted Ed25519 signature, and each ROM
+must match its published size and SHA-256 before it enters the library.
+SwanSong has no accounts, analytics, telemetry, crash-reporting service, or
+system profiling. **Check for Updates…** contacts SwanSong's signed GitHub-hosted
 Sparkle feed when you invoke it. **Automatically check for updates** and
 **Automatically download and install updates** are separate opt-ins; background
 update requests remain off unless you enable automatic checks. Opening a
 project, support, or **Open SwanSong Releases** link is an explicit action that
 uses your default browser. Read [PRIVACY.md](PRIVACY.md) for the exact
 app-update behavior and the
-disclosure that applies if a future release activates the first-party catalog.
+catalog disclosure.
 
 The **Analogue Pocket** page also stays offline until you choose **Check for
 Core Release**. That action checks the official Core repository on GitHub; a
@@ -58,10 +60,10 @@ games or saves.
 ### What can I import?
 
 SwanSong accepts `.ws`, `.wsc`, `.pc2`, and `.pcv2` files, plus supported ZIP
-archives containing one authorized game or homebrew image. The first-party
-Homebrew Catalog is **Coming Soon** in the current production configuration.
-SwanSong does not provide a general ROM catalog, accept original BIOS files,
-or open multi-game archive collections.
+archives containing one authorized game or homebrew image. The signed
+Homebrew Catalog contains only entries with affirmative redistribution and
+original-work attestations. SwanSong does not provide a general ROM catalog,
+accept original BIOS files, or open multi-game archive collections.
 
 ### How do I put SwanSong Core on an Analogue Pocket card?
 

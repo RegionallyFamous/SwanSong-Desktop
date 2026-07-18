@@ -68,10 +68,64 @@ final class SwanSongLocalMCPBridge {
             payload = try navigate(arguments)
         case "player":
             payload = try controlPlayer(arguments)
+        case "studio-projects":
+            payload = studioProjects()
+        case "studio-action":
+            payload = try runStudioAction(arguments)
         default:
             throw BridgeError("SwanSong does not allow the requested local MCP action.")
         }
         return try encode(payload)
+    }
+
+    private func studioProjects() -> [String: Any] {
+        let workspace = model.studioWorkspace
+        let phase: String
+        let sdkSource: String
+        if workspace.isRunning {
+            phase = "running"
+        } else if workspace.issue != nil {
+            phase = "needs-attention"
+        } else {
+            phase = "idle"
+        }
+        if workspace.sdkRoot == nil {
+            sdkSource = "unavailable"
+        } else if workspace.usesVerifiedBundledSDK {
+            sdkSource = "bundled"
+        } else {
+            sdkSource = "external"
+        }
+        return [
+            "schema": "swansong-studio-projects-v1",
+            "sdkConfigured": workspace.sdkRoot != nil,
+            "sdkSource": sdkSource,
+            "sdkVersion": workspace.sdkPackage?.version ?? "unavailable",
+            "pythonVersion": workspace.pythonRuntime?.version ?? "unavailable",
+            "projectCount": workspace.projectRoot == nil ? 0 : 1,
+            "projects": workspace.projectRoot == nil ? [] : [[
+                "slot": "current",
+                "manifestOpen": true,
+                "scenarioCount": workspace.playContract?.scenarios.count ?? 0,
+                "hasUnsavedChanges": workspace.manifestHasUnsavedChanges
+                    || workspace.scenarioPlanHasUnsavedChanges,
+            ]],
+            "phase": phase,
+            "activeAction": workspace.activeCommandName ?? "none",
+        ]
+    }
+
+    private func runStudioAction(_ arguments: [String: Any]) throws -> [String: Any] {
+        guard arguments["confirmProjectWrites"] as? Bool == true else {
+            throw BridgeError(
+                "Set confirmProjectWrites to true after confirming the current Studio project may be built or updated."
+            )
+        }
+        guard let action = arguments["action"] as? String else {
+            throw BridgeError("action is required")
+        }
+        try model.studioWorkspace.runAutomationAction(named: action)
+        return studioProjects()
     }
 
     private func status() -> [String: Any] {

@@ -1,10 +1,12 @@
 # Local MCP and Automation
 
 SwanSong includes a local Model Context Protocol server for trusted Codex and
-other MCP clients. It has four deliberately separate surfaces:
+other MCP clients. It has five deliberately separate surfaces:
 
 - a live-app bridge for small, allowlisted status, navigation, and playback
   actions;
+- a path-free Studio project-status tool and confirmation-gated fixed SDK
+  action allowlist;
 - bounded headless playtest tools that return one rendered frame and final
   audio window, or a deterministic Original/Patched pair, from SwanSong's own
   engine after an exact input plan;
@@ -32,14 +34,30 @@ setting off immediately revokes that token.
 The live bridge must have the SwanSong app open. It exposes:
 
 - `swansong_status`: section, library count, playback state, and readiness;
-- `swansong_navigate`: Library, Favorites, Recent, Homebrew, Pocket, or
-  Translation Lab; and
+- `swansong_navigate`: Library, Favorites, Recent, Homebrew, Pocket,
+  Translation Lab, or Studio; and
 - `swansong_player`: play the already selected game, pause, resume, or stop.
 
 It does not expose game titles, paths, ROM bytes, save or state bytes, RAM,
 screenshots, controller input, logs, or arbitrary app commands. It cannot pick
 a file or select a different game. Navigation is refused while a game is
 running.
+
+## Studio tools
+
+`swansong_studio_projects` returns a single `current` slot when a project is
+already open in Studio. It reports readiness, SDK and Python versions, scenario
+count, unsaved-change state, and current activity. It does not return the
+project name or path, manifest contents, source, assets, ROM, diagnostics,
+screenshots, audio, or evidence.
+
+`swansong_studio_action` requires `confirmProjectWrites: true` and accepts only
+`doctor`, `assets`, `build`, `test`, `play`, or `profile`. It invokes the same
+SDK action already used by the native Studio view against the already-open
+project. It cannot accept a path, choose or create a project, directly edit a
+file, run Release, or execute a shell command. Studio refuses the request while
+another command is running or the visible manifest or scenario plan has
+unsaved edits.
 
 ## Homebrew playtesting
 

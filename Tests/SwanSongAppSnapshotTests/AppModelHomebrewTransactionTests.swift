@@ -38,7 +38,10 @@ final class AppModelHomebrewTransactionTests: XCTestCase {
         XCTAssertEqual(AppModelHomebrewURLProtocol.requestCount, 2)
         XCTAssertEqual(
             AppModelHomebrewURLProtocol.requestURLs,
-            [HomebrewCatalogClient.catalogURL, HomebrewCatalogClient.signatureURL]
+            [
+                URL(string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-story-forge/main/distribution/catalog-v1.json")!,
+                URL(string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-story-forge/main/distribution/catalog-v1.json.sig")!,
+            ]
         )
         XCTAssertEqual(fixture.model.homebrewCatalog, catalog)
         XCTAssertEqual(fixture.model.selectedHomebrewEntryID, catalog.entries.first?.id)
@@ -554,7 +557,9 @@ final class AppModelHomebrewTransactionTests: XCTestCase {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [AppModelHomebrewURLProtocol.self]
         return HomebrewCatalogClient(
-            testSourceURL: HomebrewCatalogClient.catalogURL,
+            testSourceURL: URL(
+                string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-story-forge/main/distribution/catalog-v1.json"
+            )!,
             sessionConfiguration: configuration,
             trustsSource: { url in
                 guard url.scheme?.lowercased() == "https",

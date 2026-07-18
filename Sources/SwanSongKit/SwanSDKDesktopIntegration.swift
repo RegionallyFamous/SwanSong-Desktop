@@ -1,4 +1,6 @@
 import Darwin
+import CryptoKit
+import Dispatch
 import Foundation
 
 public enum SwanSDKRecipe: String, CaseIterable, Codable, Identifiable, Sendable {
@@ -214,17 +216,26 @@ public struct SwanSDKCLIResolution: Equatable, Sendable {
     public let executableURL: URL
     public let argumentPrefix: [String]
     public let environment: [String: String]
+    public let bundleSummary: SwanSDKBundleSummary?
+    public let pythonExecutableURL: URL?
+    public let pythonArgumentPrefix: [String]
 
     public init(
         sdkRoot: URL,
         executableURL: URL,
         argumentPrefix: [String],
-        environment: [String: String]
+        environment: [String: String],
+        bundleSummary: SwanSDKBundleSummary? = nil,
+        pythonExecutableURL: URL? = nil,
+        pythonArgumentPrefix: [String] = []
     ) {
         self.sdkRoot = sdkRoot
         self.executableURL = executableURL
         self.argumentPrefix = argumentPrefix
         self.environment = environment
+        self.bundleSummary = bundleSummary
+        self.pythonExecutableURL = pythonExecutableURL
+        self.pythonArgumentPrefix = pythonArgumentPrefix
     }
 
     public static func resolve(
@@ -232,6 +243,13 @@ public struct SwanSDKCLIResolution: Equatable, Sendable {
         environment: [String: String] = ProcessInfo.processInfo.environment
     ) throws -> Self {
         let root = sdkRoot.standardizedFileURL.resolvingSymlinksInPath()
+        let bundleManifest = root.appendingPathComponent("SDK-BUNDLE.json")
+        let bundleSummary: SwanSDKBundleSummary?
+        if FileManager.default.fileExists(atPath: bundleManifest.path) {
+            bundleSummary = try SwanSDKBundleSummary.loadAndValidate(from: root)
+        } else {
+            bundleSummary = nil
+        }
         let schema = root.appendingPathComponent("schema/swan.schema.json")
         let recipes = root.appendingPathComponent("templates", isDirectory: true)
         guard FileManager.default.fileExists(atPath: schema.path),
@@ -241,18 +259,10 @@ public struct SwanSDKCLIResolution: Equatable, Sendable {
             )
         }
 
-        let bundledCLI = root.appendingPathComponent("bin/swan")
-        if FileManager.default.isExecutableFile(atPath: bundledCLI.path) {
-            return Self(
-                sdkRoot: root,
-                executableURL: bundledCLI,
-                argumentPrefix: [],
-                environment: ["SWANSONG_SDK_DIR": root.path]
-            )
-        }
-
         let module = root.appendingPathComponent("python/swansong_sdk/cli.py")
-        guard FileManager.default.fileExists(atPath: module.path) else {
+        let bundledCLI = root.appendingPathComponent("bin/swan")
+        guard FileManager.default.fileExists(atPath: module.path)
+                || FileManager.default.isExecutableFile(atPath: bundledCLI.path) else {
             throw SwanSDKIntegrationError.invalidSDKLocation(
                 "The selected SDK does not contain bin/swan or python/swansong_sdk/cli.py."
             )
@@ -260,24 +270,40 @@ public struct SwanSDKCLIResolution: Equatable, Sendable {
         var additions = [
             "SWANSONG_SDK_DIR": root.path,
             "PYTHONPATH": root.appendingPathComponent("python").path,
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONNOUSERSITE": "1",
         ]
         if let existing = environment["PYTHONPATH"], !existing.isEmpty {
             additions["PYTHONPATH"]! += ":\(existing)"
         }
-        let bundledPython = root.appendingPathComponent("runtime/bin/python3")
-        if FileManager.default.isExecutableFile(atPath: bundledPython.path) {
+        if FileManager.default.fileExists(atPath: module.path) {
+            let bundledPython = root.appendingPathComponent("runtime/bin/python3")
+            if FileManager.default.isExecutableFile(atPath: bundledPython.path) {
+                return Self(
+                    sdkRoot: root,
+                    executableURL: bundledPython,
+                    argumentPrefix: ["-P", "-m", "swansong_sdk.cli"],
+                    environment: additions,
+                    bundleSummary: bundleSummary,
+                    pythonExecutableURL: bundledPython
+                )
+            }
             return Self(
                 sdkRoot: root,
-                executableURL: bundledPython,
-                argumentPrefix: ["-m", "swansong_sdk.cli"],
-                environment: additions
+                executableURL: URL(fileURLWithPath: "/usr/bin/env"),
+                argumentPrefix: ["python3", "-P", "-m", "swansong_sdk.cli"],
+                environment: additions,
+                bundleSummary: bundleSummary,
+                pythonExecutableURL: URL(fileURLWithPath: "/usr/bin/env"),
+                pythonArgumentPrefix: ["python3"]
             )
         }
         return Self(
             sdkRoot: root,
-            executableURL: URL(fileURLWithPath: "/usr/bin/env"),
-            argumentPrefix: ["python3", "-m", "swansong_sdk.cli"],
-            environment: additions
+            executableURL: bundledCLI,
+            argumentPrefix: [],
+            environment: additions,
+            bundleSummary: bundleSummary
         )
     }
 
@@ -288,6 +314,206 @@ public struct SwanSDKCLIResolution: Equatable, Sendable {
             workingDirectory: command.workingDirectory ?? sdkRoot,
             environment: environment
         )
+    }
+}
+
+public struct SwanSDKBundleSummary: Equatable, Sendable {
+    public static let expectedVersion = "0.2.0"
+    public static let expectedCommit = "074f391981d2863703ef814472e944870c850cd3"
+    public static let expectedManifestSchemaVersion = 1
+    public static let expectedPayloadRevision =
+        "sha256:a9d93aa45ba8d1d5c5ce62cc04dd9f59692d7e0a849a899f6ceac15118b9b4d0"
+    public static let expectedMinimumPython = "3.11"
+
+    public let version: String
+    public let commit: String
+    public let manifestSchemaVersion: Int
+    public let payloadRevision: String
+    public let minimumPython: String
+    public let fileCount: Int
+
+    private struct Document: Decodable {
+        struct File: Decodable {
+            let path: String
+            let byteCount: Int
+            let sha256: String
+        }
+
+        let schema: String
+        let version: String
+        let commit: String
+        let manifestSchemaVersion: Int
+        let payloadRevision: String
+        let minimumPython: String
+        let files: [File]
+    }
+
+    public static func loadAndValidate(from sdkRoot: URL) throws -> Self {
+        let root = sdkRoot.standardizedFileURL.resolvingSymlinksInPath()
+        let manifestURL = root.appendingPathComponent("SDK-BUNDLE.json")
+        let manifestData = try Data(contentsOf: manifestURL)
+        let document = try JSONDecoder().decode(Document.self, from: manifestData)
+        guard document.schema == "swan-song-sdk-bundle-v1",
+              document.version == expectedVersion,
+              document.commit == expectedCommit,
+              document.manifestSchemaVersion == expectedManifestSchemaVersion,
+              document.payloadRevision == expectedPayloadRevision,
+              document.minimumPython == expectedMinimumPython,
+              !document.files.isEmpty else {
+            throw SwanSDKIntegrationError.invalidSDKLocation(
+                "The bundled SwanSong SDK identity does not match this SwanSong build."
+            )
+        }
+
+        var expected = Set<String>()
+        for file in document.files {
+            let components = file.path.split(separator: "/", omittingEmptySubsequences: false)
+            guard !file.path.isEmpty,
+                  !file.path.hasPrefix("/"),
+                  !file.path.contains("\\"),
+                  !components.contains(where: { $0.isEmpty || $0 == "." || $0 == ".." }),
+                  file.byteCount >= 0,
+                  file.sha256.count == 64,
+                  file.sha256.allSatisfy(\.isHexDigit),
+                  expected.insert(file.path).inserted else {
+                throw SwanSDKIntegrationError.invalidSDKLocation(
+                    "The bundled SwanSong SDK file manifest is malformed."
+                )
+            }
+            let url = root.appendingPathComponent(file.path)
+            let values = try url.resourceValues(forKeys: [
+                .isRegularFileKey, .isSymbolicLinkKey, .fileSizeKey,
+            ])
+            guard values.isRegularFile == true,
+                  values.isSymbolicLink != true,
+                  values.fileSize == file.byteCount,
+                  sha256(try Data(contentsOf: url)) == file.sha256 else {
+                throw SwanSDKIntegrationError.invalidSDKLocation(
+                    "The bundled SwanSong SDK file failed verification: \(file.path)."
+                )
+            }
+        }
+
+        let actual = try payloadFilePaths(root: root)
+        guard actual == expected.union(["SDK-BUNDLE.json"]) else {
+            let approved = expected.union(["SDK-BUNDLE.json"])
+            let missing = approved.subtracting(actual).sorted().first ?? "none"
+            let extra = actual.subtracting(approved).sorted().first ?? "none"
+            throw SwanSDKIntegrationError.invalidSDKLocation(
+                "The bundled SwanSong SDK contains an unexpected or missing file (missing: \(missing); extra: \(extra))."
+            )
+        }
+        return Self(
+            version: document.version,
+            commit: document.commit,
+            manifestSchemaVersion: document.manifestSchemaVersion,
+            payloadRevision: document.payloadRevision,
+            minimumPython: document.minimumPython,
+            fileCount: document.files.count
+        )
+    }
+
+    private static func payloadFilePaths(root: URL) throws -> Set<String> {
+        guard let enumerator = FileManager.default.enumerator(atPath: root.path) else {
+            throw SwanSDKIntegrationError.invalidSDKLocation(
+                "The bundled SwanSong SDK cannot be enumerated."
+            )
+        }
+        var files = Set<String>()
+        for case let relative as String in enumerator {
+            let url = root.appendingPathComponent(relative)
+            let values = try url.resourceValues(forKeys: [
+                .isRegularFileKey, .isDirectoryKey, .isSymbolicLinkKey,
+            ])
+            guard values.isSymbolicLink != true,
+                  values.isRegularFile == true || values.isDirectory == true else {
+                throw SwanSDKIntegrationError.invalidSDKLocation(
+                    "The bundled SwanSong SDK contains a link or special file."
+                )
+            }
+            if values.isRegularFile == true {
+                files.insert(relative)
+            }
+        }
+        return files
+    }
+
+    private static func sha256(_ data: Data) -> String {
+        SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+    }
+}
+
+public struct SwanSDKPythonSummary: Equatable, Sendable {
+    public let version: String?
+    public let executable: String
+    public let isBundled: Bool
+
+    public var supportsStudio: Bool {
+        guard let version else { return false }
+        let parts = version.split(separator: ".").prefix(2).compactMap { Int($0) }
+        guard parts.count == 2 else { return false }
+        return parts[0] > 3 || (parts[0] == 3 && parts[1] >= 11)
+    }
+
+    public var description: String {
+        let identity = version.map { "Python \($0)" } ?? "Python unavailable"
+        return "\(identity) · \(executable)"
+    }
+
+    public static func probe(_ resolution: SwanSDKCLIResolution) -> Self {
+        guard let executableURL = resolution.pythonExecutableURL else {
+            return Self(version: nil, executable: "SDK tool entry point", isBundled: false)
+        }
+        let process = Process()
+        process.executableURL = executableURL
+        process.arguments = resolution.pythonArgumentPrefix + ["--version"]
+        process.environment = ProcessInfo.processInfo.environment.merging(
+            resolution.environment
+        ) { _, supplied in supplied }
+        let pipe = Pipe()
+        process.standardOutput = pipe
+        process.standardError = pipe
+        let completed = DispatchSemaphore(value: 0)
+        process.terminationHandler = { _ in completed.signal() }
+        do {
+            try process.run()
+            if completed.wait(timeout: .now() + 2) == .timedOut {
+                process.terminate()
+                return Self(
+                    version: nil,
+                    executable: executableDescription(resolution),
+                    isBundled: isBundled(resolution)
+                )
+            }
+            let text = String(
+                decoding: pipe.fileHandleForReading.readDataToEndOfFile(),
+                as: UTF8.self
+            )
+            let version = text.split(whereSeparator: { $0.isWhitespace })
+                .dropFirst()
+                .first
+                .map(String.init)
+            return Self(
+                version: process.terminationStatus == 0 ? version : nil,
+                executable: executableDescription(resolution),
+                isBundled: isBundled(resolution)
+            )
+        } catch {
+            return Self(
+                version: nil,
+                executable: executableDescription(resolution),
+                isBundled: isBundled(resolution)
+            )
+        }
+    }
+
+    private static func executableDescription(_ resolution: SwanSDKCLIResolution) -> String {
+        ([resolution.pythonExecutableURL?.path].compactMap { $0 }
+            + resolution.pythonArgumentPrefix).joined(separator: " ")
+    }
+
+    private static func isBundled(_ resolution: SwanSDKCLIResolution) -> Bool {
+        resolution.pythonExecutableURL?.path.hasPrefix(resolution.sdkRoot.path + "/") == true
     }
 }
 

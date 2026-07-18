@@ -55,6 +55,18 @@ record the same Sparkle commit. Validation requires the archived Sparkle lock,
 license, package manifest, public header, executable hashes, and commit to
 agree before the release or update feed can be published.
 
+## SwanSong SDK
+
+Studio embeds the MIT-licensed SwanSong SDK 0.2.0 runtime, schema, recipes,
+Python package, and tool entry point from the exact tag and commit recorded in
+[`Dependencies/swansong-sdk.lock.json`](Dependencies/swansong-sdk.lock.json).
+The lock also records the SDK's own normalized content revision. Build tooling
+materializes only distributable paths from immutable Git objects, adds the
+Desktop-owned launcher and embedded lock, and generates a digest for every
+file. Build, runtime, app-payload, archive-extraction, and release checks reject
+missing, modified, extra, linked, or identity-mismatched SDK payloads. The SDK
+license and notices remain inside the signed `Resources/SwanSongSDK` directory.
+
 ## Open test fixtures
 
 The checked-in files under [`testroms/`](testroms/) are tracked open-source and

@@ -27,12 +27,16 @@ unexpected_file=$(find "$APP/Contents" -type f \
   ! -path "$APP/Contents/Resources/SPARKLE_LICENSE" \
   ! -path "$APP/Contents/Resources/ares.lock.json" \
   ! -path "$APP/Contents/Resources/sparkle.lock.json" \
+  ! -path "$APP/Contents/Resources/SwanSongSDK/*" \
   ! -path "$APP/Contents/_CodeSignature/CodeResources" \
   -print -quit)
 if [ -n "$unexpected_file" ]; then
   echo "the app bundle contains an unexpected payload: $unexpected_file" >&2
   exit 1
 fi
+
+"$SCRIPT_DIR/check-swansong-sdk-payload.sh" \
+  "$APP/Contents/Resources/SwanSongSDK" >/dev/null
 
 "$SCRIPT_DIR/check-sparkle-framework.sh" "$APP" >/dev/null
 "$SCRIPT_DIR/check-sparkle-configuration.sh" "$APP" >/dev/null
@@ -62,4 +66,4 @@ if strings -a "$ENGINE" \
   exit 1
 fi
 
-echo "PASS app bundle payload and engine API match the firmware-free allowlist"
+echo "PASS app bundle payload, locked SDK, and engine API match the firmware-free allowlist"

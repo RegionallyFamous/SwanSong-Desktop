@@ -5,9 +5,30 @@ The project uses semantic versioning once a release is published.
 
 ## [Unreleased]
 
+- Published the first-party Homebrew Catalog with its purpose-specific
+  Ed25519 public key. Catalog requests remain explicit; signed bytes, rights
+  attestations, immutable provenance, asset size, and SHA-256 all fail closed.
+- Added SwanSong Studio's bounded USB Hardware Lab for Doctor, update planning,
+  digest-and-reset-confirmed install, and physical control QA. USB device writes
+  are intentionally not exposed through local MCP automation. Studio accepts
+  only the content-pinned `0.1.0-prototype.1` tool set, stages its three verified
+  files in isolation, and fails closed on unknown report fields or shapes.
+- Documented the public replay, minimization, and six visual-authoring schema
+  seams for the next tagged SDK while keeping the bundled payload at reviewed
+  SDK 0.2.0.
+
 ## [0.4.1] - 2026-07-18
 
 ### Added
+
+- Bundled the complete, tagged SwanSong SDK 0.2.0 runtime, schema, recipes,
+  Python package, and `swan` entry point inside the signed app. A per-file
+  content manifest, SDK revision lock, app runtime verifier, and packaging gates
+  reject incomplete, modified, extra, or identity-mismatched payloads.
+- Added two opt-in Studio MCP tools: path-free status for the single already-open
+  project slot, and a confirmation-gated fixed action allowlist for Doctor,
+  Assets, Build, Test, Play, and Profile. Neither surface accepts a path, shell
+  command, direct edit, project creation, or Release request.
 
 - Added ABI 9 private sprite-attribute provenance. Clean-replay owner artifacts
   retain the selected sprite's OAM address, byte count, and final CPU writer;
@@ -23,13 +44,19 @@ The project uses semantic versioning once a release is published.
 
 ### Changed
 
+- Studio now prefers the verified bundled SDK, retains an explicit external
+  development override, and shows resolved SDK, Python, Wonderful, schema, and
+  SwanSong identities. Python 3.11+ and Wonderful remain honest local
+  prerequisites checked by Doctor.
+
 - Raised the shared private source-evidence artifact bound to 64 MiB and the
   normalized selected-range contract to 256 disjoint ranges. Genuine per-byte
   range overflow, unknown lineage, and conservative lineage still fail closed.
 - Bumped current private source-probe and source-free report schemas to v4 for
   ABI 9. The Evidence browser retains v1-v3 compatibility, while static seed
   export requires a complete v4 artifact and keeps its deterministic v1 seed
-  schema. The guarded MCP allowlist remains fifteen tools.
+  schema. The guarded MCP allowlist now contains seventeen tools after adding
+  the bounded Studio status and action contracts.
 
 ### Fixed
 

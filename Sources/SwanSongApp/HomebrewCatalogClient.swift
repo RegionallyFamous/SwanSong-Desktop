@@ -275,10 +275,10 @@ private final class HomebrewDownloadDelegate: NSObject, URLSessionDataDelegate,
 
 struct HomebrewCatalogClient: Sendable {
     static let catalogURL = URL(
-        string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-story-forge/main/distribution/catalog-v1.json"
+        string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-catalog/main/dist/catalog-v1.json"
     )!
     static let signatureURL = URL(
-        string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-story-forge/main/distribution/catalog-v1.sig.json"
+        string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-catalog/main/dist/catalog-v1.json.sig"
     )!
 
     private static let maximumCatalogBytes = 1_024 * 1_024
@@ -444,8 +444,8 @@ struct HomebrewCatalogClient: Sendable {
         guard let components = safeHTTPSComponents(url),
               components.host?.lowercased() == "raw.githubusercontent.com",
               [
-                  "/RegionallyFamous/swansong-story-forge/main/distribution/catalog-v1.json",
-                  "/RegionallyFamous/swansong-story-forge/main/distribution/catalog-v1.sig.json",
+                  "/RegionallyFamous/swansong-catalog/main/dist/catalog-v1.json",
+                  "/RegionallyFamous/swansong-catalog/main/dist/catalog-v1.json.sig",
               ].contains(components.percentEncodedPath) else {
             return false
         }
@@ -453,9 +453,7 @@ struct HomebrewCatalogClient: Sendable {
     }
 
     private static func detachedSignatureURL(for catalogURL: URL) -> URL {
-        catalogURL.deletingLastPathComponent().appendingPathComponent(
-            "catalog-v1.sig.json"
-        )
+        URL(string: catalogURL.absoluteString + ".sig")!
     }
 
     private static func isTrustedAssetSource(_ url: URL) -> Bool {
@@ -464,7 +462,7 @@ struct HomebrewCatalogClient: Sendable {
               let segments = strictPathSegments(components.percentEncodedPath),
               segments.count == 6,
               segments[0] == "RegionallyFamous",
-              segments[1] == "swansong-story-forge",
+              segments[1] == "SwanSong-Originals",
               segments[2] == "releases",
               segments[3] == "download",
               !segments[4].isEmpty,

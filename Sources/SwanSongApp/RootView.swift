@@ -727,10 +727,7 @@ private struct LibraryShell: View {
                     overviewGeometryProbe: translationLabOverviewGeometryProbe
                 )
             } else if model.section == .gameStudio {
-                SwanSDKWorkspaceView(
-                    engineName: model.engineBackendName,
-                    engineBuildID: model.engineBuildID
-                )
+                SwanSDKWorkspaceView(workspace: model.studioWorkspace)
             } else {
                 LibraryView(
                     model: model,
@@ -1644,7 +1641,7 @@ private struct LibraryView: View {
         case .library: "Your WonderSwan library is empty"
         case .favorites: "No favorites yet"
         case .recent: "Nothing played recently"
-        case .homebrew: "Homebrew Catalog Coming Soon"
+        case .homebrew: "No verified homebrew loaded"
         case .pocketCore: "No Pocket SD card selected"
         case .translationLab: "No translation project linked"
         case .gameStudio: "No SDK project open"
@@ -1668,7 +1665,7 @@ private struct LibraryView: View {
         case .library: "Open a .ws, .wsc, .pc2, .pcv2, or one-game ZIP. SwanSong keeps a private managed copy."
         case .favorites: "Mark the games you return to most often."
         case .recent: "Games appear here after they have been played."
-        case .homebrew: "No catalog network requests are made in this release. You can still add homebrew from your Mac."
+        case .homebrew: "Choose Homebrew to load the signed catalog, or add a game you already have from your Mac."
         case .pocketCore: "Choose the Analogue Pocket tool to verify and install the first-party Core."
         case .translationLab: "Link a private translation-toolkit project to begin."
         case .gameStudio: "Create or open a SwanSong SDK project to begin."
