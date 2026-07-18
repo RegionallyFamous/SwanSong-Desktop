@@ -184,7 +184,7 @@ private enum SwanSongMCPServer {
     private static let protocolVersion = "2025-11-25"
     private static let liveApp = LiveAppClient()
     private static let observedPlay = ObservedPlayRegistry()
-    private static let instructions = "Controls a running SwanSong app through its opt-in local bridge, runs guarded Translation Lab evidence workflows, and can execute bounded deterministic homebrew playtest plans through SwanSong's own engine. Playtest and observed-step tools return a rendered game frame and audio window only when confirmShareCapture=true. The server must never expose ROM, save, state, persistence, RAM, tile, palette, map-cell, or CPU-writer values. Translation tools only accept project-contained files and require confirmProjectWrites=true. Persisted translation captures privately retain both native frames, the exact plan, deterministic context hashes, and pixel-diff evidence inside the selected project. Display-owner probes retain detailed source evidence privately and return only hashes and aggregate counts. Observed play holds a private ownership lease, atomically saves its cumulative from-boot plan after every step, marks crash-abandoned sessions interrupted, recovers only by clean-boot plan replay, and creates final evidence only by another clean-boot replay. A successful execution is observation evidence, not proof that a game mechanic passed; inspect the frame, listen to relevant audio, and exercise the declared game contract."
+    private static let instructions = "Controls a running SwanSong app through its opt-in local bridge, runs guarded Translation Lab evidence workflows, and can execute bounded deterministic homebrew playtest plans through SwanSong's own engine. Playtest and observed-step tools return a rendered game frame and audio window only when confirmShareCapture=true. The server must never expose ROM, save, state, persistence, RAM, tile, palette, map-cell, CPU-writer, cartridge-range, address, or mapper values. Translation tools only accept project-contained files and require confirmProjectWrites=true. Persisted translation captures privately retain both native frames, the exact plan, deterministic context hashes, and pixel-diff evidence inside the selected project. Display-owner probes and static-analysis seeds retain detailed source evidence privately and return only hashes and aggregate counts. Observed play holds a private ownership lease, atomically saves its cumulative from-boot plan after every step, marks crash-abandoned sessions interrupted, recovers only by clean-boot plan replay, and creates final evidence only by another clean-boot replay. A successful execution is observation evidence, not proof that a game mechanic passed; inspect the frame, listen to relevant audio, and exercise the declared game contract."
 
     static func main() {
         while let line = readLine(strippingNewline: true) {
@@ -393,6 +393,15 @@ private enum SwanSongMCPServer {
                 idempotent: false
             ),
             tool(
+                name: "swansong_translation_export_static_analysis_seed",
+                title: "Export Private Static-Analysis Seed",
+                description: "Revalidate one current complete ABI-8 source-probe artifact and privately export deterministic cartridge ranges plus executed caller, operand, and mapper anchors for Ghidra or pypcode. Returns only source-free counts, completeness flags, and hashes; static analysis never authorizes a patch.",
+                inputSchema: projectWriteSchema(fileKey: "sourceProbeDetailsPath"),
+                readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
                 name: "swansong_translation_record_route",
                 title: "Record Translation Route",
                 description: "Create an immutable route-v3 proof from a project-contained frame/input plan using Original, clean power-on, empty persistence, and SwanSong's fixed proof RTC. Writes a new route inside the project.",
@@ -472,6 +481,8 @@ private enum SwanSongMCPServer {
                 return try probeRectangle(arguments: arguments)
             case "swansong_translation_probe_rectangle_source":
                 return try probeRectangleSource(arguments: arguments)
+            case "swansong_translation_export_static_analysis_seed":
+                return try exportStaticAnalysisSeed(arguments: arguments)
             case "swansong_translation_record_route":
                 return try recordRoute(arguments: arguments)
             case "swansong_translation_verify_pair":
@@ -561,6 +572,30 @@ private enum SwanSongMCPServer {
             ))
         } catch let diagnostic as TranslationDisplaySourceProbeBlockedDiagnostic {
             return try errorReportResult(diagnostic)
+        }
+    }
+
+    private static func exportStaticAnalysisSeed(
+        arguments: JSONDictionary
+    ) throws -> JSONDictionary {
+        guard arguments["confirmProjectWrites"] as? Bool == true else {
+            throw SwanSongMCPError(
+                message: "Set confirmProjectWrites to true after confirming the selected project may receive a private static-analysis seed."
+            )
+        }
+        do {
+            let (project, sourceProbeDetailsURL) = try projectWriteArguments(
+                arguments,
+                fileKey: "sourceProbeDetailsPath"
+            )
+            return try reportResult(TranslationStaticAnalysisSeedExporter.run(
+                project: project,
+                sourceProbeDetailsURL: sourceProbeDetailsURL
+            ))
+        } catch {
+            throw SwanSongMCPError(
+                message: "Static-analysis seed export was refused because the private source probe or its current project bindings are unsafe, stale, damaged, or incomplete."
+            )
         }
     }
 
