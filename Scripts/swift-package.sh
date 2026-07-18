@@ -6,6 +6,15 @@ set -eu
 command_name=${1:?SwiftPM subcommand is required}
 shift
 
+# Hosted CI and explicitly non-interactive local runs use only public,
+# lockfile-pinned dependencies. Never let SwiftPM pause these lanes on a login
+# keychain credential prompt.
+if [ "${CI:-}" = "true" ] \
+  || [ "${CI:-}" = "1" ] \
+  || [ "${SWAN_SWIFTPM_DISABLE_KEYCHAIN:-0}" = "1" ]; then
+  set -- --disable-keychain --only-use-versions-from-resolved-file "$@"
+fi
+
 # Some pre-release Apple toolchain updates can briefly install a compiler one
 # patch newer than the matching SDK interfaces. This explicit, opt-in value is
 # passed to both the package manifest and product compiler; release automation

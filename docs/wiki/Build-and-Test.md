@@ -100,6 +100,25 @@ selected range, an outside consumer, source-free public output, and intact
 private artifact validation. Inspection-only stub runs skip that one live test;
 the separate live-engine invocation is mandatory for release evidence.
 
+## CI lanes
+
+Pull requests run the complete Swift/XCTest and UI snapshot suite once on the
+macOS 14 Apple-silicon runner. The macOS 15 Intel runner executes the native
+engine/library compatibility binary, while the release-preflight job builds and
+inspects the complete universal app including its Intel slice. MCP and
+fail-closed production checks run once rather than being duplicated by both
+matrix entries.
+
+Pushes to `main` and manual workflow runs retain the complete XCTest suite on
+the Intel runner. This keeps real Intel execution in the release history while
+removing a second cold SwiftUI compile from every pull-request iteration. UI
+snapshots remain part of the complete XCTest suite and are not repeated in the
+separate release-preflight job.
+
+The shared SwiftPM wrapper disables login-keychain credential lookup in CI and
+uses only `Package.resolved`. Set `SWAN_SWIFTPM_DISABLE_KEYCHAIN=1` for the same
+non-interactive behavior in a local automation or clean-scratch smoke run.
+
 ## SwanSong Studio and SDK boundary
 
 SwanSong Studio's Swift tests cover exact `swan` arguments—including Doctor,

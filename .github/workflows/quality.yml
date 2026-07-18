@@ -24,9 +24,11 @@ jobs:
           - label: macOS 14 Apple silicon
             runner: macos-14
             developer_dir: /Applications/Xcode_16.2.app/Contents/Developer
+            lane: full
           - label: macOS 15 Intel
             runner: macos-15-intel
             developer_dir: /Applications/Xcode.app/Contents/Developer
+            lane: compatibility
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 35
     env:
@@ -49,18 +51,26 @@ jobs:
           uname -m
 
       - name: Run complete Swift and XCTest suite
-        run: ./Scripts/swift-package.sh test --package-path .
+        if: matrix.lane == 'full' || github.event_name != 'pull_request'
+        run: ./Scripts/swift-package.sh test --package-path . --disable-index-store
+
+      - name: Run Intel engine and library compatibility smoke
+        if: matrix.lane == 'compatibility' && github.event_name == 'pull_request'
+        run: ./Scripts/swift-package.sh run --package-path . --disable-index-store SwanSongChecks
 
       - name: Run engine-boundary and library checks
-        run: ./Scripts/swift-package.sh run --package-path . SwanSongChecks
+        if: matrix.lane == 'full' || github.event_name != 'pull_request'
+        run: ./Scripts/swift-package.sh run --skip-build --package-path . SwanSongChecks
 
       - name: Check local MCP protocol surface
+        if: matrix.lane == 'full'
         run: |
           set -eu
           ./Scripts/check-mcp-server.sh
           ./Scripts/check-playtest-mcp-server.sh
 
       - name: Check fail-closed production configuration
+        if: matrix.lane == 'full'
         run: |
           set -eu
           ./Scripts/check-release-metadata.sh
@@ -121,6 +131,3 @@ jobs:
           # Mac separately runs the default wall-clock 30-minute gate.
           SWAN_AV_SOAK_CLOCK_MODE: media-time
         run: ./Scripts/check-av-soak.sh
-
-      - name: Render and verify UI snapshots
-        run: ./Scripts/check-ui-snapshots.sh
