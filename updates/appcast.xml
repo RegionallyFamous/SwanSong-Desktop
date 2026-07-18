@@ -6,6 +6,26 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.4.1</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.4.1</link>
+      <description sparkle:format="html">&lt;h2&gt;Follow the source.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.4.1 gives Translation Lab an ABI 9 path from a visible sprite to its private OAM ownership and cartridge lineage, plus a guarded handoff to static-analysis tools.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Trace sprites directly.&lt;/strong&gt; Select sprite attributes independently from map, raster, and palette components.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep provenance private.&lt;/strong&gt; OAM addresses, CPU writers, cartridge ranges, mapper context, and conservative origins stay inside the project.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Start analysis from a fact.&lt;/strong&gt; Export a deterministic private Ghidra or pypcode seed from a current, complete source probe.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Handle real evidence safely.&lt;/strong&gt; Source artifacts may grow to 64 MiB and 256 normalized ranges while uncertain lineage still fails closed.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Preserve prior work.&lt;/strong&gt; The Evidence browser continues to read v1-v3 source artifacts after the move to ABI 9 schema v4.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Restart SwanSong and the MCP client after updating. Static-analysis seeds do not authorize patches, and private project evidence never leaves through SwanSong's tool responses.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.4.1"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Sat, 18 Jul 2026 06:02:07 -0500</pubDate>
+      <sparkle:version>7</sparkle:version>
+      <sparkle:shortVersionString>0.4.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:channel>beta</sparkle:channel>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.4.1/SwanSong-0.4.1-macOS-universal.zip" length="21406207" type="application/octet-stream" sparkle:edSignature="tFc88wqNijXHkN4xyR3fEJ/ELSqBP1zo/VHQlc3twFLCZGCMa7wuJNzW4RpQcfJ2jsJ+gvMliWCg+fxlwQ8sAw==" />
+    </item>
+    <item>
       <title>SwanSong 0.4.0</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.4.0</link>
       <description sparkle:format="html">&lt;h2&gt;Build where you play.&lt;/h2&gt;
@@ -69,6 +89,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: dCVbIUf+DJhhP1G5KL5+V5bxPXlVjUAFcPP8julWMXOidtA4iV0g9V/huBKw1O5ZZfv/n2jXOHC2+W8EUtEICA==
-length: 6361
+edSignature: 8PwGweyLqUr+iIO83oTeX9agiJOlo/QhxvA8lSPGv11wqjETP3RryT/Rk78RCGvYjdR+osd313YRX1lH7MTVAg==
+length: 8631
 -->
