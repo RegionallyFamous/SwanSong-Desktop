@@ -41,7 +41,7 @@ silicon and Intel.
   profiles, Time Ribbon, visual save states, Game Confidence, and save exchange.
 - [[Translation Lab]] documents deterministic route tests, paired evidence,
   on-device text intake, batch verification, First Visual Change, and privacy.
-- [[SwanSong Studio|Game Studio]] documents the SDK-backed game-development
+- [[SwanSong Studio]] documents the SDK-backed game-development
   workflow and its current local-toolchain boundary.
 - [[Local MCP and Automation]] documents the opt-in Codex bridge and guarded
   route/evidence commands.

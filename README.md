@@ -98,7 +98,7 @@ The technical documentation lives in the
 
 - [Playing, library, saves, and Time Ribbon](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
 - [Translation Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
-- [SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Game-Studio)
+- [SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/SwanSong-Studio)
 - [Local MCP and automation](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
 - [Analogue Pocket SD setup](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
 - [Controllers and mapping](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Gamepads)
