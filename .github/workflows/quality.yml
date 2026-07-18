@@ -177,7 +177,7 @@ jobs:
         run: ./Scripts/check-compatibility-matrix.sh
 
       - name: Run live input-frame bridge regression
-        run: ./Scripts/check-live-engine.sh
+        run: ./Scripts/check-input-frame-bridge.sh
 
       - name: Run guarded Translation Lab automation CLI
         run: |

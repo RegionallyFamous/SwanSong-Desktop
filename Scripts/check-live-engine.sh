@@ -24,13 +24,7 @@ check_fixture() {
 check_fixture "$MACOS_DIR/testroms/ws-test-suite/80186_quirks/80186_quirks.ws"
 check_fixture "$MACOS_DIR/testroms/ws-test-suite/tile_screen_extended_range/tile_screen_extended_range.wsc"
 
-INPUT_FRAME_FIXTURE="$MACOS_DIR/testroms/swan-song/input_frame_bridge/input_frame_bridge.wsc"
-INPUT_FRAME_FIXTURE_SHA256=$(shasum -a 256 "$INPUT_FRAME_FIXTURE" | awk '{print $1}')
-if [ "$INPUT_FRAME_FIXTURE_SHA256" != "840b154cda31b42dd374d1afc4216a1c3f9792f2c3157e8fa90d7591563f62df" ]; then
-  echo "input-frame fixture hash mismatch: $INPUT_FRAME_FIXTURE" >&2
-  exit 1
-fi
-"$BUILD_DIR/SwanAresSmoke" --input-frame-fixture "$INPUT_FRAME_FIXTURE"
+ARES_BUILD_DIR="$BUILD_DIR" "$SCRIPT_DIR/check-input-frame-bridge.sh"
 
 check_provenance_fixture() {
   fixture=$1
