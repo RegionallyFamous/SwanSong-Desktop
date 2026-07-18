@@ -6,6 +6,26 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.4.2</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.4.2</link>
+      <description sparkle:format="html">&lt;h2&gt;Make the next game smaller, clearer, better.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.4.2 brings the released SwanSong SDK 0.3.1 toolset into Studio, with native controls for visual authoring, replay inspection, and deterministic failure reduction.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Shape the game.&lt;/strong&gt; Create, validate, report, and export tilemap, sprite, palette, collision, scene-flow, and audio documents.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Read the replay.&lt;/strong&gt; Turn exact-frame plans, checkpoints, evidence, and traces into one read-only timeline.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Shrink the failure.&lt;/strong&gt; Delta-reduce a failing plan through bounded fresh SwanSong runs and verify the failure still holds.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Trust the bundle.&lt;/strong&gt; Studio content-verifies the exact tagged SDK runtime, schema, recipes, docs, and Python package.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Finish Doctor cleanly.&lt;/strong&gt; Its bounded local SwanSong probe no longer waits for a valid persistent server to exit.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Python and Wonderful remain local prerequisites, and authoring or replay reports do not replace inspected gameplay evidence.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.4.2"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Sat, 18 Jul 2026 09:04:11 -0500</pubDate>
+      <sparkle:version>8</sparkle:version>
+      <sparkle:shortVersionString>0.4.2</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:channel>beta</sparkle:channel>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.4.2/SwanSong-0.4.2-macOS-universal.zip" length="22423914" type="application/octet-stream" sparkle:edSignature="3CDk8gUGN1upiZOms8bEdaARwr7IpTyucv8G5eaGFr163zzBNVndIU3iNtuCMtH081vLl2dvwJ05aBh5L9PFBA==" />
+    </item>
+    <item>
       <title>SwanSong 0.4.1</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.4.1</link>
       <description sparkle:format="html">&lt;h2&gt;Follow the source.&lt;/h2&gt;
@@ -89,6 +109,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: 8PwGweyLqUr+iIO83oTeX9agiJOlo/QhxvA8lSPGv11wqjETP3RryT/Rk78RCGvYjdR+osd313YRX1lH7MTVAg==
-length: 8631
+edSignature: YzCoMk+8utVrxp8kq/Y62RiyqDC6iCy2PhDfafqlYMNCK7H6uFObW9PY3I//WX+R43+TXCiI1Kkt3Zi+PtedBg==
+length: 10832
 -->
