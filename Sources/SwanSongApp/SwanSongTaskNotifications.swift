@@ -1,6 +1,6 @@
 import AppKit
 import Foundation
-import UserNotifications
+@preconcurrency import UserNotifications
 
 enum SwanSongTaskCompletionResult: Equatable, Sendable {
     case succeeded
