@@ -324,19 +324,6 @@ public enum SwanSDKOutputStream: String, Sendable {
 }
 
 public final class SwanSDKSubprocessRunner: @unchecked Sendable {
-    private static let sessionLauncher = """
-    import os, sys
-    try:
-        os.setsid()
-    except PermissionError:
-        try:
-            os.setpgid(0, 0)
-        except PermissionError:
-            if os.getpgrp() != os.getpid():
-                raise
-    os.execv(sys.argv[1], sys.argv[1:])
-    """
-
     public init() {}
 
     public func run(
@@ -366,22 +353,8 @@ public final class SwanSDKSubprocessRunner: @unchecked Sendable {
         }
 
         let process = Process()
-        let bundledPython = invocation.environment["SWANSONG_SDK_DIR"].map {
-            URL(fileURLWithPath: $0, isDirectory: true)
-                .appendingPathComponent("runtime/bin/python3")
-        }
-        if let bundledPython,
-           FileManager.default.isExecutableFile(atPath: bundledPython.path) {
-            process.executableURL = bundledPython
-            process.arguments = [
-                "-c", Self.sessionLauncher, invocation.executableURL.path,
-            ] + invocation.arguments
-        } else {
-            process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-            process.arguments = [
-                "python3", "-c", Self.sessionLauncher, invocation.executableURL.path,
-            ] + invocation.arguments
-        }
+        process.executableURL = invocation.executableURL
+        process.arguments = invocation.arguments
         process.currentDirectoryURL = invocation.workingDirectory
         process.environment = inheritedEnvironment.merging(invocation.environment) { _, supplied in
             supplied
@@ -438,15 +411,47 @@ public final class SwanSDKSubprocessRunner: @unchecked Sendable {
 
     private static func terminateProcessTree(_ process: Process) {
         guard process.isRunning else { return }
-        let processID = process.processIdentifier
-        if kill(-processID, SIGTERM) != 0 {
-            process.terminate()
+        let processIDs = stoppedProcessTree(root: process.processIdentifier)
+        for processID in processIDs.reversed() {
+            _ = kill(processID, SIGTERM)
+        }
+        // SIGTERM remains pending for stopped processes. Resume the captured
+        // tree so commands can run ordinary termination handlers and exit.
+        for processID in processIDs {
+            _ = kill(processID, SIGCONT)
         }
         DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 0.5) {
-            if kill(-processID, 0) == 0 {
-                _ = kill(-processID, SIGKILL)
+            for processID in processIDs.reversed() where kill(processID, 0) == 0 {
+                _ = kill(processID, SIGKILL)
             }
         }
+    }
+
+    private static func stoppedProcessTree(root: pid_t) -> [pid_t] {
+        guard kill(root, SIGSTOP) == 0 else { return [root] }
+        var processIDs = [root]
+        for child in childProcessIDs(of: root) {
+            processIDs.append(contentsOf: stoppedProcessTree(root: child))
+        }
+        return processIDs
+    }
+
+    private static func childProcessIDs(of parent: pid_t) -> [pid_t] {
+        var capacity = 16
+        while capacity <= 4_096 {
+            var processIDs = [pid_t](repeating: 0, count: capacity)
+            let count = proc_listchildpids(
+                parent,
+                &processIDs,
+                Int32(processIDs.count * MemoryLayout<pid_t>.stride)
+            )
+            guard count > 0 else { return [] }
+            if count < capacity || capacity == 4_096 {
+                return processIDs.prefix(min(Int(count), capacity)).filter { $0 > 0 }
+            }
+            capacity *= 2
+        }
+        return []
     }
 
     private static func monitor(
@@ -643,10 +648,28 @@ public struct SwanSDKPackageSummary: Equatable, Sendable {
     public let version: String
 
     public var supportsStudioTools: Bool {
-        let core = version.split(separator: "-", maxSplits: 1)[0]
-        let components = core.split(separator: ".").compactMap { Int($0) }
-        guard components.count == 3 else { return false }
-        return components[0] > 0 || components[1] >= 2
+        let withoutBuildMetadata = version.split(
+            separator: "+",
+            maxSplits: 1,
+            omittingEmptySubsequences: false
+        )[0]
+        let coreAndPrerelease = withoutBuildMetadata.split(
+            separator: "-",
+            maxSplits: 1,
+            omittingEmptySubsequences: false
+        )
+        let components = coreAndPrerelease[0]
+            .split(separator: ".", omittingEmptySubsequences: false)
+        guard components.count == 3,
+              let major = Int(components[0]),
+              let minor = Int(components[1]),
+              let patch = Int(components[2]) else { return false }
+        let candidate = (major, minor, patch)
+        let minimum = (0, 2, 0)
+        if candidate.0 != minimum.0 { return candidate.0 > minimum.0 }
+        if candidate.1 != minimum.1 { return candidate.1 > minimum.1 }
+        if candidate.2 != minimum.2 { return candidate.2 > minimum.2 }
+        return coreAndPrerelease.count == 1
     }
 
     public static func load(from sdkRoot: URL) throws -> Self {

@@ -1,3 +1,4 @@
+import Darwin
 import Foundation
 @testable import SwanSongKit
 import XCTest
@@ -280,25 +281,48 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         XCTAssertTrue(streamed.value.contains("SWANSONG_SDK_TEST_VALUE=sdk-visible"))
     }
 
-    func testSubprocessRunnerCancellationTerminatesTheActiveCommand() async throws {
+    func testSubprocessRunnerCancellationTerminatesTheEntireCommandSession() async throws {
         let directory = try temporaryDirectory()
         defer { try? FileManager.default.removeItem(at: directory) }
+        let childPIDURL = directory.appendingPathComponent("child.pid")
         let invocation = SwanSDKCommandInvocation(
-            executableURL: URL(fileURLWithPath: "/usr/bin/tail"),
-            arguments: ["-f", "/dev/null"],
+            executableURL: URL(fileURLWithPath: "/bin/sh"),
+            arguments: [
+                "-c",
+                "/bin/sleep 30 & child=$!; echo $child > child.pid; wait",
+            ],
             workingDirectory: directory,
             environment: [:]
         )
         let task = Task {
             try await SwanSDKSubprocessRunner().run(invocation)
         }
-        try await Task.sleep(for: .milliseconds(100))
+        let childPID = try await waitForChildPID(at: childPIDURL)
+        XCTAssertEqual(kill(childPID, 0), 0, "The fixture child never started")
         task.cancel()
         do {
             _ = try await task.value
             XCTFail("A cancelled SDK command unexpectedly completed successfully")
         } catch is CancellationError {
-            // Expected: the runner terminates Process and waits for its exit.
+            // Expected: the runner terminates the captured process tree.
+        }
+        try await waitForProcessExit(childPID)
+    }
+
+    func testStudioToolsVersionBoundaryUsesStableSemanticVersions() {
+        for version in ["0.2.0", "0.2.0+build.7", "0.2.1-beta.1", "0.10.0", "1.0.0"] {
+            XCTAssertTrue(
+                SwanSDKPackageSummary(version: version).supportsStudioTools,
+                version
+            )
+        }
+        for version in [
+            "0.1.99", "0.2.0-beta.1", "0.2", "0.2.0.1", "0.nope.2.3", "invalid",
+        ] {
+            XCTAssertFalse(
+                SwanSDKPackageSummary(version: version).supportsStudioTools,
+                version
+            )
         }
     }
 
@@ -410,6 +434,26 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         )
         try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         return url
+    }
+
+    private func waitForChildPID(at url: URL) async throws -> pid_t {
+        for _ in 0..<100 {
+            if let text = try? String(contentsOf: url, encoding: .utf8),
+               let processID = pid_t(text.trimmingCharacters(in: .whitespacesAndNewlines)) {
+                return processID
+            }
+            try await Task.sleep(for: .milliseconds(20))
+        }
+        XCTFail("The fixture did not record its child process")
+        throw CancellationError()
+    }
+
+    private func waitForProcessExit(_ processID: pid_t) async throws {
+        for _ in 0..<100 {
+            if kill(processID, 0) != 0, errno == ESRCH { return }
+            try await Task.sleep(for: .milliseconds(20))
+        }
+        XCTFail("Cancellation left descendant process \(processID) running")
     }
 
     private func wavFixture() -> Data {
