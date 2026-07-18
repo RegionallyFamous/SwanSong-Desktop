@@ -1,9 +1,8 @@
 import Foundation
 import SwanSongKit
 
-/// Production catalog trust is intentionally fail-closed until the one-time
-/// offline signing ceremony supplies the first public key. Never place a test
-/// key or a private key in this table.
+/// Production catalog trust contains only the purpose-specific public key from
+/// RegionallyFamous/swansong-catalog. The signing key is never shipped here.
 enum HomebrewCatalogProductionTrust {
     enum PublicationStatus {
         case comingSoon
@@ -14,19 +13,24 @@ enum HomebrewCatalogProductionTrust {
     /// and public catalog before an official app can be built. Changing it to
     /// `.published` without a reachable, validly signed catalog fails the
     /// release-readiness gate.
-    static let publicationStatus: PublicationStatus = .comingSoon
+    static let publicationStatus: PublicationStatus = .published
     static let minimumRevision = 1
 
     static let trustedKeys: [HomebrewCatalogTrustedKey] = [
-        // Pending production key:
-        // HomebrewCatalogTrustedKey(
-        //     keyID: "ed25519-<first-16-hex-of-public-key-sha256>",
-        //     rawPublicKey: Data(base64Encoded: "<32-byte-public-key>")!,
-        //     minimumRevision: 1
-        // ),
+        HomebrewCatalogTrustedKey(
+            keyID: "ed25519-68d24903f9a749d7",
+            rawPublicKey: Data(
+                base64Encoded: "+AeyqHDUdhMqtjYADGDJrVfxQBz0LWfxYi3/cvJZfSY="
+            )!,
+            minimumRevision: 1
+        ),
     ]
 
     static let verifier = HomebrewCatalogSignatureVerifier(
-        trustedKeys: trustedKeys
+        trustedKeys: trustedKeys,
+        contract: .rawEd25519(
+            keyID: "ed25519-68d24903f9a749d7",
+            expectedCatalogSHA256: nil
+        )
     )
 }

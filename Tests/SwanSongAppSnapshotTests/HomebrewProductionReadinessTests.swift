@@ -161,7 +161,7 @@ final class HomebrewProductionReadinessTests: XCTestCase {
             catalogData: wireBundle.catalogData,
             signatureData: wireBundle.signatureData
         )
-        let catalog = try HomebrewCatalogValidator.decode(
+        let catalog = try PublishedHomebrewCatalogDecoder.decode(
             wireBundle.catalogData,
             sourceURL: client.catalogSourceURL
         )

@@ -5,16 +5,19 @@ Effective July 18, 2026
 This policy describes SwanSong 0.4.1. The versioned release notes document
 earlier release behavior.
 
-<!-- homebrew-catalog-status: coming-soon -->
+<!-- homebrew-catalog-status: published -->
 
 SwanSong is a local-first macOS application. It has no analytics,
 advertisements, accounts, telemetry, crash-reporting service, or system
 profiling. Manual app-update checks are available. Automatic app-update checks
 and automatic download/install are separate choices and are off until you opt
 in. When automatic checks are disabled, SwanSong does not make an app-update
-request at launch or in the background. The current production configuration
-does not publish the first-party Homebrew Catalog and makes no catalog or
-game-download request.
+request at launch or in the background. The Homebrew Catalog makes no request
+at launch, on Homebrew navigation, or in the background. Choosing **Load
+Catalog** or **Refresh** requests the signed catalog from GitHub; choosing
+**Add to Library** requests only that listed release asset. GitHub receives
+ordinary connection information, but SwanSong does not attach library, save,
+state, screenshot, or Translation Lab data.
 
 ## What stays on your Mac
 
@@ -181,18 +184,14 @@ network URL or user game/save path.
 
 ### Homebrew Catalog
 
-The Homebrew page in the current production configuration says **Coming Soon**
-and makes no catalog or game-download request because no production catalog
-trust key has been published in the app. **Add From Mac** remains local.
-
-A future release may activate the first-party Homebrew Catalog only after a
-public trust key and a non-empty signed catalog are published and verified by
-the release gate. In such a release, SwanSong still will not load or refresh
-the catalog at launch or in the background. After you explicitly consent,
-opening Homebrew without a saved verified catalog, refreshing it, or choosing
-a listed title will make an HTTPS request to Regionally Famous's GitHub
-repository. SwanSong will not use a GitHub account, credential, or unique app
-identifier for those requests.
+The Homebrew page can load the public catalog only after you choose **Load
+Catalog**. SwanSong will not load or refresh it at launch, when you navigate to
+Homebrew, or in the background. **Refresh** requests a new signed copy and
+**Add to Library** requests the selected immutable release asset. **Add From
+Mac** remains local. Every downloaded catalog is checked against the embedded
+public key; publisher rights attestations and every listed ROM's exact size and
+SHA-256 are checked before installation. SwanSong does not use a GitHub
+account, credential, or unique app identifier for these requests.
 
 As with any direct web request, GitHub receives the connecting IP address, the
 time of the request, the requested URL (which identifies the catalog or selected

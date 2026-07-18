@@ -149,6 +149,37 @@ final class HomebrewCatalogSignatureTests: XCTestCase {
         }
     }
 
+    func testRawDetachedSignatureContractAcceptsOnlyExactCanonicalBytes() throws {
+        let catalogData = Data("published-catalog".utf8)
+        let privateKey = try deterministicPrivateKey()
+        let signature = try privateKey.signature(for: catalogData)
+            .base64EncodedString()
+        let verifier = HomebrewCatalogSignatureVerifier(
+            trustedKeys: [
+                .init(
+                    keyID: keyID,
+                    rawPublicKey: privateKey.publicKey.rawRepresentation
+                ),
+            ],
+            contract: .rawEd25519(keyID: keyID, expectedCatalogSHA256: nil)
+        )
+
+        let authenticated = try verifier.verify(
+            catalogData: catalogData,
+            signatureData: Data((signature + "\n").utf8)
+        )
+        XCTAssertEqual(authenticated.cryptographicallyValidKeyIDs, [keyID])
+
+        XCTAssertThrowsError(
+            try verifier.verify(
+                catalogData: catalogData + Data([0x0a]),
+                signatureData: Data((signature + "\n").utf8)
+            )
+        ) { error in
+            XCTAssertEqual(error as? HomebrewCatalogSignatureError, .noTrustedSignature)
+        }
+    }
+
     func testRollbackPolicyPersistsRevisionDigestAndKeyWindow() throws {
         let catalogData = Data("revision-one".utf8)
         let fixture = try signedFixture(catalogData, minimumRevision: 1, maximumRevision: 2)

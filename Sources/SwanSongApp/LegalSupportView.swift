@@ -276,7 +276,7 @@ struct LegalSupportView: View {
         case .comingSoon:
             "The first-party Homebrew Catalog is coming soon and makes no network requests in this release. SwanSong does not upload your library, saves, states, screenshots, settings, or Translation Lab data."
         case .published:
-            "The first-party Homebrew Catalog never loads at launch or in the background. After you choose Load Catalog once, opening Homebrew without a saved verified copy contacts GitHub; refreshing it or downloading a listed title does too. SwanSong does not upload your library, saves, states, screenshots, settings, or Translation Lab data."
+            "The signed Homebrew Catalog never loads at launch, when you open Homebrew, or in the background. Choosing Load Catalog, Refresh, or downloading a listed title contacts GitHub. SwanSong does not upload your library, saves, states, screenshots, settings, or Translation Lab data."
         }
     }
 
@@ -285,7 +285,7 @@ struct LegalSupportView: View {
         case .comingSoon:
             "SwanSong checks for app updates only when you ask or after you enable automatic checks. The Homebrew Catalog is coming soon and makes no network requests in this release."
         case .published:
-            "SwanSong checks for app updates only when you ask or after you enable automatic checks. It does not refresh the Homebrew Catalog at launch or in the background. After catalog consent, opening Homebrew can request a missing verified copy; refresh remains an explicit action."
+            "SwanSong checks for app updates only when you ask or after you enable automatic checks. It does not refresh the Homebrew Catalog at launch, on navigation, or in the background. Load Catalog and Refresh are explicit actions."
         }
     }
 
@@ -294,7 +294,7 @@ struct LegalSupportView: View {
         case .comingSoon:
             "Checking for app updates contacts only SwanSong’s GitHub-hosted feed and never sends a system profile. Opening Releases uses your browser. The unavailable Homebrew Catalog cannot contact GitHub in this release."
         case .published:
-            "App updates and the Homebrew Catalog use separate GitHub requests. The updater never sends a system profile. The catalog contacts GitHub when Homebrew needs a missing verified copy, when you refresh it, or when you download a listed title. SwanSong does not attach library, save, or Translation Lab data."
+            "App updates and the Homebrew Catalog use separate GitHub requests. The updater never sends a system profile. The catalog contacts GitHub only when you choose Load Catalog or Refresh, or download a listed title. SwanSong does not attach library, save, or Translation Lab data."
         }
     }
 

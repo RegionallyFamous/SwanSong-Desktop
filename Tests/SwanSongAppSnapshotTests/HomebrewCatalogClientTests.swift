@@ -32,7 +32,7 @@ final class HomebrewCatalogClientTests: XCTestCase {
         XCTAssertEqual(CatalogURLProtocol.requestCount, 2)
         XCTAssertEqual(
             CatalogURLProtocol.requestURLs.map(\.lastPathComponent),
-            ["catalog-v1.json", "catalog-v1.sig.json"]
+            ["catalog-v1.json", "catalog-v1.json.sig"]
         )
         XCTAssertEqual(CatalogURLProtocol.lastRequest?.httpMethod, "GET")
         XCTAssertEqual(
@@ -166,22 +166,22 @@ final class HomebrewCatalogClientTests: XCTestCase {
 
     func testProductionAssetTrustRequiresExactFirstPartyReleasePath() {
         let valid = URL(
-            string: "https://github.com/RegionallyFamous/swansong-story-forge/releases/download/game-v1.0.0/game.wsc"
+            string: "https://github.com/RegionallyFamous/SwanSong-Originals/releases/download/v3.0.0/game.wsc"
         )!
         XCTAssertTrue(
             HomebrewCatalogClient.productionTrustsAssetSourceForTesting(valid)
         )
 
         let invalid = [
-            "http://github.com/RegionallyFamous/swansong-story-forge/releases/download/game-v1.0.0/game.wsc",
-            "https://name@github.com/RegionallyFamous/swansong-story-forge/releases/download/game-v1.0.0/game.wsc",
-            "https://github.com:444/RegionallyFamous/swansong-story-forge/releases/download/game-v1.0.0/game.wsc",
+            "http://github.com/RegionallyFamous/SwanSong-Originals/releases/download/v3.0.0/game.wsc",
+            "https://name@github.com/RegionallyFamous/SwanSong-Originals/releases/download/v3.0.0/game.wsc",
+            "https://github.com:444/RegionallyFamous/SwanSong-Originals/releases/download/v3.0.0/game.wsc",
             "https://github.com/RegionallyFamous/another-repository/releases/download/game-v1.0.0/game.wsc",
-            "https://github.com/RegionallyFamous/swansong-story-forge/releases/download/game-v1.0.0/game.wsc?raw=1",
-            "https://github.com/RegionallyFamous/swansong-story-forge/releases/download/game-v1.0.0/game.wsc#fragment",
-            "https://github.com/RegionallyFamous/swansong-story-forge/releases/download/%2e%2e/game.wsc",
-            "https://github.com/RegionallyFamous/swansong-story-forge/releases/download/game-v1.0.0/folder/game.wsc",
-            "https://github.com/RegionallyFamous/swansong-story-forge/releases/download/game-v1.0.0/game.zip",
+            "https://github.com/RegionallyFamous/SwanSong-Originals/releases/download/v3.0.0/game.wsc?raw=1",
+            "https://github.com/RegionallyFamous/SwanSong-Originals/releases/download/v3.0.0/game.wsc#fragment",
+            "https://github.com/RegionallyFamous/SwanSong-Originals/releases/download/%2e%2e/game.wsc",
+            "https://github.com/RegionallyFamous/SwanSong-Originals/releases/download/v3.0.0/folder/game.wsc",
+            "https://github.com/RegionallyFamous/SwanSong-Originals/releases/download/v3.0.0/game.zip",
         ].compactMap(URL.init(string:))
 
         XCTAssertEqual(invalid.count, 9)
@@ -244,7 +244,7 @@ final class HomebrewCatalogClientTests: XCTestCase {
         XCTAssertTrue(
             HomebrewCatalogClient.productionTrustsRedirectForTesting(
                 URL(
-                    string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-story-forge/main/distribution/catalog-v1.json"
+                    string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-catalog/main/dist/catalog-v1.json"
                 )!
             )
         )

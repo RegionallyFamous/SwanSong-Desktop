@@ -7,6 +7,7 @@ import UniformTypeIdentifiers
 struct SwanSDKWorkspaceView: View {
     @State private var workspace: SwanSDKWorkspaceModel
     @State private var audioPlayer = SwanSDKEvidenceAudioPlayer()
+    @State private var showsUSBHardwareLab = false
 
     init(workspace: SwanSDKWorkspaceModel) {
         _workspace = State(initialValue: workspace)
@@ -51,6 +52,10 @@ struct SwanSDKWorkspaceView: View {
                     chooseProject()
                 }
                 .disabled(workspace.sdkRoot == nil || workspace.isRunning)
+                Button("USB Hardware Lab", systemImage: "cable.connector") {
+                    showsUSBHardwareLab = true
+                }
+                .disabled(workspace.isRunning)
                 if let manifestURL = workspace.manifestURL {
                     Button("Show Project in Finder", systemImage: "arrow.forward.square") {
                         NSWorkspace.shared.activateFileViewerSelecting([manifestURL])
@@ -69,12 +74,127 @@ struct SwanSDKWorkspaceView: View {
         } message: {
             Text(workspace.issue ?? "")
         }
+        .sheet(isPresented: $showsUSBHardwareLab) {
+            usbHardwareLab
+        }
+        .confirmationDialog(
+            "Install firmware and reset the controller?",
+            isPresented: $workspace.usbInstallConfirmationIsPresented,
+            titleVisibility: .visible
+        ) {
+            Button("Install Verified Firmware & Reset", role: .destructive) {
+                workspace.confirmUSBInstall()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text(
+                "SwanSong USB will install only the planned image with SHA-256 \(workspace.usbReport?.confirmationSHA256 ?? "unavailable"). Readback is verified before the controller restarts."
+            )
+        }
         .onChange(of: workspace.selectedScenarioID) { _, _ in
             workspace.currentEvidenceReplayWasVerified = false
             workspace.reloadScenarioPlan()
             workspace.reloadEvidence()
             audioPlayer.stop()
         }
+    }
+
+    private var usbHardwareLab: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Label("SwanSong USB Hardware Lab", systemImage: "cable.connector")
+                    .font(.title2.bold())
+                Spacer()
+                Button("Done") { showsUSBHardwareLab = false }
+                    .disabled(workspace.usbIsRunning)
+            }
+            .padding(20)
+            Divider()
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    StudioCard {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Bounded tool contract").font(.headline)
+                            Text(
+                                workspace.usbRoot?.path
+                                    ?? "Choose the swansong-usb checkout. Studio invokes only its fixed Python entry point and typed doctor, plan, install, and hardware-QA arguments—never a shell command."
+                            )
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                            .textSelection(.enabled)
+                            HStack {
+                                Button("Choose USB Tools…", action: chooseUSBTools)
+                                if let digest = workspace.usbToolSHA256 {
+                                    Text("Tool \(digest.prefix(12))…")
+                                        .font(.caption.monospaced())
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                        }
+                    }
+                    StudioCard {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Firmware image").font(.headline)
+                            Text(workspace.usbFirmwareImageURL?.lastPathComponent ?? "No image selected")
+                                .font(.callout.monospaced())
+                            HStack {
+                                Button("Choose Image…", action: chooseUSBFirmware)
+                                TextField("Version", text: $workspace.usbFirmwareVersion)
+                                    .textFieldStyle(.roundedBorder)
+                                    .frame(width: 90)
+                                Toggle("Require connected device", isOn: $workspace.usbRequireDevice)
+                            }
+                            HStack {
+                                Button("Run Doctor") { workspace.runUSBDoctor() }
+                                Button("Plan Update") { workspace.runUSBUpdatePlan() }
+                                    .buttonStyle(.borderedProminent)
+                                Button("Run Physical Control QA") { workspace.runUSBHardwareQA() }
+                            }
+                            .disabled(workspace.usbRoot == nil || workspace.usbIsRunning)
+                        }
+                    }
+                    if let report = workspace.usbReport {
+                        StudioCard {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Label(
+                                    report.ok ? "Verified report" : "Report needs attention",
+                                    systemImage: report.ok ? "checkmark.seal.fill" : "exclamationmark.triangle.fill"
+                                )
+                                .font(.headline)
+                                if let digest = report.confirmationSHA256 {
+                                    Text("Firmware SHA-256")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                    Text(digest)
+                                        .font(.caption.monospaced())
+                                        .textSelection(.enabled)
+                                    Toggle(
+                                        "I accept that this verified update resets the controller",
+                                        isOn: $workspace.usbAcceptDeviceReset
+                                    )
+                                    Button("Review Install…") { workspace.requestUSBInstall() }
+                                        .buttonStyle(.borderedProminent)
+                                        .disabled(!workspace.usbAcceptDeviceReset || workspace.usbIsRunning)
+                                }
+                                DisclosureGroup("Structured report") {
+                                    Text(report.formattedJSON)
+                                        .font(.caption.monospaced())
+                                        .textSelection(.enabled)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            }
+                        }
+                    }
+                    Text(
+                        "Prototype VID/PID identity remains a hardware release blocker. Studio reports it; it does not hide or waive it. Firmware installation also requires a connected, unambiguous SwanSong USB device."
+                    )
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                }
+                .padding(20)
+            }
+        }
+        .frame(minWidth: 720, minHeight: 620)
     }
 
     private var header: some View {
@@ -1147,6 +1267,33 @@ struct SwanSDKWorkspaceView: View {
         if panel.runModal() == .OK, let url = panel.url {
             do { try workspace.openProject(at: url) }
             catch { workspace.issue = error.localizedDescription }
+        }
+    }
+
+    private func chooseUSBTools() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose SwanSong USB Tools"
+        panel.prompt = "Use Tools"
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = false
+        if panel.runModal() == .OK, let url = panel.url {
+            do { try workspace.configureUSB(at: url) }
+            catch { workspace.issue = error.localizedDescription }
+        }
+    }
+
+    private func chooseUSBFirmware() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose SwanSong USB Firmware Image"
+        panel.prompt = "Use Image"
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        if panel.runModal() == .OK {
+            workspace.usbFirmwareImageURL = panel.url
+            workspace.usbReport = nil
+            workspace.usbAcceptDeviceReset = false
         }
     }
 

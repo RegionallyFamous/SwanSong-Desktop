@@ -50,6 +50,15 @@ final class SwanSDKWorkspaceModel {
     var schema: SwanSDKSchemaSummary?
     var toolchain: SwanSDKToolchainSummary?
     var pythonRuntime: SwanSDKPythonSummary?
+    var usbRoot: URL?
+    var usbFirmwareImageURL: URL?
+    var usbFirmwareVersion = "1.0"
+    var usbRequireDevice = false
+    var usbReport: SwanSongUSBStructuredReport?
+    var usbToolSHA256: String?
+    var usbAcceptDeviceReset = false
+    var usbInstallConfirmationIsPresented = false
+    var usbIsRunning = false
 
     let engineName: String
     let engineBuildID: String
@@ -58,6 +67,8 @@ final class SwanSDKWorkspaceModel {
     private let runner: SwanSDKSubprocessRunner
     private let completionNotifier: @MainActor (SwanSongTaskCompletion) -> Void
     private var commandTask: Task<Void, Never>?
+    private var usbCommandTask: Task<Void, Never>?
+    private var usbCLI: SwanSongUSBCLIResolution?
     private let defaults: UserDefaults
     private let bundledSDKRoot: URL?
 
@@ -118,7 +129,7 @@ final class SwanSDKWorkspaceModel {
     }
 
     var isRunning: Bool {
-        if case .running = stateMachine.phase { true } else { false }
+        if case .running = stateMachine.phase { true } else { usbIsRunning }
     }
 
     var activeAction: SwanSDKWorkspaceAction? {
@@ -284,6 +295,7 @@ final class SwanSDKWorkspaceModel {
 
     func cancel() {
         commandTask?.cancel()
+        usbCommandTask?.cancel()
     }
 
     func clearDiagnostics() {
@@ -416,6 +428,132 @@ final class SwanSDKWorkspaceModel {
             action: selectedAction,
             title: "Doctor"
         )
+    }
+
+    func configureUSB(at root: URL) throws {
+        guard !isRunning else { throw SwanSDKIntegrationError.commandAlreadyRunning }
+        let resolution = try SwanSongUSBCLIResolution.resolve(root: root)
+        usbCLI = resolution
+        usbRoot = resolution.root
+        usbToolSHA256 = resolution.scriptSHA256
+        usbReport = nil
+        usbInstallConfirmationIsPresented = false
+        usbAcceptDeviceReset = false
+    }
+
+    func runUSBDoctor() {
+        guard let image = usbFirmwareImageURL else {
+            issue = "Choose a SwanSong USB firmware image first."
+            return
+        }
+        runUSB(.doctor(image: image, requireDevice: usbRequireDevice))
+    }
+
+    func runUSBUpdatePlan() {
+        guard let image = usbFirmwareImageURL else {
+            issue = "Choose a SwanSong USB firmware image first."
+            return
+        }
+        runUSB(.planUpdate(image: image, version: usbFirmwareVersion))
+    }
+
+    func requestUSBInstall() {
+        guard usbReport?.schema == "swansong-usb-update-plan-v1",
+              usbReport?.ok == true,
+              usbReport?.confirmationSHA256 != nil,
+              usbReport?.version == usbFirmwareVersion else {
+            issue = "Run a successful USB update plan before installing."
+            return
+        }
+        usbInstallConfirmationIsPresented = true
+    }
+
+    func confirmUSBInstall() {
+        guard let image = usbFirmwareImageURL,
+              let digest = usbReport?.confirmationSHA256,
+              usbReport?.version == usbFirmwareVersion,
+              usbAcceptDeviceReset else {
+            issue = "Confirm the exact firmware digest and controller reset first."
+            return
+        }
+        usbInstallConfirmationIsPresented = false
+        usbAcceptDeviceReset = false
+        runUSB(
+            .install(
+                image: image,
+                version: usbFirmwareVersion,
+                confirmationSHA256: digest,
+                acceptDeviceReset: true
+            )
+        )
+    }
+
+    func runUSBHardwareQA() {
+        runUSB(.hardwareQA(maxReports: 30_000, timeoutMilliseconds: 1))
+    }
+
+    private func runUSB(_ command: SwanSongUSBCommand) {
+        guard let usbCLI else {
+            issue = "Choose the SwanSong USB tools folder first."
+            return
+        }
+        guard !isRunning else {
+            issue = SwanSDKIntegrationError.commandAlreadyRunning.localizedDescription
+            return
+        }
+        let invocation: SwanSDKCommandInvocation
+        do {
+            invocation = try usbCLI.invocation(for: command)
+        } catch {
+            issue = error.localizedDescription
+            return
+        }
+        usbIsRunning = true
+        activeCommandName = switch command {
+        case .doctor: "USB Doctor"
+        case .planUpdate: "USB Update Plan"
+        case .install: "USB Install"
+        case .hardwareQA: "USB Hardware QA"
+        }
+        issue = nil
+        diagnosticsAreVisible = true
+        usbCommandTask = Task { [weak self] in
+            guard let self else { return }
+            do {
+                let result = try await runner.run(invocation) { [weak self] stream, text in
+                    guard stream == .standardError else { return }
+                    Task { @MainActor in self?.diagnostics += text }
+                }
+                try Task.checkCancellation()
+                let report = try SwanSongUSBStructuredReport.decode(
+                    Data(result.standardOutput.utf8),
+                    expectedSchema: command.expectedSchema
+                )
+                usbReport = report
+                diagnostics += report.formattedJSON + "\n"
+                guard result.succeeded, report.ok else {
+                    throw SwanSDKIntegrationError.commandFailed(
+                        status: result.status,
+                        detail: result.standardError.isEmpty
+                            ? "Review the structured USB report."
+                            : result.standardError
+                    )
+                }
+                completionNotifier(
+                    SwanSongTaskCompletion(
+                        name: activeCommandName ?? "USB task",
+                        result: .succeeded
+                    )
+                )
+            } catch is CancellationError {
+                // The bounded subprocess runner terminates the process group.
+            } catch {
+                issue = error.localizedDescription
+            }
+            usbIsRunning = false
+            usbCommandTask = nil
+            activeCommandName = nil
+        }
     }
 
     func runAutomationAction(named name: String) throws {

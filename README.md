@@ -76,9 +76,11 @@ app. It is designed to preserve games, saves, Memories, settings, and unrelated
 cores. The screen is included now and will unlock installation when the separate
 SwanSong Core project publishes its first verified stable release.
 
-**Homebrew Catalog** is being built as a signed, first-party way to discover
-and install authorized homebrew. It remains Coming Soon in 0.4; local imports
-already work.
+**Homebrew Catalog** verifies a purpose-specific Ed25519 signature, publisher
+rights attestations, immutable release links, exact sizes, and ROM SHA-256
+digests before a listed game can enter the managed library. It never requests
+the catalog at launch or merely because Homebrew was opened; Load, Refresh,
+and Add to Library are explicit network actions.
 
 **Local automation** lets a trusted Codex session check SwanSong, move around
 the app, control the selected game, inspect path-free Studio readiness, invoke a
@@ -86,7 +88,7 @@ fixed set of existing SDK actions with confirmation, and run proof-grade
 Translation Lab routes. It is off by default, stays on your Mac, and never
 exposes ROM or save bytes.
 
-<!-- homebrew-catalog-status: coming-soon -->
+<!-- homebrew-catalog-status: published -->
 
 ## Private on purpose
 

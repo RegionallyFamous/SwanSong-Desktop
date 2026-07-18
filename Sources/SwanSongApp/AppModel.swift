@@ -910,11 +910,9 @@ final class AppModel {
     }
 
     func loadHomebrewCatalogIfNeeded() {
-        guard homebrewCatalogIsConfigured,
-              homebrewCatalogConsentGranted,
-              homebrewCatalog == nil,
-              !homebrewCatalogRefreshAttemptedThisSession else { return }
-        refreshHomebrewCatalog()
+        // Catalog network access is always attached to an explicit Load or
+        // Refresh action. Launch and navigation may use a locally cached,
+        // reverified catalog but never create a request on their own.
     }
 
     func refreshHomebrewCatalog() {
@@ -1089,6 +1087,7 @@ final class AppModel {
                     try HomebrewCatalogInstaller(assetData: data).install(
                         entry: entry,
                         release: release,
+                        catalogID: catalog.catalogID,
                         into: previousGames,
                         managedStore: managedGameStore
                     )
@@ -7338,7 +7337,13 @@ final class AppModel {
         _ data: Data,
         sourceURL: URL
     ) throws -> HomebrewCatalog {
-        try HomebrewCatalogValidator.decode(data, sourceURL: sourceURL)
+        if sourceURL == PublishedHomebrewCatalogDecoder.sourceURL {
+            return try PublishedHomebrewCatalogDecoder.decode(
+                data,
+                sourceURL: sourceURL
+            )
+        }
+        return try HomebrewCatalogValidator.decode(data, sourceURL: sourceURL)
     }
 
     nonisolated private static func shouldRetryHomebrewCatalogPair(

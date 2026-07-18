@@ -5,6 +5,16 @@ The project uses semantic versioning once a release is published.
 
 ## [Unreleased]
 
+- Published the first-party Homebrew Catalog with its purpose-specific
+  Ed25519 public key. Catalog requests remain explicit; signed bytes, rights
+  attestations, immutable provenance, asset size, and SHA-256 all fail closed.
+- Added SwanSong Studio's bounded USB Hardware Lab for Doctor, update planning,
+  digest-and-reset-confirmed install, and physical control QA. USB device writes
+  are intentionally not exposed through local MCP automation.
+- Documented the public replay, minimization, and six visual-authoring schema
+  seams for the next tagged SDK while keeping the bundled payload at reviewed
+  SDK 0.2.0.
+
 ## [0.4.1] - 2026-07-18
 
 ### Added
