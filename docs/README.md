@@ -172,6 +172,7 @@ tester-facing boundaries are in the [0.4 beta guide](BETA_TESTING.md).
 - [Privacy](../PRIVACY.md)
 - [Support](../SUPPORT.md)
 - [Source and fixture provenance](../SOURCE_PROVENANCE.md)
+- [0.4.2 beta release notes](releases/0.4.2.md)
 - [0.4.1 beta release notes](releases/0.4.1.md)
 - [0.4.0 beta release notes](releases/0.4.0.md)
 - [0.3.1 beta release notes](releases/0.3.1.md)

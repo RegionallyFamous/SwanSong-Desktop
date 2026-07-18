@@ -19,8 +19,9 @@ COMMIT = re.compile(r"^[0-9a-f]{40}$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 VERSION = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
 IDENTITY_DIRECTORIES = ("docs", "include", "mk", "schema", "src", "templates")
-IDENTITY_FILES = ("toolchain.lock",)
+IDENTITY_FILES = ("CHANGELOG.md", "toolchain.lock")
 REQUIRED_FILES = (
+    "CHANGELOG.md",
     "Desktop-SDK.lock.json",
     "LICENSE",
     "README.md",

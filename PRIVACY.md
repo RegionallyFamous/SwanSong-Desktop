@@ -2,7 +2,7 @@
 
 Effective July 18, 2026
 
-This policy describes SwanSong 0.4.1. The versioned release notes document
+This policy describes SwanSong 0.4.2. The versioned release notes document
 earlier release behavior.
 
 <!-- homebrew-catalog-status: published -->
@@ -89,12 +89,13 @@ counts. These tools do not return ROM, state, RAM, or persistence bytes.
 SwanSong makes no network request for MCP, but an AI client may transmit tool
 arguments and results to its own service under that client's privacy policy.
 
-SwanSong Studio reads its content-verified SDK 0.2.0 resources from the signed
+SwanSong Studio reads its content-verified SDK 0.3.1 resources from the signed
 app by default and reads and writes only project folders you explicitly select.
 You may explicitly override the SDK with a development checkout. Studio launches
 that resolved SDK command-line tool for New, Assets, Build, Test, Play, Profile,
-Evidence, and Release, and keeps compiler, generator, resource, frame-plan, PNG,
-WAV, observation, and structured evidence output on the Mac. Those commands may
+Evidence, and Release, including typed author, replay, and minimization tools,
+and keeps compiler, generator, resource, frame-plan, PNG, WAV, observation, and
+structured evidence output on the Mac. Those commands may
 invoke the locally installed Python and Wonderful toolchain and SwanSong
 deterministic play executor; Desktop does not upload project source, assets,
 ROMs, or evidence.

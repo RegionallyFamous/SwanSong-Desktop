@@ -5,6 +5,10 @@ The project uses semantic versioning once a release is published.
 
 ## [Unreleased]
 
+## [0.4.2] - 2026-07-18
+
+### Added
+
 - Published the first-party Homebrew Catalog with its purpose-specific
   Ed25519 public key. Catalog requests remain explicit; signed bytes, rights
   attestations, immutable provenance, asset size, and SHA-256 all fail closed.
@@ -13,9 +17,20 @@ The project uses semantic versioning once a release is published.
   are intentionally not exposed through local MCP automation. Studio accepts
   only the content-pinned `0.1.0-prototype.1` tool set, stages its three verified
   files in isolation, and fails closed on unknown report fields or shapes.
-- Documented the public replay, minimization, and six visual-authoring schema
-  seams for the next tagged SDK while keeping the bundled payload at reviewed
-  SDK 0.2.0.
+- Added typed Studio tools for all six SDK visual-authoring documents, read-only
+  replay timelines with optional checkpoints/evidence/traces, and deterministic
+  failing-plan minimization through fresh SwanSong execution.
+
+### Changed
+
+- Updated the signed, content-verified embedded framework to SwanSong SDK 0.3.1
+  at its exact tagged commit and normalized payload revision. Studio, CI,
+  packaging, runtime checks, notices, and documentation share that identity.
+- Included SDK 0.3.1's bounded Doctor MCP response reader and deterministic
+  cleanup so a valid persistent SwanSong server no longer causes a false
+  timeout while version, identity, protocol, and redaction checks stay strict.
+- Refined the shared app visual system and screen-level snapshots while keeping
+  Studio's SDK-owned build, gameplay, evidence, and release boundaries intact.
 
 ## [0.4.1] - 2026-07-18
 
@@ -314,7 +329,8 @@ The project uses semantic versioning once a release is published.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.1...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.2...HEAD
+[0.4.2]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.0...v0.3.1

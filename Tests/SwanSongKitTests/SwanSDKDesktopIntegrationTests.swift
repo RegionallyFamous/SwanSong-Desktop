@@ -70,6 +70,85 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
             ["scenario-record", "--project", "/tmp/lamp-game/swan.toml", "--input-log", "/tmp/lamp-game/input.json", "--output", "/tmp/lamp-game/tests/play/neutral.json", "--json"]
         )
         XCTAssertEqual(
+            SwanSDKCommand.authorCreate(
+                manifest: manifest,
+                kind: .sceneFlow,
+                id: "opening"
+            ).arguments,
+            [
+                "author", "create", "scene-flow", "opening",
+                "--project", "/tmp/lamp-game/swan.toml", "--json",
+            ]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.authorValidate(
+                manifest: manifest,
+                document: root.appendingPathComponent("authoring/opening.scene-flow.json")
+            ).arguments,
+            [
+                "author", "validate", "/tmp/lamp-game/authoring/opening.scene-flow.json",
+                "--project", "/tmp/lamp-game/swan.toml", "--json",
+            ]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.authorReport(
+                manifest: manifest,
+                document: root.appendingPathComponent("authoring/opening.scene-flow.json"),
+                output: root.appendingPathComponent("build/author-report.json")
+            ).arguments,
+            [
+                "author", "report", "/tmp/lamp-game/authoring/opening.scene-flow.json",
+                "--project", "/tmp/lamp-game/swan.toml",
+                "--output", "/tmp/lamp-game/build/author-report.json", "--json",
+            ]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.authorExport(
+                manifest: manifest,
+                document: root.appendingPathComponent("authoring/opening.scene-flow.json"),
+                output: root.appendingPathComponent("source/opening.json")
+            ).arguments,
+            [
+                "author", "export", "/tmp/lamp-game/authoring/opening.scene-flow.json",
+                "--project", "/tmp/lamp-game/swan.toml",
+                "--output", "/tmp/lamp-game/source/opening.json", "--json",
+            ]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.replay(
+                manifest: manifest,
+                scenario: "neutral",
+                checkpoints: root.appendingPathComponent("checkpoints.json"),
+                evidence: root.appendingPathComponent("build/swansong/neutral"),
+                trace: root.appendingPathComponent("trace.json"),
+                output: root.appendingPathComponent("replay.json")
+            ).arguments,
+            [
+                "replay", "--project", "/tmp/lamp-game/swan.toml",
+                "--scenario", "neutral",
+                "--checkpoints", "/tmp/lamp-game/checkpoints.json",
+                "--evidence", "current=/tmp/lamp-game/build/swansong/neutral",
+                "--trace", "/tmp/lamp-game/trace.json",
+                "--output", "/tmp/lamp-game/replay.json", "--json",
+            ]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.minimize(
+                manifest: manifest,
+                plan: root.appendingPathComponent("tests/play/failing.json"),
+                predicate: root.appendingPathComponent("tests/failure.json"),
+                output: root.appendingPathComponent("tests/play/minimized.json"),
+                maxEvaluations: 48
+            ).arguments,
+            [
+                "minimize", "--project", "/tmp/lamp-game/swan.toml",
+                "--plan", "/tmp/lamp-game/tests/play/failing.json",
+                "--predicate", "/tmp/lamp-game/tests/failure.json",
+                "--output", "/tmp/lamp-game/tests/play/minimized.json",
+                "--max-evaluations", "48", "--json",
+            ]
+        )
+        XCTAssertEqual(
             SwanSDKCommand.dev(manifest: manifest, scenario: "neutral", once: true).arguments,
             ["dev", "--project", "/tmp/lamp-game/swan.toml", "--scenario", "neutral", "--once", "--json"]
         )
@@ -153,7 +232,7 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         try writeBundleManifest(at: root)
 
         let resolution = try SwanSDKCLIResolution.resolve(sdkRoot: root)
-        XCTAssertEqual(resolution.bundleSummary?.version, "0.2.0")
+        XCTAssertEqual(resolution.bundleSummary?.version, "0.3.1")
         XCTAssertEqual(resolution.bundleSummary?.fileCount, 2)
 
         try Data("# changed\n".utf8).write(to: module)
@@ -179,12 +258,52 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         let resolution = try SwanSDKCLIResolution.resolve(sdkRoot: sdkRoot)
         XCTAssertEqual(resolution.sdkRoot, sdkRoot.resolvingSymlinksInPath())
         let package = try SwanSDKPackageSummary.load(from: sdkRoot)
-        XCTAssertEqual(package.version, "0.2.0")
+        XCTAssertEqual(package.version, "0.3.1")
         XCTAssertTrue(package.supportsStudioTools)
         XCTAssertEqual(try SwanSDKSchemaSummary.load(from: sdkRoot).version, 1)
         let toolchain = try SwanSDKToolchainSummary.load(from: sdkRoot)
         XCTAssertTrue(toolchain.nativePackages.contains { $0.hasPrefix("target-wswan ") })
         XCTAssertTrue(toolchain.canonicalImage?.contains("@sha256:") == true)
+    }
+
+    func testPinnedSDKIdentityMatchesLockAndBothCILanes() throws {
+        let desktopRoot = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+        let lockData = try Data(
+            contentsOf: desktopRoot.appendingPathComponent(
+                "Dependencies/swansong-sdk.lock.json"
+            )
+        )
+        let lock = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: lockData) as? [String: Any]
+        )
+        XCTAssertEqual(lock["version"] as? String, SwanSDKBundleSummary.expectedVersion)
+        XCTAssertEqual(lock["commit"] as? String, SwanSDKBundleSummary.expectedCommit)
+        XCTAssertEqual(
+            lock["manifestSchemaVersion"] as? Int,
+            SwanSDKBundleSummary.expectedManifestSchemaVersion
+        )
+        XCTAssertEqual(
+            lock["payloadRevision"] as? String,
+            SwanSDKBundleSummary.expectedPayloadRevision
+        )
+        XCTAssertEqual(
+            lock["minimumPython"] as? String,
+            SwanSDKBundleSummary.expectedMinimumPython
+        )
+
+        let workflow = try String(
+            contentsOf: desktopRoot.appendingPathComponent(".github/workflows/quality.yml"),
+            encoding: .utf8
+        )
+        XCTAssertEqual(
+            workflow.components(separatedBy: "ref: \(SwanSDKBundleSummary.expectedCommit)")
+                .count - 1,
+            2,
+            "Both CI lanes must check out the same SDK commit as the app lock."
+        )
     }
 
     func testStableGeneratedContractsDecode() throws {
@@ -344,14 +463,14 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
     }
 
     func testStudioToolsVersionBoundaryUsesStableSemanticVersions() {
-        for version in ["0.2.0", "0.2.0+build.7", "0.2.1-beta.1", "0.10.0", "1.0.0"] {
+        for version in ["0.3.1", "0.3.1+build.8", "0.3.2-beta.1", "0.10.0", "1.0.0"] {
             XCTAssertTrue(
                 SwanSDKPackageSummary(version: version).supportsStudioTools,
                 version
             )
         }
         for version in [
-            "0.1.99", "0.2.0-beta.1", "0.2", "0.2.0.1", "0.nope.2.3", "invalid",
+            "0.3.0", "0.3.1-beta.1", "0.3", "0.3.1.1", "0.nope.3.1", "invalid",
         ] {
             XCTAssertFalse(
                 SwanSDKPackageSummary(version: version).supportsStudioTools,

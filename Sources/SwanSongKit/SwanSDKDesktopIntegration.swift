@@ -30,6 +30,28 @@ public enum SwanSDKRecipe: String, CaseIterable, Codable, Identifiable, Sendable
     }
 }
 
+public enum SwanSDKAuthorKind: String, CaseIterable, Codable, Identifiable, Sendable {
+    case tilemap
+    case sprites
+    case palette
+    case collision
+    case sceneFlow = "scene-flow"
+    case audio
+
+    public var id: String { rawValue }
+
+    public var title: String {
+        switch self {
+        case .tilemap: "Tilemap"
+        case .sprites: "Sprites & Hitboxes"
+        case .palette: "Palette & Mono"
+        case .collision: "Collision & Paths"
+        case .sceneFlow: "Scene Flow"
+        case .audio: "Audio Timeline"
+        }
+    }
+}
+
 public enum SwanSDKWorkspaceAction: String, CaseIterable, Codable, Identifiable, Sendable {
     case newProject = "New"
     case assets = "Assets"
@@ -55,6 +77,25 @@ public enum SwanSDKCommand: Equatable, Sendable {
     case fuzz(manifest: URL, seed: UInt64, cases: Int, frames: Int)
     case laboratory(manifest: URL, testCase: String, rtcSeed: Int64? = nil)
     case scenarioRecord(manifest: URL, inputLog: URL, outputPlan: URL)
+    case authorCreate(manifest: URL, kind: SwanSDKAuthorKind, id: String, output: URL? = nil)
+    case authorValidate(manifest: URL, document: URL)
+    case authorReport(manifest: URL, document: URL, output: URL? = nil)
+    case authorExport(manifest: URL, document: URL, output: URL)
+    case replay(
+        manifest: URL,
+        scenario: String,
+        checkpoints: URL? = nil,
+        evidence: URL? = nil,
+        trace: URL? = nil,
+        output: URL? = nil
+    )
+    case minimize(
+        manifest: URL,
+        plan: URL,
+        predicate: URL,
+        output: URL,
+        maxEvaluations: Int
+    )
     case dev(manifest: URL, scenario: String?, once: Bool)
     case profile(manifest: URL, trace: URL? = nil)
     case evidenceDiff(before: URL, after: URL)
@@ -69,9 +110,9 @@ public enum SwanSDKCommand: Equatable, Sendable {
         case .play: .play
         case .report, .profile: .profile
         case .doctor: nil
-        case .optimize: .assets
-        case .fuzz, .laboratory: .test
-        case .scenarioRecord, .dev: .play
+        case .optimize, .authorCreate, .authorValidate, .authorReport, .authorExport: .assets
+        case .fuzz, .laboratory, .minimize: .test
+        case .scenarioRecord, .replay, .dev: .play
         case .evidenceDiff: .evidence
         case .release: .release
         }
@@ -127,6 +168,49 @@ public enum SwanSDKCommand: Equatable, Sendable {
                 "--input-log", inputLog.path, "--output", outputPlan.path,
                 "--json",
             ]
+        case let .authorCreate(manifest, kind, id, output):
+            var arguments = [
+                "author", "create", kind.rawValue, id,
+                "--project", manifest.path,
+            ]
+            if let output { arguments += ["--output", output.path] }
+            arguments.append("--json")
+            return arguments
+        case let .authorValidate(manifest, document):
+            return [
+                "author", "validate", document.path,
+                "--project", manifest.path, "--json",
+            ]
+        case let .authorReport(manifest, document, output):
+            var arguments = [
+                "author", "report", document.path,
+                "--project", manifest.path,
+            ]
+            if let output { arguments += ["--output", output.path] }
+            arguments.append("--json")
+            return arguments
+        case let .authorExport(manifest, document, output):
+            return [
+                "author", "export", document.path,
+                "--project", manifest.path, "--output", output.path, "--json",
+            ]
+        case let .replay(manifest, scenario, checkpoints, evidence, trace, output):
+            var arguments = [
+                "replay", "--project", manifest.path, "--scenario", scenario,
+            ]
+            if let checkpoints { arguments += ["--checkpoints", checkpoints.path] }
+            if let evidence { arguments += ["--evidence", "current=\(evidence.path)"] }
+            if let trace { arguments += ["--trace", trace.path] }
+            if let output { arguments += ["--output", output.path] }
+            arguments.append("--json")
+            return arguments
+        case let .minimize(manifest, plan, predicate, output, maxEvaluations):
+            return [
+                "minimize", "--project", manifest.path,
+                "--plan", plan.path, "--predicate", predicate.path,
+                "--output", output.path,
+                "--max-evaluations", String(maxEvaluations), "--json",
+            ]
         case let .dev(manifest, scenario, once):
             var arguments = ["dev", "--project", manifest.path]
             if let scenario, !scenario.isEmpty { arguments += ["--scenario", scenario] }
@@ -161,7 +245,11 @@ public enum SwanSDKCommand: Equatable, Sendable {
              let .test(manifest), let .play(manifest, _),
              let .report(manifest), let .optimize(manifest, _),
              let .fuzz(manifest, _, _, _), let .laboratory(manifest, _, _),
-             let .scenarioRecord(manifest, _, _), let .dev(manifest, _, _),
+             let .scenarioRecord(manifest, _, _),
+             let .authorCreate(manifest, _, _, _),
+             let .authorValidate(manifest, _), let .authorReport(manifest, _, _),
+             let .authorExport(manifest, _, _), let .replay(manifest, _, _, _, _, _),
+             let .minimize(manifest, _, _, _, _), let .dev(manifest, _, _),
              let .profile(manifest, _), let .release(manifest, _, _, _):
             manifest.deletingLastPathComponent()
         case let .doctor(manifest, _):
@@ -179,6 +267,10 @@ public enum SwanSDKCommand: Equatable, Sendable {
         case .fuzz: "swansong-fuzz-report-v1"
         case .laboratory: "swansong-laboratory-report-v1"
         case .scenarioRecord: "swansong-scenario-record-report-v1"
+        case .authorCreate, .authorValidate, .authorReport, .authorExport:
+            "swansong-author-operation-report-v1"
+        case .replay: "swansong-replay-report-v1"
+        case .minimize: "swansong-minimize-report-v1"
         case .dev: "swansong-dev-event-v1"
         case .profile: "swansong-profile-report-v1"
         case .evidenceDiff: "swansong-evidence-diff-v1"
@@ -318,11 +410,11 @@ public struct SwanSDKCLIResolution: Equatable, Sendable {
 }
 
 public struct SwanSDKBundleSummary: Equatable, Sendable {
-    public static let expectedVersion = "0.2.0"
-    public static let expectedCommit = "074f391981d2863703ef814472e944870c850cd3"
+    public static let expectedVersion = "0.3.1"
+    public static let expectedCommit = "0aed2049a51029b79a34277a2ceec93a08f72eaa"
     public static let expectedManifestSchemaVersion = 1
     public static let expectedPayloadRevision =
-        "sha256:a9d93aa45ba8d1d5c5ce62cc04dd9f59692d7e0a849a899f6ceac15118b9b4d0"
+        "sha256:92c2f3b0823465c0d0b0d4e094ef3b2c89fcbf2e984a364cb1021e95e6043874"
     public static let expectedMinimumPython = "3.11"
 
     public let version: String
@@ -869,7 +961,7 @@ public struct SwanSDKSchemaSummary: Equatable, Sendable {
 }
 
 public struct SwanSDKPackageSummary: Equatable, Sendable {
-    public static let minimumStudioToolsVersion = "0.2.0"
+    public static let minimumStudioToolsVersion = "0.3.1"
 
     public let version: String
 
@@ -891,7 +983,7 @@ public struct SwanSDKPackageSummary: Equatable, Sendable {
               let minor = Int(components[1]),
               let patch = Int(components[2]) else { return false }
         let candidate = (major, minor, patch)
-        let minimum = (0, 2, 0)
+        let minimum = (0, 3, 1)
         if candidate.0 != minimum.0 { return candidate.0 > minimum.0 }
         if candidate.1 != minimum.1 { return candidate.1 > minimum.1 }
         if candidate.2 != minimum.2 { return candidate.2 > minimum.2 }
