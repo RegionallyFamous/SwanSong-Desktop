@@ -5,6 +5,8 @@ The project uses semantic versioning once a release is published.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-07-17
+
 ### Added
 
 - Added SwanSong Studio with New, Assets, Build, Test, Play, Profile, Evidence,
@@ -212,7 +214,8 @@ The project uses semantic versioning once a release is published.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.1.1...v0.2.0

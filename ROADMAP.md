@@ -3,33 +3,28 @@
 This roadmap describes intended outcomes, not promises or compatibility claims.
 Release notes and the issue tracker are authoritative for shipped behavior.
 
-## 0.3 beta closure
+## 0.4 beta closure
 
-- Publish guarded route recording, Original/Patched paired verification, and
-  deterministic homebrew playtesting as an explicitly marked GitHub
-  prerelease built from its exact signed source tag.
-- Prove the 0.2-to-0.3 Sparkle update on beta-enabled clients while stable-only
-  clients remain on their selected channel and all private library and project
-  data survives the transition.
-- Keep local MCP off by default, token-authenticated, session-local, and limited
-  to its documented tool and data allowlists. Exercise enable, control, revoke,
-  and denied-request paths on a clean supported Mac.
+- Validate SwanSong Studio's New, Assets, Build, Test, Play, Profile, Evidence,
+  and Release workspaces against SwanSong SDK 0.2.0-or-newer projects.
+- Exercise Doctor, Dev, Scenario Recorder, Evidence Diff, deterministic input
+  fuzzing, Sprite/VRAM profiling, Asset Optimizer, and Save/RTC Laboratory with
+  both successful projects and bounded failure cases.
+- Prove that Release accepts only inspected, current, hash-bound PNG and WAV
+  observations and rejects execution-only, incomplete, or stale evidence.
+- Keep ownership explicit: the SDK owns Wonderful builds, assets, manifests,
+  budgets, and release policy; SwanSong remains the only gameplay backend.
+- Prove the 0.3-to-0.4 Sparkle update on beta-enabled clients while stable-only
+  clients remain on their selected channel and private library/project data is
+  preserved.
 - Developer ID sign, notarize, staple, Gatekeeper-assess, and inspect the
-  universal Apple silicon and Intel archive, including the corrected Finder,
-  Dock, and direct-launch icon behavior.
-- Publish the exact corresponding-source archive, SHA-256 checksums,
-  machine-readable manifest, human release notes, beta testing guide, and
-  matching repo-backed Wiki revision.
-- Keep the Homebrew Catalog visibly **Coming Soon** and network-silent until the
-  first explicitly licensed Story Forge ROM, immutable release asset, signed
-  non-empty catalog, and production public key all pass the release gate.
-- Keep SwanSong Desktop and the separate Analogue Pocket `swansong-core`
-  release lanes explicit. Desktop's manual SD-card tool may install only an
-  immutable, authorized stable Core release after its manifest and checksum
-  agree; it must not build, publish, or silently update the FPGA product.
+  universal Apple silicon and Intel archive from its exact release tag.
+- Publish corresponding source, checksums, manifest, release notes, beta guide,
+  and the matching repo-backed Wiki revision.
+- Keep the Homebrew Catalog **Coming Soon** and network-silent and keep the
+  separate SwanSong Core release lane locked until its independent gates pass.
 - Retain Open IPL, controller, save/state, portrait, accessibility,
-  minimum-macOS, A/V soak, and physical input acceptance from 0.2 without
-  treating a successful boot or automation command as a compatibility verdict.
+  minimum-macOS, A/V soak, Translation Lab, and local-MCP regression coverage.
 
 ## 1.0 readiness
 

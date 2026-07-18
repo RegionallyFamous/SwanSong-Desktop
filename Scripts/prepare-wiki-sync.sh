@@ -19,6 +19,7 @@ validate_source() {
 
   required_pages='0.2-Beta-Testing.md
 0.3-Beta-Testing.md
+0.4-Beta-Testing.md
 Architecture-and-Source-Ownership.md
 Build-and-Test.md
 Gamepads.md
