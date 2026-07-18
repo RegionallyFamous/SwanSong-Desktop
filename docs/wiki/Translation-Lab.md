@@ -1,8 +1,24 @@
 # Translation Lab
 
-Translation Lab is an optional native workspace for private WonderSwan
-translation projects created by the SwanSong translation toolkit. It links a
-project without copying its ROM into the normal game library.
+Translation work gets difficult when “this screen looks wrong” is the only
+evidence you have. Translation Lab turns that feeling into something you can
+replay, compare, review, and keep.
+
+Link a private WonderSwan translation project and SwanSong can record the exact
+route to a screen, replay it against Original and Patched, compare native
+frames, find the first visual change, review visible text on-device, and keep
+the evidence beside the project. The ROM never enters the normal game library.
+
+## What you can do here
+
+- record a deterministic test from clean boot;
+- compare Original and Patched at the exact same frame;
+- build a suite of routes and run them together;
+- locate the first frame where the two builds diverge;
+- turn reviewed on-screen text into a private translation draft;
+- advance long observed-play sequences one visible step at a time; and
+- investigate a selected rectangle without sending private source addresses
+  or cartridge lineage through automation.
 
 ## Workspace and readiness
 

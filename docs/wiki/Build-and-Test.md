@@ -1,7 +1,10 @@
 # Build and Test
 
-This page is the technical command reference for contributors and release
-operators. Product documentation lives in [[Playing and Library]],
+This is the workshop manual: the shortest reliable path from a clean checkout
+to a real SwanSong app, plus the gates that keep a convenient local build from
+being mistaken for release evidence.
+
+Product documentation lives in [[Playing and Library]],
 [[Translation Lab]], [[SwanSong Studio]], and
 [[Analogue Pocket SD Setup]].
 
@@ -152,8 +155,10 @@ and resource-report decoding, structured JSON/JSONL schema rejection,
 evidence/WAV and editable-plan intake, package/schema/toolchain identity,
 streamed output, cancellation, and command overlap guards.
 
-For the 0.4 developer preview, select a local `swansong-sdk` checkout and run a
-real smoke project through:
+Current source resolves the content-verified SDK embedded in the app by
+default. Use Studio's explicit external SDK override when developing the SDK
+itself. SDK contributors can run a real smoke project directly from that
+checkout with:
 
 ```sh
 PYTHONPATH=/path/to/swansong-sdk/python \

@@ -4,6 +4,11 @@ Official SwanSong Desktop releases are produced only on the trusted macOS
 signing machine. Routine CI does not receive the Developer ID private key or
 Apple notarization credentials.
 
+The goal is simple even when the checklist is long: a public SwanSong download
+should be the exact reviewed source, built with the exact reviewed engine and
+dependencies, accepted by macOS, and unable to quietly widen its trust or
+network boundaries.
+
 ## Source and version
 
 1. Update the changelog, versioned notes, beta guide, version, and build number.
@@ -42,8 +47,10 @@ public distribution.
 - Run the live player input/focus lane from a logged-in GUI session. Exit 77 is
   not a pass.
 - Visually review every changed screenshot and UI baseline.
-- Run `./Scripts/check-homebrew-production-readiness.sh`. For 0.4 beta,
-  `comingSoon` must mean no production key and no catalog network request.
+- Run `./Scripts/check-homebrew-production-readiness.sh`. A `comingSoon` build
+  must contain no production key and make no catalog network request. A
+  `published` build must bind the reviewed public key, reachable signed catalog,
+  rights attestations, immutable provenance, and installable asset evidence.
 - Verify manual **Check for Updates…**, off-by-default automatic checks and
   automatic download/install, beta-channel opt-in, no system profile, and the
   exact GitHub-hosted trust boundary in [[App Updates]]. Run

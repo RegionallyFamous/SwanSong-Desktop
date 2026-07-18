@@ -1,12 +1,18 @@
 # Architecture and Source Ownership
 
+SwanSong is one experience built from several deliberately separate products,
+repositories, and trust lanes. Those boundaries keep a Mac app update from
+becoming permission to install a game, and keep a Core release from becoming
+permission to change the Mac app.
+
 ## Repository boundaries
 
 | Product or input | Canonical source | Ownership boundary |
 | --- | --- | --- |
 | SwanSong Desktop for macOS | [`RegionallyFamous/SwanSong-Desktop`](https://github.com/RegionallyFamous/SwanSong-Desktop) | SwiftUI/AppKit app, library, translation workbench, C ABI, release tooling, and macOS tests. |
 | SwanSong for Analogue Pocket | [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core) | FPGA source, Pocket packaging, hardware qualification, and Pocket releases. Desktop can install only a verified, authorized release from this lane onto a user-selected card. |
-| First-party homebrew and catalog publication | [`RegionallyFamous/swansong-story-forge`](https://github.com/RegionallyFamous/swansong-story-forge) | Licensed ROM release assets and signed catalog publication. It is not bundled into Desktop. |
+| First-party Homebrew Catalog | [`RegionallyFamous/swansong-catalog`](https://github.com/RegionallyFamous/swansong-catalog) | Signed catalog bytes, publisher/right attestations, immutable provenance, and source-file evidence. Catalog content is fetched only after explicit consent and is not bundled into Desktop. |
+| First-party homebrew releases | Identified immutable source repositories, including [`RegionallyFamous/swansong-story-forge`](https://github.com/RegionallyFamous/swansong-story-forge) | Licensed ROM source and exact-tag release assets referenced by the signed catalog. A catalog entry cannot replace the source repository's own license and provenance. |
 | WonderSwan software engine | Upstream ares pinned by [`Dependencies/ares.lock.json`](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/Dependencies/ares.lock.json) | Exact upstream revision prepared locally, patched only by the tracked integration patch, and included as sanitized corresponding source in official releases. |
 | SwanSong Studio SDK | SwanSong SDK 0.2.0 pinned by [`Dependencies/swansong-sdk.lock.json`](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/Dependencies/swansong-sdk.lock.json) | Exact tagged runtime, schema, recipes, Python package, license, and tool entry point are embedded in the signed app with a per-file content manifest. External checkouts are explicit development overrides. |
 | SwanSong Desktop updater | [`updates/appcast.xml`](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/updates/appcast.xml) plus this repository's GitHub Releases | Sparkle updates the signed macOS app only. It does not publish homebrew or invoke the Pocket installer. |

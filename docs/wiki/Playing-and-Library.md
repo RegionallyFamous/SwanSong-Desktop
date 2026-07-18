@@ -1,7 +1,20 @@
 # Playing and Library
 
-This page documents the technical behavior behind SwanSong's normal library
-and player. For the short product tour, start with the repository README.
+This is the everyday heart of SwanSong: add a game, make the library yours,
+and disappear into the player when it is time to play. This page covers the
+details behind that simple loop without assuming you need to know how the
+emulator works.
+
+## Your first five minutes
+
+1. Choose **File → Add Games to Library…**, drag in a supported game, or add a
+   folder.
+2. Select the new library card and press **Play**.
+3. Use the display menu for Pure Pixels or an LCD-style profile.
+4. Press Option-Command-S for a visual quick state, or open Time Ribbon when
+   you want to revisit the last 30 seconds.
+5. Favorite the game, choose artwork, or add your own compatibility note when
+   you are ready.
 
 ## Supported software
 
@@ -33,10 +46,12 @@ diagnostics.
 
 ## Player behavior
 
-Play mode collapses library chrome into a focused one-game surface. The native
+Play mode collapses the library into a focused one-game surface. The native
 game framebuffer stays square-cornered and unmodified; pause, focus, warning,
 and recovery UI remain outside the game pixels. Horizontal and vertical games
-are presented without cropping.
+are presented without cropping. Current source also fits the cyan-framed
+canvas and automatic player-window shape around the native 224×157 raster, so
+wide windows do not create a second set of side wells around the game.
 
 The live ares backend produces deterministic video and 48 kHz stereo audio.
 Metal presents the native raster with true integer scaling. Four display

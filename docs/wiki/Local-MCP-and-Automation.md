@@ -1,7 +1,12 @@
 # Local MCP and Automation
 
-SwanSong includes a local Model Context Protocol server for trusted Codex and
-other MCP clients. It has five deliberately separate surfaces:
+SwanSong can work with a trusted local agent, but only through doors you choose
+to open. There is no remote SwanSong service, no general-purpose command
+channel, and no tool that quietly turns your private library into agent
+context.
+
+The local Model Context Protocol server has five deliberately separate
+surfaces:
 
 - a live-app bridge for small, allowlisted status, navigation, and playback
   actions;
