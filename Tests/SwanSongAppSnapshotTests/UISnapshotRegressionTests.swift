@@ -6,6 +6,30 @@ import XCTest
 @testable import SwanSongApp
 
 @MainActor
+private final class PlayerSurfaceSizeProbe {
+    private(set) var size = CGSize.zero
+
+    func record(_ size: CGSize) {
+        self.size = size
+    }
+}
+
+private struct PlayerSurfaceSizeReader: View {
+    let probe: PlayerSurfaceSizeProbe
+
+    var body: some View {
+        GeometryReader { proxy in
+            let size = proxy.size
+            Color.clear
+                .onAppear { probe.record(size) }
+                .onChange(of: size) { _, value in probe.record(value) }
+        }
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+}
+
+@MainActor
 final class UISnapshotRegressionTests: XCTestCase {
     private static let perceptualHashAlgorithm = "dhash-16x16-luma-v1"
     // 24/256 bits (9.375%) tolerates minor font/material rasterization drift
@@ -1054,6 +1078,42 @@ final class UISnapshotRegressionTests: XCTestCase {
             3,
             "Distinct framebuffer corner markers were lost or replaced by canvas chrome"
         )
+    }
+
+    func testPlayerSurfaceKeepsNativeAspectRatioInWideWindow() throws {
+        let hostSize = CGSize(width: 900, height: 430)
+        let nativeRatios: [CGFloat] = [224.0 / 157.0, 157.0 / 224.0]
+
+        for nativeRatio in nativeRatios {
+            let probe = PlayerSurfaceSizeProbe()
+            _ = try render(
+                AnyView(
+                    ZStack {
+                        SwanTheme.playerBackground
+                        PlayerAspectFittedSurface(aspectRatio: nativeRatio) {
+                            Color.black
+                        }
+                        .background(PlayerSurfaceSizeReader(probe: probe))
+                    }
+                ),
+                size: hostSize,
+                scheme: .dark
+            )
+
+            XCTAssertGreaterThan(probe.size.width, 0)
+            XCTAssertGreaterThan(probe.size.height, 0)
+            XCTAssertEqual(
+                probe.size.width / probe.size.height,
+                nativeRatio,
+                accuracy: 0.01,
+                "The framed player surface expanded away from the native game ratio"
+            )
+            XCTAssertLessThan(
+                probe.size.width,
+                hostSize.width - 100,
+                "An overly wide host must not add gutters inside the framed game surface"
+            )
+        }
     }
 
     func testDismissedVideoActivityRemainsDegradedAndRearms() throws {

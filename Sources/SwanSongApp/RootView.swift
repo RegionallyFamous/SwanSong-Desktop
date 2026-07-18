@@ -7804,6 +7804,20 @@ struct PlayerCanvasFrame<Content: View>: View {
     }
 }
 
+struct PlayerAspectFittedSurface<Content: View>: View {
+    let aspectRatio: CGFloat
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        content
+            // The surface must accept the available space before its aspect
+            // ratio is applied. Reversing these modifiers expands the outer
+            // canvas after fitting its pixels, which creates side gutters.
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .aspectRatio(aspectRatio, contentMode: .fit)
+    }
+}
+
 private struct PlayerView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.openSettings) private var openSettings
@@ -7996,27 +8010,27 @@ private struct PlayerView: View {
     }
 
     private var gameSurface: some View {
-        ZStack {
-            Color.black
+        PlayerAspectFittedSurface(aspectRatio: playerAspectRatio) {
+            ZStack {
+                Color.black
 
-            if let frame = model.currentFrame {
-                MetalScreenView(
-                    frame: frame,
-                    profile: displayProfile,
-                    hardwareModel: model.playingGame?.resolvedHardwareModel ?? .automatic,
-                    responseScale: Float(lcdMotionLevel.responseScale)
-                )
-                .aspectRatio(
-                    CGFloat(frame.width) / CGFloat(frame.height),
-                    contentMode: .fit
-                )
-                .accessibilityHidden(true)
-            } else if model.playerFailure == nil {
-                playerLaunchView
+                if let frame = model.currentFrame {
+                    MetalScreenView(
+                        frame: frame,
+                        profile: displayProfile,
+                        hardwareModel: model.playingGame?.resolvedHardwareModel ?? .automatic,
+                        responseScale: Float(lcdMotionLevel.responseScale)
+                    )
+                    .aspectRatio(
+                        CGFloat(frame.width) / CGFloat(frame.height),
+                        contentMode: .fit
+                    )
+                    .accessibilityHidden(true)
+                } else if model.playerFailure == nil {
+                    playerLaunchView
+                }
             }
         }
-        .aspectRatio(playerAspectRatio, contentMode: .fit)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(Rectangle())
         .overlay(alignment: .topLeading) {
             if model.debugToolsEnabled,
