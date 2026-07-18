@@ -30,6 +30,13 @@ bundled third-party notices are reproduced in `SPARKLE_LICENSE` and in the
 application's Resources directory. Exact source is included in every official
 corresponding-source archive under `Dependencies/sparkle-source`.
 
+## SwanSong SDK
+
+SwanSong Studio embeds the MIT-licensed SwanSong SDK 0.2.0 runtime, recipes,
+schema, and Python package from revision
+`074f391981d2863703ef814472e944870c850cd3`. Its complete license and notices
+are included inside the signed application at `Resources/SwanSongSDK`.
+
 ## Stack-less Just-In-Time compiler (SLJIT)
 
 Copyright Zoltan Herczeg. All rights reserved.

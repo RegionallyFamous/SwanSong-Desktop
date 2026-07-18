@@ -86,13 +86,23 @@ counts. These tools do not return ROM, state, RAM, or persistence bytes.
 SwanSong makes no network request for MCP, but an AI client may transmit tool
 arguments and results to its own service under that client's privacy policy.
 
-SwanSong Studio reads and writes only the SDK and project folders you explicitly
-select. It launches the selected local SwanSong SDK command-line tool for New,
-Assets, Build, Test, Play, Profile, Evidence, and Release, and keeps compiler,
-generator, resource, frame-plan, PNG, WAV, observation, and structured evidence
-output on the Mac. Those commands may invoke the locally installed Wonderful
-toolchain and SwanSong deterministic play executor; Desktop does not upload
-project source, assets, ROMs, or evidence.
+SwanSong Studio reads its content-verified SDK 0.2.0 resources from the signed
+app by default and reads and writes only project folders you explicitly select.
+You may explicitly override the SDK with a development checkout. Studio launches
+that resolved SDK command-line tool for New, Assets, Build, Test, Play, Profile,
+Evidence, and Release, and keeps compiler, generator, resource, frame-plan, PNG,
+WAV, observation, and structured evidence output on the Mac. Those commands may
+invoke the locally installed Python and Wonderful toolchain and SwanSong
+deterministic play executor; Desktop does not upload project source, assets,
+ROMs, or evidence.
+
+When local MCP control is enabled, Studio project status returns at most one
+already-open project slot, counts, readiness, and tool versions. It does not
+return the project name, path, manifest, source, assets, ROM, diagnostics,
+captures, audio, or evidence. A separate guarded action requires explicit
+project-write confirmation and can invoke only Doctor, Assets, Build, Test,
+Play, or Profile against that already-open project. It cannot select a path,
+create or directly edit a project, run Release, or execute an arbitrary command.
 
 Optional Studio completion notifications are local macOS notifications. SwanSong
 requests notification permission only after you enable the setting, sends them

@@ -462,6 +462,7 @@ final class AppModel {
     let engineBackendName: String
     let engineBuildID: String
     let engineCanExecute: Bool
+    let studioWorkspace: SwanSDKWorkspaceModel
 
     private let store: GameLibraryStore
     private let saveStore: GameSaveStore
@@ -638,7 +639,8 @@ final class AppModel {
         artworkStore: GameArtworkStore = .defaultStore(),
         controllerProfileStore: ControllerProfileStore = .defaultStore(),
         translationWorkspaceStore: TranslationWorkspaceStore = .defaultStore(),
-        engineCanExecuteOverride: Bool? = nil
+        engineCanExecuteOverride: Bool? = nil,
+        studioWorkspaceOverride: SwanSDKWorkspaceModel? = nil
     ) {
         self.store = store
         self.saveStore = saveStore
@@ -685,6 +687,10 @@ final class AppModel {
             engineBuildID = "unavailable"
             engineCanExecute = false
         }
+        studioWorkspace = studioWorkspaceOverride ?? SwanSDKWorkspaceModel(
+            engineName: engineBackendName,
+            engineBuildID: engineBuildID
+        )
         controllerProfile = (try? controllerProfileStore.load()) ?? .default
         controller.onChange = { [weak self] elements in
             self?.handleControllerElements(elements)

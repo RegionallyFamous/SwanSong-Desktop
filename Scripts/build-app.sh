@@ -23,6 +23,8 @@ APP_DIR="$OUTPUT_DIR/SwanSong.app"
 UNIVERSAL_SWIFT_DIR=${SWAN_UNIVERSAL_SWIFT_DIR:-"$MACOS_DIR/.build/swan-universal"}
 SIGNING_MODE=${SWAN_SIGNING_MODE:-adhoc}
 SIGNING_IDENTITY=${SWAN_CODE_SIGN_IDENTITY:-}
+SDK_REPOSITORY=${SWAN_SDK_SOURCE_REPOSITORY:-"$MACOS_DIR/../swansong-sdk"}
+SDK_PAYLOAD_SOURCE=${SWAN_SDK_PAYLOAD_SOURCE:-}
 SOURCE_COMMIT=$(git -C "$MACOS_DIR" rev-parse --verify HEAD)
 printf '%s\n' "$SOURCE_COMMIT" | grep -Eq '^[0-9a-f]{40}$' || {
   echo "could not determine a 40-character Git source commit" >&2
@@ -293,6 +295,15 @@ cp "$MACOS_DIR/Dependencies/ares.lock.json" \
   "$APP_DIR/Contents/Resources/ares.lock.json"
 cp "$MACOS_DIR/Dependencies/sparkle.lock.json" \
   "$APP_DIR/Contents/Resources/sparkle.lock.json"
+if [ -n "$SDK_PAYLOAD_SOURCE" ]; then
+  "$SCRIPT_DIR/check-swansong-sdk-payload.sh" "$SDK_PAYLOAD_SOURCE" >/dev/null
+  ditto "$SDK_PAYLOAD_SOURCE" "$APP_DIR/Contents/Resources/SwanSongSDK"
+else
+  "$SCRIPT_DIR/materialize-swansong-sdk.sh" \
+    "$SDK_REPOSITORY" "$APP_DIR/Contents/Resources/SwanSongSDK" >/dev/null
+fi
+"$SCRIPT_DIR/check-swansong-sdk-payload.sh" \
+  "$APP_DIR/Contents/Resources/SwanSongSDK" >/dev/null
 
 list_rpaths() {
   otool -l "$1" | awk '

@@ -93,6 +93,8 @@ expected = {
     "swansong_status",
     "swansong_navigate",
     "swansong_player",
+    "swansong_studio_projects",
+    "swansong_studio_action",
     "swansong_playtest_plan",
     "swansong_observed_play_start",
     "swansong_observed_play_resume",
@@ -108,9 +110,11 @@ expected = {
 }
 if set(by_name) != expected:
     raise SystemExit(f"unexpected SwanSong MCP tool set: {set(by_name)!r}")
-if by_name["swansong_status"]["annotations"].get("readOnlyHint") is not True:
-    raise SystemExit("status tool is not marked read-only")
-for name in expected - {"swansong_status"}:
+read_only = {"swansong_status", "swansong_studio_projects"}
+for name in read_only:
+    if by_name[name]["annotations"].get("readOnlyHint") is not True:
+        raise SystemExit(f"read-only MCP tool was not annotated: {name}")
+for name in expected - read_only:
     if by_name[name]["annotations"].get("readOnlyHint") is not False:
         raise SystemExit(f"write-capable MCP tool was not annotated: {name}")
 playtest_required = set(by_name["swansong_playtest_plan"]["inputSchema"].get("required", []))
@@ -162,6 +166,17 @@ if seed_required != {
     "projectPath", "sourceProbeDetailsPath", "confirmProjectWrites"
 }:
     raise SystemExit("static-analysis seed export lost its exact guarded input contract")
+studio_required = set(
+    by_name["swansong_studio_action"]["inputSchema"].get("required", [])
+)
+if studio_required != {"action", "confirmProjectWrites"}:
+    raise SystemExit("Studio action lost its exact guarded input contract")
+studio_actions = set(
+    by_name["swansong_studio_action"]["inputSchema"]
+    .get("properties", {}).get("action", {}).get("enum", [])
+)
+if studio_actions != {"doctor", "assets", "build", "test", "play", "profile"}:
+    raise SystemExit("Studio action gained an unsafe or unknown operation")
 
 send({
     "jsonrpc": "2.0",
@@ -208,6 +223,16 @@ observed_step_guard = receive(20)["result"]
 if observed_step_guard.get("isError") is not True or "confirmShareCapture" not in json.dumps(observed_step_guard):
     raise SystemExit("observed-play step runtime lost its capture-sharing guard")
 
+send({
+    "jsonrpc": "2.0",
+    "id": 21,
+    "method": "tools/call",
+    "params": {"name": "swansong_studio_action", "arguments": {}},
+})
+studio_guard = receive(21)["result"]
+if studio_guard.get("isError") is not True or "confirmProjectWrites" not in json.dumps(studio_guard):
+    raise SystemExit("Studio MCP runtime lost its project-write guard")
+
 process.stdin.close()
 process.wait(timeout=5)
 if process.returncode != 0:
@@ -215,4 +240,4 @@ if process.returncode != 0:
     raise SystemExit(f"MCP server exited {process.returncode}: {stderr}")
 PY
 
-echo "PASS SwanSong MCP initializes with fifteen scoped, correctly annotated tools"
+echo "PASS SwanSong MCP initializes with seventeen scoped, correctly annotated tools"

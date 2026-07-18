@@ -63,11 +63,13 @@ workspace. Record a route, compare original and patched frames, inspect visual
 changes, capture text on-device, and keep review evidence beside the project.
 
 **SwanSong Studio** brings New, Assets, Build, Test, Play, Profile, Evidence,
-and Release into one native workspace for SwanSong SDK projects. The 0.4 beta
-is a developer preview that uses an explicitly selected local SwanSong SDK
-0.2.0-or-newer checkout. It delegates toolchain, deterministic play, profiling,
-and release policy to the SDK; the tagged SDK/runtime bundle is still being
-prepared for a later self-contained build.
+and Release into one native workspace for SwanSong SDK projects. Current builds
+embed and content-verify the complete SwanSong SDK 0.2.0 runtime, schema,
+recipes, Python package, and `swan` entry point. An explicit external SDK
+override remains available for framework development. Python 3.11+ and the
+pinned Wonderful packages are resolved locally and checked by Doctor; Studio
+continues to delegate toolchain, deterministic play, profiling, and release
+policy to the SDK.
 
 **Analogue Pocket setup** prepares an SD card for SwanSong Core from inside the
 app. It is designed to preserve games, saves, Memories, settings, and unrelated
@@ -79,8 +81,10 @@ and install authorized homebrew. It remains Coming Soon in 0.4; local imports
 already work.
 
 **Local automation** lets a trusted Codex session check SwanSong, move around
-the app, control the selected game, and run proof-grade Translation Lab routes.
-It is off by default, stays on your Mac, and never exposes ROM or save bytes.
+the app, control the selected game, inspect path-free Studio readiness, invoke a
+fixed set of existing SDK actions with confirmation, and run proof-grade
+Translation Lab routes. It is off by default, stays on your Mac, and never
+exposes ROM or save bytes.
 
 <!-- homebrew-catalog-status: coming-soon -->
 

@@ -1,4 +1,5 @@
 import Darwin
+import CryptoKit
 import Foundation
 @testable import SwanSongKit
 import XCTest
@@ -119,13 +120,46 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         XCTAssertEqual(resolution.executableURL.path, "/usr/bin/env")
         XCTAssertEqual(
             resolution.argumentPrefix,
-            ["python3", "-m", "swansong_sdk.cli"]
+            ["python3", "-P", "-m", "swansong_sdk.cli"]
         )
         XCTAssertEqual(resolution.environment["SWANSONG_SDK_DIR"], root.path)
         XCTAssertEqual(
             resolution.environment["PYTHONPATH"]?.split(separator: ":").first.map(String.init),
             root.appendingPathComponent("python").path
         )
+        XCTAssertEqual(resolution.environment["PYTHONDONTWRITEBYTECODE"], "1")
+        XCTAssertEqual(resolution.environment["PYTHONNOUSERSITE"], "1")
+        XCTAssertNil(resolution.bundleSummary)
+    }
+
+    func testResolverValidatesEveryFileInPinnedApplicationBundle() throws {
+        let root = try temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        try FileManager.default.createDirectory(
+            at: root.appendingPathComponent("schema", isDirectory: true),
+            withIntermediateDirectories: true
+        )
+        try FileManager.default.createDirectory(
+            at: root.appendingPathComponent("templates", isDirectory: true),
+            withIntermediateDirectories: true
+        )
+        try FileManager.default.createDirectory(
+            at: root.appendingPathComponent("python/swansong_sdk", isDirectory: true),
+            withIntermediateDirectories: true
+        )
+        try Data("{}".utf8).write(to: root.appendingPathComponent("schema/swan.schema.json"))
+        let module = root.appendingPathComponent("python/swansong_sdk/cli.py")
+        try Data("# fixture\n".utf8).write(to: module)
+        try writeBundleManifest(at: root)
+
+        let resolution = try SwanSDKCLIResolution.resolve(sdkRoot: root)
+        XCTAssertEqual(resolution.bundleSummary?.version, "0.2.0")
+        XCTAssertEqual(resolution.bundleSummary?.fileCount, 2)
+
+        try Data("# changed\n".utf8).write(to: module)
+        XCTAssertThrowsError(try SwanSDKCLIResolution.resolve(sdkRoot: root)) { error in
+            XCTAssertTrue(error.localizedDescription.contains("failed verification"))
+        }
     }
 
     func testRealAdjacentSDKCheckoutResolvesAndReportsPinnedIdentity() throws {
@@ -434,6 +468,36 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         )
         try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         return url
+    }
+
+    private func writeBundleManifest(at root: URL) throws {
+        let paths = [
+            "python/swansong_sdk/cli.py",
+            "schema/swan.schema.json",
+        ]
+        let files: [[String: Any]] = try paths.map { path in
+            let data = try Data(contentsOf: root.appendingPathComponent(path))
+            return [
+                "path": path,
+                "byteCount": data.count,
+                "sha256": SHA256.hash(data: data)
+                    .map { String(format: "%02x", $0) }.joined(),
+            ]
+        }
+        let document: [String: Any] = [
+            "schema": "swan-song-sdk-bundle-v1",
+            "version": SwanSDKBundleSummary.expectedVersion,
+            "commit": SwanSDKBundleSummary.expectedCommit,
+            "manifestSchemaVersion": SwanSDKBundleSummary.expectedManifestSchemaVersion,
+            "payloadRevision": SwanSDKBundleSummary.expectedPayloadRevision,
+            "minimumPython": SwanSDKBundleSummary.expectedMinimumPython,
+            "files": files,
+        ]
+        let data = try JSONSerialization.data(
+            withJSONObject: document,
+            options: [.prettyPrinted, .sortedKeys]
+        )
+        try data.write(to: root.appendingPathComponent("SDK-BUNDLE.json"))
     }
 
     private func waitForChildPID(at url: URL) async throws -> pid_t {

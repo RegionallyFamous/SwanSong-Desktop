@@ -46,8 +46,10 @@ final class SwanSDKWorkspaceModel {
     var stateMachine = SwanSDKWorkspaceStateMachine()
     var activeCommandName: String?
     var sdkPackage: SwanSDKPackageSummary?
+    var sdkBundle: SwanSDKBundleSummary?
     var schema: SwanSDKSchemaSummary?
     var toolchain: SwanSDKToolchainSummary?
+    var pythonRuntime: SwanSDKPythonSummary?
 
     let engineName: String
     let engineBuildID: String
@@ -57,6 +59,7 @@ final class SwanSDKWorkspaceModel {
     private let completionNotifier: @MainActor (SwanSongTaskCompletion) -> Void
     private var commandTask: Task<Void, Never>?
     private let defaults: UserDefaults
+    private let bundledSDKRoot: URL?
 
     private static let sdkDefaultsKey = "SwanSong.gameStudioSDKPath"
     private static let projectDefaultsKey = "SwanSong.gameStudioProjectPath"
@@ -78,7 +81,7 @@ final class SwanSDKWorkspaceModel {
         self.completionNotifier = completionNotifier
         self.defaults = defaults
 
-        let bundledSDK = bundle.resourceURL?
+        bundledSDKRoot = bundle.resourceURL?
             .appendingPathComponent("SwanSongSDK", isDirectory: true)
         let configuredSDK = environment["SWANSONG_SDK_DIR"].map {
             URL(fileURLWithPath: $0, isDirectory: true)
@@ -86,8 +89,27 @@ final class SwanSDKWorkspaceModel {
         let rememberedSDK = defaults.string(forKey: Self.sdkDefaultsKey).map {
             URL(fileURLWithPath: $0, isDirectory: true)
         }
-        for candidate in [bundledSDK, configuredSDK, rememberedSDK].compactMap({ $0 }) {
-            if (try? configureSDK(at: candidate, remember: false)) != nil { break }
+        if let configuredSDK {
+            do {
+                try configureSDK(at: configuredSDK, remember: false)
+            } catch {
+                issue = "The SWANSONG_SDK_DIR override is invalid. \(error.localizedDescription)"
+            }
+        } else {
+            if let rememberedSDK {
+                do {
+                    try configureSDK(at: rememberedSDK, remember: false)
+                } catch {
+                    defaults.removeObject(forKey: Self.sdkDefaultsKey)
+                }
+            }
+            if sdkRoot == nil, let bundledSDKRoot {
+                do {
+                    try configureSDK(at: bundledSDKRoot, remember: false)
+                } catch {
+                    issue = "The bundled SwanSong SDK failed verification. \(error.localizedDescription)"
+                }
+            }
         }
 
         if let path = defaults.string(forKey: Self.projectDefaultsKey) {
@@ -109,15 +131,35 @@ final class SwanSDKWorkspaceModel {
 
     var resolvedSDKDescription: String {
         guard let sdkRoot else { return "No SDK selected" }
-        return "SwanSong SDK \(sdkPackage?.version ?? "unknown") · \(sdkRoot.path)"
+        let source = sdkBundle == nil ? "External" : "Bundled"
+        return "\(source) SwanSong SDK \(sdkPackage?.version ?? "unknown") · \(sdkRoot.path)"
+    }
+
+    var usesVerifiedBundledSDK: Bool { sdkBundle != nil }
+
+    var canRestoreBundledSDK: Bool {
+        guard let bundledSDKRoot else { return false }
+        return sdkRoot != bundledSDKRoot.standardizedFileURL.resolvingSymlinksInPath()
     }
 
     var identityRows: [(String, String)] {
         [
-            ("SDK", sdkPackage.map { "SwanSong SDK \($0.version)" } ?? "Unknown"),
-            ("Manifest schema", schema.map { "v\($0.version)" } ?? "Unknown"),
             (
-                "Wonderful toolchain",
+                "SDK",
+                sdkPackage.map {
+                    "SwanSong SDK \($0.version) · \(sdkBundle == nil ? "external override" : "verified bundle")"
+                } ?? "Unknown"
+            ),
+            (
+                "SDK payload",
+                sdkBundle.map {
+                    "\($0.payloadRevision) · \($0.commit.prefix(12)) · \($0.fileCount) files"
+                } ?? "External checkout (not app-bundle pinned)"
+            ),
+            ("Manifest schema", schema.map { "v\($0.version)" } ?? "Unknown"),
+            ("Python", pythonRuntime?.description ?? "Not resolved"),
+            (
+                "Wonderful pins",
                 toolchain.map { summary in
                     let packages = summary.nativePackages.prefix(2).joined(separator: " · ")
                     return packages.isEmpty ? (summary.canonicalImage ?? "Not resolved") : packages
@@ -125,13 +167,6 @@ final class SwanSDKWorkspaceModel {
             ),
             ("SwanSong engine", "\(engineName) · \(engineBuildID)"),
         ]
-    }
-
-    var usesBundledPythonRuntime: Bool {
-        guard let path = sdkRoot?
-            .appendingPathComponent("runtime/bin/python3")
-            .path else { return false }
-        return FileManager.default.isExecutableFile(atPath: path)
     }
 
     func configureSDK(at url: URL, remember: Bool = true) throws {
@@ -142,15 +177,36 @@ final class SwanSDKWorkspaceModel {
                 "SwanSong Studio requires SwanSong SDK \(SwanSDKPackageSummary.minimumStudioToolsVersion) or newer."
             )
         }
+        let python = SwanSDKPythonSummary.probe(resolution)
+        if resolution.pythonExecutableURL != nil, !python.supportsStudio {
+            throw SwanSDKIntegrationError.invalidSDKLocation(
+                "SwanSong Studio requires a resolvable Python 3.11 or newer runtime."
+            )
+        }
         cli = resolution
         sdkRoot = resolution.sdkRoot
         sdkPackage = package
+        sdkBundle = resolution.bundleSummary
         schema = try? SwanSDKSchemaSummary.load(from: resolution.sdkRoot)
         toolchain = try? SwanSDKToolchainSummary.load(from: resolution.sdkRoot)
+        pythonRuntime = python
         if remember {
             defaults.set(resolution.sdkRoot.path, forKey: Self.sdkDefaultsKey)
         }
         issue = nil
+    }
+
+    func restoreBundledSDK() {
+        guard let bundledSDKRoot else {
+            issue = "This SwanSong build does not contain a bundled SDK."
+            return
+        }
+        do {
+            try configureSDK(at: bundledSDKRoot, remember: false)
+            defaults.removeObject(forKey: Self.sdkDefaultsKey)
+        } catch {
+            issue = error.localizedDescription
+        }
     }
 
     func openProject(at url: URL) throws {
@@ -360,6 +416,55 @@ final class SwanSDKWorkspaceModel {
             action: selectedAction,
             title: "Doctor"
         )
+    }
+
+    func runAutomationAction(named name: String) throws {
+        let allowed = Set(["doctor", "assets", "build", "test", "play", "profile"])
+        guard allowed.contains(name) else {
+            throw SwanSDKIntegrationError.malformedContract(
+                "Studio automation action must be doctor, assets, build, test, play, or profile."
+            )
+        }
+        guard sdkRoot != nil else {
+            throw SwanSDKIntegrationError.malformedContract(
+                "Resolve the SwanSong SDK in Studio first."
+            )
+        }
+        guard !isRunning else {
+            throw SwanSDKIntegrationError.commandAlreadyRunning
+        }
+        guard !manifestHasUnsavedChanges, !scenarioPlanHasUnsavedChanges else {
+            throw SwanSDKIntegrationError.malformedContract(
+                "Save or discard the visible Studio edits before running an automated action."
+            )
+        }
+        switch name {
+        case "doctor":
+            runDoctor()
+        case "assets":
+            guard projectRoot != nil else { throw missingAutomationProject() }
+            runProjectCommand(.assets)
+        case "build":
+            guard projectRoot != nil else { throw missingAutomationProject() }
+            runProjectCommand(.build)
+        case "test":
+            guard projectRoot != nil else { throw missingAutomationProject() }
+            runProjectCommand(.test)
+        case "play":
+            guard projectRoot != nil else { throw missingAutomationProject() }
+            runProjectCommand(.play)
+        case "profile":
+            guard projectRoot != nil else { throw missingAutomationProject() }
+            runProjectCommand(.profile)
+        default:
+            throw SwanSDKIntegrationError.malformedContract(
+                "Studio automation action was not dispatched."
+            )
+        }
+    }
+
+    private func missingAutomationProject() -> SwanSDKIntegrationError {
+        .malformedContract("Open a SwanSong SDK project in Studio first.")
     }
 
     func runOptimizer() {

@@ -727,10 +727,7 @@ private struct LibraryShell: View {
                     overviewGeometryProbe: translationLabOverviewGeometryProbe
                 )
             } else if model.section == .gameStudio {
-                SwanSDKWorkspaceView(
-                    engineName: model.engineBackendName,
-                    engineBuildID: model.engineBuildID
-                )
+                SwanSDKWorkspaceView(workspace: model.studioWorkspace)
             } else {
                 LibraryView(
                     model: model,

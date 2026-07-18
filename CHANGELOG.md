@@ -7,6 +7,15 @@ The project uses semantic versioning once a release is published.
 
 ### Added
 
+- Bundled the complete, tagged SwanSong SDK 0.2.0 runtime, schema, recipes,
+  Python package, and `swan` entry point inside the signed app. A per-file
+  content manifest, SDK revision lock, app runtime verifier, and packaging gates
+  reject incomplete, modified, extra, or identity-mismatched payloads.
+- Added two opt-in Studio MCP tools: path-free status for the single already-open
+  project slot, and a confirmation-gated fixed action allowlist for Doctor,
+  Assets, Build, Test, Play, and Profile. Neither surface accepts a path, shell
+  command, direct edit, project creation, or Release request.
+
 - Added ABI 9 private sprite-attribute provenance. Clean-replay owner artifacts
   retain the selected sprite's OAM address, byte count, and final CPU writer;
   upstream probes can select `spriteAttribute` independently and preserve the
@@ -21,13 +30,19 @@ The project uses semantic versioning once a release is published.
 
 ### Changed
 
+- Studio now prefers the verified bundled SDK, retains an explicit external
+  development override, and shows resolved SDK, Python, Wonderful, schema, and
+  SwanSong identities. Python 3.11+ and Wonderful remain honest local
+  prerequisites checked by Doctor.
+
 - Raised the shared private source-evidence artifact bound to 64 MiB and the
   normalized selected-range contract to 256 disjoint ranges. Genuine per-byte
   range overflow, unknown lineage, and conservative lineage still fail closed.
 - Bumped current private source-probe and source-free report schemas to v4 for
   ABI 9. The Evidence browser retains v1-v3 compatibility, while static seed
   export requires a complete v4 artifact and keeps its deterministic v1 seed
-  schema. The guarded MCP allowlist remains fifteen tools.
+  schema. The guarded MCP allowlist now contains seventeen tools after adding
+  the bounded Studio status and action contracts.
 
 ## [0.4.0] - 2026-07-17
 

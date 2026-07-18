@@ -33,6 +33,7 @@ jobs:
     timeout-minutes: 35
     env:
       DEVELOPER_DIR: ${{ matrix.developer_dir }}
+      SWAN_SDK_SOURCE_REPOSITORY: ${{ github.workspace }}/.sdk/swansong-sdk
       # AppKit/SwiftUI rasterization is OS-specific. Both runners still render
       # every surface and enforce geometry/content invariants; reviewed pixel
       # hashes remain strict on the macOS family that produced the baseline.
@@ -41,6 +42,14 @@ jobs:
       - name: Check out exact source
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
+          persist-credentials: false
+
+      - name: Check out locked SwanSong SDK source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          repository: RegionallyFamous/swansong-sdk
+          ref: 074f391981d2863703ef814472e944870c850cd3
+          path: .sdk/swansong-sdk
           persist-credentials: false
 
       - name: Record toolchain and architecture
@@ -92,6 +101,7 @@ jobs:
           ./Scripts/prepare-wiki-sync.sh --check
           ./Scripts/check-homebrew-production-readiness.sh
           python3 ./Scripts/check-sparkle-dependency-lock.py --repository .
+          ./Scripts/selftest-swansong-sdk-payload.sh
 
   release-preflight:
     name: Release preflight
@@ -99,6 +109,7 @@ jobs:
     timeout-minutes: 75
     env:
       DEVELOPER_DIR: /Applications/Xcode_16.2.app/Contents/Developer
+      SWAN_SDK_SOURCE_REPOSITORY: ${{ github.workspace }}/.sdk/swansong-sdk
       SWAN_SONG_ALLOW_UI_BASELINE_PLATFORM_MISMATCH: "1"
       # Pull requests prove the same contracts with shorter bounded samples.
       # Main/manual runs remain the release-grade universal and soak gates.
@@ -108,6 +119,14 @@ jobs:
       - name: Check out exact source
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
+          persist-credentials: false
+
+      - name: Check out locked SwanSong SDK source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          repository: RegionallyFamous/swansong-sdk
+          ref: 074f391981d2863703ef814472e944870c850cd3
+          path: .sdk/swansong-sdk
           persist-credentials: false
 
       - name: Resolve pinned release dependencies
@@ -122,6 +141,7 @@ jobs:
           ./Scripts/selftest-release-installer.sh
           ./Scripts/selftest-sparkle-dependency-lock.sh
           ./Scripts/selftest-sparkle-appcast.sh
+          ./Scripts/selftest-swansong-sdk-payload.sh
 
       - name: Configure shared preflight build
         run: |

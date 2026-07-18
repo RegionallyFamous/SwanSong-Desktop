@@ -8,13 +8,8 @@ struct SwanSDKWorkspaceView: View {
     @State private var workspace: SwanSDKWorkspaceModel
     @State private var audioPlayer = SwanSDKEvidenceAudioPlayer()
 
-    init(engineName: String, engineBuildID: String) {
-        _workspace = State(
-            initialValue: SwanSDKWorkspaceModel(
-                engineName: engineName,
-                engineBuildID: engineBuildID
-            )
-        )
+    init(workspace: SwanSDKWorkspaceModel) {
+        _workspace = State(initialValue: workspace)
     }
 
     var body: some View {
@@ -46,6 +41,12 @@ struct SwanSDKWorkspaceView: View {
                     chooseSDK()
                 }
                 .disabled(workspace.isRunning)
+                if workspace.canRestoreBundledSDK {
+                    Button("Use Bundled SDK", systemImage: "checkmark.seal") {
+                        workspace.restoreBundledSDK()
+                    }
+                    .disabled(workspace.isRunning)
+                }
                 Button("Open Project…", systemImage: "folder") {
                     chooseProject()
                 }
@@ -776,9 +777,16 @@ struct SwanSDKWorkspaceView: View {
                             .textSelection(.enabled)
                     }
                 }
-                if !workspace.usesBundledPythonRuntime {
+                if workspace.usesVerifiedBundledSDK {
                     Label(
-                        "Development SDK checkout selected. A public Desktop build still needs the tagged SDK, Python runtime, and deterministic SwanSong play executor bundled together.",
+                        "The signed SDK 0.2.0 payload is verified. Python 3.11+ and the Wonderful packages shown above are resolved locally; Run Doctor checks their installed versions and SwanSong connectivity.",
+                        systemImage: "checkmark.shield.fill"
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.green)
+                } else {
+                    Label(
+                        "An explicit external SDK override is active. Use Bundled SDK to return to the signed, content-verified 0.2.0 payload.",
                         systemImage: "exclamationmark.triangle"
                     )
                     .font(.caption)

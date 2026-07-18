@@ -5,13 +5,20 @@ Color games with SwanSong SDK. It puts New, Assets, Build, Test, Play, Profile,
 Evidence, and Release beside the player and Translation Lab without creating a
 second build system.
 
-## Developer preview
+## Bundled SDK
 
-Choose a local SwanSong SDK 0.2.0-or-newer checkout when Studio opens. SwanSong
-remembers the SDK and project folders for the current macOS user. This preview
-does not yet bundle Python, Wonderful, or the SDK runtime inside the signed app.
-The workspace shows that boundary rather than presenting the public app as a
-self-contained SDK distribution.
+SwanSong embeds the complete SwanSong SDK 0.2.0 runtime, schema, three recipes,
+Python package, and `swan` entry point. The bundle is pinned to the tagged Git
+commit and SDK content revision; build, packaging, runtime, and release checks
+reject missing, modified, extra, or identity-mismatched files. Studio selects
+this signed payload by default. **Choose SDK…** remains an explicit development
+override, and **Use Bundled SDK** returns to the verified copy.
+
+Python 3.11+ and Wonderful are still resolved from the Mac in this milestone;
+they are not silently described as bundled. The identity panel shows the
+resolved Python version, Wonderful package pins, SDK revision, schema, and
+SwanSong engine. Doctor validates the installed Python and Wonderful packages
+and the SwanSong connection before a production workflow.
 
 ## The eight workspaces
 
@@ -40,6 +47,12 @@ Doctor is available beside the resolved SDK, schema, toolchain, and SwanSong
 identity. Diagnostics stream while commands run, Cancel terminates the command
 process group, and Studio permits only one SDK command at a time.
 
+Opt-in local MCP automation exposes two Studio contracts. One returns only the
+single already-open project slot, readiness, counts, and tool versions without
+its name or path. The other requires `confirmProjectWrites: true` and invokes
+only Doctor, Assets, Build, Test, Play, or Profile. It cannot select a path,
+create or edit a project directly, run Release, or execute an arbitrary command.
+
 In **Settings → Display & Player**, you can opt in to a local notification when
 a Studio task finishes while SwanSong is in the background. The notification
 contains only the task name and whether it finished or needs attention. Project
@@ -64,7 +77,9 @@ schemas. Gameplay and release evidence run through SwanSong only. Studio does
 not add another emulator, asset compiler, manifest interpretation, or release
 policy.
 
-The workspace reads and writes only the SDK and project folders you choose.
+The workspace reads its signed SDK resources and reads and writes only project
+folders you choose. An explicit external SDK override is treated as a chosen
+development folder.
 Project source, ROMs, diagnostics, frames, audio, plans, and reports stay on the
 Mac.
 
