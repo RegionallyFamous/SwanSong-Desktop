@@ -24,6 +24,12 @@ custom-profile persistence. Limited Micro or Directional devices expose only
 controls they actually report, and Settings marks saved bindings they cannot
 emit.
 
+When a controller exposes battery information through GameController, Settings
+shows its charge percentage and charging state. A discharging controller at 20%
+or below is highlighted. With multiple controllers, SwanSong reports the lowest
+available charge so the device most likely to need attention is visible. Battery
+status is UI-only and never changes deterministic emulation input or evidence.
+
 When macOS reports them, bumpers, Share, underside back-button positions, Xbox
 paddles, DualShock touchpad click, and arcade-grid positions remain distinct
 remappable inputs. The system-reserved Home button is not a game binding.
@@ -45,6 +51,8 @@ layer that presents a standard GameController profile, or use the keyboard.
 - replace one controller without restarting the app;
 - hold inputs on two controllers, including opposite directions;
 - verify Micro/Directional unavailable-binding warnings;
+- verify battery percentage, charging state, and the low-battery warning on
+  hardware that reports them through macOS;
 - learn, reject a duplicate, save, relaunch, and recheck a custom profile; and
 - use Settings **Live Input Test** to confirm physical and mapped WonderSwan
   input, then use Debug Tools to confirm focus, mapped controller input, and

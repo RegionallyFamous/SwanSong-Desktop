@@ -54,6 +54,7 @@ final class SwanSDKWorkspaceModel {
 
     private var cli: SwanSDKCLIResolution?
     private let runner: SwanSDKSubprocessRunner
+    private let completionNotifier: @MainActor (SwanSongTaskCompletion) -> Void
     private var commandTask: Task<Void, Never>?
     private let defaults: UserDefaults
 
@@ -64,6 +65,9 @@ final class SwanSDKWorkspaceModel {
         engineName: String,
         engineBuildID: String,
         runner: SwanSDKSubprocessRunner = SwanSDKSubprocessRunner(),
+        completionNotifier: @escaping @MainActor (SwanSongTaskCompletion) -> Void = {
+            SwanSongTaskNotificationCenter.shared.deliver($0)
+        },
         defaults: UserDefaults = .standard,
         environment: [String: String] = ProcessInfo.processInfo.environment,
         bundle: Bundle = .main
@@ -71,6 +75,7 @@ final class SwanSDKWorkspaceModel {
         self.engineName = engineName
         self.engineBuildID = engineBuildID
         self.runner = runner
+        self.completionNotifier = completionNotifier
         self.defaults = defaults
 
         let bundledSDK = bundle.resourceURL?
@@ -585,7 +590,8 @@ final class SwanSDKWorkspaceModel {
         do {
             let commandID = try stateMachine.start(action)
             issue = nil
-            activeCommandName = commandName ?? action.rawValue
+            let resolvedCommandName = commandName ?? action.rawValue
+            activeCommandName = resolvedCommandName
             diagnosticsAreVisible = true
             let invocation = cli.invocation(for: command)
             appendDiagnostic(
@@ -620,6 +626,12 @@ final class SwanSDKWorkspaceModel {
                             detail: detail
                         ).localizedDescription
                     }
+                    completionNotifier(
+                        SwanSongTaskCompletion(
+                            name: resolvedCommandName,
+                            result: result.succeeded ? .succeeded : .failed
+                        )
+                    )
                 } catch is CancellationError {
                     try? stateMachine.finish(id: commandID, succeeded: false)
                     appendDiagnostic("Command cancelled.\n")
@@ -627,6 +639,12 @@ final class SwanSDKWorkspaceModel {
                     try? stateMachine.finish(id: commandID, succeeded: false)
                     issue = error.localizedDescription
                     appendDiagnostic("\(error.localizedDescription)\n")
+                    completionNotifier(
+                        SwanSongTaskCompletion(
+                            name: resolvedCommandName,
+                            result: .failed
+                        )
+                    )
                 }
                 activeCommandName = nil
                 commandTask = nil

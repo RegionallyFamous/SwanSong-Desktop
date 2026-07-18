@@ -91,6 +91,12 @@ output on the Mac. Those commands may invoke the locally installed Wonderful
 toolchain and SwanSong deterministic play executor; Desktop does not upload
 project source, assets, ROMs, or evidence.
 
+Optional Studio completion notifications are local macOS notifications. SwanSong
+requests notification permission only after you enable the setting, sends them
+only while the app is in the background, and includes only the task name and
+result. Project paths, ROM names, diagnostics, frames, audio, and evidence are
+excluded.
+
 ## Files you provide
 
 The SwanSong app bundle contains no games. SwanSong Open IPL is built-in

@@ -2,10 +2,57 @@
 @preconcurrency import GameController
 import SwanSongKit
 
+enum ControllerBatteryChargeState: Equatable, Sendable {
+    case unknown
+    case discharging
+    case charging
+    case full
+}
+
+struct ControllerBatterySummary: Equatable, Sendable {
+    let level: Double
+    let state: ControllerBatteryChargeState
+
+    init(level: Double, state: ControllerBatteryChargeState) {
+        self.level = min(max(level, 0), 1)
+        self.state = state
+    }
+
+    var percentage: Int {
+        Int((level * 100).rounded())
+    }
+
+    var isLow: Bool {
+        percentage <= 20 && state == .discharging
+    }
+
+    var statusText: String {
+        switch state {
+        case .charging:
+            "\(percentage)% · Charging"
+        case .full:
+            "100% · Fully charged"
+        case .unknown, .discharging:
+            "\(percentage)% battery"
+        }
+    }
+
+    var symbolName: String {
+        if state == .charging { return "battery.100percent.bolt" }
+        return switch percentage {
+        case 76...: "battery.100percent"
+        case 51...: "battery.75percent"
+        case 26...: "battery.50percent"
+        case 1...: "battery.25percent"
+        default: "battery.0percent"
+        }
+    }
+}
+
 @MainActor
 final class ControllerInput {
     var onChange: ((Set<ControllerElement>) -> Void)?
-    var onConnectionChange: ((String?, Set<ControllerElement>) -> Void)?
+    var onConnectionChange: ((String?, Set<ControllerElement>, ControllerBatterySummary?) -> Void)?
 
     nonisolated(unsafe) private var connectObserver: NSObjectProtocol?
     nonisolated(unsafe) private var disconnectObserver: NSObjectProtocol?
@@ -15,6 +62,8 @@ final class ControllerInput {
     private var reducer = ControllerInputReducer<ObjectIdentifier>()
     private var capabilityReducer = ControllerCapabilityReducer<ObjectIdentifier>()
     private var acceptsGameplayInput = true
+    private var lastPublishedBatterySummary: ControllerBatterySummary?
+    nonisolated(unsafe) private var batteryRefreshTimer: Timer?
     private(set) var pressedElements: Set<ControllerElement> = []
 
     var availableElements: Set<ControllerElement> {
@@ -29,6 +78,12 @@ final class ControllerInput {
             return controllerNames.values.first
         default:
             return "\(controllerNames.count) controllers connected"
+        }
+    }
+
+    var batterySummary: ControllerBatterySummary? {
+        controllers.values.compactMap(Self.batterySummary(for:)).min {
+            $0.level < $1.level
         }
     }
 
@@ -70,6 +125,7 @@ final class ControllerInput {
     }
 
     deinit {
+        batteryRefreshTimer?.invalidate()
         for controller in controllers.values {
             controller.physicalInputProfile.valueDidChangeHandler = nil
         }
@@ -108,6 +164,7 @@ final class ControllerInput {
             for: identifier
         )
         publishInputIfNeeded(changed)
+        updateBatteryRefreshTimer()
         publishConnection()
     }
 
@@ -119,6 +176,7 @@ final class ControllerInput {
             from: Self.snapshot(from: controller.physicalInputProfile)
         )
         publishInputIfNeeded(reducer.update(elements, for: identifier))
+        publishBatteryIfChanged()
     }
 
     private func refresh(_ controller: GCController) {
@@ -189,6 +247,7 @@ final class ControllerInput {
         capabilityReducer.disconnect(identifier)
         let changed = reducer.disconnect(identifier)
         publishInputIfNeeded(changed)
+        updateBatteryRefreshTimer()
         publishConnection()
     }
 
@@ -199,7 +258,32 @@ final class ControllerInput {
     }
 
     private func publishConnection() {
-        onConnectionChange?(connectedControllerName, availableElements)
+        let summary = batterySummary
+        lastPublishedBatterySummary = summary
+        onConnectionChange?(connectedControllerName, availableElements, summary)
+    }
+
+    private func publishBatteryIfChanged() {
+        let summary = batterySummary
+        guard summary != lastPublishedBatterySummary else { return }
+        lastPublishedBatterySummary = summary
+        onConnectionChange?(connectedControllerName, availableElements, summary)
+    }
+
+    private func updateBatteryRefreshTimer() {
+        if controllers.isEmpty {
+            batteryRefreshTimer?.invalidate()
+            batteryRefreshTimer = nil
+        } else if batteryRefreshTimer == nil {
+            let timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) {
+                [weak self] _ in
+                Task { @MainActor [weak self] in
+                    self?.publishBatteryIfChanged()
+                }
+            }
+            timer.tolerance = 5
+            batteryRefreshTimer = timer
+        }
     }
 
     private nonisolated static func supports(_ controller: GCController) -> Bool {
@@ -216,6 +300,30 @@ final class ControllerInput {
             }
         }
         return "Game Controller"
+    }
+
+    private nonisolated static func batterySummary(
+        for controller: GCController
+    ) -> ControllerBatterySummary? {
+        guard let battery = controller.battery,
+              battery.batteryLevel >= 0 else { return nil }
+        let state: ControllerBatteryChargeState
+        switch battery.batteryState {
+        case .discharging:
+            state = .discharging
+        case .charging:
+            state = .charging
+        case .full:
+            state = .full
+        case .unknown:
+            state = .unknown
+        @unknown default:
+            state = .unknown
+        }
+        return ControllerBatterySummary(
+            level: Double(battery.batteryLevel),
+            state: state
+        )
     }
 
     private nonisolated static func snapshot(

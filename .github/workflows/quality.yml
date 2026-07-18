@@ -95,17 +95,31 @@ jobs:
 
   release-preflight:
     name: Release preflight
-    needs: tests
     runs-on: macos-14
     timeout-minutes: 75
     env:
       DEVELOPER_DIR: /Applications/Xcode_16.2.app/Contents/Developer
       SWAN_SONG_ALLOW_UI_BASELINE_PLATFORM_MISMATCH: "1"
+      # Pull requests prove the same contracts with shorter bounded samples.
+      # Main/manual runs remain the release-grade universal and soak gates.
+      SWAN_MATRIX_FRAMES: ${{ github.event_name == 'pull_request' && '180' || '360' }}
+      SWAN_MATRIX_WARMUP_FRAMES: ${{ github.event_name == 'pull_request' && '60' || '120' }}
     steps:
       - name: Check out exact source
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
+
+      - name: Configure shared preflight build
+        run: |
+          set -eu
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            echo "SWAN_UNIVERSAL=0" >> "$GITHUB_ENV"
+            echo "ARES_BUILD_DIR=$GITHUB_WORKSPACE/.engine/build-app" >> "$GITHUB_ENV"
+          else
+            echo "SWAN_UNIVERSAL=1" >> "$GITHUB_ENV"
+            echo "ARES_BUILD_DIR=$GITHUB_WORKSPACE/.engine/build-app-universal" >> "$GITHUB_ENV"
+          fi
 
       - name: Resolve pinned release dependencies
         run: ./Scripts/swift-package.sh package resolve --package-path .
@@ -120,6 +134,21 @@ jobs:
           ./Scripts/selftest-sparkle-dependency-lock.sh
           ./Scripts/selftest-sparkle-appcast.sh
 
+      - name: Build and inspect application
+        run: |
+          set -eu
+          ./Scripts/build-app.sh
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            required_architectures=arm64
+          else
+            required_architectures="arm64 x86_64"
+          fi
+          ./Scripts/check-app-payload.sh .build/app/SwanSong.app
+          SWAN_REQUIRED_ARCHITECTURES="$required_architectures" \
+            ./Scripts/verify-app-architectures.sh .build/app/SwanSong.app
+          ./Scripts/check-sparkle-configuration.sh .build/app/SwanSong.app
+          ./Scripts/check-sparkle-framework.sh .build/app/SwanSong.app
+
       - name: Run public-fixture compatibility matrix
         run: ./Scripts/check-compatibility-matrix.sh
 
@@ -129,18 +158,9 @@ jobs:
           ./Scripts/check-playtest-cli.sh
           ./Scripts/check-translation-automation-cli.sh
 
-      - name: Build and inspect universal application
-        run: |
-          set -eu
-          SWAN_UNIVERSAL=1 ./Scripts/build-app.sh
-          ./Scripts/check-app-payload.sh .build/app/SwanSong.app
-          ./Scripts/verify-app-architectures.sh .build/app/SwanSong.app
-          ./Scripts/check-sparkle-configuration.sh .build/app/SwanSong.app
-          ./Scripts/check-sparkle-framework.sh .build/app/SwanSong.app
-
       - name: Run scheduler-neutral A/V integrity soak
         env:
-          SWAN_AV_SOAK_SECONDS: "60"
+          SWAN_AV_SOAK_SECONDS: ${{ github.event_name == 'pull_request' && '20' || '60' }}
           # Shared hosted runners can inject 100+ ms scheduling gaps. Keep CI
           # strict about media integrity and >=70 Hz throughput; the release
           # Mac separately runs the default wall-clock 30-minute gate.
