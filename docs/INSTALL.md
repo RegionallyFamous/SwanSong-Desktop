@@ -44,7 +44,7 @@ controls, stop. Development artifacts are not official public releases.
 Choose **Check for Updates…** in SwanSong to use the native Sparkle updater.
 It reads SwanSong's signed appcast from this repository and downloads accepted
 updates only from immutable, exact-tag SwanSong Desktop GitHub Release assets.
-Stable releases are the default; **Include beta versions** is an explicit
+Stable releases are the default; **Try beta versions** is an explicit
 prerelease choice.
 
 **Automatically check for updates** and **Automatically download and install

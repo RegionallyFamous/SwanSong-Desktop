@@ -12,7 +12,7 @@ download service.
 - **Automatically download and install updates** is a separate opt-in and does
   not implicitly enable network checks without the user's automatic-check
   choice.
-- **Include beta versions** selects prerelease entries in addition to the stable
+- **Try beta versions** selects prerelease entries in addition to the stable
   channel. Stable updates remain the default.
 
 Sparkle system profiling is disabled. A normal HTTP User-Agent can identify
@@ -149,4 +149,5 @@ Sparkle updates `SwanSong.app` only. It does not distribute WonderSwan games,
 fetch the first-party Homebrew Catalog, or install/update the separate Analogue
 Pocket core. The signed GitHub-backed Homebrew Catalog has its own public key,
 signature, schema, consent, cache, anti-rollback, ROM validation, and release
-gate. Its current production state remains **Coming Soon** and network-silent.
+gate. SwanSong 0.4.2 publishes that catalog, but it stays network-silent until
+the user chooses **Browse Games**, **Refresh**, or a specific download.

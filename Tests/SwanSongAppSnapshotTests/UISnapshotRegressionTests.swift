@@ -211,7 +211,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             }
         }
 
-        XCTAssertEqual(signatures.count, 76)
+        XCTAssertEqual(signatures.count, 80)
         for scenario in scenarios {
             let pair = signatures.filter { $0.name == scenario.name }
             XCTAssertEqual(pair.count, 2, scenario.name)
@@ -973,7 +973,7 @@ final class UISnapshotRegressionTests: XCTestCase {
         )
         XCTAssertEqual(
             TranslationLabOverviewAccessibility.workflowLabel,
-            "Deterministic route testing workflow"
+            "Replay the exact same moment workflow"
         )
         XCTAssertEqual(
             TranslationLabOverviewAccessibility.readinessMetrics,
@@ -1014,7 +1014,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             model: model,
             size: compactSize,
             actionExpectations: [
-                TranslationLabOverviewAccessibility.recordTest: "Record New Test…",
+                TranslationLabOverviewAccessibility.recordTest: "Record a Test…",
             ]
         )
 
@@ -1402,6 +1402,16 @@ final class UISnapshotRegressionTests: XCTestCase {
         emptyTranslationModel.section = .translationLab
         let studioSetupModel = makeModel(root: root.appendingPathComponent("studio-setup"))
         studioSetupModel.section = .gameStudio
+        let supportMarkdown = try String(
+            contentsOf: packageRoot.appendingPathComponent("SUPPORT.md"),
+            encoding: .utf8
+        )
+        let supportMetadata = SwanSongMetadata(
+            version: "0.4.2",
+            build: "8",
+            bundleIdentifier: "com.regionallyfamous.swansong",
+            aresRevision: nil
+        )
 
         return [
             Scenario(name: "library-empty-wide", size: CGSize(width: 1_040, height: 680)) {
@@ -1425,6 +1435,25 @@ final class UISnapshotRegressionTests: XCTestCase {
                     RootView(
                         model: studioSetupModel,
                         usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+            Scenario(name: "support-overview-wide", size: CGSize(width: 820, height: 640)) {
+                AnyView(
+                    LegalSupportView(
+                        fixedSection: .overview,
+                        usesDeterministicSidebarForOffscreenSnapshots: true,
+                        metadata: supportMetadata
+                    )
+                )
+            },
+            Scenario(name: "support-help-wide", size: CGSize(width: 820, height: 640)) {
+                AnyView(
+                    LegalSupportView(
+                        fixedSection: .support,
+                        bundledDocumentOverrides: ["SUPPORT": supportMarkdown],
+                        usesDeterministicSidebarForOffscreenSnapshots: true,
+                        metadata: supportMetadata
                     )
                 )
             },
@@ -1615,7 +1644,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             },
             Scenario(
                 name: "controller-mapping-settings-wide",
-                size: CGSize(width: 980, height: 720),
+                size: CGSize(width: 900, height: 608),
                 usesPolishOutput: true
             ) {
                 UserDefaults.standard.set(1, forKey: "settingsPane")
@@ -1623,7 +1652,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             },
             Scenario(
                 name: "display-player-settings-wide",
-                size: CGSize(width: 980, height: 720),
+                size: CGSize(width: 900, height: 608),
                 usesPolishOutput: true
             ) {
                 UserDefaults.standard.set(0, forKey: "settingsPane")
@@ -1631,7 +1660,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             },
             Scenario(
                 name: "update-settings-wide",
-                size: CGSize(width: 980, height: 720),
+                size: CGSize(width: 900, height: 608),
                 usesPolishOutput: true
             ) {
                 UserDefaults.standard.set(3, forKey: "settingsPane")
@@ -1688,7 +1717,10 @@ final class UISnapshotRegressionTests: XCTestCase {
     }
 
     private func settingsSurface(model: AppModel) -> some View {
-        SettingsView(model: model)
+        SettingsView(
+            model: model,
+            usesDeterministicTabsForOffscreenSnapshots: true
+        )
             .background(Color(nsColor: .windowBackgroundColor))
     }
 
@@ -2287,7 +2319,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             COMPLETE Runtime QA: Public fixture checkpoints are configured.
             Next actions:
             - MEDIUM: Record a clean-boot route for the next screen.
-              Use Record New Test in Translation Lab.
+              Use Record a Test in Translation Lab.
             """#
         )
         return model
@@ -3008,7 +3040,7 @@ final class UISnapshotRegressionTests: XCTestCase {
 
         XCTAssertNotNil(
             visibleWorkflowFrame,
-            "Deterministic Route Testing cannot be scrolled fully into the compact overview viewport"
+            "The replay workflow cannot be scrolled fully into the compact overview viewport"
         )
         XCTAssertFalse(
             geometryProbe.viewportFrame.isEmpty,

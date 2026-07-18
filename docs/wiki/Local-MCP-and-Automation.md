@@ -26,7 +26,7 @@ process, and live-app messages stay inside the current macOS login session.
 ## Turn on live-app control
 
 1. Open **SwanSong > Settings > Display & Player**.
-2. Turn on **Allow local MCP control**.
+2. Turn on **Let trusted local tools control SwanSong**.
 3. Restart Codex after checking out a version of the project that contains
    `.codex/config.toml`.
 

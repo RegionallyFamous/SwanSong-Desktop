@@ -121,7 +121,7 @@ its name or path. The other requires `confirmProjectWrites: true` and invokes
 only Doctor, Assets, Build, Test, Play, or Profile. It cannot select a path,
 create or edit a project directly, run Release, or execute an arbitrary command.
 
-In **Settings → Display & Player**, you can opt in to a local notification when
+In **Settings → Display & Player**, you can ask for a local notification when
 a Studio task finishes while SwanSong is in the background. The notification
 contains only the task name and whether it finished or needs attention. Project
 paths, ROM names, diagnostics, frames, audio, and evidence never appear in it.

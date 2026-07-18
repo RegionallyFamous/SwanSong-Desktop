@@ -6,7 +6,17 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
-Work accepted on `main` after the latest public beta will be listed here.
+### Changed
+
+- Rewrote the Library, Homebrew, Translation Lab, Analogue Pocket, Studio,
+  Settings, Updates, and Support screens around plain-language headlines and
+  obvious next actions. Technical proof and safety details remain available
+  where they matter without taking over the first read.
+- Made game cards and the game inspector distinguish “picture appeared,” the
+  player’s own verdict, play readiness, and file health in everyday language.
+- Expanded the reviewed visual suite from 88 to 92 snapshots, added the About
+  and Support screens, matched Settings to its real window size, and replaced
+  misleading offscreen sidebar/tab artifacts with faithful deterministic views.
 
 ## [0.4.2] - 2026-07-18
 

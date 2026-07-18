@@ -326,7 +326,7 @@ struct SwanSongApp: App {
                 }
             }
             CommandMenu("Translation") {
-                Button("Add Translation Project or Toolkit…") {
+                Button("Add Translation Project…") {
                     model.chooseTranslationProject()
                 }
                 .disabled(model.isPlaying)
@@ -345,7 +345,7 @@ struct SwanSongApp: App {
 
                 Divider()
 
-                Button("Record New Test…") {
+                Button("Record a Test…") {
                     model.startCleanBootTranslationTest()
                 }
                 .disabled(

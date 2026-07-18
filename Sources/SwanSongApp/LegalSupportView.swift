@@ -108,43 +108,112 @@ struct LegalSupportView: View {
     @ObservedObject var updater: SwanSongUpdater
     @AppStorage("legalSupportSelectedSection") private var selectedSection =
         LegalSupportSection.overview.rawValue
+    private let fixedSection: LegalSupportSection?
+    private let bundledDocumentOverrides: [String: String]
+    private let usesDeterministicSidebarForOffscreenSnapshots: Bool
+    private let metadata: SwanSongMetadata
 
-    private let metadata = SwanSongMetadata.current
-
-    init(updater: SwanSongUpdater = .shared) {
+    init(
+        updater: SwanSongUpdater = .shared,
+        fixedSection: LegalSupportSection? = nil,
+        bundledDocumentOverrides: [String: String] = [:],
+        usesDeterministicSidebarForOffscreenSnapshots: Bool = false,
+        metadata: SwanSongMetadata = .current
+    ) {
         self.updater = updater
+        self.fixedSection = fixedSection
+        self.bundledDocumentOverrides = bundledDocumentOverrides
+        self.usesDeterministicSidebarForOffscreenSnapshots =
+            usesDeterministicSidebarForOffscreenSnapshots
+        self.metadata = metadata
     }
 
     private var selection: Binding<LegalSupportSection?> {
         Binding(
-            get: { LegalSupportSection(rawValue: selectedSection) ?? .overview },
-            set: { selectedSection = ($0 ?? .overview).rawValue }
+            get: {
+                fixedSection
+                    ?? LegalSupportSection(rawValue: selectedSection)
+                    ?? .overview
+            },
+            set: { selection in
+                guard fixedSection == nil else { return }
+                selectedSection = (selection ?? .overview).rawValue
+            }
         )
     }
 
     var body: some View {
-        NavigationSplitView {
-            List(LegalSupportSection.allCases, selection: selection) { section in
-                Label(section.title, systemImage: section.systemImage)
-                    .tag(section)
-            }
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200, max: 230)
-        } detail: {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 18) {
-                    sectionContent
+        Group {
+            if usesDeterministicSidebarForOffscreenSnapshots {
+                HStack(spacing: 0) {
+                    snapshotSidebar
+                        .frame(width: 210)
+                    Divider()
+                    detailContent
                 }
-                .frame(maxWidth: 720, alignment: .leading)
-                .padding(28)
+            } else {
+                NavigationSplitView {
+                    List(LegalSupportSection.allCases, selection: selection) { section in
+                        Label(section.title, systemImage: section.systemImage)
+                            .tag(section)
+                    }
+                    .navigationSplitViewColumnWidth(min: 180, ideal: 200, max: 230)
+                } detail: {
+                    detailContent
+                }
             }
-            .navigationTitle(activeSection.title)
-            .background(Color(nsColor: .textBackgroundColor))
         }
         .frame(minWidth: 720, minHeight: 520)
     }
 
+    private var detailContent: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                sectionContent
+            }
+            .frame(maxWidth: 720, alignment: .leading)
+            .padding(28)
+        }
+        .navigationTitle(activeSection.title)
+        .background(Color(nsColor: .textBackgroundColor))
+    }
+
+    private var snapshotSidebar: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("HELP & INFO")
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 12)
+                .padding(.top, 18)
+                .padding(.bottom, 4)
+
+            ForEach(LegalSupportSection.allCases) { section in
+                Label(section.title, systemImage: section.systemImage)
+                    .font(.callout)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .foregroundStyle(
+                        section == activeSection ? Color.accentColor : Color.primary
+                    )
+                    .background(
+                        section == activeSection
+                            ? Color.accentColor.opacity(0.14)
+                            : Color.clear,
+                        in: RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    )
+            }
+
+            Spacer()
+        }
+        .padding(.horizontal, 8)
+        .background(Color(nsColor: .windowBackgroundColor))
+    }
+
     private var activeSection: LegalSupportSection {
-        LegalSupportSection(rawValue: selectedSection) ?? .overview
+        fixedSection
+            ?? LegalSupportSection(rawValue: selectedSection)
+            ?? .overview
     }
 
     @ViewBuilder
@@ -172,7 +241,7 @@ struct LegalSupportView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("SwanSong")
                         .font(.system(size: 30, weight: .bold, design: .rounded))
-                    Text("A private WonderSwan player and translation workbench for macOS.")
+                    Text("Play, rewind, translate, and build WonderSwan games—all on your Mac.")
                         .font(.title3)
                         .foregroundStyle(.secondary)
                 }
@@ -181,7 +250,7 @@ struct LegalSupportView: View {
             detailGrid
 
             Text(
-                "SwanSong always starts games with its independently written Open IPL. No BIOS is needed or accepted. Add only game and homebrew images you own or are authorized to use."
+                "No BIOS hunt required: SwanSong starts games with its independently written Open IPL. Add only games and homebrew you own or are allowed to use."
             )
             .foregroundStyle(.secondary)
 
@@ -192,10 +261,10 @@ struct LegalSupportView: View {
 
             HStack(spacing: 12) {
                 Link(destination: SwanSongLinks.project) {
-                    Label("Project Website", systemImage: "safari")
+                    Label("Visit SwanSong", systemImage: "safari")
                 }
                 Link(destination: SwanSongLinks.releases) {
-                    Label("Releases", systemImage: "arrow.down.circle")
+                    Label("See What’s New", systemImage: "arrow.down.circle")
                 }
             }
             .buttonStyle(.bordered)
@@ -257,8 +326,8 @@ struct LegalSupportView: View {
 
             Text(
                 updater.isConfigured
-                    ? "Checking contacts SwanSong’s GitHub-hosted signed update feed. Automatic checks and downloads remain off until you enable them in Settings."
-                    : "The signed updater is unavailable in this build, so Check for Updates opens GitHub Releases in your default browser."
+                    ? "SwanSong checks its signed update feed on GitHub. Automatic checks and downloads stay off until you turn them on in Settings."
+                    : "Updates are not built into this copy, so Check for Updates opens the official GitHub Releases page in your browser."
             )
             .font(.callout)
             .foregroundStyle(.secondary)
@@ -276,7 +345,7 @@ struct LegalSupportView: View {
         case .comingSoon:
             "The first-party Homebrew Catalog is coming soon and makes no network requests in this release. SwanSong does not upload your library, saves, states, screenshots, settings, or Translation Lab data."
         case .published:
-            "The signed Homebrew Catalog never loads at launch, when you open Homebrew, or in the background. Choosing Load Catalog, Refresh, or downloading a listed title contacts GitHub. SwanSong does not upload your library, saves, states, screenshots, settings, or Translation Lab data."
+            "The signed Homebrew Catalog never loads at launch, when you open Homebrew, or in the background. Choosing Browse Games, Refresh, or a listed download contacts GitHub. SwanSong does not upload your library, saves, states, screenshots, settings, or Translation Lab data."
         }
     }
 
@@ -285,7 +354,7 @@ struct LegalSupportView: View {
         case .comingSoon:
             "SwanSong checks for app updates only when you ask or after you enable automatic checks. The Homebrew Catalog is coming soon and makes no network requests in this release."
         case .published:
-            "SwanSong checks for app updates only when you ask or after you enable automatic checks. It does not refresh the Homebrew Catalog at launch, on navigation, or in the background. Load Catalog and Refresh are explicit actions."
+            "SwanSong checks for app updates only when you ask or after you enable automatic checks. It does not refresh Homebrew at launch, on navigation, or in the background. Browse Games and Refresh are choices you make."
         }
     }
 
@@ -294,7 +363,7 @@ struct LegalSupportView: View {
         case .comingSoon:
             "Checking for app updates contacts only SwanSong’s GitHub-hosted feed and never sends a system profile. Opening Releases uses your browser. The unavailable Homebrew Catalog cannot contact GitHub in this release."
         case .published:
-            "App updates and the Homebrew Catalog use separate GitHub requests. The updater never sends a system profile. The catalog contacts GitHub only when you choose Load Catalog or Refresh, or download a listed title. SwanSong does not attach library, save, or Translation Lab data."
+            "App updates and Homebrew use separate GitHub requests. The updater never sends a system profile. Homebrew contacts GitHub only when you choose Browse Games, Refresh, or a listed download. SwanSong does not attach library, save, or Translation Lab data."
         }
     }
 
@@ -304,7 +373,7 @@ struct LegalSupportView: View {
 
             Divider()
 
-            Text("Support tools")
+            Text("Need a Hand?")
                 .font(.title2.weight(.semibold))
 
             HStack(spacing: 12) {
@@ -322,7 +391,7 @@ struct LegalSupportView: View {
             }
 
             Text(
-                "Support information contains the app version, bundle ID, macOS version, and pinned engine revision. It does not include game names, private paths, ROM data, saves, or translation content."
+                "Support information includes the app, macOS, and game-engine versions. It never includes game names, private paths, game data, saves, or translation content."
             )
             .font(.callout)
             .foregroundStyle(.secondary)
@@ -341,7 +410,8 @@ struct LegalSupportView: View {
 
     @ViewBuilder
     private func bundledMarkdown(named name: String) -> some View {
-        if let text = BundledLegalDocument.text(named: name, extension: "md") {
+        if let text = bundledDocumentOverrides[name]
+            ?? BundledLegalDocument.text(named: name, extension: "md") {
             BundledMarkdownDocument(source: text)
         } else {
             unavailableDocument
@@ -350,7 +420,8 @@ struct LegalSupportView: View {
 
     @ViewBuilder
     private func bundledPlainText(named name: String) -> some View {
-        if let text = BundledLegalDocument.text(named: name) {
+        if let text = bundledDocumentOverrides[name]
+            ?? BundledLegalDocument.text(named: name) {
             Text(text)
                 .font(.system(.body, design: .monospaced))
                 .textSelection(.enabled)
@@ -587,7 +658,7 @@ enum BundledLegalDocument {
     }
 }
 
-private struct SwanSongMetadata {
+struct SwanSongMetadata {
     let version: String
     let build: String
     let bundleIdentifier: String
