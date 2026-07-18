@@ -91,11 +91,11 @@ struct SwanSongApp: App {
         Window("SwanSong", id: "main") {
             RootView(model: model)
                 .frame(
-                    minWidth: model.isPlaying && model.currentFrame?.isVertical == true
-                        ? 420
+                    minWidth: model.isPlaying
+                        ? (model.currentFrame?.isVertical == true ? 360 : 620)
                         : 820,
-                    minHeight: model.isPlaying && model.currentFrame?.isVertical == true
-                        ? 520
+                    minHeight: model.isPlaying
+                        ? (model.currentFrame?.isVertical == true ? 540 : 500)
                         : 560
                 )
                 .onAppear {

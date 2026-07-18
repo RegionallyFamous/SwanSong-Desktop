@@ -8,16 +8,17 @@ public enum PlayerWindowOrientation: String, Codable, Sendable {
 
 public struct PlayerWindowLayout: Sendable {
     public static let screenMargin: CGFloat = 20
+    private static let nativeHorizontalSurfaceSize = CGSize(width: 224, height: 157)
+    private static let windowChromeAllowance = CGSize(width: 48, height: 96)
+    private static let idealNativeScale: CGFloat = 4
 
     public static func idealSize(
         for orientation: PlayerWindowOrientation
     ) -> CGSize {
-        switch orientation {
-        case .horizontal:
-            CGSize(width: 1_040, height: 680)
-        case .vertical:
-            CGSize(width: 700, height: 860)
-        }
+        windowSize(
+            for: orientation,
+            nativeScale: idealNativeScale
+        )
     }
 
     public static func minimumSize(
@@ -27,9 +28,9 @@ public struct PlayerWindowLayout: Sendable {
         let requested: CGSize
         switch orientation {
         case .horizontal:
-            requested = CGSize(width: 820, height: 560)
+            requested = CGSize(width: 620, height: 500)
         case .vertical:
-            requested = CGSize(width: 620, height: 720)
+            requested = CGSize(width: 360, height: 540)
         }
         let target = fittedSize(for: orientation, visibleFrame: visibleFrame)
         return CGSize(
@@ -43,17 +44,25 @@ public struct PlayerWindowLayout: Sendable {
         visibleFrame: CGRect
     ) -> CGSize {
         let available = insetVisibleFrame(visibleFrame)
-        let ideal = idealSize(for: orientation)
-        let scale = min(
-            1,
+        let nativeSurface = nativeSurfaceSize(for: orientation)
+        let availableSurface = CGSize(
+            width: max(0, available.width - windowChromeAllowance.width),
+            height: max(0, available.height - windowChromeAllowance.height)
+        )
+        let scale = max(
+            0,
             min(
-                available.width / ideal.width,
-                available.height / ideal.height
+                idealNativeScale,
+                min(
+                    availableSurface.width / nativeSurface.width,
+                    availableSurface.height / nativeSurface.height
+                )
             )
         )
+        let fitted = windowSize(for: orientation, nativeScale: scale)
         return CGSize(
-            width: floor(ideal.width * scale),
-            height: floor(ideal.height * scale)
+            width: floor(min(fitted.width, available.width)),
+            height: floor(min(fitted.height, available.height))
         )
     }
 
@@ -106,6 +115,31 @@ public struct PlayerWindowLayout: Sendable {
         let horizontalInset = min(screenMargin, visibleFrame.width / 4)
         let verticalInset = min(screenMargin, visibleFrame.height / 4)
         return visibleFrame.insetBy(dx: horizontalInset, dy: verticalInset)
+    }
+
+    private static func nativeSurfaceSize(
+        for orientation: PlayerWindowOrientation
+    ) -> CGSize {
+        switch orientation {
+        case .horizontal:
+            nativeHorizontalSurfaceSize
+        case .vertical:
+            CGSize(
+                width: nativeHorizontalSurfaceSize.height,
+                height: nativeHorizontalSurfaceSize.width
+            )
+        }
+    }
+
+    private static func windowSize(
+        for orientation: PlayerWindowOrientation,
+        nativeScale: CGFloat
+    ) -> CGSize {
+        let nativeSurface = nativeSurfaceSize(for: orientation)
+        return CGSize(
+            width: nativeSurface.width * nativeScale + windowChromeAllowance.width,
+            height: nativeSurface.height * nativeScale + windowChromeAllowance.height
+        )
     }
 
     private static func clampedOrigin(

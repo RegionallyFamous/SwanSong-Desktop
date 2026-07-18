@@ -1540,9 +1540,17 @@ private struct SwanSongChecks {
             visibleFrame: visible,
             orientation: .horizontal
         )
-        try expect(horizontal.size == CGSize(width: 1_040, height: 680), "horizontal fit lost its ideal size")
+        try expect(horizontal.size == CGSize(width: 944, height: 724), "horizontal fit lost its native-aspect ideal size")
         try expect(abs(horizontal.midX - current.midX) < 0.5, "horizontal fit did not preserve the window center")
         try expect(abs(horizontal.midY - current.midY) < 0.5, "horizontal fit did not preserve the window center")
+        let horizontalSurface = CGSize(
+            width: horizontal.width - 48,
+            height: horizontal.height - 96
+        )
+        try expect(
+            abs(horizontalSurface.width / horizontalSurface.height - 224.0 / 157.0) < 0.001,
+            "horizontal window chrome no longer leaves a native-aspect game surface"
+        )
 
         let vertical = PlayerWindowLayout.targetFrame(
             currentFrame: current,
@@ -1550,7 +1558,15 @@ private struct SwanSongChecks {
             orientation: .vertical
         )
         try expect(vertical.height > vertical.width, "vertical fit did not produce a portrait window")
-        try expect(vertical.width == 700 && vertical.height == 860, "vertical fit lost its ideal size")
+        try expect(vertical.width == 583 && vertical.height == 860, "vertical fit lost its native-aspect fitted size")
+        let verticalSurface = CGSize(
+            width: vertical.width - 48,
+            height: vertical.height - 96
+        )
+        try expect(
+            abs(verticalSurface.width / verticalSurface.height - 157.0 / 224.0) < 0.002,
+            "vertical window chrome no longer leaves a native-aspect game surface"
+        )
         try expect(visible.insetBy(dx: 20, dy: 20).contains(vertical), "vertical fit escaped the visible screen")
 
         let edgeWindow = CGRect(x: 1_300, y: 760, width: 1_040, height: 680)
