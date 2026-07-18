@@ -608,14 +608,11 @@ final class SwanSDKWorkspaceModel {
                             }
                         }
                     )
-                    if result.succeeded {
+                    try stateMachine.finish(id: commandID, succeeded: result.succeeded)
+                    if result.succeeded || processResultOnFailure {
                         try onSuccess(result)
-                        try stateMachine.finish(id: commandID, succeeded: true)
-                    } else {
-                        if processResultOnFailure {
-                            try onSuccess(result)
-                        }
-                        try stateMachine.finish(id: commandID, succeeded: false)
+                    }
+                    if !result.succeeded {
                         let detail = result.standardError
                             .trimmingCharacters(in: .whitespacesAndNewlines)
                         issue = SwanSDKIntegrationError.commandFailed(

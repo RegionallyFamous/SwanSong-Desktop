@@ -34,6 +34,15 @@ public struct EngineCapabilities: OptionSet, Sendable {
     public static let displayProvenance = Self(
         rawValue: UInt64(SWAN_CAPABILITY_DISPLAY_PROVENANCE)
     )
+    public static let displaySourceProvenance = Self(
+        rawValue: UInt64(SWAN_CAPABILITY_DISPLAY_SOURCE_PROVENANCE)
+    )
+    public static let displaySourceComponentSelection = Self(
+        rawValue: UInt64(SWAN_CAPABILITY_DISPLAY_SOURCE_COMPONENT_SELECTION)
+    )
+    public static let executedSourceReadContext = Self(
+        rawValue: UInt64(SWAN_CAPABILITY_EXECUTED_SOURCE_READ_CONTEXT)
+    )
 }
 
 public struct EngineInput: OptionSet, Sendable {
@@ -219,6 +228,144 @@ public struct EngineDisplayOwnerSample: Codable, Equatable, Sendable {
     }
 }
 
+public enum EngineDisplaySourceComponent:
+    String, CaseIterable, Codable, Equatable, Hashable, Sendable
+{
+    case mapCell
+    case raster
+    case palette
+
+    fileprivate init(cValue: swan_display_source_component_t) throws {
+        switch cValue {
+        case SWAN_DISPLAY_SOURCE_COMPONENT_MAP_CELL: self = .mapCell
+        case SWAN_DISPLAY_SOURCE_COMPONENT_RASTER: self = .raster
+        case SWAN_DISPLAY_SOURCE_COMPONENT_PALETTE: self = .palette
+        default:
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned an unknown upstream source component."
+            )
+        }
+    }
+
+    fileprivate var cMask: UInt32 {
+        switch self {
+        case .mapCell: UInt32(SWAN_DISPLAY_SOURCE_COMPONENT_MASK_MAP_CELL)
+        case .raster: UInt32(SWAN_DISPLAY_SOURCE_COMPONENT_MASK_RASTER)
+        case .palette: UInt32(SWAN_DISPLAY_SOURCE_COMPONENT_MASK_PALETTE)
+        }
+    }
+}
+
+func engineDisplaySourceComponents(
+    sourceKind: EngineDisplaySourceKind,
+    rasterByteCount: UInt8,
+    paletteByteCount: UInt8
+) -> [EngineDisplaySourceComponent] {
+    var components: [EngineDisplaySourceComponent] = []
+    if sourceKind == .tilemap { components.append(.mapCell) }
+    if sourceKind != .none, rasterByteCount > 0 { components.append(.raster) }
+    if paletteByteCount > 0 { components.append(.palette) }
+    return components
+}
+
+func engineDisplaySourceComponents(
+    for sample: EngineDisplayOwnerSample
+) -> [EngineDisplaySourceComponent] {
+    engineDisplaySourceComponents(
+        sourceKind: sample.sourceKind,
+        rasterByteCount: sample.rasterByteCount,
+        paletteByteCount: sample.paletteByteCount
+    )
+}
+
+public enum EngineDisplaySourceScope: String, Codable, Sendable {
+    case selected
+    case outsideConsumer
+
+    fileprivate init(cValue: swan_display_source_scope_t) throws {
+        switch cValue {
+        case SWAN_DISPLAY_SOURCE_SCOPE_SELECTED: self = .selected
+        case SWAN_DISPLAY_SOURCE_SCOPE_OUTSIDE_CONSUMER: self = .outsideConsumer
+        default:
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned an unknown upstream source scope."
+            )
+        }
+    }
+}
+
+/// One private dataflow edge from a final display byte to a half-open range in
+/// the original cartridge file. Emulated addresses and exact ROM offsets must
+/// remain inside the translation project.
+public struct EngineExecutedSourceReadContext: Codable, Equatable, Sendable {
+    public let immediateCaller: UInt32
+    public let callerSegment: UInt16
+    public let callerOffset: UInt16
+    public let operandSegment: UInt16
+    public let operandOffset: UInt16
+    public let mapperWindow: UInt16
+    public let mapperBank: UInt16
+    public let resolvedCartridgeOperand: UInt32
+
+    fileprivate init(cValue: swan_display_source_trace_t) {
+        immediateCaller = cValue.immediate_caller
+        callerSegment = cValue.caller_segment
+        callerOffset = cValue.caller_offset
+        operandSegment = cValue.operand_segment
+        operandOffset = cValue.operand_offset
+        mapperWindow = cValue.mapper_window
+        mapperBank = cValue.mapper_bank
+        resolvedCartridgeOperand = cValue.resolved_cartridge_operand
+    }
+}
+
+public struct EngineDisplaySourceTrace: Codable, Equatable, Sendable {
+    public let x: UInt16
+    public let y: UInt16
+    public let scope: EngineDisplaySourceScope
+    public let component: EngineDisplaySourceComponent
+    public let sourceAddress: UInt32
+    public let sourceByteCount: UInt16
+    public let minimumInstructionHops: UInt16
+    public let maximumInstructionHops: UInt16
+    public let cartridgeOffset: UInt32
+    public let cartridgeLength: UInt32
+    public let hasExactRange: Bool
+    public let isTransformed: Bool
+    public let hasUnknownDependency: Bool
+    public let rangeSetOverflowed: Bool
+    public let usesConservativeDataflow: Bool
+    public let executedReadContext: EngineExecutedSourceReadContext?
+
+    fileprivate init(cValue: swan_display_source_trace_t) throws {
+        x = cValue.x
+        y = cValue.y
+        scope = try EngineDisplaySourceScope(cValue: cValue.scope)
+        component = try EngineDisplaySourceComponent(cValue: cValue.component)
+        sourceAddress = cValue.source_address
+        sourceByteCount = cValue.source_byte_count
+        minimumInstructionHops = cValue.minimum_instruction_hops
+        maximumInstructionHops = cValue.maximum_instruction_hops
+        cartridgeOffset = cValue.cartridge_offset
+        cartridgeLength = cValue.cartridge_length
+        let flags = cValue.flags
+        hasExactRange = flags & UInt32(SWAN_DISPLAY_SOURCE_FLAG_EXACT) != 0
+        isTransformed = flags & UInt32(SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED) != 0
+        hasUnknownDependency = flags & UInt32(SWAN_DISPLAY_SOURCE_FLAG_UNKNOWN_DEPENDENCY) != 0
+        rangeSetOverflowed = flags & UInt32(SWAN_DISPLAY_SOURCE_FLAG_RANGE_OVERFLOW) != 0
+        usesConservativeDataflow = flags
+            & UInt32(SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW) != 0
+        if cValue.read_context_flags
+            & UInt32(SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED) != 0 {
+            executedReadContext = EngineExecutedSourceReadContext(cValue: cValue)
+        } else {
+            executedReadContext = nil
+        }
+    }
+}
+
 public enum EnginePersistenceKind: String, CaseIterable, Codable, Sendable {
     case consoleEEPROM
     case cartridgeRAM
@@ -260,6 +407,16 @@ public struct SwanEngineError: LocalizedError, Equatable, Sendable {
     public let detail: String
 
     public var errorDescription: String? { detail }
+
+    var displaySourceProbeFailure: EngineDisplaySourceProbeFailure? {
+        code == Int32(SWAN_RESULT_SOURCE_RANGE_OVERFLOW.rawValue)
+            ? .selectedRangeUnionOverflow
+            : nil
+    }
+}
+
+enum EngineDisplaySourceProbeFailure: Equatable, Sendable {
+    case selectedRangeUnionOverflow
 }
 
 /// Selects how a WonderSwan cartridge's real-time clock observes host time.
@@ -496,6 +653,79 @@ public final class EngineSession: @unchecked Sendable {
             )
         }
         return try raw.prefix(count).map(EngineDisplayOwnerSample.init(cValue:))
+    }
+
+    public func displaySourceProbe(
+        rectangle: EngineDisplayRectangle,
+        components: [EngineDisplaySourceComponent] = EngineDisplaySourceComponent.allCases
+    ) throws -> [EngineDisplaySourceTrace] {
+        guard capabilities.contains(.displaySourceProvenance) else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_UNSUPPORTED.rawValue),
+                detail: "The active engine does not support upstream display-source provenance."
+            )
+        }
+        guard capabilities.contains(.displaySourceComponentSelection) else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_UNSUPPORTED.rawValue),
+                detail: "The active engine does not support component-selective source probes."
+            )
+        }
+        guard !components.isEmpty, Set(components).count == components.count else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INVALID_ARGUMENT.rawValue),
+                detail: "Source probe components must be nonempty and unique."
+            )
+        }
+        var cRectangle = swan_display_rectangle_t(
+            struct_size: UInt32(MemoryLayout<swan_display_rectangle_t>.size),
+            x: rectangle.x,
+            y: rectangle.y,
+            width: rectangle.width,
+            height: rectangle.height
+        )
+        var options = swan_display_source_probe_options_t(
+            struct_size: UInt32(MemoryLayout<swan_display_source_probe_options_t>.size),
+            selected_component_mask: components.reduce(0) { $0 | $1.cMask }
+        )
+        var count = 0
+        try check(swan_engine_display_source_probe(
+            handle,
+            &cRectangle,
+            &options,
+            nil,
+            0,
+            &count
+        ))
+        guard count <= 262_144 else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine exceeded the bounded upstream source-trace limit."
+            )
+        }
+        var raw = [swan_display_source_trace_t](
+            repeating: swan_display_source_trace_t(),
+            count: count
+        )
+        var written = 0
+        let result = raw.withUnsafeMutableBufferPointer { buffer in
+            swan_engine_display_source_probe(
+                handle,
+                &cRectangle,
+                &options,
+                buffer.baseAddress,
+                buffer.count,
+                &written
+            )
+        }
+        try check(result)
+        guard written == count else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned incomplete upstream source provenance."
+            )
+        }
+        return try raw.prefix(written).map(EngineDisplaySourceTrace.init(cValue:))
     }
 
     public func stagePersistence(_ persistence: EnginePersistence) throws {

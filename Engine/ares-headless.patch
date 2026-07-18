@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 0c5247e..6cc4d77 100644
+index 0c5247e0..6cc4d77d 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -4,6 +4,8 @@ include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/common/bootstrap.cmake" NO_POLICY_SCO
@@ -53,7 +53,7 @@ index 0c5247e..6cc4d77 100644
  add_subdirectory(cmake)
  return()
 diff --git a/ares/ares/platform.hpp b/ares/ares/platform.hpp
-index 029c8de9..1e49dd27 100644
+index 029c8de9..5e33c8a5 100644
 --- a/ares/ares/platform.hpp
 +++ b/ares/ares/platform.hpp
 @@ -13,6 +13,23 @@ enum class Event : u32 {
@@ -80,16 +80,697 @@ index 029c8de9..1e49dd27 100644
  struct Platform {
    virtual auto attach(Node::Object) -> void {}
    virtual auto detach(Node::Object) -> void {}
-@@ -25,6 +42,9 @@ struct Platform {
+@@ -25,6 +42,16 @@ struct Platform {
    virtual auto audio(Node::Audio::Stream) -> void {}
    virtual auto input(Node::Input::Input) -> void {}
    virtual auto cheat(u32 addr) -> maybe<u32> { return nothing; }
 +  virtual auto rtcTime() -> u64 { return chrono::timestamp(); }
++  virtual auto wonderSwanInstructionBegin(u32 writer, u32 segment, u32 offset) -> void {}
++  virtual auto wonderSwanInstructionDataflow(u32 kind) -> void {}
++  virtual auto wonderSwanInstructionEnd() -> void {}
++  virtual auto wonderSwanDataRead(u32 kind, u32 address) -> void {}
++  virtual auto wonderSwanCartridgeDataRead(u32 resolvedOperand, u32 operandSegment, u32 operandOffset, u32 mapperWindow, u32 mapperBank) -> void {}
++  virtual auto wonderSwanRegisterRead(u32 index) -> void {}
++  virtual auto wonderSwanRegisterWrite(u32 index) -> void {}
 +  virtual auto wonderSwanSourceWrite(u32 kind, u32 address, u32 writer) -> void {}
 +  virtual auto wonderSwanDisplayProvenance(const WonderSwanDisplayProvenance&) -> void {}
  };
  
  extern Platform* platform;
+diff --git a/ares/component/processor/v30mz/instructions-adjust.cpp b/ares/component/processor/v30mz/instructions-adjust.cpp
+index 8dc75fa9..033e7c07 100644
+--- a/ares/component/processor/v30mz/instructions-adjust.cpp
++++ b/ares/component/processor/v30mz/instructions-adjust.cpp
+@@ -1,4 +1,6 @@
+ auto V30MZ::instructionDecimalAdjust(bool negate) -> void {
++  provenanceRead(AL);
++  provenanceWrite(AL);
+   wait(10 + negate);
+   n8 al = AL;
+   PSW.V = 0; // undefined
+@@ -25,6 +27,10 @@ auto V30MZ::instructionDecimalAdjust(bool negate) -> void {
+ }
+ 
+ auto V30MZ::instructionAsciiAdjust(bool negate) -> void {
++  provenanceRead(AL);
++  provenanceRead(AH);
++  provenanceWrite(AL);
++  provenanceWrite(AH);
+   wait(9);
+   if(PSW.AC || ((AL & 0x0f) > 0x09)) {
+     AL += negate ? -0x06 : 0x06;
+@@ -46,6 +52,9 @@ auto V30MZ::instructionAsciiAdjust(bool negate) -> void {
+ }
+ 
+ auto V30MZ::instructionAdjustAfterMultiply() -> void {
++  provenanceRead(AL);
++  provenanceWrite(AL);
++  provenanceWrite(AH);
+   wait(16);
+   auto imm = fetch<Byte>();
+   if(imm == 0) { interrupt(0, InterruptSource::CPU); return; }
+@@ -57,6 +66,10 @@ auto V30MZ::instructionAdjustAfterMultiply() -> void {
+ }
+ 
+ auto V30MZ::instructionAdjustAfterDivide() -> void {
++  provenanceRead(AL);
++  provenanceRead(AH);
++  provenanceWrite(AL);
++  provenanceWrite(AH);
+   wait(6);
+   auto imm = fetch<Byte>();
+   AL = ADD<Byte>(AL, MULU<Byte>(AH, imm) & 0xFF, 0);
+diff --git a/ares/component/processor/v30mz/instructions-alu.cpp b/ares/component/processor/v30mz/instructions-alu.cpp
+index 997ed5cc..a1c972c6 100644
+--- a/ares/component/processor/v30mz/instructions-alu.cpp
++++ b/ares/component/processor/v30mz/instructions-alu.cpp
+@@ -1,33 +1,39 @@
+ template<u32 size> auto V30MZ::instructionAddMemReg() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   modRM();
+   setMemory<size>(ADD<size>(getMemory<size>(), getRegister<size>()));
+ }
+ 
+ template<u32 size> auto V30MZ::instructionAddRegMem() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   modRM();
+   setRegister<size>(ADD<size>(getRegister<size>(), getMemory<size>()));
+ }
+ 
+ template<u32 size> auto V30MZ::instructionAddAccImm() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   setAccumulator<size>(ADD<size>(getAccumulator<size>(), fetch<size>()));
+ }
+ 
+ template<u32 size> auto V30MZ::instructionOrMemReg() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   modRM();
+   setMemory<size>(OR<size>(getMemory<size>(), getRegister<size>()));
+ }
+ 
+ template<u32 size> auto V30MZ::instructionOrRegMem() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   modRM();
+   setRegister<size>(OR<size>(getRegister<size>(), getMemory<size>()));
+ }
+ 
+ template<u32 size> auto V30MZ::instructionOrAccImm() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   setAccumulator<size>(OR<size>(getAccumulator<size>(), fetch<size>()));
+ }
+@@ -67,52 +73,61 @@ template<u32 size> auto V30MZ::instructionSbbAccImm() -> void {
+ }
+ 
+ template<u32 size> auto V30MZ::instructionAndMemReg() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   modRM();
+   setMemory<size>(AND<size>(getMemory<size>(), getRegister<size>()));
+ }
+ 
+ template<u32 size> auto V30MZ::instructionAndRegMem() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   modRM();
+   setRegister<size>(AND<size>(getRegister<size>(), getMemory<size>()));
+ }
+ 
+ template<u32 size> auto V30MZ::instructionAndAccImm() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   setAccumulator<size>(AND<size>(getAccumulator<size>(), fetch<size>()));
+ }
+ 
+ template<u32 size> auto V30MZ::instructionSubMemReg() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   modRM();
+   setMemory<size>(SUB<size>(getMemory<size>(), getRegister<size>()));
+ }
+ 
+ template<u32 size> auto V30MZ::instructionSubRegMem() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   modRM();
+   setRegister<size>(SUB<size>(getRegister<size>(), getMemory<size>()));
+ }
+ 
+ template<u32 size> auto V30MZ::instructionSubAccImm() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   setAccumulator<size>(SUB<size>(getAccumulator<size>(), fetch<size>()));
+ }
+ 
+ template<u32 size> auto V30MZ::instructionXorMemReg() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   modRM();
+   setMemory<size>(XOR<size>(getMemory<size>(), getRegister<size>()));
+ }
+ 
+ template<u32 size> auto V30MZ::instructionXorRegMem() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   modRM();
+   setRegister<size>(XOR<size>(getRegister<size>(), getMemory<size>()));
+ }
+ 
+ template<u32 size> auto V30MZ::instructionXorAccImm() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   setAccumulator<size>(XOR<size>(getAccumulator<size>(), fetch<size>()));
+ }
+@@ -152,21 +167,29 @@ template<u32 size> auto V30MZ::instructionMultiplySignedRegMemImm() -> void {
+ }
+ 
+ auto V30MZ::instructionIncReg(u16& reg) -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
++  provenanceRead(reg);
++  provenanceWrite(reg);
+   reg = INC<Word>(reg);
+ }
+ 
+ auto V30MZ::instructionDecReg(u16& reg) -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
++  provenanceRead(reg);
++  provenanceWrite(reg);
+   reg = DEC<Word>(reg);
+ }
+ 
+ auto V30MZ::instructionSignExtendByte() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   setAccumulator<Word>((i8)getAccumulator<Byte>());
+ }
+ 
+ auto V30MZ::instructionSignExtendWord() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   setAccumulator<Long>((i16)getAccumulator<Word>());
+ }
+diff --git a/ares/component/processor/v30mz/instructions-exec.cpp b/ares/component/processor/v30mz/instructions-exec.cpp
+index 2d2783b3..3417b03f 100644
+--- a/ares/component/processor/v30mz/instructions-exec.cpp
++++ b/ares/component/processor/v30mz/instructions-exec.cpp
+@@ -153,6 +153,7 @@ auto V30MZ::instructionLeave() -> void {
+ }
+ 
+ auto V30MZ::instructionPushReg(u16& reg) -> void {
++  provenanceRead(reg);
+   // Emulate the 8086/80186 "PUSH SP" bug.
+   if(&reg == &SP) push(reg - 2);
+   else push(reg);
+@@ -164,6 +165,7 @@ auto V30MZ::instructionPushSeg(u16& seg) -> void {
+ }
+ 
+ auto V30MZ::instructionPopReg(u16& reg) -> void {
++  provenanceWrite(reg);
+   reg = pop();
+ }
+ 
+@@ -184,6 +186,14 @@ auto V30MZ::instructionPopFlags() -> void {
+ }
+ 
+ auto V30MZ::instructionPushAll() -> void {
++  provenanceRead(AW);
++  provenanceRead(CW);
++  provenanceRead(DW);
++  provenanceRead(BW);
++  provenanceRead(SP);
++  provenanceRead(BP);
++  provenanceRead(IX);
++  provenanceRead(IY);
+   wait(1);
+   auto sp = SP;
+   push(AW);
+@@ -197,6 +207,13 @@ auto V30MZ::instructionPushAll() -> void {
+ }
+ 
+ auto V30MZ::instructionPopAll() -> void {
++  provenanceWrite(IY);
++  provenanceWrite(IX);
++  provenanceWrite(BP);
++  provenanceWrite(BW);
++  provenanceWrite(DW);
++  provenanceWrite(CW);
++  provenanceWrite(AW);
+   wait(1);
+   IY = pop();
+   IX = pop();
+diff --git a/ares/component/processor/v30mz/instructions-flag.cpp b/ares/component/processor/v30mz/instructions-flag.cpp
+index 2b12aa10..c08007a2 100644
+--- a/ares/component/processor/v30mz/instructions-flag.cpp
++++ b/ares/component/processor/v30mz/instructions-flag.cpp
+@@ -1,9 +1,11 @@
+ auto V30MZ::instructionStoreFlagsAcc() -> void {
++  provenanceRead(AH);
+   wait(4);
+   PSW = (PSW & 0xff00) | AH;
+ }
+ 
+ auto V30MZ::instructionLoadAccFlags() -> void {
++  provenanceWrite(AH);
+   wait(2);
+   AH = (PSW & 0x00ff);
+ }
+diff --git a/ares/component/processor/v30mz/instructions-group.cpp b/ares/component/processor/v30mz/instructions-group.cpp
+index 04665a26..3a7439f7 100644
+--- a/ares/component/processor/v30mz/instructions-group.cpp
++++ b/ares/component/processor/v30mz/instructions-group.cpp
+@@ -7,13 +7,13 @@ template<u32 size> auto V30MZ::instructionGroup1MemImm(bool sign) -> void {
+   else if(size == Byte) imm = fetch<Byte>();
+   else imm = fetch<Word>();
+   switch(modrm.reg) {
+-  case 0: setMemory<size>(ADD<size>(mem, imm)); break;
+-  case 1: setMemory<size>(OR <size>(mem, imm)); break;
++  case 0: provenanceInstructionDataflow(1); setMemory<size>(ADD<size>(mem, imm)); break;
++  case 1: provenanceInstructionDataflow(1); setMemory<size>(OR <size>(mem, imm)); break;
+   case 2: setMemory<size>(ADC<size>(mem, imm)); break;
+   case 3: setMemory<size>(SBB<size>(mem, imm)); break;
+-  case 4: setMemory<size>(AND<size>(mem, imm)); break;
+-  case 5: setMemory<size>(SUB<size>(mem, imm)); break;
+-  case 6: setMemory<size>(XOR<size>(mem, imm)); break;
++  case 4: provenanceInstructionDataflow(1); setMemory<size>(AND<size>(mem, imm)); break;
++  case 5: provenanceInstructionDataflow(1); setMemory<size>(SUB<size>(mem, imm)); break;
++  case 6: provenanceInstructionDataflow(1); setMemory<size>(XOR<size>(mem, imm)); break;
+   case 7:                (SUB<size>(mem, imm)); break;
+   }
+ }
+@@ -24,14 +24,14 @@ template<u32 size> auto V30MZ::instructionGroup2MemImm(u8 clocks, maybe<u8> imm)
+   auto mem = getMemory<size>();
+   if(!imm) imm = fetch<Byte>();
+   switch(modrm.reg) {
+-  case 0: setMemory<size>(ROL<size>(mem, *imm)); break;
+-  case 1: setMemory<size>(ROR<size>(mem, *imm)); break;
++  case 0: provenanceInstructionDataflow(1); setMemory<size>(ROL<size>(mem, *imm)); break;
++  case 1: provenanceInstructionDataflow(1); setMemory<size>(ROR<size>(mem, *imm)); break;
+   case 2: setMemory<size>(RCL<size>(mem, *imm)); break;
+   case 3: setMemory<size>(RCR<size>(mem, *imm)); break;
+-  case 4: setMemory<size>(SHL<size>(mem, *imm)); break;
+-  case 5: setMemory<size>(SHR<size>(mem, *imm)); break;
++  case 4: provenanceInstructionDataflow(1); setMemory<size>(SHL<size>(mem, *imm)); break;
++  case 5: provenanceInstructionDataflow(1); setMemory<size>(SHR<size>(mem, *imm)); break;
+   case 6: setMemory<size>(0); break; // undefined opcode
+-  case 7: setMemory<size>(SAR<size>(mem, *imm)); break;
++  case 7: provenanceInstructionDataflow(1); setMemory<size>(SAR<size>(mem, *imm)); break;
+   }
+ }
+ 
+@@ -41,8 +41,8 @@ template<u32 size> auto V30MZ::instructionGroup3MemImm() -> void {
+   switch(modrm.reg) {
+   case 0: wait(1); AND<size>(mem, fetch<size>()); break;  //TEST
+   case 1: wait(1); break; // undefined (acts as NOP)
+-  case 2: wait(1); setMemory<size>(NOT<size>(mem)); break;
+-  case 3: wait(1); setMemory<size>(NEG<size>(mem)); break;
++  case 2: wait(1); provenanceInstructionDataflow(1); setMemory<size>(NOT<size>(mem)); break;
++  case 3: wait(1); provenanceInstructionDataflow(1); setMemory<size>(NEG<size>(mem)); break;
+   case 4: wait(3); setAccumulator<size * 2>(MULU<size>(getAccumulator<size>(), mem)); break;
+   case 5: wait(3); setAccumulator<size * 2>(MULI<size>(getAccumulator<size>(), mem)); break; break;
+   case 6: wait(size == Byte ? 15 : 23); setAccumulator<size * 2>(DIVU<size>(getAccumulator<size * 2>(), mem)); break;
+@@ -54,10 +54,12 @@ template<u32 size> auto V30MZ::instructionGroup4MemImm() -> void {
+   modRM();
+   switch(modrm.reg) {
+   case 0:  //INC
++    provenanceInstructionDataflow(1);
+     wait(1);
+     setMemory<size>(INC<size>(getMemory<size>()));
+     break;
+   case 1:  //DEC
++    provenanceInstructionDataflow(1);
+     wait(1);
+     setMemory<size>(DEC<size>(getMemory<size>()));
+     break;
+diff --git a/ares/component/processor/v30mz/instructions-misc.cpp b/ares/component/processor/v30mz/instructions-misc.cpp
+index 2e7b5fc4..4f70cff3 100644
+--- a/ares/component/processor/v30mz/instructions-misc.cpp
++++ b/ares/component/processor/v30mz/instructions-misc.cpp
+@@ -69,11 +69,13 @@ template<u32 size> auto V30MZ::instructionOutDW() -> void {
+ }
+ 
+ auto V30MZ::instructionSetALCarry() -> void {
++  provenanceWrite(AL);
+   wait(8);
+   AL = PSW.CY ? 0xFF : 0x00;
+ }
+ 
+ auto V30MZ::instructionTranslate() -> void {
++  provenanceWrite(AL);
+   wait(4);
+   AL = read<Byte>(segment(DS0), BW + AL);
+ }
+diff --git a/ares/component/processor/v30mz/instructions-move.cpp b/ares/component/processor/v30mz/instructions-move.cpp
+index 5af590b5..50a7e96c 100644
+--- a/ares/component/processor/v30mz/instructions-move.cpp
++++ b/ares/component/processor/v30mz/instructions-move.cpp
+@@ -1,22 +1,26 @@
+ template<u32 size> auto V30MZ::instructionMoveMemReg() -> void {
++  provenanceInstructionDataflow(1);
+   modRM();
+   if(modrm.mod == 3) wait(1);
+   setMemory<size>(getRegister<size>());
+ }
+ 
+ template<u32 size> auto V30MZ::instructionMoveRegMem() -> void {
++  provenanceInstructionDataflow(1);
+   modRM();
+   if(modrm.mod == 3) wait(1);
+   setRegister<size>(getMemory<size>());
+ }
+ 
+ auto V30MZ::instructionMoveMemSeg() -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
+   modRM();
+   setMemory<Word>(getSegment());
+ }
+ 
+ auto V30MZ::instructionMoveSegMem() -> void {
++  provenanceInstructionDataflow(1);
+   wait(2);
+   modRM();
+   setSegment(getMemory<Word>());
+@@ -25,30 +29,41 @@ auto V30MZ::instructionMoveSegMem() -> void {
+ }
+ 
+ template<u32 size> auto V30MZ::instructionMoveAccMem() -> void {
++  provenanceInstructionDataflow(1);
+   setAccumulator<size>(read<size>(segment(DS0), fetch<Word>()));
+ }
+ 
+ template<u32 size> auto V30MZ::instructionMoveMemAcc() -> void {
++  provenanceInstructionDataflow(1);
+   write<size>(segment(DS0), fetch<Word>(), getAccumulator<size>());
+ }
+ 
+ auto V30MZ::instructionMoveRegImm(u8& reg) -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
++  provenanceWrite(reg);
+   reg = fetch<Byte>();
+ }
+ 
+ auto V30MZ::instructionMoveRegImm(u16& reg) -> void {
++  provenanceInstructionDataflow(1);
+   wait(1);
++  provenanceWrite(reg);
+   reg = fetch<Word>();
+ }
+ 
+ template<u32 size> auto V30MZ::instructionMoveMemImm() -> void {
++  provenanceInstructionDataflow(1);
+   modRM();
+   setMemory<size>(fetch<size>());
+ }
+ 
+ auto V30MZ::instructionExchange(u16& x, u16& y) -> void {
+   wait(3);
++  provenanceRead(x);
++  provenanceRead(y);
++  provenanceWrite(x);
++  provenanceWrite(y);
+   n16 z = x;
+   x = y;
+   y = z;
+diff --git a/ares/component/processor/v30mz/instructions-string.cpp b/ares/component/processor/v30mz/instructions-string.cpp
+index 359f22a8..f17c4ef6 100644
+--- a/ares/component/processor/v30mz/instructions-string.cpp
++++ b/ares/component/processor/v30mz/instructions-string.cpp
+@@ -29,6 +29,7 @@ template<u32 size> auto V30MZ::instructionOutString() -> void {
+ }
+ 
+ template<u32 size> auto V30MZ::instructionMoveString() -> void {
++  provenanceInstructionDataflow(1);
+   wait(3);
+   if(!prefix.repeat || CW) {
+     auto data = read<size>(segment(DS0), IX);
+@@ -78,6 +79,7 @@ template<u32 size> auto V30MZ::instructionStoreString() -> void {
+ }
+ 
+ template<u32 size> auto V30MZ::instructionLoadString() -> void {
++  provenanceInstructionDataflow(1);
+   wait(2);
+   if(!prefix.repeat || CW) {
+     setAccumulator<size>(read<size>(segment(DS0), IX));
+diff --git a/ares/component/processor/v30mz/memory.cpp b/ares/component/processor/v30mz/memory.cpp
+index 06ed9a56..833f7970 100644
+--- a/ares/component/processor/v30mz/memory.cpp
++++ b/ares/component/processor/v30mz/memory.cpp
+@@ -1,6 +1,7 @@
+ template<> auto V30MZ::read<Byte>(u16 segment, u16 address) -> u32 {
+   step(speed(segment * 16 + address));
+   u32 data = 0;
++  provenanceDataRead(segment * 16 + address, segment, address);
+   data |= read(segment * 16 + address++) << 0;
+   return data;
+ }
+@@ -8,8 +9,10 @@ template<> auto V30MZ::read<Byte>(u16 segment, u16 address) -> u32 {
+ template<> auto V30MZ::read<Word>(u16 segment, u16 address) -> u32 {
+   u32 data = 0;
+   step(speed(segment * 16 + address));
++  provenanceDataRead(segment * 16 + address, segment, address);
+   data |= read(segment * 16 + address++) << 0;
+   if(width(segment * 16 + address) == Byte || !(address & 1)) step(speed(segment * 16 + address));
++  provenanceDataRead(segment * 16 + address, segment, address);
+   data |= read(segment * 16 + address++) << 8;
+   return data;
+ }
+@@ -17,12 +20,16 @@ template<> auto V30MZ::read<Word>(u16 segment, u16 address) -> u32 {
+ template<> auto V30MZ::read<Long>(u16 segment, u16 address) -> u32 {
+   u32 data = 0;
+   step(speed(segment * 16 + address));
++  provenanceDataRead(segment * 16 + address, segment, address);
+   data |= read(segment * 16 + address++) <<  0;
+   if(width(segment * 16 + address) == Byte || !(address & 1)) step(speed(segment * 16 + address));
++  provenanceDataRead(segment * 16 + address, segment, address);
+   data |= read(segment * 16 + address++) <<  8;
+   if(width(segment * 16 + address) == Byte || !(address & 1)) step(speed(segment * 16 + address));
++  provenanceDataRead(segment * 16 + address, segment, address);
+   data |= read(segment * 16 + address++) << 16;
+   if(width(segment * 16 + address) == Byte || !(address & 1)) step(speed(segment * 16 + address));
++  provenanceDataRead(segment * 16 + address, segment, address);
+   data |= read(segment * 16 + address++) << 24;
+   return data;
+ }
+diff --git a/ares/component/processor/v30mz/modrm.cpp b/ares/component/processor/v30mz/modrm.cpp
+index 5ac6d011..b723854c 100644
+--- a/ares/component/processor/v30mz/modrm.cpp
++++ b/ares/component/processor/v30mz/modrm.cpp
+@@ -46,28 +46,56 @@ auto V30MZ::getSegment() -> u16 { return *RS[modrm.reg]; }
+ 
+ auto V30MZ::setSegment(u16 data) -> void { *RS[modrm.reg] = data; }
+ 
+-template<> auto V30MZ::getRegister<Byte>() -> u16 { return *RB[modrm.reg]; }
+-template<> auto V30MZ::getRegister<Word>() -> u16 { return *RW[modrm.reg]; }
++template<> auto V30MZ::getRegister<Byte>() -> u16 {
++  provenanceRegisterRead((modrm.reg & 3) * 2 + (modrm.reg >> 2));
++  return *RB[modrm.reg];
++}
++template<> auto V30MZ::getRegister<Word>() -> u16 {
++  provenanceRegisterRead(modrm.reg * 2 + 0);
++  provenanceRegisterRead(modrm.reg * 2 + 1);
++  return *RW[modrm.reg];
++}
+ 
+-template<> auto V30MZ::setRegister<Byte>(u16 data) -> void { *RB[modrm.reg] = data; }
+-template<> auto V30MZ::setRegister<Word>(u16 data) -> void { *RW[modrm.reg] = data; }
++template<> auto V30MZ::setRegister<Byte>(u16 data) -> void {
++  provenanceRegisterWrite((modrm.reg & 3) * 2 + (modrm.reg >> 2));
++  *RB[modrm.reg] = data;
++}
++template<> auto V30MZ::setRegister<Word>(u16 data) -> void {
++  provenanceRegisterWrite(modrm.reg * 2 + 0);
++  provenanceRegisterWrite(modrm.reg * 2 + 1);
++  *RW[modrm.reg] = data;
++}
+ 
+ template<> auto V30MZ::getMemory<Byte>(u32 offset) -> u16 {
+-  if(!modrm.useAddress) return *RB[modrm.mem];
++  if(!modrm.useAddress) {
++    provenanceRegisterRead((modrm.mem & 3) * 2 + (modrm.mem >> 2));
++    return *RB[modrm.mem];
++  }
+   return read<Byte>(modrm.segment, modrm.address + offset);
+ }
+ 
+ template<> auto V30MZ::getMemory<Word>(u32 offset) -> u16 {
+-  if(!modrm.useAddress) return *RW[modrm.mem];
++  if(!modrm.useAddress) {
++    provenanceRegisterRead(modrm.mem * 2 + 0);
++    provenanceRegisterRead(modrm.mem * 2 + 1);
++    return *RW[modrm.mem];
++  }
+   return read<Word>(modrm.segment, modrm.address + offset);
+ }
+ 
+ template<> auto V30MZ::setMemory<Byte>(u16 data) -> void {
+-  if(!modrm.useAddress) return (void)(*RB[modrm.mem] = data);
++  if(!modrm.useAddress) {
++    provenanceRegisterWrite((modrm.mem & 3) * 2 + (modrm.mem >> 2));
++    return (void)(*RB[modrm.mem] = data);
++  }
+   return write<Byte>(modrm.segment, modrm.address, data);
+ }
+ 
+ template<> auto V30MZ::setMemory<Word>(u16 data) -> void {
+-  if(!modrm.useAddress) return (void)(*RW[modrm.mem] = data);
++  if(!modrm.useAddress) {
++    provenanceRegisterWrite(modrm.mem * 2 + 0);
++    provenanceRegisterWrite(modrm.mem * 2 + 1);
++    return (void)(*RW[modrm.mem] = data);
++  }
+   return write<Word>(modrm.segment, modrm.address, data);
+ }
+diff --git a/ares/component/processor/v30mz/registers.cpp b/ares/component/processor/v30mz/registers.cpp
+index ed8f2edf..a89d0b28 100644
+--- a/ares/component/processor/v30mz/registers.cpp
++++ b/ares/component/processor/v30mz/registers.cpp
+@@ -6,10 +6,63 @@ auto V30MZ::segment(u16 segment) -> u16 {
+   return segment;
+ }
+ 
+-template<> auto V30MZ::getAccumulator<Byte>() -> u32 { return AL; }
+-template<> auto V30MZ::getAccumulator<Word>() -> u32 { return AW; }
+-template<> auto V30MZ::getAccumulator<Long>() -> u32 { return AW | DW << 16; }
++auto V30MZ::provenanceRead(u8& reg) -> void {
++  for(u32 index : range(8)) if(RB[index] == &reg) {
++    return provenanceRegisterRead((index & 3) * 2 + (index >> 2));
++  }
++}
++
++auto V30MZ::provenanceRead(u16& reg) -> void {
++  for(u32 index : range(8)) if(RW[index] == &reg) {
++    provenanceRegisterRead(index * 2 + 0);
++    return provenanceRegisterRead(index * 2 + 1);
++  }
++}
++
++auto V30MZ::provenanceWrite(u8& reg) -> void {
++  for(u32 index : range(8)) if(RB[index] == &reg) {
++    return provenanceRegisterWrite((index & 3) * 2 + (index >> 2));
++  }
++}
++
++auto V30MZ::provenanceWrite(u16& reg) -> void {
++  for(u32 index : range(8)) if(RW[index] == &reg) {
++    provenanceRegisterWrite(index * 2 + 0);
++    return provenanceRegisterWrite(index * 2 + 1);
++  }
++}
+ 
+-template<> auto V30MZ::setAccumulator<Byte>(u32 data) -> void { AL = data; }
+-template<> auto V30MZ::setAccumulator<Word>(u32 data) -> void { AW = data; }
+-template<> auto V30MZ::setAccumulator<Long>(u32 data) -> void { AW = data; DW = data >> 16; }
++template<> auto V30MZ::getAccumulator<Byte>() -> u32 {
++  provenanceRegisterRead(0);
++  return AL;
++}
++template<> auto V30MZ::getAccumulator<Word>() -> u32 {
++  provenanceRegisterRead(0);
++  provenanceRegisterRead(1);
++  return AW;
++}
++template<> auto V30MZ::getAccumulator<Long>() -> u32 {
++  provenanceRegisterRead(0);
++  provenanceRegisterRead(1);
++  provenanceRegisterRead(4);
++  provenanceRegisterRead(5);
++  return AW | DW << 16;
++}
++
++template<> auto V30MZ::setAccumulator<Byte>(u32 data) -> void {
++  provenanceRegisterWrite(0);
++  AL = data;
++}
++template<> auto V30MZ::setAccumulator<Word>(u32 data) -> void {
++  provenanceRegisterWrite(0);
++  provenanceRegisterWrite(1);
++  AW = data;
++}
++template<> auto V30MZ::setAccumulator<Long>(u32 data) -> void {
++  provenanceRegisterWrite(0);
++  provenanceRegisterWrite(1);
++  provenanceRegisterWrite(4);
++  provenanceRegisterWrite(5);
++  AW = data;
++  DW = data >> 16;
++}
+diff --git a/ares/component/processor/v30mz/v30mz.hpp b/ares/component/processor/v30mz/v30mz.hpp
+index 5726384e..800c24bc 100644
+--- a/ares/component/processor/v30mz/v30mz.hpp
++++ b/ares/component/processor/v30mz/v30mz.hpp
+@@ -34,6 +34,10 @@ struct V30MZ {
+   virtual auto out(n16 port, n8 data) -> void = 0;
+   virtual auto ioWidth(n16 port) -> u32 = 0;
+   virtual auto ioSpeed(n16 port) -> n32 = 0;
++  virtual auto provenanceDataRead(n20 address, u16 segment, u16 offset) -> void {}
++  virtual auto provenanceRegisterRead(u32 index) -> void {}
++  virtual auto provenanceRegisterWrite(u32 index) -> void {}
++  virtual auto provenanceInstructionDataflow(u32 kind) -> void {}
+ 
+   //v30mz.cpp
+   auto power() -> void;
+@@ -50,6 +54,10 @@ struct V30MZ {
+ 
+   template<u32> auto getAccumulator() -> u32;
+   template<u32> auto setAccumulator(u32) -> void;
++  auto provenanceRead(u8&) -> void;
++  auto provenanceRead(u16&) -> void;
++  auto provenanceWrite(u8&) -> void;
++  auto provenanceWrite(u16&) -> void;
+ 
+   //modrm.cpp
+   auto modRM(bool forceAddress = false) -> void;
+diff --git a/ares/ws/cartridge/cartridge.hpp b/ares/ws/cartridge/cartridge.hpp
+index 127b5ace..70b62f8f 100644
+--- a/ares/ws/cartridge/cartridge.hpp
++++ b/ares/ws/cartridge/cartridge.hpp
+@@ -51,6 +51,7 @@ struct Cartridge : IO, Thread {
+ 
+   //memory.cpp
+   auto readROM(n20 address) -> n8;
++  auto romOffset(n20 address) -> u32;
+   auto readRAM(n20 address) -> n8;
+   auto writeRAM(n20 address, n8 data) -> void;
+ 
+diff --git a/ares/ws/cartridge/memory.cpp b/ares/ws/cartridge/memory.cpp
+index 8bd2d35d..599dc370 100644
+--- a/ares/ws/cartridge/memory.cpp
++++ b/ares/ws/cartridge/memory.cpp
+@@ -1,15 +1,20 @@
+-//20000-fffff
+-auto Cartridge::readROM(n20 address) -> n8 {
+-  int busbyte = ((address & 1) && cpu.io.cartridgeRomWidth) ? 1 : 0;
+-  if(!rom) return openbus.byte(busbyte);
+-
+-  n8 value;
++auto Cartridge::romOffset(n20 address) -> u32 {
+   n32 offset;
+   switch(address.bit(16,19)) {
+   case 2:  offset = io.romBank0 << 16 | (n16)address; break;  //20000-2ffff
+   case 3:  offset = io.romBank1 << 16 | (n16)address; break;  //30000-3ffff
+   default: offset = io.romBank2 << 20 | (n20)address; break;  //40000-fffff
+   }
++  return rom ? (u32)offset & rom.mask() : (u32)offset;
++}
++
++//20000-fffff
++auto Cartridge::readROM(n20 address) -> n8 {
++  int busbyte = ((address & 1) && cpu.io.cartridgeRomWidth) ? 1 : 0;
++  if(!rom) return openbus.byte(busbyte);
++
++  n8 value;
++  n32 offset = romOffset(address);
+ 
+   if(has.flash && (flash.idmode || flash.fastmode)) {
+     n16 data = flash.read(offset >> 1, true);
 diff --git a/ares/ws/cartridge/rtc.cpp b/ares/ws/cartridge/rtc.cpp
 index f4ca9df5..df0fbb59 100644
 --- a/ares/ws/cartridge/rtc.cpp
@@ -112,6 +793,111 @@ index f4ca9df5..df0fbb59 100644
    for(auto n : range(8)) ram.write(8 + n, timestamp.byte(n));
  }
  
+diff --git a/ares/ws/cpu/cpu.cpp b/ares/ws/cpu/cpu.cpp
+index 50e94ec5..bb3851c3 100644
+--- a/ares/ws/cpu/cpu.cpp
++++ b/ares/ws/cpu/cpu.cpp
+@@ -23,7 +23,11 @@ auto CPU::unload() -> void {
+ auto CPU::main() -> void {
+   poll();
+   debugger.instruction();
++  if(platform) platform->wonderSwanInstructionBegin(
++    ((u32)PS << 4 | PC) & 0xfffff, PS, PC
++  );
+   instruction();
++  if(platform) platform->wonderSwanInstructionEnd();
+ }
+ 
+ auto CPU::step(u32 clocks) -> void {
+@@ -55,6 +59,43 @@ auto CPU::write(n20 address, n8 data) -> void {
+   return bus.write(address, data);
+ }
+ 
++auto CPU::provenanceDataRead(n20 address, u16 segment, u16 offset) -> void {
++  if(!platform) return;
++  switch(address.bit(16, 19)) {
++  case 0x0:
++    return platform->wonderSwanDataRead(1, address & 0xffff);
++  case 0x1:
++    return platform->wonderSwanDataRead(0, address);
++  default:
++    if(cpu.io.cartridgeRomWidth != cartridge.has.wordWidth) {
++      if(cartridge.has.wordWidth) address &= ~1;
++      else if(address & 1) return platform->wonderSwanDataRead(0, address);
++    }
++    u32 mapperWindow = address.bit(16, 19);
++    u32 mapperBank;
++    switch(mapperWindow) {
++    case 2:  mapperBank = cartridge.io.romBank0; break;
++    case 3:  mapperBank = cartridge.io.romBank1; break;
++    default: mapperBank = cartridge.io.romBank2; break;
++    }
++    return platform->wonderSwanCartridgeDataRead(
++      cartridge.romOffset(address), segment, offset, mapperWindow, mapperBank
++    );
++  }
++}
++
++auto CPU::provenanceRegisterRead(u32 index) -> void {
++  if(platform) platform->wonderSwanRegisterRead(index);
++}
++
++auto CPU::provenanceRegisterWrite(u32 index) -> void {
++  if(platform) platform->wonderSwanRegisterWrite(index);
++}
++
++auto CPU::provenanceInstructionDataflow(u32 kind) -> void {
++  if(platform) platform->wonderSwanInstructionDataflow(kind);
++}
++
+ auto CPU::ioWidth(n16 port) -> u32 {
+   if(port >= 0xC0 && port <= 0xFF)
+     return Byte;
+@@ -68,6 +109,7 @@ auto CPU::ioSpeed(n16 port) -> n32 {
+ }
+ 
+ auto CPU::in(n16 port) -> n8 {
++  if(platform) platform->wonderSwanDataRead(0, port);
+   n8 data = bus.readIO(port);
+   debugger.portRead(port, data);
+   return data;
+diff --git a/ares/ws/cpu/cpu.hpp b/ares/ws/cpu/cpu.hpp
+index 4fd4c92a..29ea6153 100644
+--- a/ares/ws/cpu/cpu.hpp
++++ b/ares/ws/cpu/cpu.hpp
+@@ -49,6 +49,10 @@ struct CPU : V30MZ, Thread, IO {
+   auto out(n16 port, n8 data) -> void override;
+   auto ioWidth(n16 port) -> u32 override;
+   auto ioSpeed(n16 port) -> n32 override;
++  auto provenanceDataRead(n20 address, u16 segment, u16 offset) -> void override;
++  auto provenanceRegisterRead(u32 index) -> void override;
++  auto provenanceRegisterWrite(u32 index) -> void override;
++  auto provenanceInstructionDataflow(u32 kind) -> void override;
+ 
+   auto power() -> void;
+ 
+diff --git a/ares/ws/cpu/dma.cpp b/ares/ws/cpu/dma.cpp
+index 267a30e6..b24553d4 100644
+--- a/ares/ws/cpu/dma.cpp
++++ b/ares/ws/cpu/dma.cpp
+@@ -15,10 +15,17 @@ auto CPU::DMA::transfer() -> void {
+     u16 data = 0;
+     //once DMA is started; SRAM reads still incur time penalty, but do not transfer
+     if(valid(source)) {
++      if(platform) platform->wonderSwanInstructionBegin(
++        ((u32)cpu.PS << 4 | cpu.PC) & 0xfffff, cpu.PS, cpu.PC
++      );
++      if(platform) platform->wonderSwanInstructionDataflow(1);
++      self.provenanceDataRead(source + 0, source >> 4, source & 15);
++      self.provenanceDataRead(source + 1, (source + 1) >> 4, (source + 1) & 15);
+       data |= self.read(source + 0) << 0;
+       data |= self.read(source + 1) << 8;
+       self.write(target + 0, data >> 0);
+       self.write(target + 1, data >> 8);
++      if(platform) platform->wonderSwanInstructionEnd();
+     }
+     source += direction ? -2 : +2;
+     target += direction ? -2 : +2;
 diff --git a/ares/ws/memory/memory.cpp b/ares/ws/memory/memory.cpp
 index 758e46f3..f0b373df 100644
 --- a/ares/ws/memory/memory.cpp

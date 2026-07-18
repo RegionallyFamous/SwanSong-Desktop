@@ -868,9 +868,9 @@ struct SwanSDKWorkspaceView: View {
     private func evidenceReview(_ evidence: SwanSDKEvidence) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Label("Persisted evidence", systemImage: "checkmark.seal")
+                Label("Immutable evidence", systemImage: "checkmark.seal.fill")
                     .font(.title3.bold())
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.green)
                 Spacer()
                 Text(
                     workspace.currentEvidenceReplayWasVerified

@@ -45,11 +45,11 @@ check_provenance_fixture() {
 check_provenance_fixture \
   "$MACOS_DIR/testroms/swan-song/display_provenance/display_provenance_horizontal.wsc" \
   planar \
-  51875c982e1b5c7edf806038402ef97b5d109a01912ef2027a1000de442b28c8
+  3c2a3814ae9c93331370e70e9c3c4afb3e2b2c61a8d8a2e09e6f119857d7f20d
 check_provenance_fixture \
   "$MACOS_DIR/testroms/swan-song/display_provenance/display_provenance_vertical.wsc" \
   packed \
-  afeb46a1b10563f1d9da3af550cd15e1ed762c2db8a7620dfd5fccbd8f20713d
+  9d70e8b632783d0858f9e3e446b829061b9e5fee6f219cb8c796d1dd66ea9f95
 
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" run \
   --package-path "$MACOS_DIR" \

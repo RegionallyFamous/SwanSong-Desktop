@@ -28,7 +28,12 @@ silicon and Intel.
 - Local MCP is off by default and exposes only allowlisted live controls,
   bounded homebrew playtesting, and guarded Translation Lab automation.
 - SwanSong Studio provides native New, Assets, Build, Test, Play, Profile,
-  Evidence, and Release views backed by SwanSong SDK 0.2.0 or newer.
+  Evidence, and Release views backed by an explicitly selected SwanSong SDK
+  0.2.0-or-newer checkout. The tagged SDK, Python runtime, and deterministic
+  play executor are not yet bundled.
+- ABI 8 can selectively trace map, raster, or palette sources to private exact
+  cartridge ranges and executed-read context while returning only source-free
+  aggregates.
 - The Analogue Pocket SD tool can install only an authorized stable SwanSong
   Core release. None is currently published, so the tool performs no package
   download or card write.

@@ -2,7 +2,8 @@
 
 This page is the technical command reference for contributors and release
 operators. Product documentation lives in [[Playing and Library]],
-[[Translation Lab]], and [[Analogue Pocket SD Setup]].
+[[Translation Lab]], [[SwanSong Studio]], and
+[[Analogue Pocket SD Setup]].
 
 ## Requirements
 
@@ -86,9 +87,70 @@ python3 ./Scripts/check-sparkle-dependency-lock.py \
 
 Fixture results prove bounded execution invariants. They are not commercial-
 game compatibility results or original-hardware accuracy evidence.
-`check-live-engine.sh` also pins two clean-room ABI 6 fixtures: horizontal
+`check-live-engine.sh` also pins two clean-room display-provenance fixtures
+(introduced with ABI 6 and retained by ABI 8): horizontal
 planar and vertical packed output with exact Screen 1, Screen 2, sprite,
 palette, raster-width, rotation, and non-unknown CPU-writer assertions.
+
+ABI 8 extends those fixtures with raster-only selection, component-complete
+consumer discovery, and executed caller/mapper context for the transformed
+ROM-resident source table. The
+live `TranslationDisplaySourceProbeTests` lane must prove an exact transformed
+selected range, an outside consumer, source-free public output, and intact
+private artifact validation. Inspection-only stub runs skip that one live test;
+the separate live-engine invocation is mandatory for release evidence.
+
+## CI lanes
+
+Pull requests run the complete Swift/XCTest and UI snapshot suite once on the
+macOS 14 Apple-silicon runner. The macOS 15 Intel runner compiles the native
+engine/library compatibility target and verifies its x86_64 Mach-O identity;
+the hosted image does not reliably permit ad-hoc standalone Swift executables.
+The release-preflight job separately builds and inspects the complete universal
+app including its Intel slice. MCP, runtime engine, and fail-closed production
+checks run once rather than being duplicated by both matrix entries.
+
+Pushes to `main` and manual workflow runs retain the complete XCTest suite on
+the Intel runner. This keeps real Intel execution in the release history while
+removing a second cold SwiftUI compile from every pull-request iteration. UI
+snapshots remain part of the complete XCTest suite and are not repeated in the
+separate release-preflight job.
+
+The shared SwiftPM wrapper disables login-keychain credential lookup in CI and
+uses only `Package.resolved`. Set `SWAN_SWIFTPM_DISABLE_KEYCHAIN=1` for the same
+non-interactive behavior in a local automation or clean-scratch smoke run. The
+pull-request Intel compile also limits SwiftPM parallelism so the hosted
+runner's tighter memory ceiling cannot turn a cold build into an exit-137
+failure.
+
+## SwanSong Studio and SDK boundary
+
+SwanSong Studio's Swift tests cover exact `swan` arguments—including Doctor,
+Optimizer, Fuzzer, Save/RTC Lab, Scenario Recorder, Dev, Profile, Evidence
+Diff, and Release—plus checkout and bundled
+runtime resolution, process environment/result capture, stable Play Contract
+and resource-report decoding, structured JSON/JSONL schema rejection,
+evidence/WAV and editable-plan intake, package/schema/toolchain identity,
+streamed output, cancellation, and command overlap guards.
+
+For the 0.4 developer preview, select a local `swansong-sdk` checkout and run a
+real smoke project through:
+
+```sh
+PYTHONPATH=/path/to/swansong-sdk/python \
+SWANSONG_SDK_DIR=/path/to/swansong-sdk \
+python3 -m swansong_sdk.cli new smoke-game \
+  --template menu-puzzle --directory /tmp/smoke-game
+
+PYTHONPATH=/path/to/swansong-sdk/python \
+SWANSONG_SDK_DIR=/path/to/swansong-sdk \
+python3 -m swansong_sdk.cli assets --project /tmp/smoke-game/swan.toml
+```
+
+Continue with `test`, `build`, `play`, and `report --json` when the pinned
+Wonderful toolchain and SwanSong play executor are available. Desktop must not
+replace any failed SDK command with a second parser, converter, builder, or
+emulator path.
 
 ## Local MCP and guarded route automation
 

@@ -63,9 +63,11 @@ workspace. Record a route, compare original and patched frames, inspect visual
 changes, capture text on-device, and keep review evidence beside the project.
 
 **SwanSong Studio** brings New, Assets, Build, Test, Play, Profile, Evidence,
-and Release into one native workspace for SwanSong SDK projects. It delegates
-toolchain, deterministic play, profiling, and release policy to SwanSong SDK
-0.2.0 or newer instead of creating a second build system.
+and Release into one native workspace for SwanSong SDK projects. The 0.4 beta
+is a developer preview that uses an explicitly selected local SwanSong SDK
+0.2.0-or-newer checkout. It delegates toolchain, deterministic play, profiling,
+and release policy to the SDK; the tagged SDK/runtime bundle is still being
+prepared for a later self-contained build.
 
 **Analogue Pocket setup** prepares an SD card for SwanSong Core from inside the
 app. It is designed to preserve games, saves, Memories, settings, and unrelated

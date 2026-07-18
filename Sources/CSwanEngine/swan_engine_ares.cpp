@@ -15,6 +15,7 @@
 #include <map>
 #include <limits>
 #include <mutex>
+#include <optional>
 #include <span>
 #include <vector>
 
@@ -219,6 +220,160 @@ std::vector<uint8_t> deterministic_rtc(uint64_t unix_seconds) {
   return rtc;
 }
 
+struct ExecutedReadContext {
+  uint32_t immediate_caller = 0;
+  uint16_t caller_segment = 0;
+  uint16_t caller_offset = 0;
+  uint16_t operand_segment = 0;
+  uint16_t operand_offset = 0;
+  uint16_t mapper_window = 0;
+  uint16_t mapper_bank = 0;
+  uint32_t resolved_cartridge_operand = 0;
+  bool executed = false;
+
+  bool operator==(const ExecutedReadContext&) const = default;
+};
+
+struct SourceRange {
+  uint32_t lower = 0;
+  uint32_t upper = 0;
+  ExecutedReadContext read_context{};
+};
+
+struct SourceSet {
+  static constexpr size_t capacity = 8;
+  std::array<SourceRange, capacity> ranges{};
+  uint8_t count = 0;
+  bool unknown = false;
+  bool overflow = false;
+  bool conservative = false;
+  uint16_t minimum_hops = 0;
+  uint16_t maximum_hops = 0;
+
+  bool empty() const { return count == 0 && !unknown && !overflow; }
+
+  static bool range_order(const SourceRange& lhs, const SourceRange& rhs) {
+    if (lhs.lower != rhs.lower) return lhs.lower < rhs.lower;
+    if (lhs.upper != rhs.upper) return lhs.upper < rhs.upper;
+    if (lhs.read_context.immediate_caller != rhs.read_context.immediate_caller) {
+      return lhs.read_context.immediate_caller < rhs.read_context.immediate_caller;
+    }
+    if (lhs.read_context.caller_segment != rhs.read_context.caller_segment) {
+      return lhs.read_context.caller_segment < rhs.read_context.caller_segment;
+    }
+    if (lhs.read_context.caller_offset != rhs.read_context.caller_offset) {
+      return lhs.read_context.caller_offset < rhs.read_context.caller_offset;
+    }
+    if (lhs.read_context.operand_segment != rhs.read_context.operand_segment) {
+      return lhs.read_context.operand_segment < rhs.read_context.operand_segment;
+    }
+    if (lhs.read_context.operand_offset != rhs.read_context.operand_offset) {
+      return lhs.read_context.operand_offset < rhs.read_context.operand_offset;
+    }
+    if (lhs.read_context.mapper_window != rhs.read_context.mapper_window) {
+      return lhs.read_context.mapper_window < rhs.read_context.mapper_window;
+    }
+    if (lhs.read_context.mapper_bank != rhs.read_context.mapper_bank) {
+      return lhs.read_context.mapper_bank < rhs.read_context.mapper_bank;
+    }
+    return lhs.read_context.resolved_cartridge_operand <
+        rhs.read_context.resolved_cartridge_operand;
+  }
+
+  static bool mergeable_context(const SourceRange& lhs,
+                                const SourceRange& rhs) {
+    const auto& left = lhs.read_context;
+    const auto& right = rhs.read_context;
+    if (left.executed != right.executed ||
+        left.immediate_caller != right.immediate_caller ||
+        left.caller_segment != right.caller_segment ||
+        left.caller_offset != right.caller_offset ||
+        left.operand_segment != right.operand_segment ||
+        left.mapper_window != right.mapper_window ||
+        left.mapper_bank != right.mapper_bank) return false;
+    if (!left.executed) return true;
+    return static_cast<uint64_t>(left.resolved_cartridge_operand) + rhs.lower ==
+            static_cast<uint64_t>(right.resolved_cartridge_operand) + lhs.lower &&
+        static_cast<uint64_t>(left.operand_offset) + rhs.lower ==
+            static_cast<uint64_t>(right.operand_offset) + lhs.lower;
+  }
+
+  void add(uint32_t lower, uint32_t upper,
+           ExecutedReadContext read_context = {}) {
+    if (lower >= upper || overflow) return;
+    SourceRange inserted{lower, upper, read_context};
+    for (size_t index = 0; index < count;) {
+      if (mergeable_context(ranges[index], inserted) &&
+          ranges[index].lower <= inserted.upper &&
+          inserted.lower <= ranges[index].upper) {
+        if (ranges[index].lower < inserted.lower) {
+          inserted.read_context = ranges[index].read_context;
+        }
+        inserted.lower = std::min(inserted.lower, ranges[index].lower);
+        inserted.upper = std::max(inserted.upper, ranges[index].upper);
+        for (size_t move = index + 1; move < count; ++move) {
+          ranges[move - 1] = ranges[move];
+        }
+        --count;
+        continue;
+      }
+      ++index;
+    }
+    if (count >= capacity) {
+      overflow = true;
+      return;
+    }
+    size_t index = 0;
+    while (index < count && range_order(ranges[index], inserted)) ++index;
+    for (size_t move = count; move > index; --move) {
+      ranges[move] = ranges[move - 1];
+    }
+    ranges[index] = inserted;
+    ++count;
+  }
+
+  void merge(const SourceSet& other) {
+    unknown = unknown || other.unknown;
+    overflow = overflow || other.overflow;
+    conservative = conservative || other.conservative;
+    if (count == 0) {
+      minimum_hops = other.minimum_hops;
+      maximum_hops = other.maximum_hops;
+    } else if (other.count != 0) {
+      minimum_hops = std::min(minimum_hops, other.minimum_hops);
+      maximum_hops = std::max(maximum_hops, other.maximum_hops);
+    }
+    for (size_t index = 0; index < other.count && !overflow; ++index) {
+      add(other.ranges[index].lower, other.ranges[index].upper,
+          other.ranges[index].read_context);
+    }
+  }
+
+  void merge_ranges_only(const SourceSet& other) {
+    unknown = unknown || other.unknown;
+    overflow = overflow || other.overflow;
+    conservative = conservative || other.conservative;
+    for (size_t index = 0; index < other.count && !overflow; ++index) {
+      add(other.ranges[index].lower, other.ranges[index].upper);
+    }
+  }
+
+  void increment_hops() {
+    if (minimum_hops != std::numeric_limits<uint16_t>::max()) ++minimum_hops;
+    if (maximum_hops != std::numeric_limits<uint16_t>::max()) ++maximum_hops;
+  }
+
+  bool intersects(const SourceSet& other) const {
+    for (size_t left = 0; left < count; ++left) {
+      for (size_t right = 0; right < other.count; ++right) {
+        if (ranges[left].lower < other.ranges[right].upper &&
+            other.ranges[right].lower < ranges[left].upper) return true;
+      }
+    }
+    return false;
+  }
+};
+
 class AresBackend final : public SwanEngineBackend, private ares::Platform {
  public:
   explicit AresBackend(const swan_engine_config_t& config)
@@ -239,7 +394,10 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
            SWAN_CAPABILITY_PERSISTENCE |
            SWAN_CAPABILITY_DEBUGGER |
            SWAN_CAPABILITY_POCKET_CHALLENGE_V2 |
-           SWAN_CAPABILITY_DISPLAY_PROVENANCE;
+           SWAN_CAPABILITY_DISPLAY_PROVENANCE |
+           SWAN_CAPABILITY_DISPLAY_SOURCE_PROVENANCE |
+           SWAN_CAPABILITY_DISPLAY_SOURCE_COMPONENT_SELECTION |
+           SWAN_CAPABILITY_EXECUTED_SOURCE_READ_CONTEXT;
   }
 
   swan_result_t load(std::span<const uint8_t> rom,
@@ -247,6 +405,9 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
                      std::string& error) override {
     unload(error);
     error.clear();
+    rom_file_size_ = static_cast<uint32_t>(rom.size());
+    rom_aperture_size_ = static_cast<uint32_t>(info.mapped_size);
+    rom_leading_padding_ = rom_aperture_size_ - rom_file_size_;
 
     {
       std::lock_guard lock(active_mutex_);
@@ -390,6 +551,9 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       root_.reset();
     }
     loaded_ = false;
+    rom_file_size_ = 0;
+    rom_aperture_size_ = 0;
+    rom_leading_padding_ = 0;
     initial_vertical_ = false;
     system_pak_.reset();
     game_pak_.reset();
@@ -629,6 +793,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     // Writer identities are intentionally not serialized by ares. A caller
     // must replay from boot before requesting an honest owner probe.
     writers_valid_ = false;
+    source_tracking_valid_ = false;
     provenance_ready_ = false;
     error.clear();
     return SWAN_RESULT_OK;
@@ -683,6 +848,85 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
         samples[output_index++] = sample;
       }
     }
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t display_source_probe(
+      const swan_display_rectangle_t& rectangle,
+      uint32_t selected_component_mask,
+      std::span<swan_display_source_trace_t> traces,
+      size_t& count,
+      std::string& error) const override {
+    count = 0;
+    if (!loaded_) return SWAN_RESULT_NOT_LOADED;
+    if (!writers_valid_ || !source_tracking_valid_) {
+      error = "upstream display-source provenance requires replay from clean power-on";
+      return SWAN_RESULT_UNSUPPORTED;
+    }
+    if (!provenance_ready_) {
+      error = "the current frame has no display-provenance observation";
+      return SWAN_RESULT_INTERNAL_ERROR;
+    }
+    const uint32_t display_width = provenance_vertical_ ? 144u : 224u;
+    const uint32_t display_height = provenance_vertical_ ? 224u : 144u;
+    const uint32_t right = static_cast<uint32_t>(rectangle.x) + rectangle.width;
+    const uint32_t bottom = static_cast<uint32_t>(rectangle.y) + rectangle.height;
+    if (right > display_width || bottom > display_height) {
+      error = "the upstream source rectangle is outside the native game raster";
+      return SWAN_RESULT_INVALID_ARGUMENT;
+    }
+
+    std::vector<swan_display_source_trace_t> collected;
+    collected.reserve(static_cast<size_t>(rectangle.width) * rectangle.height * 6u);
+    SourceSet selected_ranges;
+    for_each_display_sample([&](uint16_t x, uint16_t y,
+                                const swan_display_owner_sample_t& sample) {
+      if (x < rectangle.x || x >= right || y < rectangle.y || y >= bottom) return;
+      for_each_component(sample, [&](swan_display_source_component_t component,
+                                     uint32_t address, uint16_t byte_count,
+                                     const SourceSet& sources) {
+        const uint32_t component_bit = 1u << (static_cast<uint32_t>(component) - 1u);
+        if ((selected_component_mask & component_bit) == 0) return;
+        selected_ranges.merge_ranges_only(sources);
+        append_source_traces(collected, x, y, SWAN_DISPLAY_SOURCE_SCOPE_SELECTED,
+                             component, address, byte_count, sources);
+      });
+    });
+
+    if (selected_ranges.overflow) {
+      error = "selected display bytes exceeded the exact cartridge-range bound";
+      return SWAN_RESULT_SOURCE_RANGE_OVERFLOW;
+    }
+
+    for_each_display_sample([&](uint16_t x, uint16_t y,
+                                const swan_display_owner_sample_t& sample) {
+      if (x >= rectangle.x && x < right && y >= rectangle.y && y < bottom) return;
+      for_each_component(sample, [&](swan_display_source_component_t component,
+                                     uint32_t address, uint16_t byte_count,
+                                     const SourceSet& sources) {
+        if (!sources.intersects(selected_ranges)) return;
+        append_source_traces(
+            collected, x, y, SWAN_DISPLAY_SOURCE_SCOPE_OUTSIDE_CONSUMER,
+            component, address, byte_count, sources, &selected_ranges);
+      });
+    });
+
+    constexpr size_t kMaximumTraceRecords = 262'144u;
+    if (collected.size() > kMaximumTraceRecords) {
+      error = "outside display consumers exceeded the bounded source-trace limit";
+      return SWAN_RESULT_UNSUPPORTED;
+    }
+    count = collected.size();
+    if (traces.empty()) {
+      error.clear();
+      return SWAN_RESULT_OK;
+    }
+    if (traces.size() < collected.size()) {
+      error = "upstream display-source output buffer is too small";
+      return SWAN_RESULT_INVALID_ARGUMENT;
+    }
+    std::copy(collected.begin(), collected.end(), traces.begin());
     error.clear();
     return SWAN_RESULT_OK;
   }
@@ -782,6 +1026,105 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     if (!record) return;
     record->sequence = ++writer_sequence_;
     record->program_counter = writer & 0xfffffu;
+
+    SourceSet* sources = nullptr;
+    if (kind == 1 && address < iram_sources_.size()) {
+      sources = &iram_sources_[address];
+    } else if (kind == 2 && address < io_sources_.size()) {
+      sources = &io_sources_[address];
+    }
+    if (sources) {
+      *sources = instruction_active_ ? instruction_sources_ : SourceSet{};
+      if (instruction_active_ && !instruction_precise_copy_) {
+        sources->conservative = true;
+      }
+      if (instruction_active_ && !sources->empty()) sources->increment_hops();
+    }
+  }
+
+  void wonderSwanInstructionBegin(u32 caller, u32 segment, u32 offset) override {
+    instruction_sources_ = {};
+    instruction_written_registers_ = 0;
+    instruction_active_ = true;
+    instruction_precise_copy_ = false;
+    instruction_caller_ = caller & 0xfffffu;
+    instruction_segment_ = static_cast<uint16_t>(segment);
+    instruction_offset_ = static_cast<uint16_t>(offset);
+  }
+
+  void wonderSwanInstructionDataflow(u32 kind) override {
+    instruction_precise_copy_ = kind == 1;
+  }
+
+  void wonderSwanInstructionEnd() override {
+    if (!instruction_active_) return;
+    if (!instruction_sources_.empty()) instruction_sources_.increment_hops();
+    if (!instruction_precise_copy_) instruction_sources_.conservative = true;
+    for (uint32_t index = 0; index < register_sources_.size(); ++index) {
+      if (instruction_written_registers_ & (1u << index)) {
+        register_sources_[index] = instruction_sources_;
+      }
+    }
+    instruction_active_ = false;
+    instruction_precise_copy_ = false;
+  }
+
+  void wonderSwanDataRead(u32 kind, u32 address) override {
+    if (!instruction_active_) return;
+    if (kind == 1 && address < iram_sources_.size()) {
+      instruction_sources_.merge(iram_sources_[address]);
+      return;
+    }
+    if (kind == 2 && address < io_sources_.size()) {
+      instruction_sources_.merge(io_sources_[address]);
+      return;
+    }
+    if (kind == 3 && rom_aperture_size_ != 0) {
+      const uint32_t mapped = address & (rom_aperture_size_ - 1u);
+      if (mapped >= rom_leading_padding_ &&
+          mapped - rom_leading_padding_ < rom_file_size_) {
+        instruction_sources_.add(
+            mapped - rom_leading_padding_, mapped - rom_leading_padding_ + 1u);
+      } else {
+        instruction_sources_.unknown = true;
+      }
+      return;
+    }
+    instruction_sources_.unknown = true;
+  }
+
+  void wonderSwanCartridgeDataRead(u32 resolved_operand,
+                                   u32 operand_segment,
+                                   u32 operand_offset,
+                                   u32 mapper_window,
+                                   u32 mapper_bank) override {
+    if (!instruction_active_ || rom_aperture_size_ == 0) return;
+    const uint32_t mapped = resolved_operand & (rom_aperture_size_ - 1u);
+    if (mapped >= rom_leading_padding_ &&
+        mapped - rom_leading_padding_ < rom_file_size_) {
+      instruction_sources_.add(
+          mapped - rom_leading_padding_, mapped - rom_leading_padding_ + 1u,
+          ExecutedReadContext{
+              instruction_caller_, instruction_segment_, instruction_offset_,
+              static_cast<uint16_t>(operand_segment),
+              static_cast<uint16_t>(operand_offset),
+              static_cast<uint16_t>(mapper_window),
+              static_cast<uint16_t>(mapper_bank), resolved_operand, true});
+    } else {
+      instruction_sources_.unknown = true;
+    }
+  }
+
+  void wonderSwanRegisterRead(u32 index) override {
+    if (instruction_active_ && index < register_sources_.size()) {
+      instruction_sources_.merge(register_sources_[index]);
+    }
+  }
+
+  void wonderSwanRegisterWrite(u32 index) override {
+    if (instruction_active_ && index < register_sources_.size()) {
+      instruction_written_registers_ |= 1u << index;
+    }
   }
 
   void wonderSwanDisplayProvenance(
@@ -903,10 +1246,144 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     uint32_t program_counter = 0xffffffffu;
   };
 
+  const SourceSet& source_set_for(uint32_t address) const {
+    static const SourceSet empty;
+    if (address < iram_sources_.size()) return iram_sources_[address];
+    if (address >= 0x10000u && address - 0x10000u < io_sources_.size()) {
+      return io_sources_[address - 0x10000u];
+    }
+    return empty;
+  }
+
+  SourceSet source_set_for(uint32_t address, uint16_t byte_count) const {
+    SourceSet result;
+    for (uint32_t index = 0; index < byte_count; ++index) {
+      result.merge(source_set_for(address + index));
+    }
+    return result;
+  }
+
+  template<typename Callback>
+  void for_each_component(const swan_display_owner_sample_t& sample,
+                          Callback&& callback) const {
+    if (sample.source_kind == SWAN_DISPLAY_SOURCE_TILEMAP) {
+      callback(SWAN_DISPLAY_SOURCE_COMPONENT_MAP_CELL, sample.cell_address,
+               static_cast<uint16_t>(2), source_set_for(sample.cell_address, 2));
+    }
+    if (sample.source_kind != SWAN_DISPLAY_SOURCE_NONE && sample.raster_byte_count) {
+      callback(SWAN_DISPLAY_SOURCE_COMPONENT_RASTER, sample.raster_address,
+               sample.raster_byte_count,
+               source_set_for(sample.raster_address, sample.raster_byte_count));
+    }
+    if (sample.palette_byte_count) {
+      callback(SWAN_DISPLAY_SOURCE_COMPONENT_PALETTE, sample.palette_address,
+               sample.palette_byte_count,
+               source_set_for(sample.palette_address, sample.palette_byte_count));
+    }
+  }
+
+  template<typename Callback>
+  void for_each_display_sample(Callback&& callback) const {
+    for (uint32_t raw_y = 0; raw_y < 144u; ++raw_y) {
+      for (uint32_t raw_x = 0; raw_x < 224u; ++raw_x) {
+        const auto& sample = raw_provenance_[raw_y * 224u + raw_x];
+        if (sample.struct_size != sizeof(sample)) continue;
+        const uint16_t x = provenance_vertical_
+            ? static_cast<uint16_t>(raw_y) : static_cast<uint16_t>(raw_x);
+        const uint16_t y = provenance_vertical_
+            ? static_cast<uint16_t>(223u - raw_x) : static_cast<uint16_t>(raw_y);
+        callback(x, y, sample);
+      }
+    }
+  }
+
+  static void append_source_traces(
+      std::vector<swan_display_source_trace_t>& output,
+      uint16_t x, uint16_t y, swan_display_source_scope_t scope,
+      swan_display_source_component_t component, uint32_t address,
+      uint16_t byte_count, const SourceSet& sources,
+      const SourceSet* intersection = nullptr) {
+    const uint32_t base_flags =
+        (sources.unknown ? SWAN_DISPLAY_SOURCE_FLAG_UNKNOWN_DEPENDENCY : 0u) |
+        (sources.overflow ? SWAN_DISPLAY_SOURCE_FLAG_RANGE_OVERFLOW : 0u) |
+        (sources.conservative ? SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW : 0u) |
+        (sources.maximum_hops > 0 ? SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED : 0u);
+    bool emitted = false;
+    for (size_t index = 0; index < sources.count; ++index) {
+      const auto& range = sources.ranges[index];
+      if (intersection) {
+        bool overlaps = false;
+        for (size_t candidate = 0; candidate < intersection->count; ++candidate) {
+          const auto& selected = intersection->ranges[candidate];
+          overlaps = overlaps || (range.lower < selected.upper &&
+                                  selected.lower < range.upper);
+        }
+        if (!overlaps) continue;
+      }
+      swan_display_source_trace_t trace{};
+      trace.struct_size = sizeof(trace);
+      trace.x = x;
+      trace.y = y;
+      trace.scope = scope;
+      trace.component = component;
+      trace.source_address = address;
+      trace.source_byte_count = byte_count;
+      trace.minimum_instruction_hops = sources.minimum_hops;
+      trace.maximum_instruction_hops = sources.maximum_hops;
+      trace.cartridge_offset = range.lower;
+      trace.cartridge_length = range.upper - range.lower;
+      trace.flags = base_flags |
+          ((!sources.unknown && !sources.overflow && !sources.conservative)
+              ? SWAN_DISPLAY_SOURCE_FLAG_EXACT : 0u);
+      if (range.read_context.executed) {
+        trace.read_context_flags = SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED;
+        trace.immediate_caller = range.read_context.immediate_caller;
+        trace.caller_segment = range.read_context.caller_segment;
+        trace.caller_offset = range.read_context.caller_offset;
+        trace.operand_segment = range.read_context.operand_segment;
+        trace.operand_offset = range.read_context.operand_offset;
+        trace.mapper_window = range.read_context.mapper_window;
+        trace.mapper_bank = range.read_context.mapper_bank;
+        trace.resolved_cartridge_operand =
+            range.read_context.resolved_cartridge_operand;
+      }
+      output.push_back(trace);
+      emitted = true;
+    }
+    if (!emitted && (scope == SWAN_DISPLAY_SOURCE_SCOPE_SELECTED ||
+                     sources.unknown || sources.overflow || sources.conservative)) {
+      swan_display_source_trace_t trace{};
+      trace.struct_size = sizeof(trace);
+      trace.x = x;
+      trace.y = y;
+      trace.scope = scope;
+      trace.component = component;
+      trace.source_address = address;
+      trace.source_byte_count = byte_count;
+      trace.minimum_instruction_hops = sources.minimum_hops;
+      trace.maximum_instruction_hops = sources.maximum_hops;
+      trace.flags = base_flags;
+      if (!sources.unknown && !sources.overflow && !sources.conservative) {
+        trace.flags |= SWAN_DISPLAY_SOURCE_FLAG_EXACT;
+      }
+      output.push_back(trace);
+    }
+  }
+
   void reset_provenance_tracking() {
     writer_sequence_ = 0;
     iram_writers_.fill({});
     io_writers_.fill({});
+    iram_sources_.fill({});
+    io_sources_.fill({});
+    register_sources_.fill({});
+    instruction_sources_ = {};
+    instruction_written_registers_ = 0;
+    instruction_active_ = false;
+    instruction_precise_copy_ = false;
+    instruction_caller_ = 0;
+    instruction_segment_ = 0;
+    instruction_offset_ = 0;
     for (auto& record : iram_writers_) {
       record.program_counter = 0xffffffffu;
     }
@@ -917,6 +1394,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       std::memset(&sample, 0, sizeof(sample));
     }
     writers_valid_ = true;
+    source_tracking_valid_ = true;
     provenance_ready_ = false;
     provenance_vertical_ = false;
   }
@@ -948,8 +1426,23 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
   uint64_t writer_sequence_ = 0;
   std::array<WriterRecord, 65'536> iram_writers_{};
   std::array<WriterRecord, 256> io_writers_{};
+  std::array<SourceSet, 65'536> iram_sources_{};
+  std::array<SourceSet, 256> io_sources_{};
+  // AW/CW/DW/BW/SP/BP/IX/IY are retained as independent low/high bytes.
+  std::array<SourceSet, 16> register_sources_{};
+  SourceSet instruction_sources_{};
+  uint32_t instruction_written_registers_ = 0;
+  bool instruction_active_ = false;
+  bool instruction_precise_copy_ = false;
+  uint32_t instruction_caller_ = 0;
+  uint16_t instruction_segment_ = 0;
+  uint16_t instruction_offset_ = 0;
+  uint32_t rom_file_size_ = 0;
+  uint32_t rom_aperture_size_ = 0;
+  uint32_t rom_leading_padding_ = 0;
   std::array<swan_display_owner_sample_t, 224u * 144u> raw_provenance_{};
   bool writers_valid_ = false;
+  bool source_tracking_valid_ = false;
   bool provenance_ready_ = false;
   bool provenance_vertical_ = false;
 

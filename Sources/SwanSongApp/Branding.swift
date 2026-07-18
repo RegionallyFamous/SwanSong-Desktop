@@ -7,6 +7,7 @@ enum SwanTheme {
     static let accent = Color(red: 0.31, green: 0.48, blue: 0.98)
     static let cyan = Color(red: 0.20, green: 0.82, blue: 0.98)
     static let violet = Color(red: 0.57, green: 0.31, blue: 0.98)
+    static let translationAccent = violet
     static let midnight = Color(red: 0.025, green: 0.045, blue: 0.12)
 
     static var applicationIcon: NSImage? {
@@ -23,6 +24,30 @@ enum SwanTheme {
             withExtension: "png"
         ), let image = NSImage(contentsOf: bundledURL) {
             return image
+        }
+        return nil
+    }
+
+    /// Monochrome template artwork for SwanSong's menu-bar status item.
+    /// AppKit applies the appropriate light/dark appearance to template images.
+    static var menuBarIcon: NSImage? {
+        let sourceURL = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Packaging/MenuBarSwan.png")
+        let candidateURLs = [
+            Bundle.main.url(forResource: "MenuBarSwan", withExtension: "png"),
+            sourceURL,
+        ].compactMap { $0 }
+
+        for url in candidateURLs {
+            if let image = NSImage(contentsOf: url) {
+                image.isTemplate = true
+                image.size = NSSize(width: 18, height: 18)
+                image.accessibilityDescription = "SwanSong"
+                return image
+            }
         }
         return nil
     }

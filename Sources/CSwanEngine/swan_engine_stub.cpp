@@ -117,6 +117,17 @@ class StubBackend final : public SwanEngineBackend {
     return SWAN_RESULT_UNSUPPORTED;
   }
 
+  swan_result_t display_source_probe(
+      const swan_display_rectangle_t&,
+      uint32_t,
+      std::span<swan_display_source_trace_t>,
+      size_t& count,
+      std::string& error) const override {
+    count = 0;
+    error = "upstream display-source provenance requires the live ares backend";
+    return SWAN_RESULT_UNSUPPORTED;
+  }
+
  private:
   swan_result_t unavailable(std::string& error) const {
     if (rom_.empty()) return SWAN_RESULT_NOT_LOADED;

@@ -9,10 +9,52 @@ The project uses semantic versioning once a release is published.
 
 ### Added
 
-- Added SwanSong Studio with New, Assets, Build, Test, Play, Profile, Evidence,
-  and Release workspaces. Its SDK-backed tools include Doctor, Dev, Scenario
-  Recorder, Evidence Diff, deterministic input fuzzing, Sprite/VRAM profiling,
-  Asset Optimizer, Save/RTC Laboratory, and deterministic release packaging.
+- Added the native SwanSong Studio developer preview with New, Assets, Build,
+  Test, Play, Profile, Evidence, and Release workspaces backed by exact SwanSong
+  SDK CLI contracts. It includes Doctor, Optimizer, Fuzzer, Save/RTC Lab,
+  Scenario Recorder, Dev, profiler, evidence-diff, and release commands;
+  streaming diagnostics and cancellation; native PNG/WAV evidence; and resolved
+  SDK, toolchain, and engine identity.
+- Added bounded upstream display-source provenance. A native rectangle can be
+  traced through common copies and transforms to exact or honest conservative
+  cartridge ranges, with outside consumers retained privately.
+- Added ABI 8 component-selective source probes so map, raster, or palette seeds
+  can exclude unrelated ownership while consumer discovery still reports every
+  display component sharing the selected cartridge ranges.
+- Added private executed-read lineage context: immediate caller and code
+  location, operand segment/offset, mapper window/bank, and resolved cartridge
+  operand. MCP receives only aggregate context counts and hashes.
+- Added the guarded `swansong_translation_probe_rectangle_source` MCP tool.
+  Public automation receives only source-free hashes, counts, selected-component
+  summaries, and completeness; exact offsets, addresses, chains, and coordinates
+  stay inside the private Translation Lab project.
+- Added a SwanSong-owned menu-bar status item using generated swan artwork, with
+  quick Show SwanSong and Quit SwanSong actions.
+- Added clean-room transformed provenance fixtures for horizontal-planar and
+  vertical-packed display paths.
+
+### Changed
+
+- Bumped the narrow engine ABI from 6 through 8 for upstream source provenance,
+  component selection, and executed-read context while retaining ABI 6's
+  final-writer ownership contract.
+- Expanded the full SwanSong MCP server to fourteen guarded tools, including
+  persisted capture, both rectangle probes, record/verify, and the complete
+  observed-play lifecycle.
+- SwanSong Studio delegates project creation, validation, asset conversion,
+  Wonderful builds, tests, reports, and play contracts to the separately
+  testable SDK instead of forking those rules in Desktop.
+
+### Fixed
+
+- Corrected the SwanSong Studio `swan new --directory` integration to pass the
+  exact destination project directory required by the SDK.
+- Kept replay-verification copy honest: previously saved evidence is not called
+  replay-matched unless the comparison succeeded during the current UI run.
+- Made the live provenance integration test skip cleanly in inspection-only
+  stub builds while still requiring a separate passing ABI 8 live-engine lane.
+- Replaced the generic blue Translation Lab tint with its intended violet
+  accent across the empty state, lab controls, selections, and text intake.
 
 ## [0.3.1] - 2026-07-17
 

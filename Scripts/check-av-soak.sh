@@ -224,9 +224,9 @@ if not isinstance(elapsed_milliseconds, int) \
 if report.get("backend") != "ares":
     raise SystemExit("A/V soak did not use the live ares backend")
 if not re.fullmatch(
-    r"ares-[0-9a-f]{40}-swan-abi6", report.get("engineBuildID", "")
+    r"ares-[0-9a-f]{40}-swan-abi8", report.get("engineBuildID", "")
 ):
-    raise SystemExit("A/V soak did not bind the exact ABI-6 engine build")
+    raise SystemExit("A/V soak did not bind the exact ABI-8 engine build")
 if report.get("openIPLIdentifier") != "open-bootstrap-v3":
     raise SystemExit("A/V soak did not bind SwanSong Open IPL v3")
 if report.get("rtcMode") != "deterministic" \

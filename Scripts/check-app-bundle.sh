@@ -49,6 +49,7 @@ if [ "$icon_name" != "AppIcon" ] \
   || [ ! -s "$APP/Contents/Resources/AppIcon.icns" ] \
   || [ ! -s "$APP/Contents/Resources/AppIcon.png" ] \
   || [ ! -s "$APP/Contents/Resources/AppIconCompact.png" ] \
+  || [ ! -s "$APP/Contents/Resources/MenuBarSwan.png" ] \
   || ! cmp -s \
     "$MACOS_DIR/Packaging/AppIcon.icns" \
     "$APP/Contents/Resources/AppIcon.icns" \
@@ -57,7 +58,10 @@ if [ "$icon_name" != "AppIcon" ] \
     "$APP/Contents/Resources/AppIcon.png" \
   || ! cmp -s \
     "$MACOS_DIR/Packaging/AppIconCompact.png" \
-    "$APP/Contents/Resources/AppIconCompact.png"; then
+    "$APP/Contents/Resources/AppIconCompact.png" \
+  || ! cmp -s \
+    "$MACOS_DIR/Packaging/MenuBarSwan.png" \
+    "$APP/Contents/Resources/MenuBarSwan.png"; then
   echo "the app bundle is missing its SwanSong icon assets" >&2
   exit 1
 fi
@@ -104,6 +108,21 @@ compact_height=$(sips -g pixelHeight \
   | awk '/pixelHeight:/ { print $2 }')
 if [ "$compact_width" != "1024" ] || [ "$compact_height" != "1024" ]; then
   echo "the compact app icon is not a 1024-pixel source image" >&2
+  exit 1
+fi
+menu_bar_width=$(sips -g pixelWidth \
+  "$APP/Contents/Resources/MenuBarSwan.png" 2>/dev/null \
+  | awk '/pixelWidth:/ { print $2 }')
+menu_bar_height=$(sips -g pixelHeight \
+  "$APP/Contents/Resources/MenuBarSwan.png" 2>/dev/null \
+  | awk '/pixelHeight:/ { print $2 }')
+menu_bar_has_alpha=$(sips -g hasAlpha \
+  "$APP/Contents/Resources/MenuBarSwan.png" 2>/dev/null \
+  | awk '/hasAlpha:/ { print $2 }')
+if [ "$menu_bar_width" != "36" ] \
+  || [ "$menu_bar_height" != "36" ] \
+  || [ "$menu_bar_has_alpha" != "yes" ]; then
+  echo "the menu-bar swan is not a 36-pixel transparent template source" >&2
   exit 1
 fi
 if [ ! -s "$APP/Contents/Resources/LICENSE" ] \

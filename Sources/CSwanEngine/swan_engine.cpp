@@ -2,7 +2,7 @@
 #include "swan_engine_backend.hpp"
 
 #ifndef SWAN_ENGINE_BUILD_ID
-#define SWAN_ENGINE_BUILD_ID "inspection-stub-swan-abi6"
+#define SWAN_ENGINE_BUILD_ID "inspection-stub-swan-abi8"
 #endif
 
 #include <algorithm>
@@ -180,6 +180,8 @@ const char* swan_result_message(swan_result_t result) {
     case SWAN_RESULT_NOT_LOADED: return "no game is loaded";
     case SWAN_RESULT_UNSUPPORTED: return "operation is unsupported";
     case SWAN_RESULT_INTERNAL_ERROR: return "internal engine error";
+    case SWAN_RESULT_SOURCE_RANGE_OVERFLOW:
+      return "display source exceeded the exact cartridge-range bound";
   }
   return "unknown engine result";
 }
@@ -500,6 +502,40 @@ swan_result_t swan_engine_display_owner_probe(
       engine,
       engine->backend->display_owner_probe(
           *rectangle, output, *out_count, error),
+      std::move(error));
+}
+
+swan_result_t swan_engine_display_source_probe(
+    swan_engine_t* engine,
+    const swan_display_rectangle_t* rectangle,
+    const swan_display_source_probe_options_t* options,
+    swan_display_source_trace_t* out_traces,
+    size_t capacity,
+    size_t* out_count) {
+  if (!engine || !rectangle || !options || !out_count ||
+      (!out_traces && capacity != 0) ||
+      rectangle->struct_size < sizeof(swan_display_rectangle_t) ||
+      options->struct_size < sizeof(swan_display_source_probe_options_t) ||
+      options->selected_component_mask == 0 ||
+      (options->selected_component_mask &
+       ~SWAN_DISPLAY_SOURCE_COMPONENT_MASK_ALL) != 0 ||
+      rectangle->width == 0 || rectangle->height == 0) {
+    return SWAN_RESULT_INVALID_ARGUMENT;
+  }
+  if (!engine->loaded) return SWAN_RESULT_NOT_LOADED;
+  const size_t width = rectangle->width;
+  const size_t height = rectangle->height;
+  if (height > 4096u / width) return SWAN_RESULT_INVALID_ARGUMENT;
+  *out_count = 0;
+  std::string error;
+  const auto output = out_traces
+      ? std::span<swan_display_source_trace_t>(out_traces, capacity)
+      : std::span<swan_display_source_trace_t>();
+  return finish_backend_call(
+      engine,
+      engine->backend->display_source_probe(
+          *rectangle, options->selected_component_mask,
+          output, *out_count, error),
       std::move(error));
 }
 

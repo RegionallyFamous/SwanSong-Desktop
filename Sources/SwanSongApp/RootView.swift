@@ -2947,7 +2947,7 @@ private struct TranslationLabView: View {
             }
         }
         .navigationTitle("Translation Lab")
-        .tint(SwanTheme.accent)
+        .tint(SwanTheme.translationAccent)
         .toolbar {
             if model.translationProject != nil {
                 ToolbarItem(placement: .principal) {
@@ -3116,7 +3116,7 @@ private struct TranslationLabView: View {
             LinearGradient(
                 colors: [
                     Color(nsColor: .windowBackgroundColor),
-                    Color.accentColor.opacity(0.035),
+                    SwanTheme.translationAccent.opacity(0.035),
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -3501,7 +3501,7 @@ private struct TranslationLabView: View {
     private func readinessMetric(value: String, label: String, symbol: String) -> some View {
         HStack(spacing: 10) {
             Image(systemName: symbol)
-                .foregroundStyle(Color.accentColor)
+                .foregroundStyle(SwanTheme.translationAccent)
                 .frame(width: 22)
             VStack(alignment: .leading, spacing: 1) {
                 Text(value)
@@ -3809,7 +3809,7 @@ private struct TranslationLabView: View {
         .overlay {
             RoundedRectangle(cornerRadius: 15, style: .continuous)
                 .stroke(
-                    selected ? Color.accentColor.opacity(0.65) : Color.clear,
+                    selected ? SwanTheme.translationAccent.opacity(0.65) : Color.clear,
                     lineWidth: 1.5
                 )
         }
@@ -4110,7 +4110,7 @@ private struct TranslationLabView: View {
             }
         }
         .padding(14)
-        .background(Color.accentColor.opacity(0.045), in: RoundedRectangle(cornerRadius: 15, style: .continuous))
+        .background(SwanTheme.translationAccent.opacity(0.045), in: RoundedRectangle(cornerRadius: 15, style: .continuous))
     }
 
     private func routeTestCaseSubtitle(
@@ -4269,7 +4269,7 @@ private struct TranslationLabView: View {
             .background(.quaternary.opacity(0.45), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(selected ? Color.accentColor.opacity(0.8) : .clear, lineWidth: 2)
+                    .stroke(selected ? SwanTheme.translationAccent.opacity(0.8) : .clear, lineWidth: 2)
             }
         }
         .buttonStyle(.plain)
@@ -4361,6 +4361,7 @@ private struct TranslationLabView: View {
         switch kind {
         case .pair: "rectangle.on.rectangle.angled"
         case .displayOwnerProbe: "scope"
+        case .displaySourceProbe: "point.3.connected.trianglepath.dotted"
         case .observedSession: "gamecontroller.fill"
         }
     }
@@ -4369,6 +4370,7 @@ private struct TranslationLabView: View {
         switch kind {
         case .pair: .cyan
         case .displayOwnerProbe: .purple
+        case .displaySourceProbe: .orange
         case .observedSession: .indigo
         }
     }
@@ -4445,7 +4447,7 @@ private struct TranslationLabView: View {
             .background(.background, in: RoundedRectangle(cornerRadius: 15, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 15, style: .continuous)
-                    .stroke(selected ? Color.accentColor.opacity(0.7) : Color.clear, lineWidth: 2)
+                    .stroke(selected ? SwanTheme.translationAccent.opacity(0.7) : Color.clear, lineWidth: 2)
             }
         }
         .buttonStyle(.plain)
@@ -5404,7 +5406,7 @@ private struct TranslationLabView: View {
         HStack(alignment: .top, spacing: 11) {
             Image(systemName: symbol)
                 .font(.title3)
-                .foregroundStyle(Color.accentColor)
+                .foregroundStyle(SwanTheme.translationAccent)
                 .frame(width: 28)
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)
@@ -5591,7 +5593,7 @@ struct TranslationTextIntakeView: View {
         }
         .frame(minWidth: 620, idealWidth: 980, minHeight: 650, idealHeight: 720)
         .background(Color(nsColor: .windowBackgroundColor))
-        .tint(SwanTheme.accent)
+        .tint(SwanTheme.translationAccent)
         .onKeyPress(phases: .down, action: handleTranslationIntakeKeyPress)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Capture and draft translation")
@@ -5616,7 +5618,7 @@ struct TranslationTextIntakeView: View {
                 RoundedRectangle(cornerRadius: 13, style: .continuous)
                     .fill(
                         LinearGradient(
-                            colors: [SwanTheme.accent, SwanTheme.cyan],
+                            colors: [SwanTheme.translationAccent, SwanTheme.cyan],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )

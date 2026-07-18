@@ -14,9 +14,14 @@ Release notes and the issue tracker are authoritative for shipped behavior.
   observations and rejects execution-only, incomplete, or stale evidence.
 - Keep ownership explicit: the SDK owns Wonderful builds, assets, manifests,
   budgets, and release policy; SwanSong remains the only gameplay backend.
+- Validate ABI 8 component-selective upstream source provenance, private
+  executed-read context, the complete installed MCP surface, and the SwanSong
+  menu-bar status item.
 - Prove the 0.3-to-0.4 Sparkle update on beta-enabled clients while stable-only
   clients remain on their selected channel and private library/project data is
   preserved.
+- Keep local MCP off by default, token-authenticated, session-local, and limited
+  to its documented tool and data allowlists.
 - Developer ID sign, notarize, staple, Gatekeeper-assess, and inspect the
   universal Apple silicon and Intel archive from its exact release tag.
 - Publish corresponding source, checksums, manifest, release notes, beta guide,
@@ -25,6 +30,9 @@ Release notes and the issue tracker are authoritative for shipped behavior.
   separate SwanSong Core release lane locked until its independent gates pass.
 - Retain Open IPL, controller, save/state, portrait, accessibility,
   minimum-macOS, A/V soak, Translation Lab, and local-MCP regression coverage.
+- Keep SwanSong Studio clearly labeled as a developer preview until its SDK and
+  external toolchain dependencies can be bundled and independently verified in
+  the signed application payload.
 
 ## 1.0 readiness
 
