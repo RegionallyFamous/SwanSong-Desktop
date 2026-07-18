@@ -103,11 +103,12 @@ the separate live-engine invocation is mandatory for release evidence.
 ## CI lanes
 
 Pull requests run the complete Swift/XCTest and UI snapshot suite once on the
-macOS 14 Apple-silicon runner. The macOS 15 Intel runner executes the native
-engine/library compatibility binary, while the release-preflight job builds and
-inspects the complete universal app including its Intel slice. MCP and
-fail-closed production checks run once rather than being duplicated by both
-matrix entries.
+macOS 14 Apple-silicon runner. The macOS 15 Intel runner compiles the native
+engine/library compatibility target and verifies its x86_64 Mach-O identity;
+the hosted image does not reliably permit ad-hoc standalone Swift executables.
+The release-preflight job separately builds and inspects the complete universal
+app including its Intel slice. MCP, runtime engine, and fail-closed production
+checks run once rather than being duplicated by both matrix entries.
 
 Pushes to `main` and manual workflow runs retain the complete XCTest suite on
 the Intel runner. This keeps real Intel execution in the release history while
@@ -118,8 +119,9 @@ separate release-preflight job.
 The shared SwiftPM wrapper disables login-keychain credential lookup in CI and
 uses only `Package.resolved`. Set `SWAN_SWIFTPM_DISABLE_KEYCHAIN=1` for the same
 non-interactive behavior in a local automation or clean-scratch smoke run. The
-pull-request Intel smoke also limits SwiftPM to one job so the hosted runner's
-tighter memory ceiling cannot turn a cold compile into an exit-137 failure.
+pull-request Intel compile also limits SwiftPM parallelism so the hosted
+runner's tighter memory ceiling cannot turn a cold build into an exit-137
+failure.
 
 ## SwanSong Studio and SDK boundary
 
