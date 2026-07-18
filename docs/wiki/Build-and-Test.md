@@ -117,7 +117,9 @@ separate release-preflight job.
 
 The shared SwiftPM wrapper disables login-keychain credential lookup in CI and
 uses only `Package.resolved`. Set `SWAN_SWIFTPM_DISABLE_KEYCHAIN=1` for the same
-non-interactive behavior in a local automation or clean-scratch smoke run.
+non-interactive behavior in a local automation or clean-scratch smoke run. The
+pull-request Intel smoke also limits SwiftPM to two jobs so the hosted runner's
+tighter memory ceiling cannot turn a cold compile into an exit-137 failure.
 
 ## SwanSong Studio and SDK boundary
 
