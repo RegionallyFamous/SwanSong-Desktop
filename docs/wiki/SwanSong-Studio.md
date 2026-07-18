@@ -40,6 +40,12 @@ Doctor is available beside the resolved SDK, schema, toolchain, and SwanSong
 identity. Diagnostics stream while commands run, Cancel terminates the command
 process group, and Studio permits only one SDK command at a time.
 
+In **Settings → Display & Player**, you can opt in to a local notification when
+a Studio task finishes while SwanSong is in the background. The notification
+contains only the task name and whether it finished or needs attention. Project
+paths, ROM names, diagnostics, frames, audio, and evidence never appear in it.
+SwanSong asks macOS for notification permission only when you enable this option.
+
 ## Evidence review
 
 After a successful Play Contract, Studio can show the native frame, WAV format

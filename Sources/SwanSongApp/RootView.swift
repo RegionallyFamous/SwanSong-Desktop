@@ -10470,6 +10470,8 @@ struct SettingsView: View {
     @AppStorage("displayProfile") private var displayProfileRaw = DisplayProfile.purePixels.rawValue
     @AppStorage("lcdResponseScale") private var lcdResponseScale = 1.0
     @AppStorage("pauseWhenInactive") private var pauseWhenInactive = true
+    @AppStorage(SwanSongTaskNotificationCenter.enabledDefaultsKey)
+    private var taskCompletionNotificationsEnabled = false
     private let backendName = (try? EngineSession().backendName) ?? "Unavailable"
 
     init(model: AppModel, updater: SwanSongUpdater = .shared) {
@@ -10541,6 +10543,19 @@ struct SettingsView: View {
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
                 }
+                Section("Task Completion") {
+                    Toggle(
+                        "Notify when Studio tasks finish in the background",
+                        isOn: taskCompletionNotificationsBinding
+                    )
+                    .accessibilityIdentifier("settings-task-completion-notifications")
+                    Text(
+                        "Off by default. Notifications contain only the task name and result—never project paths, ROM names, diagnostics, or evidence."
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                }
             }
             .formStyle(.grouped)
             .padding()
@@ -10600,6 +10615,25 @@ struct SettingsView: View {
         Binding(
             get: { model.localMCPControlEnabled },
             set: { model.setLocalMCPControlEnabled($0) }
+        )
+    }
+
+    private var taskCompletionNotificationsBinding: Binding<Bool> {
+        Binding(
+            get: { taskCompletionNotificationsEnabled },
+            set: { requested in
+                if !requested {
+                    taskCompletionNotificationsEnabled = false
+                }
+                Task { @MainActor in
+                    let enabled = await SwanSongTaskNotificationCenter.shared
+                        .setEnabled(requested)
+                    taskCompletionNotificationsEnabled = enabled
+                    if requested && !enabled {
+                        model.presentedError = "Notifications were not enabled. You can allow them later in macOS System Settings."
+                    }
+                }
+            }
         )
     }
 }
@@ -10740,19 +10774,29 @@ private struct ControllerSettingsView: View {
     }
 
     private var connectionStatus: some View {
-        Label(
-            model.connectedControllerName ?? "No controller connected",
-            systemImage: model.connectedControllerName == nil
-                ? "gamecontroller"
-                : "checkmark.circle.fill"
-        )
-        .font(.caption.weight(.semibold))
-        .foregroundStyle(model.connectedControllerName == nil ? Color.secondary : Color.green)
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        .background(.quaternary, in: Capsule())
-        .accessibilityLabel("Controller connection")
-        .accessibilityValue(model.connectedControllerName ?? "No controller connected")
+        VStack(alignment: .trailing, spacing: 6) {
+            Label(
+                model.connectedControllerName ?? "No controller connected",
+                systemImage: model.connectedControllerName == nil
+                    ? "gamecontroller"
+                    : "checkmark.circle.fill"
+            )
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(model.connectedControllerName == nil ? Color.secondary : Color.green)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(.quaternary, in: Capsule())
+            .accessibilityLabel("Controller connection")
+            .accessibilityValue(model.connectedControllerName ?? "No controller connected")
+
+            if let battery = model.controllerBatterySummary {
+                Label(battery.statusText, systemImage: battery.symbolName)
+                    .font(.caption.weight(battery.isLow ? .semibold : .regular))
+                    .foregroundStyle(battery.isLow ? Color.orange : Color.secondary)
+                    .accessibilityLabel("Controller battery")
+                    .accessibilityValue(battery.statusText)
+            }
+        }
         .accessibilityHint(
             "USB and Bluetooth gamepads appear when macOS exposes a standard GameController profile."
         )

@@ -106,15 +106,22 @@ Pull requests run the complete Swift/XCTest and UI snapshot suite once on the
 macOS 14 Apple-silicon runner. The macOS 15 Intel runner compiles the native
 engine/library compatibility target and verifies its x86_64 Mach-O identity;
 the hosted image does not reliably permit ad-hoc standalone Swift executables.
-The release-preflight job separately builds and inspects the complete universal
-app including its Intel slice. MCP, runtime engine, and fail-closed production
-checks run once rather than being duplicated by both matrix entries.
+The release-preflight job runs in parallel instead of waiting for those lanes.
+On pull requests it uses bounded 180-frame compatibility routes, a 20-second
+A/V sample, and a complete native Apple-silicon app build. The separate Intel
+lane still proves x86_64 compilation. MCP, runtime engine, and fail-closed
+production checks run once rather than being duplicated by both matrix entries.
+Within release preflight, the inspected app builds the pinned ares engine first;
+compatibility, Translation Lab CLI, and A/V tools reuse that exact build instead
+of compiling a second engine tree.
 
 Pushes to `main` and manual workflow runs retain the complete XCTest suite on
-the Intel runner. This keeps real Intel execution in the release history while
-removing a second cold SwiftUI compile from every pull-request iteration. UI
-snapshots remain part of the complete XCTest suite and are not repeated in the
-separate release-preflight job.
+the Intel runner, the 360-frame compatibility matrix, the 60-second CI soak,
+and the complete universal app inspection including every Intel slice. This
+keeps the release-grade gates intact while removing serial wait time and a
+second cold SwiftUI compile from every pull-request iteration. UI snapshots
+remain part of the complete XCTest suite and are not repeated in the separate
+release-preflight job.
 
 The shared SwiftPM wrapper disables login-keychain credential lookup in CI and
 uses only `Package.resolved`. Set `SWAN_SWIFTPM_DISABLE_KEYCHAIN=1` for the same
@@ -122,6 +129,10 @@ non-interactive behavior in a local automation or clean-scratch smoke run. The
 pull-request Intel compile also limits SwiftPM parallelism so the hosted
 runner's tighter memory ceiling cannot turn a cold build into an exit-137
 failure.
+
+The nested MCP package gives its local Desktop dependency an explicit identity,
+so these checks also work from renamed clones and isolated Git worktrees instead
+of depending on the checkout folder being named exactly `SwanSong-Desktop`.
 
 ## SwanSong Studio and SDK boundary
 

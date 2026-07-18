@@ -333,6 +333,7 @@ final class AppModel {
     var controllerProfile: ControllerProfile = .default
     var controllerLearningControl: WonderSwanControl?
     var connectedControllerName: String?
+    var controllerBatterySummary: ControllerBatterySummary?
     private(set) var debugToolsEnabled = false
     var debugOverlayIsVisible = false
     private(set) var debugGameplayHasFocus = false
@@ -688,14 +689,16 @@ final class AppModel {
         controller.onChange = { [weak self] elements in
             self?.handleControllerElements(elements)
         }
-        controller.onConnectionChange = { [weak self] name, availableElements in
+        controller.onConnectionChange = { [weak self] name, availableElements, batterySummary in
             self?.connectedControllerName = name
             self?.controllerAvailableElements = availableElements
+            self?.controllerBatterySummary = batterySummary
             if name == nil {
                 self?.controllerLearningControl = nil
             }
         }
         connectedControllerName = controller.connectedControllerName
+        controllerBatterySummary = controller.batterySummary
         controllerPhysicalElements = controller.pressedElements
         controllerAvailableElements = controller.availableElements
         controllerInput = controllerProfile.input(for: controllerPhysicalElements)
