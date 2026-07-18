@@ -436,6 +436,21 @@ def call(request_id, name, arguments):
         if response.get("id") == request_id:
             return response["result"]
 
+seed_guard = call(0, "swansong_translation_export_static_analysis_seed", {})
+if not seed_guard.get("isError") or "confirmProjectWrites" not in json.dumps(seed_guard):
+    raise SystemExit("static-analysis seed export lost its explicit project-write guard")
+missing_seed = project / "analysis/swan-song-lab/display-source-probes/missing/details.json"
+seed_refusal = call(9, "swansong_translation_export_static_analysis_seed", {
+    "projectPath": str(project),
+    "sourceProbeDetailsPath": str(missing_seed),
+    "confirmProjectWrites": True,
+})
+seed_refusal_text = json.dumps(seed_refusal)
+if not seed_refusal.get("isError"):
+    raise SystemExit("static-analysis seed export accepted a missing source probe")
+if str(project) in seed_refusal_text or str(missing_seed) in seed_refusal_text:
+    raise SystemExit("static-analysis seed export leaked a private path through its error")
+
 start = call(1, "swansong_observed_play_start", {
     "projectPath": str(project),
     "role": "original",
