@@ -37,9 +37,11 @@ If a trusted local agent will help with a long route or evidence task, read
 ### I want to make a game
 
 [[SwanSong Studio]] puts New, Assets, Build, Test, Play, Profile, Evidence, and
-Release in one native workspace backed by SwanSong SDK. Current source carries
-a content-verified SDK 0.2.0 payload, while Python 3.11+ and the pinned Wonderful
-packages remain honest local prerequisites checked by Doctor.
+Release in one native workspace backed by SwanSong SDK. The prepared 0.4.2
+source carries a content-verified SDK 0.3.1 payload, typed visual-authoring
+tools, replay timelines, and deterministic failing-plan minimization. Python
+3.11+ and the pinned Wonderful packages remain honest local prerequisites
+checked by Doctor.
 
 ### I want homebrew or Analogue Pocket
 
@@ -59,18 +61,18 @@ as the command reference. [[Signing and Notarization]] and [[Release Gates]]
 document the trusted-Mac path from a clean source tag to a signed, notarized,
 checksummed public build.
 
-## Public beta and current source
+## Public beta and what comes next
 
 The latest public download is **SwanSong 0.4.1 beta**. It includes the native
-library and player, Open IPL, Translation Lab, the SwanSong Studio developer
-preview, ABI 9 private provenance, guarded local automation, and native Sparkle
-updates.
+library and player, Open IPL, Translation Lab, ABI 9 private provenance,
+guarded local automation, SwanSong Studio, and native Sparkle updates.
 
-The current `main` branch is ahead of that public beta. It adds the verified
-bundled SDK, published Homebrew Catalog trust, Studio's bounded USB Hardware
-Lab, a broader native design pass, a clearer updater dashboard, and game/window
-fitting built around the native 224×157 display. Those changes become a public
-feature only after the next signed and notarized release is published.
+The prepared **0.4.2** source on `main` adds the verified SDK 0.3.1, published
+Homebrew Catalog, typed visual-authoring tools, replay timelines, failing-plan
+minimization, bounded USB Hardware Lab, broader native design pass, clearer
+updater dashboard, and game/window fitting built around the native 224×157
+display. It becomes a public feature set only after the signed, notarized
+0.4.2 release is published.
 
 Use [[0.4 Beta Testing]] for the current tester checklist and the repository
 [changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md#unreleased)

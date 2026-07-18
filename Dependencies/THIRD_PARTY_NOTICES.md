@@ -32,9 +32,9 @@ corresponding-source archive under `Dependencies/sparkle-source`.
 
 ## SwanSong SDK
 
-SwanSong Studio embeds the MIT-licensed SwanSong SDK 0.2.0 runtime, recipes,
+SwanSong Studio embeds the MIT-licensed SwanSong SDK 0.3.1 runtime, recipes,
 schema, and Python package from revision
-`074f391981d2863703ef814472e944870c850cd3`. Its complete license and notices
+`0aed2049a51029b79a34277a2ceec93a08f72eaa`. Its complete license and notices
 are included inside the signed application at `Resources/SwanSongSDK`.
 
 ## Stack-less Just-In-Time compiler (SLJIT)

@@ -29,7 +29,7 @@ cleanup() { rm -rf "$TEMP"; }
 trap cleanup EXIT INT TERM
 
 git -C "$REPOSITORY" archive "$COMMIT" -- \
-  LICENSE README.md THIRD_PARTY_NOTICES.md pyproject.toml toolchain.lock \
+  CHANGELOG.md LICENSE README.md THIRD_PARTY_NOTICES.md pyproject.toml toolchain.lock \
   docs include mk python schema src templates \
   | COPYFILE_DISABLE=1 tar -xf - -C "$TEMP"
 mkdir -p "$TEMP/bin"

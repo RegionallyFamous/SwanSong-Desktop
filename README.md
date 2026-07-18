@@ -16,7 +16,7 @@ a really nice place to play them.
 
 <p align="center">
   <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases"><strong>Download the latest SwanSong beta</strong></a>
-  · <a href="docs/releases/0.4.1.md">See what is new in 0.4.1</a>
+  · <a href="docs/releases/0.4.2.md">Preview what is next in 0.4.2</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -77,8 +77,11 @@ exposing cartridge addresses or private project data through automation.
 Move a SwanSong SDK project through New, Assets, Build, Test, Play, Profile,
 Evidence, and Release in one native workspace. Studio keeps the SDK in charge
 of builds and release policy while SwanSong provides the deterministic player
-and evidence desk. Current source includes a content-verified bundled SDK
-0.2.0, with an explicit external SDK override for framework development.
+and evidence desk. The prepared 0.4.2 source includes the content-verified SDK
+0.3.1, typed visual-authoring tools, replay timelines, and deterministic
+failing-plan minimization. An explicit external SDK override remains available
+for framework development; Doctor checks the local Python and Wonderful
+prerequisites.
 
 ### Homebrew and Analogue Pocket
 
@@ -108,20 +111,22 @@ Official downloads are universal, Developer ID signed, notarized by Apple,
 and published with matching checksums, a release manifest, and corresponding
 source.
 
-## What is in the next beta
+## Coming next: SwanSong 0.4.2 beta
 
-The latest public download is **0.4.1 beta**. The current `main` branch is the
-work headed for the next beta and already includes:
+The latest public beta is **0.4.1**. The prepared **0.4.2** source on `main`
+brings together the work that makes SwanSong feel like a real WonderSwan home
+instead of a collection of utilities:
 
-- the verified bundled SwanSong SDK and Studio hardware-lab integration;
-- the published first-party Homebrew Catalog trust path;
+- the verified SwanSong SDK 0.3.1 and Studio hardware-lab integration;
+- typed visual authoring, replay timelines, and failing-plan minimization;
+- the published, signed first-party Homebrew Catalog;
 - a cleaner, more consistent native design across SwanSong's main screens;
 - a clearer updater dashboard; and
 - player canvas and window fitting built around the native 224×157 display.
 
-See the [Unreleased changelog](CHANGELOG.md#unreleased) for the exact current
-source status. Features listed there are not part of the 0.4.1 download until
-a new signed, notarized release is published.
+Read the [0.4.2 preview notes](docs/releases/0.4.2.md) for the guided tour or
+the [changelog](CHANGELOG.md) for the complete history. These additions become
+a public download only after the signed, notarized 0.4.2 release is published.
 
 ## Start exploring
 
@@ -137,7 +142,7 @@ keeps the deeper guides out of your way until you need them:
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.4.1 release notes](docs/releases/0.4.1.md).
+[0.4.2 preview notes](docs/releases/0.4.2.md).
 
 ## Free, open, and independent
 

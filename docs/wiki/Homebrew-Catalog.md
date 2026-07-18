@@ -7,7 +7,8 @@ It is not a general ROM directory, a web search, or a background service.
 Current source enables the published catalog and embeds its purpose-specific
 Ed25519 public key. The public SwanSong 0.4.1 beta predates that activation and
 still shows **Coming Soon**; direct catalog installation becomes available in
-the next signed and notarized build.
+the next signed and notarized build. Even then, opening the page does not
+contact the network.
 
 ## Browse only when you ask
 

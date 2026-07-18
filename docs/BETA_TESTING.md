@@ -10,14 +10,16 @@ Translation Lab evidence to a public report.
 - **One development workspace:** open SwanSong Studio and move through New,
   Assets, Build, Test, Play, Profile, Evidence, and Release without leaving the
   app.
-- **Explicit SDK ownership:** choose a local SwanSong SDK 0.2.0-or-newer
-  checkout and confirm Studio shows its resolved SDK, schema, toolchain, and
-  SwanSong identities. The app does not bundle Python, Wonderful, or the SDK.
+- **Explicit SDK ownership:** use the content-verified SwanSong SDK 0.3.1
+  payload or choose a 0.3.1-or-newer development checkout, then confirm Studio
+  shows its resolved SDK, schema, toolchain, and SwanSong identities. The app
+  does not bundle Python or Wonderful.
 - **Real project creation:** create Arcade Action, Menu Puzzle, and Grid Tactics
   projects in new empty folders, then reopen them as Studio projects.
 - **The complete SDK tool suite:** exercise Doctor, Dev, Scenario Recorder,
   Evidence Diff, deterministic input fuzzing, Sprite/VRAM profiling, Asset
-  Optimizer, and Save/RTC Laboratory through their Studio surfaces.
+  Optimizer, Save/RTC Laboratory, all six visual-authoring documents, replay
+  timelines, and deterministic failing-plan minimization through Studio.
 - **Evidence-backed release:** inspect required PNG and WAV observations,
   record a hash-bound verdict for every scenario check, and confirm Release
   refuses stale, incomplete, or execution-only evidence before packaging.
@@ -87,9 +89,9 @@ Translation Lab evidence to a public report.
 
 ## Deliberate boundaries
 
-SwanSong Studio 0.4 is a developer preview. It requires a separately installed
-SwanSong SDK 0.2.0 or newer, Python, and Wonderful Toolchain. This release does
-not install or update those dependencies inside the signed app.
+SwanSong Studio 0.4 is a developer preview. It embeds SwanSong SDK 0.3.1 and
+requires separately installed Python and Wonderful Toolchain dependencies.
+This release does not install or update those external tools.
 
 The first-party Homebrew Catalog remains **Coming Soon** and network-silent.
 Use **Add From Mac** for authorized local homebrew. The Analogue Pocket tool
@@ -105,7 +107,7 @@ publication.
 
 ## Before reporting a result
 
-1. Confirm **SwanSong 0.4.1 (7)** in **SwanSong > About SwanSong**.
+1. Confirm **SwanSong 0.4.2 (8)** in **SwanSong > About SwanSong**.
 2. Record the Mac model, macOS version, architecture, SDK version, Python
    version, Wonderful revision, and controller when relevant.
 3. For Studio, state the workspace, exact visible command, project recipe, and

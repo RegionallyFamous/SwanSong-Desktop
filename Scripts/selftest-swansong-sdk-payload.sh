@@ -21,6 +21,25 @@ expect_failure() {
 "$SCRIPT_DIR/materialize-swansong-sdk.sh" "$SDK_REPOSITORY" "$PAYLOAD" >/dev/null
 "$SCRIPT_DIR/check-swansong-sdk-payload.sh" "$PAYLOAD" >/dev/null
 
+CANARY="$TEMP/studio-canary"
+"$PAYLOAD/bin/swan" new studio-canary \
+  --template menu-puzzle --directory "$CANARY" >/dev/null
+"$PAYLOAD/bin/swan" author create palette interface \
+  --project "$CANARY/swan.toml" --json >/dev/null
+"$PAYLOAD/bin/swan" author validate \
+  "$CANARY/authoring/interface.palette.json" \
+  --project "$CANARY/swan.toml" --json >/dev/null
+"$PAYLOAD/bin/swan" author report \
+  "$CANARY/authoring/interface.palette.json" \
+  --project "$CANARY/swan.toml" --json >/dev/null
+"$PAYLOAD/bin/swan" author export \
+  "$CANARY/authoring/interface.palette.json" \
+  --project "$CANARY/swan.toml" \
+  --output "$CANARY/assets/interface.png" --json >/dev/null
+"$PAYLOAD/bin/swan" replay \
+  --project "$CANARY/swan.toml" --scenario neutral --json >/dev/null
+"$PAYLOAD/bin/swan" minimize --help >/dev/null
+
 printf '\n# tampered\n' >>"$PAYLOAD/python/swansong_sdk/cli.py"
 expect_failure "a modified Python module"
 
@@ -44,4 +63,4 @@ path.write_text(json.dumps(value) + "\n")
 PY
 expect_failure "a mismatched embedded lock"
 
-echo "PASS SwanSong SDK payload rejects modification, extras, omissions, and identity drift"
+echo "PASS SwanSong SDK payload executes Studio tools and rejects modification, extras, omissions, and identity drift"

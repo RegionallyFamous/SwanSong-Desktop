@@ -1,9 +1,9 @@
 {
   "schema": "swan-song-sdk-lock-v1",
   "repository": "https://github.com/RegionallyFamous/swansong-sdk.git",
-  "version": "0.2.0",
-  "commit": "074f391981d2863703ef814472e944870c850cd3",
+  "version": "0.3.1",
+  "commit": "0aed2049a51029b79a34277a2ceec93a08f72eaa",
   "manifestSchemaVersion": 1,
-  "payloadRevision": "sha256:a9d93aa45ba8d1d5c5ce62cc04dd9f59692d7e0a849a899f6ceac15118b9b4d0",
+  "payloadRevision": "sha256:92c2f3b0823465c0d0b0d4e094ef3b2c89fcbf2e984a364cb1021e95e6043874",
   "minimumPython": "3.11"
 }

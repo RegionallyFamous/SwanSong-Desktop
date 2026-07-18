@@ -23,7 +23,7 @@ policy, while SwanSong remains the deterministic gameplay and evidence backend.
 
 ## Bundled SDK
 
-SwanSong embeds the complete SwanSong SDK 0.2.0 runtime, schema, three recipes,
+SwanSong embeds the complete SwanSong SDK 0.3.1 runtime, schema, three recipes,
 Python package, and `swan` entry point. The bundle is pinned to the tagged Git
 commit and SDK content revision; build, packaging, runtime, and release checks
 reject missing, modified, extra, or identity-mismatched files. Studio selects
@@ -40,15 +40,18 @@ and the SwanSong connection before a production workflow.
 
 - **New** calls `swan new` with Arcade Action, Menu Puzzle, or Grid Tactics and
   passes the exact selected destination.
-- **Assets** edits and saves `swan.toml`, calls `swan assets`, and exposes Asset
-  Optimizer through `swan optimize --json`.
+- **Assets** edits and saves `swan.toml`, calls `swan assets`, exposes Asset
+  Optimizer through `swan optimize --json`, and provides typed create,
+  validate, report, and export controls for all six `swan author` documents.
 - **Build** calls `swan build`; Wonderful linking and cartridge budgets remain
   owned by the SDK.
-- **Test** calls `swan test` and exposes the deterministic input fuzzer and
-  Save/RTC Laboratory through `swan fuzz --json` and `swan lab --json`.
+- **Test** calls `swan test` and exposes the deterministic input fuzzer,
+  Save/RTC Laboratory, and failure-preserving exact-plan reducer through
+  `swan fuzz --json`, `swan lab --json`, and `swan minimize --json`.
 - **Play** selects Play Contract scenarios, calls `swan play`, offers the Dev
-  watch cycle through `swan dev --json`, and converts an exported actual-input
-  log with Scenario Recorder. Recorder imports a log; it is not live recording.
+  watch cycle through `swan dev --json`, converts an exported actual-input log
+  with Scenario Recorder, and builds read-only inspection timelines with
+  `swan replay --json`. Recorder imports a log; it is not live recording.
 - **Profile** renders `swan report --json` and optional Sprite/VRAM trace data
   from `swan profile --json`.
 - **Evidence** reviews persisted PNG/WAV/JSON output and compares two evidence
@@ -92,10 +95,10 @@ USB hardware mutation is intentionally absent from local MCP automation. A
 person at the Mac must select the tools and image and confirm the physical
 reset. This keeps device writes out of path-free unattended automation.
 
-## Next tagged SDK authoring seam
+## SDK 0.3 authoring and replay tools
 
-Desktop remains pinned to released SDK 0.2.0 for this build. Once the next SDK
-tag includes them, Studio can add adapters without inventing private models:
+Desktop 0.4.2 is pinned to released SDK 0.3.1 and exposes its public contracts
+without inventing private project models:
 
 - `swan replay --json` → `swansong-replay-report-v1`, with optional
   `swansong-replay-checkpoints-v1` input;
@@ -106,10 +109,11 @@ tag includes them, Studio can add adapters without inventing private models:
   for tilemaps, sprites/hitboxes, palettes/mono, collision/paths, scene flow,
   and audio timelines.
 
-The future UI must preserve unknown files, validate before export, show
-warnings and capacity estimates, and keep the authoring handoff's gameplay
-evidence fields visible. These commands stay hidden until those schemas ship in
-a reviewed tagged SDK payload and Desktop updates its content-verified pin.
+Studio passes exact selected files and bounded values to those commands, shows
+their schema-checked structured reports, and preserves the SDK's explicit
+boundary between authoring output, read-only inspection, deterministic failure
+reduction, and fresh gameplay evidence. Author exports are required to stay
+inside the chosen project and use the suffix declared by their public schema.
 
 Opt-in local MCP automation exposes two Studio contracts. One returns only the
 single already-open project slot, readiness, counts, and tool versions without

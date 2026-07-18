@@ -94,6 +94,6 @@ manually.
 
 The first-party Homebrew Catalog has its own repository, public key, signature,
 schema, user consent, verified cache, anti-rollback state, ROM validation, and
-release gate. Current source enables the published catalog, while the public
-0.4.1 beta still shows **Coming Soon**. Sparkle neither activates nor bypasses
-the catalog in either configuration.
+release gate. Current source enables the catalog; the public 0.4.1 beta still
+shows **Coming Soon**. Sparkle neither activates nor bypasses it. App updates
+and game downloads remain separate choices with separate trust rules.

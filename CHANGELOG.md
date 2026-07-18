@@ -6,10 +6,14 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
-The next beta makes SwanSong feel more complete before you ever press Play: the
-main screens are calmer, the game owns the player window, Studio carries its
-verified SDK, and the first-party Homebrew Catalog is ready when you choose to
-open it.
+Work accepted on `main` after the latest public beta will be listed here.
+
+## [0.4.2] - 2026-07-18
+
+**Make, Replay, Refine.** This prepared beta makes SwanSong feel more complete
+before you ever press Play: the main screens are calmer, the game owns the
+player window, Studio carries its verified SDK, and trusted homebrew is ready
+when you choose to open it.
 
 ### Added
 
@@ -17,34 +21,30 @@ open it.
   authorized original homebrew and add a selected release directly to the
   managed library. Loading, refreshing, and downloading remain explicit
   actions; nothing is fetched at launch or merely because Homebrew is open.
-- Bundled the complete tagged SwanSong SDK 0.2.0 runtime, schema, recipes,
-  Python package, and `swan` entry point inside the app. Studio uses this
-  verified copy by default while retaining an explicit external SDK override
-  for framework development.
-- Added two opt-in Studio automation tools: a path-free readiness summary for
-  the already-open project and a confirmation-gated action list for Doctor,
-  Assets, Build, Test, Play, and Profile. They cannot choose a path, create or
-  directly edit a project, run Release, or execute arbitrary commands.
-- Added Studio's bounded USB Hardware Lab for Doctor, update planning,
-  digest-and-reset-confirmed installation, and physical control QA. A person at
-  the Mac must select the tools and device image and confirm the reset; USB device
-  writes are not exposed through local automation.
+- Added SwanSong Studio's bounded USB Hardware Lab for Doctor, update planning,
+  digest-and-reset-confirmed install, and physical control QA. USB device writes
+  are intentionally not exposed through local MCP automation. Studio accepts
+  only the content-pinned `0.1.0-prototype.1` tool set, stages its three verified
+  files in isolation, and fails closed on unknown report fields or shapes.
+- Added typed Studio tools for all six SDK visual-authoring documents, read-only
+  replay timelines with optional checkpoints/evidence/traces, and deterministic
+  failing-plan minimization through fresh SwanSong execution.
 
 ### Changed
 
-- Refined SwanSong's main screens around one consistent native visual system,
-  clearer hierarchy, calmer empty states, and more readable high-information
-  workspaces. Expanded focused visual-regression coverage alongside the pass.
+- Updated the signed, content-verified embedded framework to SwanSong SDK 0.3.1
+  at its exact tagged commit and normalized payload revision. Studio, CI,
+  packaging, runtime checks, notices, and documentation share that identity.
+- Included SDK 0.3.1's bounded Doctor MCP response reader and deterministic
+  cleanup so a valid persistent SwanSong server no longer causes a false
+  timeout while version, identity, protocol, and redaction checks stay strict.
+- Refined the shared app visual system and screen-level snapshots while keeping
+  Studio's SDK-owned build, gameplay, evidence, and release boundaries intact.
 - Reworked the updater into a clear settings dashboard that distinguishes the
   installed version, update channel, automatic checks, and automatic install.
-- Made the cyan-framed game canvas keep the native framebuffer ratio in wide
-  windows, then taught automatic window fitting to size around the 224×157
-  surface after accounting for fixed macOS toolbar and player padding. The
-  result removes the oversized side wells without cropping horizontal or
-  vertical games.
-- Documented the public replay, minimization, and six visual-authoring schema
-  seams planned for the next tagged SDK while keeping the bundled payload at
-  the reviewed SDK 0.2.0 revision.
+- Made the game canvas keep the native framebuffer ratio in wide windows, then
+  taught automatic window fitting to size around the 224×157 surface. The game
+  fills its space cleanly without cropping horizontal or vertical play.
 
 ### Security
 
@@ -361,7 +361,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.1...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.2...HEAD
+[0.4.2]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.3.0...v0.3.1
