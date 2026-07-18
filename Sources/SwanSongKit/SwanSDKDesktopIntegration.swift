@@ -1,3 +1,4 @@
+import Darwin
 import Foundation
 
 public enum SwanSDKRecipe: String, CaseIterable, Codable, Identifiable, Sendable {
@@ -386,7 +387,7 @@ public final class SwanSDKSubprocessRunner: @unchecked Sendable {
         let status = await withTaskCancellationHandler {
             await terminationWaiter.value
         } onCancel: {
-            if process.isRunning { process.terminate() }
+            Self.terminateProcessTree(process)
         }
         guard let status else {
             throw SwanSDKIntegrationError.commandFailed(
@@ -406,6 +407,51 @@ public final class SwanSDKSubprocessRunner: @unchecked Sendable {
             standardOutput: output,
             standardError: error
         )
+    }
+
+    private static func terminateProcessTree(_ process: Process) {
+        guard process.isRunning else { return }
+        let processIDs = stoppedProcessTree(root: process.processIdentifier)
+        for processID in processIDs.reversed() {
+            _ = kill(processID, SIGTERM)
+        }
+        // SIGTERM remains pending for stopped processes. Resume the captured
+        // tree so commands can run ordinary termination handlers and exit.
+        for processID in processIDs {
+            _ = kill(processID, SIGCONT)
+        }
+        DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 0.5) {
+            for processID in processIDs.reversed() where kill(processID, 0) == 0 {
+                _ = kill(processID, SIGKILL)
+            }
+        }
+    }
+
+    private static func stoppedProcessTree(root: pid_t) -> [pid_t] {
+        guard kill(root, SIGSTOP) == 0 else { return [root] }
+        var processIDs = [root]
+        for child in childProcessIDs(of: root) {
+            processIDs.append(contentsOf: stoppedProcessTree(root: child))
+        }
+        return processIDs
+    }
+
+    private static func childProcessIDs(of parent: pid_t) -> [pid_t] {
+        var capacity = 16
+        while capacity <= 4_096 {
+            var processIDs = [pid_t](repeating: 0, count: capacity)
+            let count = proc_listchildpids(
+                parent,
+                &processIDs,
+                Int32(processIDs.count * MemoryLayout<pid_t>.stride)
+            )
+            guard count > 0 else { return [] }
+            if count < capacity {
+                return processIDs.prefix(Int(count)).filter { $0 > 0 }
+            }
+            capacity *= 2
+        }
+        return []
     }
 
     private static func monitor(
@@ -597,7 +643,32 @@ public struct SwanSDKSchemaSummary: Equatable, Sendable {
 }
 
 public struct SwanSDKPackageSummary: Equatable, Sendable {
+    public static let minimumStudioToolsVersion = "0.2.0"
+
     public let version: String
+
+    public var supportsStudioTools: Bool {
+        let withoutBuildMetadata = version.split(
+            separator: "+",
+            maxSplits: 1,
+            omittingEmptySubsequences: false
+        )[0]
+        let coreAndPrerelease = withoutBuildMetadata.split(
+            separator: "-",
+            maxSplits: 1,
+            omittingEmptySubsequences: false
+        )
+        let components = coreAndPrerelease[0]
+            .split(separator: ".", omittingEmptySubsequences: false)
+            .compactMap { Int($0) }
+        guard components.count == 3 else { return false }
+        let candidate = (components[0], components[1], components[2])
+        let minimum = (0, 2, 0)
+        if candidate.0 != minimum.0 { return candidate.0 > minimum.0 }
+        if candidate.1 != minimum.1 { return candidate.1 > minimum.1 }
+        if candidate.2 != minimum.2 { return candidate.2 > minimum.2 }
+        return coreAndPrerelease.count == 1
+    }
 
     public static func load(from sdkRoot: URL) throws -> Self {
         let text = try String(

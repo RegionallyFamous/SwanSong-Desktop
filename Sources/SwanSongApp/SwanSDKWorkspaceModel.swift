@@ -126,9 +126,15 @@ final class SwanSDKWorkspaceModel {
 
     func configureSDK(at url: URL, remember: Bool = true) throws {
         let resolution = try SwanSDKCLIResolution.resolve(sdkRoot: url)
+        let package = try SwanSDKPackageSummary.load(from: resolution.sdkRoot)
+        guard package.supportsStudioTools else {
+            throw SwanSDKIntegrationError.invalidSDKLocation(
+                "SwanSong Studio requires SwanSong SDK \(SwanSDKPackageSummary.minimumStudioToolsVersion) or newer."
+            )
+        }
         cli = resolution
         sdkRoot = resolution.sdkRoot
-        sdkPackage = try? SwanSDKPackageSummary.load(from: resolution.sdkRoot)
+        sdkPackage = package
         schema = try? SwanSDKSchemaSummary.load(from: resolution.sdkRoot)
         toolchain = try? SwanSDKToolchainSummary.load(from: resolution.sdkRoot)
         if remember {
@@ -150,6 +156,7 @@ final class SwanSDKWorkspaceModel {
                 "Choose a SwanSong SDK project folder containing swan.toml."
             )
         }
+        clearProjectDerivedState()
         manifestText = try String(contentsOf: manifest, encoding: .utf8)
         manifestHasUnsavedChanges = false
         projectRoot = root.standardizedFileURL.resolvingSymlinksInPath()
@@ -216,6 +223,8 @@ final class SwanSDKWorkspaceModel {
 
     func reloadGeneratedArtifacts() {
         guard let projectRoot else { return }
+        playContract = nil
+        resourceReport = nil
         let generated = projectRoot.appendingPathComponent("build/generated", isDirectory: true)
         if let data = try? Data(contentsOf: generated.appendingPathComponent("play-contract.json")) {
             playContract = try? SwanSDKPlayContract.decode(data)
@@ -534,11 +543,14 @@ final class SwanSDKWorkspaceModel {
                             }
                         }
                     )
-                    try stateMachine.finish(id: commandID, succeeded: result.succeeded)
-                    if result.succeeded || processResultOnFailure {
+                    if result.succeeded {
                         try onSuccess(result)
-                    }
-                    if !result.succeeded {
+                        try stateMachine.finish(id: commandID, succeeded: true)
+                    } else {
+                        if processResultOnFailure {
+                            try onSuccess(result)
+                        }
+                        try stateMachine.finish(id: commandID, succeeded: false)
                         let detail = result.standardError
                             .trimmingCharacters(in: .whitespacesAndNewlines)
                         issue = SwanSDKIntegrationError.commandFailed(
@@ -565,5 +577,24 @@ final class SwanSDKWorkspaceModel {
     private func appendDiagnostic(_ text: String) {
         guard !text.isEmpty else { return }
         diagnostics += text
+    }
+
+    private func clearProjectDerivedState() {
+        playContract = nil
+        resourceReport = nil
+        selectedScenarioID = nil
+        evidence = nil
+        currentEvidenceReplayWasVerified = false
+        scenarioPlanText = ""
+        scenarioPlanHasUnsavedChanges = false
+        scenarioInputLogURL = nil
+        optimizerAssetID = ""
+        profileTraceURL = nil
+        evidenceBeforeURL = nil
+        evidenceAfterURL = nil
+        releaseOutputURL = nil
+        releaseNotesURL = nil
+        structuredReport = nil
+        structuredReportTitle = ""
     }
 }

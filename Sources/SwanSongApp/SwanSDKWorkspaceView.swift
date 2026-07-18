@@ -45,6 +45,7 @@ struct SwanSDKWorkspaceView: View {
                 Button("Choose SDK…", systemImage: "shippingbox") {
                     chooseSDK()
                 }
+                .disabled(workspace.isRunning)
                 Button("Open Project…", systemImage: "folder") {
                     chooseProject()
                 }
@@ -867,9 +868,9 @@ struct SwanSDKWorkspaceView: View {
     private func evidenceReview(_ evidence: SwanSDKEvidence) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Label("Immutable evidence", systemImage: "checkmark.seal.fill")
+                Label("Persisted evidence", systemImage: "checkmark.seal")
                     .font(.title3.bold())
-                    .foregroundStyle(.green)
+                    .foregroundStyle(.secondary)
                 Spacer()
                 Text(
                     workspace.currentEvidenceReplayWasVerified
