@@ -420,6 +420,63 @@ struct SwanSDKWorkspaceView: View {
                 }
                 StudioCard {
                     VStack(alignment: .leading, spacing: 12) {
+                        Label("Visual Authoring", systemImage: "square.and.pencil")
+                            .font(.headline)
+                        Text(
+                            "Create one of the SDK's six versioned authoring documents, then validate, inspect, or export it through the public handoff contract. Authoring output is never labeled as gameplay evidence."
+                        )
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        HStack {
+                            Picker("Kind", selection: $workspace.authorKind) {
+                                ForEach(SwanSDKAuthorKind.allCases) { kind in
+                                    Text(kind.title).tag(kind)
+                                }
+                            }
+                            .pickerStyle(.menu)
+                            TextField("lowercase-document-id", text: $workspace.authorDocumentID)
+                                .textFieldStyle(.roundedBorder)
+                            Button("Create") { workspace.runAuthorCreate() }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(
+                                    workspace.isRunning
+                                        || workspace.authorDocumentID
+                                            .trimmingCharacters(in: .whitespacesAndNewlines)
+                                            .isEmpty
+                                )
+                        }
+                        fileChoiceRow(
+                            "Document",
+                            value: workspace.authorDocumentURL?.path ?? "No authoring document selected",
+                            button: "Choose…",
+                            action: chooseAuthorDocument
+                        )
+                        HStack {
+                            Button("Validate") { workspace.runAuthorValidate() }
+                            Button("Report") { workspace.runAuthorReport() }
+                            Spacer()
+                        }
+                        .disabled(workspace.isRunning || workspace.authorDocumentURL == nil)
+                        fileChoiceRow(
+                            "Export",
+                            value: workspace.authorExportURL?.path ?? "Choose a new .json, .png, or .toml path inside the project",
+                            button: "Choose…",
+                            action: chooseAuthorExport
+                        )
+                        HStack {
+                            Spacer()
+                            Button("Export Handoff") { workspace.runAuthorExport() }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(
+                                    workspace.isRunning
+                                        || workspace.authorDocumentURL == nil
+                                        || workspace.authorExportURL == nil
+                                )
+                        }
+                    }
+                }
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
                         Label("Asset Optimizer", systemImage: "wand.and.stars")
                             .font(.headline)
                         Text(
@@ -436,6 +493,10 @@ struct SwanSDKWorkspaceView: View {
                         }
                     }
                 }
+                structuredReportCard(ifTitle: "Author Create")
+                structuredReportCard(ifTitle: "Author Validate")
+                structuredReportCard(ifTitle: "Author Report")
+                structuredReportCard(ifTitle: "Author Export")
                 structuredReportCard(ifTitle: "Asset Optimizer")
             }
             .padding(24)
@@ -518,8 +579,55 @@ struct SwanSDKWorkspaceView: View {
                         }
                     }
                 }
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Failing-plan Minimizer", systemImage: "arrow.down.right.and.arrow.up.left")
+                            .font(.headline)
+                        Text(
+                            "Delta-reduce a deterministic failure through fresh SwanSong runs. If no plan is chosen, Studio uses the selected scenario plan. The SDK verifies that the final result still matches the public failure predicate."
+                        )
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        fileChoiceRow(
+                            "Failing plan",
+                            value: workspace.minimizePlanURL?.path ?? "Use selected scenario plan",
+                            button: "Choose…",
+                            action: chooseMinimizePlan
+                        )
+                        fileChoiceRow(
+                            "Predicate",
+                            value: workspace.minimizePredicateURL?.path ?? "No failure predicate selected",
+                            button: "Choose…",
+                            action: chooseMinimizePredicate
+                        )
+                        fileChoiceRow(
+                            "Output",
+                            value: workspace.minimizeOutputURL?.path ?? "No new minimized-plan path selected",
+                            button: "Choose…",
+                            action: chooseMinimizeOutput
+                        )
+                        HStack {
+                            TextField(
+                                "Maximum evaluations",
+                                value: $workspace.minimizeMaxEvaluations,
+                                format: .number
+                            )
+                            .textFieldStyle(.roundedBorder)
+                            .frame(maxWidth: 210)
+                            Spacer()
+                            Button("Minimize Failure") { workspace.runMinimize() }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(
+                                    workspace.isRunning
+                                        || workspace.minimizePredicateURL == nil
+                                        || workspace.minimizeOutputURL == nil
+                                )
+                        }
+                    }
+                }
                 structuredReportCard(ifTitle: "Deterministic Fuzzer")
                 structuredReportCard(ifTitle: "Save & RTC Lab")
+                structuredReportCard(ifTitle: "Plan Minimizer")
             }
             .padding(24)
             .frame(maxWidth: 820)
@@ -561,6 +669,46 @@ struct SwanSDKWorkspaceView: View {
                         }
                     }
                     identityCard(title: "Evidence identity")
+                    StudioCard {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Label("Replay Timeline", systemImage: "timeline.selection")
+                                .font(.headline)
+                            Text(
+                                "Index the selected exact-frame plan with optional checkpoints, evidence, and trace data. This is a read-only inspection report; it does not substitute for fresh gameplay evidence."
+                            )
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                            fileChoiceRow(
+                                "Checkpoints",
+                                value: workspace.replayCheckpointsURL?.path ?? "No optional checkpoint file",
+                                button: "Choose…",
+                                action: chooseReplayCheckpoints
+                            )
+                            fileChoiceRow(
+                                "Trace",
+                                value: workspace.replayTraceURL?.path ?? "No optional frame trace",
+                                button: "Choose…",
+                                action: chooseReplayTrace
+                            )
+                            fileChoiceRow(
+                                "Report",
+                                value: workspace.replayOutputURL?.path ?? "Show in Studio only",
+                                button: "Choose…",
+                                action: chooseReplayOutput
+                            )
+                            HStack {
+                                if workspace.evidence != nil {
+                                    Label("Current evidence will be bound", systemImage: "link")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                                Spacer()
+                                Button("Build Timeline") { workspace.runReplay() }
+                                    .buttonStyle(.borderedProminent)
+                                    .disabled(workspace.isRunning)
+                            }
+                        }
+                    }
                     StudioCard {
                         VStack(alignment: .leading, spacing: 12) {
                             Label("Dev", systemImage: "arrow.triangle.2.circlepath")
@@ -640,6 +788,7 @@ struct SwanSDKWorkspaceView: View {
                         }
                     }
                     structuredReportCard(ifTitle: "Scenario Recorder")
+                    structuredReportCard(ifTitle: "Replay Timeline")
                     structuredReportCard(ifTitle: "Dev Cycle")
                     structuredReportCard(ifTitle: "Dev Watch")
                 } else {
@@ -899,14 +1048,14 @@ struct SwanSDKWorkspaceView: View {
                 }
                 if workspace.usesVerifiedBundledSDK {
                     Label(
-                        "The signed SDK 0.2.0 payload is verified. Python 3.11+ and the Wonderful packages shown above are resolved locally; Run Doctor checks their installed versions and SwanSong connectivity.",
+                        "The signed SDK 0.3.1 payload is verified. Python 3.11+ and the Wonderful packages shown above are resolved locally; Run Doctor checks their installed versions and SwanSong connectivity.",
                         systemImage: "checkmark.shield.fill"
                     )
                     .font(.caption)
                     .foregroundStyle(.green)
                 } else {
                     Label(
-                        "An explicit external SDK override is active. Use Bundled SDK to return to the signed, content-verified 0.2.0 payload.",
+                        "An explicit external SDK override is active. Use Bundled SDK to return to the signed, content-verified 0.3.1 payload.",
                         systemImage: "exclamationmark.triangle"
                     )
                     .font(.caption)
@@ -1317,6 +1466,81 @@ struct SwanSDKWorkspaceView: View {
         panel.allowsMultipleSelection = false
         panel.allowedContentTypes = [.json]
         if panel.runModal() == .OK { workspace.scenarioInputLogURL = panel.url }
+    }
+
+    private func chooseAuthorDocument() {
+        workspace.authorDocumentURL = chooseJSONFile(title: "Choose Authoring Document")
+            ?? workspace.authorDocumentURL
+    }
+
+    private func chooseAuthorExport() {
+        let panel = NSSavePanel()
+        panel.title = "Choose New Authoring Export"
+        panel.prompt = "Choose Export"
+        panel.directoryURL = workspace.projectRoot
+        panel.nameFieldStringValue = "author-export.json"
+        panel.allowedContentTypes = [
+            .json,
+            .png,
+            UTType(filenameExtension: "toml")!,
+        ]
+        if panel.runModal() == .OK { workspace.authorExportURL = panel.url }
+    }
+
+    private func chooseReplayCheckpoints() {
+        workspace.replayCheckpointsURL = chooseJSONFile(title: "Choose Replay Checkpoints")
+            ?? workspace.replayCheckpointsURL
+    }
+
+    private func chooseReplayTrace() {
+        workspace.replayTraceURL = chooseJSONFile(title: "Choose Replay Trace")
+            ?? workspace.replayTraceURL
+    }
+
+    private func chooseReplayOutput() {
+        workspace.replayOutputURL = chooseJSONOutput(
+            title: "Choose Replay Report Output",
+            name: "replay-report.json"
+        ) ?? workspace.replayOutputURL
+    }
+
+    private func chooseMinimizePlan() {
+        workspace.minimizePlanURL = chooseJSONFile(title: "Choose Failing Frame Plan")
+            ?? workspace.minimizePlanURL
+    }
+
+    private func chooseMinimizePredicate() {
+        workspace.minimizePredicateURL = chooseJSONFile(title: "Choose Failure Predicate")
+            ?? workspace.minimizePredicateURL
+    }
+
+    private func chooseMinimizeOutput() {
+        workspace.minimizeOutputURL = chooseJSONOutput(
+            title: "Choose Minimized Plan Output",
+            name: "minimized-plan.json"
+        ) ?? workspace.minimizeOutputURL
+    }
+
+    private func chooseJSONFile(title: String) -> URL? {
+        let panel = NSOpenPanel()
+        panel.title = title
+        panel.prompt = "Choose"
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        panel.allowedContentTypes = [.json]
+        panel.directoryURL = workspace.projectRoot
+        return panel.runModal() == .OK ? panel.url : nil
+    }
+
+    private func chooseJSONOutput(title: String, name: String) -> URL? {
+        let panel = NSSavePanel()
+        panel.title = title
+        panel.prompt = "Choose Output"
+        panel.directoryURL = workspace.projectRoot
+        panel.nameFieldStringValue = name
+        panel.allowedContentTypes = [.json]
+        return panel.runModal() == .OK ? panel.url : nil
     }
 
     private func chooseProfileTrace() {

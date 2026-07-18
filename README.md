@@ -15,7 +15,7 @@ a really nice place to play them.
 
 <p align="center">
   <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases"><strong>Download the latest SwanSong beta</strong></a>
-  · <a href="docs/releases/0.4.1.md">What's new in 0.4.1</a>
+  · <a href="docs/releases/0.4.2.md">What's new in 0.4.2</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -64,8 +64,10 @@ changes, capture text on-device, and keep review evidence beside the project.
 
 **SwanSong Studio** brings New, Assets, Build, Test, Play, Profile, Evidence,
 and Release into one native workspace for SwanSong SDK projects. Current builds
-embed and content-verify the complete SwanSong SDK 0.2.0 runtime, schema,
-recipes, Python package, and `swan` entry point. An explicit external SDK
+embed and content-verify the complete SwanSong SDK 0.3.1 runtime, schema,
+recipes, Python package, and `swan` entry point. Studio includes typed visual
+authoring, replay-timeline, and failing-plan minimization tools alongside the
+existing workflow. An explicit external SDK
 override remains available for framework development. Python 3.11+ and the
 pinned Wonderful packages are resolved locally and checked by Doctor; Studio
 continues to delegate toolchain, deterministic play, profiling, and release
@@ -118,7 +120,7 @@ The technical documentation lives in the
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.4.1 release notes](docs/releases/0.4.1.md).
+[0.4.2 release notes](docs/releases/0.4.2.md).
 
 ## Free, open, and independent
 

@@ -28,11 +28,22 @@ final class SwanSDKWorkspaceModel {
     var scenarioPlanHasUnsavedChanges = false
     var scenarioInputLogURL: URL?
     var optimizerAssetID = ""
+    var authorKind: SwanSDKAuthorKind = .tilemap
+    var authorDocumentID = "main"
+    var authorDocumentURL: URL?
+    var authorExportURL: URL?
     var fuzzSeed: UInt64 = 1
     var fuzzCases = 32
     var fuzzFrames = 600
     var laboratoryCase = "all"
     var laboratoryRTCSeed = ""
+    var replayCheckpointsURL: URL?
+    var replayTraceURL: URL?
+    var replayOutputURL: URL?
+    var minimizePlanURL: URL?
+    var minimizePredicateURL: URL?
+    var minimizeOutputURL: URL?
+    var minimizeMaxEvaluations = 256
     var profileTraceURL: URL?
     var evidenceBeforeURL: URL?
     var evidenceAfterURL: URL?
@@ -618,6 +629,67 @@ final class SwanSDKWorkspaceModel {
         ) { [weak self] in self?.reloadGeneratedArtifacts() }
     }
 
+    func runAuthorCreate() {
+        guard let manifestURL, let projectRoot else {
+            issue = "Open a SwanSong SDK project first."
+            return
+        }
+        let identifier = authorDocumentID.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !identifier.isEmpty else {
+            issue = "Enter a lowercase kebab-case authoring document ID first."
+            return
+        }
+        let expected = projectRoot.appendingPathComponent(
+            "authoring/\(identifier).\(authorKind.rawValue).json"
+        )
+        runStructuredCommand(
+            .authorCreate(
+                manifest: manifestURL,
+                kind: authorKind,
+                id: identifier
+            ),
+            action: .assets,
+            title: "Author Create"
+        ) { [weak self] in self?.authorDocumentURL = expected }
+    }
+
+    func runAuthorValidate() {
+        guard let manifestURL, let document = authorDocumentURL else {
+            issue = "Choose a project-owned authoring document first."
+            return
+        }
+        runStructuredCommand(
+            .authorValidate(manifest: manifestURL, document: document),
+            action: .assets,
+            title: "Author Validate"
+        )
+    }
+
+    func runAuthorReport() {
+        guard let manifestURL, let document = authorDocumentURL else {
+            issue = "Choose a project-owned authoring document first."
+            return
+        }
+        runStructuredCommand(
+            .authorReport(manifest: manifestURL, document: document),
+            action: .assets,
+            title: "Author Report"
+        )
+    }
+
+    func runAuthorExport() {
+        guard let manifestURL, let document = authorDocumentURL,
+              let output = authorExportURL else {
+            issue = "Choose an authoring document and a new project-owned export path first."
+            return
+        }
+        runStructuredCommand(
+            .authorExport(manifest: manifestURL, document: document, output: output),
+            action: .assets,
+            title: "Author Export"
+        )
+    }
+
     func runFuzzer() {
         guard let manifestURL else {
             issue = "Open a SwanSong SDK project first."
@@ -654,6 +726,65 @@ final class SwanSDKWorkspaceModel {
             .laboratory(manifest: manifestURL, testCase: laboratoryCase, rtcSeed: seed),
             action: .test,
             title: "Save & RTC Lab"
+        )
+    }
+
+    func runReplay() {
+        guard let manifestURL, let scenario = selectedScenario else {
+            issue = "Generate assets and select a scenario first."
+            return
+        }
+        do {
+            if scenarioPlanHasUnsavedChanges { try saveScenarioPlan() }
+        } catch {
+            issue = error.localizedDescription
+            return
+        }
+        runStructuredCommand(
+            .replay(
+                manifest: manifestURL,
+                scenario: scenario.id,
+                checkpoints: replayCheckpointsURL,
+                evidence: evidence?.directoryURL,
+                trace: replayTraceURL,
+                output: replayOutputURL
+            ),
+            action: .play,
+            title: "Replay Timeline"
+        )
+    }
+
+    func runMinimize() {
+        guard let manifestURL, let projectRoot else {
+            issue = "Open a SwanSong SDK project first."
+            return
+        }
+        if minimizePlanURL == nil {
+            do {
+                if scenarioPlanHasUnsavedChanges { try saveScenarioPlan() }
+            } catch {
+                issue = error.localizedDescription
+                return
+            }
+        }
+        let plan = minimizePlanURL ?? selectedScenario.map {
+            projectRoot.appendingPathComponent($0.plan)
+        }
+        guard let plan, let predicate = minimizePredicateURL,
+              let output = minimizeOutputURL else {
+            issue = "Choose a failing plan, failure predicate, and new minimized-plan output first."
+            return
+        }
+        runStructuredCommand(
+            .minimize(
+                manifest: manifestURL,
+                plan: plan,
+                predicate: predicate,
+                output: output,
+                maxEvaluations: max(1, minimizeMaxEvaluations)
+            ),
+            action: .test,
+            title: "Plan Minimizer"
         )
     }
 
@@ -967,6 +1098,17 @@ final class SwanSDKWorkspaceModel {
         scenarioPlanHasUnsavedChanges = false
         scenarioInputLogURL = nil
         optimizerAssetID = ""
+        authorKind = .tilemap
+        authorDocumentID = "main"
+        authorDocumentURL = nil
+        authorExportURL = nil
+        replayCheckpointsURL = nil
+        replayTraceURL = nil
+        replayOutputURL = nil
+        minimizePlanURL = nil
+        minimizePredicateURL = nil
+        minimizeOutputURL = nil
+        minimizeMaxEvaluations = 256
         profileTraceURL = nil
         evidenceBeforeURL = nil
         evidenceAfterURL = nil

@@ -28,9 +28,10 @@ silicon and Intel.
 - Local MCP is off by default and exposes only allowlisted live controls,
   bounded homebrew playtesting, and guarded Translation Lab automation.
 - SwanSong Studio provides native New, Assets, Build, Test, Play, Profile,
-  Evidence, and Release views backed by an explicitly selected SwanSong SDK
-  0.2.0-or-newer checkout. The tagged SDK, Python runtime, and deterministic
-  play executor are not yet bundled.
+  Evidence, and Release views backed by its content-verified SwanSong SDK 0.3.1
+  payload or an explicitly selected 0.3.1-or-newer development checkout.
+  Python and Wonderful remain resolved local prerequisites; deterministic play
+  continues to use SwanSong exclusively.
 - ABI 9 can selectively trace map, raster, palette, or sprite-attribute sources
   to private exact cartridge ranges and executed-read context while retaining
   sprite/OAM ownership and conservative origins only inside the project.

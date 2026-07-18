@@ -50,7 +50,7 @@ not routine release metadata.
    ./Scripts/prepare-wiki-sync.sh --check
    ```
 2. Confirm the bundle identifier, minimum macOS target, Sparkle dependency
-   pin, SwanSong SDK 0.2.0 commit/content lock, production feed URL, public
+   pin, SwanSong SDK 0.3.1 commit/content lock, production feed URL, public
    update key, system-profiling disablement,
    and off-by-default automatic check/download settings.
    Resolve the package once, then bind the project manifest, resolution, source
@@ -132,7 +132,7 @@ not routine release metadata.
    provenance marker. The archived marker plus ares and Sparkle locks must
    match the manifest commits; the source and ares fields must also match the
    signed app's metadata and embedded ares lock.
-   The app payload gate separately reconstructs SDK 0.2.0 from its exact tagged
+   The app payload gate separately reconstructs SDK 0.3.1 from its exact tagged
    commit, verifies the SDK's own content-addressed revision, records every
    bundled file and digest, rejects links or extra files, and checks that same
    signed payload again after archive extraction.
@@ -266,7 +266,7 @@ that state without downloading a package or writing a card.
 ## Public release contents
 
 - versioned universal app ZIP created after stapling;
-- content-verified SwanSong SDK 0.2.0 runtime, schema, recipes, Python package,
+- content-verified SwanSong SDK 0.3.1 runtime, schema, recipes, Python package,
   license, and `swan` entry point inside that signed app;
 - exact corresponding source archive with pinned ares source and integration
   patch plus the exact locked Sparkle source and license;
