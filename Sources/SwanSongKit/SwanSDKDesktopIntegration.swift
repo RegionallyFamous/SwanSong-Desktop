@@ -326,7 +326,14 @@ public enum SwanSDKOutputStream: String, Sendable {
 public final class SwanSDKSubprocessRunner: @unchecked Sendable {
     private static let sessionLauncher = """
     import os, sys
-    os.setsid()
+    try:
+        os.setsid()
+    except PermissionError:
+        try:
+            os.setpgid(0, 0)
+        except PermissionError:
+            if os.getpgrp() != os.getpid():
+                raise
     os.execv(sys.argv[1], sys.argv[1:])
     """
 
