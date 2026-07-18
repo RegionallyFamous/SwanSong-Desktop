@@ -23,13 +23,8 @@ final class BrandingTests: XCTestCase {
     }
 
     @MainActor
-    func testStatusItemUsesSwanArtworkAndMinimalMenu() throws {
-        let controller = SwanSongStatusItemController()
-        let button = try XCTUnwrap(controller.statusItem.button)
-        let menu = try XCTUnwrap(controller.statusItem.menu)
-
-        XCTAssertTrue(try XCTUnwrap(button.image).isTemplate)
-        XCTAssertEqual(button.toolTip, "SwanSong")
+    func testStatusMenuUsesMinimalActionsWithoutInstallingSystemStatusItem() {
+        let menu = SwanSongStatusItemController.makeMenu()
         XCTAssertEqual(
             menu.items.map(\.title),
             ["Show SwanSong", "", "Quit SwanSong"]

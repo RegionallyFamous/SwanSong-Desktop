@@ -10,29 +10,46 @@ second build system.
 Choose a local SwanSong SDK 0.2.0-or-newer checkout when Studio opens. SwanSong
 remembers the SDK and project folders for the current macOS user. This preview
 does not yet bundle Python, Wonderful, or the SDK runtime inside the signed app.
+The workspace shows that boundary rather than presenting the public app as a
+self-contained SDK distribution.
 
 ## The eight workspaces
 
-- **New** calls `swan new` with Arcade Action, Menu Puzzle, or Grid Tactics.
-- **Assets** edits `swan.toml`, calls `swan assets`, and exposes Asset Optimizer.
+- **New** calls `swan new` with Arcade Action, Menu Puzzle, or Grid Tactics and
+  passes the exact selected destination.
+- **Assets** edits and saves `swan.toml`, calls `swan assets`, and exposes Asset
+  Optimizer through `swan optimize --json`.
 - **Build** calls `swan build`; Wonderful linking and cartridge budgets remain
   owned by the SDK.
-- **Test** calls `swan test` and exposes the deterministic input fuzzer plus the
-  Save/RTC Laboratory.
+- **Test** calls `swan test` and exposes the deterministic input fuzzer and
+  Save/RTC Laboratory through `swan fuzz --json` and `swan lab --json`.
 - **Play** selects Play Contract scenarios, calls `swan play`, offers the Dev
-  watch cycle, and converts an exported actual-input log with Scenario Recorder.
-- **Profile** renders the resource report and optional Sprite/VRAM trace data.
+  watch cycle through `swan dev --json`, and converts an exported actual-input
+  log with Scenario Recorder. Recorder imports a log; it is not live recording.
+- **Profile** renders `swan report --json` and optional Sprite/VRAM trace data
+  from `swan profile --json`.
 - **Evidence** reviews persisted PNG/WAV/JSON output and compares two evidence
-  folders with Evidence Diff. After inspecting the current frame and required
-  audio, enter one observation for every scenario check and record a hash-bound
-  pass verdict for Release.
-- **Release** runs `swan release`; the SDK owns gates, checksums, notes, and the
-  deterministic archive. It refuses execution-only evidence or a stale
+  folders with `swan evidence-diff --json`. After inspecting the current frame
+  and required audio, enter one observation for every scenario check and record
+  a hash-bound pass verdict for Release.
+- **Release** runs `swan release --json`; the SDK owns gates, checksums, notes,
+  and the deterministic archive. It refuses execution-only evidence or a stale
   observation record.
 
 Doctor is available beside the resolved SDK, schema, toolchain, and SwanSong
 identity. Diagnostics stream while commands run, Cancel terminates the command
 process group, and Studio permits only one SDK command at a time.
+
+## Evidence review
+
+After a successful Play Contract, Studio can show the native frame, WAV format
+and duration with local playback, formatted input plan, structured evidence,
+and latest resource summary. It also shows the resolved SDK package, manifest
+schema, Wonderful revision, SwanSong backend, and engine identity.
+
+Replay status is deliberately narrow. A successful current Play action may say
+its second replay matched. Older evidence loaded from disk does not claim that
+unless its artifact actually persists the comparison.
 
 ## Boundaries
 
@@ -44,3 +61,7 @@ policy.
 The workspace reads and writes only the SDK and project folders you choose.
 Project source, ROMs, diagnostics, frames, audio, plans, and reports stay on the
 Mac.
+
+The SDK remains independently usable from a terminal, CI, or an agent. See
+[[Build and Test]] for contributor gates, [[Local MCP and Automation]] for the
+deterministic agent boundary, and [[0.4 Beta Testing]] for current acceptance.

@@ -2,7 +2,7 @@
 
 This page is the technical command reference for contributors and release
 operators. Product documentation lives in [[Playing and Library]],
-[[Translation Lab]], [[SwanSong Studio|Game Studio]], and
+[[Translation Lab]], [[SwanSong Studio]], and
 [[Analogue Pocket SD Setup]].
 
 ## Requirements
