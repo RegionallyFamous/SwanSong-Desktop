@@ -410,11 +410,11 @@ public struct SwanSDKCLIResolution: Equatable, Sendable {
 }
 
 public struct SwanSDKBundleSummary: Equatable, Sendable {
-    public static let expectedVersion = "0.3.1"
-    public static let expectedCommit = "0aed2049a51029b79a34277a2ceec93a08f72eaa"
+    public static let expectedVersion = "0.4.0"
+    public static let expectedCommit = "6a3f555ab94e977bde4359573ef72f225a507722"
     public static let expectedManifestSchemaVersion = 1
     public static let expectedPayloadRevision =
-        "sha256:92c2f3b0823465c0d0b0d4e094ef3b2c89fcbf2e984a364cb1021e95e6043874"
+        "sha256:4a08d6fa29bf49947576292574d0d868003add6537e01aa0438c4b6eedb85ffe"
     public static let expectedMinimumPython = "3.11"
 
     public let version: String
@@ -961,7 +961,7 @@ public struct SwanSDKSchemaSummary: Equatable, Sendable {
 }
 
 public struct SwanSDKPackageSummary: Equatable, Sendable {
-    public static let minimumStudioToolsVersion = "0.3.1"
+    public static let minimumStudioToolsVersion = "0.4.0"
 
     public let version: String
 
@@ -983,7 +983,7 @@ public struct SwanSDKPackageSummary: Equatable, Sendable {
               let minor = Int(components[1]),
               let patch = Int(components[2]) else { return false }
         let candidate = (major, minor, patch)
-        let minimum = (0, 3, 1)
+        let minimum = (0, 4, 0)
         if candidate.0 != minimum.0 { return candidate.0 > minimum.0 }
         if candidate.1 != minimum.1 { return candidate.1 > minimum.1 }
         if candidate.2 != minimum.2 { return candidate.2 > minimum.2 }

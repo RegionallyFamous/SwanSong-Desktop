@@ -10,8 +10,8 @@ Translation Lab evidence to a public report.
 - **One development workspace:** open SwanSong Studio and move through New,
   Assets, Build, Test, Play, Profile, Evidence, and Release without leaving the
   app.
-- **Explicit SDK ownership:** use the content-verified SwanSong SDK 0.3.1
-  payload or choose a 0.3.1-or-newer development checkout, then confirm Studio
+- **Explicit SDK ownership:** use the content-verified SwanSong SDK 0.4.0
+  payload or choose a 0.4.0-or-newer development checkout, then confirm Studio
   shows its resolved SDK, schema, toolchain, and SwanSong identities. The app
   does not bundle Python or Wonderful.
 - **Real project creation:** create Arcade Action, Menu Puzzle, and Grid Tactics
@@ -89,13 +89,13 @@ Translation Lab evidence to a public report.
 
 ## Deliberate boundaries
 
-SwanSong Studio 0.4 is a developer preview. It embeds SwanSong SDK 0.3.1 and
+SwanSong Studio 0.4 is a developer preview. It embeds SwanSong SDK 0.4.0 and
 requires separately installed Python and Wonderful Toolchain dependencies.
 This release does not install or update those external tools.
 
-The first-party Homebrew Catalog remains **Coming Soon** and network-silent.
-Use **Add From Mac** for authorized local homebrew. The Analogue Pocket tool
-also remains locked until a separate verified stable Core release exists.
+The signed first-party Homebrew Catalog is available but remains network-silent
+until the user explicitly loads or refreshes it. The Analogue Pocket tool still
+remains locked until a separate verified stable Core release exists.
 
 SwanSong does not guess raw HID mappings. Physical device enumeration, hotplug,
 input delivery, SD-card access, and signed update installation still require
@@ -107,7 +107,7 @@ publication.
 
 ## Before reporting a result
 
-1. Confirm **SwanSong 0.4.2 (8)** in **SwanSong > About SwanSong**.
+1. Confirm **SwanSong 0.4.3 (9)** in **SwanSong > About SwanSong**.
 2. Record the Mac model, macOS version, architecture, SDK version, Python
    version, Wonderful revision, and controller when relevant.
 3. For Studio, state the workspace, exact visible command, project recipe, and

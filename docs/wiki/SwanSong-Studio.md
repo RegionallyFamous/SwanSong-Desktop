@@ -23,7 +23,7 @@ policy, while SwanSong remains the deterministic gameplay and evidence backend.
 
 ## Bundled SDK
 
-SwanSong embeds the complete SwanSong SDK 0.3.1 runtime, schema, three recipes,
+SwanSong embeds the complete SwanSong SDK 0.4.0 runtime, schema, three recipes,
 Python package, and `swan` entry point. The bundle is pinned to the tagged Git
 commit and SDK content revision; build, packaging, runtime, and release checks
 reject missing, modified, extra, or identity-mismatched files. Studio selects
@@ -95,9 +95,9 @@ USB hardware mutation is intentionally absent from local MCP automation. A
 person at the Mac must select the tools and image and confirm the physical
 reset. This keeps device writes out of path-free unattended automation.
 
-## SDK 0.3 authoring and replay tools
+## SDK 0.4 authoring and replay tools
 
-Desktop 0.4.2 is pinned to released SDK 0.3.1 and exposes its public contracts
+Desktop 0.4.3 is pinned to released SDK 0.4.0 and exposes its public contracts
 without inventing private project models:
 
 - `swan replay --json` → `swansong-replay-report-v1`, with optional

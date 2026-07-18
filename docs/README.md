@@ -10,7 +10,7 @@ current source line is the 0.4 beta.
 | --- | --- | --- |
 | SwanSong Desktop for macOS | [`RegionallyFamous/SwanSong-Desktop`](https://github.com/RegionallyFamous/SwanSong-Desktop) | This repository: SwiftUI app, library, translation workbench, C ABI, release tooling, and tests. |
 | SwanSong for Analogue Pocket | [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core) | Separate FPGA project, artifacts, hardware qualification, and release lane. Desktop can merge only an immutable, authorized stable Core release onto a user-selected card; it does not build or publish the FPGA product. |
-| First-party homebrew catalog | [`RegionallyFamous/swansong-catalog`](https://github.com/RegionallyFamous/swansong-catalog) | Separate signed catalog and publication record. SwanSong 0.4.2 loads it only after the user asks. |
+| First-party homebrew catalog | [`RegionallyFamous/swansong-catalog`](https://github.com/RegionallyFamous/swansong-catalog) | Separate signed catalog and publication record. SwanSong 0.4.3 loads it only after the user asks. |
 | WonderSwan software engine | Upstream ares at the revision in [`Dependencies/ares.lock.json`](../Dependencies/ares.lock.json) | Prepared into ignored `.engine/` build storage; official source archives include the exact sanitized corresponding source and integration patch. |
 | SwanSong Desktop update feed and app releases | This repository's [`updates/appcast.xml`](../updates/appcast.xml) and [GitHub Releases](https://github.com/RegionallyFamous/SwanSong-Desktop/releases) | Sparkle updates the macOS app only. It does not distribute homebrew or invoke the separate Pocket installer. |
 | Native updater framework | Sparkle at the exact version and commit in [`Package.swift`](../Package.swift), [`Package.resolved`](../Package.resolved), and [`Dependencies/sparkle.lock.json`](../Dependencies/sparkle.lock.json) | Third-party framework embedded in the signed app. Official corresponding-source archives include the locked Sparkle source and license; SwanSong owns its integration, policy, feed, release tooling, and tests in this repository. |
@@ -31,7 +31,7 @@ Release payload and source-archive gates reject firmware binaries. Historical
 
 ## Homebrew publication status
 
-SwanSong 0.4.2 includes the first-party Homebrew Catalog public key and can add
+SwanSong 0.4.3 includes the first-party Homebrew Catalog public key and can add
 an authorized original game directly to the private library. It does not load
 the catalog at launch or merely because the page is open. **Browse Games**,
 **Refresh**, and a selected download are the only catalog network actions.
@@ -168,6 +168,7 @@ tester-facing boundaries are in the [0.4 beta guide](BETA_TESTING.md).
 - [Privacy](../PRIVACY.md)
 - [Support](../SUPPORT.md)
 - [Source and fixture provenance](../SOURCE_PROVENANCE.md)
+- [0.4.3 beta release notes](releases/0.4.3.md)
 - [0.4.2 beta release notes](releases/0.4.2.md)
 - [0.4.1 beta release notes](releases/0.4.1.md)
 - [0.4.0 beta release notes](releases/0.4.0.md)
