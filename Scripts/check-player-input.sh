@@ -20,6 +20,7 @@ TEMP_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/swan-song-player-input.XXXXXX")
 DATA_DIR="$TEMP_ROOT/Data"
 LOG_FILE="$TEMP_ROOT/app.log"
 DEBUG_LOG="$TEMP_ROOT/input-frame-log.json"
+STOP_FRAME=${SWAN_PLAYER_INPUT_STOP_FRAME:-2400}
 PID=
 
 cleanup() {
@@ -62,7 +63,7 @@ SWAN_SONG_APP_DIAGNOSTICS=1 \
 SWAN_SONG_INITIAL_ROM="$ROM" \
 SWAN_SONG_ENABLE_DEBUG_TOOLS=1 \
 SWAN_SONG_DEBUG_LOG_PATH="$DEBUG_LOG" \
-SWAN_SONG_STOP_AT_FRAME=480 \
+SWAN_SONG_STOP_AT_FRAME="$STOP_FRAME" \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" \
 "$SWIFT_DIR/debug/SwanSong" >"$LOG_FILE" 2>&1 &
 PID=$!
@@ -88,25 +89,10 @@ if [ "$ready" -ne 1 ]; then
   exit 1
 fi
 
-# Send the physical X key (virtual keycode 7), which SwanSong maps to WonderSwan A.
-# Posting to the app PID exercises AppKit focus and RootView's real key handling.
-swift -e '
-  import AppKit
-  import CoreGraphics
-  import Darwin
-  let pid = Int32(CommandLine.arguments[1])!
-  guard let app = NSRunningApplication(processIdentifier: pid) else { exit(2) }
-  _ = app.activate(options: [.activateIgnoringOtherApps])
-  usleep(250_000)
-  guard let down = CGEvent(keyboardEventSource: nil, virtualKey: 7, keyDown: true),
-        let up = CGEvent(keyboardEventSource: nil, virtualKey: 7, keyDown: false) else { exit(3) }
-  down.postToPid(pid)
-  usleep(120_000)
-  up.postToPid(pid)
-' "$PID"
+echo "Click the SwanSong game display and press the physical X key once."
 
 attempt=0
-while [ "$attempt" -lt 400 ] && [ ! -s "$DEBUG_LOG" ]; do
+while [ "$attempt" -lt 1000 ] && [ ! -s "$DEBUG_LOG" ]; do
   if ! kill -0 "$PID" 2>/dev/null; then
     break
   fi
