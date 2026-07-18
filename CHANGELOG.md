@@ -5,6 +5,13 @@ The project uses semantic versioning once a release is published.
 
 ## [Unreleased]
 
+### Added
+
+- Added SwanSong Studio with New, Assets, Build, Test, Play, Profile, Evidence,
+  and Release workspaces. Its SDK-backed tools include Doctor, Dev, Scenario
+  Recorder, Evidence Diff, deterministic input fuzzing, Sprite/VRAM profiling,
+  Asset Optimizer, Save/RTC Laboratory, and deterministic release packaging.
+
 ## [0.3.1] - 2026-07-17
 
 ### Added
