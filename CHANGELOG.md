@@ -5,6 +5,15 @@ The project uses semantic versioning once a release is published.
 
 ## [Unreleased]
 
+### Added
+
+- Added guarded export of a current complete ABI 8 source probe into a
+  deterministic, analyzer-neutral private seed for Ghidra or pypcode. MCP
+  receives only source-free counts, completeness flags, and hashes; exact
+  cartridge ranges, executed caller/operand/mapper context, and output paths
+  remain inside the translation project, and the export never authorizes a
+  patch.
+
 ## [0.4.0] - 2026-07-17
 
 ### Added

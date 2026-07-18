@@ -358,6 +358,117 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
                 && $0.executedReadContext != nil
         })
 
+        let firstSeedReport = try TranslationStaticAnalysisSeedExporter.run(
+            project: project,
+            sourceProbeDetailsURL: detailsURL
+        )
+        let secondSeedReport = try TranslationStaticAnalysisSeedExporter.run(
+            project: project,
+            sourceProbeDetailsURL: detailsURL
+        )
+        XCTAssertEqual(firstSeedReport.schema, TranslationStaticAnalysisSeedReport.currentSchema)
+        XCTAssertEqual(firstSeedReport.privateSeedSHA256, secondSeedReport.privateSeedSHA256)
+        XCTAssertEqual(firstSeedReport.anchorsSHA256, secondSeedReport.anchorsSHA256)
+        XCTAssertEqual(firstSeedReport.payloadRangesSHA256, secondSeedReport.payloadRangesSHA256)
+        XCTAssertTrue(firstSeedReport.lineageComplete)
+        XCTAssertTrue(firstSeedReport.consumerScopeComplete)
+        XCTAssertTrue(firstSeedReport.executedReadContextsComplete)
+        XCTAssertFalse(firstSeedReport.prototypeAuthorized)
+        XCTAssertGreaterThan(firstSeedReport.anchorCount, 0)
+
+        let seedRoot = projectRoot
+            .appendingPathComponent("analysis/swan-song-lab/static-analysis-seeds")
+        let seedFiles = try FileManager.default.contentsOfDirectory(
+            at: seedRoot,
+            includingPropertiesForKeys: [.isRegularFileKey, .isSymbolicLinkKey]
+        ).filter { $0.lastPathComponent.hasPrefix("seed-") }
+        XCTAssertEqual(seedFiles.count, 2)
+        XCTAssertFalse(try FileManager.default.contentsOfDirectory(atPath: seedRoot.path)
+            .contains(where: { $0.hasPrefix(".staging-") }))
+        let seedBytes = try seedFiles.map { try Data(contentsOf: $0) }
+        XCTAssertEqual(seedBytes[0], seedBytes[1])
+        XCTAssertEqual(
+            (try FileManager.default.attributesOfItem(atPath: seedRoot.path)[.posixPermissions]
+                as? NSNumber)?.intValue,
+            0o700
+        )
+        for file in seedFiles {
+            XCTAssertEqual(
+                (try FileManager.default.attributesOfItem(atPath: file.path)[.posixPermissions]
+                    as? NSNumber)?.intValue,
+                0o600
+            )
+        }
+        let seed = try decoder.decode(
+            TranslationStaticAnalysisSeed.self,
+            from: seedBytes[0]
+        )
+        XCTAssertEqual(seed.schema, TranslationStaticAnalysisSeed.currentSchema)
+        XCTAssertFalse(seed.prototypeAuthorized)
+        XCTAssertTrue(seed.anchors.contains { $0.scope == "selected" })
+        XCTAssertTrue(seed.anchors.contains { $0.scope == "outsideConsumer" })
+        let publicSeedText = String(
+            decoding: try JSONEncoder().encode(firstSeedReport),
+            as: UTF8.self
+        ).lowercased()
+        for forbidden in [
+            "sourceprobedetailspath", "cartridgerange", "lowerbound", "upperbound",
+            "immediatecaller", "callersegment", "operandsegment", "mapperwindow",
+            "mapperbank", "resolvedmapperapertureoperand", projectRoot.path.lowercased(),
+        ] {
+            XCTAssertFalse(publicSeedText.contains(forbidden), forbidden)
+        }
+
+        try FileManager.default.setAttributes(
+            [.posixPermissions: 0o644],
+            ofItemAtPath: detailsURL.path
+        )
+        XCTAssertThrowsError(try TranslationStaticAnalysisSeedExporter.run(
+            project: project,
+            sourceProbeDetailsURL: detailsURL
+        ))
+        try FileManager.default.setAttributes(
+            [.posixPermissions: 0o600],
+            ofItemAtPath: detailsURL.path
+        )
+
+        let alias = artifact.directoryURL.deletingLastPathComponent()
+            .appendingPathComponent("source-probe-symlink-fixture")
+        try FileManager.default.createSymbolicLink(
+            at: alias,
+            withDestinationURL: artifact.directoryURL
+        )
+        XCTAssertThrowsError(try TranslationStaticAnalysisSeedExporter.run(
+            project: project,
+            sourceProbeDetailsURL: alias.appendingPathComponent("details.json")
+        ))
+        try FileManager.default.removeItem(at: alias)
+
+        let hardlink = artifact.directoryURL.deletingLastPathComponent()
+            .appendingPathComponent("source-probe-hardlink-fixture", isDirectory: true)
+        try FileManager.default.createDirectory(
+            at: hardlink,
+            withIntermediateDirectories: false,
+            attributes: [.posixPermissions: 0o700]
+        )
+        try FileManager.default.linkItem(
+            at: detailsURL,
+            to: hardlink.appendingPathComponent("details.json")
+        )
+        try FileManager.default.copyItem(
+            at: artifact.directoryURL.appendingPathComponent("plan.json"),
+            to: hardlink.appendingPathComponent("plan.json")
+        )
+        try FileManager.default.setAttributes(
+            [.posixPermissions: 0o600],
+            ofItemAtPath: hardlink.appendingPathComponent("plan.json").path
+        )
+        XCTAssertThrowsError(try TranslationStaticAnalysisSeedExporter.run(
+            project: project,
+            sourceProbeDetailsURL: hardlink.appendingPathComponent("details.json")
+        ))
+        try FileManager.default.removeItem(at: hardlink)
+
         let originalDetailsData = try Data(contentsOf: detailsURL)
         var missingContext = try XCTUnwrap(
             JSONSerialization.jsonObject(with: originalDetailsData)

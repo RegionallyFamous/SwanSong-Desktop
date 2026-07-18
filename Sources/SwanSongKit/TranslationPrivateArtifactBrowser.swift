@@ -178,7 +178,7 @@ public struct TranslationPrivateArtifactStore: Sendable {
         return output
     }
 
-    private func inspect(
+    func inspect(
         kind: TranslationPrivateArtifactKind,
         directory: URL,
         project: TranslationProject
