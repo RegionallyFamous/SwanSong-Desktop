@@ -161,7 +161,7 @@ tester-facing boundaries are in the [0.4 beta guide](BETA_TESTING.md).
 - [SwanSong Wiki](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki)
 - [Playing and library](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
 - [Translation Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
-- [SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Game-Studio)
+- [SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/SwanSong-Studio)
 - [Local MCP and automation](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
 - [Analogue Pocket SD setup](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
 - [Build and test](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Build-and-Test)

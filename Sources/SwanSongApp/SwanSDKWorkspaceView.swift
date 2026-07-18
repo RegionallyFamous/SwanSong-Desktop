@@ -45,6 +45,7 @@ struct SwanSDKWorkspaceView: View {
                 Button("Choose SDK…", systemImage: "shippingbox") {
                     chooseSDK()
                 }
+                .disabled(workspace.isRunning)
                 Button("Open Project…", systemImage: "folder") {
                     chooseProject()
                 }
@@ -910,6 +911,71 @@ struct SwanSDKWorkspaceView: View {
                         }
                         Button(audioPlayer.isPlaying ? "Stop" : "Play") {
                             audioPlayer.toggle(url: evidence.audioURL)
+                        }
+                    }
+                }
+            }
+            if let scenario = workspace.selectedScenario {
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Label("Inspected release verdict", systemImage: "eye.circle")
+                                .font(.headline)
+                            Spacer()
+                            Text(workspace.observationRecorded ? "Bound pass recorded" : "Not recorded")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(
+                                    workspace.observationRecorded ? Color.green : Color.secondary
+                                )
+                        }
+                        TextField("Observer name or role", text: Binding(
+                            get: { workspace.observationObserver },
+                            set: {
+                                workspace.observationObserver = $0
+                                workspace.observationRecorded = false
+                            }
+                        ))
+                        ForEach(scenario.requiredChecks, id: \.self) { check in
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(check).font(.caption.weight(.semibold))
+                                TextField("What was visibly or audibly observed?", text: Binding(
+                                    get: { workspace.observationNotes[check] ?? "" },
+                                    set: {
+                                        workspace.observationNotes[check] = $0
+                                        workspace.observationRecorded = false
+                                    }
+                                ))
+                            }
+                        }
+                        Toggle("I inspected the full native PNG frame", isOn: Binding(
+                            get: { workspace.observationPNGInspected },
+                            set: {
+                                workspace.observationPNGInspected = $0
+                                workspace.observationRecorded = false
+                            }
+                        ))
+                        if scenario.requiresAudioEvidence {
+                            Toggle("I listened to the required WAV evidence", isOn: Binding(
+                                get: { workspace.observationWAVInspected },
+                                set: {
+                                    workspace.observationWAVInspected = $0
+                                    workspace.observationRecorded = false
+                                }
+                            ))
+                        }
+                        HStack {
+                            Text("This binds the pass to the current ROM, PNG, WAV, scenario, and required checks.")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            Spacer()
+                            Button("Record Inspected Pass", systemImage: "checkmark.seal") {
+                                do {
+                                    try workspace.recordInspectedPass()
+                                } catch {
+                                    workspace.issue = error.localizedDescription
+                                }
+                            }
+                            .disabled(!workspace.canRecordInspectedPass)
                         }
                     }
                 }

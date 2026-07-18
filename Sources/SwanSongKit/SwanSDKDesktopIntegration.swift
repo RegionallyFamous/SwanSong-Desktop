@@ -1,3 +1,4 @@
+import Darwin
 import Foundation
 
 public enum SwanSDKRecipe: String, CaseIterable, Codable, Identifiable, Sendable {
@@ -323,6 +324,19 @@ public enum SwanSDKOutputStream: String, Sendable {
 }
 
 public final class SwanSDKSubprocessRunner: @unchecked Sendable {
+    private static let sessionLauncher = """
+    import os, sys
+    try:
+        os.setsid()
+    except PermissionError:
+        try:
+            os.setpgid(0, 0)
+        except PermissionError:
+            if os.getpgrp() != os.getpid():
+                raise
+    os.execv(sys.argv[1], sys.argv[1:])
+    """
+
     public init() {}
 
     public func run(
@@ -352,8 +366,22 @@ public final class SwanSDKSubprocessRunner: @unchecked Sendable {
         }
 
         let process = Process()
-        process.executableURL = invocation.executableURL
-        process.arguments = invocation.arguments
+        let bundledPython = invocation.environment["SWANSONG_SDK_DIR"].map {
+            URL(fileURLWithPath: $0, isDirectory: true)
+                .appendingPathComponent("runtime/bin/python3")
+        }
+        if let bundledPython,
+           FileManager.default.isExecutableFile(atPath: bundledPython.path) {
+            process.executableURL = bundledPython
+            process.arguments = [
+                "-c", Self.sessionLauncher, invocation.executableURL.path,
+            ] + invocation.arguments
+        } else {
+            process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
+            process.arguments = [
+                "python3", "-c", Self.sessionLauncher, invocation.executableURL.path,
+            ] + invocation.arguments
+        }
         process.currentDirectoryURL = invocation.workingDirectory
         process.environment = inheritedEnvironment.merging(invocation.environment) { _, supplied in
             supplied
@@ -386,7 +414,7 @@ public final class SwanSDKSubprocessRunner: @unchecked Sendable {
         let status = await withTaskCancellationHandler {
             await terminationWaiter.value
         } onCancel: {
-            if process.isRunning { process.terminate() }
+            Self.terminateProcessTree(process)
         }
         guard let status else {
             throw SwanSDKIntegrationError.commandFailed(
@@ -406,6 +434,19 @@ public final class SwanSDKSubprocessRunner: @unchecked Sendable {
             standardOutput: output,
             standardError: error
         )
+    }
+
+    private static func terminateProcessTree(_ process: Process) {
+        guard process.isRunning else { return }
+        let processID = process.processIdentifier
+        if kill(-processID, SIGTERM) != 0 {
+            process.terminate()
+        }
+        DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 0.5) {
+            if kill(-processID, 0) == 0 {
+                _ = kill(-processID, SIGKILL)
+            }
+        }
     }
 
     private static func monitor(
@@ -597,7 +638,16 @@ public struct SwanSDKSchemaSummary: Equatable, Sendable {
 }
 
 public struct SwanSDKPackageSummary: Equatable, Sendable {
+    public static let minimumStudioToolsVersion = "0.2.0"
+
     public let version: String
+
+    public var supportsStudioTools: Bool {
+        let core = version.split(separator: "-", maxSplits: 1)[0]
+        let components = core.split(separator: ".").compactMap { Int($0) }
+        guard components.count == 3 else { return false }
+        return components[0] > 0 || components[1] >= 2
+    }
 
     public static func load(from sdkRoot: URL) throws -> Self {
         let text = try String(
@@ -821,6 +871,83 @@ public struct SwanSDKEvidence: Equatable, Sendable {
                 from: directory.appendingPathComponent("audio.wav")
             )
         )
+    }
+}
+
+public struct SwanSDKEvidenceObservation: Codable, Equatable, Sendable {
+    public static let currentSchema = "swan-song-evidence-observation-v1"
+
+    public let schema: String
+    public let scenario: String
+    public let verdict: String
+    public let pngInspected: Bool
+    public let wavInspected: Bool
+    public let observer: String
+    public let romSHA256: String
+    public let capturePNG_SHA256: String
+    public let finalWindowWAVSHA256: String
+    public let requiredChecks: [String: String]
+
+    public init(
+        scenario: String,
+        pngInspected: Bool,
+        wavInspected: Bool,
+        observer: String,
+        romSHA256: String,
+        capturePNG_SHA256: String,
+        finalWindowWAVSHA256: String,
+        requiredChecks: [String: String]
+    ) {
+        schema = Self.currentSchema
+        self.scenario = scenario
+        verdict = "pass"
+        self.pngInspected = pngInspected
+        self.wavInspected = wavInspected
+        self.observer = observer
+        self.romSHA256 = romSHA256
+        self.capturePNG_SHA256 = capturePNG_SHA256
+        self.finalWindowWAVSHA256 = finalWindowWAVSHA256
+        self.requiredChecks = requiredChecks
+    }
+
+    public static func decode(_ data: Data) throws -> Self {
+        let observation = try JSONDecoder().decode(Self.self, from: data)
+        guard observation.schema == Self.currentSchema,
+              observation.verdict == "pass" else {
+            throw SwanSDKIntegrationError.malformedContract(
+                "Unsupported evidence observation verdict."
+            )
+        }
+        return observation
+    }
+
+    public func isBoundPass(
+        scenario expectedScenario: String,
+        requiresAudio: Bool,
+        requiredChecks expectedChecks: Set<String>,
+        romSHA256 expectedROM: String,
+        capturePNG_SHA256 expectedPNG: String,
+        finalWindowWAVSHA256 expectedWAV: String
+    ) -> Bool {
+        schema == Self.currentSchema
+            && verdict == "pass"
+            && scenario == expectedScenario
+            && pngInspected
+            && (!requiresAudio || wavInspected)
+            && !observer.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && romSHA256 == expectedROM
+            && capturePNG_SHA256 == expectedPNG
+            && finalWindowWAVSHA256 == expectedWAV
+            && Set(requiredChecks.keys) == expectedChecks
+            && requiredChecks.values.allSatisfy {
+                !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            }
+    }
+
+    public func formattedJSON() throws -> String {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+        return String(decoding: try encoder.encode(self), as: UTF8.self) + "\n"
     }
 }
 

@@ -29,8 +29,8 @@ silicon and Intel.
   bounded homebrew playtesting, and guarded Translation Lab automation.
 - SwanSong Studio provides native New, Assets, Build, Test, Play, Profile,
   Evidence, and Release views backed by an explicitly selected SwanSong SDK
-  checkout. The tagged SDK, Python runtime, and deterministic play executor are
-  not yet bundled.
+  0.2.0-or-newer checkout. The tagged SDK, Python runtime, and deterministic
+  play executor are not yet bundled.
 - ABI 8 can selectively trace map, raster, or palette sources to private exact
   cartridge ranges and executed-read context while returning only source-free
   aggregates.
@@ -46,8 +46,8 @@ silicon and Intel.
   profiles, Time Ribbon, visual save states, Game Confidence, and save exchange.
 - [[Translation Lab]] documents deterministic route tests, paired evidence,
   on-device text intake, batch verification, First Visual Change, and privacy.
-- [[SwanSong Studio|Game Studio]] documents the complete SDK-backed developer
-  preview and its current packaging boundary.
+- [[SwanSong Studio]] documents the SDK-backed game-development
+  workflow and its current local-toolchain boundary.
 - [[Local MCP and Automation]] documents the opt-in Codex bridge and guarded
   route/evidence commands.
 - [[Analogue Pocket SD Setup]] documents release trust, card eligibility,

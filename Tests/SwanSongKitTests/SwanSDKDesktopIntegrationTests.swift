@@ -143,7 +143,9 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
 
         let resolution = try SwanSDKCLIResolution.resolve(sdkRoot: sdkRoot)
         XCTAssertEqual(resolution.sdkRoot, sdkRoot.resolvingSymlinksInPath())
-        XCTAssertEqual(try SwanSDKPackageSummary.load(from: sdkRoot).version, "0.2.0")
+        let package = try SwanSDKPackageSummary.load(from: sdkRoot)
+        XCTAssertEqual(package.version, "0.2.0")
+        XCTAssertTrue(package.supportsStudioTools)
         XCTAssertEqual(try SwanSDKSchemaSummary.load(from: sdkRoot).version, 1)
         let toolchain = try SwanSDKToolchainSummary.load(from: sdkRoot)
         XCTAssertTrue(toolchain.nativePackages.contains { $0.hasPrefix("target-wswan ") })
@@ -210,6 +212,37 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         )
         XCTAssertEqual(plan.events.last?.inputs, ["a"])
         XCTAssertTrue(try plan.formattedJSON().contains("\"totalFrames\" : 120"))
+
+        let observation = SwanSDKEvidenceObservation(
+            scenario: "neutral",
+            pngInspected: true,
+            wavInspected: false,
+            observer: "playtester",
+            romSHA256: "rom",
+            capturePNG_SHA256: "png",
+            finalWindowWAVSHA256: "wav",
+            requiredChecks: ["title visible": "Title is visible."]
+        )
+        let decoded = try SwanSDKEvidenceObservation.decode(
+            Data(try observation.formattedJSON().utf8)
+        )
+        XCTAssertEqual(decoded, observation)
+        XCTAssertTrue(decoded.isBoundPass(
+            scenario: "neutral",
+            requiresAudio: false,
+            requiredChecks: ["title visible"],
+            romSHA256: "rom",
+            capturePNG_SHA256: "png",
+            finalWindowWAVSHA256: "wav"
+        ))
+        XCTAssertFalse(decoded.isBoundPass(
+            scenario: "neutral",
+            requiresAudio: true,
+            requiredChecks: ["title visible"],
+            romSHA256: "rom",
+            capturePNG_SHA256: "png",
+            finalWindowWAVSHA256: "wav"
+        ))
     }
 
     func testWorkspaceStateRejectsOverlapAndStaleCompletion() throws {
@@ -269,6 +302,28 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         }
     }
 
+    func testSubprocessRunnerUsesBundledPythonWithoutSystemPath() async throws {
+        let directory = try temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let runtime = directory.appendingPathComponent("runtime/bin", isDirectory: true)
+        try FileManager.default.createDirectory(at: runtime, withIntermediateDirectories: true)
+        try FileManager.default.createSymbolicLink(
+            at: runtime.appendingPathComponent("python3"),
+            withDestinationURL: URL(fileURLWithPath: "/usr/bin/python3")
+        )
+        let invocation = SwanSDKCommandInvocation(
+            executableURL: URL(fileURLWithPath: "/usr/bin/true"),
+            arguments: [],
+            workingDirectory: directory,
+            environment: ["SWANSONG_SDK_DIR": directory.path]
+        )
+        let result = try await SwanSDKSubprocessRunner().run(
+            invocation,
+            inheritedEnvironment: ["PATH": "/path/without/python"]
+        )
+        XCTAssertTrue(result.succeeded)
+    }
+
     func testPackageSchemaToolchainAndWAVIdentityReaders() throws {
         let root = try temporaryDirectory()
         defer { try? FileManager.default.removeItem(at: root) }
@@ -291,7 +346,9 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         ci: target-wswan-syslibs 0.2.0
         """#.utf8).write(to: root.appendingPathComponent("toolchain.lock"))
 
-        XCTAssertEqual(try SwanSDKPackageSummary.load(from: root).version, "0.1.0")
+        let package = try SwanSDKPackageSummary.load(from: root)
+        XCTAssertEqual(package.version, "0.1.0")
+        XCTAssertFalse(package.supportsStudioTools)
         XCTAssertEqual(try SwanSDKSchemaSummary.load(from: root).version, 1)
         let toolchain = try SwanSDKToolchainSummary.load(from: root)
         XCTAssertEqual(toolchain.nativePackages, ["target-wswan 0.1.0-3", "wf-tools 0.2.0-3"])
