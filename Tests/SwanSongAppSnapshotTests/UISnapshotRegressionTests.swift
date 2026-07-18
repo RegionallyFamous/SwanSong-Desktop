@@ -187,7 +187,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             }
         }
 
-        XCTAssertEqual(signatures.count, 66)
+        XCTAssertEqual(signatures.count, 76)
         for scenario in scenarios {
             let pair = signatures.filter { $0.name == scenario.name }
             XCTAssertEqual(pair.count, 2, scenario.name)
@@ -1333,8 +1333,40 @@ final class UISnapshotRegressionTests: XCTestCase {
         let pocketChallengeFixture = try pocketChallengeV2UIFixture(
             root: root.appendingPathComponent("pocket-challenge-v2")
         )
+        let emptyLibraryModel = makeModel(root: root.appendingPathComponent("empty-library"))
+        emptyLibraryModel.section = .library
+        let emptyTranslationModel = makeModel(
+            root: root.appendingPathComponent("empty-translation")
+        )
+        emptyTranslationModel.section = .translationLab
+        let studioSetupModel = makeModel(root: root.appendingPathComponent("studio-setup"))
+        studioSetupModel.section = .gameStudio
 
         return [
+            Scenario(name: "library-empty-wide", size: CGSize(width: 1_040, height: 680)) {
+                AnyView(
+                    RootView(
+                        model: emptyLibraryModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+            Scenario(name: "translation-empty-wide", size: CGSize(width: 1_040, height: 680)) {
+                AnyView(
+                    RootView(
+                        model: emptyTranslationModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+            Scenario(name: "studio-setup-wide", size: CGSize(width: 1_040, height: 680)) {
+                AnyView(
+                    RootView(
+                        model: studioSetupModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
             Scenario(name: "player-recovery-compact", size: CGSize(width: 560, height: 220)) {
                 AnyView(self.playerRecoverySurface)
             },
@@ -1526,6 +1558,22 @@ final class UISnapshotRegressionTests: XCTestCase {
                 usesPolishOutput: true
             ) {
                 UserDefaults.standard.set(1, forKey: "settingsPane")
+                return AnyView(self.settingsSurface(model: confidenceFixture.model))
+            },
+            Scenario(
+                name: "display-player-settings-wide",
+                size: CGSize(width: 980, height: 720),
+                usesPolishOutput: true
+            ) {
+                UserDefaults.standard.set(0, forKey: "settingsPane")
+                return AnyView(self.settingsSurface(model: confidenceFixture.model))
+            },
+            Scenario(
+                name: "update-settings-wide",
+                size: CGSize(width: 980, height: 720),
+                usesPolishOutput: true
+            ) {
+                UserDefaults.standard.set(3, forKey: "settingsPane")
                 return AnyView(self.settingsSurface(model: confidenceFixture.model))
             },
             Scenario(name: "player-canvas-horizontal", size: CGSize(width: 760, height: 430)) {

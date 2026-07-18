@@ -78,10 +78,7 @@ struct SwanSDKWorkspaceView: View {
 
     private var header: some View {
         HStack(spacing: 14) {
-            Image(systemName: "hammer.circle.fill")
-                .font(.system(size: 34))
-                .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(SwanTheme.cyan)
+            SwanIconTile(symbol: "hammer.fill", tint: SwanTheme.cyan, size: 46)
             VStack(alignment: .leading, spacing: 3) {
                 Text(workspace.playContract?.game.title ?? "SwanSong Studio")
                     .font(.title2.bold())
@@ -138,17 +135,20 @@ struct SwanSDKWorkspaceView: View {
     }
 
     private var sdkSetup: some View {
-        ContentUnavailableView {
-            Label("Connect SwanSong SDK", systemImage: "shippingbox")
-        } description: {
-            Text(
-                "Choose the SDK folder. SwanSong uses its real swan commands, schema, recipes, and pinned Wonderful manifest—there is no second build implementation inside Desktop."
+        VStack(spacing: 20) {
+            SwanEmptyState(
+                title: "Connect SwanSong SDK",
+                description: "Choose your SDK folder to create, build, test, play, and package WonderSwan games from one place.",
+                symbol: "shippingbox.fill",
+                tint: SwanTheme.cyan
             )
-        } actions: {
             Button("Choose SDK Folder…", action: chooseSDK)
                 .buttonStyle(.borderedProminent)
+                .controlSize(.large)
         }
-        .frame(maxWidth: 620)
+        .swanEmptyStateContainer(tint: SwanTheme.cyan)
+        .padding(40)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accessibilityIdentifier("game-studio-sdk-setup")
     }
 
@@ -1227,14 +1227,7 @@ private struct StudioCard<Content: View>: View {
         content
             .padding(16)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                Color(nsColor: .controlBackgroundColor).opacity(0.92),
-                in: RoundedRectangle(cornerRadius: 14, style: .continuous)
-            )
-            .overlay {
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(Color.secondary.opacity(0.14))
-            }
+            .swanSurface(.standard, tint: SwanTheme.accent, cornerRadius: 14)
     }
 }
 
