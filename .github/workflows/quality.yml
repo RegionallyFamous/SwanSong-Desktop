@@ -51,6 +51,8 @@ jobs:
           ref: 074f391981d2863703ef814472e944870c850cd3
           path: .sdk/swansong-sdk
           persist-credentials: false
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Record toolchain and architecture
         run: |
@@ -128,6 +130,8 @@ jobs:
           ref: 074f391981d2863703ef814472e944870c850cd3
           path: .sdk/swansong-sdk
           persist-credentials: false
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Resolve pinned release dependencies
         run: ./Scripts/swift-package.sh package resolve --package-path .
