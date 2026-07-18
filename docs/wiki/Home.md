@@ -5,10 +5,10 @@ Translation Lab, Analogue Pocket setup, privacy boundaries, architecture,
 testing, and releases. The repository README is the short product tour; the
 wiki is where the technical detail lives.
 
-The current source line is the 0.3 beta. It supports macOS 14 or later on Apple
+The current source line is the 0.4 beta. It supports macOS 14 or later on Apple
 silicon and Intel.
 
-## Current 0.3 beta status
+## Current 0.4 beta status
 
 - SwanSong Open IPL is the only startup path. There is no BIOS picker or
   original-firmware import, storage, download, or override.
@@ -60,7 +60,7 @@ silicon and Intel.
 - [[Signing and Notarization]] covers the trusted Mac and Apple tooling.
 - [[Release Gates]] defines source, artifact, app-update, Homebrew, Pocket, and
   publication requirements.
-- [[0.3 Beta Testing]] is the current tester checklist and known-limits page.
+- [[0.4 Beta Testing]] is the current tester checklist and known-limits page.
 
 Versioned release notes are authoritative for historical behavior. In
 particular, 0.1.0 required user-supplied startup files and 0.1.1 made Open IPL

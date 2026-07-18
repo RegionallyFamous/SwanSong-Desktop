@@ -15,7 +15,7 @@ a really nice place to play them.
 
 <p align="center">
   <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases"><strong>Download the latest SwanSong beta</strong></a>
-  · <a href="docs/releases/0.3.1.md">What's new in 0.3.1</a>
+  · <a href="docs/releases/0.4.0.md">What's new in 0.4.0</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -73,7 +73,7 @@ cores. The screen is included now and will unlock installation when the separate
 SwanSong Core project publishes its first verified stable release.
 
 **Homebrew Catalog** is being built as a signed, first-party way to discover
-and install authorized homebrew. It remains Coming Soon in 0.3; local imports
+and install authorized homebrew. It remains Coming Soon in 0.4; local imports
 already work.
 
 **Local automation** lets a trusted Codex session check SwanSong, move around
@@ -110,7 +110,7 @@ The technical documentation lives in the
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.3.1 release notes](docs/releases/0.3.1.md).
+[0.4.0 release notes](docs/releases/0.4.0.md).
 
 ## Free, open, and independent
 

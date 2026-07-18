@@ -17,7 +17,7 @@
 - [[Build and Test]]
 - [[Signing and Notarization]]
 - [[Release Gates]]
-- [[0.3 Beta Testing]]
+- [[0.4 Beta Testing]]
 
 **Policies and reference**
 
