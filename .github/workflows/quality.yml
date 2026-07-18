@@ -58,7 +58,7 @@ jobs:
         if: matrix.lane == 'compatibility' && github.event_name == 'pull_request'
         # The Intel hosted runner has a tighter memory ceiling. Bound SwiftPM's
         # cold-build parallelism so the compatibility lane cannot be OOM-killed.
-        run: ./Scripts/swift-package.sh run --package-path . --disable-index-store --jobs 2 SwanSongChecks
+        run: ./Scripts/swift-package.sh run --package-path . --disable-index-store --jobs 1 SwanSongChecks
 
       - name: Run engine-boundary and library checks
         if: matrix.lane == 'full' || github.event_name != 'pull_request'
