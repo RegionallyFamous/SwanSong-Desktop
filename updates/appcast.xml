@@ -6,6 +6,25 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.4.3</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.4.3</link>
+      <description sparkle:format="html">&lt;h2&gt;Every press reaches the game.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.4.3 makes exact-frame controls reliable, brings SwanSong SDK 0.4.0 into Studio, and makes the app's main screens easier to understand.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Trust short inputs.&lt;/strong&gt; Presses and releases reach the live WonderSwan keypad on their scheduled frame.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Build on SDK 0.4.0.&lt;/strong&gt; Studio content-verifies the released runtime, schema, recipes, docs, and Python package.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep games responsive.&lt;/strong&gt; Normal frame presentation no longer performs expensive whole-map and whole-sprite profiler scans.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Find the next action.&lt;/strong&gt; Library, Homebrew, Translation Lab, Studio, Settings, Updates, and Support lead with clearer language.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Python and Wonderful remain local prerequisites. SwanSong includes no games or original system firmware.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.4.3"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Sat, 18 Jul 2026 13:19:24 -0500</pubDate>
+      <sparkle:version>9</sparkle:version>
+      <sparkle:shortVersionString>0.4.3</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:channel>beta</sparkle:channel>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.4.3/SwanSong-0.4.3-macOS-universal.zip" length="22529467" type="application/octet-stream" sparkle:edSignature="S2dJJIaEhBuviw52wDvS8ZwaB8mQ+pGy7ALMCl7Ie5ma63XBlIC9uyx0GuyPfo5Ah96McGCJiSkXNIz/QTimAg==" />
+    </item>
+    <item>
       <title>SwanSong 0.4.2</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.4.2</link>
       <description sparkle:format="html">&lt;h2&gt;Make the next game smaller, clearer, better.&lt;/h2&gt;
@@ -109,6 +128,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: YzCoMk+8utVrxp8kq/Y62RiyqDC6iCy2PhDfafqlYMNCK7H6uFObW9PY3I//WX+R43+TXCiI1Kkt3Zi+PtedBg==
-length: 10832
+edSignature: TjPrcP8GxfGniy2TgR6KEKex1Q8IDWJoBnbO2hoHeyXD95h0dQsJ6FB0eSPv+jePFMJ0Zg9YGNyCv7nNf6f9AA==
+length: 12800
 -->
