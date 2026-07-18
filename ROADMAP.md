@@ -5,7 +5,7 @@ Release notes and the issue tracker are authoritative for shipped behavior.
 
 ## 0.4 beta closure
 
-- Publish SwanSong Studio, ABI 7 upstream source provenance, the complete installed
+- Publish SwanSong Studio, ABI 8 selective upstream source provenance, the complete installed
   plugin surface, and the SwanSong status item as an explicitly marked GitHub
   prerelease built from its exact signed source tag.
 - Prove the 0.3-to-0.4 Sparkle update on beta-enabled clients while stable-only

@@ -88,11 +88,13 @@ python3 ./Scripts/check-sparkle-dependency-lock.py \
 Fixture results prove bounded execution invariants. They are not commercial-
 game compatibility results or original-hardware accuracy evidence.
 `check-live-engine.sh` also pins two clean-room display-provenance fixtures
-(introduced with ABI 6 and retained by ABI 7): horizontal
+(introduced with ABI 6 and retained by ABI 8): horizontal
 planar and vertical packed output with exact Screen 1, Screen 2, sprite,
 palette, raster-width, rotation, and non-unknown CPU-writer assertions.
 
-ABI 7 extends those fixtures with a transformed ROM-resident source table. The
+ABI 8 extends those fixtures with raster-only selection, component-complete
+consumer discovery, and executed caller/mapper context for the transformed
+ROM-resident source table. The
 live `TranslationDisplaySourceProbeTests` lane must prove an exact transformed
 selected range, an outside consumer, source-free public output, and intact
 private artifact validation. Inspection-only stub runs skip that one live test;

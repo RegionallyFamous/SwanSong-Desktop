@@ -2,7 +2,7 @@
 #include "swan_engine_backend.hpp"
 
 #ifndef SWAN_ENGINE_BUILD_ID
-#define SWAN_ENGINE_BUILD_ID "inspection-stub-swan-abi7"
+#define SWAN_ENGINE_BUILD_ID "inspection-stub-swan-abi8"
 #endif
 
 #include <algorithm>
@@ -508,12 +508,17 @@ swan_result_t swan_engine_display_owner_probe(
 swan_result_t swan_engine_display_source_probe(
     swan_engine_t* engine,
     const swan_display_rectangle_t* rectangle,
+    const swan_display_source_probe_options_t* options,
     swan_display_source_trace_t* out_traces,
     size_t capacity,
     size_t* out_count) {
-  if (!engine || !rectangle || !out_count ||
+  if (!engine || !rectangle || !options || !out_count ||
       (!out_traces && capacity != 0) ||
       rectangle->struct_size < sizeof(swan_display_rectangle_t) ||
+      options->struct_size < sizeof(swan_display_source_probe_options_t) ||
+      options->selected_component_mask == 0 ||
+      (options->selected_component_mask &
+       ~SWAN_DISPLAY_SOURCE_COMPONENT_MASK_ALL) != 0 ||
       rectangle->width == 0 || rectangle->height == 0) {
     return SWAN_RESULT_INVALID_ARGUMENT;
   }
@@ -529,7 +534,8 @@ swan_result_t swan_engine_display_source_probe(
   return finish_backend_call(
       engine,
       engine->backend->display_source_probe(
-          *rectangle, output, *out_count, error),
+          *rectangle, options->selected_component_mask,
+          output, *out_count, error),
       std::move(error));
 }
 

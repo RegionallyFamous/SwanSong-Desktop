@@ -5,6 +5,26 @@ The project uses semantic versioning once a release is published.
 
 ## [Unreleased]
 
+### Added
+
+- Added ABI 8 component-selective upstream source probes. A raster-only seed
+  can bypass unrelated map ownership while consumer discovery still reports
+  every display component sharing the selected cartridge ranges.
+- Added private executed-read lineage context: immediate caller and code
+  location, exact operand segment/offset, mapper window/bank, and resolved
+  cartridge operand. MCP
+  receives only aggregate context counts and hashes.
+
+### Changed
+
+- Bumped the narrow engine ABI from 7 to 8 while retaining ABI 7's bounded
+  source provenance and ABI 6's final-writer ownership contracts.
+
+### Fixed
+
+- Replaced the generic blue Translation Lab tint with its intended violet
+  accent across the empty state, lab controls, selections, and text intake.
+
 ## [0.4.0] - 2026-07-17
 
 ### Added

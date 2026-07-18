@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-#define SWAN_ENGINE_ABI_VERSION 7u
+#define SWAN_ENGINE_ABI_VERSION 8u
 
 typedef struct swan_engine swan_engine_t;
 
@@ -101,6 +101,8 @@ enum {
   SWAN_CAPABILITY_POCKET_CHALLENGE_V2 = 1ull << 7,
   SWAN_CAPABILITY_DISPLAY_PROVENANCE = 1ull << 8,
   SWAN_CAPABILITY_DISPLAY_SOURCE_PROVENANCE = 1ull << 9,
+  SWAN_CAPABILITY_DISPLAY_SOURCE_COMPONENT_SELECTION = 1ull << 10,
+  SWAN_CAPABILITY_EXECUTED_SOURCE_READ_CONTEXT = 1ull << 11,
 };
 
 typedef enum swan_display_layer {
@@ -150,6 +152,26 @@ typedef enum swan_display_source_component {
   SWAN_DISPLAY_SOURCE_COMPONENT_PALETTE = 3,
 } swan_display_source_component_t;
 
+enum {
+  SWAN_DISPLAY_SOURCE_COMPONENT_MASK_MAP_CELL = 1u << 0,
+  SWAN_DISPLAY_SOURCE_COMPONENT_MASK_RASTER = 1u << 1,
+  SWAN_DISPLAY_SOURCE_COMPONENT_MASK_PALETTE = 1u << 2,
+  SWAN_DISPLAY_SOURCE_COMPONENT_MASK_ALL =
+      SWAN_DISPLAY_SOURCE_COMPONENT_MASK_MAP_CELL |
+      SWAN_DISPLAY_SOURCE_COMPONENT_MASK_RASTER |
+      SWAN_DISPLAY_SOURCE_COMPONENT_MASK_PALETTE,
+};
+
+/**
+ * ABI-8 selection applies only to the source ranges seeded by pixels inside
+ * the rectangle. Outside-consumer discovery remains component-complete for
+ * every display component that shares any selected cartridge range.
+ */
+typedef struct swan_display_source_probe_options {
+  uint32_t struct_size;
+  uint32_t selected_component_mask;
+} swan_display_source_probe_options_t;
+
 typedef enum swan_display_source_scope {
   SWAN_DISPLAY_SOURCE_SCOPE_SELECTED = 1,
   SWAN_DISPLAY_SOURCE_SCOPE_OUTSIDE_CONSUMER = 2,
@@ -168,11 +190,19 @@ enum {
   SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW = 1u << 4,
 };
 
+enum {
+  /* The lineage includes the exact CPU instruction and mapper resolution that read it. */
+  SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED = 1u << 0,
+};
+
 /**
  * One bounded upstream dataflow edge retained privately by Translation Lab.
  * cartridge_offset + cartridge_length is a half-open range in the original
  * project ROM file (not the rounded mapper aperture). source_address is an
  * emulated RAM/I/O address and must never be returned through public MCP.
+ * ABI-8 executed-read context records both the caller's code segment/offset
+ * and the exact data operand segment/offset. resolved_cartridge_operand is the
+ * mapper-aperture operand before leading-padding removal. All remain private.
  */
 typedef struct swan_display_source_trace {
   uint32_t struct_size;
@@ -188,6 +218,15 @@ typedef struct swan_display_source_trace {
   uint32_t cartridge_offset;
   uint32_t cartridge_length;
   uint32_t flags;
+  uint32_t read_context_flags;
+  uint32_t immediate_caller;
+  uint16_t caller_segment;
+  uint16_t caller_offset;
+  uint16_t operand_segment;
+  uint16_t operand_offset;
+  uint16_t mapper_window;
+  uint16_t mapper_bank;
+  uint32_t resolved_cartridge_operand;
 } swan_display_source_trace_t;
 
 typedef struct swan_engine_config {
@@ -318,6 +357,7 @@ SWAN_ENGINE_API swan_result_t swan_engine_display_owner_probe(
 SWAN_ENGINE_API swan_result_t swan_engine_display_source_probe(
     swan_engine_t* engine,
     const swan_display_rectangle_t* rectangle,
+    const swan_display_source_probe_options_t* options,
     swan_display_source_trace_t* out_traces,
     size_t capacity,
     size_t* out_count);

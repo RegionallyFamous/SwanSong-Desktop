@@ -137,7 +137,7 @@ runs, and then publishes one private pair under
 native PNGs, ROM/engine/RTC/persistence hashes, evidence bindings, and an exact
 native-raster pixel-diff report.
 
-`probe-rectangle` uses the ABI 6 final-writer capability, retained in ABI 7,
+`probe-rectangle` uses the ABI 6 final-writer capability, retained in ABI 8,
 to replay one project role from clean boot
 to an exact zero-based plan frame. Its private artifact records the active
 layer, map cell, tile/raster source, palette source, and last CPU writer for
@@ -146,11 +146,15 @@ counts, geometry, and deterministic context hashes—never addresses, tile or
 palette values, or program counters. Writer provenance is intentionally
 invalid after a save-state restore, so the probe accepts only clean replay.
 
-`probe-rectangle-source` adds ABI 7's bounded upstream dataflow. It privately
-retains exact half-open cartridge ranges, per-display-source instruction-hop
-chains, completeness/overflow flags, and visible consumers outside the chosen
-rectangle. Its MCP response remains source-free: only range/chain/consumer
-counts and hashes plus explicit completeness status leave the project.
+`probe-rectangle-source` uses ABI 8's bounded upstream dataflow and accepts an
+optional nonempty `components` selector (`mapCell`, `raster`, `palette`). The
+selector limits only the in-rectangle source seeds; every outside display
+component sharing those ranges is still discovered. It privately retains exact
+half-open cartridge ranges, per-display-source instruction-hop chains, executed
+caller, operand, and mapper context, completeness/overflow flags, and visible consumers
+outside the chosen rectangle. Its MCP response remains source-free: only
+range/chain/context/consumer counts and hashes plus explicit completeness status
+leave the project.
 
 The other Translation tools return project paths and immutable evidence
 identifiers to the MCP client, but never ROM, state, RAM, persistence, or

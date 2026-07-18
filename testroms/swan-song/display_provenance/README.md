@@ -2,7 +2,7 @@
 
 These two clean-room WonderSwan Color ROMs provide known final-display owners
 from engine ABI 6 plus exact upstream cartridge sources and outside consumers
-for ABI 7. They contain no commercial game material.
+for ABI 8. They contain no commercial game material.
 
 - `display_provenance_horizontal.wsc` is horizontal and uses planar 4bpp tile
   raster data.
@@ -16,7 +16,7 @@ from all three final layers and requires exact cell, tile, raster width,
 palette source, and non-unknown final-writer results. The vertical assertions
 also exercise canonical native rotation. Tile 1 is copied from a distinctive
 ROM-resident 32-byte table, XOR-decoded through the CPU, and reused across
-Screen 1, allowing the ABI 7 smoke test to locate its linked offset, require an
+Screen 1, allowing the ABI 8 smoke test to locate its linked offset, require an
 exact transformed raster trace, and
 require at least one outside-rectangle consumer of the same source bytes.
 

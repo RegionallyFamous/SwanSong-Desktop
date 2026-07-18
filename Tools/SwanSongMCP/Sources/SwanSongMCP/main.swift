@@ -386,8 +386,8 @@ private enum SwanSongMCPServer {
             tool(
                 name: "swansong_translation_probe_rectangle_source",
                 title: "Trace Display Rectangle to Cartridge Sources",
-                description: "Replay a project-contained exact frame/input plan from clean power-on, privately trace the selected native rectangle through final display RAM and CPU dataflow to bounded exact cartridge ranges plus outside display consumers, and return only source-free hashes, counts, and explicit completeness flags.",
-                inputSchema: displayOwnerProbeSchema(),
+                description: "Replay a project-contained exact frame/input plan from clean power-on; optionally seed only map, raster, or palette components; privately retain exact cartridge ranges, executed caller/mapper context, and every outside display component sharing those ranges; and return only source-free hashes, counts, and explicit completeness flags.",
+                inputSchema: displayOwnerProbeSchema(includeComponents: true),
                 readOnly: false,
                 destructive: false,
                 idempotent: false
@@ -540,15 +540,28 @@ private enum SwanSongMCPServer {
         arguments: JSONDictionary
     ) throws -> JSONDictionary {
         let input = try rectangleProbeArguments(arguments)
-        return try reportResult(
-            TranslationDisplaySourceProbe.run(
+        let componentValues = arguments["components"] as? [String]
+            ?? EngineDisplaySourceComponent.allCases.map(\.rawValue)
+        let components = componentValues.compactMap(EngineDisplaySourceComponent.init(rawValue:))
+        guard !componentValues.isEmpty,
+              components.count == componentValues.count,
+              Set(components).count == components.count else {
+            throw SwanSongMCPError(
+                message: "components must be a nonempty, unique array containing mapCell, raster, or palette"
+            )
+        }
+        do {
+            return try reportResult(TranslationDisplaySourceProbe.run(
                 project: input.project,
                 role: input.role,
                 plan: input.plan,
                 frameIndex: input.frameIndex,
-                rectangle: input.rectangle
-            )
-        )
+                rectangle: input.rectangle,
+                components: components
+            ))
+        } catch let diagnostic as TranslationDisplaySourceProbeBlockedDiagnostic {
+            return try errorReportResult(diagnostic)
+        }
     }
 
     private struct RectangleProbeInput {
@@ -845,6 +858,15 @@ private enum SwanSongMCPServer {
         ]
     }
 
+    private static func errorReportResult<T: Codable>(_ report: T) throws -> JSONDictionary {
+        let (text, object) = try encodedReport(report)
+        return [
+            "content": [["type": "text", "text": text]],
+            "structuredContent": object,
+            "isError": true,
+        ]
+    }
+
     private static func encodedReport<T: Codable>(
         _ report: T
     ) throws -> (String, JSONDictionary) {
@@ -882,7 +904,7 @@ private enum SwanSongMCPServer {
     }
 
     private static func projectWriteSchema(fileKey: String) -> JSONDictionary {
-        objectSchema(
+        return objectSchema(
             properties: [
                 "projectPath": [
                     "type": "string",
@@ -901,43 +923,59 @@ private enum SwanSongMCPServer {
         )
     }
 
-    private static func displayOwnerProbeSchema() -> JSONDictionary {
-        objectSchema(
-            properties: [
-                "projectPath": [
-                    "type": "string",
-                    "description": "Absolute path to a WonderSwan translation project.",
-                ],
-                "planPath": [
-                    "type": "string",
-                    "description": "Absolute path to an exact project-contained frame/input plan.",
-                ],
-                "role": enumSchema(
-                    TranslationROMRole.allCases.map(\.rawValue),
-                    description: "Project ROM role to replay privately."
-                ),
-                "frameIndex": [
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": Int(TranslationFrameInputPlan.maximumFrames - 1),
-                    "description": "Zero-based plan frame to probe after it is presented.",
-                ],
-                "rectangle": [
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": [
-                        "x": ["type": "integer", "minimum": 0, "maximum": 223],
-                        "y": ["type": "integer", "minimum": 0, "maximum": 223],
-                        "width": ["type": "integer", "minimum": 1, "maximum": 224],
-                        "height": ["type": "integer", "minimum": 1, "maximum": 224],
-                    ],
-                    "required": ["x", "y", "width", "height"],
-                ],
-                "confirmProjectWrites": [
-                    "type": "boolean",
-                    "description": "Must be true to permit private provenance artifacts inside this project.",
-                ],
+    private static func displayOwnerProbeSchema(
+        includeComponents: Bool = false
+    ) -> JSONDictionary {
+        var properties: JSONDictionary = [
+            "projectPath": [
+                "type": "string",
+                "description": "Absolute path to a WonderSwan translation project.",
             ],
+            "planPath": [
+                "type": "string",
+                "description": "Absolute path to an exact project-contained frame/input plan.",
+            ],
+            "role": enumSchema(
+                TranslationROMRole.allCases.map(\.rawValue),
+                description: "Project ROM role to replay privately."
+            ),
+            "frameIndex": [
+                "type": "integer",
+                "minimum": 0,
+                "maximum": Int(TranslationFrameInputPlan.maximumFrames - 1),
+                "description": "Zero-based plan frame to probe after it is presented.",
+            ],
+            "rectangle": [
+                "type": "object",
+                "additionalProperties": false,
+                "properties": [
+                    "x": ["type": "integer", "minimum": 0, "maximum": 223],
+                    "y": ["type": "integer", "minimum": 0, "maximum": 223],
+                    "width": ["type": "integer", "minimum": 1, "maximum": 224],
+                    "height": ["type": "integer", "minimum": 1, "maximum": 224],
+                ],
+                "required": ["x", "y", "width", "height"],
+            ],
+            "confirmProjectWrites": [
+                "type": "boolean",
+                "description": "Must be true to permit private provenance artifacts inside this project.",
+            ],
+        ]
+        if includeComponents {
+            properties["components"] = [
+                "type": "array",
+                "minItems": 1,
+                "maxItems": EngineDisplaySourceComponent.allCases.count,
+                "uniqueItems": true,
+                "items": enumSchema(
+                    EngineDisplaySourceComponent.allCases.map(\.rawValue),
+                    description: "Selected in-rectangle display component."
+                ),
+                "description": "Components that seed source discovery. Defaults to all; outside consumers remain component-complete.",
+            ]
+        }
+        return objectSchema(
+            properties: properties,
             required: [
                 "projectPath",
                 "planPath",

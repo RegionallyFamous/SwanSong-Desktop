@@ -1,5 +1,6 @@
 #include "swan_engine.h"
 
+#include <algorithm>
 #include <array>
 #include <cstdio>
 #include <cstring>
@@ -44,9 +45,13 @@ int main(int argc, char** argv) {
       (capabilities & SWAN_CAPABILITY_DISPLAY_PROVENANCE) != 0;
   const bool source_provenance_ok =
       (capabilities & SWAN_CAPABILITY_DISPLAY_SOURCE_PROVENANCE) != 0;
+  const bool source_selection_ok =
+      (capabilities & SWAN_CAPABILITY_DISPLAY_SOURCE_COMPONENT_SELECTION) != 0;
+  const bool source_read_context_ok =
+      (capabilities & SWAN_CAPABILITY_EXECUTED_SOURCE_READ_CONTEXT) != 0;
 
   if (!backend_ok || !execution_ok || !audio_ok || !provenance_ok ||
-      !source_provenance_ok) {
+      !source_provenance_ok || !source_selection_ok || !source_read_context_ok) {
     std::fputs("ares backend did not advertise the expected live capabilities\n", stderr);
     swan_engine_destroy(engine);
     return 1;
@@ -152,8 +157,11 @@ int main(int argc, char** argv) {
     }
 
     size_t source_trace_count = 0;
+    swan_display_source_probe_options_t source_options{};
+    source_options.struct_size = sizeof(source_options);
+    source_options.selected_component_mask = SWAN_DISPLAY_SOURCE_COMPONENT_MASK_ALL;
     result = swan_engine_display_source_probe(
-        engine, &rectangle, nullptr, 0, &source_trace_count);
+        engine, &rectangle, &source_options, nullptr, 0, &source_trace_count);
     if (result != SWAN_RESULT_OK || source_trace_count > 262'144u) {
       std::fputs("ares did not return bounded upstream source provenance\n", stderr);
       swan_engine_destroy(engine);
@@ -162,7 +170,8 @@ int main(int argc, char** argv) {
     std::vector<swan_display_source_trace_t> source_traces(source_trace_count);
     size_t written_source_traces = 0;
     result = swan_engine_display_source_probe(
-        engine, &rectangle, source_traces.data(), source_traces.size(),
+        engine, &rectangle, &source_options,
+        source_traces.data(), source_traces.size(),
         &written_source_traces);
     if (result != SWAN_RESULT_OK || written_source_traces != source_trace_count) {
       std::fputs("ares returned incomplete upstream source provenance\n", stderr);
@@ -299,8 +308,13 @@ int main(int argc, char** argv) {
       source_rectangle.width = 1;
       source_rectangle.height = 1;
       size_t fixture_source_count = 0;
+      swan_display_source_probe_options_t fixture_source_options{};
+      fixture_source_options.struct_size = sizeof(fixture_source_options);
+      fixture_source_options.selected_component_mask =
+          SWAN_DISPLAY_SOURCE_COMPONENT_MASK_ALL;
       result = swan_engine_display_source_probe(
-          engine, &source_rectangle, nullptr, 0, &fixture_source_count);
+          engine, &source_rectangle, &fixture_source_options,
+          nullptr, 0, &fixture_source_count);
       if (result != SWAN_RESULT_OK || fixture_source_count == 0 ||
           fixture_source_count > 262'144u) {
         std::fputs("fixture did not expose bounded upstream source records\n", stderr);
@@ -311,7 +325,8 @@ int main(int argc, char** argv) {
           fixture_source_count);
       size_t fixture_source_written = 0;
       result = swan_engine_display_source_probe(
-          engine, &source_rectangle, fixture_sources.data(),
+          engine, &source_rectangle, &fixture_source_options,
+          fixture_sources.data(),
           fixture_sources.size(), &fixture_source_written);
       if (result != SWAN_RESULT_OK ||
           fixture_source_written != fixture_sources.size()) {
@@ -328,7 +343,16 @@ int main(int argc, char** argv) {
                    (trace.flags & SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED) != 0 &&
                    trace.cartridge_offset == marker_offset &&
                    trace.cartridge_length == expected_source_bytes &&
-                   trace.minimum_instruction_hops > 0;
+                   trace.minimum_instruction_hops > 0 &&
+                   (trace.read_context_flags &
+                    SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED) != 0 &&
+                   trace.immediate_caller ==
+                       (((uint32_t)trace.caller_segment << 4) +
+                        trace.caller_offset) % 0x100000u &&
+                   ((((uint32_t)trace.operand_segment << 4) +
+                      trace.operand_offset) & 0xf0000u) >> 16 ==
+                       trace.mapper_window &&
+                   trace.mapper_window >= 2 && trace.mapper_window <= 15;
           });
       if (exact_raster == fixture_sources.end()) {
         std::fprintf(
@@ -361,6 +385,71 @@ int main(int argc, char** argv) {
         std::fputs("fixture lost its outside consumer of the exact raster source\n", stderr);
         swan_engine_destroy(engine);
         return 1;
+      }
+
+      swan_display_source_probe_options_t raster_options{};
+      raster_options.struct_size = sizeof(raster_options);
+      raster_options.selected_component_mask =
+          SWAN_DISPLAY_SOURCE_COMPONENT_MASK_RASTER;
+      size_t raster_only_count = 0;
+      result = swan_engine_display_source_probe(
+          engine, &source_rectangle, &raster_options,
+          nullptr, 0, &raster_only_count);
+      std::vector<swan_display_source_trace_t> raster_only(raster_only_count);
+      size_t raster_only_written = 0;
+      if (result == SWAN_RESULT_OK) {
+        result = swan_engine_display_source_probe(
+            engine, &source_rectangle, &raster_options,
+            raster_only.data(), raster_only.size(), &raster_only_written);
+      }
+      if (result != SWAN_RESULT_OK || raster_only_written != raster_only.size() ||
+          raster_only.empty() ||
+          std::any_of(raster_only.begin(), raster_only.end(), [](const auto& trace) {
+            return trace.scope == SWAN_DISPLAY_SOURCE_SCOPE_SELECTED &&
+                   trace.component != SWAN_DISPLAY_SOURCE_COMPONENT_RASTER;
+          })) {
+        std::fputs("component-selective raster source probe was invalid\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      const auto same_trace = [](const auto& lhs, const auto& rhs) {
+        return lhs.x == rhs.x && lhs.y == rhs.y && lhs.scope == rhs.scope &&
+               lhs.component == rhs.component &&
+               lhs.source_address == rhs.source_address &&
+               lhs.source_byte_count == rhs.source_byte_count &&
+               lhs.cartridge_offset == rhs.cartridge_offset &&
+               lhs.cartridge_length == rhs.cartridge_length &&
+               lhs.immediate_caller == rhs.immediate_caller &&
+               lhs.caller_segment == rhs.caller_segment &&
+               lhs.caller_offset == rhs.caller_offset &&
+               lhs.operand_segment == rhs.operand_segment &&
+               lhs.operand_offset == rhs.operand_offset &&
+               lhs.mapper_window == rhs.mapper_window &&
+               lhs.mapper_bank == rhs.mapper_bank &&
+               lhs.resolved_cartridge_operand == rhs.resolved_cartridge_operand;
+      };
+      for (const auto& consumer : fixture_sources) {
+        if (consumer.scope != SWAN_DISPLAY_SOURCE_SCOPE_OUTSIDE_CONSUMER) continue;
+        const uint64_t consumer_upper =
+            static_cast<uint64_t>(consumer.cartridge_offset) +
+            consumer.cartridge_length;
+        const bool shares_raster_range = std::any_of(
+            raster_only.begin(), raster_only.end(), [&](const auto& selected) {
+              if (selected.scope != SWAN_DISPLAY_SOURCE_SCOPE_SELECTED) return false;
+              const uint64_t selected_upper =
+                  static_cast<uint64_t>(selected.cartridge_offset) +
+                  selected.cartridge_length;
+              return consumer.cartridge_offset < selected_upper &&
+                     selected.cartridge_offset < consumer_upper;
+            });
+        if (shares_raster_range &&
+            std::none_of(raster_only.begin(), raster_only.end(), [&](const auto& trace) {
+              return same_trace(consumer, trace);
+            })) {
+          std::fputs("raster selection omitted a cross-component outside consumer\n", stderr);
+          swan_engine_destroy(engine);
+          return 1;
+        }
       }
     }
 

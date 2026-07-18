@@ -80,15 +80,16 @@ index 029c8de9..5e33c8a5 100644
  struct Platform {
    virtual auto attach(Node::Object) -> void {}
    virtual auto detach(Node::Object) -> void {}
-@@ -25,6 +42,15 @@ struct Platform {
+@@ -25,6 +42,16 @@ struct Platform {
    virtual auto audio(Node::Audio::Stream) -> void {}
    virtual auto input(Node::Input::Input) -> void {}
    virtual auto cheat(u32 addr) -> maybe<u32> { return nothing; }
 +  virtual auto rtcTime() -> u64 { return chrono::timestamp(); }
-+  virtual auto wonderSwanInstructionBegin(u32 writer) -> void {}
++  virtual auto wonderSwanInstructionBegin(u32 writer, u32 segment, u32 offset) -> void {}
 +  virtual auto wonderSwanInstructionDataflow(u32 kind) -> void {}
 +  virtual auto wonderSwanInstructionEnd() -> void {}
 +  virtual auto wonderSwanDataRead(u32 kind, u32 address) -> void {}
++  virtual auto wonderSwanCartridgeDataRead(u32 resolvedOperand, u32 operandSegment, u32 operandOffset, u32 mapperWindow, u32 mapperBank) -> void {}
 +  virtual auto wonderSwanRegisterRead(u32 index) -> void {}
 +  virtual auto wonderSwanRegisterWrite(u32 index) -> void {}
 +  virtual auto wonderSwanSourceWrite(u32 kind, u32 address, u32 writer) -> void {}
@@ -526,7 +527,7 @@ index 06ed9a56..833f7970 100644
  template<> auto V30MZ::read<Byte>(u16 segment, u16 address) -> u32 {
    step(speed(segment * 16 + address));
    u32 data = 0;
-+  provenanceDataRead(segment * 16 + address);
++  provenanceDataRead(segment * 16 + address, segment, address);
    data |= read(segment * 16 + address++) << 0;
    return data;
  }
@@ -534,10 +535,10 @@ index 06ed9a56..833f7970 100644
  template<> auto V30MZ::read<Word>(u16 segment, u16 address) -> u32 {
    u32 data = 0;
    step(speed(segment * 16 + address));
-+  provenanceDataRead(segment * 16 + address);
++  provenanceDataRead(segment * 16 + address, segment, address);
    data |= read(segment * 16 + address++) << 0;
    if(width(segment * 16 + address) == Byte || !(address & 1)) step(speed(segment * 16 + address));
-+  provenanceDataRead(segment * 16 + address);
++  provenanceDataRead(segment * 16 + address, segment, address);
    data |= read(segment * 16 + address++) << 8;
    return data;
  }
@@ -545,16 +546,16 @@ index 06ed9a56..833f7970 100644
  template<> auto V30MZ::read<Long>(u16 segment, u16 address) -> u32 {
    u32 data = 0;
    step(speed(segment * 16 + address));
-+  provenanceDataRead(segment * 16 + address);
++  provenanceDataRead(segment * 16 + address, segment, address);
    data |= read(segment * 16 + address++) <<  0;
    if(width(segment * 16 + address) == Byte || !(address & 1)) step(speed(segment * 16 + address));
-+  provenanceDataRead(segment * 16 + address);
++  provenanceDataRead(segment * 16 + address, segment, address);
    data |= read(segment * 16 + address++) <<  8;
    if(width(segment * 16 + address) == Byte || !(address & 1)) step(speed(segment * 16 + address));
-+  provenanceDataRead(segment * 16 + address);
++  provenanceDataRead(segment * 16 + address, segment, address);
    data |= read(segment * 16 + address++) << 16;
    if(width(segment * 16 + address) == Byte || !(address & 1)) step(speed(segment * 16 + address));
-+  provenanceDataRead(segment * 16 + address);
++  provenanceDataRead(segment * 16 + address, segment, address);
    data |= read(segment * 16 + address++) << 24;
    return data;
  }
@@ -709,7 +710,7 @@ index 5726384e..800c24bc 100644
    virtual auto out(n16 port, n8 data) -> void = 0;
    virtual auto ioWidth(n16 port) -> u32 = 0;
    virtual auto ioSpeed(n16 port) -> n32 = 0;
-+  virtual auto provenanceDataRead(n20 address) -> void {}
++  virtual auto provenanceDataRead(n20 address, u16 segment, u16 offset) -> void {}
 +  virtual auto provenanceRegisterRead(u32 index) -> void {}
 +  virtual auto provenanceRegisterWrite(u32 index) -> void {}
 +  virtual auto provenanceInstructionDataflow(u32 kind) -> void {}
@@ -796,21 +797,23 @@ diff --git a/ares/ws/cpu/cpu.cpp b/ares/ws/cpu/cpu.cpp
 index 50e94ec5..bb3851c3 100644
 --- a/ares/ws/cpu/cpu.cpp
 +++ b/ares/ws/cpu/cpu.cpp
-@@ -23,7 +23,9 @@ auto CPU::unload() -> void {
+@@ -23,7 +23,11 @@ auto CPU::unload() -> void {
  auto CPU::main() -> void {
    poll();
    debugger.instruction();
-+  if(platform) platform->wonderSwanInstructionBegin(((u32)PS << 4 | PC) & 0xfffff);
++  if(platform) platform->wonderSwanInstructionBegin(
++    ((u32)PS << 4 | PC) & 0xfffff, PS, PC
++  );
    instruction();
 +  if(platform) platform->wonderSwanInstructionEnd();
  }
  
  auto CPU::step(u32 clocks) -> void {
-@@ -55,6 +57,34 @@ auto CPU::write(n20 address, n8 data) -> void {
+@@ -55,6 +59,43 @@ auto CPU::write(n20 address, n8 data) -> void {
    return bus.write(address, data);
  }
  
-+auto CPU::provenanceDataRead(n20 address) -> void {
++auto CPU::provenanceDataRead(n20 address, u16 segment, u16 offset) -> void {
 +  if(!platform) return;
 +  switch(address.bit(16, 19)) {
 +  case 0x0:
@@ -822,7 +825,16 @@ index 50e94ec5..bb3851c3 100644
 +      if(cartridge.has.wordWidth) address &= ~1;
 +      else if(address & 1) return platform->wonderSwanDataRead(0, address);
 +    }
-+    return platform->wonderSwanDataRead(3, cartridge.romOffset(address));
++    u32 mapperWindow = address.bit(16, 19);
++    u32 mapperBank;
++    switch(mapperWindow) {
++    case 2:  mapperBank = cartridge.io.romBank0; break;
++    case 3:  mapperBank = cartridge.io.romBank1; break;
++    default: mapperBank = cartridge.io.romBank2; break;
++    }
++    return platform->wonderSwanCartridgeDataRead(
++      cartridge.romOffset(address), segment, offset, mapperWindow, mapperBank
++    );
 +  }
 +}
 +
@@ -841,7 +853,7 @@ index 50e94ec5..bb3851c3 100644
  auto CPU::ioWidth(n16 port) -> u32 {
    if(port >= 0xC0 && port <= 0xFF)
      return Byte;
-@@ -68,6 +98,7 @@ auto CPU::ioSpeed(n16 port) -> n32 {
+@@ -68,6 +109,7 @@ auto CPU::ioSpeed(n16 port) -> n32 {
  }
  
  auto CPU::in(n16 port) -> n8 {
@@ -857,7 +869,7 @@ index 4fd4c92a..29ea6153 100644
    auto out(n16 port, n8 data) -> void override;
    auto ioWidth(n16 port) -> u32 override;
    auto ioSpeed(n16 port) -> n32 override;
-+  auto provenanceDataRead(n20 address) -> void override;
++  auto provenanceDataRead(n20 address, u16 segment, u16 offset) -> void override;
 +  auto provenanceRegisterRead(u32 index) -> void override;
 +  auto provenanceRegisterWrite(u32 index) -> void override;
 +  auto provenanceInstructionDataflow(u32 kind) -> void override;
@@ -868,14 +880,16 @@ diff --git a/ares/ws/cpu/dma.cpp b/ares/ws/cpu/dma.cpp
 index 267a30e6..b24553d4 100644
 --- a/ares/ws/cpu/dma.cpp
 +++ b/ares/ws/cpu/dma.cpp
-@@ -15,10 +15,15 @@ auto CPU::DMA::transfer() -> void {
+@@ -15,10 +15,17 @@ auto CPU::DMA::transfer() -> void {
      u16 data = 0;
      //once DMA is started; SRAM reads still incur time penalty, but do not transfer
      if(valid(source)) {
-+      if(platform) platform->wonderSwanInstructionBegin(((u32)cpu.PS << 4 | cpu.PC) & 0xfffff);
++      if(platform) platform->wonderSwanInstructionBegin(
++        ((u32)cpu.PS << 4 | cpu.PC) & 0xfffff, cpu.PS, cpu.PC
++      );
 +      if(platform) platform->wonderSwanInstructionDataflow(1);
-+      self.provenanceDataRead(source + 0);
-+      self.provenanceDataRead(source + 1);
++      self.provenanceDataRead(source + 0, source >> 4, source & 15);
++      self.provenanceDataRead(source + 1, (source + 1) >> 4, (source + 1) & 15);
        data |= self.read(source + 0) << 0;
        data |= self.read(source + 1) << 8;
        self.write(target + 0, data >> 0);
@@ -1126,4 +1140,3 @@ index b3fe3578..fb907b5b 100644
        break;
      }
    }
-

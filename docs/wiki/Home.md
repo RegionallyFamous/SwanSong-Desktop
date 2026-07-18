@@ -31,8 +31,9 @@ silicon and Intel.
   Evidence, and Release views backed by an explicitly selected SwanSong SDK
   checkout. The tagged SDK, Python runtime, and deterministic play executor are
   not yet bundled.
-- ABI 7 can trace a bounded visible rectangle upstream to private exact or
-  conservative cartridge ranges while returning only source-free aggregates.
+- ABI 8 can selectively trace map, raster, or palette sources to private exact
+  cartridge ranges and executed-read context while returning only source-free
+  aggregates.
 - The Analogue Pocket SD tool can install only an authorized stable SwanSong
   Core release. None is currently published, so the tool performs no package
   download or card write.

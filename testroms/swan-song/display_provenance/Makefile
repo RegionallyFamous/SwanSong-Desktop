@@ -1,4 +1,4 @@
-# Reproducible Wonderful-toolchain build for SwanSong's clean-room ABI 7
+# Reproducible Wonderful-toolchain build for SwanSong's clean-room ABI 8
 # upstream provenance fixtures (also retaining the ABI 6 owner checks).
 
 WONDERFUL_TOOLCHAIN ?= /opt/wonderful

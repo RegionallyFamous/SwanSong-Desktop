@@ -3744,7 +3744,7 @@ private struct SwanSongChecks {
             ),
             engine: TranslationRouteEngineIdentity(
                 backend: "ares",
-                buildID: "ares-public-fixture-swan-abi7"
+                buildID: "ares-public-fixture-swan-abi8"
             )
         )
         var recorder = TranslationRouteRecorder(
