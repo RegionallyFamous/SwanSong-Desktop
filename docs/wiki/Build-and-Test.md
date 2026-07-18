@@ -94,6 +94,12 @@ game compatibility results or original-hardware accuracy evidence.
 (introduced with ABI 6 and retained by ABI 9): horizontal
 planar and vertical packed output with exact Screen 1, Screen 2, sprite,
 palette, raster-width, rotation, and non-unknown CPU-writer assertions.
+The same lane runs a clean-room input-frame fixture that samples once per
+VBlank and requires repeated A release/press cycles interleaved with X1 and Y3
+directional changes, without a stale cached button frame between them.
+`check-input-frame-bridge.sh` exposes that exact regression independently for
+release preflight, while `check-live-engine.sh` retains the broader persistence,
+display, audio, and replay suite.
 
 ABI 8 extends those fixtures with raster-only selection, component-complete
 consumer discovery, and executed caller/mapper context for the transformed

@@ -24,6 +24,8 @@ check_fixture() {
 check_fixture "$MACOS_DIR/testroms/ws-test-suite/80186_quirks/80186_quirks.ws"
 check_fixture "$MACOS_DIR/testroms/ws-test-suite/tile_screen_extended_range/tile_screen_extended_range.wsc"
 
+ARES_BUILD_DIR="$BUILD_DIR" "$SCRIPT_DIR/check-input-frame-bridge.sh"
+
 check_provenance_fixture() {
   fixture=$1
   mode=$2

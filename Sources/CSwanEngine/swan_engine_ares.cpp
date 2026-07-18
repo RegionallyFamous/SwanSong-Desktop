@@ -699,6 +699,18 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
   swan_result_t set_input(uint32_t input_mask,
                           std::string& error) override {
     input_mask_.store(input_mask, std::memory_order_relaxed);
+    if (root_) {
+      for (auto& button : root_->find<ares::Node::Input::Button>()) {
+        const uint32_t bits = input_bits(button->name());
+        // ares detects these two console controls from the value change made
+        // by its own input callback. Eagerly update only keypad-style nodes so
+        // their per-frame state is current without consuming those edges.
+        if (bits != 0 && button->name() != "Volume" &&
+            button->name() != "Power") {
+          button->setValue((input_mask & bits) != 0);
+        }
+      }
+    }
     error.clear();
     return SWAN_RESULT_OK;
   }
@@ -1311,7 +1323,12 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     auto button = node->cast<ares::Node::Input::Button>();
     if (!button) return;
 
-    const auto name = node->name();
+    const uint32_t bits = input_bits(node->name());
+    button->setValue(
+        (input_mask_.load(std::memory_order_relaxed) & bits) != 0);
+  }
+
+  static uint32_t input_bits(const string& name) {
     uint32_t bits = 0;
     if (name == "Y1") bits = SWAN_INPUT_Y1;
     else if (name == "Y2") bits = SWAN_INPUT_Y2;
@@ -1346,8 +1363,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     } else if (name == "Power") {
       bits = SWAN_INPUT_POWER;
     }
-
-    button->setValue((input_mask_.load(std::memory_order_relaxed) & bits) != 0);
+    return bits;
   }
 
   inline static std::mutex active_mutex_;
