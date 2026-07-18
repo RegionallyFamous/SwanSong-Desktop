@@ -806,7 +806,10 @@ private struct TranslationOverviewSnapshotSidebar: View {
                     sections: [.library, .favorites, .recent]
                 )
                 snapshotGroup("DISCOVER", sections: [.homebrew])
-                snapshotGroup("TOOLS", sections: [.translationLab, .gameStudio])
+                snapshotGroup(
+                    "TOOLS",
+                    sections: [.pocketCore, .translationLab, .gameStudio]
+                )
             }
             .padding(.horizontal, 8)
 
@@ -997,8 +1000,8 @@ private struct HomebrewCatalogView: View {
     private var notPublished: some View {
         VStack(spacing: 20) {
             SwanEmptyState(
-                title: "Homebrew Catalog Coming Soon",
-                description: "Direct Homebrew installation is built in, but this SwanSong build does not yet contain a production catalog signing key. No network request will be made.",
+                title: "Homebrew Is Almost Here",
+                description: "SwanSong is ready to install homebrew, but this build does not include the key needed to trust the public catalog. Nothing will connect to the internet.",
                 symbol: "shippingbox.fill",
                 tint: SwanTheme.cyan
             )
@@ -1020,13 +1023,13 @@ private struct HomebrewCatalogView: View {
     private var disclosure: some View {
         VStack(spacing: 20) {
             SwanEmptyState(
-                title: "Explore SwanSong Homebrew",
-                description: "SwanSong can load its curated homebrew catalog from GitHub. No library, game, save, or translation data is sent. GitHub receives ordinary connection information and can see which catalog item you download.",
+                title: "Discover WonderSwan Homebrew",
+                description: "Browse SwanSong’s signed catalog from GitHub whenever you choose. GitHub sees the usual connection details and the game you download; your library, saves, and translation projects stay on your Mac.",
                 symbol: "shippingbox.fill",
                 tint: SwanTheme.cyan
             )
             HStack(spacing: 10) {
-                Button("Load Catalog", action: model.enableHomebrewCatalog)
+                Button("Browse Games", action: model.enableHomebrewCatalog)
                     .buttonStyle(.borderedProminent)
                     .keyboardShortcut(.defaultAction)
                     .accessibilityIdentifier("homebrew-consent-load")
@@ -1049,9 +1052,9 @@ private struct HomebrewCatalogView: View {
     private var unavailable: some View {
         VStack(spacing: 20) {
             SwanEmptyState(
-                title: "Catalog Unavailable",
+                title: "Homebrew Couldn’t Load",
                 description: model.homebrewCatalogIssue
-                    ?? "SwanSong could not load the first-party catalog from GitHub.",
+                    ?? "SwanSong couldn’t reach its signed catalog on GitHub.",
                 symbol: "wifi.exclamationmark",
                 tint: .orange
             )
@@ -1638,13 +1641,13 @@ private struct LibraryView: View {
 
     private var emptyTitle: String {
         switch model.section {
-        case .library: "Your WonderSwan library is empty"
+        case .library: "Add your first WonderSwan game"
         case .favorites: "No favorites yet"
         case .recent: "Nothing played recently"
-        case .homebrew: "No verified homebrew loaded"
+        case .homebrew: "No homebrew games yet"
         case .pocketCore: "No Pocket SD card selected"
-        case .translationLab: "No translation project linked"
-        case .gameStudio: "No SDK project open"
+        case .translationLab: "No translation project yet"
+        case .gameStudio: "No game project open"
         }
     }
 
@@ -1662,13 +1665,13 @@ private struct LibraryView: View {
 
     private var emptyDescription: String {
         switch model.section {
-        case .library: "Open a .ws, .wsc, .pc2, .pcv2, or one-game ZIP. SwanSong keeps a private managed copy."
-        case .favorites: "Mark the games you return to most often."
-        case .recent: "Games appear here after they have been played."
-        case .homebrew: "Choose Homebrew to load the signed catalog, or add a game you already have from your Mac."
-        case .pocketCore: "Choose the Analogue Pocket tool to verify and install the first-party Core."
-        case .translationLab: "Link a private translation-toolkit project to begin."
-        case .gameStudio: "Create or open a SwanSong SDK project to begin."
+        case .library: "Open a game from your Mac or drop it here. SwanSong saves a private copy so it’s ready whenever you are."
+        case .favorites: "Star a favorite and it’ll always be easy to find."
+        case .recent: "Games show up here after you play them."
+        case .homebrew: "Browse SwanSong’s signed catalog, or add a game you already have on your Mac."
+        case .pocketCore: "Choose Analogue Pocket to add or update the official SwanSong Core."
+        case .translationLab: "Add a private translation project to keep its progress, tests, and captures together."
+        case .gameStudio: "Create a WonderSwan game or open one you’re already making."
         }
     }
 }
@@ -2778,7 +2781,7 @@ struct CheckpointRAMInspectorView: View {
 enum TranslationLabOverviewAccessibility {
     static let page = "translation-overview-page"
     static let workflow = "translation-lab-overview-workflow"
-    static let workflowLabel = "Deterministic route testing workflow"
+    static let workflowLabel = "Replay the exact same moment workflow"
     static let readinessMetrics = "translation-lab-overview-readiness-metrics"
     static let currentAction = "translation-lab-overview-current-action"
     static let currentActionLabel = "Current route testing action"
@@ -2889,12 +2892,12 @@ private struct TranslationLabView: View {
             } else {
                 VStack(spacing: 20) {
                     SwanEmptyState(
-                        title: "Add Translation Projects",
-                        description: "Choose one project or link an entire private toolkit. SwanSong will keep every game’s status, test routes, and captures together.",
+                        title: "Bring In a Translation Project",
+                        description: "Choose one project—or an entire private toolkit—and SwanSong will keep its progress, test routes, and captures together.",
                         symbol: "character.book.closed.fill",
                         tint: SwanTheme.translationAccent
                     )
-                    Button("Add Project or Toolkit…", action: model.chooseTranslationProject)
+                    Button("Add Translation Project…", action: model.chooseTranslationProject)
                         .buttonStyle(.borderedProminent)
                         .controlSize(.large)
                 }
@@ -2923,7 +2926,7 @@ private struct TranslationLabView: View {
                 }
 
                 ToolbarItemGroup(placement: .primaryAction) {
-                    Button("Record New Test", systemImage: "record.circle") {
+                    Button("Record a Test", systemImage: "record.circle") {
                         translationLabPageRaw = TranslationLabPage.testCases.rawValue
                         model.startCleanBootTranslationTest()
                     }
@@ -2989,7 +2992,7 @@ private struct TranslationLabView: View {
                     }
 
                     Menu {
-                        Button("Add Project or Toolkit…", systemImage: "plus", action: model.chooseTranslationProject)
+                        Button("Add Translation Project…", systemImage: "plus", action: model.chooseTranslationProject)
                         Button("Show Project in Finder", systemImage: "folder", action: model.revealTranslationProject)
                         if model.lastTranslationEvidenceURL != nil {
                             Button("Show Last Evidence", systemImage: "camera.viewfinder", action: model.revealLastTranslationEvidence)
@@ -3245,8 +3248,8 @@ private struct TranslationLabView: View {
         HStack(spacing: 12) {
             Label(
                 model.translationProjects.count == 1
-                    ? "1 private project"
-                    : "\(model.translationProjects.count) private projects",
+                    ? "1 project on this Mac"
+                    : "\(model.translationProjects.count) projects on this Mac",
                 systemImage: "books.vertical.fill"
             )
             .font(.caption.weight(.semibold))
@@ -3273,7 +3276,7 @@ private struct TranslationLabView: View {
 
             Spacer()
 
-            Button("Add Project or Toolkit", systemImage: "plus", action: model.chooseTranslationProject)
+            Button("Add Translation Project", systemImage: "plus", action: model.chooseTranslationProject)
                 .buttonStyle(.borderless)
         }
         .padding(.horizontal, 4)
@@ -3318,7 +3321,7 @@ private struct TranslationLabView: View {
                 VStack(alignment: .leading, spacing: 16) {
                     HStack(alignment: .firstTextBaseline) {
                         VStack(alignment: .leading, spacing: 3) {
-                            Text("Project readiness")
+                            Text("Project Progress")
                                 .font(.title3.weight(.semibold))
                                 .accessibilityAddTraits(.isHeader)
                             Text(readiness.headline)
@@ -3326,7 +3329,7 @@ private struct TranslationLabView: View {
                                 .foregroundStyle(.secondary)
                         }
                         Spacer()
-                        Text("\(Int((readiness.completionFraction * 100).rounded()))% of stages complete")
+                        Text("\(Int((readiness.completionFraction * 100).rounded()))% complete")
                             .font(.caption.monospacedDigit().weight(.semibold))
                             .foregroundStyle(readinessColor(readiness.status))
                     }
@@ -3342,12 +3345,12 @@ private struct TranslationLabView: View {
                         ) {
                             readinessMetric(
                                 value: "\(metrics.translated) / \(metrics.extracted)",
-                                label: "Strings translated",
+                                label: "Text translated",
                                 symbol: "text.quote"
                             )
                             readinessMetric(
                                 value: "\(Int((metrics.translationFraction * 100).rounded()))%",
-                                label: "Corpus coverage",
+                                label: "Translation coverage",
                                 symbol: "chart.bar.fill"
                             )
                             readinessMetric(
@@ -3381,7 +3384,7 @@ private struct TranslationLabView: View {
                     if !readiness.nextActions.isEmpty {
                         Divider()
                         VStack(alignment: .leading, spacing: 9) {
-                            Text("Next actions")
+                            Text("What to Do Next")
                                 .font(.headline)
                             ForEach(readiness.nextActions) { action in
                                 HStack(alignment: .top, spacing: 10) {
@@ -3412,7 +3415,7 @@ private struct TranslationLabView: View {
                 HStack(spacing: 12) {
                     ProgressView()
                         .controlSize(.small)
-                    Text("Reading the toolkit’s structured project status…")
+                    Text("Checking the project’s progress…")
                         .font(.callout)
                         .foregroundStyle(.secondary)
                 }
@@ -3425,9 +3428,9 @@ private struct TranslationLabView: View {
                         .font(.title3)
                         .foregroundStyle(.secondary)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Readiness has not been checked")
+                        Text("Project progress has not been checked")
                             .font(.headline)
-                        Text("Refresh to read the project’s current toolkit status.")
+                        Text("Refresh to see what’s ready and what needs attention.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -3490,8 +3493,8 @@ private struct TranslationLabView: View {
     @ViewBuilder
     private var routeHistory: some View {
         historySection(
-            title: "Route Tests",
-            subtitle: "Record from a clean boot, save the exact target frame, then replay the same inputs against Original and Patched.",
+            title: "Replayable Tests",
+            subtitle: "Record once from a fresh start, then replay the same inputs in the original and translated games.",
             count: model.translationRoutes.count
         ) {
             VStack(spacing: 10) {
@@ -3499,14 +3502,14 @@ private struct TranslationLabView: View {
                     HStack(spacing: 14) {
                         SwanIconTile(symbol: "record.circle", tint: .orange, size: 48)
                         VStack(alignment: .leading, spacing: 3) {
-                            Text("No route tests yet")
+                            Text("No replayable tests yet")
                                 .font(.headline)
-                            Text("Start Original from frame 1, play to a useful screen, then save that exact checkpoint.")
+                            Text("Start the original game, play to a useful moment, then save the route so you can repeat it exactly.")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
                         Spacer()
-                        Button("Record New Test…", systemImage: "record.circle") {
+                        Button("Record a Test…", systemImage: "record.circle") {
                             model.startCleanBootTranslationTest()
                         }
                         .buttonStyle(.borderedProminent)
@@ -4980,7 +4983,7 @@ private struct TranslationLabView: View {
     private func testLoop(_ project: TranslationProject) -> some View {
         VStack(alignment: .leading, spacing: 14) {
             VStack(alignment: .leading, spacing: 3) {
-                Text("Deterministic Route Testing")
+                    Text("Replay the Exact Same Moment")
                     .font(.title3.weight(.semibold))
                     .accessibilityAddTraits(.isHeader)
                     .background(
@@ -4989,7 +4992,7 @@ private struct TranslationLabView: View {
                             probe: overviewGeometryProbe
                         )
                     )
-                Text("Start Original from a clean boot, save one exact checkpoint, then replay it against both builds for native-pixel review.")
+                Text("Record one route from a fresh start, then replay the same inputs in the original and translated games.")
                     .foregroundStyle(.secondary)
             }
 
@@ -5000,30 +5003,30 @@ private struct TranslationLabView: View {
             ) {
                 labStep(
                     number: "1",
-                    title: "Clean Boot",
-                    detail: "Boot with clean, isolated persistence.",
+                    title: "Start Fresh",
+                    detail: "Boot with a clean, isolated save.",
                     symbol: "1.circle.fill",
                     accent: .blue
                 )
                 labStep(
                     number: "2",
-                    title: "Record",
+                    title: "Record the Route",
                     detail: latestRouteDetail,
                     symbol: model.latestTranslationRoute == nil ? "record.circle" : "checkmark.circle.fill",
                     accent: model.latestTranslationRoute == nil ? .orange : .green
                 )
                 labStep(
                     number: "3",
-                    title: "Replay Both",
-                    detail: "Strict pack, then deterministic replay.",
+                    title: "Replay Both Games",
+                    detail: "Build the patch, then repeat the same inputs.",
                     symbol: "hammer.circle.fill",
                     accent: .purple
                 )
                 labStep(
                     number: "4",
-                    title: "Review",
+                    title: "Compare the Result",
                     detail: model.lastTranslationEvidenceURL == nil
-                        ? "Frame + RAM + state + manifest."
+                        ? "Picture, memory, save state, and proof details."
                         : "Latest evidence is ready in the project.",
                     symbol: model.lastTranslationEvidenceURL == nil ? "camera.metering.center.weighted" : "checkmark.seal.fill",
                     accent: model.lastTranslationEvidenceURL == nil ? .cyan : .green
@@ -5093,7 +5096,7 @@ private struct TranslationLabView: View {
             .frame(width: 48, height: 48)
 
             VStack(alignment: .leading, spacing: 3) {
-                Text("Automated A/B route verification")
+                Text("One Route, Two Games")
                     .font(.headline)
                 Text(routeVerificationDetail)
                     .font(.caption)
@@ -5114,7 +5117,7 @@ private struct TranslationLabView: View {
                     .foregroundStyle(.secondary)
             }
         } else if model.latestTranslationRoute == nil {
-            Button("Record New Test…", systemImage: "record.circle") {
+            Button("Record a Test…", systemImage: "record.circle") {
                 model.startCleanBootTranslationTest()
             }
             .buttonStyle(.borderedProminent)
@@ -5185,9 +5188,9 @@ private struct TranslationLabView: View {
 
     private var routeVerificationDetail: String {
         if model.latestTranslationRoute == nil {
-            return "Record a clean-boot test once; SwanSong will then run the exact same frames against both ROMs."
+            return "Record one test from a fresh start. SwanSong can then replay those exact moments in both games."
         }
-        return "Runs guarded QA and strict pack, replays the selected route against Original and Patched, captures both endpoints, and opens the paired review."
+        return "SwanSong checks the project, replays the route in both games, saves the matching captures, and opens them for review."
     }
 
     private var routeVerificationHelp: String {
@@ -5283,8 +5286,8 @@ private struct TranslationLabView: View {
 
     private var readinessBadge: some View {
         let status = model.translationReadiness?.status ?? .unknown
-        return Text(status.rawValue)
-            .font(.caption2.monospaced().weight(.bold))
+        return Text(readinessTitle(status))
+            .font(.caption2.weight(.bold))
             .foregroundStyle(readinessColor(status))
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
@@ -5294,7 +5297,7 @@ private struct TranslationLabView: View {
 
     private var latestRouteDetail: String {
         guard let route = model.latestTranslationRoute else {
-            return "Capture input timing from a visible route."
+            return "Play to a useful moment and save every input along the way."
         }
         switch route.proofEligibility {
         case .legacyStartUnknown:
@@ -5304,7 +5307,7 @@ private struct TranslationLabView: View {
         default:
             break
         }
-        return "Target frame \(route.targetFrameNumber ?? route.totalFrames) · \(route.events.count) input changes."
+        return "Frame \(route.targetFrameNumber ?? route.totalFrames) · \(route.events.count) button changes."
     }
 
     private func labStep(
@@ -5364,6 +5367,15 @@ private struct TranslationLabView: View {
         case .pending: .orange
         case .blocked: .red
         case .unknown: .secondary
+        }
+    }
+
+    private func readinessTitle(_ status: TranslationReadinessStatus) -> String {
+        switch status {
+        case .complete: "Ready"
+        case .pending: "In progress"
+        case .blocked: "Blocked"
+        case .unknown: "Not checked"
         }
     }
 
@@ -6619,10 +6631,10 @@ private struct GameConfidenceActionGeometryReader: View {
 private extension GameCompatibilityStatus {
     var confidenceTitle: String {
         switch self {
-        case .untested: "Untested"
-        case .reachedVideo: "Reached video"
+        case .untested: "Not tested yet"
+        case .reachedVideo: "Picture appeared"
         case .confirmedWorks: "Works"
-        case .reportedIssues: "Issues"
+        case .reportedIssues: "Needs attention"
         }
     }
 
@@ -6649,7 +6661,7 @@ private struct GameCompatibilityBadge: View {
     let status: GameCompatibilityStatus
 
     var body: some View {
-        Label("Compatibility: \(status.confidenceTitle)", systemImage: status.confidenceSymbol)
+        Label(status.confidenceTitle, systemImage: status.confidenceSymbol)
             .font(.caption2.weight(.semibold))
             .foregroundStyle(status.confidenceColor)
             .lineLimit(1)
@@ -6661,7 +6673,7 @@ private struct GameCompatibilityBadge: View {
                 Capsule()
                     .stroke(status.confidenceColor.opacity(0.22), lineWidth: 0.75)
             }
-            .accessibilityLabel("Compatibility evidence: \(status.confidenceTitle)")
+            .accessibilityLabel("Play status: \(status.confidenceTitle)")
     }
 }
 
@@ -6731,7 +6743,7 @@ private struct GameCard: View {
                 Button("Capture Artwork Next Time Played", systemImage: "camera", action: onCaptureArtworkNextPlay)
             }
             if canReveal {
-                Button(game.managedROM == nil ? "Show in Finder" : "Show Managed Copy in Finder", systemImage: "folder", action: onReveal)
+                Button(game.managedROM == nil ? "Show in Finder" : "Show SwanSong Copy in Finder", systemImage: "folder", action: onReveal)
             }
             Divider()
             Button("Remove from Library", role: .destructive, action: onRemove)
@@ -6840,7 +6852,7 @@ private struct GameCard: View {
     private var accessibilityValue: String {
         let system = game.systemTitle
         let artworkDescription = artwork == nil ? "procedural artwork" : "captured gameplay artwork"
-        let compatibility = "compatibility evidence: \(confidence.compatibility.confidenceTitle)"
+        let compatibility = "play status: \(confidence.compatibility.confidenceTitle)"
         if isRepairingManagedCopy {
             return "\(system); \(artworkDescription); repairing private copy; \(compatibility)"
         }
@@ -6863,7 +6875,7 @@ private struct GameCard: View {
 
     private var sourceDetail: String {
         let system = game.systemTitle
-        return game.managedROM == nil ? system : "\(system) · Managed copy"
+        return game.managedROM == nil ? system : "\(system) · Saved in SwanSong"
     }
 
     private var sourceHelp: String {
@@ -7097,23 +7109,23 @@ private struct GameArtworkTile: View {
 extension GameLaunchReadiness {
     var confidenceTitle: String {
         switch self {
-        case .ready: "Ready to launch"
-        case .checkingGame: "Checking game copy"
-        case .gameUnavailable: "Game copy unavailable"
-        case .engineUnavailable: "Playback engine unavailable"
+        case .ready: "Ready to play"
+        case .checkingGame: "Checking the game file"
+        case .gameUnavailable: "Game file unavailable"
+        case .engineUnavailable: "Player unavailable"
         }
     }
 
     var confidenceDetail: String {
         switch self {
         case .ready:
-            "The native engine, SwanSong Open IPL, and local game bytes are available."
+            "SwanSong has everything it needs to open this game."
         case .checkingGame:
-            "SwanSong is checking the private game copy before allowing play."
+            "SwanSong is checking its private copy before play begins."
         case .gameUnavailable:
-            "Repair or re-add the exact game before trying to play."
+            "Repair or add this game again before trying to play."
         case .engineUnavailable:
-            "The native SwanSong playback engine is not currently available."
+            "SwanSong’s game player is not available in this build."
         }
     }
 
@@ -7140,13 +7152,13 @@ private extension GameCompatibilityStatus {
     var confidenceDetail: String {
         switch self {
         case .untested:
-            "No local play evidence or personal verdict has been recorded for this exact game."
+            "SwanSong has not played far enough to see a picture, and you have not added a verdict yet."
         case .reachedVideo:
-            "SwanSong observed a non-uniform native game picture. This is not confirmation of gameplay or hardware accuracy."
+            "SwanSong saw a real game picture. That alone does not prove the controls, sound, timing, saves, or hardware accuracy."
         case .confirmedWorks:
-            "You marked this exact game as working. This personal verdict is independent from launch setup and ROM integrity."
+            "You marked this game as working. Your verdict stays separate from the player and file checks."
         case .reportedIssues:
-            "You reported compatibility issues for this exact game. Add a note below to preserve what needs attention."
+            "You reported a problem with this game. Add a note below so you remember what needs attention."
         }
     }
 }
@@ -7154,32 +7166,32 @@ private extension GameCompatibilityStatus {
 private extension GameROMIntegrity {
     var confidenceTitle: String {
         switch self {
-        case .verified: "Verified managed copy"
-        case .checksumMismatch: "Footer checksum mismatch"
-        case .checking: "Checking exact bytes"
-        case .missing: "Private copy missing"
-        case .changed: "Private copy changed"
-        case .invalidReference: "Library identity invalid"
-        case .unmanaged: "Original-location game"
+        case .verified: "Game file verified"
+        case .checksumMismatch: "Game file checksum warning"
+        case .checking: "Checking the game file"
+        case .missing: "Saved game file is missing"
+        case .changed: "Saved game file changed"
+        case .invalidReference: "Game file link is broken"
+        case .unmanaged: "Using the original file"
         }
     }
 
     var confidenceDetail: String {
         switch self {
         case .verified:
-            "The managed bytes and WonderSwan footer checksum match the identity saved at import."
+            "SwanSong’s private copy matches the game you added, including its WonderSwan footer checksum."
         case .checksumMismatch:
-            "The WonderSwan footer checksum does not match. This is an integrity warning, not a compatibility verdict."
+            "The WonderSwan footer checksum does not match. This warns about the file; it does not say whether the game works."
         case .checking:
-            "SwanSong is validating the local game bytes and saved library identity."
+            "SwanSong is checking the local game file against the copy saved in your library."
         case .missing:
-            "The private managed copy is missing and must be repaired from the exact original."
+            "SwanSong’s private copy is missing. Choose the exact original game to repair it."
         case .changed:
-            "The managed bytes changed after import and must be repaired before play."
+            "SwanSong’s private copy changed after you added it. Repair it before playing."
         case .invalidReference:
-            "This library entry cannot prove which managed copy belongs to it; re-add the original as a new entry."
+            "SwanSong cannot safely match this library entry to its private copy. Add the original again as a new game."
         case .unmanaged:
-            "This legacy entry runs from its original location instead of a SwanSong managed copy."
+            "This older library entry runs from its original location instead of a private SwanSong copy."
         }
     }
 
@@ -7274,10 +7286,10 @@ private struct GameConfidencePanel: View {
                 .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("Game Confidence")
+                    Text("What SwanSong Knows")
                         .font(.headline)
                         .accessibilityAddTraits(.isHeader)
-                    Text("Three independent signals for this exact game.")
+                    Text("Three separate checks, kept honest and easy to read.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -7285,7 +7297,7 @@ private struct GameConfidencePanel: View {
             }
 
             GameConfidenceRow(
-                lane: "Launch readiness",
+                lane: "Ready to play",
                 title: confidence.launchReadiness.confidenceTitle,
                 detail: confidence.launchReadiness.confidenceDetail,
                 symbol: confidence.launchReadiness.confidenceSymbol,
@@ -7294,7 +7306,7 @@ private struct GameConfidencePanel: View {
             )
 
             GameConfidenceRow(
-                lane: "Compatibility evidence",
+                lane: "Play status",
                 title: confidence.compatibility.confidenceTitle,
                 detail: confidence.compatibility.confidenceDetail,
                 symbol: confidence.compatibility.confidenceSymbol,
@@ -7303,7 +7315,7 @@ private struct GameConfidencePanel: View {
             )
 
             GameConfidenceRow(
-                lane: "ROM integrity",
+                lane: "Game file",
                 title: confidence.romIntegrity.confidenceTitle,
                 detail: confidence.romIntegrity.confidenceDetail,
                 symbol: confidence.romIntegrity.confidenceSymbol,
@@ -7312,26 +7324,26 @@ private struct GameConfidencePanel: View {
             )
 
             DisclosureGroup(
-                "What these checks mean",
+                "How these checks work",
                 isExpanded: $showsCheckExplanations
             ) {
                 VStack(alignment: .leading, spacing: 10) {
                     confidenceExplanation(
-                        "Launch readiness",
+                        "Ready to play",
                         detail: confidence.launchReadiness.confidenceDetail
                     )
                     confidenceExplanation(
-                        "Compatibility evidence",
+                        "Play status",
                         detail: confidence.compatibility.confidenceDetail
                     )
                     confidenceExplanation(
-                        "ROM integrity",
+                        "Game file",
                         detail: confidence.romIntegrity.confidenceDetail
                     )
 
                     if confidence.compatibility == .reachedVideo {
                         Label(
-                            "Reached video confirms only a non-uniform native game raster—not gameplay, controls, audio, timing, saves, or hardware accuracy.",
+                            "A picture only proves that the game drew something. It does not prove gameplay, controls, sound, timing, saves, or hardware accuracy.",
                             systemImage: "info.circle"
                         )
                         .font(.caption)
@@ -7347,9 +7359,9 @@ private struct GameConfidencePanel: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Your compatibility verdict")
+                Text("Your play verdict")
                     .font(.subheadline.weight(.semibold))
-                Text("Record your experience without changing the checks above.")
+                Text("Tell SwanSong how it went. This won’t change the checks above.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -7358,7 +7370,7 @@ private struct GameConfidencePanel: View {
 
             VStack(alignment: .leading, spacing: 7) {
                 HStack {
-                    Text("Compatibility note")
+                    Text("Play note")
                         .font(.subheadline.weight(.semibold))
                     Text("Optional")
                         .font(.caption)
@@ -10420,92 +10432,44 @@ struct SettingsView: View {
     @AppStorage(SwanSongTaskNotificationCenter.enabledDefaultsKey)
     private var taskCompletionNotificationsEnabled = false
     private let backendName = (try? EngineSession().backendName) ?? "Unavailable"
+    private let usesDeterministicTabsForOffscreenSnapshots: Bool
 
-    init(model: AppModel, updater: SwanSongUpdater = .shared) {
+    init(
+        model: AppModel,
+        updater: SwanSongUpdater = .shared,
+        usesDeterministicTabsForOffscreenSnapshots: Bool = false
+    ) {
         self.model = model
         self.updater = updater
+        self.usesDeterministicTabsForOffscreenSnapshots =
+            usesDeterministicTabsForOffscreenSnapshots
     }
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            Form {
-                Section {
-                    HStack(spacing: 14) {
-                        SwanSongIcon(size: 58)
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text("SwanSong")
-                                .font(.title3.weight(.semibold))
-                            Text("A private, native WonderSwan player and translation workbench for macOS.")
-                                .font(.callout)
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                    .padding(.vertical, 3)
+        Group {
+            if usesDeterministicTabsForOffscreenSnapshots {
+                VStack(spacing: 0) {
+                    deterministicTabBar
+                    Divider()
+                    selectedSettingsPane
                 }
-                Section("Screen") {
-                    Picker("Display", selection: $displayProfileRaw) {
-                        ForEach(DisplayProfile.allCases) { profile in
-                            Text(profile.rawValue).tag(profile.rawValue)
-                        }
-                    }
-                    Text(displayProfile.detail)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                    Picker("LCD motion response", selection: lcdMotionSelection) {
-                        ForEach(LCDMotionLevel.allCases) { level in
-                            Text(level.title).tag(level)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .disabled(displayProfile == .purePixels)
-                }
-                Section("Player") {
-                    Toggle(
-                        "Automatically fit horizontal and vertical games",
-                        isOn: $automaticallyFitGameOrientation
-                    )
-                    Toggle("Pause when SwanSong is in the background", isOn: $pauseWhenInactive)
-                    LabeledContent("Execution engine", value: backendName)
-                        .foregroundStyle(.secondary)
-                }
-                Section("Debugging") {
-                    Toggle("Enable Debug Tools", isOn: debugToolsBinding)
-                        .accessibilityIdentifier("settings-enable-debug-tools")
-                    Text(
-                        model.debugToolsEnabled
-                            ? "Testing overlays, input/frame logging, and the Debug menu are available. The bundled route runner still requires its explicit debug flag."
-                            : "Off by default. Game-testing controls stay hidden from the player until enabled."
-                    )
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-                }
-                Section("Local Automation") {
-                    Toggle("Allow local MCP control", isOn: localMCPControlBinding)
-                        .accessibilityIdentifier("settings-enable-local-mcp")
-                    Text(
-                        "Off by default. Trusted local tools can read limited app status and control navigation or playback. ROMs, saves, memory, screenshots, and file contents are never exposed through the live-app bridge."
-                    )
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-                }
-                Section("Task Completion") {
-                    Toggle(
-                        "Notify when Studio tasks finish in the background",
-                        isOn: taskCompletionNotificationsBinding
-                    )
-                    .accessibilityIdentifier("settings-task-completion-notifications")
-                    Text(
-                        "Off by default. Notifications contain only the task name and result—never project paths, ROM names, diagnostics, or evidence."
-                    )
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-                }
+            } else {
+                nativeSettingsTabs
             }
-            .formStyle(.grouped)
-            .padding()
+        }
+        .tint(SwanTheme.accent)
+        .background(SwanTheme.libraryBackground.ignoresSafeArea())
+        .onAppear {
+            selectedTab = Self.migratedTab(selectedTab)
+            if ProcessInfo.processInfo.environment["SWAN_SONG_SETTINGS_TAB"] == "controller" {
+                selectedTab = 1
+            }
+        }
+    }
+
+    private var nativeSettingsTabs: some View {
+        TabView(selection: $selectedTab) {
+            displayPlayerSettings
             .tabItem {
                 Label("Display & Player", systemImage: "display")
             }
@@ -10523,14 +10487,136 @@ struct SettingsView: View {
                 }
                 .tag(3)
         }
-        .tint(SwanTheme.accent)
-        .background(SwanTheme.libraryBackground.ignoresSafeArea())
-        .onAppear {
-            selectedTab = Self.migratedTab(selectedTab)
-            if ProcessInfo.processInfo.environment["SWAN_SONG_SETTINGS_TAB"] == "controller" {
-                selectedTab = 1
+    }
+
+    private var displayPlayerSettings: some View {
+        Form {
+            Section {
+                HStack(spacing: 14) {
+                    SwanSongIcon(size: 58)
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text("SwanSong")
+                            .font(.title3.weight(.semibold))
+                        Text("Play, rewind, translate, and build WonderSwan games—all on your Mac.")
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .padding(.vertical, 3)
+            }
+            Section("Picture") {
+                Picker("Display", selection: $displayProfileRaw) {
+                    ForEach(DisplayProfile.allCases) { profile in
+                        Text(profile.rawValue).tag(profile.rawValue)
+                    }
+                }
+                Text(displayProfile.detail)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Picker("LCD motion", selection: lcdMotionSelection) {
+                    ForEach(LCDMotionLevel.allCases) { level in
+                        Text(level.title).tag(level)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .disabled(displayProfile == .purePixels)
+            }
+            Section("Player") {
+                Toggle(
+                    "Fit every game to the window",
+                    isOn: $automaticallyFitGameOrientation
+                )
+                Toggle("Pause when SwanSong is in the background", isOn: $pauseWhenInactive)
+                LabeledContent("Game engine", value: backendName)
+                    .foregroundStyle(.secondary)
+            }
+            Section("Testing Tools") {
+                Toggle("Show testing tools", isOn: debugToolsBinding)
+                    .accessibilityIdentifier("settings-enable-debug-tools")
+                Text(
+                    model.debugToolsEnabled
+                        ? "Testing overlays, input and frame logs, and the Debug menu are now available. The route runner still needs its own debug flag."
+                        : "Off by default. Turn this on when you want extra tools for testing a game."
+                )
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            }
+            Section("Trusted Local Tools") {
+                Toggle("Let trusted local tools control SwanSong", isOn: localMCPControlBinding)
+                    .accessibilityIdentifier("settings-enable-local-mcp")
+                Text(
+                    "Off by default. This local MCP bridge can share limited app status and control navigation or playback. It never exposes games, saves, memory, screenshots, or file contents."
+                )
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            }
+            Section("Notifications") {
+                Toggle(
+                    "Tell me when Studio finishes in the background",
+                    isOn: taskCompletionNotificationsBinding
+                )
+                .accessibilityIdentifier("settings-task-completion-notifications")
+                Text(
+                    "Off by default. Notifications show only the task and result—never project paths, game names, diagnostics, or evidence."
+                )
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
             }
         }
+        .formStyle(.grouped)
+        .padding()
+    }
+
+    @ViewBuilder
+    private var selectedSettingsPane: some View {
+        switch selectedTab {
+        case 1:
+            ControllerSettingsView(model: model)
+        case 3:
+            UpdateSettingsView(updater: updater)
+        default:
+            displayPlayerSettings
+        }
+    }
+
+    private var deterministicTabBar: some View {
+        HStack(spacing: 8) {
+            deterministicTab("Display & Player", symbol: "display", tag: 0)
+            deterministicTab("Controller", symbol: "gamecontroller.fill", tag: 1)
+            deterministicTab("Updates", symbol: "arrow.down.circle", tag: 3)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 9)
+        .frame(maxWidth: .infinity)
+        .background(.bar)
+    }
+
+    private func deterministicTab(
+        _ title: String,
+        symbol: String,
+        tag: Int
+    ) -> some View {
+        Button {
+            selectedTab = tag
+        } label: {
+            Label(title, systemImage: symbol)
+                .font(.callout.weight(.medium))
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 7)
+                .foregroundStyle(selectedTab == tag ? Color.accentColor : Color.primary)
+                .background(
+                    selectedTab == tag
+                        ? Color.accentColor.opacity(0.14)
+                        : Color.clear,
+                    in: RoundedRectangle(cornerRadius: 8, style: .continuous)
+                )
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(selectedTab == tag ? .isSelected : [])
     }
 
     /// Startup was tab 2 before the built-in Open IPL made that pane obsolete.

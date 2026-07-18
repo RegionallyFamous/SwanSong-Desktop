@@ -1055,7 +1055,7 @@ struct PocketCoreSetupView: View {
         .navigationTitle("Analogue Pocket")
         .accessibilityIdentifier(PocketCoreSetupAccessibility.page)
         .alert(
-            "Prepare \(setup.card?.volumeName ?? "SD Card")?",
+            "Install on \(setup.card?.volumeName ?? "SD Card")?",
             isPresented: $showsPrepareConfirmation
         ) {
             Button("Cancel", role: .cancel) {}
@@ -1063,7 +1063,7 @@ struct PocketCoreSetupView: View {
                 setup.prepareCard()
             }
         } message: {
-            Text("SwanSong will install verified Core \(setup.release?.metadata.version ?? "") files on \(setup.card?.rootURL.path ?? "the selected card"). Existing games, saves, settings, and unrelated cores are left in place. Back up the card first.")
+            Text("SwanSong will install verified Core \(setup.release?.metadata.version ?? "") on \(setup.card?.rootURL.path ?? "the selected card"). Your games, saves, settings, and other cores stay in place. Back up the card first.")
         }
     }
 
@@ -1071,9 +1071,9 @@ struct PocketCoreSetupView: View {
         HStack(alignment: .top, spacing: 18) {
             SwanIconTile(symbol: "sdcard.fill", tint: SwanTheme.cyan, size: 58)
             VStack(alignment: .leading, spacing: 6) {
-                Text("Put SwanSong on your Pocket")
+                Text("Add SwanSong to Your Pocket")
                     .font(.largeTitle.bold())
-                Text("Install or update the first-party SwanSong Core on a mounted Analogue Pocket SD card. No external BIOS is needed.")
+                Text("Install or update SwanSong Core on an Analogue Pocket SD card. Your games, saves, settings, and other cores stay put—and no external BIOS is needed.")
                     .font(.title3)
                     .foregroundStyle(.secondary)
             }
@@ -1081,7 +1081,7 @@ struct PocketCoreSetupView: View {
     }
 
     private var releaseCard: some View {
-        stepCard(number: 1, title: "Verify the official Core release") {
+        stepCard(number: 1, title: "Find the official SwanSong Core") {
             if setup.isChecking {
                 HStack(spacing: 10) {
                     ProgressView()
@@ -1092,7 +1092,7 @@ struct PocketCoreSetupView: View {
                     symbol: "checkmark.seal.fill",
                     tint: .green,
                     title: "SwanSong Core \(release.metadata.version)",
-                    detail: "Released \(release.metadata.releaseDate) · checksum and release authorization verified"
+                    detail: "Released \(release.metadata.releaseDate) · package signature and checksum verified"
                 )
                 HStack {
                     Button("Check Again", action: setup.checkForRelease)
@@ -1114,7 +1114,7 @@ struct PocketCoreSetupView: View {
                     }
                 }
             } else {
-                Text("SwanSong only checks the Core repository when you ask it to.")
+                Text("SwanSong checks the official Core release only when you ask.")
                     .foregroundStyle(.secondary)
                 Button("Check for Core Release", action: setup.checkForRelease)
                     .buttonStyle(.borderedProminent)
@@ -1124,7 +1124,7 @@ struct PocketCoreSetupView: View {
     }
 
     private var cardCard: some View {
-        stepCard(number: 2, title: "Choose the mounted SD card") {
+        stepCard(number: 2, title: "Choose your Pocket SD card") {
             if let card = setup.card {
                 statusRow(
                     symbol: "externaldrive.fill.badge.checkmark",
@@ -1137,7 +1137,7 @@ struct PocketCoreSetupView: View {
                     .foregroundStyle(.secondary)
                     .textSelection(.enabled)
             } else {
-                Text("Use an exFAT or FAT32 card mounted under /Volumes. A blank card or an existing Pocket card is accepted.")
+                Text("Use a blank or existing Pocket card formatted as exFAT or FAT32.")
                     .foregroundStyle(.secondary)
             }
             Button(setup.card == nil ? "Choose SD Card…" : "Choose Another Card…") {
@@ -1149,7 +1149,7 @@ struct PocketCoreSetupView: View {
     }
 
     private var prepareCard: some View {
-        stepCard(number: 3, title: "Prepare and verify") {
+        stepCard(number: 3, title: "Review and install") {
             if setup.isPreparing {
                 HStack(spacing: 10) {
                     ProgressView()
@@ -1172,9 +1172,9 @@ struct PocketCoreSetupView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else {
-                Text("The final confirmation names the exact card and Core version before any file is written.")
+                Text("SwanSong shows the exact card and Core version before it changes anything.")
                     .foregroundStyle(.secondary)
-                Button("Prepare SD Card…") {
+                Button("Install SwanSong Core…") {
                     showsPrepareConfirmation = true
                 }
                 .buttonStyle(.borderedProminent)

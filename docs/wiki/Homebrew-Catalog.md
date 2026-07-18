@@ -4,11 +4,8 @@ The first-party Homebrew Catalog is a small, signed shelf of WonderSwan games
 that their publishers have affirmatively authorized SwanSong to distribute.
 It is not a general ROM directory, a web search, or a background service.
 
-Current source enables the published catalog and embeds its purpose-specific
-Ed25519 public key. The public SwanSong 0.4.1 beta predates that activation and
-still shows **Coming Soon**; direct catalog installation becomes available in
-the next signed and notarized build. Even then, opening the page does not
-contact the network.
+SwanSong 0.4.2 enables the published catalog and includes its purpose-specific
+public key. Opening the Homebrew page still does not contact the network.
 
 ## Browse only when you ask
 
@@ -16,7 +13,7 @@ SwanSong never loads the catalog at launch or merely because you opened the
 Homebrew page.
 
 1. Open **Homebrew**.
-2. Choose **Load Catalog** and review the GitHub network disclosure.
+2. Choose **Browse Games** and review the short GitHub network disclosure.
 3. Browse the verified entries.
 4. Choose **Add to Library** for a title you want.
 5. SwanSong downloads that one immutable release, verifies it, and adds it to

@@ -22,7 +22,7 @@ the evidence beside the project. The ROM never enters the normal game library.
 
 ## Workspace and readiness
 
-Open **Translation Lab** in the sidebar and choose **Add Project or Toolkit…**,
+Open **Translation Lab** in the sidebar and choose **Add Translation Project…**,
 or drag a project, `project.json`, or private toolkit folder into the window.
 Adding a toolkit discovers its immediate projects. The project switcher keeps
 each game's status, routes, captures, and reviews separate.
@@ -47,7 +47,7 @@ cannot keep a stale integrity label.
 
 ## Deterministic route tests
 
-Choose **Record New Test…** from the Translation menu. SwanSong cold-launches
+Choose **Record a Test…** from the Translation menu. SwanSong cold-launches
 the Original image with empty isolated persistence, fixes the emulated RTC at
 `2000-01-01T00:00:00Z`, and arms recording before the first frame. Normal
 library play continues to use the Mac's clock.

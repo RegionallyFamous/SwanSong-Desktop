@@ -22,7 +22,7 @@ separate Analogue Pocket core.
 - **Automatically check for updates** is off until the user opts in. With it
   off, SwanSong makes no background app-update request.
 - **Automatically download and install updates** is a separate opt-in.
-- **Include beta versions** adds Sparkle's beta channel. Stable remains the
+- **Try beta versions** adds Sparkle's beta channel. Stable remains the
   default.
 
 Sparkle system profiling is disabled. A normal HTTP User-Agent can identify
@@ -94,6 +94,6 @@ manually.
 
 The first-party Homebrew Catalog has its own repository, public key, signature,
 schema, user consent, verified cache, anti-rollback state, ROM validation, and
-release gate. Current source enables the catalog; the public 0.4.1 beta still
-shows **Coming Soon**. Sparkle neither activates nor bypasses it. App updates
-and game downloads remain separate choices with separate trust rules.
+release gate. SwanSong 0.4.2 makes the catalog available; 0.4.1 and earlier did
+not. Sparkle neither activates nor bypasses the catalog. App updates and game
+downloads remain separate choices with separate trust rules.

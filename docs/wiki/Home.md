@@ -37,8 +37,8 @@ If a trusted local agent will help with a long route or evidence task, read
 ### I want to make a game
 
 [[SwanSong Studio]] puts New, Assets, Build, Test, Play, Profile, Evidence, and
-Release in one native workspace backed by SwanSong SDK. The prepared 0.4.2
-source carries a content-verified SDK 0.3.1 payload, typed visual-authoring
+Release in one native workspace backed by SwanSong SDK. SwanSong 0.4.2 carries
+a content-verified SDK 0.3.1 payload, typed visual-authoring
 tools, replay timelines, and deterministic failing-plan minimization. Python
 3.11+ and the pinned Wonderful packages remain honest local prerequisites
 checked by Doctor.

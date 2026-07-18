@@ -262,7 +262,7 @@ struct UpdateSettingsView: View {
 
                 if updater.isConfigured {
                     settingsCard(
-                        title: "Automatic Updates",
+                        title: "Keep SwanSong Updated",
                         symbol: "arrow.triangle.2.circlepath"
                     ) {
                         Toggle(
@@ -286,25 +286,25 @@ struct UpdateSettingsView: View {
                         )
 
                         Text(
-                            "Both options are off until you enable them. SwanSong never sends a system profile with update requests."
+                            "You’re in control: both options stay off until you turn them on. SwanSong never sends a system profile when it checks."
                         )
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     }
 
                     settingsCard(
-                        title: "Release Channel",
+                        title: "Early Access",
                         symbol: "point.3.connected.trianglepath.dotted"
                     ) {
                         Toggle(
-                            "Include beta versions",
+                            "Try beta versions",
                             isOn: Binding(
                                 get: { updater.includesBetaUpdates },
                                 set: { updater.setIncludesBetaUpdates($0) }
                             )
                         )
                         Text(
-                            "Stable releases are always included. Beta versions may be less reliable."
+                            "Stable releases are always included. Betas let you try new ideas sooner, but they may be less reliable."
                         )
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -317,7 +317,7 @@ struct UpdateSettingsView: View {
                             size: 48
                         )
                         VStack(alignment: .leading, spacing: 5) {
-                            Text("Built-in Updater Unavailable")
+                            Text("Updates Aren’t Available in This Build")
                                 .font(.headline)
                             Text(
                                 updater.configurationIssue
@@ -332,7 +332,7 @@ struct UpdateSettingsView: View {
                     .swanSurface(.standard, tint: .orange, cornerRadius: 16)
                 }
 
-                settingsCard(title: "Update Actions", symbol: "arrow.down.circle.fill") {
+                settingsCard(title: "Check Now", symbol: "arrow.down.circle.fill") {
                     ViewThatFits(in: .horizontal) {
                         HStack(spacing: 10) {
                             updateButtons
@@ -362,7 +362,7 @@ struct UpdateSettingsView: View {
                         Text("Private by design")
                             .font(.callout.weight(.semibold))
                         Text(
-                            "SwanSong never sends a system profile with update requests. Automatic checks and downloads stay off until you enable them."
+                            "Update checks never include a system profile. Automatic checks and downloads stay off until you turn them on."
                         )
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -386,11 +386,11 @@ struct UpdateSettingsView: View {
                 size: 56
             )
             VStack(alignment: .leading, spacing: 4) {
-                Text("SwanSong Updates")
+                Text("Stay Up to Date")
                     .font(.title2.weight(.bold))
                     .accessibilityAddTraits(.isHeader)
                 Text(
-                    "Updates stay on GitHub and are verified with SwanSong’s update-signing key before installation."
+                    "Every update is signed and checked before SwanSong installs it. Releases come from the official GitHub project."
                 )
                 .font(.callout)
                 .foregroundStyle(.secondary)

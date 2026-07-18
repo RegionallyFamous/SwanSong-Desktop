@@ -60,8 +60,8 @@ layer that presents a standard GameController profile, or use the keyboard.
   hardware that reports them through macOS;
 - learn, reject a duplicate, save, relaunch, and recheck a custom profile; and
 - use Settings **Live Input Test** to confirm physical and mapped WonderSwan
-  input, then use Debug Tools to confirm focus, mapped controller input, and
-  effective merged input without sharing private ROM material.
+  input, then use **Show testing tools** to confirm focus, mapped controller
+  input, and effective merged input without sharing private ROM material.
 
 Automated tests cover standard-alias mapping, profile capability reduction,
 multiple-controller merge and disconnect behavior, inactivity neutralization,

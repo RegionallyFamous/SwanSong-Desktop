@@ -258,14 +258,26 @@ struct SwanSDKWorkspaceView: View {
     private var sdkSetup: some View {
         VStack(spacing: 20) {
             SwanEmptyState(
-                title: "Connect SwanSong SDK",
-                description: "Choose your SDK folder to create, build, test, play, and package WonderSwan games from one place.",
+                title: "Set Up SwanSong Studio",
+                description: "Use the included SDK to make, build, test, play, and package a WonderSwan game without leaving SwanSong.",
                 symbol: "shippingbox.fill",
                 tint: SwanTheme.cyan
             )
-            Button("Choose SDK Folder…", action: chooseSDK)
-                .buttonStyle(.borderedProminent)
+            if workspace.canRestoreBundledSDK {
+                HStack(spacing: 10) {
+                    Button("Use the Included SDK") {
+                        workspace.restoreBundledSDK()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    Button("Choose Another SDK…", action: chooseSDK)
+                        .buttonStyle(.bordered)
+                }
                 .controlSize(.large)
+            } else {
+                Button("Choose SDK Folder…", action: chooseSDK)
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+            }
         }
         .swanEmptyStateContainer(tint: SwanTheme.cyan)
         .padding(40)
@@ -278,7 +290,7 @@ struct SwanSDKWorkspaceView: View {
             ContentUnavailableView {
                 Label("Open a Game Project", systemImage: "folder.badge.plus")
             } description: {
-                Text("Open a folder containing swan.toml, or start with New.")
+                Text("Open a SwanSong game folder, or start something new.")
             } actions: {
                 Button("Open Project…", action: chooseProject)
                     .buttonStyle(.borderedProminent)
@@ -297,8 +309,8 @@ struct SwanSDKWorkspaceView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 sectionHeading(
-                    "Start a WonderSwan game",
-                    detail: "Pick a production recipe. The SDK creates a complete game with source, host tests, budgets, and deterministic Play Contracts."
+                    "Make a WonderSwan Game",
+                    detail: "Choose a starting point and SwanSong will create the project, tests, budgets, and repeatable play checks for you."
                 )
 
                 StudioCard {
@@ -509,8 +521,8 @@ struct SwanSDKWorkspaceView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 sectionHeading(
-                    "Build the cartridge",
-                    detail: "Runs asset generation, Make, Wonderful, and the SDK's resource checks. The primary result is a Color .wsc cartridge."
+                    "Build Your Cartridge",
+                    detail: "Turn your project into a WonderSwan Color .wsc file and check that everything fits."
                 )
                 runCard(
                     title: "Build with Wonderful",
@@ -533,12 +545,12 @@ struct SwanSDKWorkspaceView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 sectionHeading(
-                    "Run host tests",
-                    detail: "Regenerates derived files and compiles the same portable game model used by the cartridge into its native test executable."
+                    "Test Your Game",
+                    detail: "Run the game’s logic on your Mac and catch problems before they reach a cartridge."
                 )
                 runCard(
-                    title: "Test game logic",
-                    detail: "Failures and compiler diagnostics remain available without leaving SwanSong.",
+                    title: "Check the game logic",
+                    detail: "If something goes wrong, SwanSong keeps the useful details right here.",
                     symbol: "checkmark.diamond.fill",
                     button: "Run Tests"
                 )

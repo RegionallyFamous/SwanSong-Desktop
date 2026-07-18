@@ -17,12 +17,10 @@ versioned release notes.
 
 ## Can SwanSong install homebrew directly from GitHub?
 
-The signed, first-party Homebrew Catalog installer is implemented, but it is
-not available in the current production configuration. The
-Homebrew page says **Coming Soon**, contains no production trust key, and makes
-no catalog or game-download request. **Add From Mac** remains available for
-authorized local homebrew. A future build can activate the catalog only after
-a non-empty signed catalog and its public trust key pass the release gate.
+Yes. SwanSong 0.4.2 can browse its signed first-party Homebrew Catalog and add
+an authorized original game to your private library. It connects only after
+you choose **Browse Games**, **Refresh**, or a specific download. **Add From
+Mac** remains available for local homebrew.
 
 ## Does it collect anything?
 
@@ -30,16 +28,15 @@ SwanSong has no accounts, ads, analytics, telemetry, crash-reporting service,
 or system profiling. A manual update check contacts SwanSong's signed
 GitHub-hosted feed when you ask. Automatic checks and automatic
 download/install are separate opt-ins; background update requests remain off
-unless you enable automatic checks. The current production Homebrew page says
-**Coming Soon** and makes no catalog or game-download request. Read
-[PRIVACY.md](../PRIVACY.md) for the complete network boundary and the
-disclosure that applies if a future release activates the catalog.
+unless you enable automatic checks. The Homebrew Catalog also stays offline
+until you choose an action that needs GitHub. Read [PRIVACY.md](../PRIVACY.md)
+for the complete network boundary.
 
 ## Does the app update itself from GitHub?
 
 Yes. SwanSong uses Sparkle 2 for a native **Check for Updates…** workflow, but
 the signed appcast and all accepted app archives remain on GitHub. Stable is
-the default channel; **Include beta versions** opts into prereleases. Sparkle
+the default channel; **Try beta versions** opts into prereleases. Sparkle
 system profiling is disabled. See [App updates](APP_UPDATES.md) for security,
 privacy, and release details.
 

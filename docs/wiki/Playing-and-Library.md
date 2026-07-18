@@ -98,22 +98,20 @@ Save states appear as a screenshot-backed timeline. A state load:
 A missing or damaged preview is reported as damaged evidence. SwanSong does
 not replace it with whatever transient frame happens to be visible.
 
-## Game Confidence
+## What SwanSong knows about a game
 
-The selected-game inspector keeps three different questions separate:
+The game inspector answers three different questions without mixing them up:
 
-- **Launch Readiness** reports whether the managed game copy and execution
-  engine are ready.
-- **Compatibility Evidence** distinguishes Untested, Reached Video, Confirmed
-  Works, and Reported Issues.
-- **ROM Integrity** reports managed-copy and footer-checksum health.
+- **Ready to play** tells you whether SwanSong can open the game now.
+- **Play status** distinguishes Not Tested Yet, Picture Appeared, Works, and
+  Needs Attention.
+- **Game file** tells you whether SwanSong's private copy still matches the
+  game you added.
 
-Normal play records **Reached Video** only after the native game raster becomes
-non-uniform, excluding the WonderSwan hardware-icon rail. A rendered frame is
-not a full-game works verdict, an accuracy claim, or proof against original
-hardware. Confirmed Works, Reported Issues, and the optional note are the
-player's editable local report. [[Translation Lab]] runs never change this
-normal-library evidence.
+**Picture Appeared** means SwanSong saw a meaningful game picture, not just the
+WonderSwan hardware-icon rail. It is not a full-game verdict or an accuracy
+claim. **Works**, **Needs Attention**, and the optional play note are your own
+editable local report. Translation Lab never changes these library results.
 
 ## Pocket save exchange
 
@@ -127,9 +125,9 @@ setup installs only a verified Core package and does not copy or alter saves.
 
 ## Debug tools
 
-Game-testing surfaces are off by default. Enable **Debug Tools** in Settings to
-show the live focus/input overlay, player diagnostics, and bounded input/frame
-recorder.
+Game-testing surfaces are off by default. Turn on **Show testing tools** in
+Settings to show the live focus/input overlay, player diagnostics, and bounded
+input/frame recorder.
 
 The recorder exports source-free `swan-song-input-frame-log-v2` JSON containing
 frame geometry and timing, separate keyboard and controller masks, effective
