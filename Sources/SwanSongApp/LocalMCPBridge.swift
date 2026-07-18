@@ -146,6 +146,7 @@ final class SwanSongLocalMCPBridge {
         case "homebrew": .homebrew
         case "pocket": .pocketCore
         case "translation": .translationLab
+        case "studio": .gameStudio
         default: nil
         }
     }
@@ -158,6 +159,7 @@ final class SwanSongLocalMCPBridge {
         case .homebrew: "homebrew"
         case .pocketCore: "pocket"
         case .translationLab: "translation"
+        case .gameStudio: "studio"
         }
     }
 

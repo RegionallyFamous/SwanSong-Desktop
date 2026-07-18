@@ -27,6 +27,8 @@ silicon and Intel.
   Capture Intake evidence.
 - Local MCP is off by default and exposes only allowlisted live controls,
   bounded homebrew playtesting, and guarded Translation Lab automation.
+- SwanSong Studio provides native New, Assets, Build, Test, Play, Profile,
+  Evidence, and Release views backed by SwanSong SDK 0.2.0 or newer.
 - The Analogue Pocket SD tool can install only an authorized stable SwanSong
   Core release. None is currently published, so the tool performs no package
   download or card write.
@@ -39,6 +41,8 @@ silicon and Intel.
   profiles, Time Ribbon, visual save states, Game Confidence, and save exchange.
 - [[Translation Lab]] documents deterministic route tests, paired evidence,
   on-device text intake, batch verification, First Visual Change, and privacy.
+- [[SwanSong Studio|Game Studio]] documents the SDK-backed game-development
+  workflow and its current local-toolchain boundary.
 - [[Local MCP and Automation]] documents the opt-in Codex bridge and guarded
   route/evidence commands.
 - [[Analogue Pocket SD Setup]] documents release trust, card eligibility,

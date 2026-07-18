@@ -726,6 +726,11 @@ private struct LibraryShell: View {
                     model: model,
                     overviewGeometryProbe: translationLabOverviewGeometryProbe
                 )
+            } else if model.section == .gameStudio {
+                SwanSDKWorkspaceView(
+                    engineName: model.engineBackendName,
+                    engineBuildID: model.engineBuildID
+                )
             } else {
                 LibraryView(
                     model: model,
@@ -789,6 +794,12 @@ private struct AppSidebar: View {
                         systemImage: AppModel.Section.translationLab.symbol
                     )
                     .tag(AppModel.Section.translationLab)
+
+                    Label(
+                        AppModel.Section.gameStudio.rawValue,
+                        systemImage: AppModel.Section.gameStudio.symbol
+                    )
+                    .tag(AppModel.Section.gameStudio)
                 }
             }
             .listStyle(.sidebar)
@@ -826,7 +837,7 @@ private struct TranslationOverviewSnapshotSidebar: View {
                     sections: [.library, .favorites, .recent]
                 )
                 snapshotGroup("DISCOVER", sections: [.homebrew])
-                snapshotGroup("TOOLS", sections: [.translationLab])
+                snapshotGroup("TOOLS", sections: [.translationLab, .gameStudio])
             }
             .padding(.horizontal, 8)
 
@@ -1639,6 +1650,7 @@ private struct LibraryView: View {
         case .homebrew: .all
         case .pocketCore: .all
         case .translationLab: .all
+        case .gameStudio: .all
         }
     }
 
@@ -1655,6 +1667,7 @@ private struct LibraryView: View {
         case .homebrew: "Homebrew Catalog Coming Soon"
         case .pocketCore: "No Pocket SD card selected"
         case .translationLab: "No translation project linked"
+        case .gameStudio: "No SDK project open"
         }
     }
 
@@ -1666,6 +1679,7 @@ private struct LibraryView: View {
         case .homebrew: "shippingbox"
         case .pocketCore: "sdcard"
         case .translationLab: "character.book.closed"
+        case .gameStudio: "hammer"
         }
     }
 
@@ -1677,6 +1691,7 @@ private struct LibraryView: View {
         case .homebrew: "No catalog network requests are made in this release. You can still add homebrew from your Mac."
         case .pocketCore: "Choose the Analogue Pocket tool to verify and install the first-party Core."
         case .translationLab: "Link a private translation-toolkit project to begin."
+        case .gameStudio: "Create or open a SwanSong SDK project to begin."
         }
     }
 }
