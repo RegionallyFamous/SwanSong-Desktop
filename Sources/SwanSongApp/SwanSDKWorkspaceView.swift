@@ -117,7 +117,7 @@ struct SwanSDKWorkspaceView: View {
                             Text("Bounded tool contract").font(.headline)
                             Text(
                                 workspace.usbRoot?.path
-                                    ?? "Choose the swansong-usb checkout. Studio invokes only its fixed Python entry point and typed doctor, plan, install, and hardware-QA arguments—never a shell command."
+                                    ?? "Choose the exact SwanSong USB 0.1.0-prototype.1 checkout. Studio verifies and privately stages only its three pinned tools before invoking typed doctor, plan, install, and hardware-QA arguments—never a shell command."
                             )
                             .font(.callout)
                             .foregroundStyle(.secondary)

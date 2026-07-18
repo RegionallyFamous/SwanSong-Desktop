@@ -50,18 +50,27 @@ process group, and Studio permits only one SDK command at a time.
 ## USB Hardware Lab
 
 The toolbar's **USB Hardware Lab** connects Studio to an explicitly selected
-`swansong-usb` checkout through its fixed `tools/swansong_usb_studio.py` entry
-point. The adapter has four typed operations only: Doctor, Update Plan, Install,
-and bounded Physical Control QA. It resolves Python 3.11+ only from the fixed
-Homebrew, `/usr/local`, or system tool locations and invokes it with `-P` and
-an argument array; there is no shell string or arbitrary executable field.
+SwanSong USB `0.1.0-prototype.1` checkout. Studio pins commit
+`e39980a1148623ed13f55c2677bccde24fef865f` and the exact SHA-256 of its three
+Python tools. It reads those verified bytes once and stages only those three
+files in a private, read-only execution directory, so extra checkout modules
+cannot shadow standard or pinned imports. A missing, changed, symlinked, or
+incomplete tool set is never executed.
+
+The adapter has four typed operations only: Doctor, Update Plan, Install, and
+bounded Physical Control QA. It resolves Python 3.11+ only from the fixed
+Homebrew, `/usr/local`, or system tool locations and invokes the isolated fixed
+entry point with `-P` and an argument array; there is no shell string,
+arbitrary executable field, or development override.
 
 Doctor and Update Plan are read-only. An install is unavailable until the plan
 returns a valid lowercase SHA-256, the user accepts a controller reset, and a
 second dialog repeats the exact digest. The hardware tool then verifies
-readback before restart. Reports are schema-checked and local firmware paths
-are stripped before Studio retains the formatted report. The engineering
-VID/PID warning remains visible and cannot be waived by the app.
+readback before restart. Every report schema has an exact allowed key set,
+nested shape, type, size, integer bound, and digest/version format. Unknown
+fields fail closed; local firmware paths are stripped before Studio retains the
+formatted report. The engineering VID/PID warning remains visible and cannot
+be waived by the app.
 
 USB hardware mutation is intentionally absent from local MCP automation. A
 person at the Mac must select the tools and image and confirm the physical

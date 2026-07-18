@@ -10,7 +10,9 @@ The project uses semantic versioning once a release is published.
   attestations, immutable provenance, asset size, and SHA-256 all fail closed.
 - Added SwanSong Studio's bounded USB Hardware Lab for Doctor, update planning,
   digest-and-reset-confirmed install, and physical control QA. USB device writes
-  are intentionally not exposed through local MCP automation.
+  are intentionally not exposed through local MCP automation. Studio accepts
+  only the content-pinned `0.1.0-prototype.1` tool set, stages its three verified
+  files in isolation, and fails closed on unknown report fields or shapes.
 - Documented the public replay, minimization, and six visual-authoring schema
   seams for the next tagged SDK while keeping the bundled payload at reviewed
   SDK 0.2.0.
