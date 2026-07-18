@@ -246,10 +246,11 @@ final class UISnapshotRegressionTests: XCTestCase {
                 string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-story-forge/main/distribution/catalog-v1.json"
             )!
         )
-        let comingSoonModel = makeModel(
-            root: root.appendingPathComponent("coming-soon")
+        let initialModel = makeModel(
+            root: root.appendingPathComponent("initial")
         )
-        comingSoonModel.section = .homebrew
+        initialModel.section = .homebrew
+        initialModel.homebrewCatalogConsentGranted = false
         let disclosureModel = makeHomebrewModel(
             root: root.appendingPathComponent("disclosure"),
             consentGranted: false,
@@ -270,18 +271,18 @@ final class UISnapshotRegressionTests: XCTestCase {
         let compactSize = CGSize(width: 760, height: 560)
         let wideSize = CGSize(width: 1_180, height: 720)
         let scenarios = [
-            Scenario(name: "homebrew-coming-soon-compact", size: compactSize) {
+            Scenario(name: "homebrew-initial-compact", size: compactSize) {
                 AnyView(
                     RootView(
-                        model: comingSoonModel,
+                        model: initialModel,
                         usesDeterministicSidebarForOffscreenSnapshots: true
                     )
                 )
             },
-            Scenario(name: "homebrew-coming-soon-wide", size: wideSize) {
+            Scenario(name: "homebrew-initial-wide", size: wideSize) {
                 AnyView(
                     RootView(
-                        model: comingSoonModel,
+                        model: initialModel,
                         usesDeterministicSidebarForOffscreenSnapshots: true
                     )
                 )
@@ -374,8 +375,8 @@ final class UISnapshotRegressionTests: XCTestCase {
                 "\(scenario.name) ignored Light/Dark"
             )
         }
-        XCTAssertFalse(comingSoonModel.homebrewCatalogIsConfigured)
-        XCTAssertNil(comingSoonModel.homebrewCatalog)
+        XCTAssertTrue(initialModel.homebrewCatalogIsConfigured)
+        XCTAssertNil(initialModel.homebrewCatalog)
         XCTAssertFalse(disclosureModel.homebrewCatalogIsLoading)
         XCTAssertNil(disclosureModel.homebrewCatalog)
         XCTAssertFalse(compactCatalogModel.homebrewCatalogIsLoading)

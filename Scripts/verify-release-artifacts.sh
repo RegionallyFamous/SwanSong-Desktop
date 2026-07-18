@@ -431,6 +431,7 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents/Resources/SPARKLE_LICENSE" \
     ! -path "$APP/Contents/Resources/ares.lock.json" \
     ! -path "$APP/Contents/Resources/sparkle.lock.json" \
+    ! -path "$APP/Contents/Resources/SwanSongSDK/*" \
     ! -path "$APP/Contents/_CodeSignature/CodeResources" \
     -print -quit)
   [ -z "$UNEXPECTED_FILE" ] || fail "app contains an unexpected payload file"
@@ -442,6 +443,8 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents/Frameworks/Sparkle.framework" \
     ! -path "$APP/Contents/Frameworks/Sparkle.framework/*" \
     ! -path "$APP/Contents/Resources" \
+    ! -path "$APP/Contents/Resources/SwanSongSDK" \
+    ! -path "$APP/Contents/Resources/SwanSongSDK/*" \
     ! -path "$APP/Contents/_CodeSignature" \
     -print -quit)
   [ -z "$UNEXPECTED_DIRECTORY" ] \
@@ -454,6 +457,9 @@ if [ -n "$APP" ]; then
     ! -type d ! -type f ! -type l -print -quit)
   [ -z "$UNEXPECTED_NODE" ] \
     || fail "app contains a non-regular payload node"
+  "$SCRIPT_DIR/check-swansong-sdk-payload.sh" \
+    "$APP/Contents/Resources/SwanSongSDK" >/dev/null \
+    || fail "embedded SwanSong SDK validation failed"
   if nm -am "$ENGINE" 2>/dev/null \
     | grep -Eiq 'swan_engine_stage_boot_rom|stage_boot_rom|staged_boot_rom'; then
     fail "production engine retains a boot-ROM staging symbol"

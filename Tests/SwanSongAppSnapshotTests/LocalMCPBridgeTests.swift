@@ -43,10 +43,47 @@ final class LocalMCPBridgeTests: XCTestCase {
         XCTAssertThrowsError(
             try bridge.response(method: "arbitrary", argumentsJSON: "{}")
         )
+
+        let studioData = Data(
+            try bridge.response(method: "studio-projects", argumentsJSON: "{}").utf8
+        )
+        let studio = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: studioData) as? [String: Any]
+        )
+        XCTAssertEqual(studio["schema"] as? String, "swansong-studio-projects-v1")
+        XCTAssertEqual(studio["projectCount"] as? Int, 0)
+        XCTAssertNil(studio["projectPath"])
+        XCTAssertNil(studio["projectName"])
+        XCTAssertThrowsError(
+            try bridge.response(
+                method: "studio-action",
+                argumentsJSON: #"{"action":"build"}"#
+            )
+        ) { error in
+            XCTAssertTrue(error.localizedDescription.contains("confirmProjectWrites"))
+        }
+        XCTAssertThrowsError(
+            try bridge.response(
+                method: "studio-action",
+                argumentsJSON: #"{"action":"shell","confirmProjectWrites":true}"#
+            )
+        ) { error in
+            XCTAssertTrue(error.localizedDescription.contains("doctor, assets, build"))
+        }
     }
 
     private func makeModel(root: URL) -> AppModel {
-        AppModel(
+        let suite = "LocalMCPBridgeTests-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defaults.removePersistentDomain(forName: suite)
+        let workspace = SwanSDKWorkspaceModel(
+            engineName: "Unavailable",
+            engineBuildID: "unavailable",
+            defaults: defaults,
+            environment: [:],
+            bundle: Bundle(for: Self.self)
+        )
+        return AppModel(
             store: GameLibraryStore(fileURL: root.appendingPathComponent("Library.json")),
             saveStore: GameSaveStore(rootURL: root.appendingPathComponent("Saves")),
             stateStore: GameStateStore(rootURL: root.appendingPathComponent("States")),
@@ -58,7 +95,8 @@ final class LocalMCPBridgeTests: XCTestCase {
             translationWorkspaceStore: TranslationWorkspaceStore(
                 fileURL: root.appendingPathComponent("TranslationWorkspace.json")
             ),
-            engineCanExecuteOverride: false
+            engineCanExecuteOverride: false,
+            studioWorkspaceOverride: workspace
         )
     }
 }

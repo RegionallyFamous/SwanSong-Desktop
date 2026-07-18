@@ -148,6 +148,14 @@ public struct HomebrewCatalogTrustedKey: Equatable, Sendable {
     }
 }
 
+public enum HomebrewCatalogSignatureContract: Equatable, Sendable {
+    /// SwanSong's original rotation-capable JSON signature envelope.
+    case envelope
+    /// One canonical base64 Ed25519 signature over the exact catalog bytes.
+    /// The optional digest binds an app release to an immutable publication.
+    case rawEd25519(keyID: String, expectedCatalogSHA256: String?)
+}
+
 public struct AuthenticatedHomebrewCatalog: Equatable, Sendable {
     public let catalogData: Data
     public let signatureData: Data
@@ -179,9 +187,14 @@ public struct AuthenticatedHomebrewCatalog: Equatable, Sendable {
 
 public struct HomebrewCatalogSignatureVerifier: Sendable {
     public let trustedKeys: [HomebrewCatalogTrustedKey]
+    public let contract: HomebrewCatalogSignatureContract
 
-    public init(trustedKeys: [HomebrewCatalogTrustedKey]) {
+    public init(
+        trustedKeys: [HomebrewCatalogTrustedKey],
+        contract: HomebrewCatalogSignatureContract = .envelope
+    ) {
         self.trustedKeys = trustedKeys
+        self.contract = contract
     }
 
     public func verify(
@@ -192,6 +205,26 @@ public struct HomebrewCatalogSignatureVerifier: Sendable {
               catalogData.count <= HomebrewCatalogValidator.maximumCatalogByteCount else {
             throw HomebrewCatalogSignatureError.invalidCatalogBytes
         }
+        switch contract {
+        case .envelope:
+            return try verifyEnvelope(
+                catalogData: catalogData,
+                signatureData: signatureData
+            )
+        case let .rawEd25519(keyID, expectedCatalogSHA256):
+            return try verifyRawSignature(
+                catalogData: catalogData,
+                signatureData: signatureData,
+                keyID: keyID,
+                expectedCatalogSHA256: expectedCatalogSHA256
+            )
+        }
+    }
+
+    private func verifyEnvelope(
+        catalogData: Data,
+        signatureData: Data
+    ) throws -> AuthenticatedHomebrewCatalog {
         let envelope = try HomebrewCatalogSignatureEnvelope.decode(signatureData)
         guard envelope.catalogByteCount == catalogData.count else {
             throw HomebrewCatalogSignatureError.catalogByteCountMismatch
@@ -239,6 +272,67 @@ public struct HomebrewCatalogSignatureVerifier: Sendable {
             catalogSHA256: digest,
             cryptographicallyValidKeyIDs: validKeyIDs
         )
+    }
+
+    private func verifyRawSignature(
+        catalogData: Data,
+        signatureData: Data,
+        keyID: String,
+        expectedCatalogSHA256: String?
+    ) throws -> AuthenticatedHomebrewCatalog {
+        let digest = Self.sha256(catalogData)
+        guard expectedCatalogSHA256.map({ $0 == digest }) != false else {
+            throw HomebrewCatalogSignatureError.catalogDigestMismatch
+        }
+        guard signatureData.count <= HomebrewCatalogSignatureEnvelope.maximumByteCount,
+              let text = String(data: signatureData, encoding: .utf8) else {
+            throw HomebrewCatalogSignatureError.invalidEnvelope
+        }
+        let value: String
+        if text.hasSuffix("\n") {
+            value = String(text.dropLast())
+            guard !value.hasSuffix("\r"), !value.contains("\n") else {
+                throw HomebrewCatalogSignatureError.invalidEnvelope
+            }
+        } else {
+            value = text
+        }
+        guard let signature = HomebrewCatalogSignatureEnvelope.canonicalBase64(value),
+              signature.count == 64 else {
+            throw HomebrewCatalogSignatureError.invalidEnvelope
+        }
+        let keys = try validatedTrustedKeys()
+        guard let trusted = keys[keyID],
+              let publicKey = try? Curve25519.Signing.PublicKey(
+                  rawRepresentation: trusted.rawPublicKey
+              ),
+              publicKey.isValidSignature(signature, for: catalogData) else {
+            throw trustedKeys.isEmpty
+                ? HomebrewCatalogSignatureError.noProductionTrustAnchor
+                : HomebrewCatalogSignatureError.noTrustedSignature
+        }
+        return AuthenticatedHomebrewCatalog(
+            catalogData: catalogData,
+            signatureData: signatureData,
+            catalogSHA256: digest,
+            cryptographicallyValidKeyIDs: [keyID]
+        )
+    }
+
+    private func validatedTrustedKeys() throws -> [String: HomebrewCatalogTrustedKey] {
+        var trustedByID: [String: HomebrewCatalogTrustedKey] = [:]
+        for key in trustedKeys {
+            guard trustedByID[key.keyID] == nil,
+                  key.minimumRevision >= 1,
+                  key.maximumRevision.map({ $0 >= key.minimumRevision }) != false,
+                  (try? Curve25519.Signing.PublicKey(
+                      rawRepresentation: key.rawPublicKey
+                  )) != nil else {
+                throw HomebrewCatalogSignatureError.invalidTrustedKey(key.keyID)
+            }
+            trustedByID[key.keyID] = key
+        }
+        return trustedByID
     }
 
     public static func sha256(_ data: Data) -> String {

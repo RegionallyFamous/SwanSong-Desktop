@@ -2,6 +2,7 @@
 .build/
 .build-stub/
 .engine/
+.sdk/
 .swiftpm/
 DerivedData/
 build/

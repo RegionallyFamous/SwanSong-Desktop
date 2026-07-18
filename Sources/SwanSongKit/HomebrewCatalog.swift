@@ -357,8 +357,16 @@ public enum HomebrewCatalogValidator {
 
     static func validateForInstallation(
         entry: HomebrewCatalogEntry,
-        release: HomebrewCatalogRelease
+        release: HomebrewCatalogRelease,
+        catalogID: String = firstPartyCatalogID
     ) throws {
+        if catalogID == PublishedHomebrewCatalogDecoder.catalogID {
+            try PublishedHomebrewCatalogDecoder.validateForInstallation(
+                entry: entry,
+                release: release
+            )
+            return
+        }
         try validateEntry(entry, generatedAt: Date())
         guard entry.releases.contains(release) else {
             throw HomebrewCatalogError.releaseDoesNotBelongToEntry
@@ -366,7 +374,8 @@ public enum HomebrewCatalogValidator {
     }
 
     static func originIsValid(_ origin: HomebrewCatalogOrigin) -> Bool {
-        origin.catalogID == firstPartyCatalogID
+        [firstPartyCatalogID, PublishedHomebrewCatalogDecoder.catalogID]
+            .contains(origin.catalogID)
             && isIdentifier(origin.entryID, maximumUTF8Bytes: 128)
             && isVersion(origin.version)
             && (origin.releasedAt.map {
@@ -750,10 +759,15 @@ public struct HomebrewCatalogInstaller: Sendable {
     public func install(
         entry: HomebrewCatalogEntry,
         release: HomebrewCatalogRelease,
+        catalogID: String = HomebrewCatalogValidator.firstPartyCatalogID,
         into existingGames: [GameRecord],
         managedStore: ManagedGameStore
     ) throws -> HomebrewCatalogInstallResult {
-        try HomebrewCatalogValidator.validateForInstallation(entry: entry, release: release)
+        try HomebrewCatalogValidator.validateForInstallation(
+            entry: entry,
+            release: release,
+            catalogID: catalogID
+        )
         let asset = release.asset
         guard assetData.count == asset.byteCount else {
             throw HomebrewCatalogError.assetByteCountMismatch(
@@ -779,7 +793,7 @@ public struct HomebrewCatalogInstaller: Sendable {
 
         let catalogIndices = existingGames.indices.filter { index in
             existingGames[index].homebrewCatalogOrigin?.catalogID
-                == HomebrewCatalogValidator.firstPartyCatalogID
+                == catalogID
                 && existingGames[index].homebrewCatalogOrigin?.entryID == entry.id
         }
         guard catalogIndices.count <= 1 else {
@@ -862,7 +876,7 @@ public struct HomebrewCatalogInstaller: Sendable {
         )
         let installed = try managedStore.install(image)
         let origin = HomebrewCatalogOrigin(
-            catalogID: HomebrewCatalogValidator.firstPartyCatalogID,
+            catalogID: catalogID,
             entryID: entry.id,
             version: release.version,
             releasedAt: release.releasedAt,

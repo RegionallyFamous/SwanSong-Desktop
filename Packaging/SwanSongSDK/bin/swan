@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+
+SDK_ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd -P)
+export SWANSONG_SDK_DIR="$SDK_ROOT"
+export PYTHONPATH="$SDK_ROOT/python${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONDONTWRITEBYTECODE=1
+export PYTHONNOUSERSITE=1
+
+if [ -x "$SDK_ROOT/runtime/bin/python3" ]; then
+  exec "$SDK_ROOT/runtime/bin/python3" -P -m swansong_sdk.cli "$@"
+fi
+exec /usr/bin/env python3 -P -m swansong_sdk.cli "$@"

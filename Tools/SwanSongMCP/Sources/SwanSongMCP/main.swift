@@ -184,7 +184,7 @@ private enum SwanSongMCPServer {
     private static let protocolVersion = "2025-11-25"
     private static let liveApp = LiveAppClient()
     private static let observedPlay = ObservedPlayRegistry()
-    private static let instructions = "Controls a running SwanSong app through its opt-in local bridge, runs guarded Translation Lab evidence workflows, and can execute bounded deterministic homebrew playtest plans through SwanSong's own engine. Playtest and observed-step tools return a rendered game frame and audio window only when confirmShareCapture=true. The server must never expose ROM, save, state, persistence, RAM, tile, palette, map-cell, sprite/OAM attribute, CPU-writer, conservative-origin, cartridge-range, address, or mapper values. Translation tools only accept project-contained files and require confirmProjectWrites=true. Persisted translation captures privately retain both native frames, the exact plan, deterministic context hashes, and pixel-diff evidence inside the selected project. Display-owner probes and static-analysis seeds retain detailed source evidence privately and return only hashes and aggregate counts. Observed play holds a private ownership lease, atomically saves its cumulative from-boot plan after every step, marks crash-abandoned sessions interrupted, recovers only by clean-boot plan replay, and creates final evidence only by another clean-boot replay. A successful execution is observation evidence, not proof that a game mechanic passed; inspect the frame, listen to relevant audio, and exercise the declared game contract."
+    private static let instructions = "Controls a running SwanSong app through its opt-in local bridge, runs guarded Translation Lab evidence workflows, and can execute bounded deterministic homebrew playtest plans through SwanSong's own engine. Studio tools expose only one already-open project slot without its name or path, and invoke only the fixed doctor/assets/build/test/play/profile allowlist after confirmProjectWrites=true. Playtest and observed-step tools return a rendered game frame and audio window only when confirmShareCapture=true. The server must never expose ROM, save, state, persistence, RAM, tile, palette, map-cell, sprite/OAM attribute, CPU-writer, conservative-origin, cartridge-range, address, or mapper values. Translation tools only accept project-contained files and require confirmProjectWrites=true. Persisted translation captures privately retain both native frames, the exact plan, deterministic context hashes, and pixel-diff evidence inside the selected project. Display-owner probes and static-analysis seeds retain detailed source evidence privately and return only hashes and aggregate counts. Observed play holds a private ownership lease, atomically saves its cumulative from-boot plan after every step, marks crash-abandoned sessions interrupted, recovers only by clean-boot plan replay, and creates final evidence only by another clean-boot replay. A successful execution is observation evidence, not proof that a game mechanic passed; inspect the frame, listen to relevant audio, and exercise the declared game contract."
 
     static func main() {
         while let line = readLine(strippingNewline: true) {
@@ -284,7 +284,7 @@ private enum SwanSongMCPServer {
                 inputSchema: objectSchema(
                     properties: [
                         "section": enumSchema(
-                            ["library", "favorites", "recent", "homebrew", "pocket", "translation"],
+                            ["library", "favorites", "recent", "homebrew", "pocket", "translation", "studio"],
                             description: "The destination section."
                         ),
                     ],
@@ -306,6 +306,36 @@ private enum SwanSongMCPServer {
                         ),
                     ],
                     required: ["action"]
+                ),
+                readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
+                name: "swansong_studio_projects",
+                title: "Read SwanSong Studio Projects",
+                description: "Read bounded status for the single project already open in Studio. Returns counts, readiness, and resolved tool versions without project names, paths, source, assets, ROMs, diagnostics, or evidence.",
+                inputSchema: objectSchema(),
+                readOnly: true,
+                destructive: false,
+                idempotent: true
+            ),
+            tool(
+                name: "swansong_studio_action",
+                title: "Run SwanSong Studio Action",
+                description: "Invoke one existing SDK action against the project already open in Studio. The fixed allowlist cannot choose paths, edit files directly, create projects, release packages, or execute a shell command.",
+                inputSchema: objectSchema(
+                    properties: [
+                        "action": enumSchema(
+                            ["doctor", "assets", "build", "test", "play", "profile"],
+                            description: "Existing Studio action to invoke."
+                        ),
+                        "confirmProjectWrites": [
+                            "type": "boolean",
+                            "description": "Must be true to permit the selected SDK action in the already-open project.",
+                        ],
+                    ],
+                    required: ["action", "confirmProjectWrites"]
                 ),
                 readOnly: false,
                 destructive: false,
@@ -463,6 +493,24 @@ private enum SwanSongMCPServer {
                     throw SwanSongMCPError(message: "action is required")
                 }
                 return try liveResult(method: "player", arguments: ["action": action])
+            case "swansong_studio_projects":
+                return try liveResult(method: "studio-projects")
+            case "swansong_studio_action":
+                guard arguments["confirmProjectWrites"] as? Bool == true else {
+                    throw SwanSongMCPError(
+                        message: "Set confirmProjectWrites to true after confirming the current Studio project may be built or updated."
+                    )
+                }
+                guard let action = arguments["action"] as? String else {
+                    throw SwanSongMCPError(message: "action is required")
+                }
+                return try liveResult(
+                    method: "studio-action",
+                    arguments: [
+                        "action": action,
+                        "confirmProjectWrites": true,
+                    ]
+                )
             case "swansong_playtest_plan":
                 return try playtest(arguments: arguments)
             case "swansong_observed_play_start":

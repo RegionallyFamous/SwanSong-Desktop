@@ -50,7 +50,8 @@ not routine release metadata.
    ./Scripts/prepare-wiki-sync.sh --check
    ```
 2. Confirm the bundle identifier, minimum macOS target, Sparkle dependency
-   pin, production feed URL, public update key, system-profiling disablement,
+   pin, SwanSong SDK 0.2.0 commit/content lock, production feed URL, public
+   update key, system-profiling disablement,
    and off-by-default automatic check/download settings.
    Resolve the package once, then bind the project manifest, resolution, source
    lock, and Sparkle binary-artifact checksum and exercise the fail-closed
@@ -61,6 +62,7 @@ not routine release metadata.
      --repository . \
      --upstream-package .build/checkouts/Sparkle/Package.swift
    ./Scripts/selftest-sparkle-dependency-lock.sh
+   ./Scripts/selftest-swansong-sdk-payload.sh
    ```
 3. Verify the production Homebrew publication state:
 
@@ -111,6 +113,7 @@ not routine release metadata.
    ```sh
    SWAN_NOTARIZE=1 \
    SWAN_NOTARY_PROFILE=swan-song-notary \
+   SWAN_SDK_SOURCE_REPOSITORY=/path/to/swansong-sdk \
    ./Scripts/release-app.sh
    ```
 
@@ -129,6 +132,10 @@ not routine release metadata.
    provenance marker. The archived marker plus ares and Sparkle locks must
    match the manifest commits; the source and ares fields must also match the
    signed app's metadata and embedded ares lock.
+   The app payload gate separately reconstructs SDK 0.2.0 from its exact tagged
+   commit, verifies the SDK's own content-addressed revision, records every
+   bundled file and digest, rejects links or extra files, and checks that same
+   signed payload again after archive extraction.
 
    ```sh
    ./Scripts/selftest-release-build-snapshot.sh
@@ -137,6 +144,7 @@ not routine release metadata.
    ./Scripts/selftest-release-installer.sh
    ./Scripts/selftest-sparkle-dependency-lock.sh
    ./Scripts/selftest-sparkle-appcast.sh
+   ./Scripts/selftest-swansong-sdk-payload.sh
    ./Scripts/verify-release-artifacts.sh \
      --archive dist/SwanSong-X.Y.Z-macOS-universal.zip \
      --source-archive dist/SwanSong-X.Y.Z-source.tar.xz \
@@ -258,6 +266,8 @@ that state without downloading a package or writing a card.
 ## Public release contents
 
 - versioned universal app ZIP created after stapling;
+- content-verified SwanSong SDK 0.2.0 runtime, schema, recipes, Python package,
+  license, and `swan` entry point inside that signed app;
 - exact corresponding source archive with pinned ares source and integration
   patch plus the exact locked Sparkle source and license;
 - SHA-256 checksums;
