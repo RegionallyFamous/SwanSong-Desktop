@@ -176,6 +176,9 @@ jobs:
       - name: Run public-fixture compatibility matrix
         run: ./Scripts/check-compatibility-matrix.sh
 
+      - name: Run live input-frame bridge regression
+        run: ./Scripts/check-live-engine.sh
+
       - name: Run guarded Translation Lab automation CLI
         run: |
           set -eu
