@@ -1,8 +1,8 @@
 # SwanSong privacy policy
 
-Effective July 17, 2026
+Effective July 18, 2026
 
-This policy describes SwanSong 0.4.0. The versioned release notes document
+This policy describes SwanSong 0.4.1. The versioned release notes document
 earlier release behavior.
 
 <!-- homebrew-catalog-status: coming-soon -->

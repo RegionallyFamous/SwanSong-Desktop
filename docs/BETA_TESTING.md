@@ -105,7 +105,7 @@ publication.
 
 ## Before reporting a result
 
-1. Confirm **SwanSong 0.4.0 (6)** in **SwanSong > About SwanSong**.
+1. Confirm **SwanSong 0.4.1 (7)** in **SwanSong > About SwanSong**.
 2. Record the Mac model, macOS version, architecture, SDK version, Python
    version, Wonderful revision, and controller when relevant.
 3. For Studio, state the workspace, exact visible command, project recipe, and
