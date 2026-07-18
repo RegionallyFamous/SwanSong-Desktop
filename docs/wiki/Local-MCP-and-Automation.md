@@ -117,15 +117,16 @@ recover the endpoint or construct the final route.
 
 ## Translation Lab tools
 
-The same MCP server exposes five project-writing tools:
+The same MCP server exposes six project-writing tools:
 
 - `swansong_translation_capture_plan`;
 - `swansong_translation_probe_rectangle`;
 - `swansong_translation_probe_rectangle_source`;
+- `swansong_translation_export_static_analysis_seed`;
 - `swansong_translation_record_route`; and
 - `swansong_translation_verify_pair`.
 
-All five require absolute project-contained input paths and
+All six require absolute project-contained input paths and
 `confirmProjectWrites: true`. Codex is configured to treat non-read-only tools
 as write operations requiring approval. The server rejects symlinks,
 out-of-project inputs, oversized JSON, unsupported schemas, missing live ares
@@ -137,7 +138,7 @@ runs, and then publishes one private pair under
 native PNGs, ROM/engine/RTC/persistence hashes, evidence bindings, and an exact
 native-raster pixel-diff report.
 
-`probe-rectangle` uses the ABI 6 final-writer capability, retained in ABI 7,
+`probe-rectangle` uses the ABI 6 final-writer capability, retained in ABI 8,
 to replay one project role from clean boot
 to an exact zero-based plan frame. Its private artifact records the active
 layer, map cell, tile/raster source, palette source, and last CPU writer for
@@ -146,11 +147,25 @@ counts, geometry, and deterministic context hashes—never addresses, tile or
 palette values, or program counters. Writer provenance is intentionally
 invalid after a save-state restore, so the probe accepts only clean replay.
 
-`probe-rectangle-source` adds ABI 7's bounded upstream dataflow. It privately
-retains exact half-open cartridge ranges, per-display-source instruction-hop
-chains, completeness/overflow flags, and visible consumers outside the chosen
-rectangle. Its MCP response remains source-free: only range/chain/consumer
-counts and hashes plus explicit completeness status leave the project.
+`probe-rectangle-source` uses ABI 8's bounded upstream dataflow and accepts an
+optional nonempty `components` selector (`mapCell`, `raster`, `palette`). The
+selector limits only the in-rectangle source seeds; every outside display
+component sharing those ranges is still discovered. It privately retains exact
+half-open cartridge ranges, per-display-source instruction-hop chains, executed
+caller, operand, and mapper context, completeness/overflow flags, and visible consumers
+outside the chosen rectangle. Its MCP response remains source-free: only
+range/chain/context/consumer counts and hashes plus explicit completeness status
+leave the project.
+
+`swansong_translation_export_static_analysis_seed` accepts only the exact private `details.json`
+from one current, complete ABI 8 source probe. It revalidates the probe's
+project, ROM, plan, engine, RTC, persistence, native frame, lineage, ranges,
+executed caller arithmetic, and outside-consumer scope before atomically
+writing a deterministic private seed under
+`analysis/swan-song-lab/static-analysis-seeds/`. The seed contains exact
+cartridge ranges and caller, operand, and mapper anchors for a private Ghidra or
+pypcode workflow. Its MCP receipt contains only counts, completeness flags,
+binding hashes, and content hashes. It never authorizes a patch.
 
 The other Translation tools return project paths and immutable evidence
 identifiers to the MCP client, but never ROM, state, RAM, persistence, or

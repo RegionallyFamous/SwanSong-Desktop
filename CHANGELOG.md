@@ -5,6 +5,15 @@ The project uses semantic versioning once a release is published.
 
 ## [Unreleased]
 
+### Added
+
+- Added guarded export of a current complete ABI 8 source probe into a
+  deterministic, analyzer-neutral private seed for Ghidra or pypcode. MCP
+  receives only source-free counts, completeness flags, and hashes; exact
+  cartridge ranges, executed caller/operand/mapper context, and output paths
+  remain inside the translation project, and the export never authorizes a
+  patch.
+
 ## [0.4.0] - 2026-07-17
 
 ### Added
@@ -15,22 +24,29 @@ The project uses semantic versioning once a release is published.
   Scenario Recorder, Dev, profiler, evidence-diff, and release commands;
   streaming diagnostics and cancellation; native PNG/WAV evidence; and resolved
   SDK, toolchain, and engine identity.
-- Added ABI 7 upstream display-source provenance. A bounded native rectangle
-  can now be traced through common copies and transforms to exact or honest
-  conservative cartridge ranges, with outside consumers retained privately.
+- Added bounded upstream display-source provenance. A native rectangle can be
+  traced through common copies and transforms to exact or honest conservative
+  cartridge ranges, with outside consumers retained privately.
+- Added ABI 8 component-selective source probes so map, raster, or palette seeds
+  can exclude unrelated ownership while consumer discovery still reports every
+  display component sharing the selected cartridge ranges.
+- Added private executed-read lineage context: immediate caller and code
+  location, operand segment/offset, mapper window/bank, and resolved cartridge
+  operand. MCP receives only aggregate context counts and hashes.
 - Added the guarded `swansong_translation_probe_rectangle_source` MCP tool.
-  Public automation receives only source-free hashes, counts, and completeness;
-  exact offsets, emulated addresses, per-display chains, and coordinates stay
-  inside the private Translation Lab project.
+  Public automation receives only source-free hashes, counts, selected-component
+  summaries, and completeness; exact offsets, addresses, chains, and coordinates
+  stay inside the private Translation Lab project.
 - Added a SwanSong-owned menu-bar status item using generated swan artwork, with
   quick Show SwanSong and Quit SwanSong actions.
-- Added clean-room transformed provenance fixtures for both horizontal-planar
-  and vertical-packed display paths.
+- Added clean-room transformed provenance fixtures for horizontal-planar and
+  vertical-packed display paths.
 
 ### Changed
 
-- Bumped the narrow engine ABI from 6 to 7 for upstream source provenance while
-  retaining ABI 6's final-writer ownership contract.
+- Bumped the narrow engine ABI from 6 through 8 for upstream source provenance,
+  component selection, and executed-read context while retaining ABI 6's
+  final-writer ownership contract.
 - Expanded the full SwanSong MCP server to fourteen guarded tools, including
   persisted capture, both rectangle probes, record/verify, and the complete
   observed-play lifecycle.
@@ -40,12 +56,14 @@ The project uses semantic versioning once a release is published.
 
 ### Fixed
 
-- Corrected the SwanSong Studio `swan new --directory` integration to pass the exact
-  destination project directory required by the SDK.
+- Corrected the SwanSong Studio `swan new --directory` integration to pass the
+  exact destination project directory required by the SDK.
 - Kept replay-verification copy honest: previously saved evidence is not called
   replay-matched unless the comparison succeeded during the current UI run.
 - Made the live provenance integration test skip cleanly in inspection-only
-  stub builds while still requiring a separate passing ABI 7 live-engine lane.
+  stub builds while still requiring a separate passing ABI 8 live-engine lane.
+- Replaced the generic blue Translation Lab tint with its intended violet
+  accent across the empty state, lab controls, selections, and text intake.
 
 ## [0.3.1] - 2026-07-17
 

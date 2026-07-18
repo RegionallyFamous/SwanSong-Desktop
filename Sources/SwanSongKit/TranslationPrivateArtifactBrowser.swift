@@ -178,7 +178,7 @@ public struct TranslationPrivateArtifactStore: Sendable {
         return output
     }
 
-    private func inspect(
+    func inspect(
         kind: TranslationPrivateArtifactKind,
         directory: URL,
         project: TranslationProject
@@ -363,6 +363,7 @@ public struct TranslationPrivateArtifactStore: Sendable {
             from: detailsData
         )
         let isAdaptive = details.schema == TranslationDisplaySourceProbeDetails.currentSchema
+            || details.schema == TranslationDisplaySourceProbeDetails.legacyAdaptiveSchema
         guard isAdaptive
                 || details.schema == TranslationDisplaySourceProbeDetails.legacySchema else {
             throw TranslationLabError.invalidProject(
@@ -380,6 +381,8 @@ public struct TranslationPrivateArtifactStore: Sendable {
         guard expectedSamples > 0,
               expectedSamples <= 4_096,
               expectedSamples == details.ownerSamples.count,
+              details.rom.byteCount > 0,
+              details.rom.byteCount <= 16 * 1_024 * 1_024,
               details.completeness.traceRecordLimit > 0,
               details.completeness.traceRecordLimit
                 <= TranslationDisplaySourcePartitioner.traceRecordLimit,
@@ -446,7 +449,18 @@ public struct TranslationPrivateArtifactStore: Sendable {
                 }
             }
         }
-        let expectedCoverage = Set(details.ownerSamples.flatMap(sourceCoverageKeys))
+        let expectedCoverage = Set(details.ownerSamples.flatMap { sample in
+            if isAdaptive {
+                return sourceCoverageKeys(
+                    sample,
+                    components: Set(
+                        details.selectedComponents
+                            ?? EngineDisplaySourceComponent.allCases
+                    )
+                )
+            }
+            return legacySourceCoverageKeys(sample)
+        })
         let actualCoverage = Set(details.traces.filter {
             $0.scope == .selected
         }.map { "\($0.x):\($0.y):\($0.component.rawValue)" })
@@ -569,6 +583,29 @@ public struct TranslationPrivateArtifactStore: Sendable {
         _ details: TranslationDisplaySourceProbeDetails,
         partition: TranslationDisplaySourcePartition
     ) throws {
+        let selectedComponents = details.selectedComponents
+            ?? EngineDisplaySourceComponent.allCases
+        let includesABI8ReadContext =
+            details.schema == TranslationDisplaySourceProbeDetails.currentSchema
+        guard !selectedComponents.isEmpty,
+              Set(selectedComponents).count == selectedComponents.count,
+              details.schema != TranslationDisplaySourceProbeDetails.currentSchema
+                || selectedComponents == selectedComponents.sorted(by: {
+                    $0.rawValue < $1.rawValue
+                }) else {
+            throw TranslationLabError.invalidProject(
+                "the adaptive upstream source component selector is invalid"
+            )
+        }
+        let selectedComponentSet = Set(selectedComponents)
+        if details.schema == TranslationDisplaySourceProbeDetails.currentSchema,
+           details.traces.contains(where: {
+               $0.cartridgeLength > 0 && $0.executedReadContext == nil
+           }) {
+            throw TranslationLabError.invalidProject(
+                "an ABI-8 upstream source lineage is missing executed-read context"
+            )
+        }
         guard partition.algorithm == TranslationDisplaySourcePartition.currentAlgorithm,
               partition.atomicCellWidth == 8,
               partition.atomicCellHeight == 8,
@@ -607,7 +644,9 @@ public struct TranslationPrivateArtifactStore: Sendable {
             )
         }
 
-        let canonicalTraces = details.traces.map(canonicalSourceTrace)
+        let canonicalTraces = details.traces.map {
+            canonicalSourceTrace($0, includeReadContext: includesABI8ReadContext)
+        }
         guard canonicalTraces == canonicalTraces.sorted(),
               Set(canonicalTraces).count == canonicalTraces.count else {
             throw TranslationLabError.invalidProject(
@@ -668,7 +707,9 @@ public struct TranslationPrivateArtifactStore: Sendable {
             }
             let expectedCoverage = Set(details.ownerSamples.filter {
                 contains(leaf.rectangle, x: $0.x, y: $0.y)
-            }.flatMap(sourceCoverageKeys))
+            }.flatMap { sample in
+                sourceCoverageKeys(sample, components: selectedComponentSet)
+            })
             let actualCoverage = Set(selected.map(sourceCoverageKey))
             let exactRanges = try normalizedSourceRanges(selected.filter {
                 $0.hasExactRange && $0.cartridgeLength > 0
@@ -694,9 +735,7 @@ public struct TranslationPrivateArtifactStore: Sendable {
         }
         guard groupedSelected == selectedIndexSet,
               groupedConsumers == consumerIndexSet,
-              details.traces.contains(where: {
-                  $0.scope == .selected && $0.component == .raster
-              }) else {
+              details.traces.contains(where: { $0.scope == .selected }) else {
             throw TranslationLabError.invalidProject(
                 "the adaptive upstream source partition lost trace-level leaf grouping"
             )
@@ -712,15 +751,26 @@ public struct TranslationPrivateArtifactStore: Sendable {
         }
         let selectedLineages = Set(details.traces.filter {
             $0.scope == .selected
-        }.map(canonicalSourceLineage))
+        }.map {
+            canonicalSourceLineage($0, includeReadContext: includesABI8ReadContext)
+        })
         guard partition.withinRootConsumerTraceCount == withinRoot.count,
               partition.withinRootConsumersSHA256
-                == hashCanonicalSourceTraces(withinRoot),
+                == hashCanonicalSourceTraces(
+                    withinRoot,
+                    includeReadContext: includesABI8ReadContext
+                ),
               partition.outsideRootSameFrameConsumerTraceCount == outsideRoot.count,
               partition.outsideRootSameFrameConsumersSHA256
-                == hashCanonicalSourceTraces(outsideRoot),
+                == hashCanonicalSourceTraces(
+                    outsideRoot,
+                    includeReadContext: includesABI8ReadContext
+                ),
               withinRoot.allSatisfy({
-                  selectedLineages.contains(canonicalSourceLineage($0))
+                  selectedLineages.contains(canonicalSourceLineage(
+                      $0,
+                      includeReadContext: includesABI8ReadContext
+                  ))
               }) else {
             throw TranslationLabError.invalidProject(
                 "the adaptive upstream consumer partition does not match its traces"
@@ -729,11 +779,26 @@ public struct TranslationPrivateArtifactStore: Sendable {
     }
 
     private func sourceCoverageKeys(
-        _ sample: EngineDisplayOwnerSample
+        _ sample: EngineDisplayOwnerSample,
+        components: Set<EngineDisplaySourceComponent> = Set(
+            EngineDisplaySourceComponent.allCases
+        )
     ) -> [String] {
-        engineDisplaySourceComponents(for: sample).map {
+        engineDisplaySourceComponents(for: sample).filter {
+            components.contains($0)
+        }.map {
             "\(sample.x):\(sample.y):\($0.rawValue)"
         }
+    }
+
+    private func legacySourceCoverageKeys(
+        _ sample: EngineDisplayOwnerSample
+    ) -> [String] {
+        var components: [EngineDisplaySourceComponent] = []
+        if sample.sourceKind == .tilemap { components.append(.mapCell) }
+        if sample.sourceKind != .none { components.append(.raster) }
+        components.append(.palette)
+        return components.map { "\(sample.x):\(sample.y):\($0.rawValue)" }
     }
 
     private func sourceCoverageKey(_ trace: EngineDisplaySourceTrace) -> String {
@@ -752,15 +817,21 @@ public struct TranslationPrivateArtifactStore: Sendable {
     }
 
     private func hashCanonicalSourceTraces(
-        _ traces: [EngineDisplaySourceTrace]
+        _ traces: [EngineDisplaySourceTrace],
+        includeReadContext: Bool = true
     ) -> String {
         TranslationEvidenceStore.sha256(Data(
-            traces.map(canonicalSourceTrace).sorted().joined(separator: "\n").utf8
+            traces.map {
+                canonicalSourceTrace($0, includeReadContext: includeReadContext)
+            }.sorted().joined(separator: "\n").utf8
         ))
     }
 
-    private func canonicalSourceTrace(_ trace: EngineDisplaySourceTrace) -> String {
-        String(
+    private func canonicalSourceTrace(
+        _ trace: EngineDisplaySourceTrace,
+        includeReadContext: Bool = true
+    ) -> String {
+        let base = String(
             format: "%04x:%04x:%@:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d",
             trace.x,
             trace.y,
@@ -778,10 +849,15 @@ public struct TranslationPrivateArtifactStore: Sendable {
             trace.rangeSetOverflowed ? 1 : 0,
             trace.usesConservativeDataflow ? 1 : 0
         )
+        guard includeReadContext else { return base }
+        return base + ":" + (canonicalSourceReadContext(trace) ?? "none")
     }
 
-    private func canonicalSourceLineage(_ trace: EngineDisplaySourceTrace) -> String {
-        String(
+    private func canonicalSourceLineage(
+        _ trace: EngineDisplaySourceTrace,
+        includeReadContext: Bool = true
+    ) -> String {
+        let base = String(
             format: "%04x:%04x:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d",
             trace.x,
             trace.y,
@@ -797,6 +873,25 @@ public struct TranslationPrivateArtifactStore: Sendable {
             trace.hasUnknownDependency ? 1 : 0,
             trace.rangeSetOverflowed ? 1 : 0,
             trace.usesConservativeDataflow ? 1 : 0
+        )
+        guard includeReadContext else { return base }
+        return base + ":" + (canonicalSourceReadContext(trace) ?? "none")
+    }
+
+    private func canonicalSourceReadContext(
+        _ trace: EngineDisplaySourceTrace
+    ) -> String? {
+        guard let context = trace.executedReadContext else { return nil }
+        return String(
+            format: "%08x:%04x:%04x:%04x:%04x:%04x:%04x:%08x",
+            context.immediateCaller,
+            context.callerSegment,
+            context.callerOffset,
+            context.operandSegment,
+            context.operandOffset,
+            context.mapperWindow,
+            context.mapperBank,
+            context.resolvedCartridgeOperand
         )
     }
 

@@ -7,6 +7,7 @@ enum SwanTheme {
     static let accent = Color(red: 0.31, green: 0.48, blue: 0.98)
     static let cyan = Color(red: 0.20, green: 0.82, blue: 0.98)
     static let violet = Color(red: 0.57, green: 0.31, blue: 0.98)
+    static let translationAccent = violet
     static let midnight = Color(red: 0.025, green: 0.045, blue: 0.12)
 
     static var applicationIcon: NSImage? {

@@ -19,6 +19,11 @@ final class SwanSDKWorkspaceModel {
     var selectedScenarioID: String?
     var evidence: SwanSDKEvidence?
     var currentEvidenceReplayWasVerified = false
+    var observationNotes: [String: String] = [:]
+    var observationObserver = ""
+    var observationPNGInspected = false
+    var observationWAVInspected = false
+    var observationRecorded = false
     var scenarioPlanText = ""
     var scenarioPlanHasUnsavedChanges = false
     var scenarioInputLogURL: URL?
@@ -49,6 +54,7 @@ final class SwanSDKWorkspaceModel {
 
     private var cli: SwanSDKCLIResolution?
     private let runner: SwanSDKSubprocessRunner
+    private let completionNotifier: @MainActor (SwanSongTaskCompletion) -> Void
     private var commandTask: Task<Void, Never>?
     private let defaults: UserDefaults
 
@@ -59,6 +65,9 @@ final class SwanSDKWorkspaceModel {
         engineName: String,
         engineBuildID: String,
         runner: SwanSDKSubprocessRunner = SwanSDKSubprocessRunner(),
+        completionNotifier: @escaping @MainActor (SwanSongTaskCompletion) -> Void = {
+            SwanSongTaskNotificationCenter.shared.deliver($0)
+        },
         defaults: UserDefaults = .standard,
         environment: [String: String] = ProcessInfo.processInfo.environment,
         bundle: Bundle = .main
@@ -66,6 +75,7 @@ final class SwanSDKWorkspaceModel {
         self.engineName = engineName
         self.engineBuildID = engineBuildID
         self.runner = runner
+        self.completionNotifier = completionNotifier
         self.defaults = defaults
 
         let bundledSDK = bundle.resourceURL?
@@ -169,6 +179,8 @@ final class SwanSDKWorkspaceModel {
     func updateManifest(_ text: String) {
         manifestText = text
         manifestHasUnsavedChanges = true
+        currentEvidenceReplayWasVerified = false
+        observationRecorded = false
     }
 
     func saveManifest() throws {
@@ -177,6 +189,7 @@ final class SwanSDKWorkspaceModel {
         }
         try manifestText.write(to: manifestURL, atomically: true, encoding: .utf8)
         manifestHasUnsavedChanges = false
+        currentEvidenceReplayWasVerified = false
     }
 
     func runSelectedAction() {
@@ -244,9 +257,53 @@ final class SwanSDKWorkspaceModel {
         guard let projectRoot,
               let scenario = selectedScenario else {
             evidence = nil
+            clearObservationDraft()
             return
         }
         evidence = try? SwanSDKEvidence.load(projectRoot: projectRoot, scenario: scenario)
+        reloadObservationDraft()
+    }
+
+    var canRecordInspectedPass: Bool {
+        guard let scenario = selectedScenario, evidence != nil,
+              observationPNGInspected,
+              !observationObserver.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              !scenario.requiresAudioEvidence || observationWAVInspected else {
+            return false
+        }
+        return scenario.requiredChecks.allSatisfy {
+            !(observationNotes[$0] ?? "")
+                .trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        }
+    }
+
+    func recordInspectedPass() throws {
+        guard canRecordInspectedPass,
+              let scenario = selectedScenario,
+              let evidence,
+              let bindings = evidenceBindings(evidence) else {
+            throw SwanSDKIntegrationError.malformedContract(
+                "Inspect the current frame and required audio, name the observer, and record every required check before passing evidence."
+            )
+        }
+        let notes = Dictionary(uniqueKeysWithValues: scenario.requiredChecks.map {
+            ($0, observationNotes[$0]!.trimmingCharacters(in: .whitespacesAndNewlines))
+        })
+        let observation = SwanSDKEvidenceObservation(
+            scenario: scenario.id,
+            pngInspected: observationPNGInspected,
+            wavInspected: observationWAVInspected,
+            observer: observationObserver.trimmingCharacters(in: .whitespacesAndNewlines),
+            romSHA256: bindings.rom,
+            capturePNG_SHA256: bindings.png,
+            finalWindowWAVSHA256: bindings.wav,
+            requiredChecks: notes
+        )
+        try Data(try observation.formattedJSON().utf8).write(
+            to: evidence.directoryURL.appendingPathComponent("observation.json"),
+            options: .atomic
+        )
+        observationRecorded = true
     }
 
     var selectedScenario: SwanSDKPlayContract.Scenario? {
@@ -277,6 +334,8 @@ final class SwanSDKWorkspaceModel {
     func updateScenarioPlan(_ text: String) {
         scenarioPlanText = text
         scenarioPlanHasUnsavedChanges = true
+        currentEvidenceReplayWasVerified = false
+        observationRecorded = false
     }
 
     func saveScenarioPlan() throws {
@@ -292,6 +351,7 @@ final class SwanSDKWorkspaceModel {
         scenarioPlanText = text
         scenarioPlanHasUnsavedChanges = false
         currentEvidenceReplayWasVerified = false
+        observationRecorded = false
     }
 
     func runDoctor() {
@@ -375,6 +435,7 @@ final class SwanSDKWorkspaceModel {
         ) { [weak self] in
             self?.reloadScenarioPlan()
             self?.currentEvidenceReplayWasVerified = false
+            self?.observationRecorded = false
         }
     }
 
@@ -461,13 +522,21 @@ final class SwanSDKWorkspaceModel {
         case .newProject, .evidence, .release:
             return
         }
+        if action == .assets || action == .build {
+            currentEvidenceReplayWasVerified = false
+            observationRecorded = false
+        }
         start(command, action: action) { [weak self] result in
             guard let self else { return }
+            let report: SwanSDKResourceReport?
             if action == .profile,
                let data = result.standardOutput.data(using: .utf8) {
-                self.resourceReport = try SwanSDKResourceReport.decode(data)
+                report = try SwanSDKResourceReport.decode(data)
+            } else {
+                report = nil
             }
             self.reloadGeneratedArtifacts()
+            if let report { self.resourceReport = report }
             if action == .play {
                 self.reloadEvidence()
                 self.currentEvidenceReplayWasVerified = self.evidence != nil
@@ -481,6 +550,7 @@ final class SwanSDKWorkspaceModel {
         title: String,
         onSuccess: (@MainActor () throws -> Void)? = nil
     ) {
+        currentEvidenceReplayWasVerified = false
         if manifestHasUnsavedChanges {
             do { try saveManifest() }
             catch {
@@ -520,7 +590,8 @@ final class SwanSDKWorkspaceModel {
         do {
             let commandID = try stateMachine.start(action)
             issue = nil
-            activeCommandName = commandName ?? action.rawValue
+            let resolvedCommandName = commandName ?? action.rawValue
+            activeCommandName = resolvedCommandName
             diagnosticsAreVisible = true
             let invocation = cli.invocation(for: command)
             appendDiagnostic(
@@ -558,6 +629,12 @@ final class SwanSDKWorkspaceModel {
                             detail: detail
                         ).localizedDescription
                     }
+                    completionNotifier(
+                        SwanSongTaskCompletion(
+                            name: resolvedCommandName,
+                            result: result.succeeded ? .succeeded : .failed
+                        )
+                    )
                 } catch is CancellationError {
                     try? stateMachine.finish(id: commandID, succeeded: false)
                     appendDiagnostic("Command cancelled.\n")
@@ -565,6 +642,12 @@ final class SwanSDKWorkspaceModel {
                     try? stateMachine.finish(id: commandID, succeeded: false)
                     issue = error.localizedDescription
                     appendDiagnostic("\(error.localizedDescription)\n")
+                    completionNotifier(
+                        SwanSongTaskCompletion(
+                            name: resolvedCommandName,
+                            result: .failed
+                        )
+                    )
                 }
                 activeCommandName = nil
                 commandTask = nil
@@ -579,12 +662,64 @@ final class SwanSDKWorkspaceModel {
         diagnostics += text
     }
 
+    private func evidenceBindings(
+        _ evidence: SwanSDKEvidence
+    ) -> (rom: String, png: String, wav: String)? {
+        guard let rom = evidence.evidence["romSHA256"]?.displayString,
+              let png = evidence.evidence["capturePNG_SHA256"]?.displayString,
+              let wav = evidence.evidence["audio"]?["finalWindowWAVSHA256"]?.displayString else {
+            return nil
+        }
+        return (rom, png, wav)
+    }
+
+    private func reloadObservationDraft() {
+        guard let scenario = selectedScenario,
+              let evidence,
+              let bindings = evidenceBindings(evidence),
+              let data = try? Data(
+                contentsOf: evidence.directoryURL.appendingPathComponent("observation.json")
+              ),
+              let observation = try? SwanSDKEvidenceObservation.decode(data),
+              observation.isBoundPass(
+                scenario: scenario.id,
+                requiresAudio: scenario.requiresAudioEvidence,
+                requiredChecks: Set(scenario.requiredChecks),
+                romSHA256: bindings.rom,
+                capturePNG_SHA256: bindings.png,
+                finalWindowWAVSHA256: bindings.wav
+              ) else {
+            observationNotes = Dictionary(
+                uniqueKeysWithValues: (selectedScenario?.requiredChecks ?? []).map { ($0, "") }
+            )
+            observationObserver = ""
+            observationPNGInspected = false
+            observationWAVInspected = false
+            observationRecorded = false
+            return
+        }
+        observationNotes = observation.requiredChecks
+        observationObserver = observation.observer
+        observationPNGInspected = observation.pngInspected
+        observationWAVInspected = observation.wavInspected
+        observationRecorded = true
+    }
+
+    private func clearObservationDraft() {
+        observationNotes = [:]
+        observationObserver = ""
+        observationPNGInspected = false
+        observationWAVInspected = false
+        observationRecorded = false
+    }
+
     private func clearProjectDerivedState() {
         playContract = nil
         resourceReport = nil
         selectedScenarioID = nil
         evidence = nil
         currentEvidenceReplayWasVerified = false
+        clearObservationDraft()
         scenarioPlanText = ""
         scenarioPlanHasUnsavedChanges = false
         scenarioInputLogURL = nil

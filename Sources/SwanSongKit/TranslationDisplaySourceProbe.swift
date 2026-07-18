@@ -50,7 +50,8 @@ public struct TranslationDisplaySourcePartition: Codable, Equatable, Sendable {
 }
 
 public struct TranslationDisplaySourceProbeDetails: Codable, Equatable, Sendable {
-    public static let currentSchema = "swan-song-display-source-probe-v2"
+    public static let currentSchema = "swan-song-display-source-probe-v3"
+    public static let legacyAdaptiveSchema = "swan-song-display-source-probe-v2"
     public static let legacySchema = "swan-song-display-source-probe-v1"
 
     public let schema: String
@@ -59,6 +60,8 @@ public struct TranslationDisplaySourceProbeDetails: Codable, Equatable, Sendable
     public let planFrameIndex: UInt64
     public let nativeFrameNumber: UInt64
     public let rectangle: EngineDisplayRectangle
+    /// Nil only when decoding a pre-ABI-8 artifact, where all components were selected.
+    public let selectedComponents: [EngineDisplaySourceComponent]?
     public let plan: TranslationArtifactDigest
     public let project: TranslationArtifactDigest?
     public let rom: TranslationArtifactDigest
@@ -84,7 +87,7 @@ public struct TranslationDisplaySourceProbeDetails: Codable, Equatable, Sendable
 /// addresses, per-pixel chains, and outside-consumer coordinates remain only
 /// in the private project details artifact.
 public struct TranslationDisplaySourceProbeReport: Codable, Equatable, Sendable {
-    public static let currentSchema = "swan-song-display-source-probe-report-v2"
+    public static let currentSchema = "swan-song-display-source-probe-report-v3"
 
     public let schema: String
     public let role: TranslationROMRole
@@ -93,6 +96,7 @@ public struct TranslationDisplaySourceProbeReport: Codable, Equatable, Sendable 
     public let rectangleWidth: Int
     public let rectangleHeight: Int
     public let selectedPixelCount: Int
+    public let selectedComponents: [String]
     public let traceCount: Int
     public let sourceRangeCount: Int
     public let sourceRangesSHA256: String
@@ -101,6 +105,8 @@ public struct TranslationDisplaySourceProbeReport: Codable, Equatable, Sendable 
     public let componentCounts: [String: Int]
     public let chainKindCounts: [String: Int]
     public let chainsSHA256: String
+    public let executedReadContextCount: Int
+    public let executedReadContextsSHA256: String
     public let outsideConsumerCount: Int
     public let outsideConsumersSHA256: String
     public let withinRootConsumerCount: Int
@@ -131,6 +137,64 @@ public struct TranslationDisplaySourceProbeReport: Codable, Equatable, Sendable 
     public let persistenceSHA256: String
     public let nativeFrameSHA256: String
     public let privateDetailsSHA256: String
+}
+
+public struct TranslationDisplaySourceBlockedReasonCounts: Codable, Equatable, Sendable {
+    public let unblockedExact: Int
+    public let unblockedRuntimeGenerated: Int
+    public let unknown: Int
+    public let overflow: Int
+    public let conservative: Int
+    public let nonexact: Int
+    public let multiReason: Int
+}
+
+public struct TranslationDisplaySourceBlockedComponentCounts: Codable, Equatable, Sendable {
+    public let mapCell: TranslationDisplaySourceBlockedReasonCounts
+    public let raster: TranslationDisplaySourceBlockedReasonCounts
+    public let palette: TranslationDisplaySourceBlockedReasonCounts
+}
+
+public struct TranslationDisplaySourceBlockedScopeCounts: Codable, Equatable, Sendable {
+    public let selected: TranslationDisplaySourceBlockedComponentCounts
+    public let outsideConsumer: TranslationDisplaySourceBlockedComponentCounts
+}
+
+public struct TranslationDisplaySourceBlockedLeafGeometry: Codable, Equatable, Sendable {
+    public let width: Int
+    public let height: Int
+    public let depth: Int
+}
+
+public struct TranslationDisplaySourceProbeBlockedDiagnostic:
+    Codable, Equatable, Error, LocalizedError, Sendable
+{
+    public static let currentSchema = "swan-song-display-source-probe-blocked-leaf-v1"
+
+    public let schema: String
+    public let errorCode: String
+    public let role: TranslationROMRole
+    public let planFrameIndex: UInt64
+    public let nativeFrameNumber: UInt64
+    public let leaf: TranslationDisplaySourceBlockedLeafGeometry
+    public let traceCount: Int
+    public let counts: TranslationDisplaySourceBlockedScopeCounts
+    public let blockedEvidenceSHA256: String
+    public let lineageComplete: Bool
+    public let continuedTraversal: Bool
+    public let privateArtifactPublished: Bool
+    public let prototypeAuthorized: Bool
+    public let planSHA256: String
+    public let projectSHA256: String
+    public let romSHA256: String
+    public let engineSHA256: String
+    public let rtcSHA256: String
+    public let persistenceSHA256: String
+    public let nativeFrameSHA256: String
+
+    public var errorDescription: String? {
+        "the upstream source probe stopped at its first incomplete-lineage leaf"
+    }
 }
 
 struct TranslationDisplaySourcePartitionPayload<Element> {
@@ -168,7 +232,10 @@ enum TranslationDisplaySourcePartitioner {
 
     static func run<Element>(
         rectangle: EngineDisplayRectangle,
-        probe: (EngineDisplayRectangle) throws -> TranslationDisplaySourcePartitionPayload<Element>
+        probe: (
+            EngineDisplayRectangle,
+            Int
+        ) throws -> TranslationDisplaySourcePartitionPayload<Element>
     ) throws -> TranslationDisplaySourcePartitionResult<Element> {
         var pending = [(rectangle: rectangle, depth: 0)]
         var terminals: [TranslationDisplaySourcePartitionTerminal<Element>] = []
@@ -185,7 +252,7 @@ enum TranslationDisplaySourcePartitioner {
             attemptCount += 1
             maximumObservedDepth = max(maximumObservedDepth, current.depth)
             do {
-                let payload = try probe(current.rectangle)
+                let payload = try probe(current.rectangle, current.depth)
                 guard terminals.count < terminalLeafLimit else {
                     throw TranslationLabError.invalidRoute(
                         "the adaptive upstream source probe exceeded its 32-leaf bound"
@@ -357,7 +424,8 @@ public enum TranslationDisplaySourceProbe {
         role: TranslationROMRole,
         plan: TranslationFrameInputPlan,
         frameIndex: UInt64,
-        rectangle: EngineDisplayRectangle
+        rectangle: EngineDisplayRectangle,
+        components: [EngineDisplaySourceComponent] = EngineDisplaySourceComponent.allCases
     ) throws -> TranslationDisplaySourceProbeReport {
         let hardware = try project.routeHardwareModel
         try plan.validate(for: hardware)
@@ -366,6 +434,13 @@ public enum TranslationDisplaySourceProbe {
                 "the upstream source probe frame is outside the exact frame/input plan"
             )
         }
+        guard !components.isEmpty,
+              Set(components).count == components.count else {
+            throw TranslationLabError.invalidRoute(
+                "the upstream source component selector must be nonempty and unique"
+            )
+        }
+        let selectedComponents = components.sorted { $0.rawValue < $1.rawValue }
         let pixelCount = Int(rectangle.width) * Int(rectangle.height)
         guard rectangle.width > 0,
               rectangle.height > 0,
@@ -406,6 +481,8 @@ public enum TranslationDisplaySourceProbe {
         guard engine.capabilities.contains(.execution),
               engine.capabilities.contains(.displayProvenance),
               engine.capabilities.contains(.displaySourceProvenance),
+              engine.capabilities.contains(.displaySourceComponentSelection),
+              engine.capabilities.contains(.executedSourceReadContext),
               engine.backendName == "ares" else {
             throw TranslationLabError.invalidRoute(
                 "the bundled live engine cannot produce upstream display-source provenance"
@@ -444,34 +521,83 @@ public enum TranslationDisplaySourceProbe {
         }
         let nativeFrameNumberBeforeQueries = frame.number
         let nativeFrameSHA256BeforeQueries = try TranslationRouteCheckpoint.fingerprint(frame)
+        let engineIdentity = TranslationRouteEngineIdentity(
+            backend: engine.backendName,
+            buildID: engine.buildID
+        )
+        let persistencePolicy = TranslationRouteStartContext.isolatedPersistencePolicy
+        let engineSHA256 = sha256(try encoded(engineIdentity))
+        let rtcSHA256 = sha256(try encoded(rtc))
+        let persistenceSHA256 = sha256(Data(persistencePolicy.utf8))
+        let nativeFrameSHA256 = nativeFrameSHA256BeforeQueries
+        let planDigest = TranslationArtifactDigest(
+            byteCount: planData.count,
+            sha256: sha256(planData)
+        )
         var traceByToken: [EngineDisplaySourceTrace] = []
         var tokenByCanonical: [String: Int] = [:]
-        let partitionResult = try TranslationDisplaySourcePartitioner.run(
-            rectangle: rectangle
-        ) { leafRectangle in
-            let leafTraces = try engine.displaySourceProbe(rectangle: leafRectangle)
-            let selected = leafTraces.filter { $0.scope == .selected }
-            let consumers = leafTraces.filter { $0.scope == .outsideConsumer }
-            try validateLeaf(
-                rectangle: leafRectangle,
-                ownerSamples: ownerSamples,
-                selected: selected,
-                consumers: consumers
-            )
-            let selectedTokens = try recordTraceTokens(
-                selected,
-                traceByToken: &traceByToken,
-                tokenByCanonical: &tokenByCanonical
-            )
-            let consumerTokens = try recordTraceTokens(
-                consumers,
-                traceByToken: &traceByToken,
-                tokenByCanonical: &tokenByCanonical
-            )
-            return TranslationDisplaySourcePartitionPayload(
-                selected: selectedTokens,
-                consumers: consumerTokens
-            )
+        let partitionResult: TranslationDisplaySourcePartitionResult<Int>
+        do {
+            partitionResult = try TranslationDisplaySourcePartitioner.run(
+                rectangle: rectangle
+            ) { leafRectangle, depth in
+                let leafTraces = try engine.displaySourceProbe(
+                    rectangle: leafRectangle,
+                    components: selectedComponents
+                )
+                if let diagnostic = blockedDiagnostic(
+                    role: role,
+                    frameIndex: frameIndex,
+                    nativeFrameNumber: nativeFrameNumberBeforeQueries,
+                    rectangle: leafRectangle,
+                    depth: depth,
+                    traces: leafTraces,
+                    planSHA256: planDigest.sha256,
+                    projectSHA256: projectDigest.sha256,
+                    romSHA256: romDigest.sha256,
+                    engineSHA256: engineSHA256,
+                    rtcSHA256: rtcSHA256,
+                    persistenceSHA256: persistenceSHA256,
+                    nativeFrameSHA256: nativeFrameSHA256
+                ) {
+                    throw diagnostic
+                }
+                let selected = leafTraces.filter { $0.scope == .selected }
+                let consumers = leafTraces.filter { $0.scope == .outsideConsumer }
+                try validateLeaf(
+                    rectangle: leafRectangle,
+                    ownerSamples: ownerSamples,
+                    selected: selected,
+                    consumers: consumers,
+                    components: Set(selectedComponents)
+                )
+                let selectedTokens = try recordTraceTokens(
+                    selected,
+                    traceByToken: &traceByToken,
+                    tokenByCanonical: &tokenByCanonical
+                )
+                let consumerTokens = try recordTraceTokens(
+                    consumers,
+                    traceByToken: &traceByToken,
+                    tokenByCanonical: &tokenByCanonical
+                )
+                return TranslationDisplaySourcePartitionPayload(
+                    selected: selectedTokens,
+                    consumers: consumerTokens
+                )
+            }
+        } catch let diagnostic as TranslationDisplaySourceProbeBlockedDiagnostic {
+            let currentFrame = try engine.videoFrame()
+            let currentProjectData = try Data(contentsOf: projectURL)
+            guard currentFrame.number == nativeFrameNumberBeforeQueries,
+                  try TranslationRouteCheckpoint.fingerprint(currentFrame)
+                    == nativeFrameSHA256BeforeQueries,
+                  currentProjectData == projectData else {
+                throw TranslationLabError.invalidRoute(
+                    "the probe context drifted before its blocked-leaf diagnostic could be returned"
+                )
+            }
+            throw diagnostic
         }
         let treeStatistics = try TranslationDisplaySourcePartitioner.validateTerminalTree(
             root: rectangle,
@@ -506,7 +632,7 @@ public enum TranslationDisplaySourceProbe {
         }
         let selected = traces.filter { $0.scope == .selected }
         let rasterSelected = selected.filter { $0.component == .raster }
-        guard !rasterSelected.isEmpty,
+        guard !selected.isEmpty,
               selected.allSatisfy(\.hasExactRange) else {
             throw TranslationLabError.invalidRoute(
                 "the selected rectangle has incomplete exact source lineage"
@@ -550,19 +676,6 @@ public enum TranslationDisplaySourceProbe {
             )
         }
 
-        let engineIdentity = TranslationRouteEngineIdentity(
-            backend: engine.backendName,
-            buildID: engine.buildID
-        )
-        let persistencePolicy = TranslationRouteStartContext.isolatedPersistencePolicy
-        let engineSHA256 = sha256(try encoded(engineIdentity))
-        let rtcSHA256 = sha256(try encoded(rtc))
-        let persistenceSHA256 = sha256(Data(persistencePolicy.utf8))
-        let nativeFrameSHA256 = nativeFrameSHA256BeforeQueries
-        let planDigest = TranslationArtifactDigest(
-            byteCount: planData.count,
-            sha256: sha256(planData)
-        )
         let withinRootConsumers = traces.filter {
             $0.scope == .outsideConsumer && contains(rectangle, x: $0.x, y: $0.y)
         }
@@ -629,6 +742,7 @@ public enum TranslationDisplaySourceProbe {
             planFrameIndex: frameIndex,
             nativeFrameNumber: frame.number,
             rectangle: rectangle,
+            selectedComponents: selectedComponents,
             plan: planDigest,
             project: projectDigest,
             rom: romDigest,
@@ -673,6 +787,7 @@ public enum TranslationDisplaySourceProbe {
             String(format: "%08x-%08x", $0.lowerBound, $0.upperBound)
         }
         let privateChainStrings = selected.map(canonicalTrace)
+        let executedReadContextStrings = traces.compactMap(canonicalReadContext)
         let outsideConsumers = Set(outsideRootConsumers.map {
             "\($0.x):\($0.y):\($0.component.rawValue)"
         })
@@ -688,6 +803,7 @@ public enum TranslationDisplaySourceProbe {
             rectangleWidth: Int(rectangle.width),
             rectangleHeight: Int(rectangle.height),
             selectedPixelCount: pixelCount,
+            selectedComponents: selectedComponents.map(\.rawValue),
             traceCount: traces.count,
             sourceRangeCount: ranges.count,
             sourceRangesSHA256: hashCanonical(privateRangeStrings),
@@ -696,6 +812,8 @@ public enum TranslationDisplaySourceProbe {
             componentCounts: componentCounts,
             chainKindCounts: counts(chainKinds),
             chainsSHA256: hashCanonical(privateChainStrings),
+            executedReadContextCount: executedReadContextStrings.count,
+            executedReadContextsSHA256: hashCanonical(executedReadContextStrings),
             outsideConsumerCount: outsideConsumers.count,
             outsideConsumersSHA256: hashCanonical(outsideRootConsumerStrings),
             withinRootConsumerCount: withinRootConsumerComponents.count,
@@ -711,9 +829,14 @@ public enum TranslationDisplaySourceProbe {
             runtimeGeneratedSelectedTraceCount: runtimeGeneratedSelected.count,
             runtimeGeneratedRasterTraceCount: runtimeGeneratedRaster.count,
             runtimeGeneratedSelectedSHA256: hashCanonical(runtimeGeneratedSelectedStrings),
-            sameFrameConsumerIsolationApplicable: runtimeGeneratedRaster.isEmpty,
-            sameFrameOutsideRootConsumersAbsent: runtimeGeneratedRaster.isEmpty
-                && outsideConsumers.isEmpty,
+            sameFrameConsumerIsolationApplicable: consumerIsolation(
+                runtimeGeneratedRasterCount: runtimeGeneratedRaster.count,
+                outsideRootConsumerCount: outsideConsumers.count
+            ).applicable,
+            sameFrameOutsideRootConsumersAbsent: consumerIsolation(
+                runtimeGeneratedRasterCount: runtimeGeneratedRaster.count,
+                outsideRootConsumerCount: outsideConsumers.count
+            ).outsideRootConsumersAbsent,
             prototypeAuthorized: false,
             isComplete: completeness.isComplete,
             unknownDependencyTraceCount: unknownCount,
@@ -730,15 +853,123 @@ public enum TranslationDisplaySourceProbe {
         )
     }
 
-    private static func validateLeaf(
+    static func blockedDiagnostic(
+        role: TranslationROMRole,
+        frameIndex: UInt64,
+        nativeFrameNumber: UInt64,
+        rectangle: EngineDisplayRectangle,
+        depth: Int,
+        traces: [EngineDisplaySourceTrace],
+        planSHA256: String,
+        projectSHA256: String,
+        romSHA256: String,
+        engineSHA256: String,
+        rtcSHA256: String,
+        persistenceSHA256: String,
+        nativeFrameSHA256: String
+    ) -> TranslationDisplaySourceProbeBlockedDiagnostic? {
+        let blockedTraces = traces.filter {
+            $0.hasUnknownDependency
+                || $0.rangeSetOverflowed
+                || $0.usesConservativeDataflow
+                || !$0.hasExactRange
+        }
+        guard !blockedTraces.isEmpty else { return nil }
+        return TranslationDisplaySourceProbeBlockedDiagnostic(
+            schema: TranslationDisplaySourceProbeBlockedDiagnostic.currentSchema,
+            errorCode: "blocked-leaf-lineage",
+            role: role,
+            planFrameIndex: frameIndex,
+            nativeFrameNumber: nativeFrameNumber,
+            leaf: TranslationDisplaySourceBlockedLeafGeometry(
+                width: Int(rectangle.width),
+                height: Int(rectangle.height),
+                depth: depth
+            ),
+            traceCount: traces.count,
+            counts: TranslationDisplaySourceBlockedScopeCounts(
+                selected: blockedComponentCounts(scope: .selected, traces: traces),
+                outsideConsumer: blockedComponentCounts(
+                    scope: .outsideConsumer,
+                    traces: traces
+                )
+            ),
+            blockedEvidenceSHA256: hashCanonical(
+                blockedTraces.map(canonicalTrace)
+            ),
+            lineageComplete: false,
+            continuedTraversal: false,
+            privateArtifactPublished: false,
+            prototypeAuthorized: false,
+            planSHA256: planSHA256,
+            projectSHA256: projectSHA256,
+            romSHA256: romSHA256,
+            engineSHA256: engineSHA256,
+            rtcSHA256: rtcSHA256,
+            persistenceSHA256: persistenceSHA256,
+            nativeFrameSHA256: nativeFrameSHA256
+        )
+    }
+
+    private static func blockedComponentCounts(
+        scope: EngineDisplaySourceScope,
+        traces: [EngineDisplaySourceTrace]
+    ) -> TranslationDisplaySourceBlockedComponentCounts {
+        TranslationDisplaySourceBlockedComponentCounts(
+            mapCell: blockedReasonCounts(scope: scope, component: .mapCell, traces: traces),
+            raster: blockedReasonCounts(scope: scope, component: .raster, traces: traces),
+            palette: blockedReasonCounts(scope: scope, component: .palette, traces: traces)
+        )
+    }
+
+    private static func blockedReasonCounts(
+        scope: EngineDisplaySourceScope,
+        component: EngineDisplaySourceComponent,
+        traces: [EngineDisplaySourceTrace]
+    ) -> TranslationDisplaySourceBlockedReasonCounts {
+        let matching = traces.filter {
+            $0.scope == scope && $0.component == component
+        }
+        return TranslationDisplaySourceBlockedReasonCounts(
+            unblockedExact: matching.filter {
+                $0.hasExactRange
+                    && $0.cartridgeLength > 0
+                    && blockerReasonCount($0) == 0
+            }.count,
+            unblockedRuntimeGenerated: matching.filter {
+                $0.hasExactRange
+                    && $0.cartridgeLength == 0
+                    && blockerReasonCount($0) == 0
+            }.count,
+            unknown: matching.filter(\.hasUnknownDependency).count,
+            overflow: matching.filter(\.rangeSetOverflowed).count,
+            conservative: matching.filter(\.usesConservativeDataflow).count,
+            nonexact: matching.filter { !$0.hasExactRange }.count,
+            multiReason: matching.filter { blockerReasonCount($0) > 1 }.count
+        )
+    }
+
+    private static func blockerReasonCount(_ trace: EngineDisplaySourceTrace) -> Int {
+        (trace.hasUnknownDependency ? 1 : 0)
+            + (trace.rangeSetOverflowed ? 1 : 0)
+            + (trace.usesConservativeDataflow ? 1 : 0)
+            + (!trace.hasExactRange ? 1 : 0)
+    }
+
+    static func validateLeaf(
         rectangle: EngineDisplayRectangle,
         ownerSamples: [EngineDisplayOwnerSample],
         selected: [EngineDisplaySourceTrace],
-        consumers: [EngineDisplaySourceTrace]
+        consumers: [EngineDisplaySourceTrace],
+        components: Set<EngineDisplaySourceComponent> = Set(
+            EngineDisplaySourceComponent.allCases
+        )
     ) throws {
         let expectedCoverage = Set(ownerSamples.filter {
             contains(rectangle, x: $0.x, y: $0.y)
-        }.flatMap(expectedComponents))
+        }.flatMap { sample in
+            expectedComponents(sample).filter { components.contains($0.component) }.map(\.key)
+        })
         let actualCoverage = Set(selected.map(coverageKey))
         guard actualCoverage == expectedCoverage,
               selected.allSatisfy({
@@ -837,11 +1068,19 @@ public enum TranslationDisplaySourceProbe {
             && UInt64(rhs.cartridgeOffset) < lhsUpper
     }
 
+    static func consumerIsolation(
+        runtimeGeneratedRasterCount: Int,
+        outsideRootConsumerCount: Int
+    ) -> (applicable: Bool, outsideRootConsumersAbsent: Bool) {
+        let applicable = runtimeGeneratedRasterCount == 0
+        return (applicable, applicable && outsideRootConsumerCount == 0)
+    }
+
     private static func expectedComponents(
         _ sample: EngineDisplayOwnerSample
-    ) -> [String] {
+    ) -> [(component: EngineDisplaySourceComponent, key: String)] {
         engineDisplaySourceComponents(for: sample).map {
-            "\(sample.x):\(sample.y):\($0.rawValue)"
+            ($0, "\(sample.x):\(sample.y):\($0.rawValue)")
         }
     }
 
@@ -892,7 +1131,7 @@ public enum TranslationDisplaySourceProbe {
 
     private static func canonicalTrace(_ trace: EngineDisplaySourceTrace) -> String {
         String(
-            format: "%04x:%04x:%@:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d",
+            format: "%04x:%04x:%@:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d:%@",
             trace.x,
             trace.y,
             trace.scope.rawValue,
@@ -907,13 +1146,14 @@ public enum TranslationDisplaySourceProbe {
             trace.isTransformed ? 1 : 0,
             trace.hasUnknownDependency ? 1 : 0,
             trace.rangeSetOverflowed ? 1 : 0,
-            trace.usesConservativeDataflow ? 1 : 0
+            trace.usesConservativeDataflow ? 1 : 0,
+            canonicalReadContext(trace) ?? "none"
         )
     }
 
     private static func canonicalLineage(_ trace: EngineDisplaySourceTrace) -> String {
         String(
-            format: "%04x:%04x:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d",
+            format: "%04x:%04x:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d:%@",
             trace.x,
             trace.y,
             trace.component.rawValue,
@@ -927,7 +1167,25 @@ public enum TranslationDisplaySourceProbe {
             trace.isTransformed ? 1 : 0,
             trace.hasUnknownDependency ? 1 : 0,
             trace.rangeSetOverflowed ? 1 : 0,
-            trace.usesConservativeDataflow ? 1 : 0
+            trace.usesConservativeDataflow ? 1 : 0,
+            canonicalReadContext(trace) ?? "none"
+        )
+    }
+
+    private static func canonicalReadContext(
+        _ trace: EngineDisplaySourceTrace
+    ) -> String? {
+        guard let context = trace.executedReadContext else { return nil }
+        return String(
+            format: "%08x:%04x:%04x:%04x:%04x:%04x:%04x:%08x",
+            context.immediateCaller,
+            context.callerSegment,
+            context.callerOffset,
+            context.operandSegment,
+            context.operandOffset,
+            context.mapperWindow,
+            context.mapperBank,
+            context.resolvedCartridgeOperand
         )
     }
 

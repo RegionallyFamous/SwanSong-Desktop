@@ -119,6 +119,7 @@ class StubBackend final : public SwanEngineBackend {
 
   swan_result_t display_source_probe(
       const swan_display_rectangle_t&,
+      uint32_t,
       std::span<swan_display_source_trace_t>,
       size_t& count,
       std::string& error) const override {

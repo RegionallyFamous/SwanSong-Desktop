@@ -16,13 +16,17 @@ final class SwanSongStatusItemController: NSObject {
             button.setAccessibilityLabel("SwanSong")
         }
 
+        statusItem.menu = Self.makeMenu(target: self)
+    }
+
+    static func makeMenu(target: AnyObject? = nil) -> NSMenu {
         let menu = NSMenu(title: "SwanSong")
         let showItem = NSMenuItem(
             title: "Show SwanSong",
             action: #selector(showApplication(_:)),
             keyEquivalent: ""
         )
-        showItem.target = self
+        showItem.target = target
         menu.addItem(showItem)
         menu.addItem(.separator())
 
@@ -31,9 +35,9 @@ final class SwanSongStatusItemController: NSObject {
             action: #selector(quitApplication(_:)),
             keyEquivalent: "q"
         )
-        quitItem.target = self
+        quitItem.target = target
         menu.addItem(quitItem)
-        statusItem.menu = menu
+        return menu
     }
 
     @objc

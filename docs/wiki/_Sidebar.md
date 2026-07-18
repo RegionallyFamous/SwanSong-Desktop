@@ -3,7 +3,7 @@
 - [[Home]]
 - [[Playing and Library]]
 - [[Translation Lab]]
-- [[SwanSong Studio|Game-Studio]]
+- [[SwanSong Studio]]
 - [[Local MCP and Automation]]
 - [[Analogue Pocket SD Setup]]
 - [[Gamepads]]
@@ -18,7 +18,6 @@
 - [[Signing and Notarization]]
 - [[Release Gates]]
 - [[0.4 Beta Testing]]
-- [[0.3 Beta Testing]]
 
 **Policies and reference**
 

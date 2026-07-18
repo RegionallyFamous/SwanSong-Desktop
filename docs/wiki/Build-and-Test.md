@@ -2,7 +2,7 @@
 
 This page is the technical command reference for contributors and release
 operators. Product documentation lives in [[Playing and Library]],
-[[Translation Lab]], [[SwanSong Studio|Game Studio]], and
+[[Translation Lab]], [[SwanSong Studio]], and
 [[Analogue Pocket SD Setup]].
 
 ## Requirements
@@ -88,15 +88,51 @@ python3 ./Scripts/check-sparkle-dependency-lock.py \
 Fixture results prove bounded execution invariants. They are not commercial-
 game compatibility results or original-hardware accuracy evidence.
 `check-live-engine.sh` also pins two clean-room display-provenance fixtures
-(introduced with ABI 6 and retained by ABI 7): horizontal
+(introduced with ABI 6 and retained by ABI 8): horizontal
 planar and vertical packed output with exact Screen 1, Screen 2, sprite,
 palette, raster-width, rotation, and non-unknown CPU-writer assertions.
 
-ABI 7 extends those fixtures with a transformed ROM-resident source table. The
+ABI 8 extends those fixtures with raster-only selection, component-complete
+consumer discovery, and executed caller/mapper context for the transformed
+ROM-resident source table. The
 live `TranslationDisplaySourceProbeTests` lane must prove an exact transformed
 selected range, an outside consumer, source-free public output, and intact
 private artifact validation. Inspection-only stub runs skip that one live test;
 the separate live-engine invocation is mandatory for release evidence.
+
+## CI lanes
+
+Pull requests run the complete Swift/XCTest and UI snapshot suite once on the
+macOS 14 Apple-silicon runner. The macOS 15 Intel runner compiles the native
+engine/library compatibility target and verifies its x86_64 Mach-O identity;
+the hosted image does not reliably permit ad-hoc standalone Swift executables.
+The release-preflight job runs in parallel instead of waiting for those lanes.
+On pull requests it uses bounded 180-frame compatibility routes, a 20-second
+A/V sample, and a complete native Apple-silicon app build. The separate Intel
+lane still proves x86_64 compilation. MCP, runtime engine, and fail-closed
+production checks run once rather than being duplicated by both matrix entries.
+Within release preflight, the inspected app builds the pinned ares engine first;
+compatibility, Translation Lab CLI, and A/V tools reuse that exact build instead
+of compiling a second engine tree.
+
+Pushes to `main` and manual workflow runs retain the complete XCTest suite on
+the Intel runner, the 360-frame compatibility matrix, the 60-second CI soak,
+and the complete universal app inspection including every Intel slice. This
+keeps the release-grade gates intact while removing serial wait time and a
+second cold SwiftUI compile from every pull-request iteration. UI snapshots
+remain part of the complete XCTest suite and are not repeated in the separate
+release-preflight job.
+
+The shared SwiftPM wrapper disables login-keychain credential lookup in CI and
+uses only `Package.resolved`. Set `SWAN_SWIFTPM_DISABLE_KEYCHAIN=1` for the same
+non-interactive behavior in a local automation or clean-scratch smoke run. The
+pull-request Intel compile also limits SwiftPM parallelism so the hosted
+runner's tighter memory ceiling cannot turn a cold build into an exit-137
+failure.
+
+The nested MCP package gives its local Desktop dependency an explicit identity,
+so these checks also work from renamed clones and isolated Git worktrees instead
+of depending on the checkout folder being named exactly `SwanSong-Desktop`.
 
 ## SwanSong Studio and SDK boundary
 

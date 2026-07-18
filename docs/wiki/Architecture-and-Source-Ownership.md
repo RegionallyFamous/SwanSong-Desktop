@@ -38,9 +38,13 @@ The main execution path is:
 4. The live release backend links the pinned ares WonderSwan engine.
 
 ABI 6 introduced the narrow final-writer display-provenance capability. ABI 7
-adds bounded upstream CPU dataflow from those final display bytes to exact
+added bounded upstream CPU dataflow from those final display bytes to exact
 half-open cartridge ranges, with explicit unknown/overflow completeness flags
-and private outside-consumer records. During a clean replay the
+and private outside-consumer records. ABI 8 adds component-selective seeds and
+private executed-read context (caller, exact operand segment/offset, mapper
+window/bank, and resolved cartridge operand); outside-consumer discovery remains
+component-complete.
+During a clean replay the
 renderer can describe the final owner of a bounded native rectangle—layer,
 map/tile/raster/palette source, and last CPU writer—without exposing a general
 trace API. Writer history is intentionally not serialized in save states, so a

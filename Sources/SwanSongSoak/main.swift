@@ -441,8 +441,8 @@ private struct SwanSongSoak {
         var issues: [String] = []
         if engine.backendName != "ares" { issues.append("live ares backend was not used") }
         if !engine.buildID.hasPrefix("ares-")
-            || !engine.buildID.hasSuffix("-swan-abi7") {
-            issues.append("live engine build identity was not ABI 7")
+            || !engine.buildID.hasSuffix("-swan-abi8") {
+            issues.append("live engine build identity was not ABI 8")
         }
         if !durationCompleted { issues.append("requested wall-clock duration did not complete") }
         if framesProduced == 0 { issues.append("no video frames were produced") }

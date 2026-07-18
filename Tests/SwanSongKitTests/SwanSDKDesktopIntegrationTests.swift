@@ -213,6 +213,37 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         )
         XCTAssertEqual(plan.events.last?.inputs, ["a"])
         XCTAssertTrue(try plan.formattedJSON().contains("\"totalFrames\" : 120"))
+
+        let observation = SwanSDKEvidenceObservation(
+            scenario: "neutral",
+            pngInspected: true,
+            wavInspected: false,
+            observer: "playtester",
+            romSHA256: "rom",
+            capturePNG_SHA256: "png",
+            finalWindowWAVSHA256: "wav",
+            requiredChecks: ["title visible": "Title is visible."]
+        )
+        let decoded = try SwanSDKEvidenceObservation.decode(
+            Data(try observation.formattedJSON().utf8)
+        )
+        XCTAssertEqual(decoded, observation)
+        XCTAssertTrue(decoded.isBoundPass(
+            scenario: "neutral",
+            requiresAudio: false,
+            requiredChecks: ["title visible"],
+            romSHA256: "rom",
+            capturePNG_SHA256: "png",
+            finalWindowWAVSHA256: "wav"
+        ))
+        XCTAssertFalse(decoded.isBoundPass(
+            scenario: "neutral",
+            requiresAudio: true,
+            requiredChecks: ["title visible"],
+            romSHA256: "rom",
+            capturePNG_SHA256: "png",
+            finalWindowWAVSHA256: "wav"
+        ))
     }
 
     func testWorkspaceStateRejectsOverlapAndStaleCompletion() throws {
@@ -273,7 +304,7 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
             _ = try await task.value
             XCTFail("A cancelled SDK command unexpectedly completed successfully")
         } catch is CancellationError {
-            // Expected: the runner terminates the command's private process group.
+            // Expected: the runner terminates the captured process tree.
         }
         try await waitForProcessExit(childPID)
     }
@@ -285,12 +316,36 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
                 version
             )
         }
-        for version in ["0.1.99", "0.2.0-beta.1", "0.2", "0.2.0.1", "invalid"] {
+        for version in [
+            "0.1.99", "0.2.0-beta.1", "0.2", "0.2.0.1", "0.nope.2.3", "invalid",
+        ] {
             XCTAssertFalse(
                 SwanSDKPackageSummary(version: version).supportsStudioTools,
                 version
             )
         }
+    }
+
+    func testSubprocessRunnerUsesBundledPythonWithoutSystemPath() async throws {
+        let directory = try temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let runtime = directory.appendingPathComponent("runtime/bin", isDirectory: true)
+        try FileManager.default.createDirectory(at: runtime, withIntermediateDirectories: true)
+        try FileManager.default.createSymbolicLink(
+            at: runtime.appendingPathComponent("python3"),
+            withDestinationURL: URL(fileURLWithPath: "/usr/bin/python3")
+        )
+        let invocation = SwanSDKCommandInvocation(
+            executableURL: URL(fileURLWithPath: "/usr/bin/true"),
+            arguments: [],
+            workingDirectory: directory,
+            environment: ["SWANSONG_SDK_DIR": directory.path]
+        )
+        let result = try await SwanSDKSubprocessRunner().run(
+            invocation,
+            inheritedEnvironment: ["PATH": "/path/without/python"]
+        )
+        XCTAssertTrue(result.succeeded)
     }
 
     func testPackageSchemaToolchainAndWAVIdentityReaders() throws {

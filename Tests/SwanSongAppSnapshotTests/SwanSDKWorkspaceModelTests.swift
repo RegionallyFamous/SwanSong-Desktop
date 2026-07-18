@@ -38,6 +38,11 @@ final class SwanSDKWorkspaceModelTests: XCTestCase {
         """#.utf8))
         model.selectedScenarioID = "neutral"
         model.currentEvidenceReplayWasVerified = true
+        model.observationNotes = ["title visible": "Looks good."]
+        model.observationObserver = "Playtester"
+        model.observationPNGInspected = true
+        model.observationWAVInspected = true
+        model.observationRecorded = true
         model.scenarioPlanText = "stale plan"
         model.scenarioPlanHasUnsavedChanges = true
         model.scenarioInputLogURL = first.appendingPathComponent("input.json")
@@ -57,6 +62,11 @@ final class SwanSDKWorkspaceModelTests: XCTestCase {
         XCTAssertNil(model.selectedScenarioID)
         XCTAssertNil(model.evidence)
         XCTAssertFalse(model.currentEvidenceReplayWasVerified)
+        XCTAssertEqual(model.observationNotes, [:])
+        XCTAssertEqual(model.observationObserver, "")
+        XCTAssertFalse(model.observationPNGInspected)
+        XCTAssertFalse(model.observationWAVInspected)
+        XCTAssertFalse(model.observationRecorded)
         XCTAssertEqual(model.scenarioPlanText, "")
         XCTAssertFalse(model.scenarioPlanHasUnsavedChanges)
         XCTAssertNil(model.scenarioInputLogURL)

@@ -3,7 +3,7 @@
 Effective July 17, 2026
 
 This policy describes SwanSong 0.4.0. The versioned release notes document
-earlier 0.1.x and 0.2.0 behavior.
+earlier release behavior.
 
 <!-- homebrew-catalog-status: coming-soon -->
 
@@ -75,17 +75,27 @@ identities only in private project files and return only hashes and aggregate
 counts to the MCP client. Upstream source probes additionally keep exact and
 candidate cartridge ranges, emulated source addresses, per-display chains, and
 outside-consumer coordinates private while returning only hashes, counts, and
-completeness. These tools do not return ROM, state, RAM, or
-persistence bytes. SwanSong makes no network request for MCP, but an AI client
+completeness. ABI 8 source probes may select map, raster, or palette ownership;
+the private artifact also retains immediate caller, code and operand
+segment/offset, mapper window/bank, and resolved cartridge operand. MCP receives
+only aggregate context counts and hashes. These tools do not return ROM, state,
+RAM, or persistence bytes. SwanSong makes no network request for MCP, but an AI client
 may transmit tool arguments and results to its own service under that client's
 privacy policy.
 
 SwanSong Studio reads and writes only the SDK and project folders you explicitly
 select. It launches the selected local SwanSong SDK command-line tool for New,
-Assets, Build, Test, Play, and Report, and keeps compiler, generator, resource,
-frame-plan, PNG, WAV, and structured evidence output on the Mac. Those commands
-may invoke the locally installed Wonderful toolchain and SwanSong deterministic
-play executor; Desktop does not upload project source, assets, ROMs, or evidence.
+Assets, Build, Test, Play, Profile, Evidence, and Release, and keeps compiler,
+generator, resource, frame-plan, PNG, WAV, observation, and structured evidence
+output on the Mac. Those commands may invoke the locally installed Wonderful
+toolchain and SwanSong deterministic play executor; Desktop does not upload
+project source, assets, ROMs, or evidence.
+
+Optional Studio completion notifications are local macOS notifications. SwanSong
+requests notification permission only after you enable the setting, sends them
+only while the app is in the background, and includes only the task name and
+result. Project paths, ROM names, diagnostics, frames, audio, and evidence are
+excluded.
 
 ## Files you provide
 

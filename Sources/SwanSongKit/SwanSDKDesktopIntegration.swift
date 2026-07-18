@@ -446,8 +446,8 @@ public final class SwanSDKSubprocessRunner: @unchecked Sendable {
                 Int32(processIDs.count * MemoryLayout<pid_t>.stride)
             )
             guard count > 0 else { return [] }
-            if count < capacity {
-                return processIDs.prefix(Int(count)).filter { $0 > 0 }
+            if count < capacity || capacity == 4_096 {
+                return processIDs.prefix(min(Int(count), capacity)).filter { $0 > 0 }
             }
             capacity *= 2
         }
@@ -660,9 +660,11 @@ public struct SwanSDKPackageSummary: Equatable, Sendable {
         )
         let components = coreAndPrerelease[0]
             .split(separator: ".", omittingEmptySubsequences: false)
-            .compactMap { Int($0) }
-        guard components.count == 3 else { return false }
-        let candidate = (components[0], components[1], components[2])
+        guard components.count == 3,
+              let major = Int(components[0]),
+              let minor = Int(components[1]),
+              let patch = Int(components[2]) else { return false }
+        let candidate = (major, minor, patch)
         let minimum = (0, 2, 0)
         if candidate.0 != minimum.0 { return candidate.0 > minimum.0 }
         if candidate.1 != minimum.1 { return candidate.1 > minimum.1 }
@@ -892,6 +894,83 @@ public struct SwanSDKEvidence: Equatable, Sendable {
                 from: directory.appendingPathComponent("audio.wav")
             )
         )
+    }
+}
+
+public struct SwanSDKEvidenceObservation: Codable, Equatable, Sendable {
+    public static let currentSchema = "swan-song-evidence-observation-v1"
+
+    public let schema: String
+    public let scenario: String
+    public let verdict: String
+    public let pngInspected: Bool
+    public let wavInspected: Bool
+    public let observer: String
+    public let romSHA256: String
+    public let capturePNG_SHA256: String
+    public let finalWindowWAVSHA256: String
+    public let requiredChecks: [String: String]
+
+    public init(
+        scenario: String,
+        pngInspected: Bool,
+        wavInspected: Bool,
+        observer: String,
+        romSHA256: String,
+        capturePNG_SHA256: String,
+        finalWindowWAVSHA256: String,
+        requiredChecks: [String: String]
+    ) {
+        schema = Self.currentSchema
+        self.scenario = scenario
+        verdict = "pass"
+        self.pngInspected = pngInspected
+        self.wavInspected = wavInspected
+        self.observer = observer
+        self.romSHA256 = romSHA256
+        self.capturePNG_SHA256 = capturePNG_SHA256
+        self.finalWindowWAVSHA256 = finalWindowWAVSHA256
+        self.requiredChecks = requiredChecks
+    }
+
+    public static func decode(_ data: Data) throws -> Self {
+        let observation = try JSONDecoder().decode(Self.self, from: data)
+        guard observation.schema == Self.currentSchema,
+              observation.verdict == "pass" else {
+            throw SwanSDKIntegrationError.malformedContract(
+                "Unsupported evidence observation verdict."
+            )
+        }
+        return observation
+    }
+
+    public func isBoundPass(
+        scenario expectedScenario: String,
+        requiresAudio: Bool,
+        requiredChecks expectedChecks: Set<String>,
+        romSHA256 expectedROM: String,
+        capturePNG_SHA256 expectedPNG: String,
+        finalWindowWAVSHA256 expectedWAV: String
+    ) -> Bool {
+        schema == Self.currentSchema
+            && verdict == "pass"
+            && scenario == expectedScenario
+            && pngInspected
+            && (!requiresAudio || wavInspected)
+            && !observer.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && romSHA256 == expectedROM
+            && capturePNG_SHA256 == expectedPNG
+            && finalWindowWAVSHA256 == expectedWAV
+            && Set(requiredChecks.keys) == expectedChecks
+            && requiredChecks.values.allSatisfy {
+                !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            }
+    }
+
+    public func formattedJSON() throws -> String {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+        return String(decoding: try encoder.encode(self), as: UTF8.self) + "\n"
     }
 }
 

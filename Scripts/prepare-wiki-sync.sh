@@ -23,11 +23,11 @@ validate_source() {
 Architecture-and-Source-Ownership.md
 Build-and-Test.md
 Gamepads.md
-Game-Studio.md
 Home.md
 Homebrew-Catalog.md
 Open-IPL.md
 Release-Gates.md
+SwanSong-Studio.md
 _Sidebar.md'
 
   printf '%s\n' "$required_pages" | while IFS= read -r page; do

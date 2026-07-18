@@ -102,6 +102,7 @@ expected = {
     "swansong_translation_capture_plan",
     "swansong_translation_probe_rectangle",
     "swansong_translation_probe_rectangle_source",
+    "swansong_translation_export_static_analysis_seed",
     "swansong_translation_record_route",
     "swansong_translation_verify_pair",
 }
@@ -123,6 +124,7 @@ for name in (
     "swansong_translation_capture_plan",
     "swansong_translation_probe_rectangle",
     "swansong_translation_probe_rectangle_source",
+    "swansong_translation_export_static_analysis_seed",
     "swansong_translation_record_route",
     "swansong_translation_verify_pair",
 ):
@@ -135,6 +137,31 @@ observed_step_required = set(
 )
 if observed_step_required != {"sessionID", "inputs", "frames", "confirmShareCapture"}:
     raise SystemExit("observed-play step lost its explicit capture-sharing contract")
+
+source_schema = by_name["swansong_translation_probe_rectangle_source"]["inputSchema"]
+source_components = source_schema.get("properties", {}).get("components", {})
+if source_components.get("type") != "array" or source_components.get("minItems") != 1:
+    raise SystemExit("upstream source probe lost its nonempty component selector")
+if source_components.get("uniqueItems") is not True:
+    raise SystemExit("upstream source probe component selector is not unique")
+if set(source_components.get("items", {}).get("enum", [])) != {
+    "mapCell", "raster", "palette"
+}:
+    raise SystemExit("upstream source probe component selector changed")
+owner_properties = by_name["swansong_translation_probe_rectangle"]["inputSchema"].get(
+    "properties", {}
+)
+if "components" in owner_properties:
+    raise SystemExit("final-writer owner probe incorrectly advertises source selection")
+seed_required = set(
+    by_name["swansong_translation_export_static_analysis_seed"]["inputSchema"].get(
+        "required", []
+    )
+)
+if seed_required != {
+    "projectPath", "sourceProbeDetailsPath", "confirmProjectWrites"
+}:
+    raise SystemExit("static-analysis seed export lost its exact guarded input contract")
 
 send({
     "jsonrpc": "2.0",
@@ -155,6 +182,7 @@ for request_id, name in enumerate(
         "swansong_translation_capture_plan",
         "swansong_translation_probe_rectangle",
         "swansong_translation_probe_rectangle_source",
+        "swansong_translation_export_static_analysis_seed",
         "swansong_translation_record_route",
         "swansong_translation_verify_pair",
     ),
@@ -187,4 +215,4 @@ if process.returncode != 0:
     raise SystemExit(f"MCP server exited {process.returncode}: {stderr}")
 PY
 
-echo "PASS SwanSong MCP initializes with fourteen scoped, correctly annotated tools"
+echo "PASS SwanSong MCP initializes with fifteen scoped, correctly annotated tools"
