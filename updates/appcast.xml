@@ -6,6 +6,26 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.4.0</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.4.0</link>
+      <description sparkle:format="html">&lt;h2&gt;Build where you play.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.4 adds Studio for the complete SwanSong SDK workflow and gives Translation Lab a deeper, private path from visible pixels to cartridge sources.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Make and iterate.&lt;/strong&gt; Create a recipe, build assets, test, play, profile, inspect evidence, and package from one native workspace.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Turn play into proof.&lt;/strong&gt; Record deterministic scenarios, compare visual and audio evidence, and require inspected results before release.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Trace upstream privately.&lt;/strong&gt; Select map, raster, or palette provenance while exact cartridge and executed-read details stay inside the project.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Use the whole toolset.&lt;/strong&gt; The installed plugin exposes persisted capture, both probes, record/verify, and the complete observed-play lifecycle.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Find the swan.&lt;/strong&gt; SwanSong now has its own compact menu-bar status item.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Studio is a developer preview that uses SwanSong SDK 0.2 or newer and a separately installed toolchain. Your projects, ROMs, diagnostics, and evidence stay on your Mac.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.4.0"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Fri, 17 Jul 2026 22:54:34 -0500</pubDate>
+      <sparkle:version>6</sparkle:version>
+      <sparkle:shortVersionString>0.4.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:channel>beta</sparkle:channel>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.4.0/SwanSong-0.4.0-macOS-universal.zip" length="21358713" type="application/octet-stream" sparkle:edSignature="ILmbH2CAfQZ/FOjPSxrUJwxzjABw4lLQuo9tR4D6x+pfrZ5dfGLfsPSC0uQt2EtDrrByt1YozahknowZKL/iDA==" />
+    </item>
+    <item>
       <title>SwanSong 0.3.1</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.3.1</link>
       <description sparkle:format="html">&lt;h2&gt;See exactly what changed.&lt;/h2&gt;
@@ -49,6 +69,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: FFz2givus+Drz5G2KmdiGg6pIeUpIBdYEenT9vLs+ueKrQicTxzS0YzGUvCUCYOB3CwxghYiItqg8jzLIGX6Ag==
-length: 4117
+edSignature: dCVbIUf+DJhhP1G5KL5+V5bxPXlVjUAFcPP8julWMXOidtA4iV0g9V/huBKw1O5ZZfv/n2jXOHC2+W8EUtEICA==
+length: 6361
 -->
