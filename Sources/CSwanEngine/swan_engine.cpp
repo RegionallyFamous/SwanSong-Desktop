@@ -2,7 +2,7 @@
 #include "swan_engine_backend.hpp"
 
 #ifndef SWAN_ENGINE_BUILD_ID
-#define SWAN_ENGINE_BUILD_ID "inspection-stub-swan-abi8"
+#define SWAN_ENGINE_BUILD_ID "inspection-stub-swan-abi9"
 #endif
 
 #include <algorithm>
@@ -17,6 +17,11 @@
 #include <vector>
 
 namespace {
+
+static_assert(sizeof(swan_display_rectangle_t) == 12);
+static_assert(sizeof(swan_display_owner_sample_t) == 56);
+static_assert(sizeof(swan_display_source_probe_options_t) == 8);
+static_assert(sizeof(swan_display_source_trace_t) == 76);
 
 constexpr size_t kFooterSize = 16;
 constexpr size_t kBankSize = 64u * 1024u;
@@ -523,6 +528,14 @@ swan_result_t swan_engine_display_source_probe(
     return SWAN_RESULT_INVALID_ARGUMENT;
   }
   if (!engine->loaded) return SWAN_RESULT_NOT_LOADED;
+  if ((options->selected_component_mask &
+       SWAN_DISPLAY_SOURCE_COMPONENT_MASK_SPRITE_ATTRIBUTE) != 0 &&
+      (engine->backend->capabilities() &
+       SWAN_CAPABILITY_DISPLAY_SPRITE_ATTRIBUTE_PROVENANCE) == 0) {
+    engine->last_error =
+        "sprite-attribute source provenance is unavailable in this backend";
+    return SWAN_RESULT_UNSUPPORTED;
+  }
   const size_t width = rectangle->width;
   const size_t height = rectangle->height;
   if (height > 4096u / width) return SWAN_RESULT_INVALID_ARGUMENT;

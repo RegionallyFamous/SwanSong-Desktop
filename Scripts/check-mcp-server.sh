@@ -145,7 +145,7 @@ if source_components.get("type") != "array" or source_components.get("minItems")
 if source_components.get("uniqueItems") is not True:
     raise SystemExit("upstream source probe component selector is not unique")
 if set(source_components.get("items", {}).get("enum", [])) != {
-    "mapCell", "raster", "palette"
+    "mapCell", "raster", "palette", "spriteAttribute"
 }:
     raise SystemExit("upstream source probe component selector changed")
 owner_properties = by_name["swansong_translation_probe_rectangle"]["inputSchema"].get(

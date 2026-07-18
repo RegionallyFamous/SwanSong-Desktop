@@ -75,13 +75,16 @@ identities only in private project files and return only hashes and aggregate
 counts to the MCP client. Upstream source probes additionally keep exact and
 candidate cartridge ranges, emulated source addresses, per-display chains, and
 outside-consumer coordinates private while returning only hashes, counts, and
-completeness. ABI 8 source probes may select map, raster, or palette ownership;
-the private artifact also retains immediate caller, code and operand
-segment/offset, mapper window/bank, and resolved cartridge operand. MCP receives
-only aggregate context counts and hashes. These tools do not return ROM, state,
-RAM, or persistence bytes. SwanSong makes no network request for MCP, but an AI client
-may transmit tool arguments and results to its own service under that client's
-privacy policy.
+completeness. ABI 9 source probes may select map, raster, palette, or
+`spriteAttribute` ownership. The private artifact retains immediate caller,
+code and operand segment/offset, mapper window/bank, resolved cartridge
+operand, sprite OAM addresses and byte counts, final writers, and
+conservative-dataflow reasons and V30 origins. None of those addresses, writers,
+reasons, or origins leave through MCP; its public response remains limited to
+source-free counts, hashes, geometry, completeness flags, and aggregate context
+counts. These tools do not return ROM, state, RAM, or persistence bytes.
+SwanSong makes no network request for MCP, but an AI client may transmit tool
+arguments and results to its own service under that client's privacy policy.
 
 SwanSong Studio reads and writes only the SDK and project folders you explicitly
 select. It launches the selected local SwanSong SDK command-line tool for New,

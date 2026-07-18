@@ -166,8 +166,8 @@ project-writing commands close the autonomous evidence and diagnosis gaps:
   plan, both native endpoints, deterministic context bindings, and pixel diff
   as one immutable pair;
 - `probe-rectangle` replays one role to an exact plan frame and privately saves
-  per-pixel layer, map-cell, tile/raster, palette, and CPU-writer provenance,
-  while its report exposes only hashes and counts;
+  per-pixel layer, map-cell, tile/raster, palette, sprite/OAM, and CPU-writer
+  provenance, while its report exposes only hashes and counts;
 - `record-route` converts a versioned frame/input plan into route-v3 using
   Original, empty isolated persistence, the fixed proof RTC, and a native
   endpoint checkpoint; and

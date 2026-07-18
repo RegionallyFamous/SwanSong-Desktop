@@ -319,7 +319,7 @@ report_path = pathlib.Path(sys.argv[3])
 report_data = report_path.read_bytes()
 report = json.loads(report_data)
 report_b = json.loads(pathlib.Path(sys.argv[4]).read_text())
-if report.get("schema") != "swan-song-display-owner-probe-report-v1":
+if report.get("schema") != "swan-song-display-owner-probe-report-v2":
     raise SystemExit("probe-rectangle report schema mismatch")
 if report.get("role") != "original" or report.get("planFrameIndex") != 29:
     raise SystemExit("probe-rectangle lost its exact replay target")
@@ -332,6 +332,7 @@ for key in (
     "ownerGridSHA256",
     "tileRasterSourcesSHA256",
     "paletteSourcesSHA256",
+    "spriteAttributeSourcesSHA256",
     "finalWritersSHA256",
     "planSHA256",
     "romSHA256",
@@ -351,6 +352,12 @@ for forbidden in (
     "paletteaddress",
     "palettecolor",
     "writerpc",
+    "oamaddress",
+    "oambytecount",
+    "oamwriterpc",
+    "conservativeorigin",
+    "origin20bit",
+    "unclassifiedinstruction",
 ):
     if forbidden in public_keys:
         raise SystemExit(f"probe-rectangle exposed private source field {forbidden}")
@@ -373,7 +380,7 @@ details_data = (probe / "details.json").read_bytes()
 if hashlib.sha256(details_data).hexdigest() != report["privateDetailsSHA256"]:
     raise SystemExit("probe-rectangle private details digest mismatch")
 details = json.loads(details_data)
-if details.get("schema") != "swan-song-display-owner-probe-v1":
+if details.get("schema") != "swan-song-display-owner-probe-v2":
     raise SystemExit("private display-owner schema mismatch")
 if details.get("persistencePolicy") != "isolated-empty-v1":
     raise SystemExit("private display-owner probe lost empty persistence")
@@ -387,6 +394,15 @@ required_sample_keys = {
 }
 if not required_sample_keys.issubset(details["samples"][0]):
     raise SystemExit("private display-owner probe lost renderer source fields")
+for sample in details["samples"]:
+    oam_keys = {"oamAddress", "oamByteCount", "oamWriterPC"}
+    present = oam_keys.intersection(sample)
+    if present and present != oam_keys:
+        raise SystemExit("private display-owner probe retained partial OAM provenance")
+    if sample.get("sourceKind") != "sprite" and present:
+        raise SystemExit("private display-owner probe attached OAM provenance to a non-sprite")
+if report.get("spriteAttributeSourceCount", -1) < 0:
+    raise SystemExit("probe-rectangle lost its source-free sprite-attribute count")
 plan_data = (probe / "plan.json").read_bytes()
 if json.loads(plan_data) != source_plan:
     raise SystemExit("private display-owner probe lost the exact plan")
@@ -435,6 +451,10 @@ def call(request_id, name, arguments):
         response = json.loads(line)
         if response.get("id") == request_id:
             return response["result"]
+
+source_guard = call(-1, "swansong_translation_probe_rectangle_source", {})
+if not source_guard.get("isError") or "confirmProjectWrites" not in json.dumps(source_guard):
+    raise SystemExit("upstream source probe lost its explicit project-write guard")
 
 seed_guard = call(0, "swansong_translation_export_static_analysis_seed", {})
 if not seed_guard.get("isError") or "confirmProjectWrites" not in json.dumps(seed_guard):

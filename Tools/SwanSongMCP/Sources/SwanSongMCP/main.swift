@@ -184,7 +184,7 @@ private enum SwanSongMCPServer {
     private static let protocolVersion = "2025-11-25"
     private static let liveApp = LiveAppClient()
     private static let observedPlay = ObservedPlayRegistry()
-    private static let instructions = "Controls a running SwanSong app through its opt-in local bridge, runs guarded Translation Lab evidence workflows, and can execute bounded deterministic homebrew playtest plans through SwanSong's own engine. Playtest and observed-step tools return a rendered game frame and audio window only when confirmShareCapture=true. The server must never expose ROM, save, state, persistence, RAM, tile, palette, map-cell, CPU-writer, cartridge-range, address, or mapper values. Translation tools only accept project-contained files and require confirmProjectWrites=true. Persisted translation captures privately retain both native frames, the exact plan, deterministic context hashes, and pixel-diff evidence inside the selected project. Display-owner probes and static-analysis seeds retain detailed source evidence privately and return only hashes and aggregate counts. Observed play holds a private ownership lease, atomically saves its cumulative from-boot plan after every step, marks crash-abandoned sessions interrupted, recovers only by clean-boot plan replay, and creates final evidence only by another clean-boot replay. A successful execution is observation evidence, not proof that a game mechanic passed; inspect the frame, listen to relevant audio, and exercise the declared game contract."
+    private static let instructions = "Controls a running SwanSong app through its opt-in local bridge, runs guarded Translation Lab evidence workflows, and can execute bounded deterministic homebrew playtest plans through SwanSong's own engine. Playtest and observed-step tools return a rendered game frame and audio window only when confirmShareCapture=true. The server must never expose ROM, save, state, persistence, RAM, tile, palette, map-cell, sprite/OAM attribute, CPU-writer, conservative-origin, cartridge-range, address, or mapper values. Translation tools only accept project-contained files and require confirmProjectWrites=true. Persisted translation captures privately retain both native frames, the exact plan, deterministic context hashes, and pixel-diff evidence inside the selected project. Display-owner probes and static-analysis seeds retain detailed source evidence privately and return only hashes and aggregate counts. Observed play holds a private ownership lease, atomically saves its cumulative from-boot plan after every step, marks crash-abandoned sessions interrupted, recovers only by clean-boot plan replay, and creates final evidence only by another clean-boot replay. A successful execution is observation evidence, not proof that a game mechanic passed; inspect the frame, listen to relevant audio, and exercise the declared game contract."
 
     static func main() {
         while let line = readLine(strippingNewline: true) {
@@ -377,7 +377,7 @@ private enum SwanSongMCPServer {
             tool(
                 name: "swansong_translation_probe_rectangle",
                 title: "Probe Display Rectangle Owner",
-                description: "Replay a project-contained exact frame/input plan from clean power-on to one frame, privately retain per-pixel layer, map-cell, tile/raster, palette, and CPU-writer provenance, and return only source-free hashes and aggregate counts.",
+                description: "Replay a project-contained exact frame/input plan from clean power-on to one frame, privately retain per-pixel layer, map-cell or sprite/OAM attribute, tile/raster, palette, and CPU-writer provenance, and return only source-free hashes and aggregate counts.",
                 inputSchema: displayOwnerProbeSchema(),
                 readOnly: false,
                 destructive: false,
@@ -386,7 +386,7 @@ private enum SwanSongMCPServer {
             tool(
                 name: "swansong_translation_probe_rectangle_source",
                 title: "Trace Display Rectangle to Cartridge Sources",
-                description: "Replay a project-contained exact frame/input plan from clean power-on; optionally seed only map, raster, or palette components; privately retain exact cartridge ranges, executed caller/mapper context, and every outside display component sharing those ranges; and return only source-free hashes, counts, and explicit completeness flags.",
+                description: "Replay a project-contained exact frame/input plan from clean power-on; optionally seed map, raster, palette, or sprite-attribute components; privately retain exact cartridge ranges, executed caller/mapper context, conservative-origin diagnostics, and every outside display component sharing those ranges; and return only source-free hashes, counts, and explicit completeness flags.",
                 inputSchema: displayOwnerProbeSchema(includeComponents: true),
                 readOnly: false,
                 destructive: false,
@@ -395,7 +395,7 @@ private enum SwanSongMCPServer {
             tool(
                 name: "swansong_translation_export_static_analysis_seed",
                 title: "Export Private Static-Analysis Seed",
-                description: "Revalidate one current complete ABI-8 source-probe artifact and privately export deterministic cartridge ranges plus executed caller, operand, and mapper anchors for Ghidra or pypcode. Returns only source-free counts, completeness flags, and hashes; static analysis never authorizes a patch.",
+                description: "Revalidate one current complete ABI-9 source-probe artifact and privately export deterministic cartridge ranges plus executed caller, operand, mapper, and sprite-attribute anchors for Ghidra or pypcode. Returns only source-free counts, completeness flags, and hashes; static analysis never authorizes a patch.",
                 inputSchema: projectWriteSchema(fileKey: "sourceProbeDetailsPath"),
                 readOnly: false,
                 destructive: false,
@@ -558,7 +558,7 @@ private enum SwanSongMCPServer {
               components.count == componentValues.count,
               Set(components).count == components.count else {
             throw SwanSongMCPError(
-                message: "components must be a nonempty, unique array containing mapCell, raster, or palette"
+                message: "components must be a nonempty, unique array containing mapCell, raster, palette, or spriteAttribute"
             )
         }
         do {

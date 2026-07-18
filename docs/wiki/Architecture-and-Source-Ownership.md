@@ -43,12 +43,22 @@ half-open cartridge ranges, with explicit unknown/overflow completeness flags
 and private outside-consumer records. ABI 8 adds component-selective seeds and
 private executed-read context (caller, exact operand segment/offset, mapper
 window/bank, and resolved cartridge operand); outside-consumer discovery remains
-component-complete.
+component-complete. ABI 9 adds sprite-attribute ownership: the private owner
+sample records its OAM range and final writer, and upstream probing can select
+`spriteAttribute` separately. Conservative dataflow now retains the first
+private reason and V30 origin while continuing to withhold exact lineage.
 During a clean replay the
 renderer can describe the final owner of a bounded native rectangle—layer,
-map/tile/raster/palette source, and last CPU writer—without exposing a general
-trace API. Writer history is intentionally not serialized in save states, so a
-restored session cannot claim provenance and must replay from boot.
+map/tile/raster/palette or sprite/OAM source, and last CPU writer—without
+exposing a general trace API. Writer history is intentionally not serialized in
+save states, so a restored session cannot claim provenance and must replay from
+boot.
+
+Private source-probe artifacts share a 64 MiB evidence bound and may normalize
+as many as 256 disjoint selected cartridge ranges. Those are storage and
+aggregation bounds, not permission to weaken lineage: a true per-byte range-set
+overflow, unknown dependency, conservative origin, or incomplete outside-
+consumer scope still blocks promotion and static-seed export.
 
 A stub backend exists for UI-only contributor work. It is not evidence that a
 game boots, that audio/video timing is healthy, or that a release is valid.

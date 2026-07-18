@@ -43,6 +43,9 @@ public struct EngineCapabilities: OptionSet, Sendable {
     public static let executedSourceReadContext = Self(
         rawValue: UInt64(SWAN_CAPABILITY_EXECUTED_SOURCE_READ_CONTEXT)
     )
+    public static let displaySpriteAttributeProvenance = Self(
+        rawValue: UInt64(SWAN_CAPABILITY_DISPLAY_SPRITE_ATTRIBUTE_PROVENANCE)
+    )
 }
 
 public struct EngineInput: OptionSet, Sendable {
@@ -207,6 +210,9 @@ public struct EngineDisplayOwnerSample: Codable, Equatable, Sendable {
     public let cellWriterPC: UInt32
     public let rasterWriterPC: UInt32
     public let paletteWriterPC: UInt32
+    public let oamAddress: UInt16?
+    public let oamByteCount: UInt8?
+    public let oamWriterPC: UInt32?
 
     fileprivate init(cValue: swan_display_owner_sample_t) throws {
         x = cValue.x
@@ -225,6 +231,15 @@ public struct EngineDisplayOwnerSample: Codable, Equatable, Sendable {
         cellWriterPC = cValue.cell_writer_pc
         rasterWriterPC = cValue.raster_writer_pc
         paletteWriterPC = cValue.palette_writer_pc
+        if cValue.oam_byte_count > 0 {
+            oamAddress = cValue.oam_address
+            oamByteCount = cValue.oam_byte_count
+            oamWriterPC = cValue.oam_writer_pc
+        } else {
+            oamAddress = nil
+            oamByteCount = nil
+            oamWriterPC = nil
+        }
     }
 }
 
@@ -234,12 +249,14 @@ public enum EngineDisplaySourceComponent:
     case mapCell
     case raster
     case palette
+    case spriteAttribute
 
     fileprivate init(cValue: swan_display_source_component_t) throws {
         switch cValue {
         case SWAN_DISPLAY_SOURCE_COMPONENT_MAP_CELL: self = .mapCell
         case SWAN_DISPLAY_SOURCE_COMPONENT_RASTER: self = .raster
         case SWAN_DISPLAY_SOURCE_COMPONENT_PALETTE: self = .palette
+        case SWAN_DISPLAY_SOURCE_COMPONENT_SPRITE_ATTRIBUTE: self = .spriteAttribute
         default:
             throw SwanEngineError(
                 code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
@@ -253,6 +270,8 @@ public enum EngineDisplaySourceComponent:
         case .mapCell: UInt32(SWAN_DISPLAY_SOURCE_COMPONENT_MASK_MAP_CELL)
         case .raster: UInt32(SWAN_DISPLAY_SOURCE_COMPONENT_MASK_RASTER)
         case .palette: UInt32(SWAN_DISPLAY_SOURCE_COMPONENT_MASK_PALETTE)
+        case .spriteAttribute:
+            UInt32(SWAN_DISPLAY_SOURCE_COMPONENT_MASK_SPRITE_ATTRIBUTE)
         }
     }
 }
@@ -260,12 +279,14 @@ public enum EngineDisplaySourceComponent:
 func engineDisplaySourceComponents(
     sourceKind: EngineDisplaySourceKind,
     rasterByteCount: UInt8,
-    paletteByteCount: UInt8
+    paletteByteCount: UInt8,
+    oamByteCount: UInt8 = 0
 ) -> [EngineDisplaySourceComponent] {
     var components: [EngineDisplaySourceComponent] = []
     if sourceKind == .tilemap { components.append(.mapCell) }
     if sourceKind != .none, rasterByteCount > 0 { components.append(.raster) }
     if paletteByteCount > 0 { components.append(.palette) }
+    if sourceKind == .sprite, oamByteCount > 0 { components.append(.spriteAttribute) }
     return components
 }
 
@@ -275,7 +296,8 @@ func engineDisplaySourceComponents(
     engineDisplaySourceComponents(
         sourceKind: sample.sourceKind,
         rasterByteCount: sample.rasterByteCount,
-        paletteByteCount: sample.paletteByteCount
+        paletteByteCount: sample.paletteByteCount,
+        oamByteCount: sample.oamByteCount ?? 0
     )
 }
 
@@ -321,6 +343,50 @@ public struct EngineExecutedSourceReadContext: Codable, Equatable, Sendable {
     }
 }
 
+public enum EngineDisplaySourceConservativeReason: String, Codable, Equatable, Sendable {
+    case unclassifiedInstruction
+
+    fileprivate init(cValue: swan_display_source_conservative_reason_t) throws {
+        switch cValue {
+        case SWAN_DISPLAY_SOURCE_CONSERVATIVE_UNCLASSIFIED_INSTRUCTION:
+            self = .unclassifiedInstruction
+        default:
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned an unknown conservative-dataflow reason."
+            )
+        }
+    }
+}
+
+/// Private identity of the first instruction that forced otherwise physical
+/// cartridge lineage to remain conservative. Never expose these CPU values
+/// through an automation response.
+public struct EngineDisplaySourceConservativeOrigin: Codable, Equatable, Sendable {
+    public let reason: EngineDisplaySourceConservativeReason
+    public let origin20Bit: UInt32
+    public let segment: UInt16
+    public let offset: UInt16
+
+    fileprivate init(cValue: swan_display_source_trace_t) throws {
+        reason = try EngineDisplaySourceConservativeReason(
+            cValue: cValue.conservative_reason
+        )
+        origin20Bit = cValue.conservative_origin
+        segment = cValue.conservative_origin_segment
+        offset = cValue.conservative_origin_offset
+        let expected = UInt32(
+            ((UInt64(segment) << 4) + UInt64(offset)) & 0xF_FFFF
+        )
+        guard origin20Bit == expected else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned an inconsistent conservative-dataflow origin."
+            )
+        }
+    }
+}
+
 public struct EngineDisplaySourceTrace: Codable, Equatable, Sendable {
     public let x: UInt16
     public let y: UInt16
@@ -338,6 +404,7 @@ public struct EngineDisplaySourceTrace: Codable, Equatable, Sendable {
     public let rangeSetOverflowed: Bool
     public let usesConservativeDataflow: Bool
     public let executedReadContext: EngineExecutedSourceReadContext?
+    public let conservativeOrigin: EngineDisplaySourceConservativeOrigin?
 
     fileprivate init(cValue: swan_display_source_trace_t) throws {
         x = cValue.x
@@ -362,6 +429,17 @@ public struct EngineDisplaySourceTrace: Codable, Equatable, Sendable {
             executedReadContext = EngineExecutedSourceReadContext(cValue: cValue)
         } else {
             executedReadContext = nil
+        }
+        if cValue.conservative_reason != SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE {
+            conservativeOrigin = try EngineDisplaySourceConservativeOrigin(cValue: cValue)
+        } else {
+            conservativeOrigin = nil
+        }
+        guard usesConservativeDataflow == (conservativeOrigin != nil) else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned inconsistent conservative-dataflow evidence."
+            )
         }
     }
 }
@@ -675,6 +753,13 @@ public final class EngineSession: @unchecked Sendable {
             throw SwanEngineError(
                 code: Int32(SWAN_RESULT_INVALID_ARGUMENT.rawValue),
                 detail: "Source probe components must be nonempty and unique."
+            )
+        }
+        if components.contains(.spriteAttribute),
+           !capabilities.contains(.displaySpriteAttributeProvenance) {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_UNSUPPORTED.rawValue),
+                detail: "The active engine does not support sprite-attribute provenance."
             )
         }
         var cRectangle = swan_display_rectangle_t(

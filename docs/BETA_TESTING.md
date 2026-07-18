@@ -24,11 +24,11 @@ Translation Lab evidence to a public report.
 - **Process control:** confirm only one SDK command runs at a time, streaming
   diagnostics remain readable, and Cancel terminates the complete process
   group without leaving a watcher or SwanSong child process behind.
-- **ABI 8 source provenance:** probe a small native rectangle and select map,
-  raster, or palette components. Confirm the private artifact contains exact or
-  conservative cartridge ranges, executed-read context, selected display
-  chains, and outside consumers while MCP returns only hashes, counts, and an
-  honest completeness result.
+- **ABI 9 source provenance:** probe a small native rectangle and select map,
+  raster, palette, or sprite-attribute components. Confirm the private artifact
+  contains sprite/OAM ownership, exact or conservative cartridge ranges,
+  executed-read context, selected display chains, and outside consumers while
+  MCP returns only hashes, counts, and an honest completeness result.
 - **Translation Lab automation:** retain deterministic route, paired capture,
   display-owner probe, source probe, observed-play recovery, evidence browser,
   and complete installed MCP-tool coverage.
@@ -68,8 +68,12 @@ Translation Lab evidence to a public report.
   consumers stay private.
 - Carry-dependent, ambiguous, unknown, or overflowing source dataflow must be
   marked incomplete instead of being presented as exact.
+- More than eight disjoint exact ranges may complete within the 256-range and
+  64 MiB private-evidence bounds, but a genuine per-byte overflow or a recorded
+  conservative origin must still stop promotion and static-seed export.
 - `probe-rectangle` keeps map-cell addresses, tile/raster sources, palette
-  values, and writer identities private and returns only source-free aggregates.
+  values, sprite/OAM fields, and writer identities private and returns only
+  source-free aggregates.
 - Route, capture, verify, and observed-play commands retain empty persistence,
   fixed proof RTC, project containment, bounded plans, atomic evidence writes,
   and clean-boot replay requirements.

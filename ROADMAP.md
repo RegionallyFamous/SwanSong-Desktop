@@ -14,9 +14,10 @@ Release notes and the issue tracker are authoritative for shipped behavior.
   observations and rejects execution-only, incomplete, or stale evidence.
 - Keep ownership explicit: the SDK owns Wonderful builds, assets, manifests,
   budgets, and release policy; SwanSong remains the only gameplay backend.
-- Validate ABI 8 component-selective upstream source provenance, private
-  executed-read context, the complete installed MCP surface, and the SwanSong
-  menu-bar status item.
+- Validate ABI 9 component-selective upstream source provenance, private
+  sprite/OAM ownership and conservative-origin identity, private executed-read
+  context, the complete installed MCP surface, and the SwanSong menu-bar status
+  item. MCP must continue to expose only source-free counts and hashes.
 - Prove the 0.3-to-0.4 Sparkle update on beta-enabled clients while stable-only
   clients remain on their selected channel and private library/project data is
   preserved.

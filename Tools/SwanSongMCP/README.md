@@ -11,9 +11,12 @@ signed app and keeps it buildable across SwanSong's Xcode 16.2 release floor
 and current Xcode. Protocol behavior is exercised by a real initialize/list/
 call exchange in `Scripts/check-mcp-server.sh`. The current fifteen-tool
 allowlist includes recoverable observed-play sessions, private persisted capture,
-source-free display-owner probing, and ABI 8 component-selective upstream
-cartridge-source probing with private executed-read context, exact ranges, and
-component-complete outside consumers. A guarded exporter turns one current
+source-free display-owner probing, and ABI 9 component-selective upstream
+cartridge-source probing with private sprite/OAM ownership, conservative-origin
+diagnostics, executed-read context, exact ranges, and component-complete outside
+consumers. The selector accepts `mapCell`, `raster`, `palette`, and
+`spriteAttribute`; detailed addresses and writers stay private. A guarded
+exporter turns one current
 complete probe into a private analyzer-neutral seed without returning addresses
 or ranges through MCP, in addition to the original live-app,
 one-shot playtest, and route/evidence operations.

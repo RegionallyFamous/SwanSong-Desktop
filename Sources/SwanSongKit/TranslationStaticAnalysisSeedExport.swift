@@ -82,8 +82,6 @@ public struct TranslationStaticAnalysisSeedReport: Codable, Sendable {
 }
 
 public enum TranslationStaticAnalysisSeedExporter {
-    private static let maximumSourceProbeBytes = 16 * 1_024 * 1_024
-
     public static func run(
         project: TranslationProject,
         sourceProbeDetailsURL: URL
@@ -94,7 +92,7 @@ public enum TranslationStaticAnalysisSeedExporter {
         )
         let seed = try makeSeed(details: details, detailsData: detailsData)
         let seedData = try encoded(seed)
-        guard seedData.count <= maximumSourceProbeBytes else {
+        guard TranslationPrivateSourceEvidenceLimits.contains(byteCount: seedData.count) else {
             throw TranslationLabError.invalidProject(
                 "the private static-analysis seed exceeds its size limit"
             )
@@ -143,7 +141,7 @@ public enum TranslationStaticAnalysisSeedExporter {
     ) throws -> TranslationStaticAnalysisSeed {
         guard details.schema == TranslationDisplaySourceProbeDetails.currentSchema else {
             throw TranslationLabError.invalidProject(
-                "static-analysis export requires a current ABI-8/v3 upstream source probe"
+                "static-analysis export requires a current ABI-9/v4 upstream source probe"
             )
         }
         guard let projectDigest = details.project,
@@ -165,7 +163,21 @@ public enum TranslationStaticAnalysisSeedExporter {
         var anchorsByCanonical: [String: TranslationStaticAnalysisSeedAnchor] = [:]
         var selectedTraces: [EngineDisplaySourceTrace] = []
         for trace in details.traces {
+            guard trace.usesConservativeDataflow == (trace.conservativeOrigin != nil) else {
+                throw TranslationLabError.invalidProject(
+                    "an exported source trace has inconsistent conservative-origin evidence"
+                )
+            }
             if trace.cartridgeLength == 0 {
+                guard trace.hasExactRange,
+                      !trace.hasUnknownDependency,
+                      !trace.rangeSetOverflowed,
+                      !trace.usesConservativeDataflow,
+                      trace.conservativeOrigin == nil else {
+                    throw TranslationLabError.invalidProject(
+                        "an exported runtime-generated trace is incomplete"
+                    )
+                }
                 runtimeGeneratedTraceCount += 1
                 continue
             }
@@ -173,9 +185,10 @@ public enum TranslationStaticAnalysisSeedExporter {
                   !trace.hasUnknownDependency,
                   !trace.rangeSetOverflowed,
                   !trace.usesConservativeDataflow,
+                  trace.conservativeOrigin == nil,
                   let context = trace.executedReadContext else {
                 throw TranslationLabError.invalidProject(
-                    "an exported source trace does not have complete exact ABI-8 lineage"
+                    "an exported source trace does not have complete exact ABI-9 lineage"
                 )
             }
             let expectedCaller = UInt32(
@@ -205,7 +218,6 @@ public enum TranslationStaticAnalysisSeedExporter {
             }
             guard context.immediateCaller == expectedCaller,
                   (2...15).contains(context.mapperWindow),
-                  context.mapperBank <= UInt16(UInt8.max),
                   operandWindow == context.mapperWindow,
                   context.resolvedCartridgeOperand < aperture,
                   context.resolvedCartridgeOperand == resolvedFromMapper,
@@ -312,7 +324,7 @@ public enum TranslationStaticAnalysisSeedExporter {
               values.isSymbolicLink != true,
               let byteCount = values.fileSize,
               byteCount > 0,
-              byteCount <= maximumSourceProbeBytes else {
+              TranslationPrivateSourceEvidenceLimits.contains(byteCount: byteCount) else {
             throw TranslationLabError.unsafePath(detailsURL.path)
         }
         try requirePrivateFile(detailsURL)
@@ -347,7 +359,7 @@ public enum TranslationStaticAnalysisSeedExporter {
         let details = try decoder.decode(TranslationDisplaySourceProbeDetails.self, from: data)
         guard try encoded(details) == data else {
             throw TranslationLabError.invalidProject(
-                "the upstream source probe is not canonical ABI-8 evidence"
+                "the upstream source probe is not canonical ABI-9 evidence"
             )
         }
         return (details, data)
