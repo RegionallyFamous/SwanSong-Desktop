@@ -89,7 +89,10 @@ and runs a Gatekeeper assessment. The temporary submission is not a release
 artifact.
 
 SwanSong currently uses no signing entitlements. The app is not sandboxed,
-does not JIT, and needs no hardened-runtime exception.
+does not JIT, and needs no hardened-runtime exception. Its Homebrew Catalog
+anti-rollback record uses the traditional protected macOS Keychain, which is
+available to directly distributed Developer ID apps without a provisioned
+data-protection Keychain entitlement.
 
 ## Verification commands
 

@@ -6,6 +6,13 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed the signed Homebrew Catalog failing to open in the notarized app. Its
+  anti-rollback record now uses the protected macOS Keychain available to
+  directly distributed Developer ID apps, instead of requesting an entitlement
+  that the release did not carry.
+
 ## [0.4.3] - 2026-07-18
 
 **Every Press Counts.** This beta makes short, exact game inputs reliable,

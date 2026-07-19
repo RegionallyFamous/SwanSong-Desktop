@@ -35,8 +35,8 @@ enum HomebrewCatalogHighWaterStoreError: LocalizedError, Equatable {
 
     var errorDescription: String? {
         switch self {
-        case let .keychain(status):
-            "The homebrew catalog anti-rollback state could not be accessed in Keychain (\(status))."
+        case .keychain:
+            "SwanSong couldn’t safely save Homebrew’s catalog check in your Mac’s Keychain. Make sure your Mac is unlocked, then try again."
         case .corruptState:
             "The homebrew catalog anti-rollback state in Keychain is invalid."
         case let .interprocessLock(code):
@@ -256,9 +256,10 @@ struct HomebrewCatalogKeychainHighWaterBacking: HomebrewCatalogHighWaterBacking 
             update as CFDictionary
         )
         if status == errSecItemNotFound {
-            var insertion = query
-            insertion[kSecValueData] = data
-            insertion[kSecAttrAccessible] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+            let insertion = insertionQuery(
+                catalogID: state.catalogID,
+                data: data
+            )
             status = SecItemAdd(insertion as CFDictionary, nil)
         }
         guard status == errSecSuccess else {
@@ -266,12 +267,29 @@ struct HomebrewCatalogKeychainHighWaterBacking: HomebrewCatalogHighWaterBacking 
         }
     }
 
-    private func baseQuery(catalogID: String) -> [CFString: Any] {
+    /// SwanSong is distributed directly with Developer ID and does not ship a
+    /// provisioning profile. On macOS, opting into the data-protection
+    /// Keychain without its provisioned application-identifier entitlement
+    /// fails every operation with `errSecMissingEntitlement` (-34018).
+    ///
+    /// The traditional macOS Keychain remains encrypted and ACL-protected, and
+    /// is the entitlement-free Keychain intended for this distribution model.
+    /// Keep this query free of data-protection-only attributes so notarized
+    /// builds can persist the anti-rollback record they require.
+    func baseQuery(catalogID: String) -> [CFString: Any] {
         [
             kSecClass: kSecClassGenericPassword,
             kSecAttrService: Self.service,
             kSecAttrAccount: catalogID,
-            kSecUseDataProtectionKeychain: true,
         ]
+    }
+
+    func insertionQuery(
+        catalogID: String,
+        data: Data
+    ) -> [CFString: Any] {
+        var query = baseQuery(catalogID: catalogID)
+        query[kSecValueData] = data
+        return query
     }
 }
