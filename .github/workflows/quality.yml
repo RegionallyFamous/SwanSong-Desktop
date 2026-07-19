@@ -15,6 +15,44 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    name: Plan CI
+    runs-on: ubuntu-latest
+    outputs:
+      preflight: ${{ steps.classify.outputs.preflight }}
+      release_chain: ${{ steps.classify.outputs.release_chain }}
+      compatibility: ${{ steps.classify.outputs.compatibility }}
+      translation: ${{ steps.classify.outputs.translation }}
+      av: ${{ steps.classify.outputs.av }}
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Select required lanes
+        id: classify
+        env:
+          BASE_REVISION: ${{ github.event.pull_request.base.sha }}
+          HEAD_REVISION: ${{ github.sha }}
+        run: |
+          set -eu
+          ./Scripts/selftest-ci-change-classifier.sh
+          if [ "$GITHUB_EVENT_NAME" != "pull_request" ]; then
+            {
+              echo "preflight=true"
+              echo "release_chain=true"
+              echo "compatibility=true"
+              echo "translation=true"
+              echo "av=true"
+            } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          ./Scripts/classify-ci-changes.sh \
+            "$BASE_REVISION" \
+            "$HEAD_REVISION" >> "$GITHUB_OUTPUT"
+
   tests:
     name: Tests (${{ matrix.label }})
     strategy:
@@ -63,6 +101,12 @@ jobs:
 
       - name: Run complete Swift and XCTest suite
         if: matrix.lane == 'full' || github.event_name != 'pull_request'
+        env:
+          # Prove the published catalog and its signed production trust while
+          # the full test target is already built. The release lane repeats
+          # the focused gate for explicit release evidence.
+          SWAN_ENFORCE_HOMEBREW_PRODUCTION_READINESS: ${{ matrix.lane == 'full' && '1' || '0' }}
+          SWAN_HOMEBREW_REPOSITORY_ROOT: ${{ github.workspace }}
         run: ./Scripts/swift-package.sh test --package-path . --disable-index-store
 
       - name: Build and inspect Intel engine and library target
@@ -101,29 +145,46 @@ jobs:
           set -eu
           ./Scripts/check-release-metadata.sh
           ./Scripts/prepare-wiki-sync.sh --check
-          ./Scripts/check-homebrew-production-readiness.sh
           python3 ./Scripts/check-sparkle-dependency-lock.py --repository .
+
+      - name: Verify release-only integrations
+        if: matrix.lane == 'full' && github.event_name != 'pull_request'
+        run: |
+          set -eu
+          ./Scripts/check-homebrew-production-readiness.sh
           ./Scripts/selftest-swansong-sdk-payload.sh
 
   release-preflight:
     name: Release preflight
+    needs: changes
     runs-on: macos-14
     timeout-minutes: 75
     env:
       DEVELOPER_DIR: /Applications/Xcode_16.2.app/Contents/Developer
       SWAN_SDK_SOURCE_REPOSITORY: ${{ github.workspace }}/.sdk/swansong-sdk
       SWAN_SONG_ALLOW_UI_BASELINE_PLATFORM_MISMATCH: "1"
-      # Pull requests prove the same contracts with shorter bounded samples.
-      # Main/manual runs remain the release-grade universal and soak gates.
+      RUN_PREFLIGHT: ${{ needs.changes.outputs.preflight }}
+      RUN_RELEASE_CHAIN: ${{ needs.changes.outputs.release_chain }}
+      RUN_COMPATIBILITY: ${{ needs.changes.outputs.compatibility }}
+      RUN_TRANSLATION: ${{ needs.changes.outputs.translation }}
+      RUN_AV: ${{ needs.changes.outputs.av }}
+      # Affected pull requests prove live contracts with shorter bounded
+      # samples. Main/manual runs retain every universal and soak gate.
       SWAN_MATRIX_FRAMES: ${{ github.event_name == 'pull_request' && '180' || '360' }}
       SWAN_MATRIX_WARMUP_FRAMES: ${{ github.event_name == 'pull_request' && '60' || '120' }}
     steps:
+      - name: Confirm fast pull-request lane
+        if: env.RUN_PREFLIGHT != 'true'
+        run: echo "No packaged-app or live-engine surface changed; the required preflight is complete."
+
       - name: Check out exact source
+        if: env.RUN_PREFLIGHT == 'true'
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
       - name: Check out locked SwanSong SDK source
+        if: env.RUN_PREFLIGHT == 'true'
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           repository: RegionallyFamous/swansong-sdk
@@ -134,9 +195,11 @@ jobs:
           fetch-tags: true
 
       - name: Resolve pinned release dependencies
+        if: env.RUN_PREFLIGHT == 'true'
         run: ./Scripts/swift-package.sh package resolve --package-path .
 
       - name: Run release-chain tamper and rollback self-tests
+        if: env.RUN_RELEASE_CHAIN == 'true'
         run: |
           set -eu
           ./Scripts/selftest-release-build-snapshot.sh
@@ -148,6 +211,7 @@ jobs:
           ./Scripts/selftest-swansong-sdk-payload.sh
 
       - name: Configure shared preflight build
+        if: env.RUN_PREFLIGHT == 'true'
         run: |
           set -eu
           if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
@@ -159,6 +223,7 @@ jobs:
           fi
 
       - name: Build and inspect application
+        if: env.RUN_PREFLIGHT == 'true'
         run: |
           set -eu
           ./Scripts/build-app.sh
@@ -174,18 +239,22 @@ jobs:
           ./Scripts/check-sparkle-framework.sh .build/app/SwanSong.app
 
       - name: Run public-fixture compatibility matrix
+        if: env.RUN_COMPATIBILITY == 'true'
         run: ./Scripts/check-compatibility-matrix.sh
 
       - name: Run live input-frame bridge regression
+        if: env.RUN_COMPATIBILITY == 'true'
         run: ./Scripts/check-input-frame-bridge.sh
 
       - name: Run guarded Translation Lab automation CLI
+        if: env.RUN_TRANSLATION == 'true'
         run: |
           set -eu
           ./Scripts/check-playtest-cli.sh
           ./Scripts/check-translation-automation-cli.sh
 
       - name: Run scheduler-neutral A/V integrity soak
+        if: env.RUN_AV == 'true'
         env:
           SWAN_AV_SOAK_SECONDS: ${{ github.event_name == 'pull_request' && '20' || '60' }}
           # Shared hosted runners can inject 100+ ms scheduling gaps. Keep CI

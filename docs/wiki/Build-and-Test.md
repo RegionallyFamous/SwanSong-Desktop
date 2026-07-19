@@ -119,26 +119,35 @@ the separate live-engine invocation is mandatory for release evidence.
 
 ## CI lanes
 
-Pull requests run the complete Swift/XCTest and UI snapshot suite once on the
-macOS 14 Apple-silicon runner. The macOS 15 Intel runner compiles the native
-engine/library compatibility target and verifies its x86_64 Mach-O identity;
-the hosted image does not reliably permit ad-hoc standalone Swift executables.
-The release-preflight job runs in parallel instead of waiting for those lanes.
-On pull requests it uses bounded 180-frame compatibility routes, a 20-second
-A/V sample, and a complete native Apple-silicon app build. The separate Intel
-lane still proves x86_64 compilation. MCP, runtime engine, and fail-closed
-production checks run once rather than being duplicated by both matrix entries.
-Within release preflight, the inspected app builds the pinned ares engine first;
-compatibility, Translation Lab CLI, and A/V tools reuse that exact build instead
-of compiling a second engine tree.
+Pull requests always run the complete Swift/XCTest and UI snapshot suite once
+on the macOS 14 Apple-silicon runner. A macOS 15 Intel runner simultaneously
+compiles the native engine/library compatibility target and verifies its x86_64
+Mach-O identity. The hosted Intel image does not reliably permit ad-hoc
+standalone Swift executables, so runtime proof stays on Apple silicon. The
+Apple-silicon suite enables published Homebrew production enforcement in that
+same test process instead of rebuilding the test target for a duplicate pass.
+
+The required release-preflight check is impact-aware. It finishes immediately
+when a change cannot affect the packaged app or live engine. Packaging, updater,
+dependency, and release-pipeline changes build and inspect a native app and run
+the release-chain self-tests. Engine, Translation Lab, and audio changes add
+only their affected bounded compatibility, automation, or A/V gates. This keeps
+ordinary pull-request feedback near the time of the core test suite instead of
+adding a second cold app build and every release-only soak.
+
+The change classifier lives in `Scripts/classify-ci-changes.sh`. Add a new
+release-sensitive path there whenever a new packaging or live-runtime boundary
+is introduced. The branch-protected `Release preflight` check must remain
+present even when its expensive work is unnecessary.
 
 Pushes to `main` and manual workflow runs retain the complete XCTest suite on
-the Intel runner, the 360-frame compatibility matrix, the 60-second CI soak,
-and the complete universal app inspection including every Intel slice. This
-keeps the release-grade gates intact while removing serial wait time and a
-second cold SwiftUI compile from every pull-request iteration. UI snapshots
-remain part of the complete XCTest suite and are not repeated in the separate
-release-preflight job.
+the Intel runner, release-chain tamper and rollback tests, bundled SDK
+materialization, the 360-frame compatibility matrix, guarded Translation Lab
+automation, the 60-second CI soak, and complete universal app inspection
+including every Intel slice. The full release standard therefore stays intact;
+only the feedback loop used while developing a change becomes selective. UI
+snapshots remain part of the complete XCTest suite and are not repeated in the
+separate release-preflight job.
 
 The shared SwiftPM wrapper disables login-keychain credential lookup in CI and
 uses only `Package.resolved`. Set `SWAN_SWIFTPM_DISABLE_KEYCHAIN=1` for the same
