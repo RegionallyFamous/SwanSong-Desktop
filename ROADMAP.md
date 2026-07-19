@@ -3,7 +3,7 @@
 This roadmap describes intended outcomes, not promises or compatibility claims.
 Release notes and the issue tracker are authoritative for shipped behavior.
 
-## 0.4 beta closure
+## 0.5 release closure
 
 - Validate Story Forge project creation, every schema-v3 stage and report,
   ImageGen-only art evidence, catalog originality/status, migration, lockfile,
@@ -29,7 +29,7 @@ Release notes and the issue tracker are authoritative for shipped behavior.
   sprite/OAM ownership and conservative-origin identity, private executed-read
   context, the complete installed MCP surface, and the SwanSong menu-bar status
   item. MCP must continue to expose only source-free counts and hashes.
-- Prove the 0.3-to-0.4 Sparkle update on beta-enabled clients while stable-only
+- Prove the 0.4-to-0.5 Sparkle update on beta-enabled clients while stable-only
   clients remain on their selected channel and private library/project data is
   preserved.
 - Keep local MCP off by default, token-authenticated, session-local, and limited
@@ -46,9 +46,8 @@ Release notes and the issue tracker are authoritative for shipped behavior.
 - Keep SwanSong Studio's external Python and Wonderful requirements visible
   until those dependencies can be bundled and independently verified in the
   signed application payload.
-- Keep Story Forge and Cartridge Lab labeled as current-source previews until a
-  later signed beta passes their product, hardware, privacy, update, and
-  release gates.
+- Keep Story Forge and Cartridge Lab inside their documented privacy, hardware,
+  payload, update, and release boundaries as 0.5 testing expands.
 
 ## 1.0 readiness
 

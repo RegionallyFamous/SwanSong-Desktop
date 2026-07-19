@@ -47,8 +47,8 @@ export CLANG_MODULE_CACHE_PATH SWIFTPM_MODULECACHE_OVERRIDE
 
 core_snapshot_count=$(find "$OUTPUT_DIR" -maxdepth 1 -type f -name '*.png' \
   | wc -l | tr -d ' ')
-if [ "$core_snapshot_count" -ne 66 ]; then
-  echo "expected 66 core UI snapshots, found $core_snapshot_count in $OUTPUT_DIR" >&2
+if [ "$core_snapshot_count" -ne 68 ]; then
+  echo "expected 68 core UI snapshots, found $core_snapshot_count in $OUTPUT_DIR" >&2
   exit 1
 fi
 homebrew_snapshot_count=$(find "$OUTPUT_DIR/homebrew" -maxdepth 1 \
@@ -73,6 +73,6 @@ if [ ! -s "$POLISH_OUTPUT_DIR/manifest.json" ]; then
 fi
 
 if [ "$UPDATE_BASELINES" -eq 1 ]; then
-  echo "UPDATED reviewed perceptual baselines for 84 baseline-tracked UI snapshots"
+  echo "UPDATED reviewed perceptual baselines for 86 baseline-tracked UI snapshots"
 fi
-echo "PASS 96 offscreen Light/Dark compact/wide UI snapshots: 66 core + 12 Homebrew + 18 focused polish"
+echo "PASS 98 offscreen Light/Dark compact/wide UI snapshots: 68 core + 12 Homebrew + 18 focused polish"

@@ -15,8 +15,8 @@ No account. No ads. No telemetry. No BIOS scavenger hunt. Just your games and
 a really nice place to play them.
 
 <p align="center">
-  <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases"><strong>Download SwanSong 0.4.3 beta</strong></a>
-  · <a href="docs/releases/0.4.3.md">See what’s new</a>
+  <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.5.0</strong></a>
+  · <a href="docs/releases/0.5.0.md">See what’s new</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -76,7 +76,7 @@ it.
 
 Take a WonderSwan project from New to Release in one native workspace. Build
 assets, run the game, inspect frames and audio, replay failures, and package
-only after the evidence is ready. SwanSong 0.4.3 carries the verified SwanSong
+only after the evidence is ready. SwanSong 0.5.0 carries the verified SwanSong
 SDK 0.4.0; Doctor clearly shows the few development tools that still need to
 be installed on the Mac.
 
@@ -90,12 +90,6 @@ The Analogue Pocket workflow is built to add a verified SwanSong Core without
 formatting the card or disturbing games, saves, Memories, settings, Presets,
 or unrelated cores. It stays safely locked until the separate Core project
 publishes an authorized stable release.
-
-## Coming next in current source
-
-These features are already taking shape on `main`, but they are **not part of
-the public 0.4.3 download yet**. They will ship only after the next beta passes
-its release gates.
 
 ### Story Forge
 
@@ -135,20 +129,19 @@ Official downloads are universal, Developer ID signed, notarized by Apple,
 and published with matching checksums, a release manifest, and corresponding
 source.
 
-## The latest beta: SwanSong 0.4.3
+## The latest release: SwanSong 0.5.0
 
-The public **0.4.3 beta** brings together the work that makes SwanSong feel like
-a real WonderSwan home instead of a collection of utilities:
+The public **0.5.0 release** turns SwanSong into a workshop that reaches from the
+first story idea to the cartridge in your hand:
 
-- the verified SwanSong SDK 0.4.0 and Studio hardware-lab integration;
-- exact-frame keypad delivery for short presses and releases;
-- typed visual authoring, replay timelines, and failing-plan minimization;
-- the published, signed first-party Homebrew Catalog;
-- a cleaner, more consistent native design across SwanSong's main screens;
-- a clearer updater dashboard; and
-- player canvas and window fitting built around the native 224×157 display.
+- Story Forge for planning, drafting, revising, illustrating, and publishing a
+  light novel, with a direct handoff to SwanSong Studio;
+- Cartridge Lab for verified physical ROM/save backups, guarded save restore,
+  and recovery-conscious Yokoi Boot installer media;
+- a Homebrew Catalog fix for the signed, notarized app; and
+- a friendlier README, setup path, FAQ, Support experience, and Wiki.
 
-Read the [0.4.3 release notes](docs/releases/0.4.3.md) for the guided tour or
+Read the [0.5.0 release notes](docs/releases/0.5.0.md) for the guided tour or
 the [changelog](CHANGELOG.md) for the complete history.
 
 ## Start exploring
@@ -159,15 +152,15 @@ keeps the deeper guides out of your way until you need them:
 - [Play, organize, rewind, and manage saves](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
 - [Build deterministic translation evidence](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
 - [Make games in SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/SwanSong-Studio)
-- [Preview Story Forge for novels and adaptations](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Story-Forge)
-- [Preview real-cartridge workflows in Cartridge Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Cartridge-Lab)
+- [Write and publish novels with Story Forge](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Story-Forge)
+- [Work with real cartridges in Cartridge Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Cartridge-Lab)
 - [Prepare an Analogue Pocket SD card safely](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
 - [Understand local automation and privacy](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
 - [Build, test, sign, and release SwanSong](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Build-and-Test)
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.4.3 release notes](docs/releases/0.4.3.md).
+[0.5.0 release notes](docs/releases/0.5.0.md).
 
 ## Free, open, and independent
 

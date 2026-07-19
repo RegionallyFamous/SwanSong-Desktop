@@ -110,6 +110,6 @@ paths, symlinks, resource limits, card eligibility, insufficient space,
 identity change before write, successful merge/read-back, post-write mismatch,
 rollback, cleanup, and preservation of unrelated card content.
 
-Physical beta coverage still requires real SD cards, readers, exFAT/FAT32
+Physical release coverage still requires real SD cards, readers, exFAT/FAT32
 volumes, Finder eject behavior, and a published Core package exercised on
-Analogue Pocket hardware. See [[0.4 Beta Testing]] and [[Release Gates]].
+Analogue Pocket hardware. See [[0.5 Release Testing]] and [[Release Gates]].

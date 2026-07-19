@@ -211,7 +211,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             }
         }
 
-        XCTAssertEqual(signatures.count, 84)
+        XCTAssertEqual(signatures.count, 86)
         for scenario in scenarios {
             let pair = signatures.filter { $0.name == scenario.name }
             XCTAssertEqual(pair.count, 2, scenario.name)
@@ -1441,8 +1441,8 @@ final class UISnapshotRegressionTests: XCTestCase {
             encoding: .utf8
         )
         let supportMetadata = SwanSongMetadata(
-            version: "0.4.3",
-            build: "8",
+            version: "0.5.0",
+            build: "10",
             bundleIdentifier: "com.regionallyfamous.swansong",
             aresRevision: nil
         )
@@ -1487,6 +1487,9 @@ final class UISnapshotRegressionTests: XCTestCase {
                         usesDeterministicSidebarForOffscreenSnapshots: true
                     )
                 )
+            },
+            Scenario(name: "cartridge-lab-setup-wide", size: CGSize(width: 820, height: 700)) {
+                AnyView(CartridgeLabView(appModel: emptyLibraryModel))
             },
             Scenario(name: "support-overview-wide", size: CGSize(width: 820, height: 640)) {
                 AnyView(

@@ -1,11 +1,10 @@
 # Help with SwanSong
 
-Most problems have a quick fix. Make sure you have the newest SwanSong beta,
+Most problems have a quick fix. Make sure you have the newest SwanSong release,
 then start with the answers below. SwanSong requires macOS 14 or newer.
 
-The public download is currently 0.4.3. Story Forge and Cartridge Lab are
-current-source previews, so their support steps apply only to a source build
-until a later signed beta includes them.
+The public download is currently 0.5.0. It includes Story Forge and
+Cartridge Lab alongside the player, Translation Lab, and SwanSong Studio.
 
 <!-- homebrew-catalog-status: published -->
 
@@ -79,11 +78,9 @@ confirmed. Eject the card in Finder before removing it.
 
 ### How do I read my own cartridge?
 
-Cartridge Lab is a current-source preview and is not included in public 0.4.3.
-If you are testing a source build, open **Hardware > Open Cartridge Lab**.
-
-Use a 3.3 V ExtFriend-compatible USB serial adapter—never a PC RS-232
-cable—and insert the cartridge before powering on the WonderSwan. A Color or
+Open **Hardware > Open Cartridge Lab**. Use a 3.3 V ExtFriend-compatible USB
+serial adapter—never a PC RS-232 cable—and insert the cartridge before powering
+on the WonderSwan. A Color or
 SwanCrystal with Yokoi Boot installed can load the temporary cartridge service,
 create a verified game/save backup, or restore an exact-size save after both
 the Mac warning and A+B on the console.

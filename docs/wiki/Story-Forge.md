@@ -9,9 +9,7 @@ multi-book catalog, prepare ImageGen art, check an optional soundtrack, and
 build EPUB/PDF editions without turning an automated score into a claim that a
 book is good.
 
-> **Current-source preview:** Story Forge is present on `main` but is not in
-> the public SwanSong 0.4.3 download. It will ship only after the next beta
-> passes its product and release checks.
+Story Forge is included in SwanSong 0.5.0.
 
 Story Forge remains the source of narrative policy and tools. SwanSong Desktop
 provides the fixed, visible interface. This avoids a second story engine whose

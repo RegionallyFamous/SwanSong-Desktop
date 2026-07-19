@@ -12,7 +12,7 @@ permission to change the Mac app.
 | Story Forge novel framework | [RegionallyFamous/swansong-story-forge](https://github.com/RegionallyFamous/swansong-story-forge) | Schema-v3 narrative policy, starter, reports, catalog audits, ImageGen review contract, and publication tooling. Desktop provides the typed local UI and does not fork those rules. |
 | SwanSong Desktop for macOS | [`RegionallyFamous/SwanSong-Desktop`](https://github.com/RegionallyFamous/SwanSong-Desktop) | SwiftUI/AppKit app, library, translation workbench, C ABI, release tooling, and macOS tests. |
 | SwanSong for Analogue Pocket | [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core) | FPGA source, Pocket packaging, hardware qualification, and Pocket releases. Desktop can install only a verified, authorized release from this lane onto a user-selected card. |
-| Yokoi hardware utilities | Yokoi Boot and Yokoi Cart Service at the immutable SwanSong Core revision recorded in [`SOURCE_PROVENANCE.md`](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/SOURCE_PROVENANCE.md) | Separately executable GPLv3 WonderSwan programs used by current-source Cartridge Lab. Their payloads, license, notice, and corresponding-source location are verified independently from the GPLv2 Mac executable. |
+| Yokoi hardware utilities | Yokoi Boot and Yokoi Cart Service at the immutable SwanSong Core revision recorded in [`SOURCE_PROVENANCE.md`](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/SOURCE_PROVENANCE.md) | Separately executable GPLv3 WonderSwan programs used by Cartridge Lab. Their payloads, license, notice, and corresponding-source location are verified independently from the GPLv2 Mac executable. |
 | First-party Homebrew Catalog | [`RegionallyFamous/swansong-catalog`](https://github.com/RegionallyFamous/swansong-catalog) | Signed catalog bytes, publisher/right attestations, immutable provenance, and source-file evidence. Catalog content is fetched only after explicit consent and is not bundled into Desktop. |
 | First-party homebrew releases | Identified immutable source repositories, including [`RegionallyFamous/swansong-story-forge`](https://github.com/RegionallyFamous/swansong-story-forge) | Licensed ROM source and exact-tag release assets referenced by the signed catalog. A catalog entry cannot replace the source repository's own license and provenance. |
 | WonderSwan software engine | Upstream ares pinned by [`Dependencies/ares.lock.json`](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/Dependencies/ares.lock.json) | Exact upstream revision prepared locally, patched only by the tracked integration patch, and included as sanitized corresponding source in official releases. |
@@ -92,7 +92,7 @@ User ROMs, original firmware, saves, states, captures, and Translation Lab
 evidence are ignored private material and must never be committed or attached
 to public issues.
 
-Current-source Cartridge Lab keeps the same narrow ownership rule. The Mac app
+Cartridge Lab keeps the same narrow ownership rule. The Mac app
 owns serial transport, bounded transfer policy, local destinations, and the
 visible confirmation flow. Yokoi Boot and Yokoi Cart Service run separately on
 the user's WonderSwan Color or SwanCrystal. See [[Cartridge Lab]] for the

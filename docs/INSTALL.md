@@ -82,12 +82,11 @@ publishes a verified stable release, SwanSong reports that none is available
 and performs no write. The full guide is in
 [Analogue Pocket SD Setup](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup).
 
-## Cartridge Lab preview
+## Cartridge Lab
 
-Cartridge Lab is in current source but is **not part of the public 0.4.3
-download yet**. It works with a WonderSwan Color or SwanCrystal, Yokoi Boot,
-and a 3.3 V ExtFriend-compatible USB serial adapter. Never use a PC RS-232
-connection.
+Cartridge Lab is included in SwanSong 0.5.0. It works with a WonderSwan Color or
+SwanCrystal, Yokoi Boot, and a 3.3 V ExtFriend-compatible USB serial adapter.
+Never use a PC RS-232 connection.
 
 If Yokoi Boot is not installed, open **Hardware → Open Cartridge Lab…**, choose
 **Install Yokoi Boot**, and select the SD-card folder browsed by a compatible

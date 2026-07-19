@@ -41,13 +41,12 @@ workspace for concept, outline, draft, revision, ImageGen illustration review,
 catalog originality, optional music, and EPUB/PDF publication. It keeps
 automated checks separate from human editorial and release approval.
 
-Story Forge is a current-source preview and is not included in the public
-0.4.3 download yet.
+Story Forge is included in SwanSong 0.5.0.
 
 ### I want to make a game
 
 [[SwanSong Studio]] puts New, Assets, Build, Test, Play, Profile, Evidence, and
-Release in one native workspace backed by SwanSong SDK. SwanSong 0.4.3 carries
+Release in one native workspace backed by SwanSong SDK. SwanSong 0.5.0 carries
 a content-verified SDK 0.4.0 payload, typed visual-authoring
 tools, replay timelines, and deterministic failing-plan minimization. Python
 3.11+ and the pinned Wonderful packages remain honest local prerequisites
@@ -56,7 +55,7 @@ checked by Doctor.
 ### I want homebrew or real hardware
 
 [[Homebrew Catalog]] explains the signed first-party catalog included in the
-public 0.4.3 beta. It never loads at launch or merely because you opened
+public 0.5.0 release. It never loads at launch or merely because you opened
 Homebrew; Browse, Refresh, and Add to Library are choices you make.
 
 [[Analogue Pocket SD Setup]] explains how SwanSong can merge an authorized Core
@@ -64,11 +63,9 @@ release onto a selected card without formatting it or touching games, saves,
 Memories, settings, Presets, or unrelated cores. The workflow remains locked
 until the separate SwanSong Core project publishes a verified stable release.
 
-[[Cartridge Lab]] shows how current source can use a WonderSwan Color or
-SwanCrystal, Yokoi Boot, and a 3.3 V ExtFriend-compatible adapter to make
-verified cartridge and save backups or restore an exact-size save with
-physical confirmation. Cartridge Lab is not part of the public 0.4.3 download
-yet.
+[[Cartridge Lab]] shows how SwanSong can use a WonderSwan Color or SwanCrystal,
+Yokoi Boot, and a 3.3 V ExtFriend-compatible adapter to make verified cartridge
+and save backups or restore an exact-size save with physical confirmation.
 
 ### I want to contribute or release SwanSong
 
@@ -77,31 +74,23 @@ as the command reference. [[Signing and Notarization]] and [[Release Gates]]
 document the trusted-Mac path from a clean source tag to a signed, notarized,
 checksummed public build.
 
-## Public beta and what comes next
+## The 0.5 release
 
-The current public **0.4.3 beta** adds the verified SDK 0.4.0, exact-frame keypad
-delivery, published Homebrew Catalog, typed visual-authoring tools, replay
-timelines, failing-plan minimization, bounded USB Hardware Lab, broader native
-design pass, clearer updater dashboard, and game/window fitting built around
-the native 224×157 display. Its GitHub download is Developer ID signed,
-notarized, stapled, checksummed, and available through the opt-in beta update
-channel.
+The current public **0.5.0 release** adds Story Forge, Cartridge Lab, a fix for the
+Homebrew Catalog in the notarized app, and a much friendlier path through the
+README, setup guides, FAQ, Support, and Wiki. It retains the verified SDK 0.4.0,
+exact-frame input, Translation Lab, native player, and everything already in
+the 0.4 line.
 
-Use [[0.4 Beta Testing]] for the current tester checklist and the repository
-[changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md#unreleased)
-for the exact source status.
-
-Current source is already building the next chapter: Story Forge carries a
-novel from idea to EPUB/PDF and into Studio for adaptation, while Cartridge Lab
-puts a real WonderSwan back into the preservation loop. These previews are
-documented now so contributors can test them honestly, but they are not being
-advertised as features of the signed 0.4.3 download.
+Use [[0.5 Release Testing]] for the current tester checklist and the repository
+[changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md)
+for the exact source and release history.
 
 ## Private by default, explicit when online
 
 SwanSong has no accounts, ads, analytics, telemetry, crash-reporting service,
 or system profiling. Your games, saves, states, screenshots, controller setup,
-translation evidence, Studio projects, preview manuscripts, and hardware
+translation evidence, Studio projects, manuscripts, and hardware
 backups stay on the Mac.
 
 Three separate features can contact GitHub, and only under their own rules:
