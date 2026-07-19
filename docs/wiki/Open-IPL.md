@@ -31,7 +31,10 @@ hardware revision. Compatibility reports must retain that distinction.
 
 ## Release protections
 
-- The app-payload gate rejects files named or shaped like firmware payloads.
+- The app-payload gate rejects original startup images and unknown files. The
+  separately licensed Yokoi hardware utilities are accepted only in their
+  dedicated resource directory after bounded decode, exact size/SHA-256,
+  license, notice, and source-provenance checks.
 - The prepared ares source removes upstream convenience firmware binaries.
 - The corresponding-source archive gate rejects firmware-like binary
   extensions anywhere in its single validated source root.

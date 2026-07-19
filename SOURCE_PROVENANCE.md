@@ -67,6 +67,26 @@ file. Build, runtime, app-payload, archive-extraction, and release checks reject
 missing, modified, extra, linked, or identity-mismatched SDK payloads. The SDK
 license and notices remain inside the signed `Resources/SwanSongSDK` directory.
 
+## Yokoi hardware support
+
+The signed app carries two separately executable GPL-3.0-or-later WonderSwan
+programs as bounded Base64/raw-DEFLATE resources: the Yokoi Boot installer cartridge
+and Yokoi Cart Service RAM program. They contain no original Bandai startup
+firmware or commercial game data and are not linked into the GPL-2.0-only Mac
+executable. Their manifest pins decoded sizes and SHA-256 values; build,
+runtime, and app-payload checks reject a missing, modified, linked, extra, or
+malformed payload. The GPLv3 text, notices, and corresponding source location
+ship beside them under `Resources/YokoiHardware`.
+
+The `0.2.0-prototype.1` payload corresponds to SwanSong Core commit
+`94e9a1ae3d09f8d9eab776d36296144e85c72f1d`. Its manifest links that immutable
+source tree, and `SWAN_RELEASE_BUILD=1` requires the source-publication gate to
+remain explicitly unlocked.
+
+SwanSong's native serial, XMODEM, and cartridge-service client is independently
+implemented against the documented wire contract. The GPLv3 programs execute
+only on the user's WonderSwan Color or SwanCrystal.
+
 ## Open test fixtures
 
 The checked-in files under [`testroms/`](testroms/) are tracked open-source and
