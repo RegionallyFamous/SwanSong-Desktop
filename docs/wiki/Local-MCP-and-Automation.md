@@ -40,13 +40,20 @@ The live bridge must have the SwanSong app open. It exposes:
 
 - `swansong_status`: section, library count, playback state, and readiness;
 - `swansong_navigate`: Library, Favorites, Recent, Homebrew, Pocket,
-  Translation Lab, or Studio; and
+  Translation Lab, Story Forge, or Studio; and
 - `swansong_player`: play the already selected game, pause, resume, or stop.
 
 It does not expose game titles, paths, ROM bytes, save or state bytes, RAM,
 screenshots, controller input, logs, or arbitrary app commands. It cannot pick
 a file or select a different game. Navigation is refused while a game is
 running.
+
+Story Forge contributes only coarse status and navigation to this bridge.
+`swansong_status` may say whether a novel project is open; it does not return
+its title, path, manuscript, reports, art, music, editions, diagnostics, or
+approvals. There is no unattended Story Forge action method. Creation,
+editorial, art review, catalog, lock, migration, and publication actions remain
+visible choices in the native workspace.
 
 ## Studio tools
 

@@ -150,6 +150,7 @@ final class SwanSongLocalMCPBridge {
             "playback": playback,
             "playerBusy": model.playerStateOperationIsBusy,
             "translationProjectOpen": model.translationProject != nil,
+            "storyProjectOpen": model.storyForgeWorkspace.projectSummary != nil,
         ]
     }
 
@@ -157,7 +158,7 @@ final class SwanSongLocalMCPBridge {
         guard let requested = arguments["section"] as? String,
               let section = section(named: requested) else {
             throw BridgeError(
-                "section must be library, favorites, recent, homebrew, pocket, or translation"
+                "section must be library, favorites, recent, homebrew, pocket, translation, story, or studio"
             )
         }
         guard !model.isPlaying else {
@@ -200,6 +201,7 @@ final class SwanSongLocalMCPBridge {
         case "homebrew": .homebrew
         case "pocket": .pocketCore
         case "translation": .translationLab
+        case "story": .storyForge
         case "studio": .gameStudio
         default: nil
         }
@@ -213,6 +215,7 @@ final class SwanSongLocalMCPBridge {
         case .homebrew: "homebrew"
         case .pocketCore: "pocket"
         case .translationLab: "translation"
+        case .storyForge: "story"
         case .gameStudio: "studio"
         }
     }

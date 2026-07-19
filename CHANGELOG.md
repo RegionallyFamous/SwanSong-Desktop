@@ -8,6 +8,14 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ### Added
 
+- Added Story Forge, a native schema-v3 light-novel workspace for stage gates,
+  editorial reports, typed continuity, reader-feedback synthesis, rights
+  lanes, optional soundtrack bibles, ImageGen illustration briefs and set
+  review, catalog originality/status, deterministic locks, and EPUB/PDF
+  publication. It invokes only the explicitly selected Story Forge checkout,
+  keeps human approvals human, and hands revision-ready projects to SwanSong
+  Studio without weakening either release lane.
+
 - Added Cartridge Lab, a native macOS workflow for loading Yokoi Cart Service
   through an ExtFriend-compatible serial adapter, inspecting a cartridge,
   creating checksum-verified ROM and save backups, and restoring SRAM/EEPROM

@@ -121,6 +121,7 @@ struct SwanSongApp: App {
                         || model.section == .homebrew
                         || model.section == .pocketCore
                         || model.section == .translationLab
+                        || model.section == .storyForge
                         || model.section == .gameStudio
                         || model.selectedGame == nil
                 )

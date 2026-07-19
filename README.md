@@ -64,6 +64,16 @@ to use.
 SwanSong has a second life for people who make, translate, test, and preserve
 WonderSwan software.
 
+### Story Forge
+
+Develop a light novel through Concept, Outline, Draft, Revision, and Release
+without reducing quality to a word count or average score. The native Story
+Forge workspace runs the schema-v3 framework's voice, prose, momentum,
+scene-delivery, continuity, reader, rights, soundtrack, catalog, ImageGen art,
+lockfile, EPUB, and PDF workflows through a fixed local tool contract.
+Manuscripts and evidence stay in folders you choose, and human approval remains
+human.
+
 ### Translation Lab
 
 Record an exact route, replay it against Original and Patched builds, compare
@@ -149,6 +159,7 @@ The [SwanSong Wiki](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki)
 keeps the deeper guides out of your way until you need them:
 
 - [Play, organize, rewind, and manage saves](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
+- [Write and publish novels with Story Forge](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Story-Forge)
 - [Build deterministic translation evidence](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
 - [Make games in SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/SwanSong-Studio)
 - [Prepare an Analogue Pocket SD card safely](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)

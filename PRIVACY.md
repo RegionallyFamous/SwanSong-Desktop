@@ -123,6 +123,20 @@ only while the app is in the background, and includes only the task name and
 result. Project paths, ROM names, diagnostics, frames, audio, and evidence are
 excluded.
 
+Story Forge reads and writes only the framework repository, catalog, and novel
+folders you explicitly select. Its fixed local command allowlist can create a
+project; validate stages; refresh editorial, continuity, reader, rights, music,
+art, catalog, and series evidence; write or check a lockfile; migrate a
+manifest; and build EPUB/PDF editions. SwanSong does not upload manuscripts,
+reader responses, reports, ImageGen source art, music, rights records,
+approvals, dashboards, or editions.
+
+The live local bridge reports only whether a Story Forge project is open and
+can navigate to the workspace. It does not return the novel title, path,
+manifest, manuscript, reports, art, music, output editions, diagnostics, or
+approval records. Story Forge actions are not exposed as unattended MCP
+project writes.
+
 ## Files you provide
 
 The SwanSong app bundle contains no games or original system startup image.

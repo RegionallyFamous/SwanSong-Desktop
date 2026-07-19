@@ -9,6 +9,7 @@ permission to change the Mac app.
 
 | Product or input | Canonical source | Ownership boundary |
 | --- | --- | --- |
+| Story Forge novel framework | [RegionallyFamous/swansong-story-forge](https://github.com/RegionallyFamous/swansong-story-forge) | Schema-v3 narrative policy, starter, reports, catalog audits, ImageGen review contract, and publication tooling. Desktop provides the typed local UI and does not fork those rules. |
 | SwanSong Desktop for macOS | [`RegionallyFamous/SwanSong-Desktop`](https://github.com/RegionallyFamous/SwanSong-Desktop) | SwiftUI/AppKit app, library, translation workbench, C ABI, release tooling, and macOS tests. |
 | SwanSong for Analogue Pocket | [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core) | FPGA source, Pocket packaging, hardware qualification, and Pocket releases. Desktop can install only a verified, authorized release from this lane onto a user-selected card. |
 | First-party Homebrew Catalog | [`RegionallyFamous/swansong-catalog`](https://github.com/RegionallyFamous/swansong-catalog) | Signed catalog bytes, publisher/right attestations, immutable provenance, and source-file evidence. Catalog content is fetched only after explicit consent and is not bundled into Desktop. |
@@ -115,3 +116,11 @@ the already selected game. Translation automation bypasses the UI bridge and
 calls `SwanSongKit` proof/evidence primitives directly, but restricts every
 input to the selected project and requires an explicit project-write
 confirmation. See [[Local MCP and Automation]].
+
+Story Forge follows the same narrow ownership rule. A user explicitly selects
+the framework repository, catalog, and novel manifest. Desktop verifies the
+complete schema-v3 tool surface and invokes only fixed operations; it does not
+offer an arbitrary command field. The coarse app bridge can reveal only
+whether a novel project is open and navigate to Story Forge. Novel titles,
+paths, manuscript text, reports, art, music, editions, diagnostics, and approval
+records remain local.

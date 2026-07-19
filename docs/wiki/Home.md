@@ -34,6 +34,13 @@ play, private display provenance, and durable evidence review.
 If a trusted local agent will help with a long route or evidence task, read
 [[Local MCP and Automation]] before enabling anything.
 
+### I want to write or publish a novel
+
+[[Story Forge]] brings the schema-v3 light-novel framework into a native
+workspace for concept, outline, draft, revision, ImageGen illustration review,
+catalog originality, optional music, and EPUB/PDF publication. It keeps
+automated checks separate from human editorial and release approval.
+
 ### I want to make a game
 
 [[SwanSong Studio]] puts New, Assets, Build, Test, Play, Profile, Evidence, and

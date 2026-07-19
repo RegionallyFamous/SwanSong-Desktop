@@ -5,7 +5,7 @@ to a real SwanSong app, plus the gates that keep a convenient local build from
 being mistaken for release evidence.
 
 Product documentation lives in [[Playing and Library]],
-[[Translation Lab]], [[SwanSong Studio]], and
+[[Story Forge]], [[Translation Lab]], [[SwanSong Studio]], and
 [[Analogue Pocket SD Setup]].
 
 ## Requirements
@@ -90,6 +90,17 @@ python3 ./Scripts/check-sparkle-dependency-lock.py \
 
 Fixture results prove bounded execution invariants. They are not commercial-
 game compatibility results or original-hardware accuracy evidence.
+
+The focused Story Forge contract lane is:
+
+```sh
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
+  ./Scripts/swift-package.sh test --package-path . --filter StoryForge
+```
+
+It checks the complete fixed command surface, schema-v3 framework identity,
+manifest summary, catalog status, and native workspace state. The full suite
+remains required for release.
 `check-live-engine.sh` also pins two clean-room display-provenance fixtures
 (introduced with ABI 6 and retained by ABI 9): horizontal
 planar and vertical packed output with exact Screen 1, Screen 2, sprite,

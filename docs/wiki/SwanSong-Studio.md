@@ -10,6 +10,16 @@ focused native workspace. Studio does not invent a second build system: the SDK
 still owns manifests, assets, Wonderful builds, budgets, scenarios, and release
 policy, while SwanSong remains the deterministic gameplay and evidence backend.
 
+## Story-first projects
+
+Use [[Story Forge]] when the project begins as a light novel rather than a game.
+Its native workspace carries the manuscript through concept, outline, draft,
+revision, illustration, release, and catalog continuity. After the story passes
+its editorial, rights, continuity, ImageGen art, and soundtrack gates, choose
+**Continue in Studio** to build the WonderSwan adaptation. The handoff opens
+Studio without copying prose, inventing a second story schema, or treating game
+execution as editorial approval.
+
 ## Your first project
 
 1. Open **Studio** and let **Doctor** check the bundled SDK, Python, Wonderful,

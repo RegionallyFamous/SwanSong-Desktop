@@ -47,6 +47,12 @@ public distribution.
 - Run the live player input/focus lane from a logged-in GUI session. Exit 77 is
   not a pass.
 - Visually review every changed screenshot and UI baseline.
+- Run the Story Forge contract and workspace-model tests, validate the selected
+  framework's schema-v3 starter and complete script set, and review the native
+  setup and populated-workspace snapshots in both appearances. The app must
+  preserve ImageGen-only production art, human approvals, rights lanes,
+  catalog originality, manuscript locking, and export gates without embedding
+  or reinterpreting the framework.
 - Run `./Scripts/check-homebrew-production-readiness.sh`. A `comingSoon` build
   must contain no production key and make no catalog network request. A
   `published` build must bind the reviewed public key, reachable signed catalog,

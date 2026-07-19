@@ -25,6 +25,7 @@ final class LocalMCPBridgeTests: XCTestCase {
         XCTAssertEqual(status["libraryCount"] as? Int, 0)
         XCTAssertEqual(status["section"] as? String, "library")
         XCTAssertEqual(status["playback"] as? String, "stopped")
+        XCTAssertEqual(status["storyProjectOpen"] as? Bool, false)
         XCTAssertNil(status["gameTitle"])
         XCTAssertNil(status["path"])
         XCTAssertNil(status["rom"])
@@ -34,6 +35,11 @@ final class LocalMCPBridgeTests: XCTestCase {
             argumentsJSON: #"{"section":"translation"}"#
         )
         XCTAssertEqual(model.section, .translationLab)
+        _ = try bridge.response(
+            method: "navigate",
+            argumentsJSON: #"{"section":"story"}"#
+        )
+        XCTAssertEqual(model.section, .storyForge)
         XCTAssertThrowsError(
             try bridge.response(
                 method: "navigate",

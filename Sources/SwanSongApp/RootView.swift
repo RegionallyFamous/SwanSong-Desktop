@@ -726,6 +726,11 @@ private struct LibraryShell: View {
                     model: model,
                     overviewGeometryProbe: translationLabOverviewGeometryProbe
                 )
+            } else if model.section == .storyForge {
+                StoryForgeWorkspaceView(
+                    workspace: model.storyForgeWorkspace,
+                    openGameStudio: { model.section = .gameStudio }
+                )
             } else if model.section == .gameStudio {
                 SwanSDKWorkspaceView(workspace: model.studioWorkspace)
             } else {
@@ -779,6 +784,12 @@ private struct AppSidebar: View {
                     .tag(AppModel.Section.translationLab)
 
                     Label(
+                        AppModel.Section.storyForge.rawValue,
+                        systemImage: AppModel.Section.storyForge.symbol
+                    )
+                    .tag(AppModel.Section.storyForge)
+
+                    Label(
                         AppModel.Section.gameStudio.rawValue,
                         systemImage: AppModel.Section.gameStudio.symbol
                     )
@@ -808,7 +819,7 @@ private struct TranslationOverviewSnapshotSidebar: View {
                 snapshotGroup("DISCOVER", sections: [.homebrew])
                 snapshotGroup(
                     "TOOLS",
-                    sections: [.pocketCore, .translationLab, .gameStudio]
+                    sections: [.pocketCore, .translationLab, .storyForge, .gameStudio]
                 )
             }
             .padding(.horizontal, 8)
@@ -1630,6 +1641,7 @@ private struct LibraryView: View {
         case .homebrew: .all
         case .pocketCore: .all
         case .translationLab: .all
+        case .storyForge: .all
         case .gameStudio: .all
         }
     }
@@ -1647,6 +1659,7 @@ private struct LibraryView: View {
         case .homebrew: "No homebrew games yet"
         case .pocketCore: "No Pocket SD card selected"
         case .translationLab: "No translation project yet"
+        case .storyForge: "No novel project open"
         case .gameStudio: "No game project open"
         }
     }
@@ -1659,6 +1672,7 @@ private struct LibraryView: View {
         case .homebrew: "shippingbox"
         case .pocketCore: "sdcard"
         case .translationLab: "character.book.closed"
+        case .storyForge: "book.pages"
         case .gameStudio: "hammer"
         }
     }
@@ -1671,6 +1685,7 @@ private struct LibraryView: View {
         case .homebrew: "Browse SwanSong’s signed catalog, or add a game you already have on your Mac."
         case .pocketCore: "Choose Analogue Pocket to add or update the official SwanSong Core."
         case .translationLab: "Add a private translation project to keep its progress, tests, and captures together."
+        case .storyForge: "Create a novel, run editorial gates, commission ImageGen art, and prepare polished editions."
         case .gameStudio: "Create a WonderSwan game or open one you’re already making."
         }
     }
