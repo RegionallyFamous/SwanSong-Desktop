@@ -123,7 +123,9 @@ Pull requests always run the complete Swift/XCTest and UI snapshot suite once
 on the macOS 14 Apple-silicon runner. A macOS 15 Intel runner simultaneously
 compiles the native engine/library compatibility target and verifies its x86_64
 Mach-O identity. The hosted Intel image does not reliably permit ad-hoc
-standalone Swift executables, so runtime proof stays on Apple silicon.
+standalone Swift executables, so runtime proof stays on Apple silicon. The
+Apple-silicon suite enables published Homebrew production enforcement in that
+same test process instead of rebuilding the test target for a duplicate pass.
 
 The required release-preflight check is impact-aware. It finishes immediately
 when a change cannot affect the packaged app or live engine. Packaging, updater,
