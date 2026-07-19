@@ -63,12 +63,13 @@ checksummed public build.
 
 ## Public beta and what comes next
 
-The current **0.4.3** source adds the verified SDK 0.4.0, exact-frame keypad
+The current public **0.4.3 beta** adds the verified SDK 0.4.0, exact-frame keypad
 delivery, published Homebrew Catalog, typed visual-authoring tools, replay
 timelines, failing-plan minimization, bounded USB Hardware Lab, broader native
 design pass, clearer updater dashboard, and game/window fitting built around
-the native 224×157 display. It becomes a public build only after its signed,
-notarized release is published.
+the native 224×157 display. Its GitHub download is Developer ID signed,
+notarized, stapled, checksummed, and available through the opt-in beta update
+channel.
 
 Use [[0.4 Beta Testing]] for the current tester checklist and the repository
 [changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md#unreleased)
