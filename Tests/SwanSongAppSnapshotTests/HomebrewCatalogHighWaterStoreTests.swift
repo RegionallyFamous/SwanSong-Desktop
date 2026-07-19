@@ -1,9 +1,38 @@
 import Foundation
+import Security
 import SwanSongKit
 @testable import SwanSongApp
 import XCTest
 
 final class HomebrewCatalogHighWaterStoreTests: XCTestCase {
+    func testProductionQueryWorksWithoutProvisionedKeychainEntitlements() {
+        let backing = HomebrewCatalogKeychainHighWaterBacking()
+        let query = backing.baseQuery(
+            catalogID: "first-party-homebrew"
+        )
+        let insertion = backing.insertionQuery(
+            catalogID: "first-party-homebrew",
+            data: Data("state".utf8)
+        )
+
+        XCTAssertNil(query[kSecUseDataProtectionKeychain])
+        XCTAssertNil(query[kSecAttrAccessGroup])
+        XCTAssertNil(insertion[kSecUseDataProtectionKeychain])
+        XCTAssertNil(insertion[kSecAttrAccessible])
+        XCTAssertEqual(
+            query[kSecClass] as? String,
+            kSecClassGenericPassword as String
+        )
+        XCTAssertEqual(
+            query[kSecAttrService] as? String,
+            "com.regionallyfamous.SwanSong.HomebrewCatalogTrust"
+        )
+        XCTAssertEqual(
+            query[kSecAttrAccount] as? String,
+            "first-party-homebrew"
+        )
+    }
+
     func testCompetingStoreInstancesCannotCommitARevisionRollback() async throws {
         let fixture = try HighWaterFixture()
         defer { fixture.remove() }

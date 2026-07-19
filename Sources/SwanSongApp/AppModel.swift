@@ -1018,6 +1018,9 @@ final class AppModel {
                       !Task.isCancelled,
                       homebrewCatalogRefreshGeneration == refreshGeneration,
                       homebrewCatalogConsentGranted else { return }
+                appDiagnostic(
+                    "homebrew catalog refresh failed reason=\(String(reflecting: error))"
+                )
                 if homebrewCatalog == nil {
                     homebrewCatalogIssue = "The Homebrew Catalog could not be loaded. \(error.localizedDescription)"
                 } else if error is HomebrewCatalogError
