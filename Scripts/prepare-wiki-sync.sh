@@ -27,6 +27,7 @@ Home.md
 Homebrew-Catalog.md
 Open-IPL.md
 Release-Gates.md
+Story-Forge.md
 SwanSong-Studio.md
 _Sidebar.md'
 

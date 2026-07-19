@@ -187,6 +187,7 @@ final class AppModel {
         case homebrew = "Homebrew"
         case pocketCore = "Analogue Pocket"
         case translationLab = "Translation Lab"
+        case storyForge = "Story Forge"
         case gameStudio = "SwanSong Studio"
 
         var id: Self { self }
@@ -199,6 +200,7 @@ final class AppModel {
             case .homebrew: "shippingbox"
             case .pocketCore: "sdcard"
             case .translationLab: "character.book.closed"
+            case .storyForge: "book.pages"
             case .gameStudio: "hammer"
             }
         }
@@ -463,6 +465,7 @@ final class AppModel {
     let engineBuildID: String
     let engineCanExecute: Bool
     let studioWorkspace: SwanSDKWorkspaceModel
+    let storyForgeWorkspace: StoryForgeWorkspaceModel
 
     private let store: GameLibraryStore
     private let saveStore: GameSaveStore
@@ -640,7 +643,8 @@ final class AppModel {
         controllerProfileStore: ControllerProfileStore = .defaultStore(),
         translationWorkspaceStore: TranslationWorkspaceStore = .defaultStore(),
         engineCanExecuteOverride: Bool? = nil,
-        studioWorkspaceOverride: SwanSDKWorkspaceModel? = nil
+        studioWorkspaceOverride: SwanSDKWorkspaceModel? = nil,
+        storyForgeWorkspaceOverride: StoryForgeWorkspaceModel? = nil
     ) {
         self.store = store
         self.saveStore = saveStore
@@ -691,6 +695,7 @@ final class AppModel {
             engineName: engineBackendName,
             engineBuildID: engineBuildID
         )
+        storyForgeWorkspace = storyForgeWorkspaceOverride ?? StoryForgeWorkspaceModel()
         controllerProfile = (try? controllerProfileStore.load()) ?? .default
         controller.onChange = { [weak self] elements in
             self?.handleControllerElements(elements)
@@ -799,6 +804,8 @@ final class AppModel {
         case .pocketCore:
             []
         case .translationLab:
+            []
+        case .storyForge:
             []
         case .gameStudio:
             []

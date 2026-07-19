@@ -5,6 +5,11 @@ Release notes and the issue tracker are authoritative for shipped behavior.
 
 ## 0.4 beta closure
 
+- Validate Story Forge project creation, every schema-v3 stage and report,
+  ImageGen-only art evidence, catalog originality/status, migration, lockfile,
+  EPUB/PDF proof, privacy, and the revision-to-Studio handoff against both
+  passing and deliberately incomplete novels.
+
 - Validate SwanSong Studio's New, Assets, Build, Test, Play, Profile, Evidence,
   and Release workspaces against SwanSong SDK 0.4.0-or-newer projects.
 - Exercise Doctor, Dev, Scenario Recorder, Evidence Diff, deterministic input

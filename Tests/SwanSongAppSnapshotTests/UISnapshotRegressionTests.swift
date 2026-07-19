@@ -211,7 +211,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             }
         }
 
-        XCTAssertEqual(signatures.count, 80)
+        XCTAssertEqual(signatures.count, 84)
         for scenario in scenarios {
             let pair = signatures.filter { $0.name == scenario.name }
             XCTAssertEqual(pair.count, 2, scenario.name)
@@ -1402,6 +1402,40 @@ final class UISnapshotRegressionTests: XCTestCase {
         emptyTranslationModel.section = .translationLab
         let studioSetupModel = makeModel(root: root.appendingPathComponent("studio-setup"))
         studioSetupModel.section = .gameStudio
+        let storyForgeSetupModel = makeModel(
+            root: root.appendingPathComponent("story-forge-setup")
+        )
+        storyForgeSetupModel.section = .storyForge
+        let storyForgeOverviewModel = makeModel(
+            root: root.appendingPathComponent("story-forge-overview")
+        )
+        let storyForgeOverviewRoot = root.appendingPathComponent(
+            "story-forge-overview/novels/last-lantern",
+            isDirectory: true
+        )
+        try FileManager.default.createDirectory(
+            at: storyForgeOverviewRoot,
+            withIntermediateDirectories: true
+        )
+        try Data(#"""
+        {
+          "schema_version": 3,
+          "stage": "revision",
+          "identity": {"slug": "last-lantern", "title": "The Last Lantern Home"},
+          "rights_release": {"mode": "original", "release_scope": "private"},
+          "chapters": [{}, {}, {}, {}],
+          "scenes": [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+          "illustration_bible": {"moments": [{}, {}, {}, {}, {}]},
+          "editorial": {
+            "reader_tests": [{}, {}],
+            "analysis_reports": [{}, {}, {}, {}, {}, {}, {}, {}]
+          },
+          "soundtrack_bible": {"enabled": true}
+        }
+        """#.utf8).write(to: storyForgeOverviewRoot.appendingPathComponent("novel.json"))
+        storyForgeOverviewModel.storyForgeWorkspace.frameworkRoot = root
+        try storyForgeOverviewModel.storyForgeWorkspace.openProject(at: storyForgeOverviewRoot)
+        storyForgeOverviewModel.section = .storyForge
         let supportMarkdown = try String(
             contentsOf: packageRoot.appendingPathComponent("SUPPORT.md"),
             encoding: .utf8
@@ -1434,6 +1468,22 @@ final class UISnapshotRegressionTests: XCTestCase {
                 AnyView(
                     RootView(
                         model: studioSetupModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+            Scenario(name: "story-forge-setup-wide", size: CGSize(width: 1_040, height: 680)) {
+                AnyView(
+                    RootView(
+                        model: storyForgeSetupModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+            Scenario(name: "story-forge-overview-wide", size: CGSize(width: 1_040, height: 680)) {
+                AnyView(
+                    RootView(
+                        model: storyForgeOverviewModel,
                         usesDeterministicSidebarForOffscreenSnapshots: true
                     )
                 )
@@ -1984,7 +2034,15 @@ final class UISnapshotRegressionTests: XCTestCase {
         root: URL,
         stateStore: GameStateStore? = nil
     ) -> AppModel {
-        AppModel(
+        let suite = "UISnapshotRegressionTests-StoryForge-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defaults.removePersistentDomain(forName: suite)
+        let storyForgeWorkspace = StoryForgeWorkspaceModel(
+            completionNotifier: { _ in },
+            defaults: defaults,
+            environment: [:]
+        )
+        return AppModel(
             store: GameLibraryStore(fileURL: root.appendingPathComponent("Library.json")),
             saveStore: GameSaveStore(rootURL: root.appendingPathComponent("Saves")),
             stateStore: stateStore ?? GameStateStore(rootURL: root.appendingPathComponent("States")),
@@ -1995,7 +2053,8 @@ final class UISnapshotRegressionTests: XCTestCase {
             ),
             translationWorkspaceStore: TranslationWorkspaceStore(
                 fileURL: root.appendingPathComponent("TranslationWorkspace.json")
-            )
+            ),
+            storyForgeWorkspaceOverride: storyForgeWorkspace
         )
     }
 

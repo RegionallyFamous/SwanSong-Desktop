@@ -8,6 +8,7 @@ current source line is the 0.4 beta.
 
 | Surface | Source owner | Relationship |
 | --- | --- | --- |
+| Story Forge novel framework | [RegionallyFamous/swansong-story-forge](https://github.com/RegionallyFamous/swansong-story-forge) | Separate schema-v3 narrative policy and tool source. Desktop invokes only its typed local allowlist against explicitly selected projects. |
 | SwanSong Desktop for macOS | [`RegionallyFamous/SwanSong-Desktop`](https://github.com/RegionallyFamous/SwanSong-Desktop) | This repository: SwiftUI app, library, translation workbench, C ABI, release tooling, and tests. |
 | SwanSong for Analogue Pocket | [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core) | Separate FPGA project, artifacts, hardware qualification, and release lane. Desktop can merge only an immutable, authorized stable Core release onto a user-selected card; it does not build or publish the FPGA product. |
 | First-party homebrew catalog | [`RegionallyFamous/swansong-catalog`](https://github.com/RegionallyFamous/swansong-catalog) | Separate signed catalog and publication record. SwanSong 0.4.3 loads it only after the user asks. |
@@ -157,6 +158,7 @@ tester-facing boundaries are in the [0.4 beta guide](BETA_TESTING.md).
 - [SwanSong Wiki](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki)
 - [Playing and library](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
 - [Translation Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
+- [Story Forge](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Story-Forge)
 - [SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/SwanSong-Studio)
 - [Local MCP and automation](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
 - [Analogue Pocket SD setup](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
