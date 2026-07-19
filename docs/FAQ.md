@@ -1,10 +1,28 @@
 # Frequently asked questions
 
+The short version: SwanSong plays WonderSwan games, keeps your collection
+private, needs no BIOS, and behaves like a real Mac app. Here are the details
+people usually want before downloading it or plugging in hardware.
+
 ## Is SwanSong a WonderSwan emulator?
 
 Yes. SwanSong Desktop is a native macOS player for WonderSwan, WonderSwan
 Color, SwanCrystal, and Pocket Challenge V2 software, built on a pinned ares
-WonderSwan engine. It also includes an optional local Translation Lab.
+WonderSwan engine. It is also a visual library, translation workbench, and
+homebrew development desk; current source is growing dedicated writing and
+physical-cartridge workspaces too.
+
+## What is included in the public beta?
+
+The signed public download is SwanSong 0.4.3 beta. It includes the player,
+library, Time Ribbon, visual save states, Translation Lab, SwanSong Studio with
+the verified SDK 0.4.0, the signed Homebrew Catalog, native updates, and the
+guarded Analogue Pocket setup workflow.
+
+Story Forge and Cartridge Lab are current-source previews. They are documented
+for contributors and upcoming-beta testers, but they are not in the 0.4.3
+download yet. Check the [changelog](../CHANGELOG.md#unreleased) and the next
+release notes before treating either preview as shipped.
 
 ## Does it include games or require a BIOS?
 
@@ -102,6 +120,21 @@ the Core repository has no verified public release.
 
 Installing the Core does not update the macOS app, and Sparkle app updates do
 not run the Core installer.
+
+## Can SwanSong back up a physical cartridge?
+
+Current-source Cartridge Lab can use a WonderSwan Color or SwanCrystal as the
+reader. With Yokoi Boot and a 3.3 V ExtFriend-compatible USB serial adapter, it
+can inspect an inserted cartridge, make checksum-verified ROM and SRAM/EEPROM
+backups, and restore an exact-size save after confirmation on both the Mac and
+the console.
+
+It never offers to rewrite retail mask ROM. A completely stock console also
+cannot receive its first loader through EXT alone; Yokoi Boot must first be
+installed through a compatible flash-cartridge bootstrap, WonderWitch, or
+direct EEPROM programming. Read the
+[Cartridge Lab guide](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Cartridge-Lab)
+before connecting hardware. Cartridge Lab has not shipped in 0.4.3.
 
 ## Why can a game reach video but still be “Untested”?
 

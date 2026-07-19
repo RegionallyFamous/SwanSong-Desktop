@@ -9,6 +9,10 @@ Release notes and the issue tracker are authoritative for shipped behavior.
   ImageGen-only art evidence, catalog originality/status, migration, lockfile,
   EPUB/PDF proof, privacy, and the revision-to-Studio handoff against both
   passing and deliberately incomplete novels.
+- Validate Cartridge Lab against a controlled WonderSwan Color/SwanCrystal
+  hardware matrix: serial discovery, Yokoi Boot service loading, cartridge
+  inspection, interrupted ROM/save backups, exact-size save restore, physical
+  A+B write confirmation, readback, and recovery-conscious installer media.
 
 - Validate SwanSong Studio's New, Assets, Build, Test, Play, Profile, Evidence,
   and Release workspaces against SwanSong SDK 0.4.0-or-newer projects.
@@ -34,13 +38,17 @@ Release notes and the issue tracker are authoritative for shipped behavior.
   universal Apple silicon and Intel archive from its exact release tag.
 - Publish corresponding source, checksums, manifest, release notes, beta guide,
   and the matching repo-backed Wiki revision.
-- Keep the Homebrew Catalog **Coming Soon** and network-silent and keep the
-  separate SwanSong Core release lane locked until its independent gates pass.
+- Keep the published Homebrew Catalog network-silent until an explicit Browse,
+  Refresh, or Add action, and keep the separate SwanSong Core release lane
+  locked until its independent gates pass.
 - Retain Open IPL, controller, save/state, portrait, accessibility,
   minimum-macOS, A/V soak, Translation Lab, and local-MCP regression coverage.
-- Keep SwanSong Studio clearly labeled as a developer preview until its SDK and
-  external toolchain dependencies can be bundled and independently verified in
-  the signed application payload.
+- Keep SwanSong Studio's external Python and Wonderful requirements visible
+  until those dependencies can be bundled and independently verified in the
+  signed application payload.
+- Keep Story Forge and Cartridge Lab labeled as current-source previews until a
+  later signed beta passes their product, hardware, privacy, update, and
+  release gates.
 
 ## 1.0 readiness
 

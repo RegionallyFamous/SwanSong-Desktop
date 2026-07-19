@@ -5,6 +5,10 @@ SDK project material you own or are authorized to use. Never attach ROMs,
 saves, private screenshots, audio captures, cartridge-source evidence, or
 Translation Lab evidence to a public report.
 
+The signed public beta is **SwanSong 0.4.3**. Story Forge and Cartridge Lab are
+current-source previews for the next beta and must not be reported as 0.4.3
+features.
+
 ## What this beta is testing
 
 - **One development workspace:** open SwanSong Studio and move through New,
@@ -62,6 +66,24 @@ Translation Lab evidence to a public report.
 - Evidence Diff must display inspected image changes and meaningful audio
   findings. Changing hashes or successful execution alone is not a pass.
 
+## Current-source preview checks
+
+- **Story Forge:** create and reopen a schema-v3 novel; move it through
+  Concept, Outline, Draft, Revision, and Release; run every editorial, reader,
+  continuity, rights, art, music, catalog, lock, EPUB, and PDF contract; and
+  confirm incomplete or stale evidence remains blocking.
+- **Story-to-game handoff:** choose **Continue in Studio** after Revision and
+  confirm the open novel remains intact while Studio opens for the adaptation.
+- **Cartridge Lab reads:** with authorized hardware, inspect a cartridge and
+  create exact, checksum-reported ROM and save backups. Interrupt a controlled
+  transfer and confirm no partial destination is promoted.
+- **Cartridge Lab writes:** use only disposable test save data. Confirm restore
+  rejects the wrong size and requires both Mac confirmation and physical A+B
+  before writing, followed by complete readback.
+- **Yokoi Boot media:** add the installer to a controlled compatible SD folder,
+  verify a naming conflict cannot overwrite a different file, and confirm the
+  final bytes match the bundled payload.
+
 ## Provenance and automation guardrails
 
 - `probe-rectangle-source` must reject invalid, out-of-raster, or oversized
@@ -101,13 +123,15 @@ SwanSong does not guess raw HID mappings. Physical device enumeration, hotplug,
 input delivery, SD-card access, and signed update installation still require
 hands-on beta evidence even where reducers and failure paths are automated.
 
-The 0.4 feature set is frozen. Remaining work is limited to release-blocking
-fixes, tests, documentation, signing, notarization, packaging, update proof, and
-publication.
+The public 0.4.3 feature set is frozen. Story Forge and Cartridge Lab are
+candidates for a later signed beta and must pass their own hands-on, privacy,
+packaging, update, and release checks before they can be described as shipped.
 
 ## Before reporting a result
 
-1. Confirm **SwanSong 0.4.3 (9)** in **SwanSong > About SwanSong**.
+1. For the public beta, confirm **SwanSong 0.4.3 (9)** in **SwanSong > About
+   SwanSong**. For a current-source preview, record the exact Git commit and
+   build identity.
 2. Record the Mac model, macOS version, architecture, SDK version, Python
    version, Wonderful revision, and controller when relevant.
 3. For Studio, state the workspace, exact visible command, project recipe, and

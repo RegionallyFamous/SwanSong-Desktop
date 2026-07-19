@@ -1,10 +1,17 @@
 # Story Forge
 
-Story Forge brings the schema-v3 light-novel framework into SwanSong as a
-native writing and editorial desk. It can create novels, run stage gates,
-refresh manuscript reports, manage a multi-book catalog, prepare ImageGen art,
-check an optional soundtrack, and build EPUB/PDF editions without turning an
-automated score into a claim that a book is good.
+Writing a novel is not a progress bar. Story Forge gives the whole process a
+home—idea, outline, draft, revision, art, continuity, rights, and release—while
+leaving taste and approval with actual people.
+
+The native workspace can create novels, refresh editorial reports, manage a
+multi-book catalog, prepare ImageGen art, check an optional soundtrack, and
+build EPUB/PDF editions without turning an automated score into a claim that a
+book is good.
+
+> **Current-source preview:** Story Forge is present on `main` but is not in
+> the public SwanSong 0.4.3 download. It will ship only after the next beta
+> passes its product and release checks.
 
 Story Forge remains the source of narrative policy and tools. SwanSong Desktop
 provides the fixed, visible interface. This avoids a second story engine whose

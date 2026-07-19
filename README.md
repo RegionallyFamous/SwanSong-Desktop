@@ -4,12 +4,12 @@
   <img src="Packaging/AppIconCompact.png" width="150" alt="SwanSong app icon">
 </p>
 
-<h2 align="center">The WonderSwan deserved a great Mac app.</h2>
+<h2 align="center">WonderSwan, at home on your Mac.</h2>
 
-SwanSong turns your WonderSwan collection into a beautiful, private library
-and gets out of the way when it is time to play. It feels like a Mac app
-because it is one: fast, focused, keyboard-friendly, controller-ready, and
-built around the handheld's wonderfully unusual personality.
+The WonderSwan deserved a great Mac app. SwanSong turns your collection into a
+beautiful, private library, then gets out of the way when it is time to play.
+It is fast, focused, keyboard-friendly, controller-ready, and built around the
+handheld's wonderfully unusual personality.
 
 No account. No ads. No telemetry. No BIOS scavenger hunt. Just your games and
 a really nice place to play them.
@@ -59,67 +59,65 @@ SwanSong requires macOS 14 or newer and runs natively on Apple silicon and
 Intel Macs. Games are not included; use only files you own or are authorized
 to use.
 
-## Go deeper without leaving the app
+## More than a player
 
-SwanSong has a second life for people who make, translate, test, and preserve
-WonderSwan software.
-
-### Story Forge
-
-Develop a light novel through Concept, Outline, Draft, Revision, and Release
-without reducing quality to a word count or average score. The native Story
-Forge workspace runs the schema-v3 framework's voice, prose, momentum,
-scene-delivery, continuity, reader, rights, soundtrack, catalog, ImageGen art,
-lockfile, EPUB, and PDF workflows through a fixed local tool contract.
-Manuscripts and evidence stay in folders you choose, and human approval remains
-human.
+SwanSong also gives translators, homebrew makers, and preservation-minded
+players a serious workspace without making the everyday player feel like a
+developer tool.
 
 ### Translation Lab
 
-Record an exact route, replay it against Original and Patched builds, compare
-native frames, find the first visual change, review text on-device, and keep
-the evidence beside the private project that produced it. Long observed-play
-sessions and bounded source probes help answer difficult questions without
-exposing cartridge addresses or private project data through automation.
+Turn “this screen looks wrong” into evidence you can replay. Record the route,
+compare Original and Patched at the same frame, find the first visual change,
+review text on-device, and keep the private proof beside the project that made
+it.
 
 ### SwanSong Studio
 
-Move a SwanSong SDK project through New, Assets, Build, Test, Play, Profile,
-Evidence, and Release in one native workspace. Studio keeps the SDK in charge
-of builds and release policy while SwanSong provides the deterministic player
-and evidence desk. SwanSong 0.4.3 includes the content-verified SDK
-0.4.0, typed visual-authoring tools, replay timelines, and deterministic
-failing-plan minimization. An explicit external SDK override remains available
-for framework development; Doctor checks the local Python and Wonderful
-prerequisites.
+Take a WonderSwan project from New to Release in one native workspace. Build
+assets, run the game, inspect frames and audio, replay failures, and package
+only after the evidence is ready. SwanSong 0.4.3 carries the verified SwanSong
+SDK 0.4.0; Doctor clearly shows the few development tools that still need to
+be installed on the Mac.
 
 ### Homebrew and Analogue Pocket
 
-Current source includes the published, signed first-party Homebrew Catalog.
-It loads only when you ask, verifies publisher rights and the exact listed
-release, and checks the ROM size and SHA-256 before adding anything to your
-library.
+Browse a small, signed shelf of original WonderSwan homebrew whose publishers
+have allowed SwanSong to share it. The catalog stays offline until you ask,
+and each game is checked before it reaches your library.
 
-The Analogue Pocket workflow can safely merge a verified SwanSong Core onto a
-selected SD card without formatting it or disturbing games, saves, Memories,
-settings, Presets, or unrelated cores. It remains locked until the separate
-SwanSong Core project publishes an authorized stable release.
+The Analogue Pocket workflow is built to add a verified SwanSong Core without
+formatting the card or disturbing games, saves, Memories, settings, Presets,
+or unrelated cores. It stays safely locked until the separate Core project
+publishes an authorized stable release.
+
+## Coming next in current source
+
+These features are already taking shape on `main`, but they are **not part of
+the public 0.4.3 download yet**. They will ship only after the next beta passes
+its release gates.
+
+### Story Forge
+
+Take a light novel from the first idea to a finished EPUB or PDF without
+letting a score pretend to be an editor. Story Forge keeps concept, outline,
+draft, revision, art, continuity, rights, and release visible in one native
+desk—then hands a revision-ready project to SwanSong Studio for a WonderSwan
+adaptation.
 
 ### Cartridge Lab
 
-Connect a WonderSwan Color or SwanCrystal through an ExtFriend-compatible USB
-serial adapter, then use the handheld itself to read an inserted cartridge.
-Cartridge Lab can create a checksum-verified ROM dump, back up SRAM or EEPROM,
-and restore an exact-size save with physical A+B confirmation and complete
-readback verification. A verified Yokoi Boot installer can also be added to
-the folder browsed by a compatible SD-based flash cartridge.
-The installer cartridge must provide at least 8 KiB of SRAM for its verified
-internal-EEPROM recovery backup.
+Put the real handheld back in the loop. With a WonderSwan Color or SwanCrystal,
+Yokoi Boot, and a 3.3 V ExtFriend-compatible USB adapter, Cartridge Lab can
+inspect an inserted cartridge, make checksum-verified ROM and save backups,
+and restore an exact-size save only after confirmation on both the Mac and the
+console.
 
-The first Yokoi Boot installation still needs that bootstrap cartridge, a
-WonderWitch route, or direct EEPROM programming; a stock console cannot accept
-code through EXT alone. Retail game ROM is mask ROM and is never offered as a
-writable target.
+SwanSong can also prepare the verified Yokoi Boot installer for a compatible
+SD-based flash cartridge. The
+[Cartridge Lab guide](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Cartridge-Lab)
+explains the first-time bootstrap and recovery requirements before you connect
+anything. Retail game ROM remains read-only.
 
 <!-- homebrew-catalog-status: published -->
 
@@ -159,9 +157,10 @@ The [SwanSong Wiki](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki)
 keeps the deeper guides out of your way until you need them:
 
 - [Play, organize, rewind, and manage saves](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
-- [Write and publish novels with Story Forge](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Story-Forge)
 - [Build deterministic translation evidence](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
 - [Make games in SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/SwanSong-Studio)
+- [Preview Story Forge for novels and adaptations](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Story-Forge)
+- [Preview real-cartridge workflows in Cartridge Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Cartridge-Lab)
 - [Prepare an Analogue Pocket SD card safely](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
 - [Understand local automation and privacy](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
 - [Build, test, sign, and release SwanSong](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Build-and-Test)

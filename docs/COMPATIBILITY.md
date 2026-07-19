@@ -1,5 +1,10 @@
 # Compatibility and accuracy claims
 
+An honest “we saw this much” is more useful than a giant green checkmark.
+SwanSong tells you what it actually observed, keeps your own play verdict
+separate, and never turns one successful frame into a promise about an entire
+game.
+
 SwanSong uses the WonderSwan-family core from the exact ares revision recorded
 in `Dependencies/ares.lock.json`.
 

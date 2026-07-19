@@ -1,112 +1,108 @@
 # Install SwanSong Desktop
 
-SwanSong requires macOS 14 or newer and supports Apple silicon and Intel Macs.
-No games or original system firmware are included. SwanSong Open IPL provides
-the built-in startup path.
+Getting started should take about a minute: download the Mac app, move it to
+Applications, add a game, and play. SwanSong needs macOS 14 or newer and runs
+natively on Apple silicon and Intel Macs.
 
-## Official release
+No games are included. No BIOS is required—SwanSong Open IPL is built in.
 
-1. Choose the intended version on this repository's Releases page. The
-   `/releases/latest` link selects the latest stable release; beta builds are
-   marked as prereleases and must be selected explicitly. Download that
-   version's `SwanSong-X.Y.Z-macOS-universal.zip`, matching
-   `SwanSong-X.Y.Z-source.tar.xz`, `SwanSong-X.Y.Z-release.json`, and
-   `SHA256SUMS.txt`.
-2. Verify both published archives:
+## Quick install
 
-   ```sh
-   shasum -a 256 -c SHA256SUMS.txt
-   ```
+1. Open [SwanSong Releases](https://github.com/RegionallyFamous/SwanSong-Desktop/releases).
+2. Choose the newest release you want. Beta builds are marked **Pre-release**.
+3. Download `SwanSong-X.Y.Z-macOS-universal.zip`.
+4. Open the ZIP and move **SwanSong** to Applications.
+5. Open SwanSong normally.
 
-3. For the strongest verification and automatic rollback, run the repository's
-   release installer from the directory containing those four files:
+Official downloads are universal, Developer ID signed, notarized by Apple,
+stapled, and checked by Gatekeeper. If macOS says an official download is
+unnotarized or asks you to bypass its security controls, stop and report the
+problem. A local development build is not a public release.
 
-   ```sh
-   ./Scripts/install-release-local.sh \
-     --source-archive ./SwanSong-X.Y.Z-source.tar.xz \
-     --manifest ./SwanSong-X.Y.Z-release.json \
-     --checksums ./SHA256SUMS.txt \
-     ./SwanSong-X.Y.Z-macOS-universal.zip
-   ```
+## Add your first game
 
-   The installer requires the exact app archive, corresponding-source archive,
-   manifest, and checksums to agree before it replaces an existing app.
-   Alternatively, after the checksum check, open the ZIP and drag
-   `SwanSong.app` to Applications.
-4. Open SwanSong normally. An official release is Developer ID signed,
-   notarized by Apple, and accepted by Gatekeeper.
+Choose **File → Add Games to Library…**, drag in a supported game, or add a
+folder. SwanSong accepts authorized `.ws`, `.wsc`, `.pc2`, `.pcv2`, and
+supported one-game ZIP files.
 
-If macOS identifies the app as unnotarized or asks you to bypass its security
-controls, stop. Development artifacts are not official public releases.
+Select the new library card and press **Play**. That is the whole startup
+process: current SwanSong releases use the independently written Open IPL and
+do not accept, search for, or download original system firmware.
 
-## Updating an installed copy
+## Stay up to date
 
-Choose **Check for Updates…** in SwanSong to use the native Sparkle updater.
-It reads SwanSong's signed appcast from this repository and downloads accepted
-updates only from immutable, exact-tag SwanSong Desktop GitHub Release assets.
-Stable releases are the default; **Try beta versions** is an explicit
-prerelease choice.
+Choose **Check for Updates…** in SwanSong. Stable releases are the default;
+turn on **Try beta versions** if you want new features sooner.
 
-**Automatically check for updates** and **Automatically download and install
-updates** are separate opt-ins in Settings. With automatic checks off, SwanSong
-makes no background app-update request. Sparkle system profiling is disabled.
-The existing app remains in place if feed, signature, download, installation,
-or relaunch validation fails. Do not bypass a Developer ID, notarization,
-Gatekeeper, or updater-signature error.
+Automatic checks and automatic installation are separate choices in Settings
+and stay off until you enable them. SwanSong's updater installs the Mac app
+only—it does not download homebrew or touch an Analogue Pocket SD card. See
+[App updates](APP_UPDATES.md) for the exact privacy and verification rules.
 
-The manual archive-and-checksum installation above remains available for
-offline verification, rollback, and recovery. Sparkle updates SwanSong itself;
-it does not install homebrew or invoke the separate Analogue Pocket SD-card
-tool. See
-[App updates](APP_UPDATES.md) for the full trust and release contract.
+## Verify every byte
 
-## Preparing an Analogue Pocket SD card
+The quick install above is enough for most people. If you want to independently
+match the app to its published source and manifest, download these four files
+for the same version:
 
-Open **Analogue Pocket** in SwanSong's sidebar, or choose **File > Prepare
-Analogue Pocket SD Card…**. Check for the official Core release, choose the
-mounted exFAT/FAT32 card itself under `/Volumes`, and review the exact card and
-Core version before confirming.
+- `SwanSong-X.Y.Z-macOS-universal.zip`;
+- `SwanSong-X.Y.Z-source.tar.xz`;
+- `SwanSong-X.Y.Z-release.json`; and
+- `SHA256SUMS.txt`.
 
-The tool accepts a blank card or an existing Pocket layout. It verifies the
-immutable GitHub Release, release authorization, manifest, package size, and
-SHA-256, then merges only the verified SwanSong Core and WonderSwan platform
-files. It checks free space first and keeps a recovery copy until every managed
-file reads back exactly. It never formats the card, supplies games/BIOS/Pocket
-firmware, or changes saves, Memories, Settings, Presets, or unrelated cores.
-Make a complete backup first and eject the card in Finder after success. Until
-`swansong-core` publishes an authorized stable release, the tool reports that
-no verified release exists and performs no write.
+Check the published hashes:
 
-## Preparing a Yokoi Boot installer card
+```sh
+shasum -a 256 -c SHA256SUMS.txt
+```
 
-Choose **Hardware > Open Cartridge Lab**, then open **Install Yokoi Boot**.
-Select the SD-card folder that your compatible flash cartridge can browse.
-SwanSong adds `Yokoi Boot Installer.wsc`, reads it back, and requires its exact
-bundled SHA-256. A different existing file is never replaced; SwanSong chooses
-a numbered filename instead. Eject the card in Finder before removing it.
+For the strongest local verification and automatic rollback, run the release
+installer from the folder containing all four files:
 
-Put the card back into the flash cartridge, launch the installer directly, and
-follow its on-console backup and A+B confirmation flow. Keep that cartridge
-unchanged because its SRAM holds the internal-EEPROM recovery backup. This
-copying workflow does not make an arbitrary cartridge writable: the cartridge
-must already have an SD menu capable of launching `.wsc` files and at least
-8 KiB of SRAM for the recovery backup.
+```sh
+./Scripts/install-release-local.sh \
+  --source-archive ./SwanSong-X.Y.Z-source.tar.xz \
+  --manifest ./SwanSong-X.Y.Z-release.json \
+  --checksums ./SHA256SUMS.txt \
+  ./SwanSong-X.Y.Z-macOS-universal.zip
+```
 
-A completely stock WonderSwan Color or SwanCrystal cannot accept its first
-loader through the EXT serial port alone. First installation needs the
-installer cartridge, a WonderWitch route, or direct 93C86 programming. Original
-monochrome WonderSwan does not have the Color custom-splash storage area.
+It replaces an existing app only after the application archive,
+corresponding-source archive, manifest, and checksums all agree.
 
-## First game
+## Analogue Pocket SD setup
 
-Choose **File > Open Game…** or drag a supported `.ws`, `.wsc`, `.pc2`,
-`.pcv2`, or single-game ZIP into SwanSong. In version 0.2 and later it launches
-through SwanSong Open IPL without asking for a BIOS; there is no external
-firmware import or override. Add only authorized game and homebrew images.
+Open **Analogue Pocket** in SwanSong's sidebar or choose **File → Prepare
+Analogue Pocket SD Card…**. The workflow is designed to merge an authorized
+SwanSong Core without formatting the card or changing games, saves, Memories,
+settings, Presets, or unrelated cores.
+
+Back up the complete card first. Until the separate SwanSong Core project
+publishes a verified stable release, SwanSong reports that none is available
+and performs no write. The full guide is in
+[Analogue Pocket SD Setup](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup).
+
+## Cartridge Lab preview
+
+Cartridge Lab is in current source but is **not part of the public 0.4.3
+download yet**. It works with a WonderSwan Color or SwanCrystal, Yokoi Boot,
+and a 3.3 V ExtFriend-compatible USB serial adapter. Never use a PC RS-232
+connection.
+
+If Yokoi Boot is not installed, open **Hardware → Open Cartridge Lab…**, choose
+**Install Yokoi Boot**, and select the SD-card folder browsed by a compatible
+flash cartridge. SwanSong adds and verifies the installer without replacing a
+different file. The cartridge must already be able to launch `.wsc` files and
+must provide at least 8 KiB of SRAM for the recovery backup.
+
+Read the
+[Cartridge Lab guide](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Cartridge-Lab)
+before connecting hardware or restoring a save.
 
 ## Build from source
 
-See the Wiki's
+Contributor builds are intentionally different from official releases: they
+are ad-hoc signed and may include current-source previews that have not shipped
+to beta users yet. Follow the Wiki's
 [Build and Test](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Build-and-Test)
-page. Local contributor builds are ad-hoc signed and are intentionally
-different from an official release.
+guide for the live engine, app bundle, and test lanes.

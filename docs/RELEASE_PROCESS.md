@@ -97,6 +97,18 @@ not routine release metadata.
      ./Scripts/swift-package.sh test --package-path .
    ```
 
+   When Cartridge Lab is in the candidate build, run its focused source-free
+   contract lane and then complete the controlled hands-on hardware checklist
+   in the Wiki. Use disposable save data; prove physical A+B write
+   confirmation, full readback, interrupted-backup cleanup, installer
+   collision handling, and the separately licensed Yokoi payload/source
+   boundary.
+
+   ```sh
+   DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
+     ./Scripts/swift-package.sh test --package-path . --filter YokoiHardwareTests
+   ```
+
    Include the live input/focus lane with an authorized WonderSwan ROM:
 
    ```sh

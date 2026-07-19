@@ -7,7 +7,7 @@
 
 **Create and translate**
 
-- [[Story Forge]]
+- [[Story Forge]] — current-source preview
 - [[Translation Lab]]
 - [[SwanSong Studio]]
 - [[Local MCP and Automation]]
@@ -15,6 +15,7 @@
 **Homebrew and hardware**
 
 - [[Homebrew Catalog]]
+- [[Cartridge Lab]] — current-source preview
 - [[Analogue Pocket SD Setup]]
 - [[Open IPL]]
 

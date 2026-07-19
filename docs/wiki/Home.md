@@ -1,14 +1,14 @@
 # Welcome to SwanSong
 
 The WonderSwan is small, strange, clever, and still full of surprises. SwanSong
-gives it a home on the Mac: a visual game library, a focused native player, and
-serious tools for the people translating, testing, and making new software for
-it.
+gives it the Mac app it always deserved: a beautiful private library, a focused
+native player, and an unusually deep workshop for people who translate, make,
+write, test, and preserve WonderSwan software.
 
-This wiki is the deeper companion to the repository README. You do not need to
-read it before playing. Come here when you want to tune a controller, move a
-save, understand an update, build a game, prove a translation change, or see
-exactly where SwanSong draws a privacy and trust boundary.
+You do not need to study the wiki before playing. Open a game and go. Come back
+when you want to tune a controller, move a save, translate a screen, build a
+game, work with a real cartridge, or understand exactly how SwanSong protects
+your private material.
 
 SwanSong requires macOS 14 or later and supports Apple silicon and Intel Macs.
 No games or original system firmware are included.
@@ -41,6 +41,9 @@ workspace for concept, outline, draft, revision, ImageGen illustration review,
 catalog originality, optional music, and EPUB/PDF publication. It keeps
 automated checks separate from human editorial and release approval.
 
+Story Forge is a current-source preview and is not included in the public
+0.4.3 download yet.
+
 ### I want to make a game
 
 [[SwanSong Studio]] puts New, Assets, Build, Test, Play, Profile, Evidence, and
@@ -50,16 +53,22 @@ tools, replay timelines, and deterministic failing-plan minimization. Python
 3.11+ and the pinned Wonderful packages remain honest local prerequisites
 checked by Doctor.
 
-### I want homebrew or Analogue Pocket
+### I want homebrew or real hardware
 
-[[Homebrew Catalog]] explains the signed first-party catalog now enabled in
-current source. It never loads at launch or merely because you opened Homebrew;
-Load, Refresh, and Add to Library are choices you make.
+[[Homebrew Catalog]] explains the signed first-party catalog included in the
+public 0.4.3 beta. It never loads at launch or merely because you opened
+Homebrew; Browse, Refresh, and Add to Library are choices you make.
 
 [[Analogue Pocket SD Setup]] explains how SwanSong can merge an authorized Core
 release onto a selected card without formatting it or touching games, saves,
 Memories, settings, Presets, or unrelated cores. The workflow remains locked
 until the separate SwanSong Core project publishes a verified stable release.
+
+[[Cartridge Lab]] shows how current source can use a WonderSwan Color or
+SwanCrystal, Yokoi Boot, and a 3.3 V ExtFriend-compatible adapter to make
+verified cartridge and save backups or restore an exact-size save with
+physical confirmation. Cartridge Lab is not part of the public 0.4.3 download
+yet.
 
 ### I want to contribute or release SwanSong
 
@@ -82,11 +91,18 @@ Use [[0.4 Beta Testing]] for the current tester checklist and the repository
 [changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md#unreleased)
 for the exact source status.
 
+Current source is already building the next chapter: Story Forge carries a
+novel from idea to EPUB/PDF and into Studio for adaptation, while Cartridge Lab
+puts a real WonderSwan back into the preservation loop. These previews are
+documented now so contributors can test them honestly, but they are not being
+advertised as features of the signed 0.4.3 download.
+
 ## Private by default, explicit when online
 
 SwanSong has no accounts, ads, analytics, telemetry, crash-reporting service,
 or system profiling. Your games, saves, states, screenshots, controller setup,
-translation evidence, and Studio projects stay on the Mac.
+translation evidence, Studio projects, preview manuscripts, and hardware
+backups stay on the Mac.
 
 Three separate features can contact GitHub, and only under their own rules:
 
