@@ -432,6 +432,7 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents/Resources/ares.lock.json" \
     ! -path "$APP/Contents/Resources/sparkle.lock.json" \
     ! -path "$APP/Contents/Resources/SwanSongSDK/*" \
+    ! -path "$APP/Contents/Resources/YokoiHardware/*" \
     ! -path "$APP/Contents/_CodeSignature/CodeResources" \
     -print -quit)
   [ -z "$UNEXPECTED_FILE" ] || fail "app contains an unexpected payload file"
@@ -445,6 +446,8 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents/Resources" \
     ! -path "$APP/Contents/Resources/SwanSongSDK" \
     ! -path "$APP/Contents/Resources/SwanSongSDK/*" \
+    ! -path "$APP/Contents/Resources/YokoiHardware" \
+    ! -path "$APP/Contents/Resources/YokoiHardware/*" \
     ! -path "$APP/Contents/_CodeSignature" \
     -print -quit)
   [ -z "$UNEXPECTED_DIRECTORY" ] \
@@ -460,6 +463,9 @@ if [ -n "$APP" ]; then
   "$SCRIPT_DIR/check-swansong-sdk-payload.sh" \
     "$APP/Contents/Resources/SwanSongSDK" >/dev/null \
     || fail "embedded SwanSong SDK validation failed"
+  python3 "$SCRIPT_DIR/check-yokoi-hardware-payload.py" \
+    "$APP/Contents/Resources/YokoiHardware" >/dev/null \
+    || fail "embedded Yokoi hardware payload validation failed"
   if nm -am "$ENGINE" 2>/dev/null \
     | grep -Eiq 'swan_engine_stage_boot_rom|stage_boot_rom|staged_boot_rom'; then
     fail "production engine retains a boot-ROM staging symbol"
