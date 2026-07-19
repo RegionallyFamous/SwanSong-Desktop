@@ -6,6 +6,25 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.5.0</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.5.0</link>
+      <description sparkle:format="html">&lt;h2&gt;The workshop just got bigger.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.5.0 adds a native writing desk and a guarded bridge to real WonderSwan cartridges.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Write from idea to edition.&lt;/strong&gt; Story Forge keeps outline, draft, revision, art, continuity, rights, EPUB, and PDF work together.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Continue into a game.&lt;/strong&gt; Hand a revision-ready novel to SwanSong Studio for a WonderSwan adaptation.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Back up real cartridges.&lt;/strong&gt; Cartridge Lab makes verified ROM and save backups through a WonderSwan Color or SwanCrystal.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Restore saves carefully.&lt;/strong&gt; Exact sizing, two-screen confirmation, physical A+B approval, and complete readback guard every write.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Enjoy a clearer SwanSong.&lt;/strong&gt; The README, setup guides, FAQ, Support, and Wiki now lead with what you can do.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Story Forge and Cartridge Lab require separately obtained local projects or authorized hardware. SwanSong includes no games or original system firmware.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.5.0"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Sun, 19 Jul 2026 16:38:35 -0500</pubDate>
+      <sparkle:version>10</sparkle:version>
+      <sparkle:shortVersionString>0.5.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.5.0/SwanSong-0.5.0-macOS-universal.zip" length="23741610" type="application/octet-stream" sparkle:edSignature="6pNGtlHMT0c4Q6GFeRwQt3VmmJOTV8j9+eInJx8T69b9X3TfQZURLHB9f3oqXYaTcbAHFWbLvzYPo6ASV/IZBg==" />
+    </item>
+    <item>
       <title>SwanSong 0.4.3</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.4.3</link>
       <description sparkle:format="html">&lt;h2&gt;Every press reaches the game.&lt;/h2&gt;
@@ -128,6 +147,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: TjPrcP8GxfGniy2TgR6KEKex1Q8IDWJoBnbO2hoHeyXD95h0dQsJ6FB0eSPv+jePFMJ0Zg9YGNyCv7nNf6f9AA==
-length: 12800
+edSignature: zLqlj9O6A9k7lvvVeuS+6i7TYfLstIkjrNr+atgoYwir822wLquDcDQygEEZrnwrZmJ47aiClU6GNmIX86OGCg==
+length: 14892
 -->
