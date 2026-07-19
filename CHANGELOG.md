@@ -27,6 +27,14 @@ records those user-visible changes. Published releases use semantic versioning.
   corresponding-source location; it still includes no original system
   firmware or commercial game data.
 
+### Changed
+
+- Rebuilt the README and Wiki around the reasons to use SwanSong: a beautiful
+  private library, instant BIOS-free play, serious translation and creation
+  tools, and careful links to real hardware. Added a complete Cartridge Lab
+  guide and made the public 0.4.3 versus current-source preview boundary clear
+  everywhere it matters.
+
 ### Fixed
 
 - Fixed the signed Homebrew Catalog failing to open in the notarized app. Its

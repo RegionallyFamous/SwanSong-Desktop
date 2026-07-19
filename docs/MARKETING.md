@@ -32,3 +32,27 @@ compatibility, accuracy, privacy, security, or release claims.
 - Descriptor: **A private, native WonderSwan player and translation workbench
   for macOS.**
 - Visual subtitle: **FOR WONDERSWAN**
+
+## The story to tell
+
+Lead with the feeling, then earn the trust:
+
+1. **Your WonderSwan collection finally feels at home on the Mac.** The library
+   is visual, the player is focused, and the handheld's odd personality is a
+   feature rather than a compatibility footnote.
+2. **Playing is the easy part.** Open IPL means no BIOS hunt. Keyboard,
+   controllers, crisp native pixels, Time Ribbon, and visual save states are
+   ready without turning setup into a hobby.
+3. **SwanSong grows with curiosity.** Translation Lab, Studio, signed homebrew,
+   Pocket setup, Story Forge, and Cartridge Lab turn one app into a workshop
+   for making, translating, writing, and preserving.
+4. **Private and verifiable are product features.** No account, ads, telemetry,
+   or mystery updater. Explain the boundary in plain language, then link to the
+   exact technical proof.
+
+## Release honesty
+
+The public download is currently **0.4.3 beta**. Story Forge and Cartridge Lab
+are current-source previews, not shipped 0.4.3 features. Excitement never gets
+to erase that distinction. Say what people can download now, then show what is
+already being built next.

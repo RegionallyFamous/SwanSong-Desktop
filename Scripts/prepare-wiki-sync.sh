@@ -22,6 +22,7 @@ validate_source() {
 0.4-Beta-Testing.md
 Architecture-and-Source-Ownership.md
 Build-and-Test.md
+Cartridge-Lab.md
 Gamepads.md
 Home.md
 Homebrew-Catalog.md

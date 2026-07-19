@@ -4,8 +4,9 @@ The first-party Homebrew Catalog is a small, signed shelf of WonderSwan games
 that their publishers have affirmatively authorized SwanSong to distribute.
 It is not a general ROM directory, a web search, or a background service.
 
-SwanSong 0.4.2 enables the published catalog and includes its purpose-specific
-public key. Opening the Homebrew page still does not contact the network.
+SwanSong 0.4.2 and later include the published catalog and its
+purpose-specific public key. Opening the Homebrew page still does not contact
+the network.
 
 ## Browse only when you ask
 

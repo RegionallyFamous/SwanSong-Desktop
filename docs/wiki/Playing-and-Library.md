@@ -49,9 +49,9 @@ diagnostics.
 Play mode collapses the library into a focused one-game surface. The native
 game framebuffer stays square-cornered and unmodified; pause, focus, warning,
 and recovery UI remain outside the game pixels. Horizontal and vertical games
-are presented without cropping. Current source also fits the cyan-framed
-canvas and automatic player-window shape around the native 224×157 raster, so
-wide windows do not create a second set of side wells around the game.
+are presented without cropping. SwanSong fits the cyan-framed canvas and
+automatic player-window shape around the native 224×157 raster, so wide
+windows do not create a second set of side wells around the game.
 
 The live ares backend produces deterministic video and 48 kHz stereo audio.
 Metal presents the native raster with true integer scaling. Four display

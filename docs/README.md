@@ -1,16 +1,37 @@
 # SwanSong Desktop documentation
 
-This is the canonical documentation home for the native macOS application.
-Versioned release notes remain authoritative for historical behavior; the
-current source line is the 0.4 beta.
+Welcome to the deeper side of SwanSong. If you only want to play, start with
+the [installation guide](INSTALL.md) and the Wiki's
+[Playing and Library](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
+tour. Everything else can wait until curiosity wins.
 
-## Product and source ownership
+## Find your way
+
+- **Play:** install SwanSong, add a game, map a controller, rewind with Time
+  Ribbon, and manage visual save states.
+- **Translate:** record exact routes, compare Original and Patched frames, find
+  the first visual change, and keep private evidence with the project.
+- **Make:** build and prove WonderSwan projects in SwanSong Studio.
+- **Write (preview):** develop a light novel in Story Forge, then carry it into
+  Studio for a WonderSwan adaptation.
+- **Preserve (preview):** use Cartridge Lab with a real WonderSwan Color or
+  SwanCrystal to make verified cartridge and save backups.
+- **Trust but verify:** inspect the privacy, source, build, signing,
+  notarization, and release contracts behind the public app.
+
+The current public download is **SwanSong 0.4.3 beta**. Story Forge and
+Cartridge Lab are present in current source but have not shipped in that signed
+download yet. Versioned release notes remain authoritative for what each build
+actually contains.
+
+## How the pieces fit
 
 | Surface | Source owner | Relationship |
 | --- | --- | --- |
 | Story Forge novel framework | [RegionallyFamous/swansong-story-forge](https://github.com/RegionallyFamous/swansong-story-forge) | Separate schema-v3 narrative policy and tool source. Desktop invokes only its typed local allowlist against explicitly selected projects. |
 | SwanSong Desktop for macOS | [`RegionallyFamous/SwanSong-Desktop`](https://github.com/RegionallyFamous/SwanSong-Desktop) | This repository: SwiftUI app, library, translation workbench, C ABI, release tooling, and tests. |
 | SwanSong for Analogue Pocket | [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core) | Separate FPGA project, artifacts, hardware qualification, and release lane. Desktop can merge only an immutable, authorized stable Core release onto a user-selected card; it does not build or publish the FPGA product. |
+| Yokoi hardware utilities | Yokoi Boot and Yokoi Cart Service at the immutable SwanSong Core revision recorded in [`SOURCE_PROVENANCE.md`](../SOURCE_PROVENANCE.md) | Separately executable GPLv3 WonderSwan programs used by current-source Cartridge Lab. Desktop verifies their payload, license, notice, and corresponding-source location without linking them into the GPLv2 Mac executable. |
 | First-party homebrew catalog | [`RegionallyFamous/swansong-catalog`](https://github.com/RegionallyFamous/swansong-catalog) | Separate signed catalog and publication record. SwanSong 0.4.3 loads it only after the user asks. |
 | WonderSwan software engine | Upstream ares at the revision in [`Dependencies/ares.lock.json`](../Dependencies/ares.lock.json) | Prepared into ignored `.engine/` build storage; official source archives include the exact sanitized corresponding source and integration patch. |
 | SwanSong Desktop update feed and app releases | This repository's [`updates/appcast.xml`](../updates/appcast.xml) and [GitHub Releases](https://github.com/RegionallyFamous/SwanSong-Desktop/releases) | Sparkle updates the macOS app only. It does not distribute homebrew or invoke the separate Pocket installer. |
@@ -159,6 +180,7 @@ tester-facing boundaries are in the [0.4 beta guide](BETA_TESTING.md).
 - [Playing and library](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
 - [Translation Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
 - [Story Forge](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Story-Forge)
+- [Cartridge Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Cartridge-Lab)
 - [SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/SwanSong-Studio)
 - [Local MCP and automation](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
 - [Analogue Pocket SD setup](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)

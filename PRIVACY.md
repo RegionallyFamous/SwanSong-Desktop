@@ -1,9 +1,11 @@
 # SwanSong privacy policy
 
-Effective July 18, 2026
+Effective July 19, 2026
 
-This policy describes SwanSong 0.4.3. The versioned release notes document
-earlier release behavior.
+This policy describes SwanSong 0.4.3. It also documents current SwanSong source
+as of the effective date: the Story Forge and Cartridge Lab sections describe
+previews that are not part of the signed 0.4.3 download yet. Versioned release
+notes document the exact behavior of published builds.
 
 <!-- homebrew-catalog-status: published -->
 
@@ -33,7 +35,8 @@ name, filesystem type, capacity, top-level folder names, installed SwanSong
 verified package may replace. It does not read or upload game, save, Memory,
 Settings, or Preset contents from the card.
 
-When you choose a flash-cartridge SD-card folder in Cartridge Lab, SwanSong
+In current-source Cartridge Lab, when you choose a flash-cartridge SD-card
+folder, SwanSong
 reads that folder only to select a non-conflicting installer filename, writes
 the built-in open-source Yokoi Boot installer, and reads it back to verify its
 size and SHA-256. It does not scan or upload games or saves on the card. When
@@ -123,8 +126,9 @@ only while the app is in the background, and includes only the task name and
 result. Project paths, ROM names, diagnostics, frames, audio, and evidence are
 excluded.
 
-Story Forge reads and writes only the framework repository, catalog, and novel
-folders you explicitly select. Its fixed local command allowlist can create a
+Current-source Story Forge reads and writes only the framework repository,
+catalog, and novel folders you explicitly select. Its fixed local command
+allowlist can create a
 project; validate stages; refresh editorial, continuity, reader, rights, music,
 art, catalog, and series evidence; write or check a lockfile; migrate a
 manifest; and build EPUB/PDF editions. SwanSong does not upload manuscripts,

@@ -53,6 +53,11 @@ public distribution.
   preserve ImageGen-only production art, human approvals, rights lanes,
   catalog originality, manuscript locking, and export gates without embedding
   or reinterpreting the framework.
+- Run the Cartridge Lab protocol/payload tests and a controlled physical
+  hardware pass. Verify cartridge inspection, interrupted backup cleanup,
+  exact-size save restore, physical A+B write confirmation, complete readback,
+  installer naming conflicts, and the 8 KiB recovery-backup requirement. Never
+  use an irreplaceable save as release-test media.
 - Run `./Scripts/check-homebrew-production-readiness.sh`. A `comingSoon` build
   must contain no production key and make no catalog network request. A
   `published` build must bind the reviewed public key, reachable signed catalog,
@@ -63,7 +68,9 @@ public distribution.
   `check-sparkle-configuration.sh` against the built app to bind those signed
   settings and the positive build-number policy before packaging.
 - Confirm the app bundle and corresponding-source archive contain no original
-  firmware payload.
+  firmware payload. The separately licensed Yokoi programs must appear only in
+  their dedicated resource directory with their exact payload manifest,
+  license, notice, and corresponding-source location.
 - Run `./Scripts/prepare-wiki-sync.sh --check`, publish the canonical pages from
   the merged exact `main` revision, reclone the Wiki, and verify every published
   page is byte-identical to `docs/wiki/`. Review Home, Sidebar navigation,

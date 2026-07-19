@@ -5,8 +5,8 @@ to a real SwanSong app, plus the gates that keep a convenient local build from
 being mistaken for release evidence.
 
 Product documentation lives in [[Playing and Library]],
-[[Story Forge]], [[Translation Lab]], [[SwanSong Studio]], and
-[[Analogue Pocket SD Setup]].
+[[Story Forge]], [[Translation Lab]], [[SwanSong Studio]], [[Cartridge Lab]],
+and [[Analogue Pocket SD Setup]].
 
 ## Requirements
 
@@ -101,6 +101,20 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
 It checks the complete fixed command surface, schema-v3 framework identity,
 manifest summary, catalog status, and native workspace state. The full suite
 remains required for release.
+
+The focused source-free Cartridge Lab contract lane is:
+
+```sh
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
+  ./Scripts/swift-package.sh test --package-path . --filter YokoiHardwareTests
+```
+
+It checks framed serial messages, cartridge information, armed sequential save
+writes, complete readback, pinned hardware payloads, and non-destructive
+installer-media behavior. It does not replace hands-on testing with a real
+WonderSwan Color or SwanCrystal, 3.3 V adapter, disposable save data, and
+controlled flash-cartridge media.
+
 `check-live-engine.sh` also pins two clean-room display-provenance fixtures
 (introduced with ABI 6 and retained by ABI 9): horizontal
 planar and vertical packed output with exact Screen 1, Screen 2, sprite,

@@ -20,6 +20,10 @@ its editorial, rights, continuity, ImageGen art, and soundtrack gates, choose
 Studio without copying prose, inventing a second story schema, or treating game
 execution as editorial approval.
 
+Story Forge is a current-source preview and is not included in the public
+0.4.3 download yet. Studio itself and its verified SDK 0.4.0 workflow are part
+of 0.4.3.
+
 ## Your first project
 
 1. Open **Studio** and let **Doctor** check the bundled SDK, Python, Wonderful,
