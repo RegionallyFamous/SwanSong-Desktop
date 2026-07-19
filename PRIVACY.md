@@ -33,6 +33,15 @@ name, filesystem type, capacity, top-level folder names, installed SwanSong
 verified package may replace. It does not read or upload game, save, Memory,
 Settings, or Preset contents from the card.
 
+When you choose a flash-cartridge SD-card folder in Cartridge Lab, SwanSong
+reads that folder only to select a non-conflicting installer filename, writes
+the built-in open-source Yokoi Boot installer, and reads it back to verify its
+size and SHA-256. It does not scan or upload games or saves on the card. When
+you explicitly read a physical cartridge, the resulting ROM or save is written
+only to the destination you choose. Save restoration reads only the selected
+local save and sends it to the connected WonderSwan; Cartridge Lab makes no
+network request.
+
 SwanSong only creates an external copy when you explicitly choose an export or
 save destination. Source-free diagnostic exports are allowlist-based and omit
 game, RAM, save-state, and persistence bytes. Sparkle may hold a downloaded app
@@ -116,9 +125,10 @@ excluded.
 
 ## Files you provide
 
-The SwanSong app bundle contains no games. SwanSong Open IPL is built-in
-project code, and SwanSong 0.2 and later do not accept an external startup
-image.
+The SwanSong app bundle contains no games or original system startup image.
+SwanSong Open IPL is built-in project code, and SwanSong 0.2 and later do not
+accept an external startup image. The separately licensed Yokoi resources are
+open WonderSwan utilities for hardware owners, not Bandai firmware.
 You may import an authorized local game or homebrew image. SwanSong does not
 search the web, GitHub, or your Mac for ROMs. Imported games are validated and
 copied into SwanSong's private Application Support directory so the library

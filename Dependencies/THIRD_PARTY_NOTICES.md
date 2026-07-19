@@ -37,6 +37,17 @@ schema, and Python package from revision
 `6a3f555ab94e977bde4359573ef72f225a507722`. Its complete license and notices
 are included inside the signed application at `Resources/SwanSongSDK`.
 
+## Yokoi Boot and Yokoi Cart Service
+
+SwanSong includes separately encoded WonderSwan programs for installing the
+Yokoi Boot custom-splash loader and running Yokoi Cart Service from RAM. They
+are GPL-3.0-or-later programs derived in part from Adrian Siekierka's
+BootFriend. They are not linked into SwanSong and contain no original Bandai
+firmware or commercial game data. Their complete GPLv3 license, notices,
+verified artifact manifest, and corresponding-source location are included at
+`Resources/YokoiHardware`. The corresponding Yokoi source is pinned to
+SwanSong Core revision `94e9a1ae3d09f8d9eab776d36296144e85c72f1d`.
+
 ## Stack-less Just-In-Time compiler (SLJIT)
 
 Copyright Zoltan Herczeg. All rights reserved.

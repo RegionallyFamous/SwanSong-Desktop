@@ -1,0 +1,21 @@
+{
+  "schema": "swan-song-yokoi-hardware-v1",
+  "version": "0.2.0-prototype.1",
+  "releaseReady": true,
+  "source": "https://github.com/RegionallyFamous/swansong-core/tree/94e9a1ae3d09f8d9eab776d36296144e85c72f1d/firmware",
+  "sourceRevision": "94e9a1ae3d09f8d9eab776d36296144e85c72f1d",
+  "installer": {
+    "encodedFile": "yokoi-boot-installer.zlib.b64",
+    "outputFile": "Yokoi Boot Installer.wsc",
+    "compression": "raw-deflate+base64",
+    "byteCount": 131072,
+    "sha256": "8a2d6e580ebb0bc53b52929166d9517e90840db39849804717880439682db8f3"
+  },
+  "cartService": {
+    "encodedFile": "yokoi-cart-service.zlib.b64",
+    "outputFile": "yokoi-cart-service.bfb",
+    "compression": "raw-deflate+base64",
+    "byteCount": 4484,
+    "sha256": "b650bc62ddbbec6027783b577baee5319ffd25d25ce06d38c1353174dc0d1ce0"
+  }
+}

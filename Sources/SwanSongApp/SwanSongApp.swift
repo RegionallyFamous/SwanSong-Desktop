@@ -108,6 +108,7 @@ struct SwanSongApp: App {
         .defaultSize(width: 1040, height: 680)
         .commands {
             SidebarCommands()
+            CartridgeLabCommands()
 
             LegalSupportCommands(updater: appDelegate.updater)
             CommandGroup(after: .toolbar) {
@@ -434,6 +435,11 @@ struct SwanSongApp: App {
             }
         }
 
+        Window("Cartridge Lab", id: "cartridge-lab") {
+            CartridgeLabView(appModel: model)
+        }
+        .defaultSize(width: 820, height: 700)
+
         Settings {
             SettingsView(model: model, updater: appDelegate.updater)
                 .frame(
@@ -442,6 +448,24 @@ struct SwanSongApp: App {
                     minHeight: 520,
                     idealHeight: 620
                 )
+        }
+    }
+}
+
+private struct CartridgeLabCommands: Commands {
+    @Environment(\.openWindow) private var openWindow
+
+    var body: some Commands {
+        CommandMenu("Hardware") {
+            Button("Open Cartridge Lab") {
+                openWindow(id: "cartridge-lab")
+            }
+            .keyboardShortcut("h", modifiers: [.command, .shift])
+        }
+        CommandGroup(after: .newItem) {
+            Button("Open Cartridge Lab…") {
+                openWindow(id: "cartridge-lab")
+            }
         }
     }
 }

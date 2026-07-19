@@ -6,6 +6,19 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+### Added
+
+- Added Cartridge Lab, a native macOS workflow for loading Yokoi Cart Service
+  through an ExtFriend-compatible serial adapter, inspecting a cartridge,
+  creating checksum-verified ROM and save backups, and restoring SRAM/EEPROM
+  with both Mac-side confirmation and the service's physical A+B requirement.
+- Added a recovery-conscious Yokoi Boot setup workflow. Choose the SD-card
+  folder browsed by a compatible flash cartridge and SwanSong adds a
+  hash-verified installer ROM without overwriting a different file. The app
+  includes the separate GPLv3 WonderSwan programs, license, manifest, and
+  corresponding-source location; it still includes no original system
+  firmware or commercial game data.
+
 ### Fixed
 
 - Fixed the signed Homebrew Catalog failing to open in the notarized app. Its

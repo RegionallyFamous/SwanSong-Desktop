@@ -77,6 +77,26 @@ Make a complete backup first and eject the card in Finder after success. Until
 `swansong-core` publishes an authorized stable release, the tool reports that
 no verified release exists and performs no write.
 
+## Preparing a Yokoi Boot installer card
+
+Choose **Hardware > Open Cartridge Lab**, then open **Install Yokoi Boot**.
+Select the SD-card folder that your compatible flash cartridge can browse.
+SwanSong adds `Yokoi Boot Installer.wsc`, reads it back, and requires its exact
+bundled SHA-256. A different existing file is never replaced; SwanSong chooses
+a numbered filename instead. Eject the card in Finder before removing it.
+
+Put the card back into the flash cartridge, launch the installer directly, and
+follow its on-console backup and A+B confirmation flow. Keep that cartridge
+unchanged because its SRAM holds the internal-EEPROM recovery backup. This
+copying workflow does not make an arbitrary cartridge writable: the cartridge
+must already have an SD menu capable of launching `.wsc` files and at least
+8 KiB of SRAM for the recovery backup.
+
+A completely stock WonderSwan Color or SwanCrystal cannot accept its first
+loader through the EXT serial port alone. First installation needs the
+installer cartridge, a WonderWitch route, or direct 93C86 programming. Original
+monochrome WonderSwan does not have the Color custom-splash storage area.
+
 ## First game
 
 Choose **File > Open Game…** or drag a supported `.ws`, `.wsc`, `.pc2`,

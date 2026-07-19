@@ -95,6 +95,22 @@ selected SD card without formatting it or disturbing games, saves, Memories,
 settings, Presets, or unrelated cores. It remains locked until the separate
 SwanSong Core project publishes an authorized stable release.
 
+### Cartridge Lab
+
+Connect a WonderSwan Color or SwanCrystal through an ExtFriend-compatible USB
+serial adapter, then use the handheld itself to read an inserted cartridge.
+Cartridge Lab can create a checksum-verified ROM dump, back up SRAM or EEPROM,
+and restore an exact-size save with physical A+B confirmation and complete
+readback verification. A verified Yokoi Boot installer can also be added to
+the folder browsed by a compatible SD-based flash cartridge.
+The installer cartridge must provide at least 8 KiB of SRAM for its verified
+internal-EEPROM recovery backup.
+
+The first Yokoi Boot installation still needs that bootstrap cartridge, a
+WonderWitch route, or direct EEPROM programming; a stock console cannot accept
+code through EXT alone. Retail game ROM is mask ROM and is never offered as a
+writable target.
+
 <!-- homebrew-catalog-status: published -->
 
 ## Private on purpose

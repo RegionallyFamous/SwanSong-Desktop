@@ -73,6 +73,20 @@ settings, Memories, Presets, or other cores. It checks the available space,
 verifies the files after writing them, and rolls back if the install cannot be
 confirmed. Eject the card in Finder before removing it.
 
+### How do I read my own cartridge?
+
+Open **Hardware > Open Cartridge Lab**. Use a 3.3 V ExtFriend-compatible USB
+serial adapter—never a PC RS-232 cable—and insert the cartridge before powering
+on the WonderSwan. A Color or SwanCrystal with Yokoi Boot installed can load the
+temporary cartridge service, create a verified game/save backup, or restore an
+exact-size save after both the Mac warning and A+B on the console.
+
+If Yokoi Boot is not installed, use Cartridge Lab's **Install Yokoi Boot** tab
+to add the installer to an SD-based flash cartridge. Copying the file does not
+program an arbitrary cartridge; its existing menu must be able to launch
+`.wsc` files and it must provide at least 8 KiB of SRAM. Keep the installer
+cartridge after setup because its SRAM holds the recovery backup.
+
 ## Still stuck? Tell us what happened
 
 Use the repository's issue form and include:

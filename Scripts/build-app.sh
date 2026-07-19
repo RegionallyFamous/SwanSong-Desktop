@@ -37,6 +37,13 @@ fi
 
 python3 "$SCRIPT_DIR/check-sparkle-dependency-lock.py" \
   --repository "$MACOS_DIR" >/dev/null
+if [ "${SWAN_RELEASE_BUILD:-0}" = "1" ]; then
+  python3 "$SCRIPT_DIR/check-yokoi-hardware-payload.py" --release \
+    "$MACOS_DIR/Packaging/YokoiHardware" >/dev/null
+else
+  python3 "$SCRIPT_DIR/check-yokoi-hardware-payload.py" \
+    "$MACOS_DIR/Packaging/YokoiHardware" >/dev/null
+fi
 if [ "${SWAN_RELEASE_BUILD:-0}" = "1" ] \
   && [ -n "${SWAN_SPARKLE_FRAMEWORK_SOURCE:-}" ]; then
   echo "release builds cannot override the pinned SwiftPM Sparkle artifact" >&2
@@ -295,6 +302,10 @@ cp "$MACOS_DIR/Dependencies/ares.lock.json" \
   "$APP_DIR/Contents/Resources/ares.lock.json"
 cp "$MACOS_DIR/Dependencies/sparkle.lock.json" \
   "$APP_DIR/Contents/Resources/sparkle.lock.json"
+ditto "$MACOS_DIR/Packaging/YokoiHardware" \
+  "$APP_DIR/Contents/Resources/YokoiHardware"
+python3 "$SCRIPT_DIR/check-yokoi-hardware-payload.py" \
+  "$APP_DIR/Contents/Resources/YokoiHardware" >/dev/null
 if [ -n "$SDK_PAYLOAD_SOURCE" ]; then
   "$SCRIPT_DIR/check-swansong-sdk-payload.sh" "$SDK_PAYLOAD_SOURCE" >/dev/null
   ditto "$SDK_PAYLOAD_SOURCE" "$APP_DIR/Contents/Resources/SwanSongSDK"
