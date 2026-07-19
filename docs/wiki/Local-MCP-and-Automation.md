@@ -55,10 +55,10 @@ approvals. There is no unattended Story Forge action method. Creation,
 editorial, art review, catalog, lock, migration, and publication actions remain
 visible choices in the native workspace.
 
-Story Forge status/navigation is a current-source preview and is not available
-in the public 0.4.3 download. Cartridge Lab is intentionally absent from MCP:
-serial selection, cartridge reads, installer media, and every save write remain
-visible hardware actions performed by a person at the Mac and console.
+Story Forge status and navigation are included in 0.5.0. Cartridge Lab is
+intentionally absent from MCP: serial selection, cartridge reads, installer
+media, and every save write remain visible hardware actions performed by a
+person at the Mac and console.
 
 ## Studio tools
 

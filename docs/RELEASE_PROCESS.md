@@ -39,7 +39,7 @@ not routine release metadata.
 ## Release gates
 
 1. Update `CHANGELOG.md`, versioned release notes, the concise updater card at
-   `docs/releases/appcast/X.Y.Z.html`, the beta testing guide when applicable,
+   `docs/releases/appcast/X.Y.Z.html`, the beta or stable release testing guide,
    version, and build number. The updater card should lead with user benefits;
    its validator permits only a small set of formatting tags and the exact
    GitHub release link. Confirm the staged metadata and repo-backed Wiki agree

@@ -12,17 +12,16 @@ tour. Everything else can wait until curiosity wins.
 - **Translate:** record exact routes, compare Original and Patched frames, find
   the first visual change, and keep private evidence with the project.
 - **Make:** build and prove WonderSwan projects in SwanSong Studio.
-- **Write (preview):** develop a light novel in Story Forge, then carry it into
-  Studio for a WonderSwan adaptation.
-- **Preserve (preview):** use Cartridge Lab with a real WonderSwan Color or
+- **Write:** develop a light novel in Story Forge, then carry it into Studio
+  for a WonderSwan adaptation.
+- **Preserve:** use Cartridge Lab with a real WonderSwan Color or
   SwanCrystal to make verified cartridge and save backups.
 - **Trust but verify:** inspect the privacy, source, build, signing,
   notarization, and release contracts behind the public app.
 
-The current public download is **SwanSong 0.4.3 beta**. Story Forge and
-Cartridge Lab are present in current source but have not shipped in that signed
-download yet. Versioned release notes remain authoritative for what each build
-actually contains.
+The current public download is **SwanSong 0.5.0**. It includes Story Forge
+and Cartridge Lab. Versioned release notes remain authoritative for what each
+build actually contains.
 
 ## How the pieces fit
 
@@ -31,8 +30,8 @@ actually contains.
 | Story Forge novel framework | [RegionallyFamous/swansong-story-forge](https://github.com/RegionallyFamous/swansong-story-forge) | Separate schema-v3 narrative policy and tool source. Desktop invokes only its typed local allowlist against explicitly selected projects. |
 | SwanSong Desktop for macOS | [`RegionallyFamous/SwanSong-Desktop`](https://github.com/RegionallyFamous/SwanSong-Desktop) | This repository: SwiftUI app, library, translation workbench, C ABI, release tooling, and tests. |
 | SwanSong for Analogue Pocket | [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core) | Separate FPGA project, artifacts, hardware qualification, and release lane. Desktop can merge only an immutable, authorized stable Core release onto a user-selected card; it does not build or publish the FPGA product. |
-| Yokoi hardware utilities | Yokoi Boot and Yokoi Cart Service at the immutable SwanSong Core revision recorded in [`SOURCE_PROVENANCE.md`](../SOURCE_PROVENANCE.md) | Separately executable GPLv3 WonderSwan programs used by current-source Cartridge Lab. Desktop verifies their payload, license, notice, and corresponding-source location without linking them into the GPLv2 Mac executable. |
-| First-party homebrew catalog | [`RegionallyFamous/swansong-catalog`](https://github.com/RegionallyFamous/swansong-catalog) | Separate signed catalog and publication record. SwanSong 0.4.3 loads it only after the user asks. |
+| Yokoi hardware utilities | Yokoi Boot and Yokoi Cart Service at the immutable SwanSong Core revision recorded in [`SOURCE_PROVENANCE.md`](../SOURCE_PROVENANCE.md) | Separately executable GPLv3 WonderSwan programs used by Cartridge Lab. Desktop verifies their payload, license, notice, and corresponding-source location without linking them into the GPLv2 Mac executable. |
+| First-party homebrew catalog | [`RegionallyFamous/swansong-catalog`](https://github.com/RegionallyFamous/swansong-catalog) | Separate signed catalog and publication record. SwanSong loads it only after the user asks. |
 | WonderSwan software engine | Upstream ares at the revision in [`Dependencies/ares.lock.json`](../Dependencies/ares.lock.json) | Prepared into ignored `.engine/` build storage; official source archives include the exact sanitized corresponding source and integration patch. |
 | SwanSong Desktop update feed and app releases | This repository's [`updates/appcast.xml`](../updates/appcast.xml) and [GitHub Releases](https://github.com/RegionallyFamous/SwanSong-Desktop/releases) | Sparkle updates the macOS app only. It does not distribute homebrew or invoke the separate Pocket installer. |
 | Native updater framework | Sparkle at the exact version and commit in [`Package.swift`](../Package.swift), [`Package.resolved`](../Package.resolved), and [`Dependencies/sparkle.lock.json`](../Dependencies/sparkle.lock.json) | Third-party framework embedded in the signed app. Official corresponding-source archives include the locked Sparkle source and license; SwanSong owns its integration, policy, feed, release tooling, and tests in this repository. |
@@ -53,7 +52,7 @@ Release payload and source-archive gates reject firmware binaries. Historical
 
 ## Homebrew publication status
 
-SwanSong 0.4.3 includes the first-party Homebrew Catalog public key and can add
+SwanSong 0.5.0 includes the first-party Homebrew Catalog public key and can add
 an authorized original game directly to the private library. It does not load
 the catalog at launch or merely because the page is open. **Browse Games**,
 **Refresh**, and a selected download are the only catalog network actions.
@@ -167,12 +166,13 @@ version tag before notarization; the
 standalone artifact verifier does not independently prove Git history from an
 exported source tree.
 
-Betas must be marked as GitHub prereleases so `/releases/latest` continues to
-select the stable channel and must use Sparkle's beta channel so stable-only
-clients do not offer them. Appcast publication follows uploaded-asset
-verification and requires its own signed-feed and previous-version update
-tests. The complete operator procedure is in the [release process](RELEASE_PROCESS.md);
-tester-facing boundaries are in the [0.4 beta guide](BETA_TESTING.md).
+Stable releases become GitHub's `/releases/latest` destination and use the
+normal Sparkle channel. Betas are GitHub prereleases and use Sparkle's beta
+channel so stable-only clients do not offer them. Appcast publication follows
+uploaded-asset verification and requires its own signed-feed and
+previous-version update tests. The complete operator procedure is in the
+[release process](RELEASE_PROCESS.md); tester-facing boundaries are in the
+[0.5 release guide](RELEASE_TESTING.md).
 
 ## More documentation
 
@@ -192,6 +192,7 @@ tester-facing boundaries are in the [0.4 beta guide](BETA_TESTING.md).
 - [Privacy](../PRIVACY.md)
 - [Support](../SUPPORT.md)
 - [Source and fixture provenance](../SOURCE_PROVENANCE.md)
+- [0.5.0 release notes](releases/0.5.0.md)
 - [0.4.3 beta release notes](releases/0.4.3.md)
 - [0.4.2 beta release notes](releases/0.4.2.md)
 - [0.4.1 beta release notes](releases/0.4.1.md)

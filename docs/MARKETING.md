@@ -52,7 +52,7 @@ Lead with the feeling, then earn the trust:
 
 ## Release honesty
 
-The public download is currently **0.4.3 beta**. Story Forge and Cartridge Lab
-are current-source previews, not shipped 0.4.3 features. Excitement never gets
-to erase that distinction. Say what people can download now, then show what is
-already being built next.
+The public download is currently **0.5.0**. Story Forge and Cartridge Lab
+are shipped 0.5.0 features. Excitement never gets to erase requirements or
+known limits: Story Forge needs its local framework, Cartridge Lab needs
+authorized hardware, and every physical write keeps its confirmation gates.

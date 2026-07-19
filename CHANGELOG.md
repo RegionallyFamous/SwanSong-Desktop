@@ -6,6 +6,12 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-07-19
+
+**From Story to Cartridge.** SwanSong's workshop grows in both directions:
+write and publish a novel in Story Forge, or put a real WonderSwan back in the
+loop with Cartridge Lab.
+
 ### Added
 
 - Added Story Forge, a native schema-v3 light-novel workspace for stage gates,
@@ -31,9 +37,8 @@ records those user-visible changes. Published releases use semantic versioning.
 
 - Rebuilt the README and Wiki around the reasons to use SwanSong: a beautiful
   private library, instant BIOS-free play, serious translation and creation
-  tools, and careful links to real hardware. Added a complete Cartridge Lab
-  guide and made the public 0.4.3 versus current-source preview boundary clear
-  everywhere it matters.
+  tools, and careful links to real hardware. Added complete Story Forge and
+  Cartridge Lab guides and a clearer path from first download to deeper work.
 
 ### Fixed
 
@@ -424,7 +429,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.3...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.3...v0.5.0
 [0.4.3]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.0...v0.4.1

@@ -9,9 +9,7 @@ From one native window you can inspect an inserted cartridge, make a
 checksum-verified ROM backup, back up SRAM or EEPROM, and restore an exact-size
 save with confirmation on both screens.
 
-> **Current-source preview:** Cartridge Lab is present on `main` but is not in
-> the public SwanSong 0.4.3 download. It will ship only after the next beta
-> passes hardware, packaging, signing, and release checks.
+Cartridge Lab is included in SwanSong 0.5.0.
 
 ## What you need
 

@@ -23,24 +23,33 @@ printf '%s\n' "$BUILD" | grep -Eq '^[1-9][0-9]*$' \
 
 MINOR_VERSION=${VERSION%.*}
 NOTES="$ROOT/docs/releases/$VERSION.md"
-WIKI_BETA="$ROOT/docs/wiki/$MINOR_VERSION-Beta-Testing.md"
 
 [ -s "$NOTES" ] || fail "versioned release notes are missing: docs/releases/$VERSION.md"
-[ -s "$WIKI_BETA" ] || fail "current Wiki beta page is missing: docs/wiki/$MINOR_VERSION-Beta-Testing.md"
+if grep -Fq "## SwanSong $VERSION beta" "$NOTES"; then
+  TESTING="$ROOT/docs/BETA_TESTING.md"
+  TESTING_TITLE="# SwanSong $MINOR_VERSION beta testing"
+  WIKI_TESTING="$ROOT/docs/wiki/$MINOR_VERSION-Beta-Testing.md"
+else
+  grep -Fq "## SwanSong $VERSION " "$NOTES" \
+    || fail "versioned notes do not identify SwanSong $VERSION"
+  TESTING="$ROOT/docs/RELEASE_TESTING.md"
+  TESTING_TITLE="# SwanSong $MINOR_VERSION release testing"
+  WIKI_TESTING="$ROOT/docs/wiki/$MINOR_VERSION-Release-Testing.md"
+fi
+
+[ -s "$WIKI_TESTING" ] || fail "current Wiki testing page is missing: ${WIKI_TESTING#"$ROOT/"}"
 grep -Fq "## [$VERSION] -" "$ROOT/CHANGELOG.md" \
   || fail "CHANGELOG has no dated $VERSION section"
-grep -Fq "SwanSong $VERSION beta" "$NOTES" \
-  || fail "versioned notes do not identify the $VERSION beta"
-grep -Fq "# SwanSong $MINOR_VERSION beta testing" "$ROOT/docs/BETA_TESTING.md" \
-  || fail "beta guide does not identify $MINOR_VERSION"
-grep -Fq "SwanSong $VERSION ($BUILD)" "$ROOT/docs/BETA_TESTING.md" \
-  || fail "beta guide does not identify build $BUILD"
+grep -Fq "$TESTING_TITLE" "$TESTING" \
+  || fail "testing guide does not identify $MINOR_VERSION"
+grep -Fq "SwanSong $VERSION ($BUILD)" "$TESTING" \
+  || fail "testing guide does not identify build $BUILD"
 grep -Fq "This policy describes SwanSong $VERSION." "$ROOT/PRIVACY.md" \
   || fail "privacy policy version does not match $VERSION"
 grep -Fq "docs/releases/$VERSION.md" "$ROOT/README.md" \
   || fail "README does not link the current release notes"
-grep -Fq "$MINOR_VERSION-Beta-Testing.md" "$ROOT/Scripts/prepare-wiki-sync.sh" \
-  || fail "Wiki publishing guard does not require the current beta page"
+grep -Fq "$(basename "$WIKI_TESTING")" "$ROOT/Scripts/prepare-wiki-sync.sh" \
+  || fail "Wiki publishing guard does not require the current testing page"
 
 python3 - "$APPCAST" "$VERSION" "$BUILD" <<'PY'
 import pathlib

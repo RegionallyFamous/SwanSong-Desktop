@@ -20,9 +20,8 @@ its editorial, rights, continuity, ImageGen art, and soundtrack gates, choose
 Studio without copying prose, inventing a second story schema, or treating game
 execution as editorial approval.
 
-Story Forge is a current-source preview and is not included in the public
-0.4.3 download yet. Studio itself and its verified SDK 0.4.0 workflow are part
-of 0.4.3.
+Story Forge, Studio, and the verified SDK 0.4.0 workflow are included in
+SwanSong 0.5.0.
 
 ## Your first project
 
@@ -111,7 +110,7 @@ reset. This keeps device writes out of path-free unattended automation.
 
 ## SDK 0.4 authoring and replay tools
 
-Desktop 0.4.3 is pinned to released SDK 0.4.0 and exposes its public contracts
+Desktop 0.5.0 is pinned to released SDK 0.4.0 and exposes its public contracts
 without inventing private project models:
 
 - `swan replay --json` → `swansong-replay-report-v1`, with optional
@@ -167,4 +166,5 @@ Mac.
 
 The SDK remains independently usable from a terminal, CI, or an agent. See
 [[Build and Test]] for contributor gates, [[Local MCP and Automation]] for the
-deterministic agent boundary, and [[0.4 Beta Testing]] for current acceptance.
+deterministic agent boundary, and [[0.5 Release Testing]] for current
+acceptance.

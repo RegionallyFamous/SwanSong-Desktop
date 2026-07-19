@@ -1,0 +1,136 @@
+# SwanSong 0.5 release testing
+
+This guide covers the SwanSong Desktop 0.5 release. Test only games, manuscripts, homebrew,
+SDK projects, cartridges, and save data you own or are authorized to use. Never
+attach ROMs, saves, private screenshots or audio, manuscripts, cartridge-source
+evidence, or Translation Lab evidence to a public report.
+
+The signed public release is **SwanSong 0.5.0 (10)**.
+
+## What this beta is testing
+
+- **Story Forge on the Mac:** select a compatible schema-v3 framework, create
+  and reopen a novel, move through Concept, Outline, Draft, Revision, and
+  Release, and confirm the native workspace preserves the selected project.
+- **Editorial without fake approval:** run every editorial, continuity, reader,
+  rights, art, music, catalog, lock, EPUB, and PDF contract. Missing, stale, or
+  rejected evidence must remain blocking, and SwanSong must never invent a
+  human approval.
+- **Story-to-game handoff:** choose **Continue in Studio** after Revision and
+  confirm the novel remains open while SwanSong Studio opens for adaptation.
+- **Cartridge Lab reads:** with authorized hardware, inspect a cartridge and
+  create exact, checksum-reported ROM and save backups. Interrupt a controlled
+  transfer and confirm no partial destination is promoted.
+- **Cartridge Lab writes:** use disposable test save data. Confirm restoration
+  rejects the wrong size and requires both Mac confirmation and physical A+B
+  before writing, followed by a complete readback.
+- **Yokoi Boot media:** add the installer to a controlled compatible SD folder,
+  verify a naming conflict cannot overwrite a different file, and confirm the
+  final bytes match the bundled payload.
+- **One development workspace:** move an SDK project through New, Assets,
+  Build, Test, Play, Profile, Evidence, and Release without leaving SwanSong.
+- **The complete SDK tool suite:** exercise Doctor, Dev, Scenario Recorder,
+  Evidence Diff, deterministic input fuzzing, Sprite/VRAM profiling, Asset
+  Optimizer, Save/RTC Laboratory, six visual-authoring documents, replay
+  timelines, and deterministic failing-plan minimization.
+- **Evidence-backed release:** inspect required PNG and WAV observations,
+  record a hash-bound verdict for every scenario check, and confirm Release
+  refuses stale, incomplete, or execution-only evidence.
+- **ABI 9 source provenance:** probe a small native rectangle and select map,
+  raster, palette, or sprite-attribute components. Private evidence may retain
+  ownership and lineage; MCP must return only source-free hashes, counts, and
+  an honest completeness result.
+- **Translation Lab automation:** retain deterministic routes, paired capture,
+  display-owner and source probes, observed-play recovery, evidence browsing,
+  and complete installed MCP-tool coverage.
+- **The everyday player:** retain Open IPL, imports, controls, Time Ribbon,
+  save states, portrait play, native 224×157 fitting, app updates, and relaunch
+  on Apple silicon and Intel.
+
+## Story Forge guardrails
+
+- The framework, catalog, and novel folders must be explicitly selected.
+- Commands are a fixed typed allowlist; SwanSong must not run arbitrary project
+  commands or silently approve editorial, reader, rights, or art review.
+- ImageGen briefs and review packets do not turn procedural placeholders into
+  production illustration.
+- Catalog comparisons are review leads, not automatic originality verdicts.
+- Manuscripts, reports, art, music, rights records, approvals, and editions
+  stay in the selected local project and must never appear through MCP.
+
+## Cartridge Lab guardrails
+
+- Use only a WonderSwan Color or SwanCrystal and a 3.3 V ExtFriend-compatible
+  USB serial adapter. Never use PC RS-232 voltage.
+- A stock console cannot receive its first Yokoi Boot loader through EXT alone.
+  The bootstrap must come from compatible launchable media, WonderWitch, or
+  direct EEPROM programming.
+- Retail mask ROM is read-only. Save writes must remain disarmed until the Mac
+  warning and physical A+B confirmation are complete.
+- Destination files are promoted only after the complete transfer succeeds.
+  Existing files, symlinks, size mismatches, interrupted transfers, and failed
+  readback must fail closed.
+- Cartridge operations are intentionally absent from MCP. A person must select
+  the device, destination, source save, and every destructive confirmation.
+
+## Studio, provenance, and automation guardrails
+
+- Studio invokes exact `swan` commands and rejects unknown structured-result
+  schemas. It does not reinterpret manifests, compile assets itself, or own a
+  second release policy.
+- SwanSong remains the only gameplay-validation backend. No alternate emulator
+  may appear in commands, reports, documentation, or acceptance evidence.
+- Project folders must be explicitly selected. The bundled SDK is verified in
+  place; an external SDK is an explicit development override.
+- Only one SDK command may run at once. Cancellation terminates its process
+  group before another command begins.
+- Rectangle probes keep cartridge ranges, emulated addresses, OAM fields,
+  display chains, executed-read context, conservative origins, and outside
+  consumers in the private project. Ambiguous or overflowing dataflow is
+  marked incomplete rather than guessed.
+- Live MCP stays off by default, token-authenticated, and limited to its
+  documented data and tool allowlists.
+
+## Expected boundaries
+
+SwanSong 0.5.0 embeds SDK 0.4.0 but not Python or Wonderful. Install those
+external dependencies before running Studio Doctor or a build. Story Forge
+also requires a compatible local framework checkout.
+
+The Homebrew Catalog stays network-silent until the tester explicitly chooses
+Browse Games, Refresh, or a listed download. The Analogue Pocket workflow stays
+locked until a verified stable Core release is published. Raw HID mappings are
+not guessed; physical device enumeration, hotplug, input delivery, SD-card
+access, cartridge operations, and signed update installation need hands-on
+testing even where reducers and failure paths are automated.
+
+Treat **Picture Appeared** as a useful smoke-test result, not a complete
+compatibility verdict. Long play, save/restore, controller behavior, and
+title-specific quirks still deserve hands-on attention.
+
+## Before reporting a result
+
+1. Confirm **SwanSong 0.5.0 (10)** in **SwanSong > About SwanSong**.
+2. Record the Mac model, macOS version, architecture, controller or cartridge
+   hardware when relevant, SDK version, Python version, and Wonderful revision.
+3. For Story Forge, state the visible workspace and sanitized action/result;
+   never attach the manuscript, reports, paths, art, or editions.
+4. For Cartridge Lab, state the console model, adapter family, cartridge/save
+   type, action, byte count, and sanitized result without attaching a dump.
+5. For Studio, state the workspace, exact visible command, project recipe, and
+   whether a newly generated project reproduces the issue.
+6. For Play, Evidence, or Release, include the scenario/check name, sanitized
+   status, and whether PNG/WAV evidence was inspected.
+7. For source provenance, report only the frame, rectangle dimensions,
+   selected components, completeness, and source-free counts.
+8. For MCP, state whether SwanSong and the client were restarted, whether local
+   control was enabled, the tool name, and the sanitized error. Never share the
+   bearer token.
+9. Distinguish **Reached Video** from an end-to-end **Works** verdict.
+10. For updater issues, include installed and offered version/build, channel,
+    opt-in settings, and exact visible error. Do not attach a rejected archive.
+
+Use the [support guide](../SUPPORT.md), [privacy policy](../PRIVACY.md),
+[Story Forge Wiki page](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Story-Forge),
+and [Cartridge Lab Wiki page](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Cartridge-Lab)
+before reporting a result.

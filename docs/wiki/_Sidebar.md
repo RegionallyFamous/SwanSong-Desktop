@@ -7,7 +7,7 @@
 
 **Create and translate**
 
-- [[Story Forge]] — current-source preview
+- [[Story Forge]]
 - [[Translation Lab]]
 - [[SwanSong Studio]]
 - [[Local MCP and Automation]]
@@ -15,7 +15,7 @@
 **Homebrew and hardware**
 
 - [[Homebrew Catalog]]
-- [[Cartridge Lab]] — current-source preview
+- [[Cartridge Lab]]
 - [[Analogue Pocket SD Setup]]
 - [[Open IPL]]
 
@@ -25,6 +25,7 @@
 - [[Build and Test]]
 - [[Signing and Notarization]]
 - [[Release Gates]]
+- [[0.5 Release Testing]]
 - [[0.4 Beta Testing]]
 
 **Help and policies**

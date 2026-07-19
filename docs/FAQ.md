@@ -8,21 +8,16 @@ people usually want before downloading it or plugging in hardware.
 
 Yes. SwanSong Desktop is a native macOS player for WonderSwan, WonderSwan
 Color, SwanCrystal, and Pocket Challenge V2 software, built on a pinned ares
-WonderSwan engine. It is also a visual library, translation workbench, and
-homebrew development desk; current source is growing dedicated writing and
-physical-cartridge workspaces too.
+WonderSwan engine. It is also a visual library, translation workbench, homebrew
+development desk, light-novel workspace, and guarded physical-cartridge lab.
 
 ## What is included in the public beta?
 
-The signed public download is SwanSong 0.4.3 beta. It includes the player,
+The signed public download is SwanSong 0.5.0. It includes the player,
 library, Time Ribbon, visual save states, Translation Lab, SwanSong Studio with
 the verified SDK 0.4.0, the signed Homebrew Catalog, native updates, and the
-guarded Analogue Pocket setup workflow.
-
-Story Forge and Cartridge Lab are current-source previews. They are documented
-for contributors and upcoming-beta testers, but they are not in the 0.4.3
-download yet. Check the [changelog](../CHANGELOG.md#unreleased) and the next
-release notes before treating either preview as shipped.
+guarded Analogue Pocket setup workflow. It also includes Story Forge for novels
+and adaptations plus Cartridge Lab for authorized physical-cartridge work.
 
 ## Does it include games or require a BIOS?
 
@@ -35,7 +30,7 @@ versioned release notes.
 
 ## Can SwanSong install homebrew directly from GitHub?
 
-Yes. SwanSong 0.4.3 can browse its signed first-party Homebrew Catalog and add
+Yes. SwanSong 0.5.0 can browse its signed first-party Homebrew Catalog and add
 an authorized original game to your private library. It connects only after
 you choose **Browse Games**, **Refresh**, or a specific download. **Add From
 Mac** remains available for local homebrew.
@@ -123,8 +118,8 @@ not run the Core installer.
 
 ## Can SwanSong back up a physical cartridge?
 
-Current-source Cartridge Lab can use a WonderSwan Color or SwanCrystal as the
-reader. With Yokoi Boot and a 3.3 V ExtFriend-compatible USB serial adapter, it
+Cartridge Lab can use a WonderSwan Color or SwanCrystal as the reader. With
+Yokoi Boot and a 3.3 V ExtFriend-compatible USB serial adapter, it
 can inspect an inserted cartridge, make checksum-verified ROM and SRAM/EEPROM
 backups, and restore an exact-size save after confirmation on both the Mac and
 the console.
@@ -134,7 +129,7 @@ cannot receive its first loader through EXT alone; Yokoi Boot must first be
 installed through a compatible flash-cartridge bootstrap, WonderWitch, or
 direct EEPROM programming. Read the
 [Cartridge Lab guide](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Cartridge-Lab)
-before connecting hardware. Cartridge Lab has not shipped in 0.4.3.
+before connecting hardware.
 
 ## Why can a game reach video but still be “Untested”?
 
