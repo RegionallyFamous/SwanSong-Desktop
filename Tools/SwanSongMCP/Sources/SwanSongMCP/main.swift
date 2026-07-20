@@ -184,7 +184,7 @@ private enum SwanSongMCPServer {
     private static let protocolVersion = "2025-11-25"
     private static let liveApp = LiveAppClient()
     private static let observedPlay = ObservedPlayRegistry()
-    private static let instructions = "Controls a running SwanSong app through its opt-in local bridge, runs guarded Translation Lab evidence workflows, and can execute bounded deterministic homebrew playtest plans through SwanSong's own engine. Studio tools expose only one already-open project slot without its name or path, and invoke only the fixed doctor/assets/build/test/play/profile allowlist after confirmProjectWrites=true. Playtest and observed-step tools return a rendered game frame and audio window only when confirmShareCapture=true. The server must never expose ROM, save, state, persistence, RAM, tile, palette, map-cell, sprite/OAM attribute, CPU-writer, conservative-origin, cartridge-range, address, or mapper values. Translation tools only accept project-contained files and require confirmProjectWrites=true. Persisted translation captures privately retain both native frames, the exact plan, deterministic context hashes, and pixel-diff evidence inside the selected project. Display-owner probes and static-analysis seeds retain detailed source evidence privately and return only hashes and aggregate counts. Observed play holds a private ownership lease, atomically saves its cumulative from-boot plan after every step, marks crash-abandoned sessions interrupted, recovers only by clean-boot plan replay, and creates final evidence only by another clean-boot replay. A successful execution is observation evidence, not proof that a game mechanic passed; inspect the frame, listen to relevant audio, and exercise the declared game contract."
+    private static let instructions = "Controls a running SwanSong app through its opt-in local bridge, runs guarded Translation Lab evidence workflows, and can execute bounded deterministic homebrew playtest plans through SwanSong's own engine. Studio tools expose only one already-open project slot without its name or path, and invoke only the fixed doctor/assets/build/test/play/profile allowlist after confirmProjectWrites=true. Playtest and observed-step tools return a rendered game frame and audio window only when confirmShareCapture=true. A single playtest may also return the SDK's bounded, structurally validated semantic trace when captureSDKTrace=true and confirmShareSDKTrace=true. The server must never expose ROM, save, state, persistence, raw RAM, tile, palette, map-cell, sprite/OAM attribute, CPU-writer, conservative-origin, cartridge-range, address, or mapper values. Translation tools only accept project-contained files and require confirmProjectWrites=true. Persisted translation captures privately retain both native frames, the exact plan, deterministic context hashes, and pixel-diff evidence inside the selected project. Display-owner probes and static-analysis seeds retain detailed source evidence privately and return only hashes and aggregate counts. Observed play holds a private ownership lease, atomically saves its cumulative from-boot plan after every step, marks crash-abandoned sessions interrupted, recovers only by clean-boot plan replay, and creates final evidence only by another clean-boot replay. A successful execution is observation evidence, not proof that a game mechanic passed; inspect the frame, listen to relevant audio, and exercise the declared game contract."
 
     static func main() {
         while let line = readLine(strippingNewline: true) {
@@ -709,6 +709,12 @@ private enum SwanSongMCPServer {
               let planValue = arguments["plan"] else {
             throw SwanSongMCPError(message: "romPath and plan are required")
         }
+        let captureSDKTrace = arguments["captureSDKTrace"] as? Bool == true
+        if captureSDKTrace && arguments["confirmShareSDKTrace"] as? Bool != true {
+            throw SwanSongMCPError(
+                message: "Set confirmShareSDKTrace to true after confirming that the SDK's bounded semantic gameplay trace may be shared with this MCP client."
+            )
+        }
         guard (romPath as NSString).isAbsolutePath else {
             throw SwanSongMCPError(message: "romPath must be an absolute path.")
         }
@@ -737,8 +743,21 @@ private enum SwanSongMCPServer {
         }
         let planData = try JSONSerialization.data(withJSONObject: planValue)
         let plan = try JSONDecoder().decode(TranslationFrameInputPlan.self, from: planData)
-        let capture = try SwanSongPlaytester.run(image: image, plan: plan)
-        let (reportText, reportObject) = try encodedReport(capture.report)
+        let capture = try SwanSongPlaytester.run(
+            image: image,
+            plan: plan,
+            captureSDKTrace: captureSDKTrace
+        )
+        let (_, baseReportObject) = try encodedReport(capture.report)
+        var reportObject = baseReportObject
+        if let sdkTrace = capture.sdkTrace {
+            reportObject["deterministicTraceBase64"] = sdkTrace.base64EncodedString()
+        }
+        let reportData = try JSONSerialization.data(
+            withJSONObject: reportObject,
+            options: [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+        )
+        let reportText = String(decoding: reportData, as: UTF8.self)
         return [
             "content": [
                 ["type": "text", "text": reportText],
@@ -1206,6 +1225,14 @@ private enum SwanSongMCPServer {
                 "confirmShareCapture": [
                     "type": "boolean",
                     "description": "Must be true to return the rendered game frame and final audio window to the MCP client.",
+                ],
+                "captureSDKTrace": [
+                    "type": "boolean",
+                    "description": "Request the SwanSong SDK's bounded semantic deterministic trace when the ROM contains one.",
+                ],
+                "confirmShareSDKTrace": [
+                    "type": "boolean",
+                    "description": "Must be true when captureSDKTrace is true; never authorizes raw memory disclosure.",
                 ],
             ],
             required: ["romPath", "plan", "confirmShareCapture"]

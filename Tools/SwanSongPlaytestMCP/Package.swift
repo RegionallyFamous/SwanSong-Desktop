@@ -8,7 +8,9 @@ let package = Package(
         .executable(name: "SwanSongPlaytestMCP", targets: ["SwanSongPlaytestMCP"]),
     ],
     dependencies: [
-        .package(path: "../.."),
+        // Keep the dependency identity stable in renamed clones and Git
+        // worktrees; SwiftPM otherwise derives it from the checkout folder.
+        .package(name: "SwanSong-Desktop", path: "../.."),
     ],
     targets: [
         .executableTarget(

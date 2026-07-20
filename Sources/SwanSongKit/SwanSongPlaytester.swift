@@ -46,11 +46,18 @@ public struct SwanSongPlaytestCapture: Sendable {
     public let report: SwanSongPlaytestReport
     public let png: Data
     public let audioWAV: Data
+    public let sdkTrace: Data?
 
-    public init(report: SwanSongPlaytestReport, png: Data, audioWAV: Data) {
+    public init(
+        report: SwanSongPlaytestReport,
+        png: Data,
+        audioWAV: Data,
+        sdkTrace: Data? = nil
+    ) {
         self.report = report
         self.png = png
         self.audioWAV = audioWAV
+        self.sdkTrace = sdkTrace
     }
 }
 
@@ -163,14 +170,16 @@ struct PlaytestAudioAccumulator {
 ///
 /// This is the sole black-box gameplay path used by the local MCP playtest
 /// surface. It returns a rendered frame and evidence metadata, never ROM bytes,
-/// save data, state data, persistence, or memory.
+/// save data, persistence, or raw memory. Callers may explicitly request the
+/// SDK's bounded, structurally validated semantic trace.
 public enum SwanSongPlaytester {
     public static let maximumROMBytes = GameROMValidationPolicy.maximumByteCount
     public static let maximumMCPFrames: UInt64 = 12_000
 
     public static func run(
         image: LibraryGameImportImage,
-        plan: TranslationFrameInputPlan
+        plan: TranslationFrameInputPlan,
+        captureSDKTrace: Bool = false
     ) throws -> SwanSongPlaytestCapture {
         guard plan.totalFrames <= maximumMCPFrames else {
             throw SwanEngineError(
@@ -225,6 +234,9 @@ public enum SwanSongPlaytester {
         let finalFrame = try engine.videoFrame()
         let png = try EngineFramePNGCodec.encode(finalFrame)
         let audioWAV = audio.encodeFinalWindowWAV()
+        let sdkTrace = captureSDKTrace
+            ? try SwanSongSDKTraceMailbox.decode(from: engine.captureMemory(.internalRAM))
+            : nil
         let report = SwanSongPlaytestReport(
             schema: SwanSongPlaytestReport.currentSchema,
             engineBackend: engine.backendName,
@@ -247,7 +259,12 @@ public enum SwanSongPlaytester {
             audio: audio.finish(finalWindowWAV: audioWAV),
             plan: plan
         )
-        return SwanSongPlaytestCapture(report: report, png: png, audioWAV: audioWAV)
+        return SwanSongPlaytestCapture(
+            report: report,
+            png: png,
+            audioWAV: audioWAV,
+            sdkTrace: sdkTrace
+        )
     }
 
     private static func sha256(_ data: Data) -> String {

@@ -92,6 +92,11 @@ if required["swansong_playtest_plan"] != {
     "romPath", "plan", "confirmShareCapture",
 }:
     raise SystemExit("playtest tool lost its explicit media-sharing contract")
+playtest_properties = next(
+    tool for tool in tools if tool["name"] == "swansong_playtest_plan"
+)["inputSchema"]["properties"]
+if not {"captureSDKTrace", "confirmShareSDKTrace"} <= set(playtest_properties):
+    raise SystemExit("playtest tool lost its guarded SDK trace contract")
 if required["swansong_compare_playtest_plan"] != {
     "originalROMPath", "patchedROMPath", "plan", "confirmShareCapture",
 }:
@@ -102,6 +107,24 @@ denied = exchange({
 })["result"]
 if denied.get("isError") is not True:
     raise SystemExit("playtest tool accepted an unconfirmed request")
+trace_denied = exchange({
+    "jsonrpc": "2.0", "id": 300, "method": "tools/call",
+    "params": {
+        "name": "swansong_playtest_plan",
+        "arguments": {
+            "romPath": "/tmp/swansong-semantic-guard.ws",
+            "plan": {
+                "schema": "swan-song-frame-input-plan-v1",
+                "totalFrames": 3,
+                "events": [{"frameIndex": 0, "inputs": []}],
+            },
+            "confirmShareCapture": True,
+            "captureSDKTrace": True,
+        },
+    },
+})["result"]
+if trace_denied.get("isError") is not True or "confirmShareSDKTrace" not in json.dumps(trace_denied):
+    raise SystemExit("playtest tool accepted an unconfirmed semantic trace request")
 compare_denied = exchange({
     "jsonrpc": "2.0", "id": 4, "method": "tools/call",
     "params": {"name": "swansong_compare_playtest_plan", "arguments": {}},
