@@ -15,8 +15,8 @@ No account. No ads. No telemetry. No BIOS scavenger hunt. Just your games and
 a really nice place to play them.
 
 <p align="center">
-  <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.5.0</strong></a>
-  · <a href="docs/releases/0.5.0.md">See what’s new</a>
+  <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.6.0</strong></a>
+  · <a href="docs/releases/0.6.0.md">See what’s new</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -76,11 +76,11 @@ it.
 
 Take a WonderSwan project from New to Release in one native workspace. Build
 assets, run the game, inspect frames and audio, replay failures, and package
-only after the evidence is ready. The current development source carries the
-verified SwanSong SDK 0.5.0 and its complete native Studio toolset; Doctor
-clearly shows the few development tools that still need to be installed on the
-Mac. The public 0.5.0 download continues to carry SDK 0.4.0 until the next
-Desktop update is published.
+only after the evidence is ready. SwanSong 0.6.0 carries the complete,
+content-verified SwanSong SDK 0.5.0 toolset: Utility Apps, traced builds,
+scenarios, semantic outcomes, budget history, project migration, and a deeper
+release lane. Doctor clearly shows the few development tools that still need
+to be installed on the Mac.
 
 ### Homebrew and Analogue Pocket
 
@@ -96,10 +96,9 @@ publishes an authorized stable release.
 ### Story Forge
 
 Take a light novel from the first idea to a finished EPUB or PDF without
-letting a score pretend to be an editor. Story Forge keeps concept, outline,
-draft, revision, art, continuity, rights, and release visible in one native
-desk—then hands a revision-ready project to SwanSong Studio for a WonderSwan
-adaptation.
+letting a score pretend to be an editor. Map the story, draft with live scene
+context, preserve revisions, work with unprimed readers and research, audition
+ImageGen art and music, then hand a source-mapped adaptation to SwanSong Studio.
 
 ### Cartridge Lab
 
@@ -131,19 +130,18 @@ Official downloads are universal, Developer ID signed, notarized by Apple,
 and published with matching checksums, a release manifest, and corresponding
 source.
 
-## The latest release: SwanSong 0.5.0
+## The latest release: SwanSong 0.6.0
 
-The public **0.5.0 release** turns SwanSong into a workshop that reaches from the
-first story idea to the cartridge in your hand:
+The public **0.6.0 release** makes the whole SwanSong workshop move:
 
-- Story Forge for planning, drafting, revising, illustrating, and publishing a
-  light novel, with a direct handoff to SwanSong Studio;
-- Cartridge Lab for verified physical ROM/save backups, guarded save restore,
-  and recovery-conscious Yokoi Boot installer media;
-- a Homebrew Catalog fix for the signed, notarized app; and
-- a friendlier README, setup path, FAQ, Support experience, and Wiki.
+- the complete SwanSong SDK 0.5.0 experience in native Studio;
+- a nine-part Story Forge with Story Room, map, chapter editor, readers,
+  research, art, music, revisions, and adaptation tools;
+- capture-bound Translation Lab provenance that authenticates the exact native
+  frame before asking where visible data came from; and
+- calmer local automation plus a sealed, reproducible engine release gate.
 
-Read the [0.5.0 release notes](docs/releases/0.5.0.md) for the guided tour or
+Read the [0.6.0 release notes](docs/releases/0.6.0.md) for the guided tour or
 the [changelog](CHANGELOG.md) for the complete history.
 
 ## Start exploring
@@ -162,7 +160,7 @@ keeps the deeper guides out of your way until you need them:
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.5.0 release notes](docs/releases/0.5.0.md).
+[0.6.0 release notes](docs/releases/0.6.0.md).
 
 ## Free, open, and independent
 

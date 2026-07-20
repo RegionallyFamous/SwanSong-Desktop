@@ -72,6 +72,7 @@ jobs:
     env:
       DEVELOPER_DIR: ${{ matrix.developer_dir }}
       SWAN_SDK_SOURCE_REPOSITORY: ${{ github.workspace }}/.sdk/swansong-sdk
+      SWAN_SWIFTPM_DISABLE_KEYCHAIN: "1"
       # AppKit/SwiftUI rasterization is OS-specific. Both runners still render
       # every surface and enforce geometry/content invariants; reviewed pixel
       # hashes remain strict on the macOS family that produced the baseline.
@@ -162,6 +163,8 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode_16.2.app/Contents/Developer
       SWAN_SDK_SOURCE_REPOSITORY: ${{ github.workspace }}/.sdk/swansong-sdk
+      SWAN_SWIFTPM_DISABLE_KEYCHAIN: "1"
+      SWAN_SIGNING_MODE: adhoc
       SWAN_SONG_ALLOW_UI_BASELINE_PLATFORM_MISMATCH: "1"
       RUN_PREFLIGHT: ${{ needs.changes.outputs.preflight }}
       RUN_RELEASE_CHAIN: ${{ needs.changes.outputs.release_chain }}
@@ -202,6 +205,7 @@ jobs:
         if: env.RUN_RELEASE_CHAIN == 'true'
         run: |
           set -eu
+          ./Scripts/selftest-ares-source-state.sh
           ./Scripts/selftest-release-build-snapshot.sh
           ./Scripts/selftest-package-release-snapshots.sh
           ./Scripts/selftest-release-artifacts.sh
@@ -241,6 +245,10 @@ jobs:
       - name: Run public-fixture compatibility matrix
         if: env.RUN_COMPATIBILITY == 'true'
         run: ./Scripts/check-compatibility-matrix.sh
+
+      - name: Prove source-built engine reproducibility
+        if: env.RUN_COMPATIBILITY == 'true'
+        run: ./Scripts/check-engine-reproducibility.sh
 
       - name: Run live input-frame bridge regression
         if: env.RUN_COMPATIBILITY == 'true'

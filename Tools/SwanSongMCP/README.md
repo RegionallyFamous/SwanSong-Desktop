@@ -36,3 +36,5 @@ Normal use is through the trusted project configuration in
 `.codex/config.toml`. See the repository wiki page **Local MCP and Automation**
 for the app opt-in, tool contracts, privacy boundary, and tests. Existing MCP
 clients and tasks must restart after an update to negotiate newly added tools.
+The launcher forces SwiftPM's non-interactive, lockfile-only mode and never
+consults the user's login keychain.

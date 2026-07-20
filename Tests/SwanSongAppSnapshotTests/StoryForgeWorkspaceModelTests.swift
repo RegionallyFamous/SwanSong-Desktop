@@ -20,8 +20,8 @@ final class StoryForgeWorkspaceModelTests: XCTestCase {
           "identity": {"slug": "lamp", "title": "Lamp Story"},
           "rights_release": {"mode": "original", "release_scope": "private"},
           "chapters": [{}],
-          "scenes": [{}, {}],
-          "illustration_bible": {"moments": [{}]},
+          "scenes": [{"id":"scene-01"}, {"id":"scene-02"}],
+          "illustration_bible": {"moments": [{"id":"cover-01"}]},
           "editorial": {"reader_tests": [], "analysis_reports": []},
           "soundtrack_bible": {"enabled": false}
         }
@@ -38,6 +38,8 @@ final class StoryForgeWorkspaceModelTests: XCTestCase {
         XCTAssertEqual(model.selectedStage, .outline)
         XCTAssertEqual(model.catalogRoot, catalog.standardizedFileURL.resolvingSymlinksInPath())
         XCTAssertNil(model.lastOperationSucceeded)
+        XCTAssertEqual(model.selectedSceneID, "scene-01")
+        XCTAssertEqual(model.selectedArtMomentID, "cover-01")
     }
 
     func testFrameworkSelectionRejectsPartialOrOldToolsets() throws {
@@ -101,10 +103,11 @@ final class StoryForgeWorkspaceModelTests: XCTestCase {
             "lock_light_novel_project.py", "migrate_light_novel_project.py",
             "status_novel_catalog.py", "audit_novel_catalog.py",
             "build_series_bible.py", "build_novel_release.py",
+            "forge.py",
         ] {
             try Data().write(to: scripts.appendingPathComponent(name))
         }
-        try Data("{\"schema_version\":3}\n".utf8)
+        try Data("{\"schema_version\":3,\"workbench\":{\"schema_version\":1,\"lead_writer\":\"human\",\"image_policy\":\"imagegen-only\"}}\n".utf8)
             .write(to: starter.appendingPathComponent("novel.json"))
     }
 

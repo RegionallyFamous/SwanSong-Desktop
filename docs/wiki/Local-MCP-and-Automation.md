@@ -32,7 +32,9 @@ process, and live-app messages stay inside the current macOS login session.
 
 The repository-scoped MCP configuration is read only when the checkout is a
 trusted Codex project. It starts `Scripts/run-swansong-mcp.sh`, which builds and
-runs the pinned Swift MCP server. SwanSong creates a random local bearer token
+runs the pinned Swift MCP server with keychain access disabled and dependency
+resolution restricted to `Package.resolved`; restarting Codex must never cause
+a login-keychain password prompt. SwanSong creates a random local bearer token
 under its Application Support folder with user-only permissions. Turning the
 setting off immediately revokes that token.
 
@@ -256,8 +258,8 @@ WonderSwan controls are `x1`–`x4`, `y1`–`y4`, `a`, `b`, `start`, `volume`, a
 ## Direct runner fallback
 
 Existing MCP clients and tasks must restart to negotiate newly added tools.
-The four guarded project operations are also available from SwanSong's bundled
-route runner; retained observed play is MCP-only. A source-built app may be
+The guarded one-shot project operations are also available from SwanSong's
+bundled route runner; retained observed play is MCP-only. A source-built app may be
 ad-hoc signed, so distinguish a verified local development build from an
 installed Developer-ID-signed release.
 
@@ -288,6 +290,22 @@ SwanSongRouteRunner probe-rectangle \
   --role original \
   --frame 179 \
   --rect 24,40,96,32
+
+SwanSongRouteRunner probe-rectangle-source \
+  --enable-debug-tools \
+  --allow-project-writes \
+  --project "/path/to/project" \
+  --plan "/path/to/project/automation/opening-plan.json" \
+  --role original \
+  --frame 179 \
+  --rect 24,40,96,32 \
+  --components mapCell,raster
+
+SwanSongRouteRunner export-static-analysis-seed \
+  --enable-debug-tools \
+  --allow-project-writes \
+  --project "/path/to/project" \
+  --source-probe "/path/to/project/analysis/swan-song-lab/display-source-probes/source-probe-…/details.json"
 ```
 
 `record-route` always boots Original with empty isolated persistence, the
@@ -304,7 +322,11 @@ either intake or either manifest integrity check fails.
 `capture-plan` combines both commands and publishes the durable private pair
 only after both evidence lanes and Capture Intake outputs re-index intact.
 `probe-rectangle` saves detailed owner evidence privately and prints only the
-source-free summary.
+source-free summary. `probe-rectangle-source` applies the same exact clean
+replay gate to ABI 9 upstream lineage; component selection is explicit and its
+exact ranges remain private. `export-static-analysis-seed` revalidates one
+current complete source probe before writing a private disassembly seed. None
+of these operations grants patch authority.
 
 ## Tests
 

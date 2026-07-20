@@ -59,6 +59,7 @@ mkdir -p "$REPOSITORY/Scripts" "$REPOSITORY/Dependencies" \
   "$INPUT_APP/Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Installer.xpc/Contents/MacOS" \
   "$INPUT_APP/Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Downloader.xpc/Contents/MacOS"
 cp "$SCRIPT_DIR/package-release.sh" "$REPOSITORY/Scripts/"
+cp "$SCRIPT_DIR/ares-source-state.sh" "$REPOSITORY/Scripts/"
 cp "$SCRIPT_DIR/materialize-ares-source.sh" "$REPOSITORY/Scripts/"
 cp "$SCRIPT_DIR/materialize-sparkle-source.sh" "$REPOSITORY/Scripts/"
 cat >"$REPOSITORY/Scripts/check-sparkle-dependency-lock.py" <<'EOF'
@@ -77,8 +78,9 @@ cat >"$REPOSITORY/Engine/ares-headless.patch" <<'EOF'
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -1 +1 @@
+@@ -1 +1,2 @@
 -raw source
++option(ARES_HEADLESS_CORE_ONLY "Build synthetic headless core" OFF)
 +patched source
 EOF
 
@@ -274,7 +276,8 @@ ditto -x -k "$ARCHIVE" "$EXTRACTED"
 source_root="SwanSong-$VERSION-source"
 [ "$(tar -xOf "$SOURCE_ARCHIVE" \
     "$source_root/Dependencies/ares-source/CMakeLists.txt")" \
-    = "patched source" ] || {
+    = "option(ARES_HEADLESS_CORE_ONLY \"Build synthetic headless core\" OFF)
+patched source" ] || {
   echo "source archive did not use the immutable patched ares snapshot" >&2
   exit 1
 }

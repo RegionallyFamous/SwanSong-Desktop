@@ -105,24 +105,67 @@ struct StoryForgeWorkspaceView: View {
     }
 
     private var sectionPicker: some View {
-        Picker("Story Forge workspace", selection: $workspace.selectedSection) {
-            ForEach(StoryForgeWorkspaceSection.allCases) { section in
-                Label(section.rawValue, systemImage: section.symbol).tag(section)
+        HStack(spacing: 5) {
+            ForEach(Array(StoryForgeWorkspaceSection.allCases.prefix(6))) { section in
+                sectionButton(section)
             }
+            Menu {
+                ForEach(Array(StoryForgeWorkspaceSection.allCases.dropFirst(6))) { section in
+                    Button {
+                        workspace.selectedSection = section
+                    } label: {
+                        Label(section.rawValue, systemImage: section.symbol)
+                    }
+                }
+            } label: {
+                Label("More", systemImage: "ellipsis.circle")
+                    .font(.callout.weight(.medium))
+                    .padding(.horizontal, 9)
+                    .padding(.vertical, 7)
+                    .background(
+                        StoryForgeWorkspaceSection.allCases.dropFirst(6).contains(workspace.selectedSection)
+                            ? SwanTheme.violet.opacity(0.16) : Color.clear,
+                        in: Capsule()
+                    )
+            }
+            .menuStyle(.borderlessButton)
+            Spacer(minLength: 0)
         }
-        .pickerStyle(.segmented)
         .padding(.horizontal, 22)
-        .padding(.vertical, 12)
+        .padding(.vertical, 9)
         .disabled(workspace.isRunning)
         .accessibilityIdentifier("story-forge-sections")
+    }
+
+    private func sectionButton(_ section: StoryForgeWorkspaceSection) -> some View {
+        Button {
+            workspace.selectedSection = section
+        } label: {
+            Label(section.rawValue, systemImage: section.symbol)
+                .font(.callout.weight(.medium))
+                .lineLimit(1)
+                .fixedSize(horizontal: true, vertical: false)
+                .padding(.horizontal, 9)
+                .padding(.vertical, 7)
+                .background(
+                    workspace.selectedSection == section
+                        ? SwanTheme.violet.opacity(0.16) : Color.clear,
+                    in: Capsule()
+                )
+        }
+        .buttonStyle(.plain)
     }
 
     @ViewBuilder
     private var content: some View {
         switch workspace.selectedSection {
         case .overview: overview
+        case .storyRoom: projectRequired { storyRoom }
+        case .mapAndDraft: projectRequired { mapAndDraft }
         case .editorial: projectRequired { editorial }
+        case .readersAndResearch: projectRequired { readersAndResearch }
         case .artAndMusic: projectRequired { artAndMusic }
+        case .adaptation: projectRequired { adaptation }
         case .catalog: catalog
         case .publication: projectRequired { publication }
         }
@@ -219,6 +262,20 @@ struct StoryForgeWorkspaceView: View {
                 }
             }
             StoryForgeCard {
+                HStack {
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("What should happen next?").font(.headline)
+                        Text("Read the exact project state and surface a short, evidence-backed action list.")
+                            .font(.callout).foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    Button("Show Next Actions", systemImage: "arrow.right.circle") {
+                        workspace.showNextActions()
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+            }
+            StoryForgeCard {
                 HStack(alignment: .center, spacing: 16) {
                     VStack(alignment: .leading, spacing: 5) {
                         Text("Run a stage gate").font(.headline)
@@ -247,6 +304,198 @@ struct StoryForgeWorkspaceView: View {
                         .disabled(summary.stage == .concept || summary.stage == .outline || summary.stage == .draft)
                 }
             }
+        }
+    }
+
+    private var storyRoom: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                sectionHeading(
+                    "Story Room",
+                    detail: "Eight independent specialists make evidence-backed proposals. You remain the lead writer and choose every merge."
+                )
+                StoryForgeCard {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Label("Proposal-only team", systemImage: "person.3.sequence.fill")
+                                .font(.headline)
+                            Text("No specialist rewrites the manuscript, changes canon, invents readers, or approves art, music, or release evidence.")
+                                .font(.callout).foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Button("Prepare Fresh Packets") { workspace.prepareStoryRoom() }
+                            .buttonStyle(.borderedProminent)
+                        artifactButton("Open Story Room", url: workspace.storyRoomURL)
+                    }
+                }
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 220), spacing: 12)], spacing: 12) {
+                    ForEach(storyRoomRoles, id: \.0) { role in
+                        StoryForgeCard {
+                            Label(role.0, systemImage: role.1).font(.headline)
+                            Text(role.2).font(.caption).foregroundStyle(.secondary)
+                        }
+                    }
+                }
+                resultCard
+            }
+            .padding(22)
+            .frame(maxWidth: 1080, alignment: .leading)
+        }
+    }
+
+    private var storyRoomRoles: [(String, String, String)] {
+        [
+            ("Premise Scout", "sparkle.magnifyingglass", "Promise, freshness, research burden, and derivative risk."),
+            ("Story Architect", "point.3.connected.trianglepath.dotted", "Causality, escalation, setup/payoff, and ending pressure."),
+            ("Character Editor", "person.2", "Voice, agency, contradiction, chemistry, and boundaries."),
+            ("Continuity Editor", "arrow.triangle.branch", "Time, props, knowledge, promises, canon, and motifs."),
+            ("Prose Editor", "text.badge.checkmark", "Clarity, rhythm, viewpoint, repetition, and scene delivery."),
+            ("Art Director", "photo.artframe", "ImageGen acting, continuity, composition, and set review."),
+            ("Music Director", "music.note.list", "Memorable motifs, fun loops, mono, and handheld channels."),
+            ("Release Editor", "checkmark.seal", "Readers, rights, proofs, locks, drift, and remaining risk."),
+        ]
+    }
+
+    private var mapAndDraft: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                sectionHeading(
+                    "Map & Draft",
+                    detail: "See why each scene exists while writing it. Save is always explicit; diagnostics never rewrite your prose."
+                )
+                StoryForgeCard {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Label("Visual Story Map", systemImage: "map") .font(.headline)
+                            Text("Causality, relationships, setup/payoff, continuity, rhythm, illustration, and music in one browser view.")
+                                .font(.callout).foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Button("Build Map") { workspace.buildStoryMap() }.buttonStyle(.borderedProminent)
+                        artifactButton("Open Map", url: workspace.storyMapURL)
+                    }
+                }
+                StoryForgeCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Label("Manuscript Editor", systemImage: "square.and.pencil") .font(.headline)
+                            Menu(workspace.selectedManuscriptURL?.lastPathComponent ?? "Choose Chapter") {
+                                ForEach(workspace.manuscriptFiles, id: \.self) { file in
+                                    Button(file.lastPathComponent) { workspace.selectManuscript(file) }
+                                }
+                            }
+                            Spacer()
+                            if workspace.manuscriptHasChanges {
+                                Text("Unsaved changes").font(.caption.bold()).foregroundStyle(.orange)
+                                Button("Discard") { workspace.discardManuscriptChanges() }
+                            }
+                            Button("Save") { workspace.saveManuscript() }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(!workspace.manuscriptHasChanges)
+                        }
+                        TextEditor(text: Binding(
+                            get: { workspace.manuscriptText },
+                            set: { workspace.updateManuscriptText($0) }
+                        ))
+                        .font(.body.monospaced())
+                        .frame(minHeight: 360)
+                        .padding(8)
+                        .background(.background, in: RoundedRectangle(cornerRadius: 10))
+                        .overlay { RoundedRectangle(cornerRadius: 10).stroke(.primary.opacity(0.1)) }
+                        HStack {
+                            Picker("Scene context", selection: $workspace.selectedSceneID) {
+                                ForEach(workspace.projectSummary?.sceneIDs ?? [], id: \.self) { Text($0).tag($0) }
+                            }
+                            .frame(width: 220)
+                            Button("Refresh Live Context") { workspace.refreshSceneContext() }
+                            artifactButton("Open Context", url: workspace.sceneContextURL)
+                            Spacer()
+                            Text("Use <!-- scene: scene-id --> markers to bind prose to the map.")
+                                .font(.caption).foregroundStyle(.secondary)
+                        }
+                    }
+                }
+                StoryForgeCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Revision Branch", systemImage: "arrow.triangle.branch") .font(.headline)
+                        HStack {
+                            TextField("before-middle-pass", text: $workspace.revisionName)
+                                .textFieldStyle(.roundedBorder).font(.body.monospaced())
+                            Button("Snapshot") { workspace.createRevisionSnapshot() }
+                            Button("Compare to Current") { workspace.compareRevision() }
+                            artifactButton("Open Decision Timeline", url: workspace.revisionTimelineURL)
+                        }
+                        HStack {
+                            Picker("Decision", selection: $workspace.revisionDecision) {
+                                Text("Accept").tag("accept")
+                                Text("Partial").tag("partial")
+                                Text("Reject").tag("reject")
+                            }.frame(width: 130)
+                            TextField("Why this decision?", text: $workspace.revisionDecisionReason).textFieldStyle(.roundedBorder)
+                            TextField("Reviewer (optional)", text: $workspace.revisionReviewer).textFieldStyle(.roundedBorder).frame(width: 180)
+                            Button("Record") { workspace.recordRevisionDecision() }
+                        }
+                    }
+                }
+                resultCard
+            }
+            .padding(22)
+            .frame(maxWidth: 1120, alignment: .leading)
+        }
+    }
+
+    private var readersAndResearch: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                sectionHeading(
+                    "Readers & Research",
+                    detail: "Keep unprimed reactions, disagreement, claims, uncertainty, and authenticity review visible instead of averaging them away."
+                )
+                StoryForgeCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Reader Lab", systemImage: "person.2.wave.2") .font(.headline)
+                        Text("Packets contain the manuscript and neutral questions—not your outline rationale or hoped-for answer. Imports require a current hash, identity, complete answers, and consent.")
+                            .font(.callout).foregroundStyle(.secondary)
+                        HStack {
+                            TextField("reader-01", text: $workspace.readerPacketID).textFieldStyle(.roundedBorder).font(.body.monospaced())
+                            Picker("Reader", selection: $workspace.readerType) {
+                                ForEach(StoryForgeReaderType.allCases) { Text($0.title).tag($0) }
+                            }.frame(width: 180)
+                            Button("Export Packet") { workspace.exportReaderPacket() }.buttonStyle(.borderedProminent)
+                            Button("Import Response…", action: chooseReaderResponse)
+                            artifactButton("Show Packets", url: workspace.readerPacketsURL)
+                        }
+                    }
+                }
+                StoryForgeCard {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Label("Research & Authenticity Notebook", systemImage: "books.vertical") .font(.headline)
+                            Text("Link sources to claims and scenes, preserve confidence and sensitivity, and require authenticity review where it matters.")
+                                .font(.callout).foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Button("Create Notebook") { workspace.initializeResearch() }
+                        Button("Check Notebook") { workspace.checkResearch() }
+                        artifactButton("Open Notebook", url: workspace.researchNotebookURL)
+                    }
+                }
+                StoryForgeCard {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Label("Genre Specialist", systemImage: "theatermasks") .font(.headline)
+                            Text("Mystery fairness, romance boundaries, cozy sincerity, comedy escalation, or adventure competence—without turning taste into a formula.")
+                                .font(.callout).foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Button("Run Specialist") { workspace.checkGenre() }.buttonStyle(.borderedProminent)
+                        artifactButton("Open Findings", url: workspace.genreReportURL)
+                    }
+                }
+                resultCard
+            }
+            .padding(22)
+            .frame(maxWidth: 1080, alignment: .leading)
         }
     }
 
@@ -361,33 +610,105 @@ struct StoryForgeWorkspaceView: View {
                         Text("SwanSong creates prompt briefs and verifies provenance, hashes, eye line, continuity, artifacts, composition variety, and set approval. It never replaces missing art with programmatic pictures.")
                             .font(.callout).foregroundStyle(.secondary)
                         HStack {
-                            Button("Create ImageGen Briefs") { workspace.makeIllustrationBriefs() }
+                            Button("Prepare Art Room") { workspace.prepareArtRoom() }
                                 .buttonStyle(.borderedProminent)
+                            Button("Create ImageGen Briefs") { workspace.makeIllustrationBriefs() }
                             Button("Review Illustration Set") { workspace.reviewIllustrations() }
+                            artifactButton("Open Art Queue", url: workspace.artRoomURL)
                             artifactButton("Open Briefs", url: workspace.illustrationBriefsURL)
                             artifactButton("Open Contact Sheet", url: workspace.illustrationContactSheetURL)
                         }
                         .disabled(workspace.isRunning)
+                        Divider()
+                        HStack {
+                            Picker("Moment", selection: $workspace.selectedArtMomentID) {
+                                ForEach(workspace.projectSummary?.illustrationIDs ?? [], id: \.self) { Text($0).tag($0) }
+                            }
+                            .frame(width: 180)
+                            TextField("ImageGen prompt", text: $workspace.artPrompt)
+                                .textFieldStyle(.roundedBorder)
+                            TextField("Notes", text: $workspace.artPromptNotes)
+                                .textFieldStyle(.roundedBorder).frame(width: 180)
+                            Button("Record Prompt") { workspace.recordArtPrompt() }
+                            Button("Intake Result…", action: chooseImageGenResult)
+                        }
                     }
                 }
                 StoryForgeCard {
-                    HStack {
-                        VStack(alignment: .leading, spacing: 5) {
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 5) {
                             Label("Fun, story-shaped music", systemImage: "music.note.list")
                                 .font(.headline)
-                            Text("Check motif transformations, memorable loop hooks, cue purpose, mono safety, and all four WonderSwan channel roles.")
+                            Text("Author editable cue sketches, audition two loops in mono, and inspect hook, peak, RMS, seam, and all four WonderSwan channel roles.")
                                 .font(.callout).foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                            Button("Create Music Sketches") { workspace.initializeMusicRoom() }
+                                .buttonStyle(.borderedProminent)
+                            Button("Render Auditions") { workspace.renderMusicPreviews() }
                         }
-                        Spacer()
-                        Button("Check Soundtrack Bible") { workspace.runReport(.soundtrackBible) }
-                            .disabled(workspace.isRunning)
+                        HStack {
+                            Button("Check Soundtrack Bible") { workspace.runReport(.soundtrackBible) }
+                            artifactButton("Open Scores", url: workspace.musicScoresURL)
+                            artifactButton("Open Previews", url: workspace.musicPreviewsURL)
+                        }
                     }
+                    .disabled(workspace.isRunning)
                 }
                 resultCard
             }
             .padding(22)
             .frame(maxWidth: 980, alignment: .leading)
         }
+    }
+
+    private var adaptation: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                sectionHeading(
+                    "WonderSwan Adaptation",
+                    detail: "Compile a source-traceable authoring scaffold, measure drift, then continue through the real Studio and SwanSong playtest gates."
+                )
+                StoryForgeCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Novel remains the source of truth", systemImage: "arrow.triangle.2.circlepath")
+                            .font(.headline)
+                        Text("The bridge preserves scene IDs, turns, decisions, consequences, setups, payoffs, and 26×4 text pagination. It deliberately marks the first .wscvn as not production-ready.")
+                            .font(.callout).foregroundStyle(.secondary)
+                        HStack {
+                            Button("Compile Scaffold") { workspace.compileAdaptation() }
+                                .buttonStyle(.borderedProminent)
+                            Button("Check Drift") { workspace.checkAdaptationDrift() }
+                            artifactButton("Open .wscvn", url: workspace.adaptationProjectURL)
+                        }
+                    }
+                }
+                StoryForgeCard {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Label("Production checklist", systemImage: "checklist") .font(.headline)
+                        adaptationCheck("Author VN-specific beats and meaningful choices; do not dump prose onto the screen.")
+                        adaptationCheck("Use approved ImageGen production art—never fallback programmer graphics.")
+                        adaptationCheck("Pass the novel revision gate and preserve each ending's residue.")
+                        adaptationCheck("Build with the WonderSwan workflow and run exhaustive SwanSong routes, save/replay, fades, and native audio.")
+                        HStack {
+                            Spacer()
+                            Button("Continue in Studio", systemImage: "hammer", action: openGameStudio)
+                                .disabled(workspace.projectSummary?.stage == .concept || workspace.projectSummary?.stage == .outline)
+                        }
+                    }
+                }
+                resultCard
+            }
+            .padding(22)
+            .frame(maxWidth: 1000, alignment: .leading)
+        }
+    }
+
+    private func adaptationCheck(_ text: String) -> some View {
+        Label(text, systemImage: "circle")
+            .font(.callout)
+            .foregroundStyle(.secondary)
     }
 
     private var catalog: some View {
@@ -715,6 +1036,39 @@ struct StoryForgeWorkspaceView: View {
         panel.allowedContentTypes = [.json]
         guard panel.runModal() == .OK, let url = panel.url else { return }
         workspace.migrateManifest(at: url)
+    }
+
+    private func chooseReaderResponse() {
+        let panel = NSOpenPanel()
+        panel.title = "Import Story Forge Reader Response"
+        panel.prompt = "Import Response"
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        panel.allowedContentTypes = [.json]
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        workspace.importReaderResponse(url)
+    }
+
+    private func chooseImageGenResult() {
+        let imagePanel = NSOpenPanel()
+        imagePanel.title = "Choose ImageGen Result"
+        imagePanel.prompt = "Choose Image"
+        imagePanel.canChooseFiles = true
+        imagePanel.canChooseDirectories = false
+        imagePanel.allowsMultipleSelection = false
+        imagePanel.allowedContentTypes = [.png, .jpeg, .webP]
+        guard imagePanel.runModal() == .OK, let image = imagePanel.url else { return }
+
+        let promptPanel = NSOpenPanel()
+        promptPanel.title = "Choose ImageGen Prompt/Provenance Record"
+        promptPanel.prompt = "Choose Prompt Record"
+        promptPanel.canChooseFiles = true
+        promptPanel.canChooseDirectories = false
+        promptPanel.allowsMultipleSelection = false
+        promptPanel.allowedContentTypes = [.plainText, .json]
+        guard promptPanel.runModal() == .OK, let prompt = promptPanel.url else { return }
+        workspace.intakeArt(image: image, promptFile: prompt, apply: true)
     }
 
     private func chooseDirectory(prompt: String, completion: (URL) -> Void) {

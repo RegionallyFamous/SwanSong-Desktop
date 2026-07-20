@@ -63,9 +63,15 @@ int main(int argc, char** argv) {
 
   const bool provenance_fixture =
       argc == 4 && std::strcmp(argv[1], "--provenance-fixture") == 0;
+  const bool mono_palette_fixture =
+      argc == 3 && std::strcmp(argv[1], "--mono-palette-fixture") == 0;
+  const bool mapper_window_fixture =
+      argc == 3 &&
+      std::strcmp(argv[1], "--mapper-window-owner-matrix") == 0;
   const bool input_frame_fixture =
       argc == 3 && std::strcmp(argv[1], "--input-frame-fixture") == 0;
-  const char* rom_path = provenance_fixture || input_frame_fixture
+  const char* rom_path = provenance_fixture || mono_palette_fixture ||
+          mapper_window_fixture || input_frame_fixture
       ? argv[2] : (argc > 1 ? argv[1] : nullptr);
   const uint8_t expected_raster_bytes = provenance_fixture
       ? static_cast<uint8_t>(std::strcmp(argv[3], "packed") == 0 ? 1 : 4)
@@ -105,6 +111,25 @@ int main(int argc, char** argv) {
     if (result != SWAN_RESULT_OK) {
       std::fprintf(stderr, "ROM load failed: %s (%s)\n",
                    swan_result_message(result), swan_engine_last_error(engine));
+      swan_engine_destroy(engine);
+      return 1;
+    }
+
+    size_t staged_readback_size = 0;
+    result = swan_engine_persistence_size(
+        engine, SWAN_PERSISTENCE_CONSOLE_EEPROM, &staged_readback_size);
+    std::vector<uint8_t> staged_readback(staged_readback_size);
+    size_t staged_readback_written = 0;
+    if (result == SWAN_RESULT_OK) {
+      result = swan_engine_read_persistence(
+          engine, SWAN_PERSISTENCE_CONSOLE_EEPROM,
+          staged_readback.data(), staged_readback.size(),
+          &staged_readback_written);
+    }
+    if (result != SWAN_RESULT_OK ||
+        staged_readback_written != staged_console.size() ||
+        staged_readback != staged_console) {
+      std::fputs("staged console EEPROM was not loaded exactly\n", stderr);
       swan_engine_destroy(engine);
       return 1;
     }
@@ -332,6 +357,518 @@ int main(int argc, char** argv) {
         swan_engine_destroy(engine);
         return 1;
       }
+    }
+
+    if (mapper_window_fixture) {
+      constexpr size_t kExpectedROMSize = 2u * 1024u * 1024u;
+      constexpr std::array<uint32_t, 4> kActiveOffsets = {
+          0x028000, 0x038000, 0x148000, 0x1f8000,
+      };
+      constexpr std::array<uint32_t, 4> kInactiveOffsets = {
+          0x068000, 0x078000, 0x048000, 0x0f8000,
+      };
+      constexpr std::array<std::array<uint8_t, 4>, 4> kTokens = {{
+          {{0x80, 0x00, 0x00, 0x00}},
+          {{0x00, 0x80, 0x00, 0x00}},
+          {{0x00, 0x00, 0x80, 0x00}},
+          {{0x00, 0x00, 0x00, 0x80}},
+      }};
+      bool exact_rom_layout = rom.size() == kExpectedROMSize;
+      for (size_t index = 0; exact_rom_layout && index < kTokens.size();
+           ++index) {
+        exact_rom_layout = std::equal(
+            kTokens[index].begin(), kTokens[index].end(),
+            rom.begin() + kActiveOffsets[index]) &&
+            std::equal(
+                kTokens[index].begin(), kTokens[index].end(),
+                rom.begin() + kInactiveOffsets[index]);
+      }
+      if (!exact_rom_layout) {
+        std::fputs("mapper-window fixture did not retain its exact ROM layout\n",
+                   stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      if (frame_width != 237 || frame_height != 144) {
+        std::fputs("mapper-window fixture exposed the wrong native frame\n",
+                   stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      size_t iram_size = 0;
+      result = swan_engine_memory_size(
+          engine, SWAN_MEMORY_INTERNAL_RAM, &iram_size);
+      std::vector<uint8_t> iram(iram_size);
+      size_t iram_written = 0;
+      if (result == SWAN_RESULT_OK) {
+        result = swan_engine_read_memory(
+            engine, SWAN_MEMORY_INTERNAL_RAM,
+            iram.data(), iram.size(), &iram_written);
+      }
+      if (result != SWAN_RESULT_OK || iram_written != iram.size() ||
+          iram.size() <= 0x04f3 || iram[0x04f0] != 0xe6 ||
+          iram[0x04f1] != 0xe7 || iram[0x04f2] != 0xfe ||
+          iram[0x04f3] != 0xa5) {
+        std::fputs("mapper-window fixture did not reach its inactive-bank boundary\n",
+                   stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      struct ExpectedMapperPixel {
+        uint16_t x;
+        uint16_t cell_address;
+        uint16_t tile_index;
+        uint16_t raster_address;
+        uint8_t palette_color;
+        uint32_t palette_address;
+        uint32_t cartridge_offset;
+        uint16_t caller_offset;
+        uint16_t operand_segment;
+        uint16_t mapper_window;
+        uint16_t mapper_bank;
+        uint32_t resolved_cartridge_operand;
+      };
+      constexpr std::array<ExpectedMapperPixel, 4> expected = {{
+          // Keep the exact 16-bit register value in provenance. The fixture
+          // changes only the low byte, so reset-state 0xff remains in the
+          // high byte even though ROM aperture masking makes it ineffective.
+          {0, 0x1800, 1, 0x4020, 1, 0xfe02, 0x028000,
+           0x043f, 0x2000, 2, 0xffe2, 0x028000},
+          {8, 0x1802, 2, 0x4040, 2, 0xfe04, 0x038000,
+           0x044f, 0x3000, 3, 0xffe3, 0x038000},
+          {16, 0x1804, 3, 0x4060, 4, 0xfe08, 0x148000,
+           0x045f, 0x4000, 4, 0xffff, 0x148000},
+          {24, 0x1806, 4, 0x4080, 8, 0xfe10, 0x1f8000,
+           0x046f, 0xf000, 15, 0xffff, 0x1f8000},
+      }};
+
+      uint64_t trace_hash = 1469598103934665603ull;
+      const auto mix_trace = [&](uint64_t value) {
+        for (uint8_t byte = 0; byte < 8; ++byte) {
+          trace_hash ^= static_cast<uint8_t>(value & 0xffu);
+          trace_hash *= 1099511628211ull;
+          value >>= 8;
+        }
+      };
+      std::array<std::array<uint8_t, 4>, 4> selected_pixels{};
+      std::array<uint8_t, 4> backdrop_pixel{};
+
+      swan_video_frame_t matrix_frame{};
+      result = swan_engine_video_frame(engine, &matrix_frame);
+      if (result != SWAN_RESULT_OK || !matrix_frame.pixels ||
+          matrix_frame.stride_bytes < matrix_frame.width * 4) {
+        std::fputs("mapper-window fixture lost its native frame\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      const auto pixel_at = [&](uint16_t x, uint16_t y) {
+        std::array<uint8_t, 4> pixel{};
+        const size_t offset = static_cast<size_t>(y) * matrix_frame.stride_bytes +
+            static_cast<size_t>(x) * pixel.size();
+        std::copy_n(matrix_frame.pixels + offset, pixel.size(), pixel.begin());
+        return pixel;
+      };
+
+      swan_display_source_probe_options_t raster_options{};
+      raster_options.struct_size = sizeof(raster_options);
+      raster_options.selected_component_mask =
+          SWAN_DISPLAY_SOURCE_COMPONENT_MASK_RASTER;
+
+      for (size_t index = 0; index < expected.size(); ++index) {
+        const auto& item = expected[index];
+        swan_display_rectangle_t selected_rectangle{};
+        selected_rectangle.struct_size = sizeof(selected_rectangle);
+        selected_rectangle.x = item.x;
+        selected_rectangle.y = 0;
+        selected_rectangle.width = 1;
+        selected_rectangle.height = 1;
+
+        swan_display_owner_sample_t owner{};
+        size_t selected_owner_count = 0;
+        result = swan_engine_display_owner_probe(
+            engine, &selected_rectangle, &owner, 1, &selected_owner_count);
+        if (result != SWAN_RESULT_OK || selected_owner_count != 1 ||
+            owner.struct_size != sizeof(owner) || owner.x != item.x ||
+            owner.y != 0 || owner.layer != SWAN_DISPLAY_LAYER_SCREEN_1 ||
+            owner.source_kind != SWAN_DISPLAY_SOURCE_TILEMAP ||
+            owner.cell_address != item.cell_address ||
+            owner.tile_index != item.tile_index ||
+            owner.cell_attributes != item.tile_index ||
+            owner.raster_address != item.raster_address ||
+            owner.raster_byte_count != 4 || owner.palette_index != 0 ||
+            owner.palette_color != item.palette_color ||
+            owner.palette_address != item.palette_address ||
+            owner.palette_byte_count != 2 ||
+            owner.cell_writer_pc == UINT32_MAX ||
+            owner.raster_writer_pc != item.caller_offset + 1u ||
+            owner.palette_writer_pc == UINT32_MAX ||
+            owner.oam_address != 0xffff || owner.oam_byte_count != 0 ||
+            owner.oam_writer_pc != UINT32_MAX) {
+          std::fputs("mapper-window fixture owner mismatch\n", stderr);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+
+        size_t source_count = 0;
+        result = swan_engine_display_source_probe(
+            engine, &selected_rectangle, &raster_options,
+            nullptr, 0, &source_count);
+        swan_display_source_trace_t source{};
+        size_t source_written = 0;
+        if (result == SWAN_RESULT_OK && source_count == 1) {
+          result = swan_engine_display_source_probe(
+              engine, &selected_rectangle, &raster_options,
+              &source, 1, &source_written);
+        }
+        if (result != SWAN_RESULT_OK || source_count != 1 ||
+            source_written != 1 || source.struct_size != sizeof(source) ||
+            source.x != item.x || source.y != 0 ||
+            source.scope != SWAN_DISPLAY_SOURCE_SCOPE_SELECTED ||
+            source.component != SWAN_DISPLAY_SOURCE_COMPONENT_RASTER ||
+            source.source_address != item.raster_address ||
+            source.source_byte_count != 4 ||
+            source.cartridge_offset != item.cartridge_offset ||
+            source.cartridge_length != 4 ||
+            source.flags != (SWAN_DISPLAY_SOURCE_FLAG_EXACT |
+                             SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED) ||
+            source.read_context_flags !=
+                SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED ||
+            source.minimum_instruction_hops != 1 ||
+            source.maximum_instruction_hops != 1 ||
+            source.immediate_caller != item.caller_offset ||
+            source.caller_segment != 0 ||
+            source.caller_offset != item.caller_offset ||
+            source.operand_segment != item.operand_segment ||
+            source.operand_offset != 0x8000 ||
+            source.mapper_window != item.mapper_window ||
+            source.mapper_bank != item.mapper_bank ||
+            source.resolved_cartridge_operand !=
+                item.resolved_cartridge_operand ||
+            source.conservative_reason !=
+                SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE) {
+          std::fprintf(
+              stderr,
+              "mapper-window fixture source context mismatch index=%zu count=%zu/%zu result=%u pos=%u,%u scope=%u component=%u address=%05x/%u range=%08x/%u flags=%x read=%x hops=%u-%u caller=%05x:%04x:%04x operand=%04x:%04x window=%u bank=%04x resolved=%08x conservative=%u\n",
+              index, source_count, source_written, result, source.x, source.y,
+              source.scope, source.component, source.source_address,
+              source.source_byte_count, source.cartridge_offset,
+              source.cartridge_length, source.flags, source.read_context_flags,
+              source.minimum_instruction_hops, source.maximum_instruction_hops,
+              source.immediate_caller, source.caller_segment,
+              source.caller_offset, source.operand_segment,
+              source.operand_offset, source.mapper_window, source.mapper_bank,
+              source.resolved_cartridge_operand, source.conservative_reason);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+
+        mix_trace(source.x);
+        mix_trace(source.y);
+        mix_trace(source.scope);
+        mix_trace(source.component);
+        mix_trace(source.source_address);
+        mix_trace(source.source_byte_count);
+        mix_trace(source.minimum_instruction_hops);
+        mix_trace(source.maximum_instruction_hops);
+        mix_trace(source.cartridge_offset);
+        mix_trace(source.cartridge_length);
+        mix_trace(source.flags);
+        mix_trace(source.read_context_flags);
+        mix_trace(source.immediate_caller);
+        mix_trace(source.caller_segment);
+        mix_trace(source.caller_offset);
+        mix_trace(source.operand_segment);
+        mix_trace(source.operand_offset);
+        mix_trace(source.mapper_window);
+        mix_trace(source.mapper_bank);
+        mix_trace(source.resolved_cartridge_operand);
+        mix_trace(source.conservative_reason);
+
+        swan_display_rectangle_t transparent_rectangle{};
+        transparent_rectangle.struct_size = sizeof(transparent_rectangle);
+        transparent_rectangle.x = item.x + 1;
+        transparent_rectangle.y = 0;
+        transparent_rectangle.width = 1;
+        transparent_rectangle.height = 1;
+        swan_display_owner_sample_t transparent_owner{};
+        size_t transparent_owner_count = 0;
+        result = swan_engine_display_owner_probe(
+            engine, &transparent_rectangle, &transparent_owner, 1,
+            &transparent_owner_count);
+        if (result != SWAN_RESULT_OK || transparent_owner_count != 1 ||
+            transparent_owner.layer != SWAN_DISPLAY_LAYER_BACKDROP ||
+            transparent_owner.source_kind != SWAN_DISPLAY_SOURCE_NONE ||
+            transparent_owner.raster_byte_count != 0 ||
+            transparent_owner.raster_writer_pc != UINT32_MAX) {
+          std::fputs("mapper-window fixture transparency control failed\n",
+                     stderr);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+        size_t transparent_source_count = 0;
+        result = swan_engine_display_source_probe(
+            engine, &transparent_rectangle, &raster_options,
+            nullptr, 0, &transparent_source_count);
+        if (result != SWAN_RESULT_OK || transparent_source_count != 0) {
+          std::fputs("mapper-window fixture inactive source control failed\n",
+                     stderr);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+
+        selected_pixels[index] = pixel_at(item.x, 0);
+        const auto transparent_pixel = pixel_at(item.x + 1, 0);
+        if (index == 0) backdrop_pixel = transparent_pixel;
+        if (transparent_pixel != backdrop_pixel ||
+            selected_pixels[index] == backdrop_pixel) {
+          std::fputs("mapper-window fixture pixel contrast failed\n", stderr);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+        for (size_t previous = 0; previous < index; ++previous) {
+          if (selected_pixels[index] == selected_pixels[previous]) {
+            std::fputs("mapper-window fixture visible colors were not distinct\n",
+                       stderr);
+            swan_engine_destroy(engine);
+            return 1;
+          }
+        }
+      }
+
+      std::printf(
+          "PASS mapper-window owner matrix selected=4 exact=4 executed=4 inactive=0 controls=2 trace=%016llx video=%016llx\n",
+          static_cast<unsigned long long>(trace_hash),
+          static_cast<unsigned long long>(video_hash));
+      swan_engine_destroy(engine);
+      return 0;
+    }
+
+    if (mono_palette_fixture) {
+      if (frame_width != 224 || frame_height != 157) {
+        std::fprintf(stderr,
+                     "monochrome fixture exposed the wrong native frame: %ux%u\n",
+                     frame_width, frame_height);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      swan_display_rectangle_t selected_rectangle{};
+      selected_rectangle.struct_size = sizeof(selected_rectangle);
+      selected_rectangle.x = 0;
+      selected_rectangle.y = 0;
+      selected_rectangle.width = 1;
+      selected_rectangle.height = 1;
+      swan_display_owner_sample_t selected_owner{};
+      size_t selected_owner_count = 0;
+      result = swan_engine_display_owner_probe(
+          engine, &selected_rectangle, &selected_owner, 1,
+          &selected_owner_count);
+      if (result != SWAN_RESULT_OK || selected_owner_count != 1 ||
+          selected_owner.layer != SWAN_DISPLAY_LAYER_SCREEN_1 ||
+          selected_owner.source_kind != SWAN_DISPLAY_SOURCE_TILEMAP ||
+          selected_owner.cell_address != 0x1800 ||
+          selected_owner.tile_index != 0 ||
+          selected_owner.cell_attributes != 0 ||
+          selected_owner.raster_address != 0x2000 ||
+          selected_owner.raster_byte_count != 2 ||
+          selected_owner.palette_index != 0 ||
+          selected_owner.palette_color != 2 ||
+          selected_owner.palette_address != 0x10021 ||
+          selected_owner.palette_byte_count != 1 ||
+          selected_owner.cell_writer_pc == UINT32_MAX ||
+          selected_owner.raster_writer_pc == UINT32_MAX ||
+          selected_owner.palette_writer_pc == UINT32_MAX ||
+          selected_owner.oam_address != 0xffff ||
+          selected_owner.oam_byte_count != 0 ||
+          selected_owner.oam_writer_pc != UINT32_MAX) {
+        std::fprintf(
+            stderr,
+            "monochrome owner mismatch layer=%u source=%u cell=%04x/%08x tile=%u raster=%04x/%u palette=%u:%u@%05x/%u writers=%05x/%05x/%05x\n",
+            selected_owner.layer, selected_owner.source_kind,
+            selected_owner.cell_address, selected_owner.cell_attributes,
+            selected_owner.tile_index, selected_owner.raster_address,
+            selected_owner.raster_byte_count, selected_owner.palette_index,
+            selected_owner.palette_color, selected_owner.palette_address,
+            selected_owner.palette_byte_count, selected_owner.cell_writer_pc,
+            selected_owner.raster_writer_pc,
+            selected_owner.palette_writer_pc);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      swan_display_rectangle_t transparency_rectangle{};
+      transparency_rectangle.struct_size = sizeof(transparency_rectangle);
+      transparency_rectangle.x = 9;
+      transparency_rectangle.y = 0;
+      transparency_rectangle.width = 1;
+      transparency_rectangle.height = 1;
+      swan_display_owner_sample_t transparency_owner{};
+      size_t transparency_owner_count = 0;
+      result = swan_engine_display_owner_probe(
+          engine, &transparency_rectangle, &transparency_owner, 1,
+          &transparency_owner_count);
+      if (result != SWAN_RESULT_OK || transparency_owner_count != 1 ||
+          transparency_owner.layer != SWAN_DISPLAY_LAYER_BACKDROP ||
+          transparency_owner.source_kind != SWAN_DISPLAY_SOURCE_NONE ||
+          transparency_owner.cell_writer_pc != UINT32_MAX ||
+          transparency_owner.raster_byte_count != 0 ||
+          transparency_owner.raster_writer_pc != UINT32_MAX ||
+          transparency_owner.palette_address != 0x10001 ||
+          transparency_owner.palette_byte_count != 1 ||
+          transparency_owner.palette_writer_pc == UINT32_MAX) {
+        std::fputs("palette-4 color-0 transparency control was not a backdrop\n",
+                   stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      swan_display_source_probe_options_t mono_source_options{};
+      mono_source_options.struct_size = sizeof(mono_source_options);
+      mono_source_options.selected_component_mask =
+          SWAN_DISPLAY_SOURCE_COMPONENT_MASK_ALL;
+      size_t mono_source_count = 0;
+      result = swan_engine_display_source_probe(
+          engine, &selected_rectangle, &mono_source_options,
+          nullptr, 0, &mono_source_count);
+      std::vector<swan_display_source_trace_t> mono_sources(mono_source_count);
+      size_t mono_source_written = 0;
+      if (result == SWAN_RESULT_OK) {
+        result = swan_engine_display_source_probe(
+            engine, &selected_rectangle, &mono_source_options,
+            mono_sources.data(), mono_sources.size(), &mono_source_written);
+      }
+      struct ExpectedRuntimeSource {
+        swan_display_source_component_t component;
+        uint32_t address;
+        uint16_t byte_count;
+      };
+      const std::array<ExpectedRuntimeSource, 3> expected_runtime_sources = {{
+          {SWAN_DISPLAY_SOURCE_COMPONENT_MAP_CELL, 0x1800, 2},
+          {SWAN_DISPLAY_SOURCE_COMPONENT_RASTER, 0x2000, 2},
+          {SWAN_DISPLAY_SOURCE_COMPONENT_PALETTE, 0x10021, 1},
+      }};
+      bool exact_runtime_sources = result == SWAN_RESULT_OK &&
+          mono_source_count == expected_runtime_sources.size() &&
+          mono_source_written == mono_sources.size();
+      for (const auto& expected_source : expected_runtime_sources) {
+        exact_runtime_sources = exact_runtime_sources && std::count_if(
+            mono_sources.begin(), mono_sources.end(), [&](const auto& trace) {
+              return trace.x == 0 && trace.y == 0 &&
+                     trace.scope == SWAN_DISPLAY_SOURCE_SCOPE_SELECTED &&
+                     trace.component == expected_source.component &&
+                     trace.source_address == expected_source.address &&
+                     trace.source_byte_count == expected_source.byte_count &&
+                     trace.cartridge_offset == 0 &&
+                     trace.cartridge_length == 0 &&
+                     trace.flags == SWAN_DISPLAY_SOURCE_FLAG_EXACT &&
+                     trace.read_context_flags == 0 &&
+                     trace.minimum_instruction_hops == 0 &&
+                     trace.maximum_instruction_hops == 0 &&
+                     trace.conservative_reason ==
+                         SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE;
+            }) == 1;
+      }
+      if (!exact_runtime_sources) {
+        std::fprintf(stderr,
+                     "monochrome runtime lineage was not exact across %zu records\n",
+                     mono_sources.size());
+        for (const auto& trace : mono_sources) {
+          std::fprintf(
+              stderr,
+              "mono component=%u scope=%u address=%05x bytes=%u range=%08x/%u hops=%u-%u flags=%x conservative=%u\n",
+              trace.component, trace.scope, trace.source_address,
+              trace.source_byte_count, trace.cartridge_offset,
+              trace.cartridge_length, trace.minimum_instruction_hops,
+              trace.maximum_instruction_hops, trace.flags,
+              trace.conservative_reason);
+        }
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      swan_display_source_probe_options_t backdrop_palette_options{};
+      backdrop_palette_options.struct_size = sizeof(backdrop_palette_options);
+      backdrop_palette_options.selected_component_mask =
+          SWAN_DISPLAY_SOURCE_COMPONENT_MASK_PALETTE;
+      size_t backdrop_palette_count = 0;
+      result = swan_engine_display_source_probe(
+          engine, &transparency_rectangle, &backdrop_palette_options,
+          nullptr, 0, &backdrop_palette_count);
+      std::vector<swan_display_source_trace_t> backdrop_palette_sources(
+          backdrop_palette_count);
+      size_t backdrop_palette_written = 0;
+      if (result == SWAN_RESULT_OK) {
+        result = swan_engine_display_source_probe(
+            engine, &transparency_rectangle, &backdrop_palette_options,
+            backdrop_palette_sources.data(), backdrop_palette_sources.size(),
+            &backdrop_palette_written);
+      }
+      const auto exact_backdrop_palette = std::count_if(
+          backdrop_palette_sources.begin(), backdrop_palette_sources.end(),
+          [](const auto& trace) {
+            return trace.struct_size == sizeof(trace) &&
+                   trace.x == 9 && trace.y == 0 &&
+                   trace.scope == SWAN_DISPLAY_SOURCE_SCOPE_SELECTED &&
+                   trace.component == SWAN_DISPLAY_SOURCE_COMPONENT_PALETTE &&
+                   trace.source_address == 0x10001 &&
+                   trace.source_byte_count == 1 &&
+                   trace.cartridge_offset == 0 &&
+                   trace.cartridge_length == 0 &&
+                   trace.flags == SWAN_DISPLAY_SOURCE_FLAG_EXACT &&
+                   trace.read_context_flags == 0 &&
+                   trace.minimum_instruction_hops == 0 &&
+                   trace.maximum_instruction_hops == 0 &&
+                   trace.conservative_reason ==
+                       SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE;
+          });
+      const auto selected_backdrop_palette = std::count_if(
+          backdrop_palette_sources.begin(), backdrop_palette_sources.end(),
+          [](const auto& trace) {
+            return trace.scope == SWAN_DISPLAY_SOURCE_SCOPE_SELECTED;
+          });
+      if (result != SWAN_RESULT_OK ||
+          backdrop_palette_count != 1 || backdrop_palette_written != 1 ||
+          backdrop_palette_sources.size() != 1 ||
+          selected_backdrop_palette != 1 || exact_backdrop_palette != 1) {
+        std::fputs("monochrome backdrop palette lineage was not exact\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      swan_video_frame_t mono_frame{};
+      result = swan_engine_video_frame(engine, &mono_frame);
+      if (result != SWAN_RESULT_OK || !mono_frame.pixels ||
+          mono_frame.stride_bytes < mono_frame.width * 4) {
+        std::fputs("monochrome fixture lost its native frame\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      const auto pixel_at = [&](uint32_t x, uint32_t y) {
+        std::array<uint8_t, 4> pixel{};
+        const size_t offset = static_cast<size_t>(y) * mono_frame.stride_bytes +
+            static_cast<size_t>(x) * 4u;
+        std::copy_n(mono_frame.pixels + offset, pixel.size(), pixel.begin());
+        return pixel;
+      };
+      const auto selected_pixel = pixel_at(0, 0);
+      const auto transparency_pixel = pixel_at(9, 0);
+      const auto backdrop_pixel = pixel_at(16, 1);
+      if (selected_pixel == transparency_pixel ||
+          transparency_pixel != backdrop_pixel) {
+        std::fputs("monochrome native pixels did not preserve the owner/control contrast\n",
+                   stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      std::printf(
+          "PASS monochrome palette OUT owner selected=%02x%02x%02x%02x backdrop=%02x%02x%02x%02x writer=%05x\n",
+          selected_pixel[0], selected_pixel[1], selected_pixel[2],
+          selected_pixel[3], transparency_pixel[0], transparency_pixel[1],
+          transparency_pixel[2], transparency_pixel[3],
+          selected_owner.palette_writer_pc);
     }
 
     if (provenance_fixture) {
@@ -727,9 +1264,13 @@ int main(int argc, char** argv) {
           engine, SWAN_PERSISTENCE_CONSOLE_EEPROM,
           persisted.data(), persisted.size(), &persisted_size);
     }
+    // The running software owns console EEPROM after boot and may legitimately
+    // update it. Exact staging is verified immediately after load above; here
+    // verify that the live persistence surface remains readable and retains
+    // the hardware-sized region after execution and save-state replay.
     if (result != SWAN_RESULT_OK || persisted_size != staged_console.size() ||
-        persisted.empty() || persisted[0] != 0x5a) {
-      std::fputs("console EEPROM persistence did not round trip\n", stderr);
+        persisted.empty()) {
+      std::fputs("console EEPROM persistence surface became invalid\n", stderr);
       swan_engine_destroy(engine);
       return 1;
     }

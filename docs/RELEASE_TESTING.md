@@ -1,13 +1,13 @@
-# SwanSong 0.5 release testing
+# SwanSong 0.6 release testing
 
-This guide covers the SwanSong Desktop 0.5 release. Test only games, manuscripts, homebrew,
+This guide covers the SwanSong Desktop 0.6 release. Test only games, manuscripts, homebrew,
 SDK projects, cartridges, and save data you own or are authorized to use. Never
 attach ROMs, saves, private screenshots or audio, manuscripts, cartridge-source
 evidence, or Translation Lab evidence to a public report.
 
-The signed public release is **SwanSong 0.5.0 (10)**.
+The signed public release is **SwanSong 0.6.0 (11)**.
 
-## What this beta is testing
+## What this release is testing
 
 - **Story Forge on the Mac:** select a compatible schema-v3 framework, create
   and reopen a novel, move through Concept, Outline, Draft, Revision, and
@@ -18,6 +18,11 @@ The signed public release is **SwanSong 0.5.0 (10)**.
   human approval.
 - **Story-to-game handoff:** choose **Continue in Studio** after Revision and
   confirm the novel remains open while SwanSong Studio opens for adaptation.
+- **A complete native writing room:** prepare all eight proposal-only Story
+  Room packets, build the causal map, edit and explicitly save a chapter,
+  inspect live scene context, preserve and compare a revision, exchange an
+  unprimed reader packet, check research, intake an ImageGen result, render
+  music auditions, and compile then drift-check an adaptation scaffold.
 - **Cartridge Lab reads:** with authorized hardware, inspect a cartridge and
   create exact, checksum-reported ROM and save backups. Interrupt a controlled
   transfer and confirm no partial destination is promoted.
@@ -32,7 +37,9 @@ The signed public release is **SwanSong 0.5.0 (10)**.
 - **The complete SDK tool suite:** exercise Doctor, Dev, Scenario Recorder,
   Evidence Diff, deterministic input fuzzing, Sprite/VRAM profiling, Asset
   Optimizer, Save/RTC Laboratory, six visual-authoring documents, replay
-  timelines, and deterministic failing-plan minimization.
+  timelines, deterministic failing-plan minimization, Utility App scaffolds,
+  traced builds, scenario compilation, semantic outcomes, budget history,
+  project migration, and hardware-capacity checks.
 - **Evidence-backed release:** inspect required PNG and WAV observations,
   record a hash-bound verdict for every scenario check, and confirm Release
   refuses stale, incomplete, or execution-only evidence.
@@ -43,6 +50,13 @@ The signed public release is **SwanSong 0.5.0 (10)**.
 - **Translation Lab automation:** retain deterministic routes, paired capture,
   display-owner and source probes, observed-play recovery, evidence browsing,
   and complete installed MCP-tool coverage.
+- **Capture-bound provenance:** prove the authenticated native frame is checked
+  before owner/source queries, checked again afterward, and represented by the
+  exact ordered private receipt. Wrong frame or framed fingerprint must leave
+  no report, details, run directory, output, or closure.
+- **Non-interactive local tools:** restart the trusted MCP clients and run the
+  Swift wrapper with login-keychain access disabled. Neither path should ask
+  for a macOS login password.
 - **The everyday player:** retain Open IPL, imports, controls, Time Ribbon,
   save states, portrait play, native 224×157 fitting, app updates, and relaunch
   on Apple silicon and Intel.
@@ -93,7 +107,7 @@ The signed public release is **SwanSong 0.5.0 (10)**.
 
 ## Expected boundaries
 
-SwanSong 0.5.0 embeds SDK 0.4.0 but not Python or Wonderful. Install those
+SwanSong 0.6.0 embeds SDK 0.5.0 but not Python or Wonderful. Install those
 external dependencies before running Studio Doctor or a build. Story Forge
 also requires a compatible local framework checkout.
 
@@ -110,7 +124,7 @@ title-specific quirks still deserve hands-on attention.
 
 ## Before reporting a result
 
-1. Confirm **SwanSong 0.5.0 (10)** in **SwanSong > About SwanSong**.
+1. Confirm **SwanSong 0.6.0 (11)** in **SwanSong > About SwanSong**.
 2. Record the Mac model, macOS version, architecture, controller or cartridge
    hardware when relevant, SDK version, Python version, and Wonderful revision.
 3. For Story Forge, state the visible workspace and sanitized action/result;

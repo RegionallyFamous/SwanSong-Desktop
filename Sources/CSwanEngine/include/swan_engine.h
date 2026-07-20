@@ -191,7 +191,10 @@ typedef enum swan_display_source_conservative_reason {
 } swan_display_source_conservative_reason_t;
 
 enum {
-  /* The cartridge range is an exact dependency, never a collapsed superset. */
+  /*
+   * The source set is exact, never a collapsed superset. cartridge_length ==
+   * 0 denotes an exact runtime-generated source.
+   */
   SWAN_DISPLAY_SOURCE_FLAG_EXACT = 1u << 0,
   /* At least one CPU dataflow instruction separates cartridge and display RAM. */
   SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED = 1u << 1,

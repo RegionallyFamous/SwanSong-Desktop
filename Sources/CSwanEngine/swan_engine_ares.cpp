@@ -614,6 +614,21 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       error = "ares rejected the selected WonderSwan model";
       return SWAN_RESULT_INTERNAL_ERROR;
     }
+    if (!is_pocket_challenge) {
+      if (auto staged = staged_persistence_.find(
+              SWAN_PERSISTENCE_CONSOLE_EEPROM);
+          staged != staged_persistence_.end()) {
+        if (staged->second.size() != ares::WonderSwan::system.eeprom.size) {
+          root_->unload();
+          root_.reset();
+          release_active();
+          error = "console EEPROM size does not match the selected hardware";
+          return SWAN_RESULT_INVALID_ARGUMENT;
+        }
+        std::copy(staged->second.begin(), staged->second.end(),
+                  ares::WonderSwan::system.eeprom.data);
+      }
+    }
     if (auto port = root_->find<ares::Node::Port>("Cartridge Slot")) {
       port->allocate();
       port->connect();
@@ -1096,7 +1111,6 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       if (!directory.append(name, std::span<const uint8_t>(staged->second))) {
         return false;
       }
-      if (auto file = directory.read(name)) file->setAttribute("loaded", true);
       return true;
     }
     return directory.append(name, expected_size);

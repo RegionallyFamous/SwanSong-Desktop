@@ -4,8 +4,12 @@ import SwanSongKit
 
 enum StoryForgeWorkspaceSection: String, CaseIterable, Identifiable {
     case overview = "Overview"
+    case storyRoom = "Story Room"
+    case mapAndDraft = "Map & Draft"
     case editorial = "Editorial"
+    case readersAndResearch = "Readers"
     case artAndMusic = "Art & Music"
+    case adaptation = "Adapt"
     case catalog = "Catalog"
     case publication = "Publish"
 
@@ -14,8 +18,12 @@ enum StoryForgeWorkspaceSection: String, CaseIterable, Identifiable {
     var symbol: String {
         switch self {
         case .overview: "book.pages"
+        case .storyRoom: "person.3.sequence"
+        case .mapAndDraft: "point.3.filled.connected.trianglepath.dotted"
         case .editorial: "checklist"
+        case .readersAndResearch: "person.2.wave.2"
         case .artAndMusic: "photo.on.rectangle.angled"
+        case .adaptation: "gamecontroller"
         case .catalog: "books.vertical"
         case .publication: "shippingbox"
         }
@@ -47,6 +55,21 @@ final class StoryForgeWorkspaceModel {
     var newProjectFormat: StoryForgeBookFormat = .shortLightNovel
     var newProjectGenre: StoryForgeGenreProfile = .custom
     var newProjectTargetWords = 12_000
+
+    var selectedSceneID = ""
+    var selectedManuscriptURL: URL?
+    var manuscriptFiles: [URL] = []
+    var manuscriptText = ""
+    var manuscriptHasChanges = false
+    var revisionName = "before-revision"
+    var revisionDecision = "partial"
+    var revisionDecisionReason = ""
+    var revisionReviewer = ""
+    var readerPacketID = "reader-01"
+    var readerType: StoryForgeReaderType = .general
+    var selectedArtMomentID = ""
+    var artPrompt = ""
+    var artPromptNotes = ""
 
     private var cli: StoryForgeCLIResolution?
     private let runner: SwanSDKSubprocessRunner
@@ -106,7 +129,7 @@ final class StoryForgeWorkspaceModel {
 
     var frameworkDescription: String {
         guard let frameworkRoot else { return "No Story Forge selected" }
-        return "Story Forge schema v3 · \(frameworkRoot.path)"
+        return "Story Forge schema v3 · workbench v1 · \(frameworkRoot.path)"
     }
 
     var projectRoot: URL? { manifestURL?.deletingLastPathComponent() }
@@ -126,6 +149,21 @@ final class StoryForgeWorkspaceModel {
     var lockfileURL: URL? { projectRoot?.appendingPathComponent("novel.lock.json") }
 
     var catalogDashboardURL: URL? { catalogRoot?.appendingPathComponent("catalog-status.md") }
+
+    var storyRoomURL: URL? { projectRoot?.appendingPathComponent("workbench/story-room.md") }
+    var storyMapURL: URL? { projectRoot?.appendingPathComponent("workbench/story-map.html") }
+    var sceneContextURL: URL? { projectRoot?.appendingPathComponent("workbench/scene-context.json") }
+    var researchNotebookURL: URL? { projectRoot?.appendingPathComponent("workbench/research-notebook.json") }
+    var genreReportURL: URL? { projectRoot?.appendingPathComponent("workbench/genre-specialist.json") }
+    var artRoomURL: URL? { projectRoot?.appendingPathComponent("workbench/art-room/art-room.json") }
+    var musicScoresURL: URL? { projectRoot?.appendingPathComponent("workbench/music-room/scores.json") }
+    var musicPreviewsURL: URL? { projectRoot?.appendingPathComponent("workbench/music-room/previews", isDirectory: true) }
+    var adaptationProjectURL: URL? {
+        guard let projectRoot, let slug = projectSummary?.slug else { return nil }
+        return projectRoot.appendingPathComponent("workbench/adaptation/\(slug).wscvn.json")
+    }
+    var revisionTimelineURL: URL? { projectRoot?.appendingPathComponent("workbench/revisions/decisions.jsonl") }
+    var readerPacketsURL: URL? { projectRoot?.appendingPathComponent("workbench/reader-packets", isDirectory: true) }
 
     var canCreateProject: Bool {
         frameworkRoot != nil
@@ -187,15 +225,155 @@ final class StoryForgeWorkspaceModel {
         lastOperationTitle = ""
         lastOperationSucceeded = nil
         issue = nil
+        manuscriptHasChanges = false
+        selectedManuscriptURL = nil
+        loadManuscriptWorkspace()
     }
 
     func refreshProject() {
         guard let manifestURL else { return }
         do {
             projectSummary = try StoryForgeManifestSummary.load(from: manifestURL)
+            if selectedSceneID.isEmpty { selectedSceneID = projectSummary?.sceneIDs.first ?? "" }
+            if selectedArtMomentID.isEmpty { selectedArtMomentID = projectSummary?.illustrationIDs.first ?? "" }
         } catch {
             issue = error.localizedDescription
         }
+    }
+
+    func loadManuscriptWorkspace() {
+        guard let projectRoot else { return }
+        let directory = projectRoot.appendingPathComponent("manuscript", isDirectory: true)
+        manuscriptFiles = ((try? FileManager.default.contentsOfDirectory(
+            at: directory,
+            includingPropertiesForKeys: nil,
+            options: [.skipsHiddenFiles]
+        )) ?? []).filter { $0.pathExtension.lowercased() == "md" }.sorted { $0.lastPathComponent < $1.lastPathComponent }
+        if let selectedManuscriptURL, manuscriptFiles.contains(selectedManuscriptURL) {
+            selectManuscript(selectedManuscriptURL)
+        } else if let first = manuscriptFiles.first {
+            selectManuscript(first)
+        } else {
+            selectedManuscriptURL = nil
+            manuscriptText = ""
+            manuscriptHasChanges = false
+        }
+        selectedSceneID = projectSummary?.sceneIDs.first ?? ""
+        selectedArtMomentID = projectSummary?.illustrationIDs.first ?? ""
+    }
+
+    func selectManuscript(_ url: URL) {
+        guard !manuscriptHasChanges || selectedManuscriptURL == url else {
+            issue = "Save or discard the current manuscript edits before opening another chapter."
+            return
+        }
+        do {
+            manuscriptText = try String(contentsOf: url, encoding: .utf8)
+            selectedManuscriptURL = url
+            manuscriptHasChanges = false
+        } catch {
+            issue = error.localizedDescription
+        }
+    }
+
+    func updateManuscriptText(_ value: String) {
+        manuscriptText = value
+        manuscriptHasChanges = true
+    }
+
+    func saveManuscript() {
+        guard let selectedManuscriptURL else { issue = "Choose a manuscript chapter first."; return }
+        do {
+            try manuscriptText.write(to: selectedManuscriptURL, atomically: true, encoding: .utf8)
+            manuscriptHasChanges = false
+            lastOperationTitle = "Save Manuscript"
+            lastOperationSucceeded = true
+            refreshProject()
+        } catch {
+            issue = error.localizedDescription
+            lastOperationSucceeded = false
+        }
+    }
+
+    func discardManuscriptChanges() {
+        guard let selectedManuscriptURL else { return }
+        manuscriptHasChanges = false
+        selectManuscript(selectedManuscriptURL)
+    }
+
+    func showNextActions() { runWorkbench(.next, title: "Next Best Actions") }
+    func prepareStoryRoom() { runWorkbench(.storyRoom, title: "Prepare Story Room") }
+    func buildStoryMap() { runWorkbench(.storyMap, title: "Build Story Map") }
+
+    func refreshSceneContext() {
+        guard !selectedSceneID.isEmpty else { issue = "Choose a scene first."; return }
+        runWorkbench(.sceneContext(sceneID: selectedSceneID), title: "Refresh Scene Context")
+    }
+
+    func createRevisionSnapshot() {
+        let name = revisionName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard Self.isValidSlug(name) else { issue = "Use a lowercase hyphenated revision name."; return }
+        runWorkbench(.revisionSnapshot(name: name), title: "Create Revision Snapshot")
+    }
+
+    func compareRevision() {
+        let name = revisionName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard Self.isValidSlug(name) else { issue = "Use a lowercase hyphenated revision name."; return }
+        runWorkbench(.revisionCompare(left: name, right: "current"), title: "Compare Revision")
+    }
+
+    func recordRevisionDecision() {
+        let name = revisionName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard Self.isValidSlug(name), revisionDecisionReason.trimmingCharacters(in: .whitespacesAndNewlines).count >= 8 else {
+            issue = "Choose a valid snapshot and explain the decision in at least eight characters."
+            return
+        }
+        runWorkbench(
+            .revisionDecision(
+                snapshot: name,
+                decision: revisionDecision,
+                reason: revisionDecisionReason,
+                reviewer: revisionReviewer
+            ),
+            title: "Record Revision Decision"
+        )
+    }
+
+    func exportReaderPacket() {
+        let packet = readerPacketID.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard Self.isValidSlug(packet) else { issue = "Use a lowercase hyphenated reader packet name."; return }
+        runWorkbench(.readerExport(packetID: packet, readerType: readerType), title: "Export Reader Packet")
+    }
+
+    func importReaderResponse(_ url: URL) {
+        runWorkbench(.readerImport(response: url), title: "Import Reader Response")
+    }
+
+    func initializeResearch() { runWorkbench(.researchInit, title: "Create Research Notebook") }
+    func checkResearch() { runWorkbench(.researchReport, title: "Check Research Notebook") }
+    func checkGenre() { runWorkbench(.genreReport, title: "Genre Specialist") }
+    func prepareArtRoom() { runWorkbench(.artRoom, title: "Prepare ImageGen Art Room") }
+
+    func recordArtPrompt() {
+        guard !selectedArtMomentID.isEmpty, artPrompt.trimmingCharacters(in: .whitespacesAndNewlines).count >= 40 else {
+            issue = "Choose an art moment and write a specific ImageGen prompt of at least 40 characters."
+            return
+        }
+        runWorkbench(.artPrompt(momentID: selectedArtMomentID, prompt: artPrompt, notes: artPromptNotes), title: "Record ImageGen Prompt")
+    }
+
+    func intakeArt(image: URL, promptFile: URL, apply: Bool) {
+        guard !selectedArtMomentID.isEmpty else { issue = "Choose an art moment first."; return }
+        runWorkbench(.artIntake(momentID: selectedArtMomentID, image: image, promptFile: promptFile, apply: apply), title: "Preserve ImageGen Result")
+    }
+
+    func initializeMusicRoom() { runWorkbench(.musicInit, title: "Create Music Sketches") }
+    func renderMusicPreviews() { runWorkbench(.musicRender, title: "Render Music Auditions") }
+    func compileAdaptation() { runWorkbench(.adapt(output: nil), title: "Compile Adaptation Scaffold") }
+
+    func checkAdaptationDrift() {
+        guard let adaptationProjectURL else { issue = "Compile the adaptation scaffold first."; return }
+        runWorkbench(.adaptationDrift(project: adaptationProjectURL), title: "Check Adaptation Drift")
     }
 
     func createProject() {
@@ -371,6 +549,16 @@ final class StoryForgeWorkspaceModel {
         guard let manifestURL else { issue = "Open a novel project first."; return }
         start(.buildRelease(manifest: manifestURL), title: "Build EPUB & PDF") { [weak self] _ in
             self?.refreshProject()
+        }
+    }
+
+    private func runWorkbench(_ action: StoryForgeWorkbenchAction, title: String) {
+        guard let manifestURL else { issue = "Open a novel project first."; return }
+        start(.workbench(action: action, manifest: manifestURL), title: title, qualityResult: true) { [weak self] result in
+            guard let self else { return }
+            self.lastReport = try StoryForgeReportSummary.decode(Data(result.standardOutput.utf8))
+            self.lastOperationSucceeded = self.lastReport?.ok
+            self.refreshProject()
         }
     }
 

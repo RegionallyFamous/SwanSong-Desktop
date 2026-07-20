@@ -47,6 +47,20 @@ final class StoryForgeDesktopIntegrationTests: XCTestCase {
             [catalog.path, "--out", report.path, "--strict"]
         )
         XCTAssertEqual(
+            StoryForgeCommand.workbench(
+                action: .sceneContext(sceneID: "scene-03"),
+                manifest: manifest
+            ).arguments,
+            ["--json", "scene-context", manifest.path, "--scene", "scene-03"]
+        )
+        XCTAssertEqual(
+            StoryForgeCommand.workbench(
+                action: .readerExport(packetID: "cold-reader-01", readerType: .intendedAudience),
+                manifest: manifest
+            ).arguments,
+            ["--json", "reader-export", manifest.path, "--packet-id", "cold-reader-01", "--reader-type", "intended-audience"]
+        )
+        XCTAssertEqual(
             Set(StoryForgeReportKind.allCases.map(\.scriptName)).count,
             StoryForgeReportKind.allCases.count
         )
@@ -97,8 +111,8 @@ final class StoryForgeDesktopIntegrationTests: XCTestCase {
           "identity": {"slug": "lamp", "title": "Lamp Story"},
           "rights_release": {"mode": "fan-work", "release_scope": "free-noncommercial"},
           "chapters": [{}, {}],
-          "scenes": [{}, {}, {}],
-          "illustration_bible": {"moments": [{}, {}]},
+          "scenes": [{"id":"scene-01"}, {"id":"scene-02"}, {"id":"scene-03"}],
+          "illustration_bible": {"moments": [{"id":"cover-01"}, {"id":"interior-01"}]},
           "editorial": {"reader_tests": [{}, {}], "analysis_reports": [{}, {}, {}]},
           "soundtrack_bible": {"enabled": true}
         }
@@ -115,6 +129,8 @@ final class StoryForgeDesktopIntegrationTests: XCTestCase {
         XCTAssertEqual(summary.readerCount, 2)
         XCTAssertEqual(summary.reportCount, 3)
         XCTAssertTrue(summary.soundtrackEnabled)
+        XCTAssertEqual(summary.sceneIDs, ["scene-01", "scene-02", "scene-03"])
+        XCTAssertEqual(summary.illustrationIDs, ["cover-01", "interior-01"])
     }
 
     func testCatalogDecoderPreservesNextActionsAndStaleEvidence() throws {
@@ -165,9 +181,10 @@ final class StoryForgeDesktopIntegrationTests: XCTestCase {
             "lock_light_novel_project.py", "migrate_light_novel_project.py",
             "status_novel_catalog.py", "audit_novel_catalog.py",
             "build_series_bible.py", "build_novel_release.py",
+            "forge.py",
         ]
         for name in names { try Data().write(to: scripts.appendingPathComponent(name)) }
-        try Data("{\"schema_version\":\(schemaVersion)}\n".utf8)
+        try Data("{\"schema_version\":\(schemaVersion),\"workbench\":{\"schema_version\":1,\"lead_writer\":\"human\",\"image_policy\":\"imagegen-only\"}}\n".utf8)
             .write(to: starter.appendingPathComponent("novel.json"))
     }
 

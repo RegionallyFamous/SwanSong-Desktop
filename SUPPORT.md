@@ -3,8 +3,9 @@
 Most problems have a quick fix. Make sure you have the newest SwanSong release,
 then start with the answers below. SwanSong requires macOS 14 or newer.
 
-The public download is currently 0.5.0. It includes Story Forge and
-Cartridge Lab alongside the player, Translation Lab, and SwanSong Studio.
+The public download is currently 0.6.0. It includes the complete SDK 0.5
+Studio, expanded Story Forge, capture-bound Translation Lab automation, and
+Cartridge Lab alongside the private player and library.
 
 <!-- homebrew-catalog-status: published -->
 

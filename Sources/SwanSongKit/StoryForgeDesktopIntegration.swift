@@ -98,6 +98,72 @@ public enum StoryForgeReportKind: String, CaseIterable, Codable, Identifiable, S
     }
 }
 
+public enum StoryForgeReaderType: String, CaseIterable, Codable, Identifiable, Sendable {
+    case general
+    case intendedAudience = "intended-audience"
+    case genre
+
+    public var id: String { rawValue }
+
+    public var title: String {
+        switch self {
+        case .general: "General"
+        case .intendedAudience: "Intended Audience"
+        case .genre: "Genre Reader"
+        }
+    }
+}
+
+public enum StoryForgeWorkbenchAction: Equatable, Sendable {
+    case next
+    case storyRoom
+    case storyMap
+    case sceneContext(sceneID: String)
+    case revisionSnapshot(name: String)
+    case revisionCompare(left: String, right: String)
+    case revisionDecision(snapshot: String, decision: String, reason: String, reviewer: String)
+    case readerExport(packetID: String, readerType: StoryForgeReaderType)
+    case readerImport(response: URL)
+    case researchInit
+    case researchReport
+    case genreReport
+    case artRoom
+    case artPrompt(momentID: String, prompt: String, notes: String)
+    case artIntake(momentID: String, image: URL, promptFile: URL, apply: Bool)
+    case musicInit
+    case musicRender
+    case adapt(output: URL?)
+    case adaptationDrift(project: URL)
+
+    public var arguments: [String] {
+        switch self {
+        case .next: ["next"]
+        case .storyRoom: ["story-room"]
+        case .storyMap: ["story-map"]
+        case let .sceneContext(sceneID): ["scene-context", "--scene", sceneID]
+        case let .revisionSnapshot(name): ["revision-snapshot", "--name", name]
+        case let .revisionCompare(left, right): ["revision-compare", "--left", left, "--right", right]
+        case let .revisionDecision(snapshot, decision, reason, reviewer):
+            ["revision-decision", "--snapshot", snapshot, "--decision", decision, "--reason", reason, "--reviewer", reviewer]
+        case let .readerExport(packetID, readerType):
+            ["reader-export", "--packet-id", packetID, "--reader-type", readerType.rawValue]
+        case let .readerImport(response): ["reader-import", "--response", response.path]
+        case .researchInit: ["research-init"]
+        case .researchReport: ["research-report"]
+        case .genreReport: ["genre-report"]
+        case .artRoom: ["art-room"]
+        case let .artPrompt(momentID, prompt, notes):
+            ["art-prompt", "--moment", momentID, "--prompt", prompt, "--notes", notes]
+        case let .artIntake(momentID, image, promptFile, apply):
+            ["art-intake", "--moment", momentID, "--image", image.path, "--prompt-file", promptFile.path] + (apply ? ["--apply"] : [])
+        case .musicInit: ["music-init"]
+        case .musicRender: ["music-render"]
+        case let .adapt(output): ["adapt"] + (output.map { ["--out", $0.path] } ?? [])
+        case let .adaptationDrift(project): ["adaptation-drift", "--project", project.path]
+        }
+    }
+}
+
 public enum StoryForgeCommand: Equatable, Sendable {
     case createProject(
         slug: String,
@@ -117,6 +183,7 @@ public enum StoryForgeCommand: Equatable, Sendable {
     case catalogAudit(root: URL, output: URL, strict: Bool)
     case seriesBible(root: URL, output: URL)
     case buildRelease(manifest: URL)
+    case workbench(action: StoryForgeWorkbenchAction, manifest: URL)
 
     public var scriptName: String {
         switch self {
@@ -131,6 +198,7 @@ public enum StoryForgeCommand: Equatable, Sendable {
         case .catalogAudit: "audit_novel_catalog.py"
         case .seriesBible: "build_series_bible.py"
         case .buildRelease: "build_novel_release.py"
+        case .workbench: "forge.py"
         }
     }
 
@@ -170,6 +238,8 @@ public enum StoryForgeCommand: Equatable, Sendable {
             return [root.path, "--out", output.path]
         case let .buildRelease(manifest):
             return [manifest.path]
+        case let .workbench(action, manifest):
+            return ["--json", action.arguments[0], manifest.path] + Array(action.arguments.dropFirst())
         }
     }
 
@@ -181,7 +251,7 @@ public enum StoryForgeCommand: Equatable, Sendable {
         case let .migrate(manifest, _), let .validate(manifest, _, _),
              let .report(_, manifest, _), let .illustrationBriefs(manifest),
              let .illustrationReview(manifest), let .lock(manifest, _),
-             let .buildRelease(manifest):
+             let .buildRelease(manifest), let .workbench(_, manifest):
             manifest.deletingLastPathComponent()
         }
     }
@@ -202,6 +272,7 @@ public enum StoryForgeIntegrationError: LocalizedError, Equatable {
 
 public struct StoryForgeCLIResolution: Equatable, Sendable {
     public static let requiredSchemaVersion = 3
+    public static let requiredWorkbenchSchemaVersion = 1
 
     public let root: URL
     public let pythonURL: URL
@@ -236,6 +307,7 @@ public struct StoryForgeCLIResolution: Equatable, Sendable {
             "audit_novel_catalog.py",
             "build_series_bible.py",
             "build_novel_release.py",
+            "forge.py",
         ]
         guard FileManager.default.fileExists(atPath: starter.path),
               requiredScripts.allSatisfy({
@@ -249,9 +321,13 @@ public struct StoryForgeCLIResolution: Equatable, Sendable {
         }
         let data = try Data(contentsOf: starter)
         let object = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-        guard object?["schema_version"] as? Int == requiredSchemaVersion else {
+        let workbench = object?["workbench"] as? [String: Any]
+        guard object?["schema_version"] as? Int == requiredSchemaVersion,
+              workbench?["schema_version"] as? Int == requiredWorkbenchSchemaVersion,
+              workbench?["lead_writer"] as? String == "human",
+              workbench?["image_policy"] as? String == "imagegen-only" else {
             throw StoryForgeIntegrationError.invalidFramework(
-                "SwanSong requires Story Forge light-novel schema v3."
+                "SwanSong requires Story Forge schema v3 with the proposal-only workbench and ImageGen-only production art policy."
             )
         }
 
@@ -296,6 +372,8 @@ public struct StoryForgeManifestSummary: Equatable, Sendable {
     public let readerCount: Int
     public let reportCount: Int
     public let soundtrackEnabled: Bool
+    public let sceneIDs: [String]
+    public let illustrationIDs: [String]
 
     public static func load(from manifest: URL) throws -> Self {
         guard ["json", "yaml", "yml"].contains(manifest.pathExtension.lowercased()) else {
@@ -340,7 +418,9 @@ public struct StoryForgeManifestSummary: Equatable, Sendable {
             illustrationCount: (illustration["moments"] as? [Any])?.count ?? 0,
             readerCount: (editorial["reader_tests"] as? [Any])?.count ?? 0,
             reportCount: (editorial["analysis_reports"] as? [Any])?.count ?? 0,
-            soundtrackEnabled: soundtrack["enabled"] as? Bool ?? false
+            soundtrackEnabled: soundtrack["enabled"] as? Bool ?? false,
+            sceneIDs: (object["scenes"] as? [[String: Any]] ?? []).compactMap { $0["id"] as? String },
+            illustrationIDs: (illustration["moments"] as? [[String: Any]] ?? []).compactMap { $0["id"] as? String }
         )
     }
 }

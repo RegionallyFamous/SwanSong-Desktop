@@ -4,6 +4,56 @@ import Foundation
 import XCTest
 
 final class TranslationDisplaySourceProbeTests: XCTestCase {
+    func testSourceRunnerRejects4097PixelsBeforeCreatingRunState() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "swan-source-runner-overbound-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        defer { try? FileManager.default.removeItem(at: root) }
+        let run = root.appendingPathComponent("run", isDirectory: true)
+        let result = try runRouteRunner([
+            "probe-rectangle-source", "--enable-debug-tools", "--allow-project-writes",
+            "--project", root.appendingPathComponent("project").path,
+            "--plan", root.appendingPathComponent("plan.json").path,
+            "--role", "original", "--frame", "29", "--rect", "0,0,4097,1",
+            "--components", "raster", "--commercial-source-contract-kat",
+            "--capture-frame-seal", root.appendingPathComponent("seal.json").path,
+            "--authorization", run.appendingPathComponent("authorization.json").path,
+            "--capability-receipt", root.appendingPathComponent("c.json").path,
+            "--method-capability-receipt", root.appendingPathComponent("m.json").path,
+            "--method-native-marker", root.appendingPathComponent("marker.json").path,
+            "--run-directory", run.path,
+        ])
+        XCTAssertNotEqual(result.status, 0)
+        XCTAssertTrue(result.output.contains("1 through 4096 native pixels"))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: run.path))
+    }
+
+    func testCommercialSourceRunnerRejectsMissingQualifiedM2() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "swan-source-runner-missing-m2-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        defer { try? FileManager.default.removeItem(at: root) }
+        let run = root.appendingPathComponent("run", isDirectory: true)
+        let result = try runRouteRunner([
+            "probe-rectangle-source", "--enable-debug-tools", "--allow-project-writes",
+            "--project", root.appendingPathComponent("project").path,
+            "--plan", root.appendingPathComponent("plan.json").path,
+            "--role", "original", "--frame", "1839", "--rect", "48,56,120,16",
+            "--components", "raster", "--commercial-authorized-source-probe",
+            "--capture-frame-seal", root.appendingPathComponent("seal.json").path,
+            "--authorization", run.appendingPathComponent("authorization.json").path,
+            "--capability-receipt", root.appendingPathComponent("c.json").path,
+            "--method-capability-receipt", root.appendingPathComponent("m.json").path,
+            "--method-native-marker", root.appendingPathComponent("marker.json").path,
+            "--run-directory", run.path,
+        ])
+        XCTAssertNotEqual(result.status, 0)
+        XCTAssertTrue(result.output.contains("complete A/C/M/marker/seal/M2 input set"))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: run.path))
+    }
+
     func testPrivateSourceEvidenceLimitIsInclusiveAtSixtyFourMiB() {
         let maximum = 64 * 1_024 * 1_024
 
@@ -390,6 +440,120 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
             totalFrames: 3,
             events: [TranslationFrameInputPlanEvent(frameIndex: 0, inputs: [])]
         )
+        let analysisURL = projectRoot.appendingPathComponent("analysis", isDirectory: true)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: analysisURL.path))
+        let authorizedResult = try TranslationDisplaySourceProbe.runAuthorized(
+            project: project,
+            role: .original,
+            plan: plan,
+            frameIndex: 2,
+            rectangle: EngineDisplayRectangle(x: 8, y: 8, width: 1, height: 1),
+            components: [.raster]
+        )
+        XCTAssertTrue(authorizedResult.report.isComplete)
+        XCTAssertNil(authorizedResult.nativeQueryReceipt)
+        XCTAssertEqual(
+            authorizedResult.details.schema,
+            TranslationDisplaySourceProbeDetails.currentSchema
+        )
+        XCTAssertFalse(
+            FileManager.default.fileExists(atPath: analysisURL.path),
+            "the authorization envelope must exclusively own private serialization"
+        )
+
+        let expectedFrame = try replayedFrame(
+            project: project,
+            role: .original,
+            plan: plan,
+            frameIndex: 2
+        )
+        let checkpoint = try TranslationRouteCheckpoint(
+            frameIndex: 2,
+            frame: expectedFrame
+        )
+        let captureBoundResult = try TranslationDisplaySourceProbe
+            .runCaptureBoundAuthorized(
+                project: project,
+                role: .original,
+                plan: plan,
+                frameIndex: 2,
+                rectangle: EngineDisplayRectangle(
+                    x: 8, y: 8, width: 1, height: 1
+                ),
+                components: [.raster],
+                expectedFrame: TranslationDisplaySourceExpectedFrame(
+                    checkpoint: checkpoint,
+                    nativeFrameNumber: expectedFrame.number
+                )
+            )
+        let queryReceipt = try XCTUnwrap(captureBoundResult.nativeQueryReceipt)
+        XCTAssertEqual(queryReceipt.stages, [
+            .frameValidated,
+            .ownerQueryStarted,
+            .sourceQueryStarted,
+            .frameRevalidated,
+        ])
+        XCTAssertEqual(queryReceipt.expectedNativeFrameNumber, expectedFrame.number)
+        XCTAssertEqual(queryReceipt.expectedNativeFrameSHA256, checkpoint.sha256)
+        XCTAssertEqual(queryReceipt.actualNativeFrameNumberBeforeQueries, expectedFrame.number)
+        XCTAssertEqual(queryReceipt.actualNativeFrameSHA256BeforeQueries, checkpoint.sha256)
+        XCTAssertEqual(queryReceipt.firstOwnerQuerySequencePosition, 2)
+        XCTAssertEqual(queryReceipt.firstSourceQuerySequencePosition, 3)
+        XCTAssertEqual(queryReceipt.actualNativeFrameNumberAfterQueries, expectedFrame.number)
+        XCTAssertEqual(queryReceipt.actualNativeFrameSHA256AfterQueries, checkpoint.sha256)
+        XCTAssertGreaterThan(queryReceipt.sourceQueryCount, 0)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: analysisURL.path))
+
+        XCTAssertThrowsError(try TranslationDisplaySourceProbe.runCaptureBoundAuthorized(
+            project: project,
+            role: .original,
+            plan: plan,
+            frameIndex: 2,
+            rectangle: EngineDisplayRectangle(x: 8, y: 8, width: 1, height: 1),
+            components: [.raster],
+            expectedFrame: TranslationDisplaySourceExpectedFrame(
+                checkpoint: checkpoint,
+                nativeFrameNumber: expectedFrame.number + 1
+            )
+        )) { error in
+            XCTAssertEqual(
+                error as? TranslationLabError,
+                .invalidRoute(
+                    "STOP_PREEXECUTION_CAPABILITY: authenticated frame mismatch before provenance"
+                )
+            )
+        }
+        XCTAssertFalse(FileManager.default.fileExists(atPath: analysisURL.path))
+
+        let wrongFingerprint = TranslationRouteCheckpoint(
+            frameIndex: checkpoint.frameIndex,
+            width: checkpoint.width,
+            height: checkpoint.height,
+            orientation: checkpoint.orientation,
+            pixelEncoding: checkpoint.pixelEncoding,
+            sha256: String(repeating: "0", count: 64)
+        )
+        XCTAssertThrowsError(try TranslationDisplaySourceProbe.runCaptureBoundAuthorized(
+            project: project,
+            role: .original,
+            plan: plan,
+            frameIndex: 2,
+            rectangle: EngineDisplayRectangle(x: 8, y: 8, width: 1, height: 1),
+            components: [.raster],
+            expectedFrame: TranslationDisplaySourceExpectedFrame(
+                checkpoint: wrongFingerprint,
+                nativeFrameNumber: expectedFrame.number
+            )
+        )) { error in
+            XCTAssertEqual(
+                error as? TranslationLabError,
+                .invalidRoute(
+                    "STOP_PREEXECUTION_CAPABILITY: authenticated frame mismatch before provenance"
+                )
+            )
+        }
+        XCTAssertFalse(FileManager.default.fileExists(atPath: analysisURL.path))
+
         let report = try TranslationDisplaySourceProbe.run(
             project: project,
             role: .original,
@@ -718,6 +882,61 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
             decodedTrace(scope: "selected", component: "mapCell", length: 0,
                          exact: true, unknown: false, overflow: false, conservative: false),
         ]
+    }
+
+    private func replayedFrame(
+        project: TranslationProject,
+        role: TranslationROMRole,
+        plan: TranslationFrameInputPlan,
+        frameIndex: UInt64
+    ) throws -> EngineVideoFrame {
+        let engine = try EngineSession(
+            rtcMode: .deterministic(
+                seedUnixSeconds: TranslationRouteRTCContext.proof.seedUnixSeconds
+            ),
+            hardwareModel: try project.routeHardwareModel.engineHardwareModel
+        )
+        let rom = try Data(contentsOf: project.romURL(for: role))
+        _ = try engine.load(rom: rom)
+        defer { try? engine.unload() }
+        for currentFrame in 0...frameIndex {
+            try engine.setInput(plan.input(at: currentFrame))
+            try engine.runFrame()
+        }
+        return try engine.videoFrame()
+    }
+
+    private func runRouteRunner(
+        _ arguments: [String]
+    ) throws -> (status: Int32, output: String) {
+        var search = try XCTUnwrap(
+            Bundle(for: TranslationDisplaySourceProbeTests.self).executableURL
+        )
+        var runner: URL?
+        for _ in 0..<8 {
+            search.deleteLastPathComponent()
+            let candidate = search.appendingPathComponent(
+                "SwanSongRouteRunner",
+                isDirectory: false
+            )
+            if FileManager.default.isExecutableFile(atPath: candidate.path) {
+                runner = candidate
+                break
+            }
+        }
+        let process = Process()
+        process.executableURL = try XCTUnwrap(runner)
+        process.arguments = arguments
+        let pipe = Pipe()
+        process.standardOutput = pipe
+        process.standardError = pipe
+        try process.run()
+        process.waitUntilExit()
+        let output = String(
+            decoding: pipe.fileHandleForReading.readDataToEndOfFile(),
+            as: UTF8.self
+        )
+        return (process.terminationStatus, output)
     }
 
     private func decodedTrace(

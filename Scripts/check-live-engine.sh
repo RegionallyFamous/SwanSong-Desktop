@@ -24,6 +24,21 @@ check_fixture() {
 check_fixture "$MACOS_DIR/testroms/ws-test-suite/80186_quirks/80186_quirks.ws"
 check_fixture "$MACOS_DIR/testroms/ws-test-suite/tile_screen_extended_range/tile_screen_extended_range.wsc"
 
+check_consumed_prefetch_control() {
+  expected='PASS consumed-prefetch-v1 retained-origin=1 mixed-origin-stop=1 trace=d649922ce84e7b9c'
+  first=$("$BUILD_DIR/SwanV30PrefetchOriginControl")
+  second=$("$BUILD_DIR/SwanV30PrefetchOriginControl")
+  if [ "$first" != "$expected" ] || [ "$second" != "$expected" ]; then
+    echo "consumed-prefetch origin control failed or was nondeterministic" >&2
+    echo "$first" >&2
+    echo "$second" >&2
+    exit 1
+  fi
+  echo "$first"
+}
+
+check_consumed_prefetch_control
+
 ARES_BUILD_DIR="$BUILD_DIR" "$SCRIPT_DIR/check-input-frame-bridge.sh"
 
 check_provenance_fixture() {
@@ -44,6 +59,40 @@ check_provenance_fixture() {
   echo "$first"
 }
 
+check_mono_palette_fixture() {
+  fixture=$1
+  expected_sha256=$2
+  actual_sha256=$(shasum -a 256 "$fixture" | awk '{print $1}')
+  if [ "$actual_sha256" != "$expected_sha256" ]; then
+    echo "monochrome display-provenance fixture hash mismatch: $fixture" >&2
+    exit 1
+  fi
+  first=$("$BUILD_DIR/SwanAresSmoke" --mono-palette-fixture "$fixture")
+  second=$("$BUILD_DIR/SwanAresSmoke" --mono-palette-fixture "$fixture")
+  if [ "$first" != "$second" ]; then
+    echo "nondeterministic monochrome display provenance for $fixture" >&2
+    exit 1
+  fi
+  echo "$first"
+}
+
+check_mapper_window_fixture() {
+  fixture=$1
+  expected_sha256=$2
+  actual_sha256=$(shasum -a 256 "$fixture" | awk '{print $1}')
+  if [ "$actual_sha256" != "$expected_sha256" ]; then
+    echo "mapper-window fixture hash mismatch: $fixture" >&2
+    exit 1
+  fi
+  first=$("$BUILD_DIR/SwanAresSmoke" --mapper-window-owner-matrix "$fixture")
+  second=$("$BUILD_DIR/SwanAresSmoke" --mapper-window-owner-matrix "$fixture")
+  if [ "$first" != "$second" ]; then
+    echo "nondeterministic mapper-window provenance for $fixture" >&2
+    exit 1
+  fi
+  echo "$first"
+}
+
 check_provenance_fixture \
   "$MACOS_DIR/testroms/swan-song/display_provenance/display_provenance_horizontal.wsc" \
   planar \
@@ -52,6 +101,12 @@ check_provenance_fixture \
   "$MACOS_DIR/testroms/swan-song/display_provenance/display_provenance_vertical.wsc" \
   packed \
   9d70e8b632783d0858f9e3e446b829061b9e5fee6f219cb8c796d1dd66ea9f95
+check_mono_palette_fixture \
+  "$MACOS_DIR/testroms/swan-song/display_provenance/mono_palette_out_owner.ws" \
+  d38b05b8d062d662e97456ccb3499ed8b8fae17a0409ea0a800558cfae142b0d
+check_mapper_window_fixture \
+  "$MACOS_DIR/testroms/swan-song/mapper_window_owner_matrix/mapper_window_owner_matrix.wsc" \
+  db524b14401b16ad763cad3c2e78646a5be5d92060eef88c6fb6495f68a3b009
 
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" run \
   --package-path "$MACOS_DIR" \

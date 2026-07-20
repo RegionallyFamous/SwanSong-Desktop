@@ -6,6 +6,13 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-07-20
+
+**Make the Whole Workshop Move.** SwanSong Studio's complete SDK 0.5 toolset
+is ready for everyone, Story Forge becomes a far more expressive native writing
+room, and Translation Lab can bind private provenance to the exact captured
+frame before it asks the engine a single source question.
+
 ### Added
 
 - Brought the complete SwanSong SDK 0.5.0 workflow into the native Studio:
@@ -18,12 +25,55 @@ records those user-visible changes. Published releases use semantic versioning.
   one-shot Dev, migration preview, and hardware capacity. File-selecting,
   destructive migration, asset mutation, and Release operations remain visible
   native-app actions.
+- Expanded Story Forge with a proposal-only eight-specialist Story Room, a
+  causal story map, an explicit-save manuscript editor with live scene context,
+  immutable revision snapshots and decisions, unprimed reader packets, a
+  research and authenticity notebook, genre review, append-only ImageGen prompt
+  history, mono music auditions, and a source-mapped WonderSwan adaptation
+  scaffold.
+- Added a guarded capture-plan envelope for Translation Lab automation. It
+  authenticates the project, plan, Original and Patched ROMs, private capture
+  directory, and exact allowed outputs before executing the bounded record,
+  replay, capture, and intake graph.
+- Added capture-bound display-source probing with an ordered private native
+  query receipt. A successful receipt proves the exact frame was validated
+  before owner and source queries and revalidated afterward.
 
 ### Changed
 
 - Updated the signed, content-verified SDK payload to SwanSong SDK 0.5.0 at its
   exact tagged commit and payload revision, and raised external Studio SDK
   overrides to the same minimum version.
+- Reorganized Story Forge into nine focused native workspaces with compact
+  navigation, clearer next actions, and direct access to the private artifacts
+  each action creates.
+- Made local MCP and Swift package launchers use a deterministic, allowlisted
+  child environment without touching the login keychain. Restarting a trusted
+  Codex task no longer needs to trigger a password prompt.
+- Sealed the prepared ares source tree during compilation and added a
+  two-materialization reproducibility gate covering the universal engine,
+  exported ABI, source identity, monochrome output, and route-runner binding.
+
+### Security
+
+- Capture-bound provenance now checks the authenticated native frame number and
+  framed pixel fingerprint before any owner or source query. A mismatch creates
+  no report, private details, run directory, or closure artifact.
+- Translation toolkit launches now bind the selected Node executable, entry
+  point, working directory, arguments, and allowlisted environment by private
+  witness while returning only a redacted digest summary.
+- Capture Intake uses one fresh private directory and exactly two authorized
+  output files, then validates the copied RAM and receipt before accepting the
+  result.
+
+### Fixed
+
+- Strengthened monochrome palette and mapper-window provenance so private
+  source evidence keeps honest CPU-writer and cartridge-origin ownership across
+  the engine paths used by real translation work.
+- Kept long Story Forge route matrices visibly alive with current/total
+  progress and wall time, and terminate the complete child process group when a
+  run times out.
 
 ## [0.5.0] - 2026-07-19
 
@@ -448,7 +498,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.3...v0.5.0
 [0.4.3]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.1...v0.4.2

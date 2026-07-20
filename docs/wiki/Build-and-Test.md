@@ -26,7 +26,8 @@ From the repository root:
 ```sh
 ./Scripts/build-engine.sh
 export SWAN_ARES_ENGINE_DIR="$PWD/.engine/build"
-./Scripts/build-app.sh
+SWAN_SWIFTPM_DISABLE_KEYCHAIN=1 SWAN_SIGNING_MODE=adhoc \
+  ./Scripts/build-app.sh
 open ".build/app/SwanSong.app"
 ```
 
@@ -35,7 +36,8 @@ For direct SwiftPM execution instead of a Finder-style bundle:
 ```sh
 ./Scripts/build-engine.sh
 export SWAN_ARES_ENGINE_DIR="$PWD/.engine/build"
-swift run SwanSong
+SWAN_SWIFTPM_DISABLE_KEYCHAIN=1 \
+  ./Scripts/swift-package.sh run --package-path . SwanSong
 ```
 
 The local app is ad-hoc signed and is not an official distributable release.
@@ -49,7 +51,8 @@ must not be presented as gameplay, compatibility, or release evidence.
 ## Universal development build
 
 ```sh
-SWAN_UNIVERSAL=1 ./Scripts/build-app.sh
+SWAN_SWIFTPM_DISABLE_KEYCHAIN=1 SWAN_SIGNING_MODE=adhoc SWAN_UNIVERSAL=1 \
+  ./Scripts/build-app.sh
 ./Scripts/verify-app-architectures.sh ".build/app/SwanSong.app"
 ```
 
@@ -62,6 +65,7 @@ Official signing and notarization are documented in [[Signing and Notarization]]
 ## Core source-free gates
 
 ```sh
+export SWAN_SWIFTPM_DISABLE_KEYCHAIN=1
 DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
   ./Scripts/swift-package.sh test --package-path .
 ./Scripts/check-live-engine.sh
@@ -94,6 +98,7 @@ game compatibility results or original-hardware accuracy evidence.
 The focused Story Forge contract lane is:
 
 ```sh
+export SWAN_SWIFTPM_DISABLE_KEYCHAIN=1
 DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
   ./Scripts/swift-package.sh test --package-path . --filter StoryForge
 ```
@@ -105,6 +110,7 @@ remains required for release.
 The focused source-free Cartridge Lab contract lane is:
 
 ```sh
+export SWAN_SWIFTPM_DISABLE_KEYCHAIN=1
 DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
   ./Scripts/swift-package.sh test --package-path . --filter YokoiHardwareTests
 ```
@@ -249,7 +255,8 @@ For an authorized local game, the headless probe runs the same ares engine and
 Open IPL path without opening a macOS window:
 
 ```sh
-swift run SwanSongProbe \
+SWAN_SWIFTPM_DISABLE_KEYCHAIN=1 \
+  ./Scripts/swift-package.sh run --package-path . SwanSongProbe \
   --rom "/path/to/game.wsc" \
   --frames 600 \
   --report probe.json \
@@ -269,6 +276,8 @@ provide an authorized private input explicitly:
 
 ```sh
 CONFIGURATION=debug \
+SWAN_SWIFTPM_DISABLE_KEYCHAIN=1 \
+SWAN_SIGNING_MODE=adhoc \
 SWAN_APP_OUTPUT_DIR="$PWD/.build/owned-smoke-app" \
 ./Scripts/build-app.sh
 
@@ -438,7 +447,9 @@ under System Settings → Privacy & Security → Accessibility and rerun.
 ## Emulator/RTL differential
 
 ```sh
-SWAN_ARES_ENGINE_DIR="$PWD/.engine/build" swift run SwanSongDifferential \
+SWAN_ARES_ENGINE_DIR="$PWD/.engine/build" \
+SWAN_SWIFTPM_DISABLE_KEYCHAIN=1 \
+  ./Scripts/swift-package.sh run --package-path . SwanSongDifferential \
   --rom testroms/ws-test-suite/80186_quirks/80186_quirks.ws \
   --rtl /path/to/swan-song-rtl-frames \
   --frames 360 \

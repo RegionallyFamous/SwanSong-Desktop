@@ -17,8 +17,10 @@ classify_path() {
     Package.resolved | \
     Sources/SwanSongApp/HomebrewCatalogProductionTrust.swift | \
     Sources/SwanSongApp/SwanSongUpdater.swift | \
+    Scripts/ares-source-state.sh | \
     Scripts/build-app.sh | \
     Scripts/check-app-*.sh | \
+    Scripts/check-engine-reproducibility.sh | \
     Scripts/check-release-*.sh | \
     Scripts/check-sparkle-*.sh | \
     Scripts/classify-ci-changes.sh | \
@@ -27,7 +29,9 @@ classify_path() {
     Scripts/notarize-app.sh | \
     Scripts/package-release.sh | \
     Scripts/release-app.sh | \
+    Scripts/prepare-ares.sh | \
     Scripts/selftest-app-*.sh | \
+    Scripts/selftest-ares-*.sh | \
     Scripts/selftest-ci-*.sh | \
     Scripts/selftest-package-*.sh | \
     Scripts/selftest-release-*.sh | \
@@ -50,10 +54,14 @@ classify_path() {
     Sources/SwanSongKit/EngineSession.swift | \
     Sources/SwanSongKit/FrameActivityMonitor.swift | \
     Sources/SwanSongKit/OpenIPL.swift | \
+    Scripts/ares-source-state.sh | \
     Scripts/build-engine.sh | \
     Scripts/check-compatibility-matrix.sh | \
     Scripts/check-input-frame-bridge.sh | \
     Scripts/check-live-engine.sh | \
+    Scripts/check-engine-reproducibility.sh | \
+    Scripts/prepare-ares.sh | \
+    Scripts/selftest-ares-*.sh | \
     testroms/*)
       compatibility=true
       ;;

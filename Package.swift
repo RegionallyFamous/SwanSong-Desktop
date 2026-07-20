@@ -54,6 +54,10 @@ let package = Package(
             name: "SwanSongTextIntakeChecks",
             targets: ["SwanSongTextIntakeChecks"]
         ),
+        .executable(
+            name: "SwanSongEnvironmentObserver",
+            targets: ["SwanSongEnvironmentObserver"]
+        ),
         .library(name: "SwanSongKit", targets: ["SwanSongKit"]),
     ],
     dependencies: [
@@ -115,6 +119,9 @@ let package = Package(
         .executableTarget(
             name: "SwanSongTextIntakeChecks",
             dependencies: ["SwanSongKit"]
+        ),
+        .executableTarget(
+            name: "SwanSongEnvironmentObserver"
         ),
         .testTarget(
             name: "SwanSongAppSnapshotTests",
