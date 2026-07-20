@@ -120,6 +120,9 @@ for name in expected - read_only:
 playtest_required = set(by_name["swansong_playtest_plan"]["inputSchema"].get("required", []))
 if playtest_required != {"romPath", "plan", "confirmShareCapture"}:
     raise SystemExit("SwanSong playtest tool lost its explicit capture-sharing contract")
+playtest_properties = by_name["swansong_playtest_plan"]["inputSchema"]["properties"]
+if not {"captureSDKTrace", "confirmShareSDKTrace"} <= set(playtest_properties):
+    raise SystemExit("SwanSong playtest tool lost its guarded SDK trace contract")
 for name in (
     "swansong_observed_play_start",
     "swansong_observed_play_resume",
@@ -187,6 +190,27 @@ send({
 playtest_guard = receive(3)["result"]
 if playtest_guard.get("isError") is not True or "confirmShareCapture" not in json.dumps(playtest_guard):
     raise SystemExit("SwanSong playtest runtime lost its capture-sharing guard")
+send({
+    "jsonrpc": "2.0",
+    "id": 30,
+    "method": "tools/call",
+    "params": {
+        "name": "swansong_playtest_plan",
+        "arguments": {
+            "romPath": "/tmp/swansong-semantic-guard.ws",
+            "plan": {
+                "schema": "swan-song-frame-input-plan-v1",
+                "totalFrames": 3,
+                "events": [{"frameIndex": 0, "inputs": []}],
+            },
+            "confirmShareCapture": True,
+            "captureSDKTrace": True,
+        },
+    },
+})
+trace_guard = receive(30)["result"]
+if trace_guard.get("isError") is not True or "confirmShareSDKTrace" not in json.dumps(trace_guard):
+    raise SystemExit("SwanSong playtest runtime lost its semantic-trace sharing guard")
 
 for request_id, name in enumerate(
     (

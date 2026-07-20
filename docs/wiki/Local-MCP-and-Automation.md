@@ -94,6 +94,14 @@ but a successful execution only proves that SwanSong produced that observation.
 An agent must inspect the frame and exercise the game's declared mechanic before
 calling it a gameplay pass.
 
+When the cartridge is an opt-in SDK trace build, the caller may also request a
+bounded semantic trace by setting both `captureSDKTrace: true` and the separate
+`confirmShareSDKTrace: true` consent. The trace contains frame/input masks,
+scenes, progress and canonical state hashes, endings, resets, graphics pressure,
+audio markers, and panic status. SwanSong validates the mailbox, ring order,
+and retained-record checksum internally and returns only canonical trace bytes;
+it never returns raw RAM.
+
 `swansong_compare_playtest_plan` accepts different authorized absolute
 `originalROMPath` and `patchedROMPath` files plus the same plan contract. It
 reads both inputs before execution, rejects symlinks, changed files, identical

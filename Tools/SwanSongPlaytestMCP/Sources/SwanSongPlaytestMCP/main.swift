@@ -54,7 +54,7 @@ private struct PlaytestComparisonReport: Codable {
 @main
 private enum SwanSongPlaytestMCPServer {
     private static let protocolVersion = "2025-11-25"
-    private static let instructions = "Executes authorized local WonderSwan software through SwanSong's own deterministic engine. The tools return one rendered game frame and final audio window, or a paired Original/Patched A/B capture, only when confirmShareCapture=true. They must never expose paths, ROM, save, state, persistence, or RAM bytes. Successful execution is observation evidence, not proof that a mechanic passed; inspect every returned frame, listen to relevant audio, and exercise the declared game contract."
+    private static let instructions = "Executes authorized local WonderSwan software through SwanSong's own deterministic engine. The tools return one rendered game frame and final audio window, or a paired Original/Patched A/B capture, only when confirmShareCapture=true. A single playtest may also return the SDK's bounded, structurally validated semantic trace when captureSDKTrace=true and confirmShareSDKTrace=true. They must never expose paths, ROM, save, state, persistence, or raw RAM bytes. Successful execution is observation evidence, not proof that a mechanic passed; inspect every returned frame, listen to relevant audio, and exercise the declared game contract."
 
     static func main() {
         while let line = readLine(strippingNewline: true) {
@@ -91,7 +91,7 @@ private enum SwanSongPlaytestMCPServer {
                 result: [
                     "protocolVersion": protocolVersion,
                     "capabilities": ["tools": ["listChanged": false]],
-                    "serverInfo": ["name": "swansong-playtester", "version": "1.1.0"],
+                    "serverInfo": ["name": "swansong-playtester", "version": "1.2.0"],
                     "instructions": instructions,
                 ]
             )
@@ -251,6 +251,12 @@ private enum SwanSongPlaytestMCPServer {
               let planValue = arguments["plan"] else {
             throw PlaytestMCPError(message: "romPath and plan are required")
         }
+        let captureSDKTrace = arguments["captureSDKTrace"] as? Bool == true
+        if captureSDKTrace && arguments["confirmShareSDKTrace"] as? Bool != true {
+            throw PlaytestMCPError(
+                message: "Set confirmShareSDKTrace to true after confirming that the SDK's bounded semantic gameplay trace may be shared with this MCP client."
+            )
+        }
         let romURL = try validatedROMURL(path: romPath, argumentName: "romPath")
         let initialSnapshot = try preflightROM(at: romURL)
         let image = try readStableROM(
@@ -258,15 +264,26 @@ private enum SwanSongPlaytestMCPServer {
             initialSnapshot: initialSnapshot
         )
         let plan = try decodePlan(planValue)
-        let capture = try SwanSongPlaytester.run(image: image, plan: plan)
+        let capture = try SwanSongPlaytester.run(
+            image: image,
+            plan: plan,
+            captureSDKTrace: captureSDKTrace
+        )
         let encoder = reportEncoder()
         let reportData = try encoder.encode(capture.report)
-        guard let report = try JSONSerialization.jsonObject(with: reportData) as? JSONDictionary else {
+        guard var report = try JSONSerialization.jsonObject(with: reportData) as? JSONDictionary else {
             throw PlaytestMCPError(message: "SwanSong produced a non-object playtest report")
         }
+        if let sdkTrace = capture.sdkTrace {
+            report["deterministicTraceBase64"] = sdkTrace.base64EncodedString()
+        }
+        let structuredData = try JSONSerialization.data(
+            withJSONObject: report,
+            options: [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+        )
         return [
             "content": [
-                ["type": "text", "text": String(decoding: reportData, as: UTF8.self)],
+                ["type": "text", "text": String(decoding: structuredData, as: UTF8.self)],
                 [
                     "type": "image",
                     "data": capture.png.base64EncodedString(),
@@ -662,6 +679,14 @@ private enum SwanSongPlaytestMCPServer {
                 "confirmShareCapture": [
                     "type": "boolean",
                     "description": "Must be true to return rendered game image and audio media.",
+                ],
+                "captureSDKTrace": [
+                    "type": "boolean",
+                    "description": "Request the SwanSong SDK's bounded semantic deterministic trace when the ROM contains one.",
+                ],
+                "confirmShareSDKTrace": [
+                    "type": "boolean",
+                    "description": "Must be true when captureSDKTrace is true; never authorizes raw memory disclosure.",
                 ],
             ],
             required: ["romPath", "plan", "confirmShareCapture"]

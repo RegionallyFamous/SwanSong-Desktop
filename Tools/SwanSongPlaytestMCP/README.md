@@ -21,6 +21,13 @@ require different hardware models. Guarded failures omit submitted paths,
 basenames, and raw filesystem or engine errors. The tools do not write project
 evidence or game persistence.
 
+For an SDK trace ROM, `swansong_playtest_plan` can additionally return a
+bounded canonical semantic trace containing frame/input masks, scenes,
+progress and state hashes, endings, resets, graphics pressure, audio markers,
+and panic status. This requires both `captureSDKTrace: true` and the separate
+`confirmShareSDKTrace: true` consent. SwanSong validates the mailbox and its
+retained-record checksum internally; raw emulated RAM is never returned.
+
 Its small STDIO JSON-RPC adapter has no separate runtime dependency, so it
 builds with SwanSong's Xcode 16.2 release floor as well as current Xcode.
 

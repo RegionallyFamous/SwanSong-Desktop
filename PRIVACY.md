@@ -67,8 +67,14 @@ audio window, a sequence of explicitly requested observed-play screenshots and
 audio windows, or a paired Original/Patched capture and source-free delta report.
 They include audio activity and fingerprints, exact input-plan metadata, ROM
 digests and checksums, and engine identity only when the caller explicitly sets
-`confirmShareCapture: true`; they never return local paths or ROM, save, state,
-persistence, or RAM bytes and do not require the live app bridge.
+`confirmShareCapture: true`. For an SDK trace ROM, a single playtest may also
+return the SDK's bounded semantic trace—frame ticks, input/action masks, scenes,
+progress and state hashes, endings, resets, graphics pressure, audio markers,
+and panic status—only when both `captureSDKTrace: true` and the separate
+`confirmShareSDKTrace: true` consent are present. SwanSong validates mailbox
+structure, ring order, and retained-record integrity internally and exports only
+the canonical trace. The tools never return local paths or ROM, save, emulator
+state, persistence, or raw RAM bytes and do not require the live app bridge.
 
 The separate Translation Lab MCP tools can create route and evidence files
 only inside an explicitly supplied project and return project paths, digests,
