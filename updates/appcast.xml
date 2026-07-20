@@ -6,6 +6,24 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.6.1</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.6.1</link>
+      <description sparkle:format="html">&lt;h2&gt;SwanSong is ready before you are.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.6.1 opens faster, keeps an old catalog trust record from interrupting launch, and helps Studio find the modern Python already installed on your Mac.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;See your library sooner.&lt;/strong&gt; The main window appears first while controllers, local tools, and the workshop finish waking up behind it.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Skip the surprise password box.&lt;/strong&gt; Homebrew Catalog trust checks now fail quietly instead of asking for the Mac login password.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Open Studio from Finder.&lt;/strong&gt; SwanSong finds Python 3.11+ in standard Homebrew, python.org, MacPorts, and system locations.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep everything from 0.6.&lt;/strong&gt; Studio, Story Forge, Translation Lab, Time Ribbon, save states, and the native player are all here.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;SwanSong includes no games or original system firmware. Development tools remain separate prerequisites.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.6.1"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Mon, 20 Jul 2026 14:32:05 -0500</pubDate>
+      <sparkle:version>12</sparkle:version>
+      <sparkle:shortVersionString>0.6.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.6.1/SwanSong-0.6.1-macOS-universal.zip" length="25174537" type="application/octet-stream" sparkle:edSignature="zRKgFGUOoTOJXQFcAtXoq+MC2WP9ODSpU5xH9PmuCidGt9JMq9DEdJ8/VTE+Sk/PWLBzNUEsZnxQpLhGaQ9GBA==" />
+    </item>
+    <item>
       <title>SwanSong 0.6.0</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.6.0</link>
       <description sparkle:format="html">&lt;h2&gt;The whole SwanSong workshop can move with you.&lt;/h2&gt;
@@ -165,6 +183,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: x3XwV5jqMZLitS4j8MdnWjegfhhAF3JMml3KCxejypPq82bp9IaFGe3cq4Y1S0AlH/El6RRP2Cf6YOrBwEF5CA==
-length: 17102
+edSignature: BhCaq9HvEpWOcqCbiK3oWkOxdqp+DErfYnZj8qcbxuEW9tWPnzcyJIxb72+TOpzksjFq5vtUU0y0iA619mxQBA==
+length: 19090
 -->
