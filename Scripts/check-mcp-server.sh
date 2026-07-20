@@ -178,7 +178,11 @@ studio_actions = set(
     by_name["swansong_studio_action"]["inputSchema"]
     .get("properties", {}).get("action", {}).get("enum", [])
 )
-if studio_actions != {"doctor", "assets", "build", "test", "play", "profile"}:
+if studio_actions != {
+    "doctor", "assets", "build", "test", "play", "play-all", "profile",
+    "optimize", "fuzz", "lab", "dev-once", "migrate-preview",
+    "hardware-capacity",
+}:
     raise SystemExit("Studio action gained an unsafe or unknown operation")
 
 send({

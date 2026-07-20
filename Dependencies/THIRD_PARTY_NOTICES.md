@@ -32,9 +32,9 @@ corresponding-source archive under `Dependencies/sparkle-source`.
 
 ## SwanSong SDK
 
-SwanSong Studio embeds the MIT-licensed SwanSong SDK 0.4.0 runtime, recipes,
+SwanSong Studio embeds the MIT-licensed SwanSong SDK 0.5.0 runtime, recipes,
 schema, and Python package from revision
-`6a3f555ab94e977bde4359573ef72f225a507722`. Its complete license and notices
+`f9bab7451593d0d8640816c60e0836377c65027e`. Its complete license and notices
 are included inside the signed application at `Resources/SwanSongSDK`.
 
 ## Yokoi Boot and Yokoi Cart Service

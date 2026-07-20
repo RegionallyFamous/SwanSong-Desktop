@@ -27,7 +27,32 @@ final class SwanSDKWorkspaceModel {
     var scenarioPlanText = ""
     var scenarioPlanHasUnsavedChanges = false
     var scenarioInputLogURL: URL?
+    var scenarioScriptURL: URL?
+    var scenarioCompiledPlanURL: URL?
+    var buildWithTrace = false
+    var buildTraceCapacity = 64
+    var hardwareTileCapacity: Int?
+    var budgetBaselineURL: URL?
+    var budgetAllowedIncreases = ""
     var optimizerAssetID = ""
+    var optimizerApplyOutputURL: URL?
+    var optimizerApplyReportURL: URL?
+    var optimizerExpectedSourceSHA256 = ""
+    var optimizerPaletteReduction = true
+    var optimizerMonoConversion = false
+    var optimizerRevertReportURL: URL?
+    var optimizerExpectedReportSHA256 = ""
+    var assetImportSourceURL: URL?
+    var assetImportDestinationURL: URL?
+    var assetImportProvenanceURL: URL?
+    var assetImportExpectedSHA256 = ""
+    var audioSourceURL: URL?
+    var audioPreviewOutputURL: URL?
+    var audioPreviewSampleRate = 48_000
+    var audioPreviewLoops = 2
+    var audioPreviewReplace = false
+    var audioEventsURL: URL?
+    var audioArbitrationChannels = 4
     var authorKind: SwanSDKAuthorKind = .tilemap
     var authorDocumentID = "main"
     var authorDocumentURL: URL?
@@ -47,8 +72,17 @@ final class SwanSDKWorkspaceModel {
     var profileTraceURL: URL?
     var evidenceBeforeURL: URL?
     var evidenceAfterURL: URL?
+    var outcomeTraceURL: URL?
+    var outcomeWAVURL: URL?
+    var outcomeReportURL: URL?
+    var outcomeWAVInspected = false
+    var migrationTargetVersion = ""
+    var migrationTargetRevision = ""
+    var migrationTargetSchema = ""
     var releaseOutputURL: URL?
     var releaseNotesURL: URL?
+    var releaseBaselineURL: URL?
+    var releaseAllowedIncreases = ""
     var structuredReport: SwanSDKStructuredReport?
     var structuredReportTitle = ""
     var diagnostics = ""
@@ -568,10 +602,14 @@ final class SwanSDKWorkspaceModel {
     }
 
     func runAutomationAction(named name: String) throws {
-        let allowed = Set(["doctor", "assets", "build", "test", "play", "profile"])
+        let allowed = Set([
+            "doctor", "assets", "build", "test", "play", "play-all", "profile",
+            "optimize", "fuzz", "lab", "dev-once", "migrate-preview",
+            "hardware-capacity",
+        ])
         guard allowed.contains(name) else {
             throw SwanSDKIntegrationError.malformedContract(
-                "Studio automation action must be doctor, assets, build, test, play, or profile."
+                "Studio automation action is not in the fixed SDK 0.5 allowlist."
             )
         }
         guard sdkRoot != nil else {
@@ -602,9 +640,30 @@ final class SwanSDKWorkspaceModel {
         case "play":
             guard projectRoot != nil else { throw missingAutomationProject() }
             runProjectCommand(.play)
+        case "play-all":
+            guard projectRoot != nil else { throw missingAutomationProject() }
+            runPlayAll()
         case "profile":
             guard projectRoot != nil else { throw missingAutomationProject() }
             runProjectCommand(.profile)
+        case "optimize":
+            guard projectRoot != nil else { throw missingAutomationProject() }
+            runOptimizer()
+        case "fuzz":
+            guard projectRoot != nil else { throw missingAutomationProject() }
+            runFuzzer()
+        case "lab":
+            guard projectRoot != nil else { throw missingAutomationProject() }
+            runLaboratory()
+        case "dev-once":
+            guard projectRoot != nil else { throw missingAutomationProject() }
+            runDev(once: true)
+        case "migrate-preview":
+            guard projectRoot != nil else { throw missingAutomationProject() }
+            runMigration(apply: false)
+        case "hardware-capacity":
+            guard projectRoot != nil else { throw missingAutomationProject() }
+            runHardwareTileCapacity()
         default:
             throw SwanSDKIntegrationError.malformedContract(
                 "Studio automation action was not dispatched."
@@ -627,6 +686,121 @@ final class SwanSDKWorkspaceModel {
             action: .assets,
             title: "Asset Optimizer"
         ) { [weak self] in self?.reloadGeneratedArtifacts() }
+    }
+
+    func runOptimizerApply() {
+        guard let manifestURL,
+              let output = optimizerApplyOutputURL,
+              let report = optimizerApplyReportURL else {
+            issue = "Choose a new optimized image and apply-report path first."
+            return
+        }
+        let asset = optimizerAssetID.trimmingCharacters(in: .whitespacesAndNewlines)
+        let digest = optimizerExpectedSourceSHA256
+            .trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        var operations: [String] = []
+        if optimizerPaletteReduction { operations.append("palette-reduction") }
+        if optimizerMonoConversion { operations.append("mono-conversion") }
+        guard !asset.isEmpty, !operations.isEmpty, Self.isSHA256(digest) else {
+            issue = "Choose an asset and operation, then enter the reviewed 64-character source SHA-256."
+            return
+        }
+        runStructuredCommand(
+            .optimizeApply(
+                manifest: manifestURL,
+                assetID: asset,
+                output: output,
+                report: report,
+                operations: operations,
+                expectedSourceSHA256: digest
+            ),
+            action: .assets,
+            title: "Approved Asset Optimization"
+        ) { [weak self] in self?.reloadGeneratedArtifacts() }
+    }
+
+    func runOptimizerRevert() {
+        guard let manifestURL, let report = optimizerRevertReportURL else {
+            issue = "Choose the optimization apply report first."
+            return
+        }
+        let digest = optimizerExpectedReportSHA256
+            .trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        guard Self.isSHA256(digest) else {
+            issue = "Enter the reviewed 64-character apply-report SHA-256."
+            return
+        }
+        runStructuredCommand(
+            .optimizeRevert(
+                manifest: manifestURL,
+                report: report,
+                expectedReportSHA256: digest
+            ),
+            action: .assets,
+            title: "Revert Asset Optimization"
+        ) { [weak self] in self?.reloadGeneratedArtifacts() }
+    }
+
+    func runAssetImport() {
+        guard let manifestURL,
+              let source = assetImportSourceURL,
+              let destination = assetImportDestinationURL,
+              let provenance = assetImportProvenanceURL else {
+            issue = "Choose the reviewed source, new project destination, and provenance report."
+            return
+        }
+        let digest = assetImportExpectedSHA256
+            .trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        guard Self.isSHA256(digest) else {
+            issue = "Enter the reviewed 64-character source SHA-256."
+            return
+        }
+        runStructuredCommand(
+            .assetImport(
+                manifest: manifestURL,
+                source: source,
+                destination: destination,
+                provenanceReport: provenance,
+                expectedSHA256: digest
+            ),
+            action: .assets,
+            title: "Asset Import"
+        ) { [weak self] in self?.reloadGeneratedArtifacts() }
+    }
+
+    func runAudioPreview() {
+        guard let manifestURL, let source = audioSourceURL else {
+            issue = "Choose a project-owned SwanSong music TOML file first."
+            return
+        }
+        runStructuredCommand(
+            .audioPreview(
+                manifest: manifestURL,
+                source: source,
+                output: audioPreviewOutputURL,
+                sampleRate: max(8_000, audioPreviewSampleRate),
+                loops: max(1, audioPreviewLoops),
+                replace: audioPreviewReplace
+            ),
+            action: .assets,
+            title: "Audio Preview"
+        )
+    }
+
+    func runAudioArbitration() {
+        guard let manifestURL, let events = audioEventsURL else {
+            issue = "Choose a project-owned SFX event document first."
+            return
+        }
+        runStructuredCommand(
+            .audioArbitrate(
+                manifest: manifestURL,
+                events: events,
+                channels: min(4, max(1, audioArbitrationChannels))
+            ),
+            action: .assets,
+            title: "SFX Arbitration"
+        )
     }
 
     func runAuthorCreate() {
@@ -813,6 +987,31 @@ final class SwanSDKWorkspaceModel {
         }
     }
 
+    func runScenarioCompiler() {
+        guard let manifestURL,
+              let script = scenarioScriptURL,
+              let output = scenarioCompiledPlanURL else {
+            issue = "Choose a project-owned scenario script and a new exact-plan output."
+            return
+        }
+        runStructuredCommand(
+            .scenarioCompile(manifest: manifestURL, script: script, outputPlan: output),
+            action: .play,
+            title: "Scenario Compiler"
+        )
+    }
+
+    func runPlayAll() {
+        guard let manifestURL else {
+            issue = "Open a SwanSong SDK project first."
+            return
+        }
+        start(.playAll(manifest: manifestURL), action: .play) { [weak self] _ in
+            self?.reloadEvidence()
+            self?.currentEvidenceReplayWasVerified = self?.evidence != nil
+        }
+    }
+
     func runDev(once: Bool) {
         guard let manifestURL else {
             issue = "Open a SwanSong SDK project first."
@@ -837,16 +1036,100 @@ final class SwanSDKWorkspaceModel {
         )
     }
 
+    func runHardwareTileCapacity() {
+        guard let manifestURL else {
+            issue = "Open a SwanSong SDK project first."
+            return
+        }
+        start(
+            .hardwareTileCapacity(manifest: manifestURL),
+            action: .profile,
+            commandName: "Hardware Tile Capacity"
+        ) { [weak self] result in
+            let text = result.standardOutput.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard let value = Int(text), value > 0 else {
+                throw SwanSDKIntegrationError.malformedContract(
+                    "The SDK returned an invalid hardware tile capacity."
+                )
+            }
+            self?.hardwareTileCapacity = value
+        }
+    }
+
     func runEvidenceDiff() {
         guard let before = evidenceBeforeURL, let after = evidenceAfterURL else {
             issue = "Choose both SwanSong evidence folders first."
             return
         }
         runStructuredCommand(
-            .evidenceDiff(before: before, after: after),
+            .evidenceDiff(
+                before: before,
+                after: after,
+                manifest: manifestURL,
+                scenario: selectedScenarioID
+            ),
             action: .evidence,
             title: "Evidence Diff"
         )
+    }
+
+    func runOutcomeValidation() {
+        guard let manifestURL,
+              let scenario = selectedScenarioID,
+              let trace = outcomeTraceURL,
+              let wav = outcomeWAVURL else {
+            issue = "Select a scenario, trace, and matching SwanSong WAV first."
+            return
+        }
+        guard outcomeWAVInspected else {
+            issue = "Listen to the selected SwanSong WAV before validating its semantic outcome."
+            return
+        }
+        runStructuredCommand(
+            .outcome(
+                manifest: manifestURL,
+                scenario: scenario,
+                trace: trace,
+                wav: wav,
+                inspected: true,
+                output: outcomeReportURL
+            ),
+            action: .evidence,
+            title: "Semantic Outcome"
+        )
+    }
+
+    func runMigration(apply: Bool) {
+        guard let manifestURL else {
+            issue = "Open a SwanSong SDK project first."
+            return
+        }
+        let schemaText = migrationTargetSchema.trimmingCharacters(in: .whitespacesAndNewlines)
+        let schema: Int?
+        if schemaText.isEmpty {
+            schema = nil
+        } else if let value = Int(schemaText), value > 0 {
+            schema = value
+        } else {
+            issue = "Target schema must be a positive integer."
+            return
+        }
+        runStructuredCommand(
+            .migrate(
+                manifest: manifestURL,
+                targetVersion: migrationTargetVersion.nilIfBlank,
+                targetRevision: migrationTargetRevision.nilIfBlank,
+                targetSchema: schema,
+                apply: apply
+            ),
+            action: .release,
+            title: apply ? "Apply SDK Migration" : "SDK Migration Preview"
+        ) { [weak self] in
+            guard apply, let self, let manifestURL = self.manifestURL else { return }
+            self.manifestText = try String(contentsOf: manifestURL, encoding: .utf8)
+            self.manifestHasUnsavedChanges = false
+            self.reloadGeneratedArtifacts()
+        }
     }
 
     func runRelease() {
@@ -858,7 +1141,9 @@ final class SwanSDKWorkspaceModel {
             .release(
                 manifest: manifestURL,
                 output: releaseOutputURL,
-                notes: releaseNotesURL
+                notes: releaseNotesURL,
+                baseline: releaseBaselineURL,
+                allowedIncreases: Self.allowances(from: releaseAllowedIncreases)
             ),
             action: .release,
             title: "Release"
@@ -882,7 +1167,11 @@ final class SwanSDKWorkspaceModel {
         case .assets:
             command = .assets(manifest: manifestURL)
         case .build:
-            command = .build(manifest: manifestURL)
+            command = .build(
+                manifest: manifestURL,
+                trace: buildWithTrace,
+                traceCapacity: buildWithTrace ? min(255, max(1, buildTraceCapacity)) : nil
+            )
         case .test:
             command = .test(manifest: manifestURL)
         case .play:
@@ -892,7 +1181,11 @@ final class SwanSDKWorkspaceModel {
             }
             command = .play(manifest: manifestURL, scenario: scenario.id)
         case .profile:
-            command = .report(manifest: manifestURL)
+            command = .report(
+                manifest: manifestURL,
+                baseline: budgetBaselineURL,
+                allowedIncreases: Self.allowances(from: budgetAllowedIncreases)
+            )
         case .newProject, .evidence, .release:
             return
         }
@@ -1097,7 +1390,32 @@ final class SwanSDKWorkspaceModel {
         scenarioPlanText = ""
         scenarioPlanHasUnsavedChanges = false
         scenarioInputLogURL = nil
+        scenarioScriptURL = nil
+        scenarioCompiledPlanURL = nil
+        buildWithTrace = false
+        buildTraceCapacity = 64
+        hardwareTileCapacity = nil
+        budgetBaselineURL = nil
+        budgetAllowedIncreases = ""
         optimizerAssetID = ""
+        optimizerApplyOutputURL = nil
+        optimizerApplyReportURL = nil
+        optimizerExpectedSourceSHA256 = ""
+        optimizerPaletteReduction = true
+        optimizerMonoConversion = false
+        optimizerRevertReportURL = nil
+        optimizerExpectedReportSHA256 = ""
+        assetImportSourceURL = nil
+        assetImportDestinationURL = nil
+        assetImportProvenanceURL = nil
+        assetImportExpectedSHA256 = ""
+        audioSourceURL = nil
+        audioPreviewOutputURL = nil
+        audioPreviewSampleRate = 48_000
+        audioPreviewLoops = 2
+        audioPreviewReplace = false
+        audioEventsURL = nil
+        audioArbitrationChannels = 4
         authorKind = .tilemap
         authorDocumentID = "main"
         authorDocumentURL = nil
@@ -1112,9 +1430,35 @@ final class SwanSDKWorkspaceModel {
         profileTraceURL = nil
         evidenceBeforeURL = nil
         evidenceAfterURL = nil
+        outcomeTraceURL = nil
+        outcomeWAVURL = nil
+        outcomeReportURL = nil
+        outcomeWAVInspected = false
+        migrationTargetVersion = ""
+        migrationTargetRevision = ""
+        migrationTargetSchema = ""
         releaseOutputURL = nil
         releaseNotesURL = nil
+        releaseBaselineURL = nil
+        releaseAllowedIncreases = ""
         structuredReport = nil
         structuredReportTitle = ""
+    }
+
+    private static func isSHA256(_ value: String) -> Bool {
+        value.count == 64 && value.allSatisfy(\.isHexDigit)
+    }
+
+    private static func allowances(from text: String) -> [String] {
+        text.components(separatedBy: CharacterSet(charactersIn: ",\n"))
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+    }
+}
+
+private extension String {
+    var nilIfBlank: String? {
+        let value = trimmingCharacters(in: .whitespacesAndNewlines)
+        return value.isEmpty ? nil : value
     }
 }

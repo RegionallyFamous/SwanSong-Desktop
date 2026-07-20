@@ -15,12 +15,16 @@ Release notes and the issue tracker are authoritative for shipped behavior.
   A+B write confirmation, readback, and recovery-conscious installer media.
 
 - Validate SwanSong Studio's New, Assets, Build, Test, Play, Profile, Evidence,
-  and Release workspaces against SwanSong SDK 0.4.0-or-newer projects.
+  and Release workspaces against SwanSong SDK 0.5.0-or-newer projects.
 - Exercise Doctor, Dev, Scenario Recorder, Evidence Diff, deterministic input
   fuzzing, Sprite/VRAM profiling, Asset Optimizer, and Save/RTC Laboratory with
   both successful projects and bounded failure cases.
-- Exercise the six visual-authoring documents, read-only replay timelines, and
-  deterministic failing-plan minimization with valid and rejected contracts.
+- Exercise Utility App scaffolds, traced builds, all-contract play, scenario
+  compilation, reviewed asset import and optimization, audio preview and SFX
+  arbitration, the six visual-authoring documents, read-only replay timelines,
+  deterministic failing-plan minimization, semantic outcomes, budget history,
+  migration previews/applies, and release baselines with accepted and rejected
+  contracts.
 - Prove that Release accepts only inspected, current, hash-bound PNG and WAV
   observations and rejects execution-only, incomplete, or stale evidence.
 - Keep ownership explicit: the SDK owns Wonderful builds, assets, manifests,

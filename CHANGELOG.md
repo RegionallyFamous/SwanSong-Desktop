@@ -6,6 +6,25 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+### Added
+
+- Brought the complete SwanSong SDK 0.5.0 workflow into the native Studio:
+  Utility App projects, trace-aware builds, all-contract play, scenario
+  compilation, reviewed asset import and optimizer apply/revert, audio preview
+  and SFX arbitration, semantic outcome inspection, budget-history gates,
+  hardware tile capacity, project migration, and release baselines.
+- Expanded opt-in local Studio automation with the additional path-free SDK
+  actions for all-contract play, optimizer preview, fuzzing, Save/RTC Lab,
+  one-shot Dev, migration preview, and hardware capacity. File-selecting,
+  destructive migration, asset mutation, and Release operations remain visible
+  native-app actions.
+
+### Changed
+
+- Updated the signed, content-verified SDK payload to SwanSong SDK 0.5.0 at its
+  exact tagged commit and payload revision, and raised external Studio SDK
+  overrides to the same minimum version.
+
 ## [0.5.0] - 2026-07-19
 
 **From Story to Cartridge.** SwanSong's workshop grows in both directions:

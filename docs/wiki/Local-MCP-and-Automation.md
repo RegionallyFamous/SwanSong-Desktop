@@ -69,11 +69,13 @@ project name or path, manifest contents, source, assets, ROM, diagnostics,
 screenshots, audio, or evidence.
 
 `swansong_studio_action` requires `confirmProjectWrites: true` and accepts only
-`doctor`, `assets`, `build`, `test`, `play`, or `profile`. It invokes the same
-SDK action already used by the native Studio view against the already-open
-project. It cannot accept a path, choose or create a project, directly edit a
-file, run Release, or execute a shell command. Studio refuses the request while
-another command is running or the visible manifest or scenario plan has
+the path-free SDK 0.5 actions `doctor`, `assets`, `build`, `test`, `play`,
+`play-all`, `profile`, `optimize`, `fuzz`, `lab`, `dev-once`,
+`migrate-preview`, or `hardware-capacity`. It invokes the same SDK action
+already used by the native Studio view against the already-open project. It
+cannot accept a path, choose or create a project, directly edit a file, apply a
+migration, run Release, or execute a shell command. Studio refuses the request
+while another command is running or the visible manifest or scenario plan has
 unsaved edits.
 
 ## Homebrew playtesting

@@ -86,7 +86,7 @@ jobs:
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           repository: RegionallyFamous/swansong-sdk
-          ref: 6a3f555ab94e977bde4359573ef72f225a507722
+          ref: f9bab7451593d0d8640816c60e0836377c65027e
           path: .sdk/swansong-sdk
           persist-credentials: false
           fetch-depth: 0
@@ -188,7 +188,7 @@ jobs:
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           repository: RegionallyFamous/swansong-sdk
-          ref: 6a3f555ab94e977bde4359573ef72f225a507722
+          ref: f9bab7451593d0d8640816c60e0836377c65027e
           path: .sdk/swansong-sdk
           persist-credentials: false
           fetch-depth: 0
