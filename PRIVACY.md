@@ -1,8 +1,8 @@
 # SwanSong privacy policy
 
-Effective July 19, 2026
+Effective July 20, 2026
 
-This policy describes SwanSong 0.5.0. Versioned release notes document the
+This policy describes SwanSong 0.6.0. Versioned release notes document the
 exact behavior of earlier published builds.
 
 <!-- homebrew-catalog-status: published -->
@@ -101,6 +101,14 @@ conservative-dataflow reasons and V30 origins. None of those addresses, writers,
 reasons, or origins leave through MCP; its public response remains limited to
 source-free counts, hashes, geometry, completeness flags, and aggregate context
 counts. These tools do not return ROM, state, RAM, or persistence bytes.
+Capture-plan execution authenticates its project manifest, plan, ROMs,
+authorized private directory, and exact allowed outputs before launch. Capture
+Intake writes only its copied RAM and receipt into one fresh private directory.
+Capture-bound source probes retain the expected and actual native frame
+fingerprints plus ordered query receipt privately; the public result does not
+contain the native pixels, private paths, arguments, addresses, or lineage.
+Toolkit execution identity is retained only as hashes, counts, and allowlisted
+environment-key names in the command result.
 SwanSong makes no network request for MCP, but an AI client may transmit tool
 arguments and results to its own service under that client's privacy policy.
 
@@ -132,12 +140,15 @@ excluded.
 
 Story Forge reads and writes only the framework repository, catalog, and novel
 folders you explicitly select. Its fixed local command
-allowlist can create a
-project; validate stages; refresh editorial, continuity, reader, rights, music,
-art, catalog, and series evidence; write or check a lockfile; migrate a
-manifest; and build EPUB/PDF editions. SwanSong does not upload manuscripts,
-reader responses, reports, ImageGen source art, music, rights records,
-approvals, dashboards, or editions.
+allowlist can create a project; validate stages; prepare proposal-only Story
+Room packets; build maps and live scene context; explicitly save manuscripts;
+create immutable revisions and decisions; exchange consented reader packets;
+manage research, art, music, and adaptation artifacts; refresh editorial,
+continuity, reader, rights, catalog, and series evidence; write or check a
+lockfile; migrate a manifest; and build EPUB/PDF editions. SwanSong does not
+upload manuscripts, packets, maps, revisions, reader responses, research,
+reports, ImageGen source art, music, adaptations, rights records, approvals,
+dashboards, or editions.
 
 The live local bridge reports only whether a Story Forge project is open and
 can navigate to the workspace. It does not return the novel title, path,

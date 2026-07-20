@@ -45,7 +45,8 @@ cat >"$PROJECT/automation/opening-plan.json" <<'JSON'
 }
 JSON
 
-cp "$PROJECT/automation/opening-plan.json" "$SOURCE_PROJECT/automation/opening-plan.json"
+cp "$ROOT/Tests/TranslationLabFixture/display-source-plan.json" \
+  "$SOURCE_PROJECT/automation/opening-plan.json"
 
 ln -s "$TEMP_ROOT/outside" "$PROJECT/automation-link"
 cp "$PROJECT/automation/opening-plan.json" "$TEMP_ROOT/outside/linked-plan.json"
@@ -157,6 +158,7 @@ done
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" probe-rectangle-source \
   --enable-debug-tools \
   --allow-project-writes \
+  --base-capability-kat \
   --project "$SOURCE_PROJECT" \
   --plan "$SOURCE_PROJECT/automation/opening-plan.json" \
   --role original \
@@ -168,6 +170,7 @@ SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" probe-rectangle-source \
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" probe-rectangle-source \
   --enable-debug-tools \
   --allow-project-writes \
+  --base-capability-kat \
   --project "$SOURCE_PROJECT" \
   --plan "$SOURCE_PROJECT/automation/opening-plan.json" \
   --role original \
@@ -457,8 +460,12 @@ for role in ("original", "patched"):
         raise SystemExit(f"{role} manifest lost its evidence contract")
     if payload.get("route", {}).get("sha256") != report["routeSHA256"]:
         raise SystemExit(f"{role} manifest lost route provenance")
-intakes = list((project / "analysis").glob("capture-intake-*.json"))
-if len(intakes) != 2:
+intakes = list((project / "analysis/swan-song-lab").glob("capture-*/capture-intake"))
+if len(intakes) != 2 or any(
+    sorted(path.name for path in intake.iterdir())
+    != ["capture.ram.bin", "receipt.json"]
+    for intake in intakes
+):
     raise SystemExit("verify-pair did not run Capture Intake for both endpoints")
 PY
 
@@ -544,8 +551,12 @@ if diff.get("difference", {}).get("differentPixelCount") != report.get("differen
     raise SystemExit("persisted changed-pixel count mismatch")
 if report.get("differentPixelCount") != 0 or report.get("changedBounds") is not None:
     raise SystemExit("byte-identical fixture unexpectedly produced a visual delta")
-intakes = list((project / "analysis").glob("capture-intake-*.json"))
-if len(intakes) != 4:
+intakes = list((project / "analysis/swan-song-lab").glob("capture-*/capture-intake"))
+if len(intakes) != 4 or any(
+    sorted(path.name for path in intake.iterdir())
+    != ["capture.ram.bin", "receipt.json"]
+    for intake in intakes
+):
     raise SystemExit("capture-plan did not run fresh Capture Intake for both roles")
 PY
 

@@ -37,25 +37,22 @@ If a trusted local agent will help with a long route or evidence task, read
 ### I want to write or publish a novel
 
 [[Story Forge]] brings the schema-v3 light-novel framework into a native
-workspace for concept, outline, draft, revision, ImageGen illustration review,
-catalog originality, optional music, and EPUB/PDF publication. It keeps
-automated checks separate from human editorial and release approval.
+workspace with a proposal-only Story Room, causal map, chapter editor, revision
+history, unprimed readers, research, ImageGen art, music auditions, adaptation,
+and EPUB/PDF publication. It keeps automated checks separate from human
+editorial and release approval.
 
 Story Forge is included in SwanSong 0.5.0.
 
 ### I want to make a game
 
 [[SwanSong Studio]] puts New, Assets, Build, Test, Play, Profile, Evidence, and
-Release in one native workspace backed by SwanSong SDK. SwanSong 0.5.0 carries
-a content-verified SDK 0.4.0 payload, typed visual-authoring
-tools, replay timelines, and deterministic failing-plan minimization. Python
-3.11+ and the pinned Wonderful packages remain honest local prerequisites
-checked by Doctor.
-
-Development source after 0.5.0 now carries the complete content-verified SDK
-0.5.0 toolset, including Utility App scaffolds, traced builds, scenario
-compilation, reviewed asset/audio workflows, semantic outcomes, budget history,
-project migration, and the expanded release lane for the next Desktop update.
+Release in one native workspace backed by SwanSong SDK. SwanSong 0.6.0 carries
+the complete content-verified SDK 0.5.0 toolset, including Utility App
+scaffolds, traced builds, scenario compilation, reviewed asset/audio workflows,
+semantic outcomes, budget history, project migration, and the expanded release
+lane. Python 3.11+ and the pinned Wonderful packages remain honest local
+prerequisites checked by Doctor.
 
 ### I want homebrew or real hardware
 
@@ -79,15 +76,15 @@ as the command reference. [[Signing and Notarization]] and [[Release Gates]]
 document the trusted-Mac path from a clean source tag to a signed, notarized,
 checksummed public build.
 
-## The 0.5 release
+## The 0.6 release
 
-The current public **0.5.0 release** adds Story Forge, Cartridge Lab, a fix for the
-Homebrew Catalog in the notarized app, and a much friendlier path through the
-README, setup guides, FAQ, Support, and Wiki. It retains the verified SDK 0.4.0,
-exact-frame input, Translation Lab, native player, and everything already in
-the 0.4 line.
+The current public **0.6.0 release** brings the complete SDK 0.5.0 experience
+into Studio, expands Story Forge into a nine-part writing room, authenticates
+the exact native frame before capture-bound provenance, and makes trusted local
+automation calmer and release engine builds reproducible. It retains the
+private player, library, Homebrew, hardware, and everything from the 0.5 line.
 
-Use [[0.5 Release Testing]] for the current tester checklist and the repository
+Use [[0.6 Release Testing]] for the current tester checklist and the repository
 [changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md)
 for the exact source and release history.
 

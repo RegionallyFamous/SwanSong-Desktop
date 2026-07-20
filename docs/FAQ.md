@@ -11,13 +11,15 @@ Color, SwanCrystal, and Pocket Challenge V2 software, built on a pinned ares
 WonderSwan engine. It is also a visual library, translation workbench, homebrew
 development desk, light-novel workspace, and guarded physical-cartridge lab.
 
-## What is included in the public beta?
+## What is included in the public release?
 
-The signed public download is SwanSong 0.5.0. It includes the player,
+The signed public download is SwanSong 0.6.0. It includes the player,
 library, Time Ribbon, visual save states, Translation Lab, SwanSong Studio with
-the verified SDK 0.4.0, the signed Homebrew Catalog, native updates, and the
-guarded Analogue Pocket setup workflow. It also includes Story Forge for novels
-and adaptations plus Cartridge Lab for authorized physical-cartridge work.
+the verified SDK 0.5.0, the signed Homebrew Catalog, native updates, and the
+guarded Analogue Pocket setup workflow. Story Forge now includes its Story
+Room, map, chapter editor, readers, research, art, music, revision, and
+adaptation workspaces. Cartridge Lab remains available for authorized physical
+cartridge work.
 
 ## Does it include games or require a BIOS?
 
@@ -30,7 +32,7 @@ versioned release notes.
 
 ## Can SwanSong install homebrew directly from GitHub?
 
-Yes. SwanSong 0.5.0 can browse its signed first-party Homebrew Catalog and add
+Yes. SwanSong 0.6.0 can browse its signed first-party Homebrew Catalog and add
 an authorized original game to your private library. It connects only after
 you choose **Browse Games**, **Refresh**, or a specific download. **Add From
 Mac** remains available for local homebrew.
