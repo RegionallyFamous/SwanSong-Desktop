@@ -115,6 +115,25 @@ int main(int argc, char** argv) {
       return 1;
     }
 
+    size_t staged_readback_size = 0;
+    result = swan_engine_persistence_size(
+        engine, SWAN_PERSISTENCE_CONSOLE_EEPROM, &staged_readback_size);
+    std::vector<uint8_t> staged_readback(staged_readback_size);
+    size_t staged_readback_written = 0;
+    if (result == SWAN_RESULT_OK) {
+      result = swan_engine_read_persistence(
+          engine, SWAN_PERSISTENCE_CONSOLE_EEPROM,
+          staged_readback.data(), staged_readback.size(),
+          &staged_readback_written);
+    }
+    if (result != SWAN_RESULT_OK ||
+        staged_readback_written != staged_console.size() ||
+        staged_readback != staged_console) {
+      std::fputs("staged console EEPROM was not loaded exactly\n", stderr);
+      swan_engine_destroy(engine);
+      return 1;
+    }
+
     uint64_t previous_frame = 0;
     uint32_t frame_width = 0;
     uint32_t frame_height = 0;
@@ -1245,9 +1264,13 @@ int main(int argc, char** argv) {
           engine, SWAN_PERSISTENCE_CONSOLE_EEPROM,
           persisted.data(), persisted.size(), &persisted_size);
     }
+    // The running software owns console EEPROM after boot and may legitimately
+    // update it. Exact staging is verified immediately after load above; here
+    // verify that the live persistence surface remains readable and retains
+    // the hardware-sized region after execution and save-state replay.
     if (result != SWAN_RESULT_OK || persisted_size != staged_console.size() ||
-        persisted.empty() || persisted[0] != 0x5a) {
-      std::fputs("console EEPROM persistence did not round trip\n", stderr);
+        persisted.empty()) {
+      std::fputs("console EEPROM persistence surface became invalid\n", stderr);
       swan_engine_destroy(engine);
       return 1;
     }
