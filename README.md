@@ -15,8 +15,8 @@ No account. No ads. No telemetry. No BIOS scavenger hunt. Just your games and
 a really nice place to play them.
 
 <p align="center">
-  <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.6.0</strong></a>
-  · <a href="docs/releases/0.6.0.md">See what’s new</a>
+  <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.6.1</strong></a>
+  · <a href="docs/releases/0.6.1.md">See what’s new</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -76,7 +76,7 @@ it.
 
 Take a WonderSwan project from New to Release in one native workspace. Build
 assets, run the game, inspect frames and audio, replay failures, and package
-only after the evidence is ready. SwanSong 0.6.0 carries the complete,
+only after the evidence is ready. SwanSong 0.6.1 carries the complete,
 content-verified SwanSong SDK 0.5.0 toolset: Utility Apps, traced builds,
 scenarios, semantic outcomes, budget history, project migration, and a deeper
 release lane. Doctor clearly shows the few development tools that still need
@@ -130,18 +130,20 @@ Official downloads are universal, Developer ID signed, notarized by Apple,
 and published with matching checksums, a release manifest, and corresponding
 source.
 
-## The latest release: SwanSong 0.6.0
+## The latest release: SwanSong 0.6.1
 
-The public **0.6.0 release** makes the whole SwanSong workshop move:
+The public **0.6.1 release** makes SwanSong ready sooner and keeps setup out of
+your way:
 
-- the complete SwanSong SDK 0.5.0 experience in native Studio;
-- a nine-part Story Forge with Story Room, map, chapter editor, readers,
-  research, art, music, revisions, and adaptation tools;
-- capture-bound Translation Lab provenance that authenticates the exact native
-  frame before asking where visible data came from; and
-- calmer local automation plus a sealed, reproducible engine release gate.
+- the main window appears before the library and workshop finish waking up;
+- old Homebrew Catalog trust records no longer interrupt launch with a macOS
+  password dialog;
+- Studio finds Python 3.11+ from Homebrew, python.org, or MacPorts even when
+  SwanSong opens from Finder; and
+- the complete Studio, Story Forge, Translation Lab, player, and library from
+  0.6 remain right where you left them.
 
-Read the [0.6.0 release notes](docs/releases/0.6.0.md) for the guided tour or
+Read the [0.6.1 release notes](docs/releases/0.6.1.md) for the guided tour or
 the [changelog](CHANGELOG.md) for the complete history.
 
 ## Start exploring
@@ -160,7 +162,7 @@ keeps the deeper guides out of your way until you need them:
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.6.0 release notes](docs/releases/0.6.0.md).
+[0.6.1 release notes](docs/releases/0.6.1.md).
 
 ## Free, open, and independent
 
