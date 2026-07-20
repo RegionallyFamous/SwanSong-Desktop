@@ -5,7 +5,7 @@ SDK projects, cartridges, and save data you own or are authorized to use. Never
 attach ROMs, saves, private screenshots or audio, manuscripts, cartridge-source
 evidence, or Translation Lab evidence to a public report.
 
-The signed public release is **SwanSong 0.6.0 (11)**.
+The signed public release is **SwanSong 0.6.1 (12)**.
 
 ## What this release is testing
 
@@ -107,9 +107,11 @@ The signed public release is **SwanSong 0.6.0 (11)**.
 
 ## Expected boundaries
 
-SwanSong 0.6.0 embeds SDK 0.5.0 but not Python or Wonderful. Install those
-external dependencies before running Studio Doctor or a build. Story Forge
-also requires a compatible local framework checkout.
+SwanSong 0.6.1 embeds SDK 0.5.0 but not Python or Wonderful. Install those
+external dependencies before running Studio Doctor or a build. Studio should
+find Python 3.11+ in standard Homebrew, python.org, MacPorts, and system
+locations even when SwanSong opens from Finder. Story Forge also requires a
+compatible local framework checkout.
 
 The Homebrew Catalog stays network-silent until the tester explicitly chooses
 Browse Games, Refresh, or a listed download. The Analogue Pocket workflow stays
@@ -124,7 +126,7 @@ title-specific quirks still deserve hands-on attention.
 
 ## Before reporting a result
 
-1. Confirm **SwanSong 0.6.0 (11)** in **SwanSong > About SwanSong**.
+1. Confirm **SwanSong 0.6.1 (12)** in **SwanSong > About SwanSong**.
 2. Record the Mac model, macOS version, architecture, controller or cartridge
    hardware when relevant, SDK version, Python version, and Wonderful revision.
 3. For Story Forge, state the visible workspace and sanitized action/result;

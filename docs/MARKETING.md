@@ -52,9 +52,10 @@ Lead with the feeling, then earn the trust:
 
 ## Release honesty
 
-The public download is currently **0.6.0**. The complete SDK 0.5 Studio,
-expanded Story Forge, and capture-bound Translation Lab automation are shipped
-0.6.0 features. Excitement never gets to erase requirements or known limits:
+The public download is currently **0.6.1**. The complete SDK 0.5 Studio,
+expanded Story Forge, and capture-bound Translation Lab automation remain
+shipped features; 0.6.1 adds a faster, calmer Mac launch and more reliable
+Studio setup. Excitement never gets to erase requirements or known limits:
 Story Forge needs its local framework, Studio needs its stated toolchain,
 Cartridge Lab needs authorized hardware, and every physical write keeps its
 confirmation gates.
