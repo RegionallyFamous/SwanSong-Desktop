@@ -379,10 +379,11 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         try Data().write(to: root.appendingPathComponent("python/swansong_sdk/cli.py"))
 
         let resolution = try SwanSDKCLIResolution.resolve(sdkRoot: root)
-        XCTAssertEqual(resolution.executableURL.path, "/usr/bin/env")
+        XCTAssertNotEqual(resolution.executableURL.path, "/usr/bin/env")
+        XCTAssertTrue(SwanSDKPythonSummary.probe(resolution).supportsStudio)
         XCTAssertEqual(
             resolution.argumentPrefix,
-            ["python3", "-P", "-m", "swansong_sdk.cli"]
+            ["-P", "-m", "swansong_sdk.cli"]
         )
         XCTAssertEqual(resolution.environment["SWANSONG_SDK_DIR"], root.path)
         XCTAssertEqual(
@@ -392,6 +393,28 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         XCTAssertEqual(resolution.environment["PYTHONDONTWRITEBYTECODE"], "1")
         XCTAssertEqual(resolution.environment["PYTHONNOUSERSITE"], "1")
         XCTAssertNil(resolution.bundleSummary)
+    }
+
+    func testPythonDiscoverySkipsAnOldRuntimeAndFindsAHomebrewStyleRuntime() throws {
+        let root = try temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let oldPython = root.appendingPathComponent("python-old")
+        let supportedPython = root.appendingPathComponent("python-supported")
+        try Data("#!/bin/sh\necho 'Python 3.9.6'\n".utf8).write(to: oldPython)
+        try Data("#!/bin/sh\necho 'Python 3.14.6'\n".utf8).write(to: supportedPython)
+        for executable in [oldPython, supportedPython] {
+            try FileManager.default.setAttributes(
+                [.posixPermissions: 0o755],
+                ofItemAtPath: executable.path
+            )
+        }
+
+        XCTAssertEqual(
+            SwanSDKPythonSummary.firstSupportedExecutable(
+                in: [oldPython, supportedPython]
+            ),
+            supportedPython
+        )
     }
 
     func testResolverValidatesEveryFileInPinnedApplicationBundle() throws {

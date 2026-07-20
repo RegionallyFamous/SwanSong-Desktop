@@ -5,9 +5,24 @@ release_chain=false
 compatibility=false
 translation=false
 av=false
+tests=false
 
 classify_path() {
   local path=$1
+
+  case "$path" in
+    CHANGELOG.md | \
+    LICENSE | \
+    PRIVACY.md | \
+    README.md | \
+    SUPPORT.md | \
+    docs/* | \
+    updates/appcast.xml)
+      ;;
+    *)
+      tests=true
+      ;;
+  esac
 
   case "$path" in
     .github/workflows/* | \
@@ -135,3 +150,4 @@ printf 'release_chain=%s\n' "$release_chain"
 printf 'compatibility=%s\n' "$compatibility"
 printf 'translation=%s\n' "$translation"
 printf 'av=%s\n' "$av"
+printf 'tests=%s\n' "$tests"

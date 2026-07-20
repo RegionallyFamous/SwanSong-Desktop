@@ -1,16 +1,17 @@
 import Foundation
+import LocalAuthentication
 import Security
 import SwanSongKit
 @testable import SwanSongApp
 import XCTest
 
 final class HomebrewCatalogHighWaterStoreTests: XCTestCase {
-    func testProductionQueryWorksWithoutProvisionedKeychainEntitlements() {
+    func testProductionQueryWorksWithoutProvisionedKeychainEntitlements() throws {
         let backing = HomebrewCatalogKeychainHighWaterBacking()
         let query = backing.baseQuery(
             catalogID: "first-party-homebrew"
         )
-        let insertion = backing.insertionQuery(
+        let insertion = try backing.insertionQuery(
             catalogID: "first-party-homebrew",
             data: Data("state".utf8)
         )
@@ -19,13 +20,18 @@ final class HomebrewCatalogHighWaterStoreTests: XCTestCase {
         XCTAssertNil(query[kSecAttrAccessGroup])
         XCTAssertNil(insertion[kSecUseDataProtectionKeychain])
         XCTAssertNil(insertion[kSecAttrAccessible])
+        XCTAssertNotNil(insertion[kSecAttrAccess])
+        XCTAssertEqual(
+            (query[kSecUseAuthenticationContext] as? LAContext)?.interactionNotAllowed,
+            true
+        )
         XCTAssertEqual(
             query[kSecClass] as? String,
             kSecClassGenericPassword as String
         )
         XCTAssertEqual(
             query[kSecAttrService] as? String,
-            "com.regionallyfamous.SwanSong.HomebrewCatalogTrust"
+            "com.regionallyfamous.SwanSong.HomebrewCatalogTrust.v2"
         )
         XCTAssertEqual(
             query[kSecAttrAccount] as? String,

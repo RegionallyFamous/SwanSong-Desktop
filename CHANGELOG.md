@@ -6,6 +6,26 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+### Changed
+
+- Opens the main window before preparing the library, controller, local tools,
+  and updater. Studio and Story Forge now wake only when opened, with optional
+  launch timing available for future performance work.
+- Gives documentation-only and signed-appcast pull requests a seconds-long CI
+  lane while preserving the same required check names and all full gates for
+  application changes, `main`, and release runs.
+- Checks Apple notarization credentials before beginning a long sealed release
+  build, so a missing or locked profile fails immediately with a useful fix.
+
+### Fixed
+
+- Prevents old Homebrew Catalog Keychain permissions from opening a login
+  password dialog. New anti-rollback records use a stable signed-app access
+  rule, and automatic reads always fail closed without user interaction.
+- Finds Python 3.11+ at the standard Homebrew, python.org, MacPorts, and system
+  locations even when SwanSong is opened from Finder and has no shell path.
+  Studio no longer mislabels a missing runtime as a damaged bundled SDK.
+
 ## [0.6.0] - 2026-07-20
 
 **Make the Whole Workshop Move.** SwanSong Studio's complete SDK 0.5 toolset

@@ -23,11 +23,17 @@ all_false=$(printf '%s\n' \
   'release_chain=false' \
   'compatibility=false' \
   'translation=false' \
-  'av=false')
+  'av=false' \
+  'tests=false')
 
 assert_classification \
   "documentation-only change" \
   "docs/wiki/Home.md" \
+  "$all_false"
+
+assert_classification \
+  "signed appcast-only change" \
+  "updates/appcast.xml" \
   "$all_false"
 
 assert_classification \
@@ -38,7 +44,8 @@ assert_classification \
     'release_chain=true' \
     'compatibility=false' \
     'translation=false' \
-    'av=false')"
+    'av=false' \
+    'tests=true')"
 
 assert_classification \
   "Translation Lab change" \
@@ -48,7 +55,8 @@ assert_classification \
     'release_chain=false' \
     'compatibility=false' \
     'translation=true' \
-    'av=false')"
+    'av=false' \
+    'tests=true')"
 
 assert_classification \
   "audio change" \
@@ -58,7 +66,8 @@ assert_classification \
     'release_chain=false' \
     'compatibility=false' \
     'translation=false' \
-    'av=true')"
+    'av=true' \
+    'tests=true')"
 
 assert_classification \
   "engine change" \
@@ -68,6 +77,7 @@ assert_classification \
     'release_chain=false' \
     'compatibility=true' \
     'translation=true' \
-    'av=true')"
+    'av=true' \
+    'tests=true')"
 
 echo "PASS CI change classifier"

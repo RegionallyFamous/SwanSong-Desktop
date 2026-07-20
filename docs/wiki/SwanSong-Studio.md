@@ -50,6 +50,12 @@ resolved Python version, Wonderful package pins, SDK revision, schema, and
 SwanSong engine. Doctor validates the installed Python and Wonderful packages
 and the SwanSong connection before a production workflow.
 
+SwanSong looks for Python at the standard Homebrew, python.org, MacPorts, and
+system locations by absolute path. This works when the app is opened from
+Finder, which does not inherit the custom command path from a Terminal shell.
+If no supported runtime exists, Studio says exactly what is missing instead of
+claiming the signed SDK payload is damaged.
+
 ## The eight workspaces
 
 - **New** calls `swan new` with Arcade Action, Menu Puzzle, Grid Tactics, or

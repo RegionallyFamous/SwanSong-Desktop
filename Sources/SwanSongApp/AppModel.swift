@@ -308,6 +308,7 @@ final class AppModel {
 
     var section: Section = .library
     var games: [GameRecord] = []
+    var isPreparingLibrary = false
     var selectedGameID: GameRecord.ID?
     var presentedError: String? {
         didSet {
@@ -464,8 +465,15 @@ final class AppModel {
     let engineBackendName: String
     let engineBuildID: String
     let engineCanExecute: Bool
-    let studioWorkspace: SwanSDKWorkspaceModel
-    let storyForgeWorkspace: StoryForgeWorkspaceModel
+    @ObservationIgnored private let studioWorkspaceOverride: SwanSDKWorkspaceModel?
+    @ObservationIgnored private let storyForgeWorkspaceOverride: StoryForgeWorkspaceModel?
+    @ObservationIgnored lazy var studioWorkspace = studioWorkspaceOverride
+        ?? SwanSDKWorkspaceModel(
+            engineName: engineBackendName,
+            engineBuildID: engineBuildID
+        )
+    @ObservationIgnored lazy var storyForgeWorkspace = storyForgeWorkspaceOverride
+        ?? StoryForgeWorkspaceModel()
 
     private let store: GameLibraryStore
     private let saveStore: GameSaveStore
@@ -484,8 +492,8 @@ final class AppModel {
     private let importer = GameImporter()
     private let gameImportPlanner = GameImportPlanner()
     private let batchImporter: GameBatchImporter
-    private let audioOutput = AudioOutput()
-    private let controller = ControllerInput()
+    @ObservationIgnored private lazy var audioOutput = AudioOutput()
+    @ObservationIgnored private lazy var controller = ControllerInput()
     private var emulationTask: Task<Void, Never>?
     private var emulationFinalization: PlayerSessionFinalization?
     private var retiringEmulationSession: RetiringEmulationSession?
@@ -579,6 +587,7 @@ final class AppModel {
     private var playerFrameProductionWaiters: [CheckedContinuation<Void, Never>] = []
     private var nextPresentedFrameNumber: UInt64?
     private var didHandleInitialLaunchArguments = false
+    private var didCompleteDeferredStartup = false
     #if SWAN_SONG_AUTOMATION
     private let allowsAutomatedPCV2InputProbe: Bool = {
         let environment = ProcessInfo.processInfo.environment
@@ -644,8 +653,10 @@ final class AppModel {
         translationWorkspaceStore: TranslationWorkspaceStore = .defaultStore(),
         engineCanExecuteOverride: Bool? = nil,
         studioWorkspaceOverride: SwanSDKWorkspaceModel? = nil,
-        storyForgeWorkspaceOverride: StoryForgeWorkspaceModel? = nil
+        storyForgeWorkspaceOverride: StoryForgeWorkspaceModel? = nil,
+        deferStartupWork: Bool = false
     ) {
+        appLaunchDiagnostic("model initialization began")
         self.store = store
         self.saveStore = saveStore
         self.stateStore = stateStore
@@ -667,6 +678,8 @@ final class AppModel {
         self.batchImporter = GameBatchImporter(managedStore: managedGameStore)
         self.controllerProfileStore = controllerProfileStore
         self.translationWorkspaceStore = translationWorkspaceStore
+        self.studioWorkspaceOverride = studioWorkspaceOverride
+        self.storyForgeWorkspaceOverride = storyForgeWorkspaceOverride
         self.debugToolsEnabled = UserDefaults.standard.bool(
             forKey: Self.debugToolsDefaultsKey
         )
@@ -691,11 +704,23 @@ final class AppModel {
             engineBuildID = "unavailable"
             engineCanExecute = false
         }
-        studioWorkspace = studioWorkspaceOverride ?? SwanSDKWorkspaceModel(
-            engineName: engineBackendName,
-            engineBuildID: engineBuildID
+        homebrewCatalogConsentGranted = UserDefaults.standard.bool(
+            forKey: Self.homebrewCatalogConsentDefaultsKey
         )
-        storyForgeWorkspace = storyForgeWorkspaceOverride ?? StoryForgeWorkspaceModel()
+        if deferStartupWork {
+            isPreparingLibrary = true
+            appLaunchDiagnostic("model became ready for the first window")
+        } else {
+            completeDeferredStartup()
+        }
+    }
+
+    func completeDeferredStartup() {
+        guard !didCompleteDeferredStartup else { return }
+        didCompleteDeferredStartup = true
+        isPreparingLibrary = true
+        appLaunchDiagnostic("deferred model startup began")
+
         controllerProfile = (try? controllerProfileStore.load()) ?? .default
         controller.onChange = { [weak self] elements in
             self?.handleControllerElements(elements)
@@ -713,9 +738,6 @@ final class AppModel {
         controllerPhysicalElements = controller.pressedElements
         controllerAvailableElements = controller.availableElements
         controllerInput = controllerProfile.input(for: controllerPhysicalElements)
-        homebrewCatalogConsentGranted = UserDefaults.standard.bool(
-            forKey: Self.homebrewCatalogConsentDefaultsKey
-        )
         do {
             games = try store.load().games
             loadGameArtwork()
@@ -728,9 +750,12 @@ final class AppModel {
         loadCachedHomebrewCatalog()
         loadTranslationWorkspace()
         refreshManagedGameHealth()
+        isPreparingLibrary = false
+        appLaunchDiagnostic("deferred model startup finished")
     }
 
     func handleInitialLaunchArguments() {
+        completeDeferredStartup()
         guard !didHandleInitialLaunchArguments else { return }
         didHandleInitialLaunchArguments = true
         if ProcessInfo.processInfo.environment["SWAN_SONG_TRANSLATION_APPROVE_BASELINE"] == "1",

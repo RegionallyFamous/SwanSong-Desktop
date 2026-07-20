@@ -163,7 +163,11 @@ final class SwanSDKWorkspaceModel {
                 do {
                     try configureSDK(at: bundledSDKRoot, remember: false)
                 } catch {
-                    issue = "The bundled SwanSong SDK failed verification. \(error.localizedDescription)"
+                    if (error as? SwanSDKIntegrationError) == .pythonRuntimeUnavailable {
+                        issue = error.localizedDescription
+                    } else {
+                        issue = "The bundled SwanSong SDK failed verification. \(error.localizedDescription)"
+                    }
                 }
             }
         }
@@ -235,9 +239,7 @@ final class SwanSDKWorkspaceModel {
         }
         let python = SwanSDKPythonSummary.probe(resolution)
         if resolution.pythonExecutableURL != nil, !python.supportsStudio {
-            throw SwanSDKIntegrationError.invalidSDKLocation(
-                "SwanSong Studio requires a resolvable Python 3.11 or newer runtime."
-            )
+            throw SwanSDKIntegrationError.pythonRuntimeUnavailable
         }
         cli = resolution
         sdkRoot = resolution.sdkRoot
