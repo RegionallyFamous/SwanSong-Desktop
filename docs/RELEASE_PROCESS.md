@@ -15,6 +15,11 @@ xcrun notarytool store-credentials swan-song-notary
 The credential is stored in Keychain; it is never committed or passed to an
 agent, environment file, or build log.
 
+`release-app.sh` validates that named profile with Apple's notarization service
+before it creates a sealed worktree or compiles either architecture. If the
+profile is missing, locked, or revoked, restore it first; the release stops in
+seconds instead of wasting a complete build.
+
 Provision the Sparkle EdDSA private seed once as the encrypted GitHub Actions
 repository secret `SPARKLE_ED25519_PRIVATE_KEY`. Commit only the matching
 base64 public key as `SUPublicEDKey` in `Packaging/Info.plist`, then verify that

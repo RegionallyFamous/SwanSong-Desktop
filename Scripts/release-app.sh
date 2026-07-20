@@ -60,6 +60,21 @@ case "$NOTARIZE" in
     ;;
 esac
 
+# Fail before creating a private worktree or compiling either architecture if
+# the long-lived Apple credential is missing, locked, revoked, or otherwise
+# unusable. A release build takes several minutes; discovering this only after
+# signing wastes the entire sealed build and hides the actionable problem at
+# the very end of the process.
+if [ "$NOTARIZE" = "1" ]; then
+  if ! xcrun notarytool history \
+      --keychain-profile "$SWAN_NOTARY_PROFILE" >/dev/null; then
+    echo "Apple notarization credentials are unavailable for profile '$SWAN_NOTARY_PROFILE'." >&2
+    echo "Restore or unlock that Keychain profile before starting the release build." >&2
+    exit 69
+  fi
+  echo "PASS Apple notarization credentials are ready"
+fi
+
 # Every release build input comes from a private detached worktree at the
 # captured commit. Before/after cleanliness checks on the developer worktree
 # cannot detect a tracked source that is changed only while the compiler reads

@@ -10,7 +10,9 @@ APP_OUTPUT="$TEMP_ROOT/app-output"
 RELEASE_OUTPUT="$TEMP_ROOT/release-output"
 MUTATION_LOG="$TEMP_ROOT/live-source-mutated"
 PACKAGE_LOG="$TEMP_ROOT/private-package-commit"
+NOTARY_PREFLIGHT_LOG="$TEMP_ROOT/notary-preflight"
 LIVE_SOURCE_BACKUP="$TEMP_ROOT/Tracked.swift.original"
+STUB_BIN="$TEMP_ROOT/bin"
 VERSION=9.8.7
 ARES_COMMIT=2222222222222222222222222222222222222222
 
@@ -25,8 +27,20 @@ mkdir -p \
   "$REPOSITORY/Engine" \
   "$REPOSITORY/Dependencies" \
   "$REPOSITORY/Packaging" \
-  "$ARES_REPOSITORY"
+  "$ARES_REPOSITORY" \
+  "$STUB_BIN"
 cp "$SCRIPT_DIR/release-app.sh" "$REPOSITORY/Scripts/release-app.sh"
+
+cat >"$STUB_BIN/xcrun" <<'EOF'
+#!/bin/sh
+set -eu
+[ "$1" = "notarytool" ]
+[ "$2" = "history" ]
+[ "$3" = "--keychain-profile" ]
+[ "$4" = "synthetic-notary-profile" ]
+: >"$SELFTEST_NOTARY_PREFLIGHT_LOG"
+EOF
+chmod +x "$STUB_BIN/xcrun"
 
 cat >"$REPOSITORY/Sources/Tracked.swift" <<'EOF'
 let releaseSnapshotSentinel = "committed source"
@@ -211,14 +225,20 @@ SELFTEST_LIVE_SOURCE="$REPOSITORY/Sources/Tracked.swift" \
 SELFTEST_LIVE_SOURCE_BACKUP="$LIVE_SOURCE_BACKUP" \
 SELFTEST_MUTATION_LOG="$MUTATION_LOG" \
 SELFTEST_PACKAGE_LOG="$PACKAGE_LOG" \
+SELFTEST_NOTARY_PREFLIGHT_LOG="$NOTARY_PREFLIGHT_LOG" \
 SWAN_APP_OUTPUT_DIR="$APP_OUTPUT" \
 SWAN_RELEASE_OUTPUT_DIR="$RELEASE_OUTPUT" \
 ARES_SOURCE_DIR="$ARES_REPOSITORY" \
 SWAN_SIGNING_MODE=developer-id \
 SWAN_NOTARIZE=1 \
 SWAN_NOTARY_PROFILE=synthetic-notary-profile \
+PATH="$STUB_BIN:$PATH" \
   "$REPOSITORY/Scripts/release-app.sh" >/dev/null
 
+[ -f "$NOTARY_PREFLIGHT_LOG" ] || {
+  echo "release build did not validate notarization credentials before compiling" >&2
+  exit 1
+}
 [ -f "$MUTATION_LOG" ] || {
   echo "release build selftest did not transiently mutate live source" >&2
   exit 1

@@ -7,21 +7,59 @@ func appDiagnostic(_ message: String) {
     FileHandle.standardError.write(Data("SwanSong: \(message)\n".utf8))
 }
 
+private let swanSongLaunchBaseline = ProcessInfo.processInfo.systemUptime
+
+func appLaunchDiagnostic(_ phase: String) {
+    let elapsed = max(
+        0,
+        ProcessInfo.processInfo.systemUptime - swanSongLaunchBaseline
+    )
+    appDiagnostic(
+        String(format: "launch +%.1fms %@", elapsed * 1_000, phase)
+    )
+}
+
 @MainActor
 private final class SwanSongAppDelegate: NSObject, NSApplicationDelegate {
-    let model = AppModel()
+    let model = AppModel(deferStartupWork: true)
     let updater = SwanSongUpdater.shared
     private var terminationTask: Task<Void, Never>?
     private var localMCPBridge: SwanSongLocalMCPBridge?
     private var statusItemController: SwanSongStatusItemController?
+    private var didFinishDeferredLaunch = false
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         appDiagnostic("applicationDidFinishLaunching windows=\(NSApp.windows.count) bundle=\(Bundle.main.bundleIdentifier ?? "nil")")
+        appLaunchDiagnostic("application finished launching")
         NSApp.setActivationPolicy(.regular)
         if Bundle.main.bundleURL.pathExtension.lowercased() != "app",
            let icon = SwanTheme.unbundledApplicationIcon {
             NSApp.applicationIconImage = icon
         }
+        if ProcessInfo.processInfo.environment["SWAN_SONG_HEADLESS"] == "1" {
+            finishDeferredLaunch()
+        } else {
+            NSApp.activate(ignoringOtherApps: true)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            appDiagnostic("one second after launch windows=\(NSApp.windows.count)")
+        }
+    }
+
+    func applicationWindowDidAppear() {
+        appLaunchDiagnostic("first window appeared")
+        guard !didFinishDeferredLaunch else { return }
+        Task { @MainActor [weak self] in
+            await Task.yield()
+            self?.finishDeferredLaunch()
+        }
+    }
+
+    private func finishDeferredLaunch() {
+        guard !didFinishDeferredLaunch else { return }
+        didFinishDeferredLaunch = true
+        appLaunchDiagnostic("deferred application startup began")
+        model.completeDeferredStartup()
         if UserDefaults.standard.bool(
             forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
         ) {
@@ -40,12 +78,10 @@ private final class SwanSongAppDelegate: NSObject, NSApplicationDelegate {
         self.localMCPBridge = localMCPBridge
         if ProcessInfo.processInfo.environment["SWAN_SONG_HEADLESS"] != "1" {
             statusItemController = SwanSongStatusItemController()
-            NSApp.activate(ignoringOtherApps: true)
         }
+        updater.start()
         model.handleInitialLaunchArguments()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            appDiagnostic("one second after launch windows=\(NSApp.windows.count)")
-        }
+        appLaunchDiagnostic("deferred application startup finished")
     }
 
     func applicationShouldTerminate(
@@ -100,6 +136,7 @@ struct SwanSongApp: App {
                 )
                 .onAppear {
                     appDiagnostic("root view appeared windows=\(NSApp.windows.count)")
+                    appDelegate.applicationWindowDidAppear()
                 }
                 .onOpenURL { url in
                     model.importGame(at: url)

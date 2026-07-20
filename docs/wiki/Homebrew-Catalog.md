@@ -58,6 +58,11 @@ An accepted catalog is stored in a private verified cache. SwanSong also keeps
 a small Keychain high-water record so stopping catalog use and starting again
 cannot make an older signed revision acceptable.
 
+That automatic check never needs your login password. SwanSong binds new
+records to the signed app identity used by future updates and explicitly
+forbids Keychain authentication windows during launch. Legacy beta records are
+left untouched and ignored, so an old permission cannot interrupt startup.
+
 Catalog publication and cache updates are crash-safe and interprocess locked.
 A delayed process must recheck the durable revision before it can publish
 bytes, so two SwanSong processes cannot roll the accepted catalog backward.

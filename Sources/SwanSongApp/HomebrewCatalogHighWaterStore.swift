@@ -1,5 +1,6 @@
 import Darwin
 import Foundation
+import LocalAuthentication
 import Security
 import SwanSongKit
 
@@ -213,7 +214,11 @@ struct HomebrewCatalogKeychainHighWaterStore: HomebrewCatalogHighWaterStoring {
 }
 
 struct HomebrewCatalogKeychainHighWaterBacking: HomebrewCatalogHighWaterBacking {
-    private static let service = "com.regionallyfamous.SwanSong.HomebrewCatalogTrust"
+    // v2 deliberately leaves behind ACLs created by early ad-hoc/beta builds.
+    // Those items can make macOS ask for the login Keychain password when a
+    // properly signed update launches. The signed catalog's compiled revision
+    // floor remains the reset baseline; subsequent v2 revisions stay monotonic.
+    private static let service = "com.regionallyfamous.SwanSong.HomebrewCatalogTrust.v2"
 
     func load(catalogID: String) throws -> HomebrewCatalogHighWaterState? {
         var query = baseQuery(catalogID: catalogID)
@@ -256,7 +261,7 @@ struct HomebrewCatalogKeychainHighWaterBacking: HomebrewCatalogHighWaterBacking 
             update as CFDictionary
         )
         if status == errSecItemNotFound {
-            let insertion = insertionQuery(
+            let insertion = try insertionQuery(
                 catalogID: state.catalogID,
                 data: data
             )
@@ -277,19 +282,51 @@ struct HomebrewCatalogKeychainHighWaterBacking: HomebrewCatalogHighWaterBacking 
     /// Keep this query free of data-protection-only attributes so notarized
     /// builds can persist the anti-rollback record they require.
     func baseQuery(catalogID: String) -> [CFString: Any] {
-        [
+        let authenticationContext = LAContext()
+        authenticationContext.interactionNotAllowed = true
+        return [
             kSecClass: kSecClassGenericPassword,
             kSecAttrService: Self.service,
             kSecAttrAccount: catalogID,
+            // Catalog rollback state is checked automatically at launch. It
+            // must fail closed rather than interrupting the user with a login
+            // Keychain password dialog.
+            kSecUseAuthenticationContext: authenticationContext,
         ]
     }
 
     func insertionQuery(
         catalogID: String,
         data: Data
-    ) -> [CFString: Any] {
+    ) throws -> [CFString: Any] {
         var query = baseQuery(catalogID: catalogID)
         query[kSecValueData] = data
+        query[kSecAttrAccess] = try stableApplicationAccess()
         return query
+    }
+
+    /// Traditional macOS Keychain items default to the exact app that created
+    /// them. Early SwanSong builds therefore left ACLs that did not recognize
+    /// later Developer ID releases. Bind new items to this signed app's stable
+    /// designated requirement so future updates inherit access without asking
+    /// for the user's Keychain password.
+    private func stableApplicationAccess() throws -> SecAccess {
+        var trustedApplication: SecTrustedApplication?
+        let trustedStatus = SecTrustedApplicationCreateFromPath(
+            nil,
+            &trustedApplication
+        )
+        guard trustedStatus == errSecSuccess, let trustedApplication else {
+            throw HomebrewCatalogHighWaterStoreError.keychain(trustedStatus)
+        }
+
+        let descriptor: CFString = "SwanSong Homebrew Catalog Trust" as NSString
+        let trustedList: CFArray = [trustedApplication] as NSArray
+        var access: SecAccess?
+        let accessStatus = SecAccessCreate(descriptor, trustedList, &access)
+        guard accessStatus == errSecSuccess, let access else {
+            throw HomebrewCatalogHighWaterStoreError.keychain(accessStatus)
+        }
+        return access
     }
 }

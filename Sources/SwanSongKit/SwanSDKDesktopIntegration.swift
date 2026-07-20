@@ -471,6 +471,7 @@ public enum SwanSDKCommand: Equatable, Sendable {
 
 public enum SwanSDKIntegrationError: LocalizedError, Equatable {
     case invalidSDKLocation(String)
+    case pythonRuntimeUnavailable
     case commandAlreadyRunning
     case commandNotRunning
     case commandFailed(status: Int32, detail: String)
@@ -479,6 +480,8 @@ public enum SwanSDKIntegrationError: LocalizedError, Equatable {
     public var errorDescription: String? {
         switch self {
         case let .invalidSDKLocation(detail): detail
+        case .pythonRuntimeUnavailable:
+            "SwanSong Studio needs Python 3.11 or newer. Install it from python.org or Homebrew, then reopen Studio."
         case .commandAlreadyRunning: "Another SwanSong SDK command is already running."
         case .commandNotRunning: "No SwanSong SDK command is running."
         case let .commandFailed(status, detail):
@@ -555,24 +558,20 @@ public struct SwanSDKCLIResolution: Equatable, Sendable {
         }
         if FileManager.default.fileExists(atPath: module.path) {
             let bundledPython = root.appendingPathComponent("runtime/bin/python3")
-            if FileManager.default.isExecutableFile(atPath: bundledPython.path) {
-                return Self(
-                    sdkRoot: root,
-                    executableURL: bundledPython,
-                    argumentPrefix: ["-P", "-m", "swansong_sdk.cli"],
-                    environment: additions,
-                    bundleSummary: bundleSummary,
-                    pythonExecutableURL: bundledPython
-                )
+            let pythonCandidates = [bundledPython]
+                + SwanSDKPythonSummary.standardExecutableCandidates
+            guard let python = SwanSDKPythonSummary.firstSupportedExecutable(
+                in: pythonCandidates
+            ) else {
+                throw SwanSDKIntegrationError.pythonRuntimeUnavailable
             }
             return Self(
                 sdkRoot: root,
-                executableURL: URL(fileURLWithPath: "/usr/bin/env"),
-                argumentPrefix: ["python3", "-P", "-m", "swansong_sdk.cli"],
+                executableURL: python,
+                argumentPrefix: ["-P", "-m", "swansong_sdk.cli"],
                 environment: additions,
                 bundleSummary: bundleSummary,
-                pythonExecutableURL: URL(fileURLWithPath: "/usr/bin/env"),
-                pythonArgumentPrefix: ["python3"]
+                pythonExecutableURL: python
             )
         }
         return Self(
@@ -741,11 +740,63 @@ public struct SwanSDKPythonSummary: Equatable, Sendable {
         guard let executableURL = resolution.pythonExecutableURL else {
             return Self(version: nil, executable: "SDK tool entry point", isBundled: false)
         }
+        return probe(
+            executableURL: executableURL,
+            argumentPrefix: resolution.pythonArgumentPrefix,
+            sdkRoot: resolution.sdkRoot,
+            environment: resolution.environment
+        )
+    }
+
+    /// Finder-launched apps do not inherit the Homebrew path from a user's
+    /// shell. Resolve the common absolute macOS install locations so Studio
+    /// can use a supported Python that is already on the Mac.
+    static let standardExecutableCandidates: [URL] = {
+        let prefixes = [
+            "/opt/homebrew/bin",
+            "/usr/local/bin",
+            "/opt/local/bin",
+            "/Library/Frameworks/Python.framework/Versions/Current/bin",
+            "/Library/Frameworks/Python.framework/Versions/3.14/bin",
+            "/Library/Frameworks/Python.framework/Versions/3.13/bin",
+            "/Library/Frameworks/Python.framework/Versions/3.12/bin",
+            "/Library/Frameworks/Python.framework/Versions/3.11/bin",
+            "/usr/bin",
+        ]
+        let names = ["python3", "python3.14", "python3.13", "python3.12", "python3.11"]
+        return prefixes.flatMap { prefix in
+            names.map { URL(fileURLWithPath: "\(prefix)/\($0)") }
+        }
+    }()
+
+    static func firstSupportedExecutable(in candidates: [URL]) -> URL? {
+        var visited = Set<String>()
+        for candidate in candidates {
+            let path = candidate.path
+            guard visited.insert(path).inserted,
+                  FileManager.default.isExecutableFile(atPath: path) else { continue }
+            let summary = probe(
+                executableURL: candidate,
+                argumentPrefix: [],
+                sdkRoot: nil,
+                environment: [:]
+            )
+            if summary.supportsStudio { return candidate }
+        }
+        return nil
+    }
+
+    private static func probe(
+        executableURL: URL,
+        argumentPrefix: [String],
+        sdkRoot: URL?,
+        environment: [String: String]
+    ) -> Self {
         let process = Process()
         process.executableURL = executableURL
-        process.arguments = resolution.pythonArgumentPrefix + ["--version"]
+        process.arguments = argumentPrefix + ["--version"]
         process.environment = ProcessInfo.processInfo.environment.merging(
-            resolution.environment
+            environment
         ) { _, supplied in supplied }
         let pipe = Pipe()
         process.standardOutput = pipe
@@ -758,8 +809,11 @@ public struct SwanSDKPythonSummary: Equatable, Sendable {
                 process.terminate()
                 return Self(
                     version: nil,
-                    executable: executableDescription(resolution),
-                    isBundled: isBundled(resolution)
+                    executable: executableDescription(
+                        executableURL: executableURL,
+                        argumentPrefix: argumentPrefix
+                    ),
+                    isBundled: isBundled(executableURL: executableURL, sdkRoot: sdkRoot)
                 )
             }
             let text = String(
@@ -772,25 +826,34 @@ public struct SwanSDKPythonSummary: Equatable, Sendable {
                 .map(String.init)
             return Self(
                 version: process.terminationStatus == 0 ? version : nil,
-                executable: executableDescription(resolution),
-                isBundled: isBundled(resolution)
+                executable: executableDescription(
+                    executableURL: executableURL,
+                    argumentPrefix: argumentPrefix
+                ),
+                isBundled: isBundled(executableURL: executableURL, sdkRoot: sdkRoot)
             )
         } catch {
             return Self(
                 version: nil,
-                executable: executableDescription(resolution),
-                isBundled: isBundled(resolution)
+                executable: executableDescription(
+                    executableURL: executableURL,
+                    argumentPrefix: argumentPrefix
+                ),
+                isBundled: isBundled(executableURL: executableURL, sdkRoot: sdkRoot)
             )
         }
     }
 
-    private static func executableDescription(_ resolution: SwanSDKCLIResolution) -> String {
-        ([resolution.pythonExecutableURL?.path].compactMap { $0 }
-            + resolution.pythonArgumentPrefix).joined(separator: " ")
+    private static func executableDescription(
+        executableURL: URL,
+        argumentPrefix: [String]
+    ) -> String {
+        ([executableURL.path] + argumentPrefix).joined(separator: " ")
     }
 
-    private static func isBundled(_ resolution: SwanSDKCLIResolution) -> Bool {
-        resolution.pythonExecutableURL?.path.hasPrefix(resolution.sdkRoot.path + "/") == true
+    private static func isBundled(executableURL: URL, sdkRoot: URL?) -> Bool {
+        guard let sdkRoot else { return false }
+        return executableURL.path.hasPrefix(sdkRoot.path + "/")
     }
 }
 

@@ -5,6 +5,31 @@ import XCTest
 
 @MainActor
 final class AppModelControllerLifecycleTests: XCTestCase {
+    func testDeferredStartupDoesNotReadLibraryBeforeFirstWindowIsReady() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "SwanSong-DeferredStartup-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        try FileManager.default.createDirectory(
+            at: root,
+            withIntermediateDirectories: true
+        )
+        defer { try? FileManager.default.removeItem(at: root) }
+        try Data("not a library document".utf8).write(
+            to: root.appendingPathComponent("Library.json")
+        )
+
+        let model = makeModel(root: root, deferStartupWork: true)
+
+        XCTAssertTrue(model.isPreparingLibrary)
+        XCTAssertNil(model.presentedError)
+
+        model.completeDeferredStartup()
+
+        XCTAssertFalse(model.isPreparingLibrary)
+        XCTAssertNotNil(model.presentedError)
+    }
+
     func testInactivityNeutralizesControllerStateAndCancelsBindingLearning() throws {
         let root = FileManager.default.temporaryDirectory.appendingPathComponent(
             "SwanSong-ControllerLifecycle-\(UUID().uuidString)",
@@ -101,7 +126,10 @@ final class AppModelControllerLifecycleTests: XCTestCase {
         XCTAssertFalse(model.playerIsInteractive)
     }
 
-    private func makeModel(root: URL) -> AppModel {
+    private func makeModel(
+        root: URL,
+        deferStartupWork: Bool = false
+    ) -> AppModel {
         AppModel(
             store: GameLibraryStore(fileURL: root.appendingPathComponent("Library.json")),
             saveStore: GameSaveStore(rootURL: root.appendingPathComponent("Saves")),
@@ -114,7 +142,8 @@ final class AppModelControllerLifecycleTests: XCTestCase {
             translationWorkspaceStore: TranslationWorkspaceStore(
                 fileURL: root.appendingPathComponent("TranslationWorkspace.json")
             ),
-            engineCanExecuteOverride: false
+            engineCanExecuteOverride: false,
+            deferStartupWork: deferStartupWork
         )
     }
 }

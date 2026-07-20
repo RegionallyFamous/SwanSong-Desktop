@@ -1466,7 +1466,20 @@ private struct LibraryView: View {
 
     @ViewBuilder
     private var libraryContent: some View {
-        if model.visibleGames.isEmpty {
+        if model.isPreparingLibrary {
+            VStack(spacing: 14) {
+                ProgressView()
+                    .controlSize(.large)
+                Text("Waking up your library…")
+                    .font(.title2.weight(.semibold))
+                Text("Loading your games and artwork so everything is ready to play.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Loading your SwanSong library")
+        } else if model.visibleGames.isEmpty {
             LibraryEmptyState(
                 title: emptyTitle,
                 description: emptyDescription,

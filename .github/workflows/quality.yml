@@ -24,6 +24,7 @@ jobs:
       compatibility: ${{ steps.classify.outputs.compatibility }}
       translation: ${{ steps.classify.outputs.translation }}
       av: ${{ steps.classify.outputs.av }}
+      tests: ${{ steps.classify.outputs.tests }}
     steps:
       - name: Check out exact source
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -46,6 +47,7 @@ jobs:
               echo "compatibility=true"
               echo "translation=true"
               echo "av=true"
+              echo "tests=true"
             } >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -55,6 +57,7 @@ jobs:
 
   tests:
     name: Tests (${{ matrix.label }})
+    needs: changes
     strategy:
       fail-fast: false
       matrix:
@@ -67,7 +70,9 @@ jobs:
             runner: macos-15-intel
             developer_dir: /Applications/Xcode.app/Contents/Developer
             lane: compatibility
-    runs-on: ${{ matrix.runner }}
+    # Keep the required matrix check names for branch protection, but do not
+    # reserve two macOS machines just to acknowledge prose/appcast-only work.
+    runs-on: ${{ needs.changes.outputs.tests == 'true' && matrix.runner || 'ubuntu-latest' }}
     timeout-minutes: 35
     env:
       DEVELOPER_DIR: ${{ matrix.developer_dir }}
@@ -77,13 +82,20 @@ jobs:
       # every surface and enforce geometry/content invariants; reviewed pixel
       # hashes remain strict on the macOS family that produced the baseline.
       SWAN_SONG_ALLOW_UI_BASELINE_PLATFORM_MISMATCH: "1"
+      RUN_TESTS: ${{ needs.changes.outputs.tests }}
     steps:
+      - name: Confirm fast pull-request lane
+        if: env.RUN_TESTS != 'true'
+        run: echo "Only prose or the signed appcast changed; the required test lane is complete."
+
       - name: Check out exact source
+        if: env.RUN_TESTS == 'true'
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
       - name: Check out locked SwanSong SDK source
+        if: env.RUN_TESTS == 'true'
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           repository: RegionallyFamous/swansong-sdk
@@ -94,6 +106,7 @@ jobs:
           fetch-tags: true
 
       - name: Record toolchain and architecture
+        if: env.RUN_TESTS == 'true'
         run: |
           set -eu
           xcodebuild -version
@@ -101,7 +114,7 @@ jobs:
           uname -m
 
       - name: Run complete Swift and XCTest suite
-        if: matrix.lane == 'full' || github.event_name != 'pull_request'
+        if: env.RUN_TESTS == 'true' && (matrix.lane == 'full' || github.event_name != 'pull_request')
         env:
           # Prove the published catalog and its signed production trust while
           # the full test target is already built. The release lane repeats
@@ -111,7 +124,7 @@ jobs:
         run: ./Scripts/swift-package.sh test --package-path . --disable-index-store
 
       - name: Build and inspect Intel engine and library target
-        if: matrix.lane == 'compatibility' && github.event_name == 'pull_request'
+        if: env.RUN_TESTS == 'true' && matrix.lane == 'compatibility' && github.event_name == 'pull_request'
         # The Intel hosted runner has a tighter memory ceiling. Bound SwiftPM's
         # cold-build parallelism, then inspect the native product without relying
         # on that image's policy for launching ad-hoc standalone executables.
@@ -130,18 +143,18 @@ jobs:
           test "$(lipo -archs "$BIN_DIR/SwanSongChecks")" = "x86_64"
 
       - name: Run engine-boundary and library checks
-        if: matrix.lane == 'full'
+        if: env.RUN_TESTS == 'true' && matrix.lane == 'full'
         run: ./Scripts/swift-package.sh run --skip-build --package-path . SwanSongChecks
 
       - name: Check local MCP protocol surface
-        if: matrix.lane == 'full'
+        if: env.RUN_TESTS == 'true' && matrix.lane == 'full'
         run: |
           set -eu
           ./Scripts/check-mcp-server.sh
           ./Scripts/check-playtest-mcp-server.sh
 
       - name: Check fail-closed production configuration
-        if: matrix.lane == 'full'
+        if: env.RUN_TESTS == 'true' && matrix.lane == 'full'
         run: |
           set -eu
           ./Scripts/check-release-metadata.sh
@@ -149,7 +162,7 @@ jobs:
           python3 ./Scripts/check-sparkle-dependency-lock.py --repository .
 
       - name: Verify release-only integrations
-        if: matrix.lane == 'full' && github.event_name != 'pull_request'
+        if: env.RUN_TESTS == 'true' && matrix.lane == 'full' && github.event_name != 'pull_request'
         run: |
           set -eu
           ./Scripts/check-homebrew-production-readiness.sh
@@ -158,7 +171,9 @@ jobs:
   release-preflight:
     name: Release preflight
     needs: changes
-    runs-on: macos-14
+    # The no-op required check is portable; reserve the macOS release runner
+    # only when the classifier selected a packaged-app or live-engine lane.
+    runs-on: ${{ needs.changes.outputs.preflight == 'true' && 'macos-14' || 'ubuntu-latest' }}
     timeout-minutes: 75
     env:
       DEVELOPER_DIR: /Applications/Xcode_16.2.app/Contents/Developer

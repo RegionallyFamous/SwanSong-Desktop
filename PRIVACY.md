@@ -19,6 +19,11 @@ Catalog** or **Refresh** requests the signed catalog from GitHub; choosing
 ordinary connection information, but SwanSong does not attach library, save,
 state, screenshot, or Translation Lab data.
 
+The signed Homebrew Catalog's small anti-rollback record stays in the protected
+macOS Keychain. SwanSong checks it without allowing an authentication dialog;
+an unavailable or mismatched record fails closed instead of asking for the
+login Keychain password.
+
 ## What stays on your Mac
 
 Games, game names and digests, saves, save states, screenshots, controller

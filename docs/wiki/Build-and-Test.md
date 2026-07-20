@@ -150,13 +150,19 @@ the separate live-engine invocation is mandatory for release evidence.
 
 ## CI lanes
 
-Pull requests always run the complete Swift/XCTest and UI snapshot suite once
-on the macOS 14 Apple-silicon runner. A macOS 15 Intel runner simultaneously
+Application pull requests run the complete Swift/XCTest and UI snapshot suite
+once on the macOS 14 Apple-silicon runner. A macOS 15 Intel runner simultaneously
 compiles the native engine/library compatibility target and verifies its x86_64
 Mach-O identity. The hosted Intel image does not reliably permit ad-hoc
 standalone Swift executables, so runtime proof stays on Apple silicon. The
 Apple-silicon suite enables published Homebrew production enforcement in that
 same test process instead of rebuilding the test target for a duplicate pass.
+
+Prose-only and signed-appcast-only pull requests keep the same branch-protected
+test names but finish after the deterministic change-classifier self-test. They
+do not download the SDK or rebuild the unchanged app on two Macs. Any source,
+test, script, package, workflow, or configuration change restores the full
+lanes automatically; pushes to `main` and manual runs are always full.
 
 The required release-preflight check is impact-aware. It finishes immediately
 when a change cannot affect the packaged app or live engine. Packaging, updater,

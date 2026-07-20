@@ -88,6 +88,10 @@ notary service, waits for the result, staples the ticket, validates the staple,
 and runs a Gatekeeper assessment. The temporary submission is not a release
 artifact.
 
+Before compilation begins, the release script asks Apple's notary service to
+validate the named Keychain profile. A missing, locked, or revoked credential
+therefore stops immediately with the profile name and recovery direction.
+
 SwanSong currently uses no signing entitlements. The app is not sandboxed,
 does not JIT, and needs no hardened-runtime exception. Its Homebrew Catalog
 anti-rollback record uses the traditional protected macOS Keychain, which is

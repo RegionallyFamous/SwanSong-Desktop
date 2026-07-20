@@ -145,8 +145,12 @@ final class SwanSongUpdater: NSObject, ObservableObject {
         }
 
         super.init()
+    }
 
+    func start() {
+        guard updaterController == nil else { return }
         guard configurationIssue == nil else { return }
+        appLaunchDiagnostic("Sparkle startup began")
         // Sparkle's SUEnableSystemProfiling key controls whether its permission
         // prompt offers profiling. SUSendProfileInfo is the independent,
         // persisted value that actually controls whether profile fields are
@@ -161,15 +165,17 @@ final class SwanSongUpdater: NSObject, ObservableObject {
         self.updaterController = updaterController
         updaterController.updater.sendsSystemProfile = false
         observe(updaterController.updater)
+        appLaunchDiagnostic("Sparkle startup finished")
     }
 
-    var isConfigured: Bool { updaterController != nil }
+    var isConfigured: Bool { configurationIssue == nil }
 
     var includesBetaUpdates: Bool {
         userDefaults.bool(forKey: Self.includeBetaUpdatesKey)
     }
 
     func checkForUpdates() {
+        start()
         guard let updaterController else {
             openReleases()
             return
@@ -179,6 +185,7 @@ final class SwanSongUpdater: NSObject, ObservableObject {
     }
 
     func setAutomaticallyChecksForUpdates(_ enabled: Bool) {
+        start()
         guard let updater = updaterController?.updater else { return }
         updater.automaticallyChecksForUpdates = enabled
         if !enabled {
@@ -190,12 +197,14 @@ final class SwanSongUpdater: NSObject, ObservableObject {
     }
 
     func setAutomaticallyDownloadsUpdates(_ enabled: Bool) {
+        start()
         guard let updater = updaterController?.updater else { return }
         updater.automaticallyDownloadsUpdates = enabled && updater.automaticallyChecksForUpdates
         automaticallyDownloadsUpdates = updater.automaticallyDownloadsUpdates
     }
 
     func setIncludesBetaUpdates(_ enabled: Bool) {
+        start()
         userDefaults.set(enabled, forKey: Self.includeBetaUpdatesKey)
         if let updater = updaterController?.updater,
            AppUpdateNetworkPolicy.shouldResetUpdateCycle(
