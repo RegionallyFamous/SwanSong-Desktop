@@ -21,6 +21,18 @@ expect_failure() {
 "$SCRIPT_DIR/materialize-swansong-sdk.sh" "$SDK_REPOSITORY" "$PAYLOAD" >/dev/null
 "$SCRIPT_DIR/check-swansong-sdk-payload.sh" "$PAYLOAD" >/dev/null
 
+[ "$("$PAYLOAD/bin/swan" --version)" = "swan 0.5.0" ] || {
+  echo "bundled SDK did not report version 0.5.0" >&2
+  exit 1
+}
+HELP=$("$PAYLOAD/bin/swan" --help)
+for COMMAND in hardware-tile-capacity outcome scenario-compile asset-import audio migrate release; do
+  printf '%s\n' "$HELP" | grep -F "$COMMAND" >/dev/null || {
+    echo "bundled SDK help omitted $COMMAND" >&2
+    exit 1
+  }
+done
+
 CANARY="$TEMP/studio-canary"
 "$PAYLOAD/bin/swan" new studio-canary \
   --template menu-puzzle --directory "$CANARY" >/dev/null
@@ -39,6 +51,14 @@ CANARY="$TEMP/studio-canary"
 "$PAYLOAD/bin/swan" replay \
   --project "$CANARY/swan.toml" --scenario neutral --json >/dev/null
 "$PAYLOAD/bin/swan" minimize --help >/dev/null
+
+UTILITY="$TEMP/utility-canary"
+"$PAYLOAD/bin/swan" new utility-canary \
+  --template utility-app --directory "$UTILITY" >/dev/null
+[ -f "$UTILITY/swan.toml" ] || {
+  echo "bundled SDK did not create the Utility App recipe" >&2
+  exit 1
+}
 
 printf '\n# tampered\n' >>"$PAYLOAD/python/swansong_sdk/cli.py"
 expect_failure "a modified Python module"

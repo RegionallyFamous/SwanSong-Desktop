@@ -20,14 +20,16 @@ its editorial, rights, continuity, ImageGen art, and soundtrack gates, choose
 Studio without copying prose, inventing a second story schema, or treating game
 execution as editorial approval.
 
-Story Forge, Studio, and the verified SDK 0.4.0 workflow are included in
-SwanSong 0.5.0.
+Story Forge and Studio are included in SwanSong 0.5.0. Development source after
+that release carries the verified SDK 0.5.0 workflow for the next Desktop
+update.
 
 ## Your first project
 
 1. Open **Studio** and let **Doctor** check the bundled SDK, Python, Wonderful,
    schema, and SwanSong identities.
-2. Choose **New** and start with Arcade Action, Menu Puzzle, or Grid Tactics.
+2. Choose **New** and start with Arcade Action, Menu Puzzle, Grid Tactics, or
+   Utility App.
 3. Move through Assets, Build, Test, and Play; each workspace makes the next
    useful action visible.
 4. Inspect the native frame, audio, plan, and observations in Evidence.
@@ -36,7 +38,7 @@ SwanSong 0.5.0.
 
 ## Bundled SDK
 
-SwanSong embeds the complete SwanSong SDK 0.4.0 runtime, schema, three recipes,
+SwanSong embeds the complete SwanSong SDK 0.5.0 runtime, schema, four recipes,
 Python package, and `swan` entry point. The bundle is pinned to the tagged Git
 commit and SDK content revision; build, packaging, runtime, and release checks
 reject missing, modified, extra, or identity-mismatched files. Studio selects
@@ -51,29 +53,34 @@ and the SwanSong connection before a production workflow.
 
 ## The eight workspaces
 
-- **New** calls `swan new` with Arcade Action, Menu Puzzle, or Grid Tactics and
-  passes the exact selected destination.
+- **New** calls `swan new` with Arcade Action, Menu Puzzle, Grid Tactics, or
+  Utility App and passes the exact selected destination.
 - **Assets** edits and saves `swan.toml`, calls `swan assets`, exposes Asset
-  Optimizer through `swan optimize --json`, and provides typed create,
-  validate, report, and export controls for all six `swan author` documents.
-- **Build** calls `swan build`; Wonderful linking and cartridge budgets remain
-  owned by the SDK.
+  Optimizer preview plus explicitly approved apply/revert, imports a reviewed
+  digest-bound asset with provenance, previews audio and tests SFX arbitration,
+  and provides typed create, validate, report, and export controls for all six
+  `swan author` documents.
+- **Build** calls `swan build`, optionally enabling bounded semantic trace
+  capacity; Wonderful linking and cartridge budgets remain owned by the SDK.
 - **Test** calls `swan test` and exposes the deterministic input fuzzer,
   Save/RTC Laboratory, and failure-preserving exact-plan reducer through
   `swan fuzz --json`, `swan lab --json`, and `swan minimize --json`.
-- **Play** selects Play Contract scenarios, calls `swan play`, offers the Dev
-  watch cycle through `swan dev --json`, converts an exported actual-input log
-  with Scenario Recorder, and builds read-only inspection timelines with
-  `swan replay --json`. Recorder imports a log; it is not live recording.
-- **Profile** renders `swan report --json` and optional Sprite/VRAM trace data
-  from `swan profile --json`.
+- **Play** selects one Play Contract scenario or runs every contract, offers
+  the Dev watch cycle, converts actual input logs with Scenario Recorder,
+  compiles editable scenario scripts, and builds read-only inspection timelines
+  with `swan replay --json`. Recorder imports a log; it is not live recording.
+- **Profile** renders `swan report --json`, checks an optional budget-history
+  baseline and explicit allowances, reports hardware tile capacity, and shows
+  optional Sprite/VRAM trace data from `swan profile --json`.
 - **Evidence** reviews persisted PNG/WAV/JSON output and compares two evidence
-  folders with `swan evidence-diff --json`. After inspecting the current frame
-  and required audio, enter one observation for every scenario check and record
-  a hash-bound pass verdict for Release.
-- **Release** runs `swan release --json`; the SDK owns gates, checksums, notes,
-  and the deterministic archive. It refuses execution-only evidence or a stale
-  observation record.
+  folders with scenario-aware limits through `swan evidence-diff --json`.
+  Semantic Outcome combines the selected scenario, trace, and a WAV you affirm
+  you listened to. After inspecting the current frame and required audio, enter
+  one observation for every scenario check and record a hash-bound pass verdict.
+- **Release** previews or explicitly applies SDK project migration and runs
+  `swan release --json` with optional budget baseline/allowances; the SDK owns
+  gates, checksums, notes, and the deterministic archive. It refuses
+  execution-only evidence or a stale observation record.
 
 Doctor is available beside the resolved SDK, schema, toolchain, and SwanSong
 identity. Diagnostics stream while commands run, Cancel terminates the command
@@ -108,10 +115,20 @@ USB hardware mutation is intentionally absent from local MCP automation. A
 person at the Mac must select the tools and image and confirm the physical
 reset. This keeps device writes out of path-free unattended automation.
 
-## SDK 0.4 authoring and replay tools
+## SDK 0.5 tools
 
-Desktop 0.5.0 is pinned to released SDK 0.4.0 and exposes its public contracts
-without inventing private project models:
+Current development source is pinned to released SDK 0.5.0 and exposes its
+public contracts without inventing private project models. Alongside its SDK
+0.4 authoring and replay contracts, Studio now includes:
+
+- `utility-app` projects and `swan hardware-tile-capacity`;
+- traced builds, `swan play --all`, and `swan scenario-compile`;
+- approved optimizer apply/revert and digest/provenance-bound `asset-import`;
+- `swan audio preview`, SFX arbitration, scenario-aware evidence limits, and
+  `swan outcome` inspection;
+- resource/release budget history and preview/apply project migration.
+
+The retained authoring and replay contracts include:
 
 - `swan replay --json` → `swansong-replay-report-v1`, with optional
   `swansong-replay-checkpoints-v1` input;
@@ -131,8 +148,9 @@ inside the chosen project and use the suffix declared by their public schema.
 Opt-in local MCP automation exposes two Studio contracts. One returns only the
 single already-open project slot, readiness, counts, and tool versions without
 its name or path. The other requires `confirmProjectWrites: true` and invokes
-only Doctor, Assets, Build, Test, Play, or Profile. It cannot select a path,
-create or edit a project directly, run Release, or execute an arbitrary command.
+only the fixed path-free action set documented in [[Local MCP and Automation]].
+It cannot select a path, mutate a reviewed asset, apply a migration, create or
+edit a project directly, run Release, or execute an arbitrary command.
 
 In **Settings → Display & Player**, you can ask for a local notification when
 a Studio task finishes while SwanSong is in the background. The notification

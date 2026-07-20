@@ -76,9 +76,11 @@ it.
 
 Take a WonderSwan project from New to Release in one native workspace. Build
 assets, run the game, inspect frames and audio, replay failures, and package
-only after the evidence is ready. SwanSong 0.5.0 carries the verified SwanSong
-SDK 0.4.0; Doctor clearly shows the few development tools that still need to
-be installed on the Mac.
+only after the evidence is ready. The current development source carries the
+verified SwanSong SDK 0.5.0 and its complete native Studio toolset; Doctor
+clearly shows the few development tools that still need to be installed on the
+Mac. The public 0.5.0 download continues to carry SDK 0.4.0 until the next
+Desktop update is published.
 
 ### Homebrew and Analogue Pocket
 

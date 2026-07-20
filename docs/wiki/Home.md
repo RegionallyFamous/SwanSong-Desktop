@@ -52,6 +52,11 @@ tools, replay timelines, and deterministic failing-plan minimization. Python
 3.11+ and the pinned Wonderful packages remain honest local prerequisites
 checked by Doctor.
 
+Development source after 0.5.0 now carries the complete content-verified SDK
+0.5.0 toolset, including Utility App scaffolds, traced builds, scenario
+compilation, reviewed asset/audio workflows, semantic outcomes, budget history,
+project migration, and the expanded release lane for the next Desktop update.
+
 ### I want homebrew or real hardware
 
 [[Homebrew Catalog]] explains the signed first-party catalog included in the

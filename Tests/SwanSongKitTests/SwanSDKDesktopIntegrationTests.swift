@@ -22,6 +22,17 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
             ]
         )
         XCTAssertEqual(
+            SwanSDKCommand.newProject(
+                name: "field-meter",
+                recipe: .utilityApp,
+                parentDirectory: parent
+            ).arguments,
+            [
+                "new", "field-meter", "--template", "utility-app",
+                "--directory", "/tmp/games/field-meter",
+            ]
+        )
+        XCTAssertEqual(
             SwanSDKCommand.assets(manifest: manifest).arguments,
             ["assets", "--project", "/tmp/lamp-game/swan.toml"]
         )
@@ -34,6 +45,17 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
             ["build", "--project", "/tmp/lamp-game/swan.toml", "--target", "debug"]
         )
         XCTAssertEqual(
+            SwanSDKCommand.build(
+                manifest: manifest,
+                trace: true,
+                traceCapacity: 96
+            ).arguments,
+            [
+                "build", "--project", "/tmp/lamp-game/swan.toml",
+                "--trace", "--trace-capacity", "96",
+            ]
+        )
+        XCTAssertEqual(
             SwanSDKCommand.test(manifest: manifest).arguments,
             ["test", "--project", "/tmp/lamp-game/swan.toml"]
         )
@@ -42,9 +64,31 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
             ["play", "neutral", "--project", "/tmp/lamp-game/swan.toml"]
         )
         XCTAssertEqual(
+            SwanSDKCommand.playAll(manifest: manifest).arguments,
+            ["play", "--all", "--project", "/tmp/lamp-game/swan.toml"]
+        )
+        XCTAssertEqual(
             SwanSDKCommand.report(manifest: manifest).arguments,
             ["report", "--project", "/tmp/lamp-game/swan.toml", "--json"]
         )
+        XCTAssertEqual(
+            SwanSDKCommand.report(
+                manifest: manifest,
+                baseline: root.appendingPathComponent("baseline.json"),
+                allowedIncreases: ["romBytes=256", "audioBytes=64"]
+            ).arguments,
+            [
+                "report", "--project", "/tmp/lamp-game/swan.toml",
+                "--baseline-report", "/tmp/lamp-game/baseline.json",
+                "--allow-increase", "romBytes=256",
+                "--allow-increase", "audioBytes=64", "--json",
+            ]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.hardwareTileCapacity(manifest: manifest).arguments,
+            ["hardware-tile-capacity", "--project", "/tmp/lamp-game/swan.toml"]
+        )
+        XCTAssertEqual(SwanSDKCommand.hardwareTileCapacity(manifest: manifest).action, .profile)
         XCTAssertEqual(
             SwanSDKCommand.doctor(manifest: manifest, timeoutSeconds: 30).arguments,
             ["doctor", "--project", "/tmp/lamp-game/swan.toml", "--timeout", "30", "--json"]
@@ -52,6 +96,54 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         XCTAssertEqual(
             SwanSDKCommand.optimize(manifest: manifest, assetID: "hero").arguments,
             ["optimize", "--project", "/tmp/lamp-game/swan.toml", "--asset", "hero", "--json"]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.optimizeApply(
+                manifest: manifest,
+                assetID: "hero",
+                output: root.appendingPathComponent("assets/hero-mono.png"),
+                report: root.appendingPathComponent("authoring/hero-apply.json"),
+                operations: ["palette-reduction", "mono-conversion"],
+                expectedSourceSHA256: String(repeating: "a", count: 64)
+            ).arguments,
+            [
+                "optimize", "--project", "/tmp/lamp-game/swan.toml",
+                "--asset", "hero", "--apply",
+                "--output", "/tmp/lamp-game/assets/hero-mono.png",
+                "--report", "/tmp/lamp-game/authoring/hero-apply.json",
+                "--operation", "palette-reduction", "--operation", "mono-conversion",
+                "--expected-source-sha256", String(repeating: "a", count: 64),
+                "--approval", "artist-approved", "--json",
+            ]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.optimizeRevert(
+                manifest: manifest,
+                report: root.appendingPathComponent("authoring/hero-apply.json"),
+                expectedReportSHA256: String(repeating: "b", count: 64)
+            ).arguments,
+            [
+                "optimize", "--project", "/tmp/lamp-game/swan.toml", "--revert",
+                "--report", "/tmp/lamp-game/authoring/hero-apply.json",
+                "--expected-report-sha256", String(repeating: "b", count: 64),
+                "--approval", "artist-approved", "--json",
+            ]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.assetImport(
+                manifest: manifest,
+                source: URL(fileURLWithPath: "/tmp/reviewed.png"),
+                destination: root.appendingPathComponent("assets/reviewed.png"),
+                provenanceReport: root.appendingPathComponent("assets/reviewed.provenance.json"),
+                expectedSHA256: String(repeating: "c", count: 64)
+            ).arguments,
+            [
+                "asset-import", "--project", "/tmp/lamp-game/swan.toml",
+                "--source", "/tmp/reviewed.png",
+                "--destination", "/tmp/lamp-game/assets/reviewed.png",
+                "--provenance-report", "/tmp/lamp-game/assets/reviewed.provenance.json",
+                "--expected-sha256", String(repeating: "c", count: 64), "--json",
+            ]
         )
         XCTAssertEqual(
             SwanSDKCommand.fuzz(manifest: manifest, seed: 7, cases: 12, frames: 900).arguments,
@@ -68,6 +160,18 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
                 outputPlan: root.appendingPathComponent("tests/play/neutral.json")
             ).arguments,
             ["scenario-record", "--project", "/tmp/lamp-game/swan.toml", "--input-log", "/tmp/lamp-game/input.json", "--output", "/tmp/lamp-game/tests/play/neutral.json", "--json"]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.scenarioCompile(
+                manifest: manifest,
+                script: root.appendingPathComponent("tests/scripts/neutral.json"),
+                outputPlan: root.appendingPathComponent("tests/play/neutral.json")
+            ).arguments,
+            [
+                "scenario-compile", "--project", "/tmp/lamp-game/swan.toml",
+                "--script", "/tmp/lamp-game/tests/scripts/neutral.json",
+                "--output", "/tmp/lamp-game/tests/play/neutral.json", "--json",
+            ]
         )
         XCTAssertEqual(
             SwanSDKCommand.authorCreate(
@@ -162,18 +266,97 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         XCTAssertEqual(
             SwanSDKCommand.evidenceDiff(
                 before: root.appendingPathComponent("before"),
-                after: root.appendingPathComponent("after")
+                after: root.appendingPathComponent("after"),
+                manifest: manifest,
+                scenario: "success"
             ).arguments,
-            ["evidence-diff", "--before", "/tmp/lamp-game/before", "--after", "/tmp/lamp-game/after", "--json"]
+            [
+                "evidence-diff", "--before", "/tmp/lamp-game/before",
+                "--after", "/tmp/lamp-game/after",
+                "--project", "/tmp/lamp-game/swan.toml",
+                "--scenario", "success", "--json",
+            ]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.outcome(
+                manifest: manifest,
+                scenario: "success",
+                trace: root.appendingPathComponent("trace.swtr"),
+                wav: root.appendingPathComponent("audio.wav"),
+                inspected: true,
+                output: root.appendingPathComponent("outcome.json")
+            ).arguments,
+            [
+                "outcome", "success", "--project", "/tmp/lamp-game/swan.toml",
+                "--trace", "/tmp/lamp-game/trace.swtr",
+                "--wav", "/tmp/lamp-game/audio.wav", "--inspected",
+                "--output", "/tmp/lamp-game/outcome.json", "--json",
+            ]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.audioPreview(
+                manifest: manifest,
+                source: root.appendingPathComponent("assets/music.toml"),
+                output: root.appendingPathComponent("build/music.wav"),
+                sampleRate: 48_000,
+                loops: 3,
+                replace: true
+            ).arguments,
+            [
+                "audio", "preview", "--project", "/tmp/lamp-game/swan.toml",
+                "--source", "/tmp/lamp-game/assets/music.toml",
+                "--sample-rate", "48000", "--loops", "3",
+                "--output", "/tmp/lamp-game/build/music.wav", "--replace", "--json",
+            ]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.audioArbitrate(
+                manifest: manifest,
+                events: root.appendingPathComponent("tests/sfx.json"),
+                channels: 4
+            ).arguments,
+            [
+                "audio", "arbitrate", "--project", "/tmp/lamp-game/swan.toml",
+                "--events", "/tmp/lamp-game/tests/sfx.json",
+                "--channels", "4", "--json",
+            ]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.migrate(
+                manifest: manifest,
+                targetVersion: "0.5.0",
+                targetRevision: "sha256:" + String(repeating: "d", count: 64),
+                targetSchema: 1,
+                apply: true
+            ).arguments,
+            [
+                "migrate", "--project", "/tmp/lamp-game/swan.toml",
+                "--target-version", "0.5.0",
+                "--target-revision", "sha256:" + String(repeating: "d", count: 64),
+                "--target-schema", "1", "--apply", "--json",
+            ]
+        )
+        XCTAssertEqual(
+            SwanSDKCommand.migrate(manifest: manifest).action,
+            .release
         )
         XCTAssertEqual(
             SwanSDKCommand.release(
                 manifest: manifest,
                 output: root.appendingPathComponent("release"),
                 notes: root.appendingPathComponent("NOTES.md"),
+                baseline: root.appendingPathComponent("baseline.json"),
+                allowedIncreases: ["romBytes=256"],
                 timeoutSeconds: 120
             ).arguments,
-            ["release", "--project", "/tmp/lamp-game/swan.toml", "--output", "/tmp/lamp-game/release", "--notes", "/tmp/lamp-game/NOTES.md", "--timeout", "120", "--json"]
+            [
+                "release", "--project", "/tmp/lamp-game/swan.toml",
+                "--output", "/tmp/lamp-game/release",
+                "--notes", "/tmp/lamp-game/NOTES.md",
+                "--baseline-report", "/tmp/lamp-game/baseline.json",
+                "--allow-increase", "romBytes=256",
+                "--timeout", "120", "--json",
+            ]
         )
     }
 
@@ -232,7 +415,7 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         try writeBundleManifest(at: root)
 
         let resolution = try SwanSDKCLIResolution.resolve(sdkRoot: root)
-        XCTAssertEqual(resolution.bundleSummary?.version, "0.4.0")
+        XCTAssertEqual(resolution.bundleSummary?.version, "0.5.0")
         XCTAssertEqual(resolution.bundleSummary?.fileCount, 2)
 
         try Data("# changed\n".utf8).write(to: module)
@@ -258,7 +441,7 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
         let resolution = try SwanSDKCLIResolution.resolve(sdkRoot: sdkRoot)
         XCTAssertEqual(resolution.sdkRoot, sdkRoot.resolvingSymlinksInPath())
         let package = try SwanSDKPackageSummary.load(from: sdkRoot)
-        XCTAssertEqual(package.version, "0.4.0")
+        XCTAssertEqual(package.version, "0.5.0")
         XCTAssertTrue(package.supportsStudioTools)
         XCTAssertEqual(try SwanSDKSchemaSummary.load(from: sdkRoot).version, 1)
         let toolchain = try SwanSDKToolchainSummary.load(from: sdkRoot)
@@ -463,14 +646,14 @@ final class SwanSDKDesktopIntegrationTests: XCTestCase {
     }
 
     func testStudioToolsVersionBoundaryUsesStableSemanticVersions() {
-        for version in ["0.4.0", "0.4.0+build.9", "0.4.1-beta.1", "0.10.0", "1.0.0"] {
+        for version in ["0.5.0", "0.5.0+build.9", "0.5.1-beta.1", "0.10.0", "1.0.0"] {
             XCTAssertTrue(
                 SwanSDKPackageSummary(version: version).supportsStudioTools,
                 version
             )
         }
         for version in [
-            "0.3.1", "0.4.0-beta.1", "0.4", "0.4.0.1", "0.nope.4.0", "invalid",
+            "0.4.9", "0.5.0-beta.1", "0.5", "0.5.0.1", "0.nope.5.0", "invalid",
         ] {
             XCTAssertFalse(
                 SwanSDKPackageSummary(version: version).supportsStudioTools,

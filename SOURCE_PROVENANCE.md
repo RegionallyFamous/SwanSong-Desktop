@@ -57,7 +57,7 @@ agree before the release or update feed can be published.
 
 ## SwanSong SDK
 
-Studio embeds the MIT-licensed SwanSong SDK 0.4.0 runtime, schema, recipes,
+Studio embeds the MIT-licensed SwanSong SDK 0.5.0 runtime, schema, recipes,
 Python package, and tool entry point from the exact tag and commit recorded in
 [`Dependencies/swansong-sdk.lock.json`](Dependencies/swansong-sdk.lock.json).
 The lock also records the SDK's own normalized content revision. Build tooling

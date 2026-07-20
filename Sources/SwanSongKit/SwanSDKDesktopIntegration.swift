@@ -7,6 +7,7 @@ public enum SwanSDKRecipe: String, CaseIterable, Codable, Identifiable, Sendable
     case arcadeAction = "arcade-action"
     case menuPuzzle = "menu-puzzle"
     case gridTactics = "grid-tactics"
+    case utilityApp = "utility-app"
 
     public var id: String { rawValue }
 
@@ -15,6 +16,7 @@ public enum SwanSDKRecipe: String, CaseIterable, Codable, Identifiable, Sendable
         case .arcadeAction: "Arcade Action"
         case .menuPuzzle: "Menu Puzzle"
         case .gridTactics: "Grid Tactics"
+        case .utilityApp: "Utility App"
         }
     }
 
@@ -26,6 +28,8 @@ public enum SwanSDKRecipe: String, CaseIterable, Codable, Identifiable, Sendable
             "Cursor-driven screens, rules, feedback, and deterministic resets."
         case .gridTactics:
             "A turn-based board, selection states, movement, and victory checks."
+        case .utilityApp:
+            "A focused tool, instrument, viewer, or creative cartridge with repeatable checks."
         }
     }
 }
@@ -68,15 +72,47 @@ public enum SwanSDKWorkspaceAction: String, CaseIterable, Codable, Identifiable,
 public enum SwanSDKCommand: Equatable, Sendable {
     case newProject(name: String, recipe: SwanSDKRecipe, parentDirectory: URL)
     case assets(manifest: URL)
-    case build(manifest: URL, target: String? = nil)
+    case build(
+        manifest: URL,
+        target: String? = nil,
+        trace: Bool = false,
+        traceCapacity: Int? = nil
+    )
     case test(manifest: URL)
     case play(manifest: URL, scenario: String)
-    case report(manifest: URL)
+    case playAll(manifest: URL)
+    case report(
+        manifest: URL,
+        baseline: URL? = nil,
+        allowedIncreases: [String] = []
+    )
+    case hardwareTileCapacity(manifest: URL)
     case doctor(manifest: URL?, timeoutSeconds: Int? = nil)
     case optimize(manifest: URL, assetID: String? = nil)
+    case optimizeApply(
+        manifest: URL,
+        assetID: String,
+        output: URL,
+        report: URL,
+        operations: [String],
+        expectedSourceSHA256: String
+    )
+    case optimizeRevert(
+        manifest: URL,
+        report: URL,
+        expectedReportSHA256: String
+    )
+    case assetImport(
+        manifest: URL,
+        source: URL,
+        destination: URL,
+        provenanceReport: URL,
+        expectedSHA256: String
+    )
     case fuzz(manifest: URL, seed: UInt64, cases: Int, frames: Int)
     case laboratory(manifest: URL, testCase: String, rtcSeed: Int64? = nil)
     case scenarioRecord(manifest: URL, inputLog: URL, outputPlan: URL)
+    case scenarioCompile(manifest: URL, script: URL, outputPlan: URL)
     case authorCreate(manifest: URL, kind: SwanSDKAuthorKind, id: String, output: URL? = nil)
     case authorValidate(manifest: URL, document: URL)
     case authorReport(manifest: URL, document: URL, output: URL? = nil)
@@ -98,8 +134,44 @@ public enum SwanSDKCommand: Equatable, Sendable {
     )
     case dev(manifest: URL, scenario: String?, once: Bool)
     case profile(manifest: URL, trace: URL? = nil)
-    case evidenceDiff(before: URL, after: URL)
-    case release(manifest: URL, output: URL?, notes: URL?, timeoutSeconds: Int? = nil)
+    case evidenceDiff(
+        before: URL,
+        after: URL,
+        manifest: URL? = nil,
+        scenario: String? = nil
+    )
+    case outcome(
+        manifest: URL,
+        scenario: String,
+        trace: URL,
+        wav: URL,
+        inspected: Bool,
+        output: URL? = nil
+    )
+    case audioPreview(
+        manifest: URL,
+        source: URL,
+        output: URL?,
+        sampleRate: Int,
+        loops: Int,
+        replace: Bool
+    )
+    case audioArbitrate(manifest: URL, events: URL, channels: Int)
+    case migrate(
+        manifest: URL,
+        targetVersion: String? = nil,
+        targetRevision: String? = nil,
+        targetSchema: Int? = nil,
+        apply: Bool = false
+    )
+    case release(
+        manifest: URL,
+        output: URL?,
+        notes: URL?,
+        baseline: URL? = nil,
+        allowedIncreases: [String] = [],
+        timeoutSeconds: Int? = nil
+    )
 
     public var action: SwanSDKWorkspaceAction? {
         switch self {
@@ -107,14 +179,16 @@ public enum SwanSDKCommand: Equatable, Sendable {
         case .assets: .assets
         case .build: .build
         case .test: .test
-        case .play: .play
-        case .report, .profile: .profile
+        case .play, .playAll: .play
+        case .report, .profile, .hardwareTileCapacity: .profile
         case .doctor: nil
-        case .optimize, .authorCreate, .authorValidate, .authorReport, .authorExport: .assets
+        case .optimize, .optimizeApply, .optimizeRevert, .assetImport,
+             .audioPreview, .audioArbitrate,
+             .authorCreate, .authorValidate, .authorReport, .authorExport: .assets
         case .fuzz, .laboratory, .minimize: .test
-        case .scenarioRecord, .replay, .dev: .play
-        case .evidenceDiff: .evidence
-        case .release: .release
+        case .scenarioRecord, .scenarioCompile, .replay, .dev: .play
+        case .evidenceDiff, .outcome: .evidence
+        case .migrate, .release: .release
         }
     }
 
@@ -128,18 +202,30 @@ public enum SwanSDKCommand: Equatable, Sendable {
             ]
         case let .assets(manifest):
             return ["assets", "--project", manifest.path]
-        case let .build(manifest, target):
-            if let target, !target.isEmpty {
-                return ["build", "--project", manifest.path, "--target", target]
-            } else {
-                return ["build", "--project", manifest.path]
+        case let .build(manifest, target, trace, traceCapacity):
+            var arguments = ["build", "--project", manifest.path]
+            if let target, !target.isEmpty { arguments += ["--target", target] }
+            if trace {
+                arguments.append("--trace")
+                if let traceCapacity {
+                    arguments += ["--trace-capacity", String(traceCapacity)]
+                }
             }
+            return arguments
         case let .test(manifest):
             return ["test", "--project", manifest.path]
         case let .play(manifest, scenario):
             return ["play", scenario, "--project", manifest.path]
-        case let .report(manifest):
-            return ["report", "--project", manifest.path, "--json"]
+        case let .playAll(manifest):
+            return ["play", "--all", "--project", manifest.path]
+        case let .report(manifest, baseline, allowedIncreases):
+            var arguments = ["report", "--project", manifest.path]
+            if let baseline { arguments += ["--baseline-report", baseline.path] }
+            for allowance in allowedIncreases { arguments += ["--allow-increase", allowance] }
+            arguments.append("--json")
+            return arguments
+        case let .hardwareTileCapacity(manifest):
+            return ["hardware-tile-capacity", "--project", manifest.path]
         case let .doctor(manifest, timeoutSeconds):
             var arguments = ["doctor"]
             if let manifest { arguments += ["--project", manifest.path] }
@@ -151,6 +237,36 @@ public enum SwanSDKCommand: Equatable, Sendable {
             if let assetID, !assetID.isEmpty { arguments += ["--asset", assetID] }
             arguments.append("--json")
             return arguments
+        case let .optimizeApply(
+            manifest, assetID, output, report, operations, expectedSourceSHA256
+        ):
+            var arguments = [
+                "optimize", "--project", manifest.path,
+                "--asset", assetID, "--apply",
+                "--output", output.path, "--report", report.path,
+            ]
+            for operation in operations { arguments += ["--operation", operation] }
+            arguments += [
+                "--expected-source-sha256", expectedSourceSHA256,
+                "--approval", "artist-approved", "--json",
+            ]
+            return arguments
+        case let .optimizeRevert(manifest, report, expectedReportSHA256):
+            return [
+                "optimize", "--project", manifest.path, "--revert",
+                "--report", report.path,
+                "--expected-report-sha256", expectedReportSHA256,
+                "--approval", "artist-approved", "--json",
+            ]
+        case let .assetImport(
+            manifest, source, destination, provenanceReport, expectedSHA256
+        ):
+            return [
+                "asset-import", "--project", manifest.path,
+                "--source", source.path, "--destination", destination.path,
+                "--provenance-report", provenanceReport.path,
+                "--expected-sha256", expectedSHA256, "--json",
+            ]
         case let .fuzz(manifest, seed, cases, frames):
             return [
                 "fuzz", "--project", manifest.path,
@@ -167,6 +283,11 @@ public enum SwanSDKCommand: Equatable, Sendable {
                 "scenario-record", "--project", manifest.path,
                 "--input-log", inputLog.path, "--output", outputPlan.path,
                 "--json",
+            ]
+        case let .scenarioCompile(manifest, script, outputPlan):
+            return [
+                "scenario-compile", "--project", manifest.path,
+                "--script", script.path, "--output", outputPlan.path, "--json",
             ]
         case let .authorCreate(manifest, kind, id, output):
             var arguments = [
@@ -222,15 +343,61 @@ public enum SwanSDKCommand: Equatable, Sendable {
             if let trace { arguments += ["--trace", trace.path] }
             arguments.append("--json")
             return arguments
-        case let .evidenceDiff(before, after):
-            return [
+        case let .evidenceDiff(before, after, manifest, scenario):
+            var arguments = [
                 "evidence-diff", "--before", before.path,
-                "--after", after.path, "--json",
+                "--after", after.path,
             ]
-        case let .release(manifest, output, notes, timeoutSeconds):
+            if let manifest { arguments += ["--project", manifest.path] }
+            if let scenario, !scenario.isEmpty { arguments += ["--scenario", scenario] }
+            arguments.append("--json")
+            return arguments
+        case let .outcome(manifest, scenario, trace, wav, inspected, output):
+            var arguments = [
+                "outcome", scenario, "--project", manifest.path,
+                "--trace", trace.path, "--wav", wav.path,
+            ]
+            if inspected { arguments.append("--inspected") }
+            if let output { arguments += ["--output", output.path] }
+            arguments.append("--json")
+            return arguments
+        case let .audioPreview(manifest, source, output, sampleRate, loops, replace):
+            var arguments = [
+                "audio", "preview", "--project", manifest.path,
+                "--source", source.path,
+                "--sample-rate", String(sampleRate), "--loops", String(loops),
+            ]
+            if let output { arguments += ["--output", output.path] }
+            if replace { arguments.append("--replace") }
+            arguments.append("--json")
+            return arguments
+        case let .audioArbitrate(manifest, events, channels):
+            return [
+                "audio", "arbitrate", "--project", manifest.path,
+                "--events", events.path, "--channels", String(channels), "--json",
+            ]
+        case let .migrate(
+            manifest, targetVersion, targetRevision, targetSchema, apply
+        ):
+            var arguments = ["migrate", "--project", manifest.path]
+            if let targetVersion, !targetVersion.isEmpty {
+                arguments += ["--target-version", targetVersion]
+            }
+            if let targetRevision, !targetRevision.isEmpty {
+                arguments += ["--target-revision", targetRevision]
+            }
+            if let targetSchema { arguments += ["--target-schema", String(targetSchema)] }
+            if apply { arguments.append("--apply") }
+            arguments.append("--json")
+            return arguments
+        case let .release(
+            manifest, output, notes, baseline, allowedIncreases, timeoutSeconds
+        ):
             var arguments = ["release", "--project", manifest.path]
             if let output { arguments += ["--output", output.path] }
             if let notes { arguments += ["--notes", notes.path] }
+            if let baseline { arguments += ["--baseline-report", baseline.path] }
+            for allowance in allowedIncreases { arguments += ["--allow-increase", allowance] }
             if let timeoutSeconds { arguments += ["--timeout", String(timeoutSeconds)] }
             arguments.append("--json")
             return arguments
@@ -241,20 +408,29 @@ public enum SwanSDKCommand: Equatable, Sendable {
         switch self {
         case let .newProject(_, _, parentDirectory):
             parentDirectory
-        case let .assets(manifest), let .build(manifest, _),
+        case let .assets(manifest), let .build(manifest, _, _, _),
              let .test(manifest), let .play(manifest, _),
-             let .report(manifest), let .optimize(manifest, _),
+             let .playAll(manifest), let .report(manifest, _, _),
+             let .hardwareTileCapacity(manifest), let .optimize(manifest, _),
+             let .optimizeApply(manifest, _, _, _, _, _),
+             let .optimizeRevert(manifest, _, _),
+             let .assetImport(manifest, _, _, _, _),
              let .fuzz(manifest, _, _, _), let .laboratory(manifest, _, _),
              let .scenarioRecord(manifest, _, _),
+             let .scenarioCompile(manifest, _, _),
              let .authorCreate(manifest, _, _, _),
              let .authorValidate(manifest, _), let .authorReport(manifest, _, _),
              let .authorExport(manifest, _, _), let .replay(manifest, _, _, _, _, _),
              let .minimize(manifest, _, _, _, _), let .dev(manifest, _, _),
-             let .profile(manifest, _), let .release(manifest, _, _, _):
+             let .profile(manifest, _), let .outcome(manifest, _, _, _, _, _),
+             let .audioPreview(manifest, _, _, _, _, _),
+             let .audioArbitrate(manifest, _, _),
+             let .migrate(manifest, _, _, _, _),
+             let .release(manifest, _, _, _, _, _):
             manifest.deletingLastPathComponent()
         case let .doctor(manifest, _):
             manifest?.deletingLastPathComponent()
-        case let .evidenceDiff(before, _):
+        case let .evidenceDiff(before, _, _, _):
             before.deletingLastPathComponent()
         }
     }
@@ -264,9 +440,13 @@ public enum SwanSDKCommand: Equatable, Sendable {
         case .report: "swansong-resource-report-v1"
         case .doctor: "swansong-doctor-report-v1"
         case .optimize: "swansong-asset-optimization-report-v1"
+        case .optimizeApply: "swansong-asset-optimization-apply-v1"
+        case .optimizeRevert: "swansong-asset-optimization-revert-v1"
+        case .assetImport: "swansong-asset-import-report-v1"
         case .fuzz: "swansong-fuzz-report-v1"
         case .laboratory: "swansong-laboratory-report-v1"
         case .scenarioRecord: "swansong-scenario-record-report-v1"
+        case .scenarioCompile: "swansong-scenario-compile-report-v1"
         case .authorCreate, .authorValidate, .authorReport, .authorExport:
             "swansong-author-operation-report-v1"
         case .replay: "swansong-replay-report-v1"
@@ -274,8 +454,13 @@ public enum SwanSDKCommand: Equatable, Sendable {
         case .dev: "swansong-dev-event-v1"
         case .profile: "swansong-profile-report-v1"
         case .evidenceDiff: "swansong-evidence-diff-v1"
+        case .outcome: "swan-scenario-outcome-report-v1"
+        case .audioPreview: "swansong-audio-workbench-report-v1"
+        case .audioArbitrate: "swansong-sfx-arbitration-report-v1"
+        case .migrate: "swansong-migration-report-v1"
         case .release: "swansong-release-report-v1"
-        case .newProject, .assets, .build, .test, .play: nil
+        case .newProject, .assets, .build, .test, .play, .playAll,
+             .hardwareTileCapacity: nil
         }
     }
 
@@ -410,11 +595,11 @@ public struct SwanSDKCLIResolution: Equatable, Sendable {
 }
 
 public struct SwanSDKBundleSummary: Equatable, Sendable {
-    public static let expectedVersion = "0.4.0"
-    public static let expectedCommit = "6a3f555ab94e977bde4359573ef72f225a507722"
+    public static let expectedVersion = "0.5.0"
+    public static let expectedCommit = "f9bab7451593d0d8640816c60e0836377c65027e"
     public static let expectedManifestSchemaVersion = 1
     public static let expectedPayloadRevision =
-        "sha256:4a08d6fa29bf49947576292574d0d868003add6537e01aa0438c4b6eedb85ffe"
+        "sha256:905d1b7683ea55aebb90703bc4dc708ae7a436c98dae1474e67c9df89601a35c"
     public static let expectedMinimumPython = "3.11"
 
     public let version: String
@@ -961,7 +1146,7 @@ public struct SwanSDKSchemaSummary: Equatable, Sendable {
 }
 
 public struct SwanSDKPackageSummary: Equatable, Sendable {
-    public static let minimumStudioToolsVersion = "0.4.0"
+    public static let minimumStudioToolsVersion = "0.5.0"
 
     public let version: String
 
@@ -983,7 +1168,7 @@ public struct SwanSDKPackageSummary: Equatable, Sendable {
               let minor = Int(components[1]),
               let patch = Int(components[2]) else { return false }
         let candidate = (major, minor, patch)
-        let minimum = (0, 4, 0)
+        let minimum = (0, 5, 0)
         if candidate.0 != minimum.0 { return candidate.0 > minimum.0 }
         if candidate.1 != minimum.1 { return candidate.1 > minimum.1 }
         if candidate.2 != minimum.2 { return candidate.2 > minimum.2 }

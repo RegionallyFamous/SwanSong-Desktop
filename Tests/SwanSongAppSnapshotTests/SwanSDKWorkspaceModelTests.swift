@@ -8,11 +8,11 @@ final class SwanSDKWorkspaceModelTests: XCTestCase {
     func testConfigureSDKRejectsPackagesOlderThanStudioTools() throws {
         let root = try temporaryDirectory()
         defer { try? FileManager.default.removeItem(at: root) }
-        try writeSDKFixture(at: root, version: "0.3.0")
+        try writeSDKFixture(at: root, version: "0.4.0")
         let model = makeModel()
 
         XCTAssertThrowsError(try model.configureSDK(at: root, remember: false)) { error in
-            XCTAssertTrue(error.localizedDescription.contains("0.4.0 or newer"))
+            XCTAssertTrue(error.localizedDescription.contains("0.5.0 or newer"))
         }
         XCTAssertNil(model.sdkRoot)
         XCTAssertNil(model.sdkPackage)
@@ -46,7 +46,32 @@ final class SwanSDKWorkspaceModelTests: XCTestCase {
         model.scenarioPlanText = "stale plan"
         model.scenarioPlanHasUnsavedChanges = true
         model.scenarioInputLogURL = first.appendingPathComponent("input.json")
+        model.scenarioScriptURL = first.appendingPathComponent("script.json")
+        model.scenarioCompiledPlanURL = first.appendingPathComponent("compiled.json")
+        model.buildWithTrace = true
+        model.buildTraceCapacity = 96
+        model.hardwareTileCapacity = 256
+        model.budgetBaselineURL = first.appendingPathComponent("budget.json")
+        model.budgetAllowedIncreases = "romBytes=64"
         model.optimizerAssetID = "hero"
+        model.optimizerApplyOutputURL = first.appendingPathComponent("optimized.png")
+        model.optimizerApplyReportURL = first.appendingPathComponent("apply.json")
+        model.optimizerExpectedSourceSHA256 = String(repeating: "a", count: 64)
+        model.optimizerPaletteReduction = false
+        model.optimizerMonoConversion = true
+        model.optimizerRevertReportURL = first.appendingPathComponent("revert.json")
+        model.optimizerExpectedReportSHA256 = String(repeating: "b", count: 64)
+        model.assetImportSourceURL = first.appendingPathComponent("source.png")
+        model.assetImportDestinationURL = first.appendingPathComponent("destination.png")
+        model.assetImportProvenanceURL = first.appendingPathComponent("provenance.json")
+        model.assetImportExpectedSHA256 = String(repeating: "c", count: 64)
+        model.audioSourceURL = first.appendingPathComponent("music.toml")
+        model.audioPreviewOutputURL = first.appendingPathComponent("music.wav")
+        model.audioPreviewSampleRate = 44_100
+        model.audioPreviewLoops = 3
+        model.audioPreviewReplace = true
+        model.audioEventsURL = first.appendingPathComponent("events.json")
+        model.audioArbitrationChannels = 2
         model.authorKind = .audio
         model.authorDocumentID = "music"
         model.authorDocumentURL = first.appendingPathComponent("authoring/music.audio.json")
@@ -61,8 +86,17 @@ final class SwanSDKWorkspaceModelTests: XCTestCase {
         model.profileTraceURL = first.appendingPathComponent("trace.json")
         model.evidenceBeforeURL = first.appendingPathComponent("before")
         model.evidenceAfterURL = first.appendingPathComponent("after")
+        model.outcomeTraceURL = first.appendingPathComponent("outcome.swtr")
+        model.outcomeWAVURL = first.appendingPathComponent("outcome.wav")
+        model.outcomeReportURL = first.appendingPathComponent("outcome.json")
+        model.outcomeWAVInspected = true
+        model.migrationTargetVersion = "0.5.0"
+        model.migrationTargetRevision = "sha256:" + String(repeating: "d", count: 64)
+        model.migrationTargetSchema = "1"
         model.releaseOutputURL = first.appendingPathComponent("release")
         model.releaseNotesURL = first.appendingPathComponent("NOTES.md")
+        model.releaseBaselineURL = first.appendingPathComponent("release-baseline.json")
+        model.releaseAllowedIncreases = "audioBytes=32"
         model.structuredReportTitle = "Stale report"
 
         try model.openProject(at: second)
@@ -81,7 +115,32 @@ final class SwanSDKWorkspaceModelTests: XCTestCase {
         XCTAssertEqual(model.scenarioPlanText, "")
         XCTAssertFalse(model.scenarioPlanHasUnsavedChanges)
         XCTAssertNil(model.scenarioInputLogURL)
+        XCTAssertNil(model.scenarioScriptURL)
+        XCTAssertNil(model.scenarioCompiledPlanURL)
+        XCTAssertFalse(model.buildWithTrace)
+        XCTAssertEqual(model.buildTraceCapacity, 64)
+        XCTAssertNil(model.hardwareTileCapacity)
+        XCTAssertNil(model.budgetBaselineURL)
+        XCTAssertEqual(model.budgetAllowedIncreases, "")
         XCTAssertEqual(model.optimizerAssetID, "")
+        XCTAssertNil(model.optimizerApplyOutputURL)
+        XCTAssertNil(model.optimizerApplyReportURL)
+        XCTAssertEqual(model.optimizerExpectedSourceSHA256, "")
+        XCTAssertTrue(model.optimizerPaletteReduction)
+        XCTAssertFalse(model.optimizerMonoConversion)
+        XCTAssertNil(model.optimizerRevertReportURL)
+        XCTAssertEqual(model.optimizerExpectedReportSHA256, "")
+        XCTAssertNil(model.assetImportSourceURL)
+        XCTAssertNil(model.assetImportDestinationURL)
+        XCTAssertNil(model.assetImportProvenanceURL)
+        XCTAssertEqual(model.assetImportExpectedSHA256, "")
+        XCTAssertNil(model.audioSourceURL)
+        XCTAssertNil(model.audioPreviewOutputURL)
+        XCTAssertEqual(model.audioPreviewSampleRate, 48_000)
+        XCTAssertEqual(model.audioPreviewLoops, 2)
+        XCTAssertFalse(model.audioPreviewReplace)
+        XCTAssertNil(model.audioEventsURL)
+        XCTAssertEqual(model.audioArbitrationChannels, 4)
         XCTAssertEqual(model.authorKind, .tilemap)
         XCTAssertEqual(model.authorDocumentID, "main")
         XCTAssertNil(model.authorDocumentURL)
@@ -96,8 +155,17 @@ final class SwanSDKWorkspaceModelTests: XCTestCase {
         XCTAssertNil(model.profileTraceURL)
         XCTAssertNil(model.evidenceBeforeURL)
         XCTAssertNil(model.evidenceAfterURL)
+        XCTAssertNil(model.outcomeTraceURL)
+        XCTAssertNil(model.outcomeWAVURL)
+        XCTAssertNil(model.outcomeReportURL)
+        XCTAssertFalse(model.outcomeWAVInspected)
+        XCTAssertEqual(model.migrationTargetVersion, "")
+        XCTAssertEqual(model.migrationTargetRevision, "")
+        XCTAssertEqual(model.migrationTargetSchema, "")
         XCTAssertNil(model.releaseOutputURL)
         XCTAssertNil(model.releaseNotesURL)
+        XCTAssertNil(model.releaseBaselineURL)
+        XCTAssertEqual(model.releaseAllowedIncreases, "")
         XCTAssertNil(model.structuredReport)
         XCTAssertEqual(model.structuredReportTitle, "")
     }

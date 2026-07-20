@@ -505,11 +505,158 @@ struct SwanSDKWorkspaceView: View {
                         }
                     }
                 }
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Apply a reviewed optimization", systemImage: "checkmark.shield")
+                            .font(.headline)
+                        Text(
+                            "Studio never overwrites the artist source. Applying or reverting requires the exact reviewed SHA-256 and the SDK's explicit artist-approval contract."
+                        )
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        HStack {
+                            Toggle("Palette reduction", isOn: $workspace.optimizerPaletteReduction)
+                            Toggle("Mono conversion", isOn: $workspace.optimizerMonoConversion)
+                        }
+                        fileChoiceRow(
+                            "Image",
+                            value: workspace.optimizerApplyOutputURL?.path ?? "Choose a new optimized PNG",
+                            button: "Choose…",
+                            action: chooseOptimizerOutput
+                        )
+                        fileChoiceRow(
+                            "Report",
+                            value: workspace.optimizerApplyReportURL?.path ?? "Choose a new apply report",
+                            button: "Choose…",
+                            action: chooseOptimizerApplyReport
+                        )
+                        TextField(
+                            "Reviewed source SHA-256",
+                            text: $workspace.optimizerExpectedSourceSHA256
+                        )
+                        .textFieldStyle(.roundedBorder)
+                        HStack {
+                            Spacer()
+                            Button("Apply Reviewed Copy") { workspace.runOptimizerApply() }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(workspace.isRunning)
+                        }
+                        Divider()
+                        fileChoiceRow(
+                            "Undo",
+                            value: workspace.optimizerRevertReportURL?.path ?? "Choose an unchanged apply report",
+                            button: "Choose…",
+                            action: chooseOptimizerRevertReport
+                        )
+                        TextField(
+                            "Reviewed apply-report SHA-256",
+                            text: $workspace.optimizerExpectedReportSHA256
+                        )
+                        .textFieldStyle(.roundedBorder)
+                        HStack {
+                            Spacer()
+                            Button("Revert Generated Copy") { workspace.runOptimizerRevert() }
+                                .disabled(workspace.isRunning)
+                        }
+                    }
+                }
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Reviewed asset import", systemImage: "square.and.arrow.down")
+                            .font(.headline)
+                        Text(
+                            "Bring an approved external file into the project only when its reviewed digest matches. The SDK writes a new destination and provenance record; it never overwrites either."
+                        )
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        fileChoiceRow(
+                            "Source",
+                            value: workspace.assetImportSourceURL?.path ?? "No reviewed source selected",
+                            button: "Choose…",
+                            action: chooseAssetImportSource
+                        )
+                        fileChoiceRow(
+                            "Copy",
+                            value: workspace.assetImportDestinationURL?.path ?? "Choose a new project destination",
+                            button: "Choose…",
+                            action: chooseAssetImportDestination
+                        )
+                        fileChoiceRow(
+                            "Proof",
+                            value: workspace.assetImportProvenanceURL?.path ?? "Choose a new provenance report",
+                            button: "Choose…",
+                            action: chooseAssetImportProvenance
+                        )
+                        TextField("Reviewed source SHA-256", text: $workspace.assetImportExpectedSHA256)
+                            .textFieldStyle(.roundedBorder)
+                        HStack {
+                            Spacer()
+                            Button("Import Reviewed Asset") { workspace.runAssetImport() }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(workspace.isRunning)
+                        }
+                    }
+                }
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Audio Workbench", systemImage: "waveform")
+                            .font(.headline)
+                        Text(
+                            "Render a deterministic authoring WAV from project music, or inspect how fixed-priority sound effects share the four native channels. Preview audio is not gameplay evidence."
+                        )
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        fileChoiceRow(
+                            "Music",
+                            value: workspace.audioSourceURL?.path ?? "Choose project music TOML",
+                            button: "Choose…",
+                            action: chooseAudioSource
+                        )
+                        fileChoiceRow(
+                            "WAV",
+                            value: workspace.audioPreviewOutputURL?.path ?? "SDK default preview path",
+                            button: "Choose…",
+                            action: chooseAudioPreviewOutput
+                        )
+                        HStack {
+                            TextField("Sample rate", value: $workspace.audioPreviewSampleRate, format: .number)
+                            TextField("Loops", value: $workspace.audioPreviewLoops, format: .number)
+                            Toggle("Replace preview", isOn: $workspace.audioPreviewReplace)
+                            Button("Render Preview") { workspace.runAudioPreview() }
+                                .buttonStyle(.borderedProminent)
+                        }
+                        .textFieldStyle(.roundedBorder)
+                        Divider()
+                        fileChoiceRow(
+                            "Events",
+                            value: workspace.audioEventsURL?.path ?? "Choose SFX event JSON",
+                            button: "Choose…",
+                            action: chooseAudioEvents
+                        )
+                        HStack {
+                            TextField(
+                                "Channels",
+                                value: $workspace.audioArbitrationChannels,
+                                format: .number
+                            )
+                            .textFieldStyle(.roundedBorder)
+                            .frame(maxWidth: 140)
+                            Spacer()
+                            Button("Explain Channel Choices") { workspace.runAudioArbitration() }
+                                .disabled(workspace.isRunning)
+                        }
+                    }
+                }
                 structuredReportCard(ifTitle: "Author Create")
                 structuredReportCard(ifTitle: "Author Validate")
                 structuredReportCard(ifTitle: "Author Report")
                 structuredReportCard(ifTitle: "Author Export")
                 structuredReportCard(ifTitle: "Asset Optimizer")
+                structuredReportCard(ifTitle: "Approved Asset Optimization")
+                structuredReportCard(ifTitle: "Revert Asset Optimization")
+                structuredReportCard(ifTitle: "Asset Import")
+                structuredReportCard(ifTitle: "Audio Preview")
+                structuredReportCard(ifTitle: "SFX Arbitration")
             }
             .padding(24)
             .frame(maxWidth: 1_080)
@@ -530,6 +677,31 @@ struct SwanSDKWorkspaceView: View {
                     symbol: "hammer.fill",
                     button: "Build"
                 )
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Deterministic trace build", systemImage: "waveform.path.ecg")
+                            .font(.headline)
+                        Text(
+                            "Create a diagnostic ROM that lets SwanSong capture bounded scenes, progress, state hashes, resets, graphics pressure, audio markers, and panic status. Release builds remain trace-free."
+                        )
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        Toggle("Include the SDK trace mailbox", isOn: $workspace.buildWithTrace)
+                        HStack {
+                            TextField(
+                                "Retained frames",
+                                value: $workspace.buildTraceCapacity,
+                                format: .number
+                            )
+                            .textFieldStyle(.roundedBorder)
+                            .frame(maxWidth: 180)
+                            Text("1–255 frames")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .disabled(!workspace.buildWithTrace)
+                    }
+                }
                 identityCard(title: "Resolved build identity")
                 if let report = workspace.resourceReport {
                     resourceSummary(report)
@@ -674,6 +846,8 @@ struct SwanSDKWorkspaceView: View {
                             }
                             HStack {
                                 Spacer()
+                                Button("Run Every Contract") { workspace.runPlayAll() }
+                                    .disabled(workspace.isRunning)
                                 Button("Run in SwanSong") { workspace.runSelectedAction() }
                                     .buttonStyle(.borderedProminent)
                                     .disabled(workspace.isRunning)
@@ -718,6 +892,39 @@ struct SwanSDKWorkspaceView: View {
                                 Button("Build Timeline") { workspace.runReplay() }
                                     .buttonStyle(.borderedProminent)
                                     .disabled(workspace.isRunning)
+                            }
+                        }
+                    }
+                    StudioCard {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Label("Scenario Script Compiler", systemImage: "text.badge.checkmark")
+                                .font(.headline)
+                            Text(
+                                "Turn readable tap, hold, chord, repeat, and wait actions into an exact-frame SwanSong plan without hand-counting frames. Both files stay inside the project."
+                            )
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                            fileChoiceRow(
+                                "Script",
+                                value: workspace.scenarioScriptURL?.path ?? "Choose a scenario script JSON",
+                                button: "Choose…",
+                                action: chooseScenarioScript
+                            )
+                            fileChoiceRow(
+                                "Plan",
+                                value: workspace.scenarioCompiledPlanURL?.path ?? "Choose a new exact-plan output",
+                                button: "Choose…",
+                                action: chooseScenarioCompiledPlan
+                            )
+                            HStack {
+                                Spacer()
+                                Button("Compile Exact Plan") { workspace.runScenarioCompiler() }
+                                    .buttonStyle(.borderedProminent)
+                                    .disabled(
+                                        workspace.isRunning
+                                            || workspace.scenarioScriptURL == nil
+                                            || workspace.scenarioCompiledPlanURL == nil
+                                    )
                             }
                         }
                     }
@@ -800,6 +1007,7 @@ struct SwanSDKWorkspaceView: View {
                         }
                     }
                     structuredReportCard(ifTitle: "Scenario Recorder")
+                    structuredReportCard(ifTitle: "Scenario Compiler")
                     structuredReportCard(ifTitle: "Replay Timeline")
                     structuredReportCard(ifTitle: "Dev Cycle")
                     structuredReportCard(ifTitle: "Dev Watch")
@@ -841,6 +1049,39 @@ struct SwanSDKWorkspaceView: View {
                         systemImage: "chart.bar.doc.horizontal",
                         description: Text("Run Report after opening or building a project.")
                     )
+                }
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Budget history", systemImage: "chart.line.uptrend.xyaxis")
+                            .font(.headline)
+                        Text(
+                            "Compare today's resource report with an earlier release. Enter rare, reviewed exceptions as metric=amount, separated by commas or new lines."
+                        )
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        fileChoiceRow(
+                            "Earlier",
+                            value: workspace.budgetBaselineURL?.path ?? "No baseline resource report",
+                            button: "Choose…",
+                            action: chooseBudgetBaseline
+                        )
+                        TextField(
+                            "Optional allowances, for example romBytes=256",
+                            text: $workspace.budgetAllowedIncreases
+                        )
+                        .textFieldStyle(.roundedBorder)
+                        HStack {
+                            if let capacity = workspace.hardwareTileCapacity {
+                                Label("Safe background capacity: \(capacity) tiles", systemImage: "square.grid.3x3")
+                                    .font(.callout.weight(.semibold))
+                            }
+                            Spacer()
+                            Button("Read Hardware Capacity") { workspace.runHardwareTileCapacity() }
+                            Button("Compare Budgets") { workspace.runSelectedAction() }
+                                .buttonStyle(.borderedProminent)
+                        }
+                        .disabled(workspace.isRunning)
+                    }
                 }
                 StudioCard {
                     VStack(alignment: .leading, spacing: 12) {
@@ -915,7 +1156,53 @@ struct SwanSDKWorkspaceView: View {
                         }
                     }
                 }
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Semantic Outcome", systemImage: "scope")
+                            .font(.headline)
+                        Text(
+                            "Check the selected scenario's declared scene, progress, ending, reset, state hash, audio marker, and trace integrity against a matching SwanSong trace and WAV."
+                        )
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        fileChoiceRow(
+                            "Trace",
+                            value: workspace.outcomeTraceURL?.path ?? "Choose .swtr or trace JSON",
+                            button: "Choose…",
+                            action: chooseOutcomeTrace
+                        )
+                        fileChoiceRow(
+                            "Audio",
+                            value: workspace.outcomeWAVURL?.path ?? "Choose the matching SwanSong WAV",
+                            button: "Choose…",
+                            action: chooseOutcomeWAV
+                        )
+                        fileChoiceRow(
+                            "Report",
+                            value: workspace.outcomeReportURL?.path ?? "Show in Studio only",
+                            button: "Choose…",
+                            action: chooseOutcomeReport
+                        )
+                        Toggle(
+                            "I listened to this SwanSong WAV",
+                            isOn: $workspace.outcomeWAVInspected
+                        )
+                        HStack {
+                            Spacer()
+                            Button("Validate Outcome") { workspace.runOutcomeValidation() }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(
+                                    workspace.isRunning
+                                        || workspace.selectedScenarioID == nil
+                                        || workspace.outcomeTraceURL == nil
+                                        || workspace.outcomeWAVURL == nil
+                                        || !workspace.outcomeWAVInspected
+                                )
+                        }
+                    }
+                }
                 structuredReportCard(ifTitle: "Evidence Diff")
+                structuredReportCard(ifTitle: "Semantic Outcome")
             }
             .padding(24)
             .frame(maxWidth: 1_080)
@@ -933,6 +1220,31 @@ struct SwanSDKWorkspaceView: View {
                 identityCard(title: "Release identity")
                 StudioCard {
                     VStack(alignment: .leading, spacing: 12) {
+                        Label("SDK Migration", systemImage: "arrow.triangle.2.circlepath")
+                            .font(.headline)
+                        Text(
+                            "Preview the exact manifest change and backup plan first. Apply writes only the reviewed migration through the SDK's atomic migration contract. Leave targets blank to use the bundled SDK."
+                        )
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        HStack {
+                            TextField("Target version", text: $workspace.migrationTargetVersion)
+                            TextField("Target revision", text: $workspace.migrationTargetRevision)
+                            TextField("Schema", text: $workspace.migrationTargetSchema)
+                                .frame(maxWidth: 100)
+                        }
+                        .textFieldStyle(.roundedBorder)
+                        HStack {
+                            Spacer()
+                            Button("Preview Migration") { workspace.runMigration(apply: false) }
+                            Button("Apply Reviewed Migration") { workspace.runMigration(apply: true) }
+                                .buttonStyle(.borderedProminent)
+                        }
+                        .disabled(workspace.isRunning)
+                    }
+                }
+                StudioCard {
+                    VStack(alignment: .leading, spacing: 12) {
                         fileChoiceRow(
                             "Output",
                             value: workspace.releaseOutputURL?.path ?? "SDK default",
@@ -945,6 +1257,17 @@ struct SwanSDKWorkspaceView: View {
                             button: "Choose File…",
                             action: chooseReleaseNotes
                         )
+                        fileChoiceRow(
+                            "Earlier",
+                            value: workspace.releaseBaselineURL?.path ?? "No baseline budget report",
+                            button: "Choose File…",
+                            action: chooseReleaseBaseline
+                        )
+                        TextField(
+                            "Optional reviewed budget allowances, metric=amount",
+                            text: $workspace.releaseAllowedIncreases
+                        )
+                        .textFieldStyle(.roundedBorder)
                         HStack {
                             Spacer()
                             Button("Run Release Gates") { workspace.runRelease() }
@@ -954,6 +1277,8 @@ struct SwanSDKWorkspaceView: View {
                         }
                     }
                 }
+                structuredReportCard(ifTitle: "SDK Migration Preview")
+                structuredReportCard(ifTitle: "Apply SDK Migration")
                 structuredReportCard(ifTitle: "Release")
             }
             .padding(24)
@@ -1060,14 +1385,14 @@ struct SwanSDKWorkspaceView: View {
                 }
                 if workspace.usesVerifiedBundledSDK {
                     Label(
-                        "The signed SDK 0.4.0 payload is verified. Python 3.11+ and the Wonderful packages shown above are resolved locally; Run Doctor checks their installed versions and SwanSong connectivity.",
+                        "The signed SDK \(SwanSDKBundleSummary.expectedVersion) payload is verified. Python 3.11+ and the Wonderful packages shown above are resolved locally; Run Doctor checks their installed versions and SwanSong connectivity.",
                         systemImage: "checkmark.shield.fill"
                     )
                     .font(.caption)
                     .foregroundStyle(.green)
                 } else {
                     Label(
-                        "An explicit external SDK override is active. Use Bundled SDK to return to the signed, content-verified 0.4.0 payload.",
+                        "An explicit external SDK override is active. Use Bundled SDK to return to the signed, content-verified \(SwanSDKBundleSummary.expectedVersion) payload.",
                         systemImage: "exclamationmark.triangle"
                     )
                     .font(.caption)
@@ -1480,6 +1805,18 @@ struct SwanSDKWorkspaceView: View {
         if panel.runModal() == .OK { workspace.scenarioInputLogURL = panel.url }
     }
 
+    private func chooseScenarioScript() {
+        workspace.scenarioScriptURL = chooseJSONFile(title: "Choose Scenario Script")
+            ?? workspace.scenarioScriptURL
+    }
+
+    private func chooseScenarioCompiledPlan() {
+        workspace.scenarioCompiledPlanURL = chooseJSONOutput(
+            title: "Choose New Exact Plan",
+            name: "compiled-plan.json"
+        ) ?? workspace.scenarioCompiledPlanURL
+    }
+
     private func chooseAuthorDocument() {
         workspace.authorDocumentURL = chooseJSONFile(title: "Choose Authoring Document")
             ?? workspace.authorDocumentURL
@@ -1497,6 +1834,81 @@ struct SwanSDKWorkspaceView: View {
             UTType(filenameExtension: "toml")!,
         ]
         if panel.runModal() == .OK { workspace.authorExportURL = panel.url }
+    }
+
+    private func chooseOptimizerOutput() {
+        let panel = NSSavePanel()
+        panel.title = "Choose New Optimized Image"
+        panel.prompt = "Choose Image"
+        panel.directoryURL = workspace.projectRoot
+        panel.nameFieldStringValue = "optimized.png"
+        panel.allowedContentTypes = [.png]
+        if panel.runModal() == .OK { workspace.optimizerApplyOutputURL = panel.url }
+    }
+
+    private func chooseOptimizerApplyReport() {
+        workspace.optimizerApplyReportURL = chooseJSONOutput(
+            title: "Choose New Optimization Report",
+            name: "optimization-apply.json"
+        ) ?? workspace.optimizerApplyReportURL
+    }
+
+    private func chooseOptimizerRevertReport() {
+        workspace.optimizerRevertReportURL = chooseJSONFile(
+            title: "Choose Optimization Apply Report"
+        ) ?? workspace.optimizerRevertReportURL
+    }
+
+    private func chooseAssetImportSource() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose Reviewed Source Asset"
+        panel.prompt = "Use Source"
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        if panel.runModal() == .OK { workspace.assetImportSourceURL = panel.url }
+    }
+
+    private func chooseAssetImportDestination() {
+        let panel = NSSavePanel()
+        panel.title = "Choose New Project Asset Destination"
+        panel.prompt = "Choose Destination"
+        panel.directoryURL = workspace.projectRoot?.appendingPathComponent("assets")
+        if panel.runModal() == .OK { workspace.assetImportDestinationURL = panel.url }
+    }
+
+    private func chooseAssetImportProvenance() {
+        workspace.assetImportProvenanceURL = chooseJSONOutput(
+            title: "Choose New Asset Provenance Report",
+            name: "asset-provenance.json"
+        ) ?? workspace.assetImportProvenanceURL
+    }
+
+    private func chooseAudioSource() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose SwanSong Music"
+        panel.prompt = "Use Music"
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        panel.allowedContentTypes = [UTType(filenameExtension: "toml")!]
+        panel.directoryURL = workspace.projectRoot
+        if panel.runModal() == .OK { workspace.audioSourceURL = panel.url }
+    }
+
+    private func chooseAudioPreviewOutput() {
+        let panel = NSSavePanel()
+        panel.title = "Choose Audio Preview Output"
+        panel.prompt = "Choose WAV"
+        panel.directoryURL = workspace.projectRoot
+        panel.nameFieldStringValue = "audio-preview.wav"
+        panel.allowedContentTypes = [UTType(filenameExtension: "wav")!]
+        if panel.runModal() == .OK { workspace.audioPreviewOutputURL = panel.url }
+    }
+
+    private func chooseAudioEvents() {
+        workspace.audioEventsURL = chooseJSONFile(title: "Choose SFX Event Document")
+            ?? workspace.audioEventsURL
     }
 
     private func chooseReplayCheckpoints() {
@@ -1566,6 +1978,11 @@ struct SwanSDKWorkspaceView: View {
         if panel.runModal() == .OK { workspace.profileTraceURL = panel.url }
     }
 
+    private func chooseBudgetBaseline() {
+        workspace.budgetBaselineURL = chooseJSONFile(title: "Choose Earlier Resource Report")
+            ?? workspace.budgetBaselineURL
+    }
+
     private func chooseEvidenceFolder(before: Bool) {
         let panel = NSOpenPanel()
         panel.title = before ? "Choose Earlier Evidence" : "Choose Later Evidence"
@@ -1577,6 +1994,40 @@ struct SwanSDKWorkspaceView: View {
             if before { workspace.evidenceBeforeURL = panel.url }
             else { workspace.evidenceAfterURL = panel.url }
         }
+    }
+
+    private func chooseOutcomeTrace() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose SwanSong Semantic Trace"
+        panel.prompt = "Use Trace"
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        panel.allowedContentTypes = [.json, UTType(filenameExtension: "swtr")!]
+        panel.directoryURL = workspace.projectRoot
+        if panel.runModal() == .OK { workspace.outcomeTraceURL = panel.url }
+    }
+
+    private func chooseOutcomeWAV() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose Matching SwanSong WAV"
+        panel.prompt = "Use WAV"
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        panel.allowedContentTypes = [UTType(filenameExtension: "wav")!]
+        panel.directoryURL = workspace.projectRoot
+        if panel.runModal() == .OK {
+            workspace.outcomeWAVURL = panel.url
+            workspace.outcomeWAVInspected = false
+        }
+    }
+
+    private func chooseOutcomeReport() {
+        workspace.outcomeReportURL = chooseJSONOutput(
+            title: "Choose Semantic Outcome Report",
+            name: "outcome-report.json"
+        ) ?? workspace.outcomeReportURL
     }
 
     private func chooseReleaseOutput() {
@@ -1598,6 +2049,12 @@ struct SwanSDKWorkspaceView: View {
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = false
         if panel.runModal() == .OK { workspace.releaseNotesURL = panel.url }
+    }
+
+    private func chooseReleaseBaseline() {
+        workspace.releaseBaselineURL = chooseJSONFile(
+            title: "Choose Release Baseline Resource Report"
+        ) ?? workspace.releaseBaselineURL
     }
 
     private func saveManifest() {
@@ -1683,6 +2140,7 @@ private extension SwanSDKRecipe {
         case .arcadeAction: "figure.run"
         case .menuPuzzle: "square.grid.3x3"
         case .gridTactics: "checkerboard.rectangle"
+        case .utilityApp: "wrench.and.screwdriver"
         }
     }
 }

@@ -74,7 +74,15 @@ final class LocalMCPBridgeTests: XCTestCase {
                 argumentsJSON: #"{"action":"shell","confirmProjectWrites":true}"#
             )
         ) { error in
-            XCTAssertTrue(error.localizedDescription.contains("doctor, assets, build"))
+            XCTAssertTrue(error.localizedDescription.contains("fixed SDK 0.5 allowlist"))
+        }
+        XCTAssertThrowsError(
+            try bridge.response(
+                method: "studio-action",
+                argumentsJSON: #"{"action":"migrate-preview","confirmProjectWrites":true}"#
+            )
+        ) { error in
+            XCTAssertTrue(error.localizedDescription.contains("Resolve the SwanSong SDK"))
         }
     }
 
