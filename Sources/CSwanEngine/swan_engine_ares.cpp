@@ -1096,7 +1096,19 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       if (!directory.append(name, std::span<const uint8_t>(staged->second))) {
         return false;
       }
-      if (auto file = directory.read(name)) file->setAttribute("loaded", true);
+      auto file = directory.read(name);
+      if (!file) {
+        error = "persistent data could not be reopened after staging";
+        return false;
+      }
+      // nall's generic attribute setter converts non-string values through a
+      // compiler-sensitive template path. Ares reads this marker as a string,
+      // so store and verify that exact representation on every toolchain.
+      file->setAttribute("loaded", nall::string{"true"});
+      if (!file->attribute("loaded").boolean()) {
+        error = "persistent data could not be marked as loaded";
+        return false;
+      }
       return true;
     }
     return directory.append(name, expected_size);
