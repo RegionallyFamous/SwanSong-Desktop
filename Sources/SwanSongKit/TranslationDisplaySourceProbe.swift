@@ -150,6 +150,53 @@ public struct TranslationDisplaySourceProbeReport: Codable, Equatable, Sendable 
     public let privateDetailsSHA256: String
 }
 
+public struct TranslationDisplaySourceProbeAuthorizedResult: Sendable {
+    public let report: TranslationDisplaySourceProbeReport
+    public let details: TranslationDisplaySourceProbeDetails
+    public let nativeQueryReceipt: TranslationDisplaySourceNativeQueryReceipt?
+}
+
+public struct TranslationDisplaySourceExpectedFrame: Equatable, Sendable {
+    public let checkpoint: TranslationRouteCheckpoint
+    public let nativeFrameNumber: UInt64
+
+    public init(
+        checkpoint: TranslationRouteCheckpoint,
+        nativeFrameNumber: UInt64
+    ) {
+        self.checkpoint = checkpoint
+        self.nativeFrameNumber = nativeFrameNumber
+    }
+}
+
+public enum TranslationDisplaySourceNativeQueryStage:
+    String, Codable, Equatable, Sendable
+{
+    case frameValidated
+    case ownerQueryStarted
+    case sourceQueryStarted
+    case frameRevalidated
+}
+
+public struct TranslationDisplaySourceNativeQueryReceipt:
+    Codable, Equatable, Sendable
+{
+    public static let currentSchema =
+        "swan-song-display-source-native-query-receipt-v1"
+
+    public let schema: String
+    public let stages: [TranslationDisplaySourceNativeQueryStage]
+    public let expectedNativeFrameNumber: UInt64
+    public let expectedNativeFrameSHA256: String
+    public let actualNativeFrameNumberBeforeQueries: UInt64
+    public let actualNativeFrameSHA256BeforeQueries: String
+    public let firstOwnerQuerySequencePosition: Int
+    public let firstSourceQuerySequencePosition: Int
+    public let actualNativeFrameNumberAfterQueries: UInt64
+    public let actualNativeFrameSHA256AfterQueries: String
+    public let sourceQueryCount: Int
+}
+
 public struct TranslationDisplaySourceBlockedReasonCounts: Codable, Equatable, Sendable {
     public let unblockedExact: Int
     public let unblockedRuntimeGenerated: Int
@@ -432,6 +479,9 @@ enum TranslationDisplaySourcePartitioner {
 }
 
 public enum TranslationDisplaySourceProbe {
+    public static let maximumRectanglePixels = 4_096
+    public static let maximumTraceRecords = 262_144
+
     public static func run(
         project: TranslationProject,
         role: TranslationROMRole,
@@ -440,6 +490,74 @@ public enum TranslationDisplaySourceProbe {
         rectangle: EngineDisplayRectangle,
         components: [EngineDisplaySourceComponent] = EngineDisplaySourceComponent.allCases
     ) throws -> TranslationDisplaySourceProbeReport {
+        try runResult(
+            project: project,
+            role: role,
+            plan: plan,
+            frameIndex: frameIndex,
+            rectangle: rectangle,
+            components: components,
+            publishInProject: true,
+            expectedFrame: nil
+        ).report
+    }
+
+    /// Runs the exact ABI-9 probe without publishing any project artifact.
+    /// The RouteRunner authorization envelope exclusively owns serialization
+    /// and closure of the returned report/details pair.
+    public static func runAuthorized(
+        project: TranslationProject,
+        role: TranslationROMRole,
+        plan: TranslationFrameInputPlan,
+        frameIndex: UInt64,
+        rectangle: EngineDisplayRectangle,
+        components: [EngineDisplaySourceComponent] = EngineDisplaySourceComponent.allCases
+    ) throws -> TranslationDisplaySourceProbeAuthorizedResult {
+        try runResult(
+            project: project,
+            role: role,
+            plan: plan,
+            frameIndex: frameIndex,
+            rectangle: rectangle,
+            components: components,
+            publishInProject: false,
+            expectedFrame: nil
+        )
+    }
+
+    /// Runs the exact ABI-9 probe against an authenticated capture endpoint.
+    /// Frame authentication completes before either native provenance query.
+    public static func runCaptureBoundAuthorized(
+        project: TranslationProject,
+        role: TranslationROMRole,
+        plan: TranslationFrameInputPlan,
+        frameIndex: UInt64,
+        rectangle: EngineDisplayRectangle,
+        components: [EngineDisplaySourceComponent],
+        expectedFrame: TranslationDisplaySourceExpectedFrame
+    ) throws -> TranslationDisplaySourceProbeAuthorizedResult {
+        try runResult(
+            project: project,
+            role: role,
+            plan: plan,
+            frameIndex: frameIndex,
+            rectangle: rectangle,
+            components: components,
+            publishInProject: false,
+            expectedFrame: expectedFrame
+        )
+    }
+
+    private static func runResult(
+        project: TranslationProject,
+        role: TranslationROMRole,
+        plan: TranslationFrameInputPlan,
+        frameIndex: UInt64,
+        rectangle: EngineDisplayRectangle,
+        components: [EngineDisplaySourceComponent],
+        publishInProject: Bool,
+        expectedFrame: TranslationDisplaySourceExpectedFrame?
+    ) throws -> TranslationDisplaySourceProbeAuthorizedResult {
         let hardware = try project.routeHardwareModel
         try plan.validate(for: hardware)
         guard frameIndex < plan.totalFrames else {
@@ -458,7 +576,7 @@ public enum TranslationDisplaySourceProbe {
         guard rectangle.width > 0,
               rectangle.height > 0,
               pixelCount > 0,
-              pixelCount <= 4_096 else {
+              pixelCount <= maximumRectanglePixels else {
             throw TranslationLabError.invalidRoute(
                 "the upstream source rectangle must contain 1 through 4096 native pixels"
             )
@@ -517,6 +635,22 @@ public enum TranslationDisplaySourceProbe {
             frame = try engine.videoFrame()
         }
         guard let frame else { throw TranslationLabError.noRecordedFrames }
+        let nativeFrameNumberBeforeQueries = frame.number
+        let nativeFrameSHA256BeforeQueries = try TranslationRouteCheckpoint.fingerprint(frame)
+        var nativeQueryStages: [TranslationDisplaySourceNativeQueryStage] = []
+        var firstOwnerQuerySequencePosition: Int?
+        var firstSourceQuerySequencePosition: Int?
+        var sourceQueryCount = 0
+
+        if let expectedFrame {
+            try validateExpectedFrame(
+                expectedFrame,
+                frameIndex: frameIndex,
+                frame: frame
+            )
+            nativeQueryStages.append(.frameValidated)
+        }
+
         let raster = try TranslationRouteCheckpoint.canonicalGameRaster(frame)
         let right = Int(rectangle.x) + Int(rectangle.width)
         let bottom = Int(rectangle.y) + Int(rectangle.height)
@@ -527,6 +661,10 @@ public enum TranslationDisplaySourceProbe {
             )
         }
 
+        if expectedFrame != nil {
+            firstOwnerQuerySequencePosition = nativeQueryStages.count + 1
+            nativeQueryStages.append(.ownerQueryStarted)
+        }
         let ownerSamples = try engine.displayOwnerProbe(rectangle: rectangle)
         guard ownerSamples.count == pixelCount,
               ownerSamples.allSatisfy(validCurrentOwnerSample) else {
@@ -534,8 +672,6 @@ public enum TranslationDisplaySourceProbe {
                 "the engine returned incomplete ABI-9 display-owner provenance"
             )
         }
-        let nativeFrameNumberBeforeQueries = frame.number
-        let nativeFrameSHA256BeforeQueries = try TranslationRouteCheckpoint.fingerprint(frame)
         let engineIdentity = TranslationRouteEngineIdentity(
             backend: engine.backendName,
             buildID: engine.buildID
@@ -556,6 +692,12 @@ public enum TranslationDisplaySourceProbe {
             partitionResult = try TranslationDisplaySourcePartitioner.run(
                 rectangle: rectangle
             ) { leafRectangle, depth in
+                sourceQueryCount += 1
+                if expectedFrame != nil,
+                   firstSourceQuerySequencePosition == nil {
+                    firstSourceQuerySequencePosition = nativeQueryStages.count + 1
+                    nativeQueryStages.append(.sourceQueryStarted)
+                }
                 let leafTraces = try engine.displaySourceProbe(
                     rectangle: leafRectangle,
                     components: selectedComponents
@@ -658,7 +800,7 @@ public enum TranslationDisplaySourceProbe {
             unknownDependencyTraceCount: unknownCount,
             rangeOverflowTraceCount: overflowCount,
             conservativeDataflowTraceCount: conservativeCount,
-            traceRecordLimit: 262_144
+            traceRecordLimit: maximumTraceRecords
         )
         let ranges = normalizedRanges(
             selected.filter(\.hasExactRange)
@@ -683,6 +825,9 @@ public enum TranslationDisplaySourceProbe {
             throw TranslationLabError.invalidRoute(
                 "the native frame drifted while adaptive upstream source leaves were queried"
             )
+        }
+        if expectedFrame != nil {
+            nativeQueryStages.append(.frameRevalidated)
         }
         let currentProjectData = try Data(contentsOf: projectURL)
         guard currentProjectData == projectData else {
@@ -784,11 +929,13 @@ public enum TranslationDisplaySourceProbe {
                 "the bounded upstream source artifact exceeded its private evidence limit"
             )
         }
-        try TranslationPrivateStorage.preflightWrite(
-            project: project,
-            estimatedAdditionalBytes: Int64(planData.count + detailsData.count)
-        )
-        try publish(project: project, planData: planData, detailsData: detailsData)
+        if publishInProject {
+            try TranslationPrivateStorage.preflightWrite(
+                project: project,
+                estimatedAdditionalBytes: Int64(planData.count + detailsData.count)
+            )
+            try publish(project: project, planData: planData, detailsData: detailsData)
+        }
 
         let componentCounts = counts(selected.map(\.component.rawValue))
         let chainKinds = selected.map { trace in
@@ -812,7 +959,7 @@ public enum TranslationDisplaySourceProbe {
             "\($0.x):\($0.y):\($0.component.rawValue)"
         })
 
-        return TranslationDisplaySourceProbeReport(
+        let report = TranslationDisplaySourceProbeReport(
             schema: TranslationDisplaySourceProbeReport.currentSchema,
             role: role,
             planFrameIndex: frameIndex,
@@ -868,6 +1015,47 @@ public enum TranslationDisplaySourceProbe {
             nativeFrameSHA256: nativeFrameSHA256,
             privateDetailsSHA256: sha256(detailsData)
         )
+        let nativeQueryReceipt: TranslationDisplaySourceNativeQueryReceipt?
+        if let expectedFrame,
+           let firstOwnerQuerySequencePosition,
+           let firstSourceQuerySequencePosition {
+            nativeQueryReceipt = TranslationDisplaySourceNativeQueryReceipt(
+                schema: TranslationDisplaySourceNativeQueryReceipt.currentSchema,
+                stages: nativeQueryStages,
+                expectedNativeFrameNumber: expectedFrame.nativeFrameNumber,
+                expectedNativeFrameSHA256: expectedFrame.checkpoint.sha256,
+                actualNativeFrameNumberBeforeQueries: nativeFrameNumberBeforeQueries,
+                actualNativeFrameSHA256BeforeQueries: nativeFrameSHA256BeforeQueries,
+                firstOwnerQuerySequencePosition: firstOwnerQuerySequencePosition,
+                firstSourceQuerySequencePosition: firstSourceQuerySequencePosition,
+                actualNativeFrameNumberAfterQueries: nativeFrameNumberAfterQueries,
+                actualNativeFrameSHA256AfterQueries: nativeFrameSHA256AfterQueries,
+                sourceQueryCount: sourceQueryCount
+            )
+        } else {
+            nativeQueryReceipt = nil
+        }
+        return TranslationDisplaySourceProbeAuthorizedResult(
+            report: report,
+            details: details,
+            nativeQueryReceipt: nativeQueryReceipt
+        )
+    }
+
+    private static func validateExpectedFrame(
+        _ expectedFrame: TranslationDisplaySourceExpectedFrame,
+        frameIndex: UInt64,
+        frame: EngineVideoFrame
+    ) throws {
+        guard expectedFrame.checkpoint.frameIndex == frameIndex,
+              expectedFrame.nativeFrameNumber == frame.number,
+              expectedFrame.checkpoint.pixelEncoding
+                == TranslationRouteCheckpoint.pixelEncoding,
+              expectedFrame.checkpoint.matches(frame) else {
+            throw TranslationLabError.invalidRoute(
+                "STOP_PREEXECUTION_CAPABILITY: authenticated frame mismatch before provenance"
+            )
+        }
     }
 
     static func blockedDiagnostic(

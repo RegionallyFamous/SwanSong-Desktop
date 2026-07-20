@@ -598,6 +598,10 @@ public final class EngineSession: @unchecked Sendable {
         String(cString: swan_engine_build_id(handle))
     }
 
+    public var abiVersion: UInt32 {
+        swan_engine_abi_version(handle)
+    }
+
     public var capabilities: EngineCapabilities {
         EngineCapabilities(rawValue: swan_engine_capabilities(handle))
     }

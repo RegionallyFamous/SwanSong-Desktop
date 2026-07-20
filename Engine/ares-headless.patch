@@ -52,6 +52,42 @@ index 0c5247e0..6cc4d77d 100644
 +endif()
  add_subdirectory(cmake)
  return()
+diff --git a/cmake/common/helpers_common.cmake b/cmake/common/helpers_common.cmake
+--- a/cmake/common/helpers_common.cmake
++++ b/cmake/common/helpers_common.cmake
+@@ -3,16 +3,27 @@
+ include_guard(GLOBAL)
+ 
+ function(add_sourcery_command target subdir)
++  set(source_resource_dir "${CMAKE_CURRENT_SOURCE_DIR}/${subdir}")
++  set(binary_resource_dir "${CMAKE_CURRENT_BINARY_DIR}/${subdir}")
++  file(MAKE_DIRECTORY "${binary_resource_dir}")
+   add_custom_command(
+-    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${subdir}/resource.cpp ${CMAKE_CURRENT_SOURCE_DIR}/${subdir}/resource.hpp
+-    COMMAND sourcery resource.bml resource.cpp resource.hpp
+-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${subdir}
+-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${subdir}/resource.bml
++    OUTPUT
++      "${binary_resource_dir}/resource.cpp"
++      "${binary_resource_dir}/resource.hpp"
++    COMMAND
++      sourcery
++      "${source_resource_dir}/resource.bml"
++      resource.cpp
++      resource.hpp
++    WORKING_DIRECTORY "${binary_resource_dir}"
++    DEPENDS "${source_resource_dir}/resource.bml"
+     VERBATIM
+   )
+   add_custom_target(
+     ${target}-resource
+-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${subdir}/resource.cpp ${CMAKE_CURRENT_SOURCE_DIR}/${subdir}/resource.hpp
++    DEPENDS
++      "${binary_resource_dir}/resource.cpp"
++      "${binary_resource_dir}/resource.hpp"
+   )
+   add_dependencies(${target} ${target}-resource)
+   set_target_properties(${target}-resource PROPERTIES FOLDER "generated" PREFIX "")
 diff --git a/ares/ares/platform.hpp b/ares/ares/platform.hpp
 index 029c8de9..5e33c8a5 100644
 --- a/ares/ares/platform.hpp
@@ -414,7 +450,29 @@ diff --git a/ares/component/processor/v30mz/instructions-misc.cpp b/ares/compone
 index 2e7b5fc4..4f70cff3 100644
 --- a/ares/component/processor/v30mz/instructions-misc.cpp
 +++ b/ares/component/processor/v30mz/instructions-misc.cpp
-@@ -69,11 +69,13 @@ template<u32 size> auto V30MZ::instructionOutDW() -> void {
+@@ -49,31 +49,35 @@ template<u32 size> auto V30MZ::instructionIn() -> void {
+   wait(1);
+ }
+ 
+ template<u32 size> auto V30MZ::instructionOut() -> void {
++  provenanceInstructionDataflow(1);
+   // TODO: The exact cycle on which I/O access is performed remains unknown.
+   wait(6);
+   out<size>(fetch<Byte>(), getAccumulator<size>());
+ }
+ 
+ template<u32 size> auto V30MZ::instructionInDW() -> void {
+   // TODO: The exact cycle on which I/O access is performed remains unknown.
+   wait(4);
+   setAccumulator<size>(in<size>(DW));
+   wait(1);
+ }
+ 
+ template<u32 size> auto V30MZ::instructionOutDW() -> void {
++  provenanceInstructionDataflow(1);
+   // TODO: The exact cycle on which I/O access is performed remains unknown.
+   wait(5);
+   out<size>(DW, getAccumulator<size>());
  }
  
  auto V30MZ::instructionSetALCarry() -> void {
@@ -1228,3 +1286,187 @@ index b3fe3578..fb907b5b 100644
        break;
      }
    }
+diff --git a/ares/component/processor/v30mz/instruction.cpp b/ares/component/processor/v30mz/instruction.cpp
+index 13329e0..cced155 100644
+--- a/ares/component/processor/v30mz/instruction.cpp
++++ b/ares/component/processor/v30mz/instruction.cpp
+@@ -60,7 +60,9 @@ auto V30MZ::instruction() -> void {
+   state.prefix = 0;
+   if(state.halt) return wait(1);
+ 
+-  switch(opcode = fetch<Byte>()) {
++  opcode = fetch<Byte>();
++  opcodeOrigin = consumedFetchOrigin;
++  switch(opcode) {
+   op(0x00, AddMemReg<Byte>)
+   op(0x01, AddMemReg<Word>)
+   op(0x02, AddRegMem<Byte>)
+diff --git a/ares/component/processor/v30mz/prefetch.cpp b/ares/component/processor/v30mz/prefetch.cpp
+index 81ab18e..415e7cb 100644
+--- a/ares/component/processor/v30mz/prefetch.cpp
++++ b/ares/component/processor/v30mz/prefetch.cpp
+@@ -2,18 +2,39 @@ auto V30MZ::wait(u32 clocks) -> void {
+   while(clocks--) prefetch();
+ }
+ 
++auto V30MZ::prefetchOriginFailure() -> void {
++  prefetchOriginInvalid = true;
++  provenancePrefetchInvalid();
++}
++
++auto V30MZ::prefetchOriginToken(u32 origin) const -> u64 {
++  return (u64)prefetchGeneration << 32 | origin;
++}
++
+ auto V30MZ::loop() -> void {
+   queue<u8[16]> pf;
++  queue<u64[16]> pfo;
+   pf.write(opcode);
++  pfo.write(opcodeOrigin);
++  if(PF.size() != PFO.size()) prefetchOriginFailure();
+   while(!PF.empty()) {
+     if(pf.full()) { PFP--; break; }
++    if(PFO.empty()) { prefetchOriginFailure(); break; }
+     pf.write(PF.read(0));
++    pfo.write(PFO.read(0));
+   }
++  if(PF.empty() != PFO.empty()) prefetchOriginFailure();
+   PF = pf;
++  PFO = pfo;
+ }
+ 
+ auto V30MZ::flush() -> void {
+   PF.flush();
++  PFO.flush();
++  if(++prefetchGeneration == 0) {
++    prefetchOriginFailure();
++    prefetchGeneration = 1;
++  }
+   PFP = PC;
+   PFW = 0;
+ }
+@@ -25,20 +46,43 @@ auto V30MZ::prefetch() -> void {
+   auto wait = speed(address);
+   if(++PFW < wait) return;
+   PFW -= wait;
+-  if(size == Word && !(PFP & 1)) if(!PF.full()) PF.write(read(PS * 16 + PFP++));
+-  if(!PF.full()) PF.write(read(PS * 16 + PFP++));
++  if(PF.size() != PFO.size()) prefetchOriginFailure();
++  auto fill = [&] {
++    auto fillAddress = PS * 16 + PFP++;
++    u32 origin = 0;
++    auto data = readPrefetch(fillAddress, origin);
++    auto byteWritten = PF.write(data);
++    auto originWritten = PFO.write(prefetchOriginToken(origin));
++    if(byteWritten != originWritten) prefetchOriginFailure();
++  };
++  if(size == Word && !(PFP & 1)) if(!PF.full()) fill();
++  if(!PF.full()) fill();
+ }
+ 
+ template<> auto V30MZ::fetch<Byte>() -> u16 {
+-  PC++;
++  auto offset = PC++;
+   while(PF.size() < 2) prefetch();
+-  return PF.read(0);
++  if(PF.size() != PFO.size() || PFO.empty()) prefetchOriginFailure();
++  auto data = PF.read(0);
++  consumedFetchOrigin = PFO.read(0);
++  if((u32)(consumedFetchOrigin >> 32) != prefetchGeneration) prefetchOriginFailure();
++  provenanceInstructionFetch(consumedFetchOrigin, PS, offset, data);
++  return data;
+ }
+ 
+ template<> auto V30MZ::fetch<Word>() -> u16 {
++  auto offset = PC;
+   PC += 2;
+   while(PF.size() < 2) prefetch();
++  if(PF.size() != PFO.size() || PFO.size() < 2) prefetchOriginFailure();
+   u8 lo = PF.read(0);
++  auto loOrigin = PFO.read(0);
+   u8 hi = PF.read(0);
++  auto hiOrigin = PFO.read(0);
++  if((u32)(loOrigin >> 32) != prefetchGeneration ||
++     (u32)(hiOrigin >> 32) != prefetchGeneration) prefetchOriginFailure();
++  provenanceInstructionFetch(loOrigin, PS, offset, lo);
++  provenanceInstructionFetch(hiOrigin, PS, offset + 1, hi);
++  consumedFetchOrigin = hiOrigin;
+   return lo << 0 | hi << 8;
+ }
+diff --git a/ares/component/processor/v30mz/serialization.cpp b/ares/component/processor/v30mz/serialization.cpp
+index 1a1ce47..9fad0e2 100644
+--- a/ares/component/processor/v30mz/serialization.cpp
++++ b/ares/component/processor/v30mz/serialization.cpp
+@@ -35,5 +35,11 @@ auto V30MZ::serialize(serializer& s) -> void {
+   s(PC);
+   s(PFP);
+   s(PF);
++  s(PFO);
++  s(prefetchGeneration);
++  s(consumedFetchOrigin);
++  s(opcodeOrigin);
++  s(prefetchOriginInvalid);
++  if(s.reading()) prefetchOriginFailure();
+   s(PSW.data);
+ }
+diff --git a/ares/component/processor/v30mz/v30mz.cpp b/ares/component/processor/v30mz/v30mz.cpp
+index a3e4fff..ea84014 100644
+--- a/ares/component/processor/v30mz/v30mz.cpp
++++ b/ares/component/processor/v30mz/v30mz.cpp
+@@ -31,6 +31,10 @@ auto V30MZ::power() -> void {
+   state.nmi = 0;
+ 
+   opcode = 0;
++  prefetchGeneration = 0;
++  consumedFetchOrigin = 0;
++  opcodeOrigin = 0;
++  prefetchOriginInvalid = false;
+   prefixFlush();
+   modrm.mod = 0;
+   modrm.reg = 0;
+diff --git a/ares/component/processor/v30mz/v30mz.hpp b/ares/component/processor/v30mz/v30mz.hpp
+index 67c21b3..14bed9e 100644
+--- a/ares/component/processor/v30mz/v30mz.hpp
++++ b/ares/component/processor/v30mz/v30mz.hpp
+@@ -30,6 +30,10 @@ struct V30MZ {
+   virtual auto speed(n20 address) -> n32 = 0;
+   virtual auto read(n20 address) -> n8 = 0;
+   virtual auto write(n20 address, n8 data) -> void = 0;
++  virtual auto readPrefetch(n20 address, u32& origin) -> n8 {
++    origin = 0;
++    return read(address);
++  }
+   virtual auto in(n16 port) -> n8 = 0;
+   virtual auto out(n16 port, n8 data) -> void = 0;
+   virtual auto ioWidth(n16 port) -> u32 = 0;
+@@ -38,6 +42,8 @@ struct V30MZ {
+   virtual auto provenanceRegisterRead(u32 index) -> void {}
+   virtual auto provenanceRegisterWrite(u32 index) -> void {}
+   virtual auto provenanceInstructionDataflow(u32 kind) -> void {}
++  virtual auto provenanceInstructionFetch(u64 origin, u16 segment, u16 offset, u8 data) -> void {}
++  virtual auto provenancePrefetchInvalid() -> void {}
+ 
+   //v30mz.cpp
+   auto power() -> void;
+@@ -87,6 +93,8 @@ struct V30MZ {
+   auto flush() -> void;
+   auto prefetch() -> void;
+   template<u32> auto fetch() -> u16;
++  auto prefetchOriginFailure() -> void;
++  auto prefetchOriginToken(u32 origin) const -> u64;
+ 
+   //algorithms.cpp
+   auto parity(u8) const -> bool;
+@@ -287,7 +295,12 @@ struct V30MZ {
+   u16 PC;   //IP
+   u16 PFP;  //prefetch pointer
+   queue<u8[16]> PF;  //prefetch queue
++  queue<u64[16]> PFO;  //origin token paired with each prefetched byte
+   n8 PFW; //prefetch wait time
++  u32 prefetchGeneration;
++  u64 consumedFetchOrigin;
++  u64 opcodeOrigin;
++  bool prefetchOriginInvalid;
+ 
+   struct ProgramStatusWord {
+     u16 data;

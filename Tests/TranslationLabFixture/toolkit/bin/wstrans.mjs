@@ -2,6 +2,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 
 const [command, projectPath, ...args] = process.argv.slice(2);
 const projectJSON = path.join(projectPath ?? "", "project.json");
@@ -78,6 +79,44 @@ if (command === "capture-intake") {
   if (bytes !== 16 * 1024 && bytes !== 64 * 1024) {
     console.error(`unexpected RAM size ${bytes}`);
     process.exit(4);
+  }
+  if (option("--authorized-exclusive-output") === "true") {
+    const outputPath = option("--out");
+    const receiptPath = option("--receipt");
+    if (!outputPath || !receiptPath || path.dirname(outputPath) !== path.dirname(receiptPath)) {
+      console.error("fixture authorized Capture Intake requires explicit sibling outputs");
+      process.exit(7);
+    }
+    const ram = fs.readFileSync(ramPath);
+    const sha256 = crypto.createHash("sha256").update(ram).digest("hex");
+    fs.writeFileSync(outputPath, ram, { flag: "wx", mode: 0o600 });
+    fs.chmodSync(outputPath, 0o600);
+    const receipt = {
+      kind: "capture-intake",
+      version: 1,
+      captureName: name,
+      source: {
+        kind: "raw-ram",
+        path: path.relative(projectPath, ramPath),
+        size: bytes,
+        sha256,
+      },
+      output: {
+        path: path.relative(projectPath, outputPath),
+        size: bytes,
+        sha256,
+        copied: true,
+        alreadyCurrent: false,
+      },
+      actualSize: bytes,
+    };
+    fs.writeFileSync(receiptPath, `${JSON.stringify(receipt, null, 2)}\n`, {
+      flag: "wx",
+      mode: 0o600,
+    });
+    fs.chmodSync(receiptPath, 0o600);
+    console.log(`PASS capture intake ${name} (${bytes} bytes)`);
+    process.exit(0);
   }
   const reportPath = path.join(projectPath, "analysis", `capture-intake-${name}.json`);
   fs.mkdirSync(path.dirname(reportPath), { recursive: true });

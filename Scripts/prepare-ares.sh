@@ -46,4 +46,9 @@ if [ "$actual" != "$commit" ]; then
   exit 1
 fi
 
+/bin/sh "$SCRIPT_DIR/ares-source-state.sh" write \
+  "$SOURCE_DIR" "$commit" "$MACOS_DIR/Engine/ares-headless.patch"
+/bin/sh "$SCRIPT_DIR/ares-source-state.sh" check \
+  "$SOURCE_DIR" "$commit" "$MACOS_DIR/Engine/ares-headless.patch"
+
 echo "$SOURCE_DIR"

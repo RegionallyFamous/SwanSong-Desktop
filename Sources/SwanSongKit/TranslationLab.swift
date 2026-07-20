@@ -88,11 +88,47 @@ public struct TranslationProject: Codable, Hashable, Identifiable, Sendable {
             throw TranslationLabError.invalidProject("project.json is missing or is not a regular file")
         }
 
+        try self.init(
+            resolvedProjectRoot: root,
+            authenticatedManifestData: Data(contentsOf: configURL)
+        )
+    }
+
+    /// Builds a project from manifest bytes that an authorization boundary has
+    /// already read and authenticated. The project directory is still resolved
+    /// and constrained normally, but project.json is not reopened by pathname.
+    public init(
+        projectDirectory: URL,
+        authenticatedManifestData: Data
+    ) throws {
+        let selected = projectDirectory.standardizedFileURL
+        let selectedValues = try? selected.resourceValues(forKeys: [
+            .isDirectoryKey,
+            .isSymbolicLinkKey,
+        ])
+        guard selectedValues?.isSymbolicLink != true else {
+            throw TranslationLabError.unsafePath(selected.path)
+        }
+        let unresolvedRoot = selectedValues?.isDirectory == true
+            ? selected
+            : selected.deletingLastPathComponent()
+        let root = unresolvedRoot.resolvingSymlinksInPath().standardizedFileURL
+
+        try self.init(
+            resolvedProjectRoot: root,
+            authenticatedManifestData: authenticatedManifestData
+        )
+    }
+
+    private init(
+        resolvedProjectRoot root: URL,
+        authenticatedManifestData: Data
+    ) throws {
         let config: ProjectConfiguration
         do {
             config = try JSONDecoder().decode(
                 ProjectConfiguration.self,
-                from: Data(contentsOf: configURL)
+                from: authenticatedManifestData
             )
         } catch {
             throw TranslationLabError.invalidProject(error.localizedDescription)
@@ -515,7 +551,7 @@ public enum TranslationToolkitStage: Sendable {
         }
     }
 
-    fileprivate func arguments(project: TranslationProject) throws -> [String] {
+    func arguments(project: TranslationProject) throws -> [String] {
         let projectPath = project.rootURL.path
         switch self {
         case .status:
@@ -531,13 +567,81 @@ public enum TranslationToolkitStage: Sendable {
                 throw TranslationLabError.unsafePath(ramURL.path)
             }
             let name = Self.safeName(requestedName)
+            let intakeDirectoryURL = try authorizedCaptureDirectoryURL(
+                project: project,
+                ramURL: ramURL
+            )
+            let copiedRAMURL = intakeDirectoryURL.appendingPathComponent("capture.ram.bin")
+            let receiptURL = intakeDirectoryURL.appendingPathComponent("receipt.json")
             return [
                 "capture-intake", projectPath,
                 "--ram", ramURL.path,
                 "--name", name,
                 "--expect-size", "auto",
+                "--out", copiedRAMURL.path,
+                "--receipt", receiptURL.path,
+                "--authorized-exclusive-output", "true",
+                "--markdown", "false",
+                "--analyze", "false",
+                "--find-text", "false",
+                "--triage", "false",
+                "--render", "false",
             ]
         }
+    }
+
+    fileprivate var usesAuthorizedExclusiveOutput: Bool {
+        if case .captureIntake = self { return true }
+        return false
+    }
+
+    fileprivate func prepareForExecution(project: TranslationProject) throws {
+        guard case let .captureIntake(ramURL, _) = self else { return }
+        let directory = try authorizedCaptureDirectoryURL(
+            project: project,
+            ramURL: ramURL
+        )
+        try TranslationToolkitRunner.createFreshPrivateCaptureDirectory(
+            directory,
+            project: project
+        )
+    }
+
+    fileprivate func authorizedCaptureExpectation(
+        project: TranslationProject
+    ) throws -> TranslationAuthorizedCaptureExpectation? {
+        guard case let .captureIntake(ramURL, requestedName) = self else { return nil }
+        let directory = try authorizedCaptureDirectoryURL(
+            project: project,
+            ramURL: ramURL
+        )
+        return TranslationAuthorizedCaptureExpectation(
+            inputRAMURL: ramURL.standardizedFileURL,
+            outputDirectoryURL: directory,
+            outputRAMURL: directory.appendingPathComponent("capture.ram.bin"),
+            receiptURL: directory.appendingPathComponent("receipt.json"),
+            captureName: Self.safeName(requestedName)
+        )
+    }
+
+    private func authorizedCaptureDirectoryURL(
+        project: TranslationProject,
+        ramURL: URL
+    ) throws -> URL {
+        guard project.contains(ramURL) else {
+            throw TranslationLabError.unsafePath(ramURL.path)
+        }
+        let intakeDirectoryURL = ramURL.deletingLastPathComponent()
+            .appendingPathComponent("capture-intake", isDirectory: true)
+            .standardizedFileURL
+        let copiedRAMURL = intakeDirectoryURL.appendingPathComponent("capture.ram.bin")
+        let receiptURL = intakeDirectoryURL.appendingPathComponent("receipt.json")
+        guard project.contains(intakeDirectoryURL),
+              project.contains(copiedRAMURL),
+              project.contains(receiptURL) else {
+            throw TranslationLabError.unsafePath(intakeDirectoryURL.path)
+        }
+        return intakeDirectoryURL
     }
 
     private static func safeName(_ value: String) -> String {
@@ -548,76 +652,599 @@ public enum TranslationToolkitStage: Sendable {
     }
 }
 
+private struct TranslationAuthorizedCaptureExpectation: Sendable {
+    let inputRAMURL: URL
+    let outputDirectoryURL: URL
+    let outputRAMURL: URL
+    let receiptURL: URL
+    let captureName: String
+}
+
+private struct TranslationAuthorizedCaptureReceipt: Decodable {
+    struct Fingerprint: Decodable {
+        let path: String
+        let size: Int
+        let sha256: String
+        let copied: Bool?
+        let alreadyCurrent: Bool?
+        let kind: String?
+    }
+
+    let kind: String
+    let version: Int
+    let captureName: String
+    let source: Fingerprint
+    let output: Fingerprint
+    let actualSize: Int
+}
+
+private struct TranslationToolkitExecutionFileWitness: Equatable, Sendable {
+    let canonicalPath: String
+    let byteCount: Int
+    let sha256: String
+}
+
+private struct TranslationToolkitExecutionDirectoryWitness: Equatable, Sendable {
+    let canonicalPath: String
+    let canonicalPathSHA256: String
+    let deviceID: UInt64
+    let fileID: UInt64
+}
+
+/// The complete diagnostic witness remains in process because it contains
+/// private project paths and arguments. Public command results receive only its
+/// redacted digest projection below.
+private struct TranslationToolkitExecutionWitness: Equatable, Sendable {
+    static let diagnosticScope = "diagnostic-launch-identity-only"
+
+    let scope: String
+    let nodeExecutable: TranslationToolkitExecutionFileWitness
+    let entryPoint: TranslationToolkitExecutionFileWitness
+    let workingDirectory: TranslationToolkitExecutionDirectoryWitness
+    let arguments: [String]
+    let environmentKeys: [String]
+    let environmentSHA256: String
+}
+
+public struct TranslationToolkitExecutionArtifactSummary: Codable, Equatable, Sendable {
+    public let byteCount: Int
+    public let sha256: String
+    public let canonicalPathSHA256: String
+}
+
+/// A privacy-safe projection of one diagnostic toolkit launch. It binds exact
+/// inputs by digest without serializing private canonical paths or raw argv.
+public struct TranslationToolkitExecutionSummary: Codable, Equatable, Sendable {
+    public static let currentSchema = "swan-song-translation-toolkit-execution-summary-v1"
+    public static let diagnosticScope = "diagnostic-launch-identity-only"
+
+    public let schema: String
+    public let scope: String
+    public let nodeExecutable: TranslationToolkitExecutionArtifactSummary
+    public let entryPoint: TranslationToolkitExecutionArtifactSummary
+    public let workingDirectoryPathSHA256: String
+    public let workingDirectoryIdentitySHA256: String
+    public let argumentCount: Int
+    public let argumentsSHA256: String
+    public let environmentKeys: [String]
+    public let environmentSHA256: String
+}
+
 public struct TranslationCommandResult: Codable, Equatable, Sendable {
     public let stageTitle: String
     public let exitCode: Int32
     public let output: String
     public let startedAt: Date
     public let finishedAt: Date
+    public let executionWitness: TranslationToolkitExecutionSummary
 
     public var succeeded: Bool { exitCode == 0 }
+
+    init(
+        stageTitle: String,
+        exitCode: Int32,
+        output: String,
+        startedAt: Date,
+        finishedAt: Date,
+        executionWitness: TranslationToolkitExecutionSummary
+    ) {
+        self.stageTitle = stageTitle
+        self.exitCode = exitCode
+        self.output = output
+        self.startedAt = startedAt
+        self.finishedAt = finishedAt
+        self.executionWitness = executionWitness
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case stageTitle
+        case exitCode
+        case startedAt
+        case finishedAt
+        case executionWitness
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        stageTitle = try container.decode(String.self, forKey: .stageTitle)
+        exitCode = try container.decode(Int32.self, forKey: .exitCode)
+        output = ""
+        startedAt = try container.decode(Date.self, forKey: .startedAt)
+        finishedAt = try container.decode(Date.self, forKey: .finishedAt)
+        executionWitness = try container.decode(
+            TranslationToolkitExecutionSummary.self,
+            forKey: .executionWitness
+        )
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(stageTitle, forKey: .stageTitle)
+        try container.encode(exitCode, forKey: .exitCode)
+        try container.encode(startedAt, forKey: .startedAt)
+        try container.encode(finishedAt, forKey: .finishedAt)
+        try container.encode(executionWitness, forKey: .executionWitness)
+    }
 }
 
 public enum TranslationToolkitRunner {
+    static let childEnvironmentKeys = [
+        "LANG",
+        "LC_ALL",
+        "PATH",
+        "TZ",
+        "WONDERSWAN_TOOLKIT_DIR",
+    ]
+
     public static func run(
         _ stage: TranslationToolkitStage,
         project: TranslationProject
     ) throws -> TranslationCommandResult {
+        try run(stage, project: project, nodeURL: findNode())
+    }
+
+    public static func run(
+        _ stage: TranslationToolkitStage,
+        project: TranslationProject,
+        nodeURL requestedNodeURL: URL
+    ) throws -> TranslationCommandResult {
         let startedAt = Date()
-        let nodeURL = try findNode()
-        let cliURL = project.toolkitURL.appendingPathComponent("bin/wstrans.mjs")
+        let workingDirectoryURL = try canonicalExecutionDirectoryURL(project.toolkitURL)
+        let nodeURL = try canonicalExecutionFileURL(
+            requestedNodeURL,
+            label: "Node.js executable",
+            mustBeExecutable: true
+        )
+        let cliURL = try canonicalExecutionFileURL(
+            workingDirectoryURL.appendingPathComponent("bin/wstrans.mjs"),
+            label: "toolkit entry point",
+            mustBeExecutable: false
+        )
+        try stage.prepareForExecution(project: project)
+        let arguments = [cliURL.path] + (try stage.arguments(project: project))
+        let environment = childEnvironment(toolkitURL: workingDirectoryURL)
+        let executionWitness = try makeExecutionWitness(
+            nodeURL: nodeURL,
+            entryPointURL: cliURL,
+            workingDirectoryURL: workingDirectoryURL,
+            arguments: arguments,
+            environment: environment
+        )
         let process = Process()
         process.executableURL = nodeURL
-        process.arguments = [cliURL.path] + (try stage.arguments(project: project))
-        process.currentDirectoryURL = project.toolkitURL
-        var environment = ProcessInfo.processInfo.environment
-        environment["WONDERSWAN_TOOLKIT_DIR"] = project.toolkitURL.path
-        let usefulPaths = ["/opt/homebrew/bin", "/usr/local/bin"]
-        let currentPath = environment["PATH"] ?? "/usr/bin:/bin:/usr/sbin:/sbin"
-        environment["PATH"] = (usefulPaths + [currentPath]).joined(separator: ":")
+        process.arguments = arguments
+        process.currentDirectoryURL = workingDirectoryURL
         process.environment = environment
 
-        let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent(
-            "SwanSong-Translation-Command-\(UUID().uuidString).log"
-        )
-        guard FileManager.default.createFile(
-            atPath: outputURL.path,
-            contents: nil,
-            attributes: [.posixPermissions: 0o600]
-        ) else {
-            throw CocoaError(.fileWriteUnknown)
+        let output: String
+        if stage.usesAuthorizedExclusiveOutput {
+            // The authorized Capture Intake graph permits only the two explicit
+            // project artifacts. Drain stdout/stderr through an anonymous pipe
+            // so this stage creates no UUID/PID-named filesystem side effect.
+            let pipe = Pipe()
+            process.standardOutput = pipe.fileHandleForWriting
+            process.standardError = pipe.fileHandleForWriting
+            try process.run()
+            try pipe.fileHandleForWriting.close()
+            let retained = try retainedOutput(from: pipe.fileHandleForReading)
+            try pipe.fileHandleForReading.close()
+            process.waitUntilExit()
+            output = String(decoding: retained, as: UTF8.self)
+        } else {
+            let outputURL = FileManager.default.temporaryDirectory.appendingPathComponent(
+                "SwanSong-Translation-Command-\(UUID().uuidString).log"
+            )
+            guard FileManager.default.createFile(
+                atPath: outputURL.path,
+                contents: nil,
+                attributes: [.posixPermissions: 0o600]
+            ) else {
+                throw CocoaError(.fileWriteUnknown)
+            }
+            defer { try? FileManager.default.removeItem(at: outputURL) }
+            let outputHandle = try FileHandle(forWritingTo: outputURL)
+            defer { try? outputHandle.close() }
+            process.standardOutput = outputHandle
+            process.standardError = outputHandle
+            try process.run()
+            process.waitUntilExit()
+            try outputHandle.synchronize()
+            try outputHandle.close()
+            let inputHandle = try FileHandle(forReadingFrom: outputURL)
+            defer { try? inputHandle.close() }
+            output = String(
+                decoding: try retainedOutput(from: inputHandle),
+                as: UTF8.self
+            )
         }
-        defer { try? FileManager.default.removeItem(at: outputURL) }
-        let outputHandle = try FileHandle(forWritingTo: outputURL)
-        defer { try? outputHandle.close() }
-        process.standardOutput = outputHandle
-        process.standardError = outputHandle
-        try process.run()
-        process.waitUntilExit()
-        try outputHandle.synchronize()
-        try outputHandle.close()
 
-        let maximumBytes = 512 * 1024
-        let inputHandle = try FileHandle(forReadingFrom: outputURL)
-        defer { try? inputHandle.close() }
-        let byteCount = try inputHandle.seekToEnd()
-        let retainedByteCount = min(byteCount, UInt64(maximumBytes))
-        try inputHandle.seek(toOffset: byteCount - retainedByteCount)
-        let retained = try inputHandle.read(upToCount: Int(retainedByteCount)) ?? Data()
-        let output = String(decoding: retained, as: UTF8.self)
+        let executionWitnessAfter = try makeExecutionWitness(
+            nodeURL: nodeURL,
+            entryPointURL: cliURL,
+            workingDirectoryURL: workingDirectoryURL,
+            arguments: arguments,
+            environment: environment
+        )
+        guard executionWitnessAfter == executionWitness else {
+            throw TranslationLabError.invalidProject(
+                "the toolkit launch identity changed during toolkit execution"
+            )
+        }
+        if process.terminationStatus == 0,
+           let expectation = try stage.authorizedCaptureExpectation(project: project) {
+            try validateAuthorizedCaptureOutput(expectation, project: project)
+        }
+
         return TranslationCommandResult(
             stageTitle: stage.title,
             exitCode: process.terminationStatus,
             output: output,
             startedAt: startedAt,
-            finishedAt: Date()
+            finishedAt: Date(),
+            executionWitness: redactedSummary(executionWitness)
+        )
+    }
+
+    static func childEnvironment(toolkitURL: URL) -> [String: String] {
+        [
+            "LANG": "C",
+            "LC_ALL": "C",
+            "PATH": "/usr/bin:/bin",
+            "TZ": "UTC",
+            "WONDERSWAN_TOOLKIT_DIR": toolkitURL.path,
+        ]
+    }
+
+    fileprivate static func createFreshPrivateCaptureDirectory(
+        _ directoryURL: URL,
+        project: TranslationProject
+    ) throws {
+        let directory = directoryURL.standardizedFileURL
+        let parent = directory.deletingLastPathComponent().standardizedFileURL
+        guard project.contains(directory), project.contains(parent) else {
+            throw TranslationLabError.unsafePath(directory.path)
+        }
+        let canonicalParent = try physicalCanonicalURL(
+            parent,
+            label: "Capture Intake output parent"
+        )
+        guard canonicalParent == parent else {
+            throw TranslationLabError.invalidProject(
+                "the Capture Intake output parent is not canonical"
+            )
+        }
+        _ = try executionDirectoryWitness(canonicalParent)
+
+        var existing = stat()
+        let existingResult = directory.path.withCString { path in
+            lstat(path, &existing)
+        }
+        guard existingResult != 0 else {
+            throw TranslationLabError.invalidProject(
+                "the authorized Capture Intake output directory already exists"
+            )
+        }
+        guard errno == ENOENT else {
+            throw TranslationLabError.invalidProject(
+                "the authorized Capture Intake output path could not be preflighted"
+            )
+        }
+
+        let createResult = directory.path.withCString { path in
+            mkdir(path, mode_t(0o700))
+        }
+        guard createResult == 0 else {
+            throw TranslationLabError.invalidProject(
+                "the authorized Capture Intake output directory could not be created exclusively"
+            )
+        }
+        let canonicalDirectory = try physicalCanonicalURL(
+            directory,
+            label: "Capture Intake output directory"
+        )
+        let attributes = try FileManager.default.attributesOfItem(atPath: directory.path)
+        let entries = try FileManager.default.contentsOfDirectory(atPath: directory.path)
+        guard canonicalDirectory == directory,
+              (attributes[.posixPermissions] as? NSNumber)?.intValue == 0o700,
+              entries.isEmpty else {
+            throw TranslationLabError.invalidProject(
+                "the authorized Capture Intake output directory is not a fresh canonical 0700 directory"
+            )
+        }
+    }
+
+    private static func validateAuthorizedCaptureOutput(
+        _ expectation: TranslationAuthorizedCaptureExpectation,
+        project: TranslationProject
+    ) throws {
+        let entries = try FileManager.default.contentsOfDirectory(
+            atPath: expectation.outputDirectoryURL.path
+        ).sorted()
+        guard entries == ["capture.ram.bin", "receipt.json"] else {
+            throw TranslationLabError.invalidProject(
+                "authorized Capture Intake produced an unexpected output graph"
+            )
+        }
+        for url in [expectation.outputRAMURL, expectation.receiptURL] {
+            let values = try url.resourceValues(forKeys: [
+                .isRegularFileKey,
+                .isSymbolicLinkKey,
+            ])
+            let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
+            guard values.isRegularFile == true,
+                  values.isSymbolicLink != true,
+                  (attributes[.posixPermissions] as? NSNumber)?.intValue == 0o600,
+                  (attributes[.referenceCount] as? NSNumber)?.intValue == 1 else {
+                throw TranslationLabError.invalidProject(
+                    "authorized Capture Intake produced an unsafe private output"
+                )
+            }
+        }
+
+        let sourceRAM = try Data(
+            contentsOf: expectation.inputRAMURL,
+            options: [.mappedIfSafe]
+        )
+        let copiedRAM = try Data(
+            contentsOf: expectation.outputRAMURL,
+            options: [.mappedIfSafe]
+        )
+        guard copiedRAM == sourceRAM else {
+            throw TranslationLabError.invalidProject(
+                "authorized Capture Intake RAM readback does not match its input"
+            )
+        }
+        let ramSHA256 = digest(copiedRAM)
+        let receiptData = try Data(contentsOf: expectation.receiptURL)
+        let receipt: TranslationAuthorizedCaptureReceipt
+        do {
+            receipt = try JSONDecoder().decode(
+                TranslationAuthorizedCaptureReceipt.self,
+                from: receiptData
+            )
+        } catch {
+            throw TranslationLabError.invalidProject(
+                "authorized Capture Intake receipt does not match its expected schema"
+            )
+        }
+        let sourceRelativePath = try project.relativePath(for: expectation.inputRAMURL)
+        let outputRelativePath = try project.relativePath(for: expectation.outputRAMURL)
+        guard receipt.kind == "capture-intake",
+              receipt.version == 1,
+              receipt.captureName == expectation.captureName,
+              receipt.actualSize == copiedRAM.count,
+              receipt.source.kind == "raw-ram",
+              receipt.source.path == sourceRelativePath,
+              receipt.source.size == copiedRAM.count,
+              receipt.source.sha256 == ramSHA256,
+              receipt.output.path == outputRelativePath,
+              receipt.output.size == copiedRAM.count,
+              receipt.output.sha256 == ramSHA256,
+              receipt.output.copied == true,
+              receipt.output.alreadyCurrent == false else {
+            throw TranslationLabError.invalidProject(
+                "authorized Capture Intake receipt does not bind the exact RAM readback"
+            )
+        }
+    }
+
+    private static func retainedOutput(from handle: FileHandle) throws -> Data {
+        let maximumBytes = 512 * 1_024
+        var retained = Data()
+        while let chunk = try handle.read(upToCount: 64 * 1_024), !chunk.isEmpty {
+            retained.append(chunk)
+            if retained.count > maximumBytes {
+                retained.removeFirst(retained.count - maximumBytes)
+            }
+        }
+        return retained
+    }
+
+    private static func makeExecutionWitness(
+        nodeURL: URL,
+        entryPointURL: URL,
+        workingDirectoryURL: URL,
+        arguments: [String],
+        environment: [String: String]
+    ) throws -> TranslationToolkitExecutionWitness {
+        guard environment.keys.sorted() == childEnvironmentKeys else {
+            throw TranslationLabError.invalidProject(
+                "the toolkit child environment differs from its fixed key allowlist"
+            )
+        }
+        let node = try executionFileWitness(
+            nodeURL,
+            label: "Node.js executable",
+            mustBeExecutable: true
+        )
+        let entryPoint = try executionFileWitness(
+            entryPointURL,
+            label: "toolkit entry point",
+            mustBeExecutable: false
+        )
+        let workingDirectory = try executionDirectoryWitness(workingDirectoryURL)
+        let environmentValues = environment.keys.sorted().flatMap { key in
+            [key, environment[key] ?? ""]
+        }
+        return TranslationToolkitExecutionWitness(
+            scope: TranslationToolkitExecutionWitness.diagnosticScope,
+            nodeExecutable: node,
+            entryPoint: entryPoint,
+            workingDirectory: workingDirectory,
+            arguments: arguments,
+            environmentKeys: environment.keys.sorted(),
+            environmentSHA256: digest(canonicalStringSequence(environmentValues))
+        )
+    }
+
+    private static func redactedSummary(
+        _ witness: TranslationToolkitExecutionWitness
+    ) -> TranslationToolkitExecutionSummary {
+        TranslationToolkitExecutionSummary(
+            schema: TranslationToolkitExecutionSummary.currentSchema,
+            scope: TranslationToolkitExecutionSummary.diagnosticScope,
+            nodeExecutable: redactedArtifact(witness.nodeExecutable),
+            entryPoint: redactedArtifact(witness.entryPoint),
+            workingDirectoryPathSHA256: witness.workingDirectory.canonicalPathSHA256,
+            workingDirectoryIdentitySHA256: digest(
+                canonicalStringSequence([
+                    String(witness.workingDirectory.deviceID),
+                    String(witness.workingDirectory.fileID),
+                ])
+            ),
+            argumentCount: witness.arguments.count,
+            argumentsSHA256: digest(canonicalStringSequence(witness.arguments)),
+            environmentKeys: witness.environmentKeys,
+            environmentSHA256: witness.environmentSHA256
+        )
+    }
+
+    private static func redactedArtifact(
+        _ witness: TranslationToolkitExecutionFileWitness
+    ) -> TranslationToolkitExecutionArtifactSummary {
+        TranslationToolkitExecutionArtifactSummary(
+            byteCount: witness.byteCount,
+            sha256: witness.sha256,
+            canonicalPathSHA256: digest(Data(witness.canonicalPath.utf8))
+        )
+    }
+
+    private static func canonicalStringSequence(_ values: [String]) -> Data {
+        values.reduce(into: Data()) { data, value in
+            let bytes = Data(value.utf8)
+            data.append(contentsOf: String(format: "%016llx", UInt64(bytes.count)).utf8)
+            data.append(bytes)
+        }
+    }
+
+    private static func digest(_ data: Data) -> String {
+        SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+    }
+
+    private static func canonicalExecutionFileURL(
+        _ url: URL,
+        label: String,
+        mustBeExecutable: Bool
+    ) throws -> URL {
+        let canonical = try physicalCanonicalURL(url, label: label)
+        _ = try executionFileWitness(
+            canonical,
+            label: label,
+            mustBeExecutable: mustBeExecutable
+        )
+        return canonical
+    }
+
+    private static func canonicalExecutionDirectoryURL(_ url: URL) throws -> URL {
+        let canonical = try physicalCanonicalURL(url, label: "toolkit working directory")
+        _ = try executionDirectoryWitness(canonical)
+        return canonical
+    }
+
+    private static func physicalCanonicalURL(_ url: URL, label: String) throws -> URL {
+        var buffer = [CChar](repeating: 0, count: Int(PATH_MAX))
+        let canonicalPath: String? = buffer.withUnsafeMutableBufferPointer { storage in
+            guard let baseAddress = storage.baseAddress else { return nil }
+            return url.path.withCString { path in
+                guard realpath(path, baseAddress) != nil else { return nil }
+                return String(cString: baseAddress)
+            }
+        }
+        guard let canonicalPath else {
+            throw TranslationLabError.invalidProject("the \(label) cannot be resolved canonically")
+        }
+        return URL(fileURLWithPath: canonicalPath).standardizedFileURL
+    }
+
+    private static func executionDirectoryWitness(
+        _ url: URL
+    ) throws -> TranslationToolkitExecutionDirectoryWitness {
+        let standardized = url.standardizedFileURL
+        let resolved = standardized.resolvingSymlinksInPath().standardizedFileURL
+        let values = try standardized.resourceValues(forKeys: [
+            .isDirectoryKey,
+            .isSymbolicLinkKey,
+        ])
+        guard resolved == standardized,
+              values.isDirectory == true,
+              values.isSymbolicLink != true else {
+            throw TranslationLabError.invalidProject(
+                "the toolkit working directory is not a safe canonical directory"
+            )
+        }
+        let attributes = try FileManager.default.attributesOfItem(atPath: standardized.path)
+        guard let deviceID = (attributes[.systemNumber] as? NSNumber)?.uint64Value,
+              let fileID = (attributes[.systemFileNumber] as? NSNumber)?.uint64Value else {
+            throw TranslationLabError.invalidProject(
+                "the toolkit working directory filesystem identity is unavailable"
+            )
+        }
+        return TranslationToolkitExecutionDirectoryWitness(
+            canonicalPath: standardized.path,
+            canonicalPathSHA256: digest(Data(standardized.path.utf8)),
+            deviceID: deviceID,
+            fileID: fileID
+        )
+    }
+
+    private static func executionFileWitness(
+        _ url: URL,
+        label: String,
+        mustBeExecutable: Bool
+    ) throws -> TranslationToolkitExecutionFileWitness {
+        let standardized = url.standardizedFileURL
+        let resolved = standardized.resolvingSymlinksInPath().standardizedFileURL
+        let values = try standardized.resourceValues(forKeys: [
+            .isRegularFileKey,
+            .isSymbolicLinkKey,
+            .fileSizeKey,
+        ])
+        guard resolved == standardized,
+              values.isRegularFile == true,
+              values.isSymbolicLink != true,
+              let byteCount = values.fileSize,
+              byteCount > 0,
+              !mustBeExecutable || FileManager.default.isExecutableFile(atPath: standardized.path)
+        else {
+            throw TranslationLabError.invalidProject("the \(label) is not a safe regular file")
+        }
+        let data = try Data(contentsOf: standardized, options: [.mappedIfSafe])
+        guard data.count == byteCount else {
+            throw TranslationLabError.invalidProject("the \(label) changed while it was read")
+        }
+        return TranslationToolkitExecutionFileWitness(
+            canonicalPath: standardized.path,
+            byteCount: data.count,
+            sha256: digest(data)
         )
     }
 
     private static func findNode() throws -> URL {
         let environment = ProcessInfo.processInfo.environment
         var candidates: [String] = []
-        if let configured = environment["WONDERSWAN_NODE"], !configured.isEmpty {
+        if let configured = environment["WONDERSWAN_NODE"],
+           !configured.isEmpty,
+           configured.hasPrefix("/") {
             candidates.append(configured)
         }
         candidates += [
@@ -625,11 +1252,15 @@ public enum TranslationToolkitRunner {
             "/usr/local/bin/node",
             "/usr/bin/node",
         ]
-        if let path = environment["PATH"] {
-            candidates += path.split(separator: ":").map { "\($0)/node" }
-        }
-        for path in candidates where FileManager.default.isExecutableFile(atPath: path) {
-            return URL(fileURLWithPath: path)
+        for path in candidates {
+            let url = URL(fileURLWithPath: path)
+            if let canonical = try? canonicalExecutionFileURL(
+                url,
+                label: "Node.js executable",
+                mustBeExecutable: true
+            ) {
+                return canonical
+            }
         }
         throw TranslationLabError.nodeUnavailable
     }
@@ -2380,7 +3011,11 @@ public struct TranslationEvidenceStore: Sendable {
         )
         let staging = lab.appendingPathComponent(".staging-\(UUID().uuidString)", isDirectory: true)
         let final = lab.appendingPathComponent(captureName, isDirectory: true)
-        try FileManager.default.createDirectory(at: staging, withIntermediateDirectories: false)
+        try FileManager.default.createDirectory(
+            at: staging,
+            withIntermediateDirectories: false,
+            attributes: [.posixPermissions: 0o700]
+        )
         var committed = false
         defer {
             if !committed { try? FileManager.default.removeItem(at: staging) }
@@ -2392,6 +3027,12 @@ public struct TranslationEvidenceStore: Sendable {
         try input.framePNG.write(to: frameURL, options: [.atomic])
         try input.state.write(to: stateURL, options: [.atomic])
         try input.internalRAM.write(to: ramURL, options: [.atomic])
+        for url in [frameURL, stateURL, ramURL] {
+            try FileManager.default.setAttributes(
+                [.posixPermissions: 0o600],
+                ofItemAtPath: url.path
+            )
+        }
 
         var routeDigest: TranslationArtifactDigest?
         if let route = input.route {
@@ -2409,7 +3050,12 @@ public struct TranslationEvidenceStore: Sendable {
                 )
             }
             let routeData = try Self.encoded(route)
-            try routeData.write(to: staging.appendingPathComponent("route.json"), options: [.atomic])
+            let routeURL = staging.appendingPathComponent("route.json")
+            try routeData.write(to: routeURL, options: [.atomic])
+            try FileManager.default.setAttributes(
+                [.posixPermissions: 0o600],
+                ofItemAtPath: routeURL.path
+            )
             routeDigest = Self.digest(routeData)
         }
 
@@ -2431,7 +3077,12 @@ public struct TranslationEvidenceStore: Sendable {
             isolatedPersistence: true
         )
         let manifestData = try Self.encoded(manifest)
-        try manifestData.write(to: staging.appendingPathComponent("manifest.json"), options: [.atomic])
+        let manifestURL = staging.appendingPathComponent("manifest.json")
+        try manifestData.write(to: manifestURL, options: [.atomic])
+        try FileManager.default.setAttributes(
+            [.posixPermissions: 0o600],
+            ofItemAtPath: manifestURL.path
+        )
         try FileManager.default.moveItem(at: staging, to: final)
         committed = true
 
@@ -2703,7 +3354,11 @@ public struct TranslationEvidenceStore: Sendable {
                     throw TranslationLabError.unsafePath(current.path)
                 }
             } else {
-                try fileManager.createDirectory(at: current, withIntermediateDirectories: false)
+                try fileManager.createDirectory(
+                    at: current,
+                    withIntermediateDirectories: false,
+                    attributes: [.posixPermissions: 0o700]
+                )
             }
         }
         return url
@@ -2714,6 +3369,10 @@ public struct TranslationEvidenceStore: Sendable {
             throw TranslationLabError.unsafePath(url.path)
         }
         try data.write(to: url, options: [.atomic])
+        try FileManager.default.setAttributes(
+            [.posixPermissions: 0o600],
+            ofItemAtPath: url.path
+        )
     }
 
     private func validateRegularFile(_ url: URL, project: TranslationProject) throws {

@@ -99,7 +99,8 @@ Build the live local app from the repository root:
 ```sh
 ./Scripts/build-engine.sh
 export SWAN_ARES_ENGINE_DIR="$PWD/.engine/build"
-./Scripts/build-app.sh
+SWAN_SWIFTPM_DISABLE_KEYCHAIN=1 SWAN_SIGNING_MODE=adhoc \
+  ./Scripts/build-app.sh
 open ".build/app/SwanSong.app"
 ```
 
@@ -107,6 +108,7 @@ The focused source-free gates are:
 
 ```sh
 DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
+  SWAN_SWIFTPM_DISABLE_KEYCHAIN=1 \
   ./Scripts/swift-package.sh test --package-path .
 ./Scripts/check-live-engine.sh
 ./Scripts/check-compatibility-matrix.sh

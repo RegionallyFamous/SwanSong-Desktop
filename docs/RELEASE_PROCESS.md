@@ -149,7 +149,13 @@ not routine release metadata.
    bundled file and digest, rejects links or extra files, and checks that same
    signed payload again after archive extraction.
 
+   The prepared ares checkout is a sealed build input. Sourcery-generated C++
+   and headers are written to the CMake build directory, and the engine build
+   rechecks the complete prepared tree after compilation. Any build step that
+   writes back into the prepared checkout fails the same build.
+
    ```sh
+   ./Scripts/selftest-ares-source-state.sh
    ./Scripts/selftest-release-build-snapshot.sh
    ./Scripts/selftest-package-release-snapshots.sh
    ./Scripts/selftest-release-artifacts.sh

@@ -21,11 +21,13 @@ Command Line Tools.
 ```sh
 ./Scripts/build-engine.sh
 export SWAN_ARES_ENGINE_DIR="$PWD/.engine/build"
-swift build
+SWAN_SWIFTPM_DISABLE_KEYCHAIN=1 \
+  ./Scripts/swift-package.sh build --package-path .
 ```
 
-Build a Finder-ready local app with `./Scripts/build-app.sh`. Developer builds
-are ad-hoc signed; contributors do not need an Apple account.
+Build a Finder-ready local app with
+`SWAN_SWIFTPM_DISABLE_KEYCHAIN=1 SWAN_SIGNING_MODE=adhoc ./Scripts/build-app.sh`.
+Developer builds are ad-hoc signed; contributors do not need an Apple account.
 
 ## Verify a change
 
@@ -35,7 +37,8 @@ engine, and UI gates described in the Wiki's
 page. At minimum:
 
 ```sh
-swift test
+SWAN_SWIFTPM_DISABLE_KEYCHAIN=1 \
+  ./Scripts/swift-package.sh test --package-path .
 ./Scripts/check-live-engine.sh
 ./Scripts/check-ui-snapshots.sh
 git diff --check

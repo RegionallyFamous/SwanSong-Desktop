@@ -24,6 +24,11 @@ if [ ! -f "$SOURCE_DIR/ares/ares/ares.hpp" ]; then
   ARES_SOURCE_DIR="$SOURCE_DIR" "$SCRIPT_DIR/prepare-ares.sh" >/dev/null
 fi
 
+ARES_COMMIT=$(/usr/bin/plutil -extract commit raw -o - \
+  "$MACOS_DIR/Dependencies/ares.lock.json")
+/bin/sh "$SCRIPT_DIR/ares-source-state.sh" check \
+  "$SOURCE_DIR" "$ARES_COMMIT" "$MACOS_DIR/Engine/ares-headless.patch"
+
 # Command Line Tools 26.5 omits this query even though CMake's ares bootstrap
 # asks for it. Full Xcode supports it. Keep the workaround private to this
 # build instead of mutating the developer's selected toolchain.
@@ -61,6 +66,14 @@ if [ -f "$BUILD_DIR/CMakeCache.txt" ]; then
   fi
 fi
 cmake "$@"
-cmake --build "$BUILD_DIR" --target SwanAresEngine SwanAresSmoke --parallel
+cmake --build "$BUILD_DIR" \
+  --target SwanAresEngine SwanAresSmoke SwanV30PrefetchOriginControl \
+  --parallel
+
+# Configuration authenticates the source before CMake sees it. Check again
+# after compilation so an unexpected in-source generator fails this build,
+# rather than poisoning the checkout and failing only on the next invocation.
+/bin/sh "$SCRIPT_DIR/ares-source-state.sh" check \
+  "$SOURCE_DIR" "$ARES_COMMIT" "$MACOS_DIR/Engine/ares-headless.patch"
 
 echo "$BUILD_DIR"

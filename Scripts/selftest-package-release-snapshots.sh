@@ -59,6 +59,7 @@ mkdir -p "$REPOSITORY/Scripts" "$REPOSITORY/Dependencies" \
   "$INPUT_APP/Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Installer.xpc/Contents/MacOS" \
   "$INPUT_APP/Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Downloader.xpc/Contents/MacOS"
 cp "$SCRIPT_DIR/package-release.sh" "$REPOSITORY/Scripts/"
+cp "$SCRIPT_DIR/ares-source-state.sh" "$REPOSITORY/Scripts/"
 cp "$SCRIPT_DIR/materialize-ares-source.sh" "$REPOSITORY/Scripts/"
 cp "$SCRIPT_DIR/materialize-sparkle-source.sh" "$REPOSITORY/Scripts/"
 cat >"$REPOSITORY/Scripts/check-sparkle-dependency-lock.py" <<'EOF'

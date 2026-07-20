@@ -4,10 +4,11 @@ Writing a novel is not a progress bar. Story Forge gives the whole process a
 home—idea, outline, draft, revision, art, continuity, rights, and release—while
 leaving taste and approval with actual people.
 
-The native workspace can create novels, refresh editorial reports, manage a
-multi-book catalog, prepare ImageGen art, check an optional soundtrack, and
-build EPUB/PDF editions without turning an automated score into a claim that a
-book is good.
+The native workspace can run a proposal-only Story Room, show a causal map,
+edit chapters with live scene context, preserve revision branches, manage
+unprimed readers and research, prepare ImageGen art, author music auditions,
+measure WonderSwan adaptation drift, manage a catalog, and build EPUB/PDF
+editions without turning an automated score into a claim that a book is good.
 
 Story Forge is included in SwanSong 0.5.0.
 
@@ -28,7 +29,7 @@ does not scan the Mac for manuscripts or upload them. An explicit
 **SWANSONG_STORY_FORGE_DIR** development override is available; the normal app
 uses the folder selected in the interface.
 
-## Five workspaces
+## Nine workspaces
 
 ### Overview
 
@@ -40,6 +41,32 @@ The overview keeps chapter, scene, reader, report, illustration, rights, and
 soundtrack facts separate. A passing automated gate means the required evidence
 is present and internally current. It does not replace an editor, unprimed
 readers, or named human approval.
+
+**Show Next Actions** reads the exact project and gives a short evidence-backed
+queue instead of a generic checklist.
+
+### Story Room
+
+Prepare fresh packets for the premise scout, story architect, character editor,
+continuity editor, prose editor, art director, music director, and release
+editor. Every packet has the same project context, a bounded specialty, and a
+proposal-only output contract. The human lead writer selects and merges work.
+
+No specialist silently edits prose or canon, invents a reader, or approves art,
+music, rights, or release evidence.
+
+### Map & Draft
+
+**Build Map** creates a browser-readable view of chapters, causal scene turns,
+relationships, setups/payoffs, continuity, rhythm, illustrations, and music.
+The native manuscript editor opens Markdown chapters, makes unsaved changes
+visible, and saves only when asked. Choose a stable scene ID to refresh live
+context: goal, pressure, turn, decision, consequence, adjacent scenes,
+relationships, rhythm, art, music, and warnings.
+
+Revision snapshots are immutable. Compare any named snapshot with the current
+manuscript, then append an accept, partial, or reject decision and rationale to
+the timeline. Existing decisions are never rewritten.
 
 ### Editorial
 
@@ -59,22 +86,55 @@ It never averages taste into one score. Continuity tracks time, location,
 costume, injury, objects, promises, relationships, knowledge, and conditions
 through stable scene IDs.
 
+### Readers & Research
+
+Reader Lab exports a spoiler-free manuscript and neutral response form. It does
+not prime readers with the outline or desired revision. Import requires the
+current manuscript hash, a real reader identity, every answer, explicit local
+storage consent, and a response that has not already been imported.
+
+The research notebook links sources to claims, claims to scenes, confidence,
+sensitivity, and authenticity review. The genre specialist adds mystery clue
+fairness, romance boundary and reciprocity, cozy sincerity, comedy escalation,
+or adventure competence questions without flattening taste.
+
 ### Art & Music
 
-**Create ImageGen Briefs** turns approved scene intentions into production
-prompts. Every new or replacement cover, interior illustration, character
-design, prop sheet, and location key starts in ImageGen. SwanSong does not draw
-a placeholder when ImageGen art is missing.
+**Prepare Art Room** assembles the visual contract, reference pack, moment queue,
+and status. Prompt history is append-only. Every new or replacement cover,
+interior illustration, character design, prop sheet, and location key starts in
+ImageGen. SwanSong does not draw a placeholder when ImageGen art is missing.
+Intake preserves the original image and prompt record, binds an exact hash, and
+resets approval to pending.
 
 **Review Illustration Set** verifies source provenance, current hashes,
 composition, character and prop continuity, eye line, artifacts or accidental
 lettering, must-show/must-avoid delivery, and the complete contact sheet.
 Approval remains bound to the exact image set.
 
-Music is optional. When enabled, the soundtrack report checks memorable hooks,
-motif transformations, cue purpose, loop intent, mono safety, and the four
-WonderSwan channel roles. The report can validate the declared evidence; a
-person still decides whether the music is fun.
+Music is optional. Music Room creates editable four-channel sketches, renders
+two mono loops, and measures peak, RMS, duration, and seam delta. The soundtrack
+report still checks hooks, motif transformations, cue purpose, loop intent,
+mono safety, and WonderSwan roles. Generated notes are auditions; a person still
+decides whether the exact music is fun.
+
+### Adaptation
+
+**Compile Scaffold** creates a `.wscvn.json` authoring project and source map
+that preserve novel scene IDs, turns, decisions, consequences, setups, payoffs,
+and lossless 26×4 text pagination. It always says `production_ready: false`.
+**Check Drift** exposes missing mappings, stale manuscript hashes, and possible
+over-condensation after either source changes.
+
+Continue in Studio only begins the actual adaptation pass. Production still
+requires authored VN beats and choices, approved ImageGen art, the novel
+revision gate, WonderSwan readiness, and exhaustive SwanSong route, save/replay,
+fade, and native-audio testing.
+
+Long route matrices show a flushed `route-N (current/total)` line and retain
+`wall_time_seconds` for every route. The Story Forge doctor terminates the whole
+emulator process group on timeout, so a child player cannot survive and make a
+failed test look like a silent hang.
 
 ### Catalog
 
@@ -119,8 +179,9 @@ proof, and ROM proof does not substitute for novel approval.
 ## Safety and privacy boundary
 
 SwanSong invokes only its typed Story Forge allowlist; there is no arbitrary
-command field. Manuscripts, reports, art, music, lockfiles, dashboards, EPUBs,
-and PDFs stay in the selected folders. Coarse local automation may report only
+command field. Manuscripts, reports, role packets, maps, revisions, reader
+responses, research, art, music, adaptations, lockfiles, dashboards, EPUBs, and
+PDFs stay in the selected folders. Coarse local automation may report only
 whether a Story Forge project is open and can navigate to the workspace. It
 does not return a title, path, manuscript, report, image, music file, edition,
 diagnostic text, or approval record.

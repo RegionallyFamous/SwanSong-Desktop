@@ -1,0 +1,12 @@
+{
+  "game": {
+    "title": "SwanSong Display Source Fixture",
+    "platform": "WonderSwan Color",
+    "sourceLanguage": "ja",
+    "targetLanguage": "en"
+  },
+  "rom": {
+    "original": "rom/original.wsc",
+    "patched": "build/patched.wsc"
+  }
+}

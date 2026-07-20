@@ -79,7 +79,8 @@ jobs:
       - name: Resolve the pinned Sparkle signer
         run: |
           set -euo pipefail
-          swift package resolve
+          SWAN_SWIFTPM_DISABLE_KEYCHAIN=1 \
+            ./Scripts/swift-package.sh package resolve --package-path .
 
       - name: Sign and verify the appcast
         env:

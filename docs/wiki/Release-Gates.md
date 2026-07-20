@@ -96,7 +96,13 @@ Run the package-snapshot, artifact, and installer self-tests, then pass both the
 app ZIP and actual corresponding-source archive to
 `verify-release-artifacts.sh`:
 
+The prepared ares checkout remains immutable during compilation: generated
+resource sources live under the CMake build tree, and the complete source-tree
+identity is checked again after the engine targets finish.
+
 ```sh
+./Scripts/selftest-ares-source-state.sh
+./Scripts/check-engine-reproducibility.sh
 ./Scripts/selftest-release-build-snapshot.sh
 ./Scripts/selftest-package-release-snapshots.sh
 ./Scripts/selftest-release-artifacts.sh
@@ -110,6 +116,13 @@ app ZIP and actual corresponding-source archive to
   --checksums dist/SHA256SUMS.txt \
   --app .build/app/SwanSong.app
 ```
+
+The source-built engine reproducibility gate materializes the locked ares
+source twice in separate private roots and requires byte-identical dylibs,
+content-derived Mach-O UUIDs, file-backed section hashes, exported ABI symbol
+tables, public monochrome smoke output, and exact route-runner `dladdr`
+path/digest binding. A mismatch is a release stop even when executable section
+hashes happen to agree.
 
 The manifest, checksums, both archives, installed app, bundle identity,
 architectures, signatures, notarization, Gatekeeper result, and binary hashes

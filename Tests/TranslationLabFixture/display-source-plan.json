@@ -1,0 +1,10 @@
+{
+  "schema": "swan-song-frame-input-plan-v1",
+  "totalFrames": 3,
+  "events": [
+    {
+      "frameIndex": 0,
+      "inputs": []
+    }
+  ]
+}

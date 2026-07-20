@@ -9,17 +9,30 @@ MCP_SWIFT_DIR=${SWAN_TRANSLATION_AUTOMATION_MCP_SWIFT_DIR:-"$ROOT/.build/transla
 TEMP_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/swan-song-translation-automation.XXXXXX")
 TOOLKIT="$TEMP_ROOT/toolkit"
 PROJECT="$TOOLKIT/projects/fixture"
+SOURCE_PROJECT="$TOOLKIT/projects/source-fixture"
 
 cleanup() {
   rm -rf "$TEMP_ROOT"
 }
 trap cleanup EXIT INT TERM
 
-mkdir -p "$TOOLKIT/bin" "$PROJECT/rom" "$PROJECT/build" "$PROJECT/automation"
+mkdir -p \
+  "$TOOLKIT/bin" \
+  "$PROJECT/rom" \
+  "$PROJECT/build" \
+  "$PROJECT/automation" \
+  "$SOURCE_PROJECT/rom" \
+  "$SOURCE_PROJECT/build" \
+  "$SOURCE_PROJECT/automation"
 cp "$ROOT/Tests/TranslationLabFixture/toolkit/bin/wstrans.mjs" "$TOOLKIT/bin/wstrans.mjs"
 cp "$ROOT/Tests/TranslationLabFixture/project.json" "$PROJECT/project.json"
 cp "$ROOT/testroms/ws-test-suite/80186_quirks/80186_quirks.ws" "$PROJECT/rom/original.ws"
 cp "$PROJECT/rom/original.ws" "$PROJECT/build/patched.ws"
+cp "$ROOT/Tests/TranslationLabFixture/display-source-project.json" \
+  "$SOURCE_PROJECT/project.json"
+cp "$ROOT/testroms/swan-song/display_provenance/display_provenance_horizontal.wsc" \
+  "$SOURCE_PROJECT/rom/original.wsc"
+cp "$SOURCE_PROJECT/rom/original.wsc" "$SOURCE_PROJECT/build/patched.wsc"
 mkdir -p "$TEMP_ROOT/outside"
 
 cat >"$PROJECT/automation/opening-plan.json" <<'JSON'
@@ -31,6 +44,8 @@ cat >"$PROJECT/automation/opening-plan.json" <<'JSON'
   ]
 }
 JSON
+
+cp "$PROJECT/automation/opening-plan.json" "$SOURCE_PROJECT/automation/opening-plan.json"
 
 ln -s "$TEMP_ROOT/outside" "$PROJECT/automation-link"
 cp "$PROJECT/automation/opening-plan.json" "$TEMP_ROOT/outside/linked-plan.json"
@@ -98,6 +113,269 @@ if audio.get("channels") != 2 or audio.get("sampleRate") != 48000:
     raise SystemExit("playtest-plan audio format mismatch")
 if audio.get("sampleFrames", 0) <= 0 or len(audio.get("pcmFloatSHA256", "")) != 64:
     raise SystemExit("playtest-plan audio evidence is incomplete")
+PY
+
+if SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" probe-rectangle-source \
+  --allow-project-writes \
+  --project "$SOURCE_PROJECT" \
+  --plan "$SOURCE_PROJECT/automation/opening-plan.json" \
+  --role original \
+  --frame 2 \
+  --rect 8,8,1,1 \
+  --components raster >/dev/null 2>&1; then
+  echo "probe-rectangle-source accepted writes without the debug guard" >&2
+  exit 1
+fi
+
+if SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" probe-rectangle-source \
+  --enable-debug-tools \
+  --project "$SOURCE_PROJECT" \
+  --plan "$SOURCE_PROJECT/automation/opening-plan.json" \
+  --role original \
+  --frame 2 \
+  --rect 8,8,1,1 \
+  --components raster >/dev/null 2>&1; then
+  echo "probe-rectangle-source accepted writes without the project-write guard" >&2
+  exit 1
+fi
+
+for INVALID_COMPONENTS in "raster,raster" "raster,unknown"; do
+  if SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" probe-rectangle-source \
+    --enable-debug-tools \
+    --allow-project-writes \
+    --project "$SOURCE_PROJECT" \
+    --plan "$SOURCE_PROJECT/automation/opening-plan.json" \
+    --role original \
+    --frame 2 \
+    --rect 8,8,1,1 \
+    --components "$INVALID_COMPONENTS" >/dev/null 2>&1; then
+    echo "probe-rectangle-source accepted invalid components: $INVALID_COMPONENTS" >&2
+    exit 1
+  fi
+done
+
+SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" probe-rectangle-source \
+  --enable-debug-tools \
+  --allow-project-writes \
+  --project "$SOURCE_PROJECT" \
+  --plan "$SOURCE_PROJECT/automation/opening-plan.json" \
+  --role original \
+  --frame 2 \
+  --rect 8,8,1,1 \
+  --components raster \
+  >"$SOURCE_PROJECT/automation/source-probe-report.json"
+
+SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" probe-rectangle-source \
+  --enable-debug-tools \
+  --allow-project-writes \
+  --project "$SOURCE_PROJECT" \
+  --plan "$SOURCE_PROJECT/automation/opening-plan.json" \
+  --role original \
+  --frame 2 \
+  --rect 8,8,1,1 \
+  --components raster \
+  >"$SOURCE_PROJECT/automation/source-probe-report-b.json"
+
+SOURCE_PROBE_DETAILS=$(python3 - \
+  "$SOURCE_PROJECT" \
+  "$SOURCE_PROJECT/automation/opening-plan.json" \
+  "$SOURCE_PROJECT/automation/source-probe-report.json" \
+  "$SOURCE_PROJECT/automation/source-probe-report-b.json" <<'PY'
+import hashlib
+import json
+import os
+import pathlib
+import sys
+
+project = pathlib.Path(sys.argv[1])
+plan = pathlib.Path(sys.argv[2])
+report = json.loads(pathlib.Path(sys.argv[3]).read_text())
+report_b = json.loads(pathlib.Path(sys.argv[4]).read_text())
+if report.get("schema") != "swan-song-display-source-probe-report-v4":
+    raise SystemExit("probe-rectangle-source report schema mismatch")
+if report.get("role") != "original" or report.get("planFrameIndex") != 2:
+    raise SystemExit("probe-rectangle-source lost its exact clean-replay target")
+if report.get("rectangleWidth") != 1 or report.get("rectangleHeight") != 1:
+    raise SystemExit("probe-rectangle-source changed native geometry")
+if report.get("selectedComponents") != ["raster"]:
+    raise SystemExit("probe-rectangle-source changed the exact component selection")
+if not report.get("isComplete") or not report.get("lineageComplete"):
+    raise SystemExit("the public raster source probe did not complete")
+if report.get("prototypeAuthorized") is not False:
+    raise SystemExit("source evidence unexpectedly authorized a prototype")
+if report.get("executedFrames") != 3:
+    raise SystemExit("probe-rectangle-source did not replay from clean boot")
+for key in (
+    "sourceRangesSHA256", "candidateSourceRangesSHA256", "chainsSHA256",
+    "executedReadContextsSHA256", "outsideConsumersSHA256",
+    "withinRootConsumersSHA256", "planSHA256", "projectSHA256", "romSHA256",
+    "engineSHA256", "rtcSHA256", "persistenceSHA256", "nativeFrameSHA256",
+    "privateDetailsSHA256",
+):
+    if len(report.get(key, "")) != 64:
+        raise SystemExit(f"probe-rectangle-source lost source-free digest {key}")
+public_text = json.dumps(report, sort_keys=True).lower()
+for forbidden in (
+    "cartridgeoffset", "sourceaddress", "lowerbound", "upperbound",
+    "immediatecaller", "resolvedcartridgeoperand", "mapperwindow",
+    "mapperbank", "operandsegment", "operandoffset", "callersegment",
+    "calleroffset", "oamaddress", "writerpc", "cartridgebytes",
+    '"path"', '"traces"',
+    project.as_posix().lower(),
+):
+    if forbidden in public_text:
+        raise SystemExit(f"probe-rectangle-source exposed private field {forbidden}")
+stable = set(report) - {"privateDetailsSHA256"}
+if {key: report[key] for key in stable} != {key: report_b.get(key) for key in stable}:
+    raise SystemExit("probe-rectangle-source was not deterministic across clean replays")
+
+root = project / "analysis/swan-song-lab/display-source-probes"
+artifacts = sorted(root.glob("source-probe-*"))
+if len(artifacts) != 2:
+    raise SystemExit("probe-rectangle-source did not publish both private artifacts")
+if os.stat(root).st_mode & 0o777 != 0o700:
+    raise SystemExit("private source-probe root permissions are not 0700")
+selected = None
+for artifact in artifacts:
+    if os.stat(artifact).st_mode & 0o777 != 0o700:
+        raise SystemExit("private source-probe directory permissions are not 0700")
+    for name in ("plan.json", "details.json"):
+        if os.stat(artifact / name).st_mode & 0o777 != 0o600:
+            raise SystemExit(f"private source-probe file permissions are not 0600: {name}")
+    details_data = (artifact / "details.json").read_bytes()
+    details = json.loads(details_data)
+    if details.get("selectedComponents") != ["raster"]:
+        raise SystemExit("private source probe changed the exact component selection")
+    if json.loads((artifact / "plan.json").read_text()) != json.loads(plan.read_text()):
+        raise SystemExit("private source probe lost the exact frame/input plan")
+    if hashlib.sha256(details_data).hexdigest() == report["privateDetailsSHA256"]:
+        selected = artifact / "details.json"
+if selected is None:
+    raise SystemExit("private source probe could not be re-indexed by its public digest")
+print(selected)
+PY
+)
+
+if SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" export-static-analysis-seed \
+  --allow-project-writes \
+  --project "$SOURCE_PROJECT" \
+  --source-probe "$SOURCE_PROBE_DETAILS" >/dev/null 2>&1; then
+  echo "export-static-analysis-seed accepted writes without the debug guard" >&2
+  exit 1
+fi
+
+if SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" export-static-analysis-seed \
+  --enable-debug-tools \
+  --project "$SOURCE_PROJECT" \
+  --source-probe "$SOURCE_PROBE_DETAILS" >/dev/null 2>&1; then
+  echo "export-static-analysis-seed accepted writes without the project-write guard" >&2
+  exit 1
+fi
+
+if SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" export-static-analysis-seed \
+  --enable-debug-tools \
+  --allow-project-writes \
+  --project "$SOURCE_PROJECT" \
+  --source-probe "$SOURCE_PROJECT/automation/source-probe-report.json" \
+  >/dev/null 2>&1; then
+  echo "export-static-analysis-seed accepted a source-free report as private evidence" >&2
+  exit 1
+fi
+
+SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" export-static-analysis-seed \
+  --enable-debug-tools \
+  --allow-project-writes \
+  --project "$SOURCE_PROJECT" \
+  --source-probe "$SOURCE_PROBE_DETAILS" \
+  >"$SOURCE_PROJECT/automation/static-seed-report.json"
+
+SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" export-static-analysis-seed \
+  --enable-debug-tools \
+  --allow-project-writes \
+  --project "$SOURCE_PROJECT" \
+  --source-probe "$SOURCE_PROBE_DETAILS" \
+  >"$SOURCE_PROJECT/automation/static-seed-report-b.json"
+
+python3 - \
+  "$SOURCE_PROJECT" \
+  "$SOURCE_PROJECT/automation/static-seed-report.json" \
+  "$SOURCE_PROJECT/automation/static-seed-report-b.json" <<'PY'
+import hashlib
+import json
+import os
+import pathlib
+import sys
+
+project = pathlib.Path(sys.argv[1])
+report = json.loads(pathlib.Path(sys.argv[2]).read_text())
+report_b = json.loads(pathlib.Path(sys.argv[3]).read_text())
+if report != report_b:
+    raise SystemExit("export-static-analysis-seed was not deterministic")
+if report.get("schema") != "swan-song-static-analysis-seed-report-v1":
+    raise SystemExit("static-analysis seed report schema mismatch")
+if report.get("selectedComponents") != ["raster"]:
+    raise SystemExit("static-analysis seed changed the component selection")
+if not all(report.get(key) is True for key in (
+    "lineageComplete", "consumerScopeComplete", "executedReadContextsComplete",
+)):
+    raise SystemExit("static-analysis seed report lost a completeness gate")
+if report.get("prototypeAuthorized") is not False or report.get("anchorCount", 0) <= 0:
+    raise SystemExit("static-analysis seed report overstated authority or lost anchors")
+public_text = json.dumps(report, sort_keys=True).lower()
+for forbidden in (
+    "sourceprobedetailspath", "cartridgerange", "lowerbound", "upperbound",
+    "immediatecaller", "callersegment", "calleroffset", "operandsegment",
+    "operandoffset", "mapperwindow", "mapperbank",
+    "resolvedmapperapertureoperand", '"path"', '"anchors"', '"payloadranges"',
+    project.as_posix().lower(),
+):
+    if forbidden in public_text:
+        raise SystemExit(f"static-analysis seed report exposed private field {forbidden}")
+root = project / "analysis/swan-song-lab/static-analysis-seeds"
+seeds = sorted(root.glob("seed-*.json"))
+if len(seeds) != 2:
+    raise SystemExit("export-static-analysis-seed did not publish both private seeds")
+if os.stat(root).st_mode & 0o777 != 0o700:
+    raise SystemExit("private static-analysis seed directory permissions are not 0700")
+payloads = []
+for seed in seeds:
+    if os.stat(seed).st_mode & 0o777 != 0o600:
+        raise SystemExit("private static-analysis seed permissions are not 0600")
+    payloads.append(seed.read_bytes())
+if payloads[0] != payloads[1]:
+    raise SystemExit("repeated seed export changed the private payload")
+if hashlib.sha256(payloads[0]).hexdigest() != report.get("privateSeedSHA256"):
+    raise SystemExit("static-analysis seed receipt digest mismatch")
+seed = json.loads(payloads[0])
+if seed.get("schema") != "swan-song-static-analysis-seed-v1":
+    raise SystemExit("private static-analysis seed schema mismatch")
+if seed.get("selectedComponents") != ["raster"] or not seed.get("anchors"):
+    raise SystemExit("private static-analysis seed lost its exact raster anchors")
+if seed.get("prototypeAuthorized") is not False:
+    raise SystemExit("private static-analysis seed overstated patch authority")
+PY
+
+cp "$SOURCE_PROJECT/rom/original.wsc" \
+  "$SOURCE_PROJECT/automation/original.wsc.backup"
+cp "$ROOT/testroms/ws-test-suite/80186_quirks/80186_quirks.ws" \
+  "$SOURCE_PROJECT/rom/original.wsc"
+if SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" export-static-analysis-seed \
+  --enable-debug-tools \
+  --allow-project-writes \
+  --project "$SOURCE_PROJECT" \
+  --source-probe "$SOURCE_PROBE_DETAILS" >/dev/null 2>&1; then
+  echo "export-static-analysis-seed accepted a stale ROM-bound probe" >&2
+  exit 1
+fi
+cp "$SOURCE_PROJECT/automation/original.wsc.backup" \
+  "$SOURCE_PROJECT/rom/original.wsc"
+
+python3 - "$SOURCE_PROJECT/analysis/swan-song-lab/static-analysis-seeds" <<'PY'
+import pathlib
+import sys
+
+if len(list(pathlib.Path(sys.argv[1]).glob("seed-*.json"))) != 2:
+    raise SystemExit("a refused static-analysis seed export left a private artifact")
 PY
 
 if SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" record-route \
@@ -650,4 +928,4 @@ if process.returncode != 0:
     raise SystemExit(f"observed-play MCP exited {process.returncode}: {stderr}")
 PY
 
-echo "PASS deterministic automation, private capture pairs, source-free display-owner probes, crash recovery, and retained observed-play proof"
+echo "PASS deterministic automation, private capture pairs, source-free display-owner/source probes, static-analysis seed export, crash recovery, and retained observed-play proof"

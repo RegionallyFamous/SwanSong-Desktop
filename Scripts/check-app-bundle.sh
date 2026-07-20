@@ -26,7 +26,8 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
-CONFIGURATION=debug "$SCRIPT_DIR/build-app.sh" >/dev/null
+SWAN_SWIFTPM_DISABLE_KEYCHAIN=1 SWAN_SIGNING_MODE=adhoc \
+  CONFIGURATION=debug "$SCRIPT_DIR/build-app.sh" >/dev/null
 ditto "$MACOS_DIR/.build/app/SwanSong.app" "$APP"
 cp "$MACOS_DIR/testroms/ws-test-suite/80186_quirks/80186_quirks.ws" "$ROM"
 cp "$ROM" "$COLOR_ROM"
