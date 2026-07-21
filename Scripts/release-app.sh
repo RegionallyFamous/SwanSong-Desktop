@@ -142,6 +142,7 @@ if [ "$NOTARIZE" = "1" ]; then
 fi
 
 "$RELEASE_SCRIPT_DIR/check-homebrew-production-readiness.sh"
+"$RELEASE_SCRIPT_DIR/check-no-password-prompts.sh"
 
 # The shared ares checkout only supplies immutable Git objects. Prepare it with
 # the commit-derived helper and patch, then materialize the actual build source

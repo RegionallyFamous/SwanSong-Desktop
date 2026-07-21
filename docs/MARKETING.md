@@ -52,7 +52,7 @@ Lead with the feeling, then earn the trust:
 
 ## Release honesty
 
-The public download is currently **0.7.0**. The complete SDK 0.5 Studio,
+The public download is currently **0.7.1**. The complete SDK 0.5 Studio,
 Story Forge, Cartridge Tools, and capture-bound Translation Lab remain shipped
 features; 0.7 adds an isolated engine, signed local-automation boundary, Safe
 Mode, privacy-safe support, and inspectable release provenance. Excitement never

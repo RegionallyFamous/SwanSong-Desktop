@@ -44,6 +44,9 @@ public distribution.
   lanes appropriate to the release. The framework gate verifies the pinned
   version, expected helper/XPC bundle identities and payload, and absence of
   game or firmware-like files.
+- Run `check-no-password-prompts.sh`. The shipped Swift runtime must contain no
+  login-Keychain item path, and local SwiftPM automation must explicitly
+  disable Keychain lookup. A password dialog is a release-blocking regression.
 - Run `check-signed-source-probe-helper.sh` against the Developer ID candidate
   after `verify-app-signature.sh` and before notarization. It must use the real
   bundled MCP helper, prove the MCP helper, route runner, and engine dylib share

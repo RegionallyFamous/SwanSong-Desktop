@@ -6,6 +6,13 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-07-21
+
+**Follow the Evidence.** SwanSong 0.7.1 gives Translation Lab a signed,
+capture-authorized path from a visible rectangle back to its real cartridge
+sources—without exposing private addresses or game bytes. It also closes the
+last runtime paths that could wake the Mac login Keychain.
+
 ### Security
 
 - Routes the installed MCP source-provenance tool only through its bundled
@@ -35,6 +42,9 @@ records those user-visible changes. Published releases use semantic versioning.
 - Capture Intake now canonicalizes mixed-case and repeated-hyphen names exactly
   like the translation toolkit, so authenticated captures no longer fail their
   receipt check simply because the original capture name used capitals.
+- Adds a release-blocking password-prompt gate. Shipped runtime code may not
+  use Keychain item APIs or the retired Homebrew Catalog trust service, and
+  non-interactive Swift tools must disable Keychain lookup.
 
 ## [0.7.0] - 2026-07-20
 
@@ -626,7 +636,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.1...HEAD
+[0.7.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.6.1...v0.7.0
 [0.6.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.5.0...v0.6.0

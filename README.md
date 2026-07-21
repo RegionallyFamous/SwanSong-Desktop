@@ -16,7 +16,7 @@ a really nice place to play them.
 
 <p align="center">
   <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.7</strong></a>
-  · <a href="docs/releases/0.7.0.md">See what’s new</a>
+  · <a href="docs/releases/0.7.1.md">See what’s new</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -153,7 +153,7 @@ mixed-case capture names all the way through the real toolkit. None of the
 addresses, cartridge ranges, project paths, or frame contents leave through
 local automation.
 
-Read the [0.7 release notes](docs/releases/0.7.0.md) for the guided tour or
+Read the [0.7.1 release notes](docs/releases/0.7.1.md) for the guided tour or
 the [changelog](CHANGELOG.md) for the complete history.
 
 ## Start exploring
@@ -172,7 +172,7 @@ keeps the deeper guides out of your way until you need them:
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.7 release notes](docs/releases/0.7.0.md).
+[0.7.1 release notes](docs/releases/0.7.1.md).
 
 ## Free, open, and independent
 

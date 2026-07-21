@@ -92,6 +92,18 @@ not routine release metadata.
    metadata all validate. Publish the signed catalog before building an app
    that advertises it as available. Never put the private signing key in this
    repository or on the catalog host.
+
+   Also prove that neither the shipped runtime nor non-interactive local tools
+   can consult the login Keychain:
+
+   ```sh
+   ./Scripts/check-no-password-prompts.sh
+   ```
+
+   This is a source-level release boundary, not merely a UI test. It rejects
+   Keychain item APIs and the retired Homebrew Catalog trust service
+   anywhere in the shipped Swift runtime, and requires every SwiftPM-backed
+   local automation launcher to disable Keychain lookup.
 4. Run the engine, Swift, app runtime, UI, translation, architecture, payload,
    embedded-Sparkle-framework, and personally owned acceptance lanes
    appropriate to the release. After building the app, verify the feed/key,

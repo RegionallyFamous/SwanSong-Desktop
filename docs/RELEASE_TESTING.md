@@ -5,7 +5,7 @@ SDK projects, cartridges, and save data you own or are authorized to use. Never
 attach ROMs, saves, private screenshots or audio, manuscripts, cartridge-source
 evidence, or Translation Lab evidence to a public report.
 
-The signed public release is **SwanSong 0.7.0 (13)**.
+The signed public release is **SwanSong 0.7.1 (14)**.
 
 ## What this release is testing
 
@@ -71,7 +71,9 @@ The signed public release is **SwanSong 0.7.0 (13)**.
   notarization.
 - **Non-interactive local tools:** restart the trusted MCP clients and run the
   Swift wrapper with login-keychain access disabled. Neither path should ask
-  for a macOS login password.
+  for a macOS login password. `check-no-password-prompts.sh` must also prove
+  that the shipped runtime has no Keychain item API or retired
+  Homebrew Catalog trust-service path.
 - **The everyday player:** retain Open IPL, imports, controls, Time Ribbon,
   save states, portrait play, native 224×157 fitting, app updates, and relaunch
   on Apple silicon and Intel.
@@ -136,7 +138,7 @@ The signed public release is **SwanSong 0.7.0 (13)**.
 
 ## Expected boundaries
 
-SwanSong 0.7.0 embeds SDK 0.5.0 but not Python or Wonderful. Install those
+SwanSong 0.7.1 embeds SDK 0.5.0 but not Python or Wonderful. Install those
 external dependencies before running Studio Doctor or a build. Studio should
 find Python 3.11+ in standard Homebrew, python.org, MacPorts, and system
 locations even when SwanSong opens from Finder. Story Forge also requires a
@@ -155,7 +157,7 @@ title-specific quirks still deserve hands-on attention.
 
 ## Before reporting a result
 
-1. Confirm **SwanSong 0.7.0 (13)** in **SwanSong > About SwanSong**.
+1. Confirm **SwanSong 0.7.1 (14)** in **SwanSong > About SwanSong**.
 2. Record the Mac model, macOS version, architecture, controller or cartridge
    hardware when relevant, SDK version, Python version, and Wonderful revision.
 3. For Story Forge, state the visible workspace and sanitized action/result;
