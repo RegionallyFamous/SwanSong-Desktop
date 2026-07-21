@@ -8,6 +8,7 @@ TOOLKIT_DIRECTORY=${SWAN_CAPTURE_AUTH_TOOLKIT_DIR:-"$REPOSITORY_ROOT/../wondersw
 RUNNER=${SWAN_CAPTURE_KAT_RUNNER:-}
 ARES_SOURCE=${SWAN_CAPTURE_KAT_ARES_SOURCE:-}
 FULL_C=${SWAN_CAPTURE_KAT_FULL_C:-}
+ENGINE_PROFILE=${SWAN_CAPTURE_KAT_ENGINE_PROFILE:-abi9}
 BUNDLE=${SWAN_CAPTURE_KAT_BUNDLE:-}
 OWN_BUNDLE=0
 
@@ -37,6 +38,7 @@ if [ -z "$RUNNER" ] || [ ! -x "$RUNNER" ] \
   echo "Generate the full-C receipt from that exact runner, engine, source tree, and current Desktop source before running this check." >&2
   exit 64
 fi
+FULL_C_SHA256=$(/usr/bin/shasum -a 256 "$FULL_C" | /usr/bin/awk '{print $1}')
 
 if [ -z "$BUNDLE" ]; then
   BUNDLE=$(mktemp -d "${TMPDIR:-/tmp}/swan-song-capture-envelope-kat.XXXXXX")
@@ -52,6 +54,8 @@ run_phase() {
   SWAN_CAPTURE_KAT_RUNNER="$RUNNER" \
   SWAN_CAPTURE_KAT_ARES_SOURCE="$ARES_SOURCE" \
   SWAN_CAPTURE_KAT_FULL_C="$FULL_C" \
+  SWAN_CAPTURE_KAT_FULL_C_SHA256="$FULL_C_SHA256" \
+  SWAN_CAPTURE_KAT_ENGINE_PROFILE="$ENGINE_PROFILE" \
   SWAN_CAPTURE_KAT_BUNDLE="$BUNDLE" \
   SWAN_CAPTURE_KAT_PHASE="$phase" \
   SWAN_CAPTURE_KAT_SUCCESS_RECEIPT_SHA256="$success_digest" \

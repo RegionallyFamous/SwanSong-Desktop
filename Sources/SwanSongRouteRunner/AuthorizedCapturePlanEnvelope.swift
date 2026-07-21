@@ -160,6 +160,7 @@ private struct AuthorizedCapturePlanContext {
     let toolkitEntryPoint: CaptureBoundFile
     let runningRunner: CaptureBoundFile
     let loadedDylib: CaptureBoundFile
+    let engineABI: Int
     let projectManifest: CaptureBoundFile
     let planInput: CaptureBoundFile
     let originalROM: CaptureBoundFile
@@ -293,7 +294,7 @@ private struct AuthorizedCapturePlanContext {
         let qualifiedMethodCapability = try qualifiedMethodFile.map {
             try jsonObject($0, label: "qualified capture-plan method capability receipt")
         }
-        try validateCapability(capability)
+        let engineABI = try validateCapability(capability)
         try validateIntakeCapability(intakeCapability)
         try validateMethodCapability(
             methodCapability,
@@ -331,7 +332,8 @@ private struct AuthorizedCapturePlanContext {
             capability: capability,
             methodCapability: methodCapability,
             qualifiedMethodCapability: qualifiedMethodCapability,
-            loadedDylib: image
+            loadedDylib: image,
+            expectedEngineABI: engineABI
         )
         let result = Self(
             invocation: invocation,
@@ -356,6 +358,7 @@ private struct AuthorizedCapturePlanContext {
             toolkitEntryPoint: validated.entryPoint,
             runningRunner: runningRunner,
             loadedDylib: image,
+            engineABI: engineABI,
             projectManifest: validated.project,
             planInput: validated.plan,
             originalROM: validated.original,
@@ -450,7 +453,7 @@ private struct AuthorizedCapturePlanContext {
         )
     }
 
-    private static func validateCapability(_ value: [String: Any]) throws {
+    private static func validateCapability(_ value: [String: Any]) throws -> Int {
         guard try string(value["schema"], label: "C schema") == capabilitySchema,
               try string(value["classification"], label: "C classification")
                 == "ad-hoc-development" else {
@@ -465,6 +468,62 @@ private struct AuthorizedCapturePlanContext {
             throw stop("C overstates downstream authority or loses loaded-image binding")
         }
         let runner = try object(value["routeRunner"], label: "C route runner")
+        let engine = try object(value["engine"], label: "C engine")
+        let abi = try integer(engine["abi"], label: "C engine ABI")
+        let buildID = try string(engine["buildID"], label: "C engine build ID")
+        let publicControls = try object(value["publicControls"], label: "C public controls")
+        let expectedProfileIDs: Set<String>
+        let expectedCapabilitySchema: String
+        let expectedBuildSuffix: String
+        switch abi {
+        case 9:
+            expectedProfileIDs = ["swan-song-public-engine-controls-v6"]
+            expectedCapabilitySchema = "swan-song-route-runner-engine-capability-v1"
+            expectedBuildSuffix = "-swan-abi9"
+        case 10:
+            expectedProfileIDs = [
+                "swan-song-public-engine-controls-abi10-v3",
+                "swan-song-public-engine-controls-abi10-capture-v1",
+            ]
+            expectedCapabilitySchema = "swan-song-route-runner-engine-capability-v2"
+            expectedBuildSuffix = "-swan-abi10"
+        default:
+            throw stop("C does not bind one supported capture-plan engine profile")
+        }
+        guard try boolean(publicControls["officialProfile"], label: "C official profile"),
+              expectedProfileIDs.contains(
+                try string(publicControls["profileID"], label: "C profile ID")
+              ),
+              try string(runner["capabilityReportSchema"],
+                         label: "C runner capability schema")
+                == expectedCapabilitySchema,
+              try string(runner["engineBuildID"], label: "C runner build ID") == buildID,
+              buildID.hasSuffix(expectedBuildSuffix) else {
+            throw stop("C mixes capture-plan engine ABI, profile, schema, or build")
+        }
+        if abi == 10 {
+            let consumed = try object(
+                runner["consumedPrefetchProvenance"],
+                label: "C consumed-prefetch provenance"
+            )
+            guard try string(consumed["schema"], label: "C prefetch schema")
+                    == "swan-song-consumed-prefetch-capability-v1",
+                  try integer(consumed["requiredEngineABI"], label: "C prefetch ABI") == 10,
+                  try string(consumed["requiredBuildIDSuffix"],
+                             label: "C prefetch build suffix") == "-swan-abi10",
+                  try integer(consumed["capabilityBitRaw"],
+                              label: "C prefetch capability bit") == 8192,
+                  try string(consumed["sourceProbeProfile"],
+                             label: "C prefetch source profile")
+                    == "diagnostic-future-source-probe-v5",
+                  try integer(consumed["engineABI"], label: "C prefetch live ABI") == 10,
+                  try string(consumed["engineBuildID"], label: "C prefetch build ID")
+                    == buildID,
+                  try integer(consumed["engineCapabilitiesRaw"],
+                              label: "C prefetch capability set") == 16319 else {
+                throw stop("C loses the exact ABI-10 consumed-prefetch profile")
+            }
+        }
         let methods = try object(runner["methods"], label: "C methods")
         let capture = try object(methods["capturePlan"], label: "C capture-plan method")
         guard try string(capture["command"], label: "C capture command") == method,
@@ -476,11 +535,10 @@ private struct AuthorizedCapturePlanContext {
               try boolean(capture["cleanBootReplay"], label: "C clean replay") else {
             throw stop("C lost the base capture-plan contract")
         }
-        let engine = try object(value["engine"], label: "C engine")
-        guard try integer(engine["abi"], label: "C engine ABI") == 9,
-              try string(engine["backend"], label: "C engine backend") == "ares" else {
-            throw stop("C does not bind the ABI-9 ares engine")
+        guard try string(engine["backend"], label: "C engine backend") == "ares" else {
+            throw stop("C does not bind the profile-selected ares engine")
         }
+        return abi
     }
 
     private static func validateIntakeCapability(_ value: [String: Any]) throws {
@@ -1323,7 +1381,8 @@ private struct AuthorizedCapturePlanContext {
         capability: [String: Any],
         methodCapability: [String: Any],
         qualifiedMethodCapability: [String: Any]?,
-        loadedDylib: CaptureBoundFile
+        loadedDylib: CaptureBoundFile,
+        expectedEngineABI: Int
     ) throws -> CaptureBoundFile {
         let request = try object(authorization["request"], label: "A request")
         let aRunner = try validateInputRecord(
@@ -1346,7 +1405,7 @@ private struct AuthorizedCapturePlanContext {
               sameArtifact(aDylib.artifact, loadedDylib.artifact),
               sameArtifact(aDylib.artifact,
                            try identityOnly(cEngine["dylib"], label: "C dylib")),
-              try integer(cEngine["abi"], label: "C ABI") == 9,
+              try integer(cEngine["abi"], label: "C ABI") == expectedEngineABI,
               try string(cEngine["backend"], label: "C backend") == "ares",
               !(try string(cEngine["buildID"], label: "C build ID")).isEmpty else {
             throw stop("the current runner/engine differs from C, M, or A")
@@ -1355,7 +1414,7 @@ private struct AuthorizedCapturePlanContext {
             rtcMode: .deterministic(seedUnixSeconds: 946_684_800),
             hardwareModel: .wonderSwan
         )
-        guard session.abiVersion == 9,
+        guard Int(session.abiVersion) == expectedEngineABI,
               session.backendName == "ares",
               session.buildID == (try string(cEngine["buildID"], label: "C build ID")) else {
             throw stop("the live engine identity differs from C")
@@ -1371,7 +1430,13 @@ private struct AuthorizedCapturePlanContext {
                   try canonicalJSON(try object(executor["loadedDylib"],
                                                label: "M1 loaded dylib"))
                     == canonicalJSON(try object(request["loadedDylib"],
-                                                label: "A loaded dylib")) else {
+                                                label: "A loaded dylib")),
+                  try integer(executor["engineABI"], label: "M1 engine ABI")
+                    == expectedEngineABI,
+                  try string(executor["engineBackend"], label: "M1 engine backend")
+                    == (try string(cEngine["backend"], label: "C engine backend")),
+                  try string(executor["engineBuildID"], label: "M1 engine build ID")
+                    == (try string(cEngine["buildID"], label: "C engine build ID")) else {
                 throw stop("M1 executor differs from the running C/A executor")
             }
         }
@@ -1931,6 +1996,7 @@ enum AuthorizedCapturePlanRunner {
             plan: plan,
             originalROM: context.originalROM.data,
             patchedROM: context.patchedROM.data,
+            expectedEngineABI: UInt32(context.engineABI),
             comparisonPolicy: context.isCommercial
                 ? .authorizedCommercialPair
                 : .publicSameROMNoDelta

@@ -10,15 +10,18 @@ HORIZONTAL := display_provenance_horizontal.wsc
 VERTICAL := display_provenance_vertical.wsc
 MONO := mono_palette_out_owner.ws
 BLOCKED := source_lineage_blocked.wsc
+DMA := general_dma_source_lineage.wsc
 HORIZONTAL_OBJECT := $(BUILDDIR)/horizontal/main.c.o
 VERTICAL_OBJECT := $(BUILDDIR)/vertical/main.c.o
 MONO_C_OBJECT := $(BUILDDIR)/mono/mono.c.o
 MONO_S_OBJECT := $(BUILDDIR)/mono/mono_palette_out.s.o
 BLOCKED_OBJECT := $(BUILDDIR)/blocked/blocked.c.o
+DMA_OBJECT := $(BUILDDIR)/dma/dma.c.o
 HORIZONTAL_STAGE := $(BUILDDIR)/horizontal/stage1.elf
 VERTICAL_STAGE := $(BUILDDIR)/vertical/stage1.elf
 MONO_STAGE := $(BUILDDIR)/mono/stage1.elf
 BLOCKED_STAGE := $(BUILDDIR)/blocked/stage1.elf
+DMA_STAGE := $(BUILDDIR)/dma/stage1.elf
 
 INCLUDEFLAGS := -I. -isystem $(WF_TARGET_DIR)/include
 LIBDIRSFLAGS := -L$(WF_TARGET_DIR)/lib
@@ -30,7 +33,7 @@ LDFLAGS := -T$(WF_LDSCRIPT) $(LIBDIRSFLAGS) $(WF_ARCH_LDFLAGS) -lws
 
 .PHONY: all clean
 
-all: $(HORIZONTAL) $(VERTICAL) $(MONO) $(BLOCKED)
+all: $(HORIZONTAL) $(VERTICAL) $(MONO) $(BLOCKED) $(DMA)
 
 $(HORIZONTAL): $(HORIZONTAL_STAGE) wfconfig-horizontal.toml
 	$(BUILDROM) -c wfconfig-horizontal.toml -o $@ $<
@@ -44,6 +47,9 @@ $(MONO): $(MONO_STAGE) wfconfig-mono.toml
 $(BLOCKED): $(BLOCKED_STAGE) wfconfig-horizontal.toml
 	$(BUILDROM) -c wfconfig-horizontal.toml -o $@ $<
 
+$(DMA): $(DMA_STAGE) wfconfig-horizontal.toml
+	$(BUILDROM) -c wfconfig-horizontal.toml -o $@ $<
+
 $(HORIZONTAL_STAGE): $(HORIZONTAL_OBJECT)
 	$(CC) -r -o $@ $< $(WF_CRT0) $(LDFLAGS)
 
@@ -54,6 +60,9 @@ $(MONO_STAGE): $(MONO_C_OBJECT) $(MONO_S_OBJECT)
 	$(CC) -r -o $@ $^ $(WF_CRT0) $(LDFLAGS)
 
 $(BLOCKED_STAGE): $(BLOCKED_OBJECT)
+	$(CC) -r -o $@ $< $(WF_CRT0) $(LDFLAGS)
+
+$(DMA_STAGE): $(DMA_OBJECT)
 	$(CC) -r -o $@ $< $(WF_CRT0) $(LDFLAGS)
 
 $(HORIZONTAL_OBJECT): main.c
@@ -76,9 +85,13 @@ $(BLOCKED_OBJECT): blocked.c
 	$(MKDIR) -p $(@D)
 	$(CC) $(CFLAGS) -MMD -MP -c -o $@ $<
 
+$(DMA_OBJECT): dma.c
+	$(MKDIR) -p $(@D)
+	$(CC) $(CFLAGS) -MMD -MP -c -o $@ $<
+
 clean:
-	$(RM) $(HORIZONTAL) $(VERTICAL) $(MONO) $(BLOCKED) $(BUILDDIR)
+	$(RM) $(HORIZONTAL) $(VERTICAL) $(MONO) $(BLOCKED) $(DMA) $(BUILDDIR)
 
 -include $(HORIZONTAL_OBJECT:.o=.d) $(VERTICAL_OBJECT:.o=.d) \
 	$(MONO_C_OBJECT:.o=.d) $(MONO_S_OBJECT:.o=.d) \
-	$(BLOCKED_OBJECT:.o=.d)
+	$(BLOCKED_OBJECT:.o=.d) $(DMA_OBJECT:.o=.d)

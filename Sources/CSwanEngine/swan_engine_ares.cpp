@@ -540,6 +540,7 @@ struct InstructionTransactionState {
   bool active = false;
   bool precise_copy = false;
   bool nested = false;
+  bool dma_synthetic = false;
   uint32_t caller = 0;
   uint16_t segment = 0;
   uint16_t offset = 0;
@@ -1591,7 +1592,8 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
 
   void wonderSwanInstructionFetch(
       const ares::WonderSwanInstructionFetchOrigin& input) override {
-    if (!fetch_tracking_valid_ || instruction_nested_) return;
+    if (!fetch_tracking_valid_ || instruction_nested_ ||
+        instruction_dma_synthetic_) return;
     const uint32_t generation = static_cast<uint32_t>(input.token >> 32);
     if (!prefetch_generation_known_ || generation != prefetch_generation_) {
       fetch_tracking_valid_ = false;
@@ -1645,7 +1647,8 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
 
   void wonderSwanInstructionBoundary(
       u32 opcode, u64 opcode_origin, bool continuing) override {
-    if (!fetch_tracking_valid_ || instruction_nested_) return;
+    if (!fetch_tracking_valid_ || instruction_nested_ ||
+        instruction_dma_synthetic_) return;
     if (scheduler_fetch_bytes_.empty() ||
         scheduler_fetch_bytes_.front().token != opcode_origin ||
         scheduler_fetch_bytes_.front().data != (opcode & 0xffu)) {
@@ -1754,29 +1757,40 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       sources = &io_sources_[address];
     }
     if (sources) {
-      *sources = instruction_active_
-          ? instruction_sources_
-          : general_dma_active_ ? general_dma_sources_ : SourceSet{};
-      if (instruction_active_ && !instruction_precise_copy_) {
+      *sources = general_dma_active_
+          ? general_dma_sources_
+          : instruction_active_ ? instruction_sources_ : SourceSet{};
+      if (!general_dma_active_ && instruction_active_ &&
+          !instruction_precise_copy_) {
         sources->mark_conservative(
             SWAN_DISPLAY_SOURCE_CONSERVATIVE_UNCLASSIFIED_INSTRUCTION,
             instruction_caller_, instruction_segment_, instruction_offset_);
       }
-      if (instruction_active_ && !sources->empty()) sources->increment_hops();
+      if (!general_dma_active_ && instruction_active_ && !sources->empty()) {
+        sources->increment_hops();
+      }
     }
   }
 
   void wonderSwanGeneralDMABegin(u32 source_operand) override {
-    if (instruction_active_ || general_dma_active_) {
+    if (general_dma_active_) {
       source_tracking_valid_ = false;
       return;
     }
+    // The WonderSwan starts general DMA synchronously from the CPU instruction
+    // that writes the enable bit. Keep that outer CPU transaction alive, but
+    // route every callback in the DMA interval through this disjoint source
+    // transaction so it cannot inherit or overwrite CPU/fetch provenance.
     general_dma_sources_ = {};
     general_dma_source_operand_ = source_operand & 0xfffffu;
     general_dma_active_ = true;
   }
 
   void wonderSwanGeneralDMAEnd() override {
+    if (!general_dma_active_) {
+      source_tracking_valid_ = false;
+      return;
+    }
     general_dma_active_ = false;
     general_dma_source_operand_ = 0;
     general_dma_sources_ = {};
@@ -1793,6 +1807,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       instruction_transaction_stack_[instruction_transaction_depth_++] = {
           instruction_sources_, instruction_written_registers_,
           instruction_active_, instruction_precise_copy_, instruction_nested_,
+          instruction_dma_synthetic_,
           instruction_caller_, instruction_segment_, instruction_offset_,
           instruction_fetch_context_cell_id_};
     }
@@ -1801,6 +1816,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     instruction_active_ = true;
     instruction_precise_copy_ = false;
     instruction_nested_ = nested;
+    instruction_dma_synthetic_ = general_dma_active_;
     instruction_caller_ = caller & 0xfffffu;
     instruction_segment_ = static_cast<uint16_t>(segment);
     instruction_offset_ = static_cast<uint16_t>(offset);
@@ -1813,19 +1829,22 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
 
   void wonderSwanInstructionEnd() override {
     if (!instruction_active_) return;
-    if (!instruction_sources_.empty()) instruction_sources_.increment_hops();
-    if (!instruction_precise_copy_) {
-      instruction_sources_.mark_conservative(
-          SWAN_DISPLAY_SOURCE_CONSERVATIVE_UNCLASSIFIED_INSTRUCTION,
-          instruction_caller_, instruction_segment_, instruction_offset_);
-    }
-    for (uint32_t index = 0; index < register_sources_.size(); ++index) {
-      if (instruction_written_registers_ & (1u << index)) {
-        register_sources_[index] = instruction_sources_;
+    if (!instruction_dma_synthetic_) {
+      if (!instruction_sources_.empty()) instruction_sources_.increment_hops();
+      if (!instruction_precise_copy_) {
+        instruction_sources_.mark_conservative(
+            SWAN_DISPLAY_SOURCE_CONSERVATIVE_UNCLASSIFIED_INSTRUCTION,
+            instruction_caller_, instruction_segment_, instruction_offset_);
+      }
+      for (uint32_t index = 0; index < register_sources_.size(); ++index) {
+        if (instruction_written_registers_ & (1u << index)) {
+          register_sources_[index] = instruction_sources_;
+        }
       }
     }
     instruction_active_ = false;
     instruction_precise_copy_ = false;
+    instruction_dma_synthetic_ = false;
     instruction_fetch_context_cell_id_ = 0;
     if (instruction_transaction_depth_ != 0) {
       const auto parent =
@@ -1835,19 +1854,21 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       instruction_active_ = parent.active;
       instruction_precise_copy_ = parent.precise_copy;
       instruction_nested_ = parent.nested;
+      instruction_dma_synthetic_ = parent.dma_synthetic;
       instruction_caller_ = parent.caller;
       instruction_segment_ = parent.segment;
       instruction_offset_ = parent.offset;
       instruction_fetch_context_cell_id_ = parent.fetch_context_cell_id;
     } else {
       instruction_nested_ = false;
+      instruction_dma_synthetic_ = false;
     }
   }
 
   void wonderSwanDataRead(u32 kind, u32 address) override {
-    SourceSet* activeSources = instruction_active_
-        ? &instruction_sources_
-        : general_dma_active_ ? &general_dma_sources_ : nullptr;
+    SourceSet* activeSources = general_dma_active_
+        ? &general_dma_sources_
+        : instruction_active_ ? &instruction_sources_ : nullptr;
     if (!activeSources) return;
     if (kind == 1 && address < iram_sources_.size()) {
       activeSources->merge(iram_sources_[address]);
@@ -1876,9 +1897,9 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
                                    u32 operand_offset,
                                    u32 mapper_window,
                                    u32 mapper_bank) override {
-    SourceSet* activeSources = instruction_active_
-        ? &instruction_sources_
-        : general_dma_active_ ? &general_dma_sources_ : nullptr;
+    SourceSet* activeSources = general_dma_active_
+        ? &general_dma_sources_
+        : instruction_active_ ? &instruction_sources_ : nullptr;
     if (!activeSources || rom_aperture_size_ == 0) return;
     const uint32_t mapped = resolved_operand & (rom_aperture_size_ - 1u);
     if (mapped >= rom_leading_padding_ &&
@@ -1894,29 +1915,35 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
         return;
       }
       ExecutedReadContext context{};
-      context.initiator = instruction_active_
-          ? SWAN_DISPLAY_SOURCE_READ_INITIATOR_CPU
-          : SWAN_DISPLAY_SOURCE_READ_INITIATOR_GENERAL_DMA;
-      context.immediate_caller = instruction_active_ ? instruction_caller_ : 0;
+      context.initiator = general_dma_active_
+          ? SWAN_DISPLAY_SOURCE_READ_INITIATOR_GENERAL_DMA
+          : SWAN_DISPLAY_SOURCE_READ_INITIATOR_CPU;
+      context.immediate_caller = general_dma_active_ ? 0 : instruction_caller_;
       context.general_dma_source_operand = general_dma_active_
           ? dma_source_operand
           : 0;
-      context.caller_segment = instruction_active_ ? instruction_segment_ : 0;
-      context.caller_offset = instruction_active_ ? instruction_offset_ : 0;
-      context.operand_segment = instruction_active_
+      context.caller_segment = general_dma_active_ ? 0 : instruction_segment_;
+      context.caller_offset = general_dma_active_ ? 0 : instruction_offset_;
+      context.operand_segment = general_dma_active_
+          ? 0
+          : instruction_active_
           ? static_cast<uint16_t>(operand_segment) : 0;
-      context.operand_offset = instruction_active_
+      context.operand_offset = general_dma_active_
+          ? 0
+          : instruction_active_
           ? static_cast<uint16_t>(operand_offset) : 0;
       context.mapper_window = static_cast<uint16_t>(mapper_window);
       context.mapper_bank = static_cast<uint16_t>(mapper_bank);
       context.resolved_cartridge_operand = resolved_operand;
-      context.fetch_context_cell_id = instruction_active_ && !instruction_nested_
+      context.fetch_context_cell_id = !general_dma_active_ &&
+          instruction_active_ && !instruction_nested_
           ? instruction_fetch_context_cell_id_ : 0;
       context.executed = true;
       activeSources->add(
           mapped - rom_leading_padding_, mapped - rom_leading_padding_ + 1u,
           context);
-      if (instruction_active_ && !instruction_nested_ && pending_fetch_context_ &&
+      if (!general_dma_active_ && instruction_active_ &&
+          !instruction_nested_ && pending_fetch_context_ &&
           pending_fetch_context_->cell_id == instruction_fetch_context_cell_id_) {
         pending_fetch_context_->referenced_by_source_read = true;
       }
@@ -1926,13 +1953,15 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
   }
 
   void wonderSwanRegisterRead(u32 index) override {
-    if (instruction_active_ && index < register_sources_.size()) {
+    if (instruction_active_ && !instruction_dma_synthetic_ &&
+        index < register_sources_.size()) {
       instruction_sources_.merge(register_sources_[index]);
     }
   }
 
   void wonderSwanRegisterWrite(u32 index) override {
-    if (instruction_active_ && index < register_sources_.size()) {
+    if (instruction_active_ && !instruction_dma_synthetic_ &&
+        index < register_sources_.size()) {
       instruction_written_registers_ |= 1u << index;
     }
   }
@@ -2351,6 +2380,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     general_dma_source_operand_ = 0;
     instruction_precise_copy_ = false;
     instruction_nested_ = false;
+    instruction_dma_synthetic_ = false;
     instruction_caller_ = 0;
     instruction_segment_ = 0;
     instruction_offset_ = 0;
@@ -2422,6 +2452,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
   uint32_t general_dma_source_operand_ = 0;
   bool instruction_precise_copy_ = false;
   bool instruction_nested_ = false;
+  bool instruction_dma_synthetic_ = false;
   uint32_t instruction_caller_ = 0;
   uint16_t instruction_segment_ = 0;
   uint16_t instruction_offset_ = 0;

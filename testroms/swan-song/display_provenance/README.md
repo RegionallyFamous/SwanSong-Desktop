@@ -14,6 +14,11 @@ commercial game material.
   an opaque stack round trip. The ABI-9 source probe must classify the selected
   raster lineage as conservative and nonexact, stop with the pinned blocked
   report, publish no private details, and authorize no prototype.
+- `general_dma_source_lineage.wsc` copies one distinctive ROM tile into IRAM
+  with WonderSwan Color general DMA. It is the regression for DMA beginning
+  synchronously inside the CPU `OUT` instruction: raster lineage must remain
+  exact, use an executed general-DMA read context, and leave CPU/fetch
+  provenance intact.
 - `mono_palette_out_owner.ws` is horizontal monochrome and writes its shade
   controls and two-byte palette through literal V30MZ `OUT`/`OUTW`
   instructions. Its selected palette component is the one-byte selector at
