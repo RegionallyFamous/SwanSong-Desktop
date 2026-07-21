@@ -6,6 +6,27 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.7.0</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.7.0</link>
+      <description sparkle:format="html">&lt;h2&gt;A safer SwanSong—without more fuss.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.7 puts the game engine in its own locked-down service, hardens local automation, adds a launch-rescuing Safe Mode, and creates privacy-safe Support Bundles.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Play behind a stronger boundary.&lt;/strong&gt; The isolated engine accepts only typed, size-limited data and has no network access.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Trust local automation.&lt;/strong&gt; Fresh, one-use requests must come from SwanSong's signed helper and the current Mac user.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Get unstuck.&lt;/strong&gt; Safe Mode skips restored work and background helpers without touching your library or saves.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Ask for help safely.&lt;/strong&gt; Support Bundles leave out games, saves, screenshots, projects, private paths, and accounts.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Trace translations farther.&lt;/strong&gt; Deeper source provenance stays private while MCP receives only counts, hashes, geometry, and completeness.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Every release now includes exact source, checksums, an SPDX software bill of materials, and verifiable artifact attestations.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;SwanSong includes no games or original system firmware.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.7.0"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Tue, 21 Jul 2026 01:35:20 -0500</pubDate>
+      <sparkle:version>13</sparkle:version>
+      <sparkle:shortVersionString>0.7.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:criticalUpdate />
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.7.0/SwanSong-0.7.0-macOS-universal.zip" length="34941533" type="application/octet-stream" sparkle:edSignature="bC1VkfrY0HGCPPmQ+DrbHwyhryXK2U+y7qGqesg2RkLAKF/Z+hPZN/bsF9nHVdOrfpTkamiuCRKLQluQSGlZDA==" />
+    </item>
+    <item>
       <title>SwanSong 0.6.1</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.6.1</link>
       <description sparkle:format="html">&lt;h2&gt;SwanSong is ready before you are.&lt;/h2&gt;
@@ -183,6 +204,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: BhCaq9HvEpWOcqCbiK3oWkOxdqp+DErfYnZj8qcbxuEW9tWPnzcyJIxb72+TOpzksjFq5vtUU0y0iA619mxQBA==
-length: 19090
+edSignature: sOlzGIKd90m5Bed17zKLIsvGf8xBOzyR1tkknbclHMQWP390g3StqTl5jlQeQFfKqAZnqKsp5ylbJxBOT4PVAg==
+length: 21355
 -->
