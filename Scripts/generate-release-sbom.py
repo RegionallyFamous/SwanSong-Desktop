@@ -52,6 +52,34 @@ def package(
     return result
 
 
+def yokoi_source_identity(hardware: dict) -> tuple[str, tuple[str, str]]:
+    """Return the source location and checksum for either signed manifest ABI."""
+    schema = hardware.get("schema")
+    if schema == "swan-song-yokoi-hardware-v1":
+        source = hardware.get("source")
+        revision = hardware.get("sourceRevision")
+        if not isinstance(source, str) or not source.startswith("https://"):
+            raise ValueError("the Yokoi v1 source URL is invalid")
+        if not isinstance(revision, str) or not re.fullmatch(
+            r"[0-9a-f]{40}", revision
+        ):
+            raise ValueError("the Yokoi v1 source revision is invalid")
+        return source, ("SHA1", revision)
+
+    if schema == "swan-song-yokoi-hardware-v2":
+        source = hardware.get("source")
+        if not isinstance(source, dict):
+            raise ValueError("the Yokoi v2 source descriptor is invalid")
+        checksum = source.get("sha256")
+        if not isinstance(checksum, str) or not re.fullmatch(
+            r"[0-9a-f]{64}", checksum
+        ):
+            raise ValueError("the Yokoi v2 source checksum is invalid")
+        return "NOASSERTION", ("SHA256", checksum)
+
+    raise ValueError("the Yokoi hardware manifest schema is unsupported")
+
+
 def main() -> int:
     args = arguments()
     if not re.fullmatch(r"\d+\.\d+\.\d+", args.version):
@@ -66,6 +94,7 @@ def main() -> int:
     sparkle = load(dependencies / "sparkle.lock.json")
     sdk = load(dependencies / "swansong-sdk.lock.json")
     hardware = load(args.repository / "Packaging/YokoiHardware/manifest.json")
+    hardware_download, hardware_checksum = yokoi_source_identity(hardware)
     commits = [ares.get("commit"), sparkle.get("commit"), sdk.get("commit")]
     if any(not isinstance(value, str) or not re.fullmatch(r"[0-9a-f]{40}", value)
            for value in commits):
@@ -107,9 +136,9 @@ def main() -> int:
             "SPDXRef-YokoiHardware",
             "SwanSong Yokoi hardware tools",
             hardware["version"],
-            "NOASSERTION",
+            hardware_download,
             "GPL-3.0-or-later",
-            ("SHA256", hardware["source"]["sha256"]),
+            hardware_checksum,
         ),
     ]
     relationships = [

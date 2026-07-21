@@ -79,7 +79,12 @@ cat >"$REPOSITORY/Dependencies/swansong-sdk.lock.json" <<'EOF'
 {"commit":"5555555555555555555555555555555555555555","repository":"https://example.invalid/swansong-sdk.git","version":"0.5.0","payloadRevision":"sha256:905d1b7683ea55aebb90703bc4dc708ae7a436c98dae1474e67c9df89601a35c"}
 EOF
 cat >"$REPOSITORY/Packaging/YokoiHardware/manifest.json" <<'EOF'
-{"version":"0.3.0","source":{"sha256":"ee0173435a9f6d898583504e1b35b156097b133443d335ab824a0a54bef89129"}}
+{
+  "schema": "swan-song-yokoi-hardware-v1",
+  "version": "0.2.0-prototype.1",
+  "source": "https://github.com/RegionallyFamous/swansong-core/tree/94e9a1ae3d09f8d9eab776d36296144e85c72f1d/firmware",
+  "sourceRevision": "94e9a1ae3d09f8d9eab776d36296144e85c72f1d"
+}
 EOF
 printf 'synthetic Sparkle license\n' \
   >"$REPOSITORY/Dependencies/SPARKLE_LICENSE"
@@ -300,4 +305,76 @@ if tar -tf "$SOURCE_ARCHIVE" | grep -Fq 'untracked.rom'; then
   exit 1
 fi
 
-echo "PASS release packaging snapshots one verified app and commit-bound patch, ignores mutable ares worktree state, and re-verifies the exact published ZIP"
+SBOM="$DIST_DIR/SwanSong-$VERSION.spdx.json"
+python3 - "$SBOM" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], encoding="utf-8") as source:
+    document = json.load(source)
+hardware = next(
+    package for package in document["packages"]
+    if package["SPDXID"] == "SPDXRef-YokoiHardware"
+)
+if hardware["downloadLocation"] != (
+    "https://github.com/RegionallyFamous/swansong-core/tree/"
+    "94e9a1ae3d09f8d9eab776d36296144e85c72f1d/firmware"
+):
+    raise SystemExit("v1 Yokoi source URL was not retained in the SBOM")
+if hardware.get("checksums") != [{
+    "algorithm": "SHA1",
+    "checksumValue": "94e9a1ae3d09f8d9eab776d36296144e85c72f1d",
+}]:
+    raise SystemExit("v1 Yokoi source revision was not retained in the SBOM")
+PY
+
+cat >"$REPOSITORY/Packaging/YokoiHardware/manifest.json" <<'EOF'
+{
+  "schema": "swan-song-yokoi-hardware-v2",
+  "version": "0.3.0-development.1",
+  "source": {
+    "kind": "bundled-toolkit",
+    "file": "SwanSong-Yokoi-Toolkit.zip",
+    "byteCount": 182983,
+    "sha256": "ee0173435a9f6d898583504e1b35b156097b133443d335ab824a0a54bef89129"
+  }
+}
+EOF
+V2_SBOM="$TEMP_ROOT/yokoi-v2.spdx.json"
+python3 "$REPOSITORY/Scripts/generate-release-sbom.py" \
+  --repository "$REPOSITORY" \
+  --version "$VERSION" \
+  --source-commit "$DESKTOP_COMMIT" \
+  --created "2026-07-21T00:00:00Z" >"$V2_SBOM"
+python3 - "$V2_SBOM" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], encoding="utf-8") as source:
+    document = json.load(source)
+hardware = next(
+    package for package in document["packages"]
+    if package["SPDXID"] == "SPDXRef-YokoiHardware"
+)
+if hardware["downloadLocation"] != "NOASSERTION":
+    raise SystemExit("v2 Yokoi bundled source acquired an invented URL")
+if hardware.get("checksums") != [{
+    "algorithm": "SHA256",
+    "checksumValue": "ee0173435a9f6d898583504e1b35b156097b133443d335ab824a0a54bef89129",
+}]:
+    raise SystemExit("v2 Yokoi source checksum was not retained in the SBOM")
+PY
+
+cat >"$REPOSITORY/Packaging/YokoiHardware/manifest.json" <<'EOF'
+{"schema":"swan-song-yokoi-hardware-v2","version":"0.3.0","source":"ambiguous"}
+EOF
+if python3 "$REPOSITORY/Scripts/generate-release-sbom.py" \
+  --repository "$REPOSITORY" \
+  --version "$VERSION" \
+  --source-commit "$DESKTOP_COMMIT" \
+  --created "2026-07-21T00:00:00Z" >/dev/null 2>&1; then
+  echo "SBOM generator accepted an ambiguous Yokoi v2 source" >&2
+  exit 1
+fi
+
+echo "PASS release packaging snapshots one verified app and commit-bound patch, ignores mutable ares worktree state, re-verifies the exact published ZIP, and inventories both Yokoi source schemas"
