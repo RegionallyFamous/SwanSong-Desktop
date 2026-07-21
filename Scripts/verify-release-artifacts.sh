@@ -500,10 +500,12 @@ if [ -n "$APP" ]; then
   UNEXPECTED_FILE=$(find "$APP/Contents" -type f \
     ! -path "$APP/Contents/CodeResources" \
     ! -path "$APP/Contents/Info.plist" \
+    ! -path "$APP/Contents/embedded.provisionprofile" \
     ! -path "$APP/Contents/MacOS/SwanSong" \
     ! -path "$APP/Contents/Helpers/SwanSongRouteRunner" \
     ! -path "$APP/Contents/Helpers/SwanSongMCP" \
     ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/Info.plist" \
+    ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/embedded.provisionprofile" \
     ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/MacOS/SwanSongEngineService" \
     ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/_CodeSignature/CodeResources" \
     ! -path "$APP/Contents/Frameworks/libSwanAresEngine.dylib" \
@@ -524,7 +526,8 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents/Resources/YokoiHardware/*" \
     ! -path "$APP/Contents/_CodeSignature/CodeResources" \
     -print -quit)
-  [ -z "$UNEXPECTED_FILE" ] || fail "app contains an unexpected payload file"
+  [ -z "$UNEXPECTED_FILE" ] || fail \
+    "app contains an unexpected payload file: ${UNEXPECTED_FILE#"$APP/"}"
   UNEXPECTED_DIRECTORY=$(find "$APP/Contents" -type d \
     ! -path "$APP/Contents" \
     ! -path "$APP/Contents/MacOS" \
