@@ -179,6 +179,7 @@ EOF
 for script in \
   check-app-payload.sh \
   check-isolated-engine-service.sh \
+  check-signed-source-probe-helper.sh \
   verify-app-architectures.sh \
   verify-app-signature.sh \
   notarize-app.sh; do

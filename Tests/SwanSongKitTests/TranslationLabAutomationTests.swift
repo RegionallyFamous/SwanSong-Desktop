@@ -73,16 +73,97 @@ final class TranslationLabAutomationTests: XCTestCase {
         let ramURL = fixture.project.rootURL
             .appendingPathComponent("analysis/swan-song-lab/capture/ram.bin")
 
-        let arguments = try TranslationToolkitStage.captureIntake(
-            ramURL: ramURL,
-            name: "Capture-2026-07-21T02-39-25Z-Original-DA82A391"
-        ).arguments(project: fixture.project)
+        let longName = String(repeating: "A", count: 120)
+        let cases = [
+            (
+                "Capture-2026-07-21T02-39-25Z-Original-DA82A391",
+                "capture-2026-07-21t02-39-25z-original-da82a391"
+            ),
+            ("Capture--Name__One.wsc", "capture--name__one"),
+            ("/tmp/Fixture Folder/Capture.JSON", "capture"),
+            ("/tmp/Fixture Folder/日本語.wsc", "dump"),
+            ("---Name---.wsc", "name"),
+            ("A   B###C.wsc", "a-b-c"),
+            ("\(longName).wsc", String(repeating: "a", count: 120)),
+        ]
 
-        let nameIndex = try XCTUnwrap(arguments.firstIndex(of: "--name"))
-        XCTAssertEqual(
-            arguments[nameIndex + 1],
-            "capture-2026-07-21t02-39-25z-original-da82a391"
+        for (requested, expected) in cases {
+            let arguments = try TranslationToolkitStage.captureIntake(
+                ramURL: ramURL,
+                name: requested
+            ).arguments(project: fixture.project)
+            let nameIndex = try XCTUnwrap(arguments.firstIndex(of: "--name"))
+            XCTAssertEqual(arguments[nameIndex + 1], expected, requested)
+        }
+    }
+
+    func testTranslationWorkspaceStoreLoadsV1AndRoundTripsV2Bookmarks() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "SwanSong-Translation-Workspace-Tests-\(UUID().uuidString)",
+            isDirectory: true
         )
+        defer { try? FileManager.default.removeItem(at: root) }
+        let fileURL = root.appendingPathComponent("TranslationWorkspace.json")
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        try Data("""
+        {
+          "schemaVersion": 1,
+          "projectPaths": ["/tmp/public-project"],
+          "selectedProjectPath": "/tmp/public-project"
+        }
+        """.utf8).write(to: fileURL)
+        let store = TranslationWorkspaceStore(fileURL: fileURL)
+
+        let legacy = try store.load()
+        XCTAssertEqual(legacy.schemaVersion, 1)
+        XCTAssertEqual(legacy.projectPaths, ["/tmp/public-project"])
+        XCTAssertEqual(legacy.selectedProjectPath, "/tmp/public-project")
+        XCTAssertEqual(legacy.projectBookmarks, [:])
+
+        let bookmark = Data([0x01, 0x02, 0x03, 0x04])
+        try store.save(TranslationWorkspaceDocument(
+            projectPaths: legacy.projectPaths,
+            selectedProjectPath: legacy.selectedProjectPath,
+            projectBookmarks: ["/tmp/public-project": bookmark]
+        ))
+
+        let current = try store.load()
+        XCTAssertEqual(current.schemaVersion, 2)
+        XCTAssertEqual(current.projectPaths, legacy.projectPaths)
+        XCTAssertEqual(current.selectedProjectPath, legacy.selectedProjectPath)
+        XCTAssertEqual(current.projectBookmarks, ["/tmp/public-project": bookmark])
+    }
+
+    func testTranslationWorkspaceStoreRejectsUnsupportedVersions() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "SwanSong-Translation-Workspace-Version-Tests-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        defer { try? FileManager.default.removeItem(at: root) }
+        let fileURL = root.appendingPathComponent("TranslationWorkspace.json")
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        try Data("""
+        {
+          "schemaVersion": 3,
+          "projectPaths": [],
+          "selectedProjectPath": null,
+          "projectBookmarks": {}
+        }
+        """.utf8).write(to: fileURL)
+        let store = TranslationWorkspaceStore(fileURL: fileURL)
+
+        XCTAssertThrowsError(try store.load()) { error in
+            let cocoa = error as NSError
+            XCTAssertEqual(cocoa.domain, NSCocoaErrorDomain)
+            XCTAssertEqual(cocoa.code, CocoaError.fileReadCorruptFile.rawValue)
+        }
+        XCTAssertThrowsError(
+            try store.save(TranslationWorkspaceDocument(schemaVersion: 1))
+        ) { error in
+            let cocoa = error as NSError
+            XCTAssertEqual(cocoa.domain, NSCocoaErrorDomain)
+            XCTAssertEqual(cocoa.code, CocoaError.fileWriteUnknown.rawValue)
+        }
     }
 
     func testCaptureIntakeReportsOnlyPrivacySafeBindingFieldNames() throws {
@@ -143,6 +224,10 @@ final class TranslationLabAutomationTests: XCTestCase {
     func testToolkitRunnerBindsWorkingDirectoryAndReportsRedactedLaunchSummary() throws {
         let fixture = try makeToolkitFixture()
         defer { try? FileManager.default.removeItem(at: fixture.root) }
+        let requestedCaptureName =
+            "Capture-2026-07-21T02-39-25Z-Original-DA82A391"
+        let canonicalCaptureName =
+            "capture-2026-07-21t02-39-25z-original-da82a391"
         let nodeURL = fixture.root.appendingPathComponent("fixture-node")
         let environmentOutput = fixture.project.rootURL
             .appendingPathComponent("child-environment.txt")
@@ -177,7 +262,7 @@ final class TranslationLabAutomationTests: XCTestCase {
         bytes=$(/usr/bin/wc -c < "$ram")
         source_relative=${ram#"$project"/}
         output_relative=${out#"$project"/}
-        /usr/bin/printf '{"kind":"capture-intake","version":1,"captureName":"public-capture","source":{"kind":"raw-ram","path":"%s","size":%s,"sha256":"%s"},"output":{"path":"%s","size":%s,"sha256":"%s","copied":true,"alreadyCurrent":false},"actualSize":%s}\n' "$source_relative" "$bytes" "$digest" "$output_relative" "$bytes" "$digest" "$bytes" > "$receipt"
+        /usr/bin/printf '{"kind":"capture-intake","version":1,"captureName":"\(canonicalCaptureName)","source":{"kind":"raw-ram","path":"%s","size":%s,"sha256":"%s"},"output":{"path":"%s","size":%s,"sha256":"%s","copied":true,"alreadyCurrent":false},"actualSize":%s}\n' "$source_relative" "$bytes" "$digest" "$output_relative" "$bytes" "$digest" "$bytes" > "$receipt"
         /bin/chmod 600 "$receipt"
         printf 'PRIVATE_CLI_OUTPUT_SENTINEL:%s\\n' "$project"
         """
@@ -195,7 +280,7 @@ final class TranslationLabAutomationTests: XCTestCase {
         try Data(repeating: 0, count: 16 * 1_024).write(to: ramURL)
 
         let result = try TranslationToolkitRunner.run(
-            .captureIntake(ramURL: ramURL, name: "public-capture"),
+            .captureIntake(ramURL: ramURL, name: requestedCaptureName),
             project: fixture.project,
             nodeURL: nodeURL
         )
@@ -280,6 +365,8 @@ final class TranslationLabAutomationTests: XCTestCase {
             .split(separator: "\n")
             .map(String.init)
         XCTAssertEqual(observedArguments.count, result.executionWitness.argumentCount)
+        let nameIndex = try XCTUnwrap(observedArguments.firstIndex(of: "--name"))
+        XCTAssertEqual(observedArguments[nameIndex + 1], canonicalCaptureName)
         XCTAssertEqual(Array(observedArguments.suffix(16)), [
             "--out", ramURL.deletingLastPathComponent()
                 .appendingPathComponent("capture-intake/capture.ram.bin").path,

@@ -163,6 +163,15 @@ if observed_step_required != {"sessionID", "inputs", "frames", "confirmShareCapt
     raise SystemExit("observed-play step lost its explicit capture-sharing contract")
 
 source_schema = by_name["swansong_translation_probe_rectangle_source"]["inputSchema"]
+source_required = set(source_schema.get("required", []))
+if source_required != {
+    "projectPath", "planPath", "role", "frameIndex", "rectangle",
+    "confirmProjectWrites", "authorizationPath", "capabilityReceiptPath",
+    "methodCapabilityReceiptPath", "qualifiedMethodCapabilityReceiptPath",
+    "methodNativeMarkerPath", "captureFrameSealPath", "runDirectoryPath",
+    "reportPath",
+}:
+    raise SystemExit("authorized source probe lost its exact signed-runner input contract")
 source_components = source_schema.get("properties", {}).get("components", {})
 if source_components.get("type") != "array" or source_components.get("minItems") != 1:
     raise SystemExit("upstream source probe lost its nonempty component selector")

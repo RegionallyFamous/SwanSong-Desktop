@@ -1321,6 +1321,34 @@ public enum TranslationDisplaySourceProbe {
                 "an adaptive upstream source leaf has incomplete exact source lineage"
             )
         }
+        guard all.allSatisfy({ trace in
+            guard trace.cartridgeLength > 0 else {
+                return trace.executedReadContext == nil
+            }
+            guard let context = trace.executedReadContext else { return false }
+            switch context.effectiveInitiator {
+            case .cpu:
+                let reconstructedCaller = (
+                    (UInt32(context.callerSegment) << 4)
+                        + UInt32(context.callerOffset)
+                ) & 0xF_FFFF
+                return context.generalDMASourceOperand == nil
+                    && context.immediateCaller < 0x10_0000
+                    && context.immediateCaller == reconstructedCaller
+            case .generalDMA:
+                return context.generalDMASourceOperand.map { $0 < 0x10_0000 }
+                    == true
+                    && context.immediateCaller == 0
+                    && context.callerSegment == 0
+                    && context.callerOffset == 0
+                    && context.operandSegment == 0
+                    && context.operandOffset == 0
+            }
+        }) else {
+            throw TranslationLabError.invalidRoute(
+                "an adaptive upstream source leaf is missing executed-read context for cartridge lineage"
+            )
+        }
         let exactRanges = normalizedRanges(selected.filter(\.hasExactRange))
         let candidateRanges = normalizedRanges(selected)
         guard exactRanges == candidateRanges,
@@ -1339,6 +1367,94 @@ public enum TranslationDisplaySourceProbe {
                 "an adaptive upstream consumer lacks exact overlap with its selected leaf"
             )
         }
+    }
+
+    /// Fixed, source-free signed-release control for the two context-omission
+    /// failures that a correct production engine cannot emit on demand.
+    public static func signedReleaseExecutedReadContextKAT() throws -> String {
+        let decoder = JSONDecoder()
+        let owner = try decoder.decode(
+            EngineDisplayOwnerSample.self,
+            from: JSONSerialization.data(withJSONObject: [
+                "x": 0,
+                "y": 0,
+                "layer": "screen1",
+                "sourceKind": "tilemap",
+                "cellAddress": 0x1800,
+                "tileIndex": 0,
+                "cellAttributes": 0,
+                "rasterAddress": 0,
+                "rasterByteCount": 0,
+                "paletteIndex": 0,
+                "paletteColor": 0,
+                "paletteByteCount": 0,
+                "paletteAddress": 0,
+                "cellWriterPC": 0x100,
+                "rasterWriterPC": 0x200,
+                "paletteWriterPC": 0x300,
+            ])
+        )
+        let baseTrace: [String: Any] = [
+            "x": 0,
+            "y": 0,
+            "scope": "selected",
+            "component": "mapCell",
+            "sourceAddress": 0x4000,
+            "sourceByteCount": 2,
+            "minimumInstructionHops": 1,
+            "maximumInstructionHops": 2,
+            "cartridgeOffset": 0x100,
+            "cartridgeLength": 1,
+            "hasExactRange": true,
+            "isTransformed": false,
+            "hasUnknownDependency": false,
+            "rangeSetOverflowed": false,
+            "usesConservativeDataflow": false,
+        ]
+        let missingCPU = try decoder.decode(
+            EngineDisplaySourceTrace.self,
+            from: JSONSerialization.data(withJSONObject: baseTrace)
+        )
+        var incompleteDMAValue = baseTrace
+        incompleteDMAValue["executedReadContext"] = [
+            "initiator": "generalDMA",
+            "immediateCaller": 0,
+            "callerSegment": 0,
+            "callerOffset": 0,
+            "operandSegment": 0,
+            "operandOffset": 0,
+            "mapperWindow": 2,
+            "mapperBank": 0,
+            "resolvedCartridgeOperand": 0x100,
+        ]
+        let incompleteDMA = try decoder.decode(
+            EngineDisplaySourceTrace.self,
+            from: JSONSerialization.data(withJSONObject: incompleteDMAValue)
+        )
+        let rectangle = EngineDisplayRectangle(x: 0, y: 0, width: 8, height: 8)
+
+        func requiresContext(_ trace: EngineDisplaySourceTrace) -> Bool {
+            do {
+                try validateLeaf(
+                    rectangle: rectangle,
+                    ownerSamples: [owner],
+                    selected: [trace],
+                    consumers: [],
+                    components: [.mapCell]
+                )
+                return false
+            } catch {
+                return error.localizedDescription.contains(
+                    "executed-read context"
+                )
+            }
+        }
+        guard requiresContext(missingCPU), requiresContext(incompleteDMA) else {
+            throw TranslationLabError.invalidRoute(
+                "the signed-release lineage control accepted missing CPU or General DMA executed-read context"
+            )
+        }
+        return "PASS signed source-lineage context control cpu-missing=reject dma-missing=reject"
     }
 
     private static func recordTraceTokens(
@@ -1518,6 +1634,16 @@ public enum TranslationDisplaySourceProbe {
         _ trace: EngineDisplaySourceTrace
     ) -> String? {
         guard let context = trace.executedReadContext else { return nil }
+        if context.effectiveInitiator == .generalDMA {
+            guard let source = context.generalDMASourceOperand else { return nil }
+            return String(
+                format: "generalDMA:%08x:%04x:%04x:%08x",
+                source,
+                context.mapperWindow,
+                context.mapperBank,
+                context.resolvedCartridgeOperand
+            )
+        }
         return String(
             format: "%08x:%04x:%04x:%04x:%04x:%04x:%04x:%08x",
             context.immediateCaller,

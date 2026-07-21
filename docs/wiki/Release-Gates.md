@@ -44,6 +44,15 @@ public distribution.
   lanes appropriate to the release. The framework gate verifies the pinned
   version, expected helper/XPC bundle identities and payload, and absence of
   game or firmware-like files.
+- Run `check-signed-source-probe-helper.sh` against the Developer ID candidate
+  after `verify-app-signature.sh` and before notarization. It must use the real
+  bundled MCP helper, prove the MCP helper, route runner, and engine dylib share
+  one signing team, retain the complete A2/M2/seal schema, and pass the full
+  authenticated source-lineage matrix: success, blocked, wrong frame before
+  query, 4,096 accepted, 4,097 rejected before run state, every bound-input or
+  executable tamper rejected without K, missing CPU/DMA read context rejected,
+  and an exclusively written and reread K that validates the completed tree.
+  No case may expose private diagnostics or source fields.
 - Run the live player input/focus lane from a logged-in GUI session. Exit 77 is
   not a pass.
 - Visually review every changed screenshot and UI baseline.

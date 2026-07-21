@@ -651,7 +651,21 @@ public struct TranslationPrivateArtifactStore: Sendable {
         let selectedComponentSet = Set(selectedComponents)
         if includesABI8ReadContext,
            details.traces.contains(where: {
-               $0.cartridgeLength > 0 && $0.executedReadContext == nil
+               guard $0.cartridgeLength > 0 else {
+                   return $0.executedReadContext != nil
+               }
+               guard let context = $0.executedReadContext else { return true }
+               switch context.effectiveInitiator {
+               case .cpu:
+                   return context.generalDMASourceOperand != nil
+               case .generalDMA:
+                   return context.generalDMASourceOperand == nil
+                       || context.immediateCaller != 0
+                       || context.callerSegment != 0
+                       || context.callerOffset != 0
+                       || context.operandSegment != 0
+                       || context.operandOffset != 0
+               }
            }) {
             throw TranslationLabError.invalidProject(
                 "an ABI-8-or-newer upstream source lineage is missing executed-read context"
@@ -968,6 +982,16 @@ public struct TranslationPrivateArtifactStore: Sendable {
         _ trace: EngineDisplaySourceTrace
     ) -> String? {
         guard let context = trace.executedReadContext else { return nil }
+        if context.effectiveInitiator == .generalDMA {
+            guard let source = context.generalDMASourceOperand else { return nil }
+            return String(
+                format: "generalDMA:%08x:%04x:%04x:%08x",
+                source,
+                context.mapperWindow,
+                context.mapperBank,
+                context.resolvedCartridgeOperand
+            )
+        }
         return String(
             format: "%08x:%04x:%04x:%04x:%04x:%04x:%04x:%08x",
             context.immediateCaller,

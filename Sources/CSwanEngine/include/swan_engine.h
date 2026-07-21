@@ -212,14 +212,24 @@ enum {
   SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED = 1u << 0,
 };
 
+typedef uint16_t swan_display_source_read_initiator_t;
+enum {
+  SWAN_DISPLAY_SOURCE_READ_INITIATOR_NONE = 0,
+  SWAN_DISPLAY_SOURCE_READ_INITIATOR_CPU = 1,
+  SWAN_DISPLAY_SOURCE_READ_INITIATOR_GENERAL_DMA = 2,
+};
+
 /**
  * One bounded upstream dataflow edge retained privately by Translation Lab.
  * cartridge_offset + cartridge_length is a half-open range in the original
  * project ROM file (not the rounded mapper aperture). source_address is an
  * emulated RAM/I/O address and must never be returned through public MCP.
- * ABI-9 executed-read context records both the caller's code segment/offset
- * and the exact data operand segment/offset. resolved_cartridge_operand is the
- * mapper-aperture operand before leading-padding removal. All remain private.
+ * Executed-read context records an explicit initiator. CPU reads retain the
+ * caller's code segment/offset and exact data operand segment/offset;
+ * immediate_caller_or_general_dma_source_operand is the immediate caller.
+ * General DMA reads leave the CPU-only fields zero and use that same fixed ABI
+ * slot for the exact 20-bit DMA source operand. resolved_cartridge_operand is
+ * the mapper-aperture operand before leading-padding removal. All remain private.
  * Conservative diagnostics retain the first instruction that forced an
  * over-inclusive dependency set; such traces never carry the exact flag.
  */
@@ -233,12 +243,12 @@ typedef struct swan_display_source_trace {
   uint16_t source_byte_count;
   uint16_t minimum_instruction_hops;
   uint16_t maximum_instruction_hops;
-  uint16_t reserved;
+  swan_display_source_read_initiator_t read_context_initiator;
   uint32_t cartridge_offset;
   uint32_t cartridge_length;
   uint32_t flags;
   uint32_t read_context_flags;
-  uint32_t immediate_caller;
+  uint32_t immediate_caller_or_general_dma_source_operand;
   uint16_t caller_segment;
   uint16_t caller_offset;
   uint16_t operand_segment;
@@ -279,12 +289,12 @@ typedef struct swan_display_source_trace_v2 {
   uint16_t source_byte_count;
   uint16_t minimum_instruction_hops;
   uint16_t maximum_instruction_hops;
-  uint16_t reserved;
+  swan_display_source_read_initiator_t read_context_initiator;
   uint32_t cartridge_offset;
   uint32_t cartridge_length;
   uint32_t flags;
   uint32_t read_context_flags;
-  uint32_t immediate_caller;
+  uint32_t immediate_caller_or_general_dma_source_operand;
   uint16_t caller_segment;
   uint16_t caller_offset;
   uint16_t operand_segment;

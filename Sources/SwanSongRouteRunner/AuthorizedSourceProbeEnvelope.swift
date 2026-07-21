@@ -131,6 +131,7 @@ private struct AuthorizedSourceProbeContext {
     let qualifiedMethodFile: BoundFile?
     let markerFile: BoundFile
     let captureFrameSealFile: BoundFile?
+    let mcpHelperFile: BoundFile?
     let authorization: [String: Any]
     let capability: [String: Any]
     let methodCapability: [String: Any]
@@ -314,6 +315,7 @@ private struct AuthorizedSourceProbeContext {
             qualifiedMethodFile: qualifiedMethodFile,
             markerFile: markerFile,
             captureFrameSealFile: captureFrameSealFile,
+            mcpHelperFile: validated.mcpHelperFile,
             authorization: authorization,
             capability: capability,
             methodCapability: methodCapability,
@@ -371,6 +373,16 @@ private struct AuthorizedSourceProbeContext {
             )
             guard Self.sameArtifact(current.artifact, expected.artifact) else {
                 throw Self.stop("capture-frame seal drifted during authorized execution")
+            }
+        }
+        if let expected = mcpHelperFile {
+            let current = try Self.currentParentMCPHelper()
+            guard current.url.path == expected.url.path,
+                  current.mode == expected.mode,
+                  Self.sameArtifact(current.artifact, expected.artifact) else {
+                throw Self.stop(
+                    "the signed parent MCP helper drifted during authorized execution"
+                )
             }
         }
         try Self.validateRequest(
@@ -574,6 +586,11 @@ private struct AuthorizedSourceProbeContext {
     private static func validateInvocationBounds(
         _ invocation: AuthorizedSourceProbeInvocation
     ) throws {
+        guard invocation.frameIndex < UInt64(maximumPlanFrames) else {
+            throw stop(
+                "the source-probe frame must remain inside the bounded plan range"
+            )
+        }
         let (pixelCount, overflow) = Int(invocation.rectangle.width)
             .multipliedReportingOverflow(by: Int(invocation.rectangle.height))
         guard invocation.rectangle.width > 0,
@@ -873,6 +890,8 @@ private struct AuthorizedSourceProbeContext {
         let expectedNativeFrame: Int
         let expectedTransport: (width: Int, height: Int)
         let expectedRectangle: (x: Int, y: Int, width: Int, height: Int)
+        let expectedOrientation: TranslationRouteFrameOrientation
+        let expectedComponents: [String]
         let publicSourceControlProfile: String?
         var publicControlNativeFrameSHA256: String? = nil
         switch mode {
@@ -893,16 +912,75 @@ private struct AuthorizedSourceProbeContext {
             expectedTransport = (237, 144)
             expectedRectangle = profile == "success"
                 ? (8, 8, 1, 1) : (0, 0, 1, 1)
+            expectedOrientation = .horizontal
+            expectedComponents = ["raster"]
         case .commercialCaptureBound:
             publicSourceControlProfile = nil
             expectedSchema = commercialCaptureFrameSealSchema
-            expectedPlanFrame = 1_839
-            expectedNativeFrame = 1_840
-            expectedTransport = (237, 144)
-            expectedRectangle = (48, 56, 120, 16)
+            expectedPlanFrame = try integer(
+                value["planFrameIndex"],
+                label: "commercial capture-frame plan index"
+            )
+            expectedNativeFrame = try integer(
+                value["nativeFrameNumber"],
+                label: "commercial capture-frame native number"
+            )
+            let sealedTransport = try object(
+                value["transportFrame"],
+                label: "commercial sealed transport frame"
+            )
+            let orientation = try string(
+                sealedTransport["orientation"],
+                label: "commercial sealed transport orientation"
+            )
+            guard let parsedOrientation = TranslationRouteFrameOrientation(
+                rawValue: orientation
+            ) else {
+                throw stop("the commercial capture-frame orientation is invalid")
+            }
+            expectedOrientation = parsedOrientation
+            expectedTransport = (
+                try integer(
+                    sealedTransport["width"],
+                    label: "commercial sealed transport width"
+                ),
+                try integer(
+                    sealedTransport["height"],
+                    label: "commercial sealed transport height"
+                )
+            )
+            let sealedProbe = try object(
+                value["probe"],
+                label: "commercial sealed source probe"
+            )
+            let sealedRectangle = try object(
+                sealedProbe["rectangle"],
+                label: "commercial sealed source rectangle"
+            )
+            expectedRectangle = (
+                try integer(sealedRectangle["x"], label: "commercial sealed x"),
+                try integer(sealedRectangle["y"], label: "commercial sealed y"),
+                try integer(
+                    sealedRectangle["width"],
+                    label: "commercial sealed width"
+                ),
+                try integer(
+                    sealedRectangle["height"],
+                    label: "commercial sealed height"
+                )
+            )
+            expectedComponents = try stringArray(
+                sealedProbe["components"],
+                label: "commercial sealed components"
+            )
         }
 
-        guard try string(value["schema"], label: "capture-frame seal schema")
+        let (nextNativeFrame, frameOverflow) = expectedPlanFrame
+            .addingReportingOverflow(1)
+        guard expectedPlanFrame >= 0,
+              !frameOverflow,
+              expectedNativeFrame == nextNativeFrame,
+              try string(value["schema"], label: "capture-frame seal schema")
                 == expectedSchema,
               try string(value["method"], label: "capture-frame seal method") == method,
               try boolean(value["sourceFree"], label: "capture-frame source boundary"),
@@ -1049,11 +1127,16 @@ private struct AuthorizedSourceProbeContext {
             transport["orientation"],
             label: "sealed transport orientation"
         )
-        guard orientationRaw == "horizontal",
+        let expectedGameSize = expectedOrientation == .horizontal
+            ? (width: 224, height: 144) : (width: 144, height: 224)
+        let requiredTransportSize = expectedOrientation == .horizontal
+            ? (width: 237, height: 144) : (width: 144, height: 237)
+        guard orientationRaw == expectedOrientation.rawValue,
               try integer(transport["width"], label: "sealed transport width")
                 == expectedTransport.width,
               try integer(transport["height"], label: "sealed transport height")
-                == expectedTransport.height else {
+                == expectedTransport.height,
+              expectedTransport == requiredTransportSize else {
             throw stop("the capture-frame seal has the wrong native transport geometry")
         }
 
@@ -1066,8 +1149,10 @@ private struct AuthorizedSourceProbeContext {
                 == "game-raster",
               try integer(gameRaster["x"], label: "sealed raster x") == 0,
               try integer(gameRaster["y"], label: "sealed raster y") == 0,
-              try integer(gameRaster["width"], label: "sealed raster width") == 224,
-              try integer(gameRaster["height"], label: "sealed raster height") == 144,
+              try integer(gameRaster["width"], label: "sealed raster width")
+                == expectedGameSize.width,
+              try integer(gameRaster["height"], label: "sealed raster height")
+                == expectedGameSize.height,
               try string(gameRaster["pixelEncoding"], label: "sealed pixel encoding")
                 == TranslationRouteCheckpoint.pixelEncoding,
               framedFingerprint.range(
@@ -1092,8 +1177,26 @@ private struct AuthorizedSourceProbeContext {
         let probe = try object(value["probe"], label: "sealed source probe")
         let rectangle = try object(probe["rectangle"], label: "sealed source rectangle")
         let components = try stringArray(probe["components"], label: "sealed components")
-        let pixelCount = expectedRectangle.width * expectedRectangle.height
-        guard try integer(rectangle["x"], label: "sealed rectangle x")
+        let (pixelCount, pixelOverflow) = expectedRectangle.width
+            .multipliedReportingOverflow(by: expectedRectangle.height)
+        let (rectangleMaxX, rectangleXOverflow) = expectedRectangle.x
+            .addingReportingOverflow(expectedRectangle.width)
+        let (rectangleMaxY, rectangleYOverflow) = expectedRectangle.y
+            .addingReportingOverflow(expectedRectangle.height)
+        let supportedComponents = Set(
+            EngineDisplaySourceComponent.allCases.map(\.rawValue)
+        )
+        guard expectedRectangle.x >= 0,
+              expectedRectangle.y >= 0,
+              expectedRectangle.width > 0,
+              expectedRectangle.height > 0,
+              !pixelOverflow,
+              !rectangleXOverflow,
+              !rectangleYOverflow,
+              rectangleMaxX <= expectedGameSize.width,
+              rectangleMaxY <= expectedGameSize.height,
+              pixelCount <= maximumRectanglePixels,
+              try integer(rectangle["x"], label: "sealed rectangle x")
                 == expectedRectangle.x,
               try integer(rectangle["y"], label: "sealed rectangle y")
                 == expectedRectangle.y,
@@ -1103,12 +1206,16 @@ private struct AuthorizedSourceProbeContext {
                 == expectedRectangle.height,
               try integer(probe["pixelCount"], label: "sealed rectangle pixels")
                 == pixelCount,
-              components == ["raster"],
+              !expectedComponents.isEmpty,
+              expectedComponents == expectedComponents.sorted(),
+              Set(expectedComponents).count == expectedComponents.count,
+              expectedComponents.allSatisfy(supportedComponents.contains),
+              components == expectedComponents,
               invocation.rectangle.x == UInt16(expectedRectangle.x),
               invocation.rectangle.y == UInt16(expectedRectangle.y),
               invocation.rectangle.width == UInt16(expectedRectangle.width),
               invocation.rectangle.height == UInt16(expectedRectangle.height),
-              invocation.components == [.raster] else {
+              invocation.components.map(\.rawValue) == expectedComponents else {
             throw stop("the capture-frame seal does not bind the exact source rectangle")
         }
 
@@ -1138,7 +1245,7 @@ private struct AuthorizedSourceProbeContext {
                 frameIndex: UInt64(expectedPlanFrame),
                 width: expectedTransport.width,
                 height: expectedTransport.height,
-                orientation: .horizontal,
+                orientation: expectedOrientation,
                 pixelEncoding: TranslationRouteCheckpoint.pixelEncoding,
                 sha256: framedFingerprint
             ),
@@ -1165,7 +1272,8 @@ private struct AuthorizedSourceProbeContext {
         nonce: String,
         reportRole: AuthorizedOutputRole,
         detailsRole: AuthorizedOutputRole,
-        planRole: AuthorizedOutputRole
+        planRole: AuthorizedOutputRole,
+        mcpHelperFile: BoundFile?
     ) {
         var authorizationKeys = [
             "allowedOutputGraph", "capabilityReceipt", "captureHarness",
@@ -1179,6 +1287,7 @@ private struct AuthorizedSourceProbeContext {
         }
         if mode == .commercialCaptureBound {
             authorizationKeys.append("qualifiedMethodCapabilityReceipt")
+            authorizationKeys.append("mcpHelper")
         }
         try exactKeys(value, authorizationKeys, label: "method authorization")
         let purpose = try string(value["purpose"], label: "authorization purpose")
@@ -1245,6 +1354,24 @@ private struct AuthorizedSourceProbeContext {
                 throw stop("commercial A2 does not bind the qualified source-method M2 receipt")
             }
         }
+        let mcpHelperFile: BoundFile?
+        if mode == .commercialCaptureBound {
+            let boundHelper = try validateInputRecord(
+                try object(value["mcpHelper"], label: "A2 MCP helper binding"),
+                label: "A2 MCP helper"
+            )
+            let parentHelper = try currentParentMCPHelper()
+            guard boundHelper.url.path == parentHelper.url.path,
+                  boundHelper.mode == parentHelper.mode,
+                  sameArtifact(boundHelper.artifact, parentHelper.artifact) else {
+                throw stop(
+                    "commercial A2 does not bind the exact signed parent MCP helper"
+                )
+            }
+            mcpHelperFile = parentHelper
+        } else {
+            mcpHelperFile = nil
+        }
         try validateNonceClaim(value["nonceClaim"], nonce: nonce, runDirectory: runDirectory)
         try validateRequest(
             try object(value["request"], label: "authorization request"),
@@ -1278,7 +1405,7 @@ private struct AuthorizedSourceProbeContext {
             }
         }
         _ = methodCapability
-        return (nonce, reports[0], details, plan)
+        return (nonce, reports[0], details, plan, mcpHelperFile)
     }
 
     private static func validateNonceClaim(
@@ -2007,6 +2134,45 @@ private struct AuthorizedSourceProbeContext {
         return try canonicalURL(url, label: "running route runner")
     }
 
+    private static func currentParentMCPHelper() throws -> BoundFile {
+        let parentPID = getppid()
+        guard parentPID > 1 else {
+            throw stop("commercial source probing has no signed parent MCP helper")
+        }
+        var pathBuffer = [CChar](
+            repeating: 0,
+            count: 4_096
+        )
+        let length = proc_pidpath(
+            parentPID,
+            &pathBuffer,
+            UInt32(pathBuffer.count)
+        )
+        guard length > 0 else {
+            throw stop("the signed parent MCP helper identity is unavailable")
+        }
+        let pathBytes = pathBuffer.prefix(Int(length)).prefix { $0 != 0 }.map {
+            UInt8(bitPattern: $0)
+        }
+        let helperURL = try canonicalURL(
+            URL(fileURLWithPath: String(decoding: pathBytes, as: UTF8.self)),
+            label: "signed parent MCP helper"
+        )
+        let runnerURL = try executableURL()
+        guard helperURL.lastPathComponent == "SwanSongMCP",
+              helperURL.deletingLastPathComponent().path
+                == runnerURL.deletingLastPathComponent().path,
+              helperURL.deletingLastPathComponent().lastPathComponent
+                == "Helpers",
+              helperURL.deletingLastPathComponent()
+                .deletingLastPathComponent().lastPathComponent == "Contents" else {
+            throw stop(
+                "commercial source probing was not launched by the bundled sibling SwanSongMCP helper"
+            )
+        }
+        return try readBoundFile(helperURL, label: "signed parent MCP helper")
+    }
+
     fileprivate static func loadedEngineImage() throws -> BoundFile {
         guard let process = dlopen(nil, RTLD_NOW) else {
             throw stop("the current process image table is unavailable")
@@ -2420,30 +2586,101 @@ enum AuthorizedSourceProbeRunner {
         if let qualifiedMethodFile = context.qualifiedMethodFile {
             closure["qualifiedMethodCapabilityReceipt"] = qualifiedMethodFile.artifact
         }
+        if let mcpHelperFile = context.mcpHelperFile {
+            closure["mcpHelper"] = [
+                "canonicalPath": mcpHelperFile.url.path,
+                "canonicalPathSHA256": digest(Data(mcpHelperFile.url.path.utf8)),
+                "artifact": mcpHelperFile.artifact,
+                "mode": mcpHelperFile.mode,
+            ]
+        }
         let closureData = try encodedJSON(closure)
         let closureURL = URL(
             fileURLWithPath: "\(context.runDirectory.path)/closure.json"
         )
-        let closureArtifact: [String: Any] = [
-            "byteCount": closureData.count,
-            "sha256": digest(closureData),
-        ]
-        let summary: [String: Any] = [
-            "schema": "swan-song-authorized-method-closure-summary-v1",
-            "method": AuthorizedSourceProbeContext.method,
-            "status": status,
-            "nonce": context.nonce,
-            "closure": closureArtifact,
-            "commercialEvidenceAuthorized": status == "complete"
-                && context.commercialEvidenceAuthorized,
-        ]
-        let summaryData = try encodedJSON(summary)
         try writeExclusive(
             closureData,
             to: closureURL,
             mode: AuthorizedSourceProbeContext.fileMode
         )
-        FileHandle.standardOutput.write(summaryData)
+        let closureFile = try AuthorizedSourceProbeContext.readBoundFile(
+            closureURL,
+            label: "authorized source-probe closure",
+            exactMode: AuthorizedSourceProbeContext.fileMode
+        )
+        guard closureFile.data == closureData else {
+            throw AuthorizedSourceProbeError(
+                message: "STOP_PREEXECUTION_CAPABILITY: reread K differs from the exclusively written closure"
+            )
+        }
+        _ = try context.validateCurrentInputs(
+            expectOutputs: true,
+            status: status,
+            closureExpected: true
+        )
+        let completedReport = try AuthorizedSourceProbeContext.readBoundFile(
+            context.reportRole.destination,
+            label: "completed authorized public report",
+            exactMode: AuthorizedSourceProbeContext.fileMode
+        )
+        guard AuthorizedSourceProbeContext.sameArtifact(
+            completedReport.artifact,
+            reportRecord
+        ) else {
+            throw AuthorizedSourceProbeError(
+                message: "STOP_PREEXECUTION_CAPABILITY: the completed public report differs from K"
+            )
+        }
+        for record in privateRecords {
+            guard let roleName = record["role"] as? String,
+                  let role = [context.detailsRole, context.planRole].first(
+                    where: { $0.role == roleName }
+                  ) else {
+                throw AuthorizedSourceProbeError(
+                    message: "STOP_PREEXECUTION_CAPABILITY: K contains an unknown private output role"
+                )
+            }
+            let completed = try AuthorizedSourceProbeContext.readBoundFile(
+                role.destination,
+                label: "completed authorized private \(roleName)",
+                exactMode: AuthorizedSourceProbeContext.fileMode
+            )
+            guard AuthorizedSourceProbeContext.sameArtifact(
+                completed.artifact,
+                record
+            ) else {
+                throw AuthorizedSourceProbeError(
+                    message: "STOP_PREEXECUTION_CAPABILITY: completed private \(roleName) differs from K"
+                )
+            }
+        }
+        let completedClosure = try JSONSerialization.jsonObject(
+            with: closureFile.data
+        ) as? [String: Any]
+        guard let completedClosure,
+              completedClosure["schema"] as? String
+                == AuthorizedSourceProbeContext.closureSchema,
+              completedClosure["method"] as? String
+                == AuthorizedSourceProbeContext.method,
+              let completedStatus = completedClosure["status"] as? String,
+              completedStatus == status,
+              let completedNonce = completedClosure["nonce"] as? String,
+              completedNonce == context.nonce,
+              completedClosure["writtenLast"] as? Bool == true else {
+            throw AuthorizedSourceProbeError(
+                message: "STOP_PREEXECUTION_CAPABILITY: reread K does not close the exact authorized run"
+            )
+        }
+        let summary: [String: Any] = [
+            "schema": "swan-song-authorized-method-closure-summary-v1",
+            "method": AuthorizedSourceProbeContext.method,
+            "status": completedStatus,
+            "nonce": completedNonce,
+            "closure": closureFile.artifact,
+            "commercialEvidenceAuthorized": completedStatus == "complete"
+                && context.commercialEvidenceAuthorized,
+        ]
+        FileHandle.standardOutput.write(try encodedJSON(summary))
     }
 
     private static func boundedWrite(_ data: Data, role: AuthorizedOutputRole) throws {

@@ -6,6 +6,36 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+### Security
+
+- Routes the installed MCP source-provenance tool only through its bundled
+  `SwanSongRouteRunner` sibling and the commercial A2/M2 authorization
+  transaction. The helper now requires every bound receipt, seal, run, and
+  report path; binds its own signed identity into A2 and K; rereads K and the
+  K-bound public report; and refuses to return private addresses, cartridge
+  ranges, mapper state, source bytes, or executed-read details.
+- Makes commercial source probes derive their exact frame, native rectangle,
+  orientation, and selected components from the authenticated Original capture
+  seal. The seal, A2 request, CLI, project, plan, ROM, and replayed native-frame
+  fingerprint must all agree, with a 4,096-pixel ceiling and native frame
+  number exactly one beyond the zero-based plan frame.
+- Requires executed-read context for every cartridge-backed selected trace and
+  overlapping outside consumer. CPU lineage retains its real caller and
+  operand context; General DMA now carries an explicit `generalDMA` initiator
+  and exact DMA source operand instead of pretending a CPU instruction made
+  the read.
+- Strengthens source-probe closure so the runner revalidates every input,
+  executable, loaded engine image, and output; writes K exclusively; rereads
+  it; validates the completed run tree; and performs no later filesystem write.
+  Developer ID releases now exercise the actual bundled MCP helper after
+  signature verification and before notarization.
+
+### Fixed
+
+- Capture Intake now canonicalizes mixed-case and repeated-hyphen names exactly
+  like the translation toolkit, so authenticated captures no longer fail their
+  receipt check simply because the original capture name used capitals.
+
 ## [0.7.0] - 2026-07-20
 
 **A Safer SwanSong.** Version 0.7 puts the emulator, local automation, updates,

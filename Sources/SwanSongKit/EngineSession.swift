@@ -392,7 +392,14 @@ public enum EngineDisplaySourceScope: String, Codable, Sendable {
 /// One private dataflow edge from a final display byte to a half-open range in
 /// the original cartridge file. Emulated addresses and exact ROM offsets must
 /// remain inside the translation project.
+public enum EngineExecutedSourceReadInitiator: String, Codable, Equatable, Sendable {
+    case cpu
+    case generalDMA
+}
+
 public struct EngineExecutedSourceReadContext: Codable, Equatable, Sendable {
+    /// Nil only when decoding a legacy ABI-9 artifact; legacy records are CPU reads.
+    public let initiator: EngineExecutedSourceReadInitiator?
     public let immediateCaller: UInt32
     public let callerSegment: UInt16
     public let callerOffset: UInt16
@@ -401,9 +408,33 @@ public struct EngineExecutedSourceReadContext: Codable, Equatable, Sendable {
     public let mapperWindow: UInt16
     public let mapperBank: UInt16
     public let resolvedCartridgeOperand: UInt32
+    public let generalDMASourceOperand: UInt32?
 
-    fileprivate init(cValue: swan_display_source_trace_t) {
-        immediateCaller = cValue.immediate_caller
+    public var effectiveInitiator: EngineExecutedSourceReadInitiator {
+        initiator ?? .cpu
+    }
+
+    fileprivate init(cValue: swan_display_source_trace_t) throws {
+        switch cValue.read_context_initiator {
+        case swan_display_source_read_initiator_t(
+            SWAN_DISPLAY_SOURCE_READ_INITIATOR_CPU
+        ):
+            initiator = .cpu
+            immediateCaller = cValue.immediate_caller_or_general_dma_source_operand
+            generalDMASourceOperand = nil
+        case swan_display_source_read_initiator_t(
+            SWAN_DISPLAY_SOURCE_READ_INITIATOR_GENERAL_DMA
+        ):
+            initiator = .generalDMA
+            immediateCaller = 0
+            generalDMASourceOperand =
+                cValue.immediate_caller_or_general_dma_source_operand
+        default:
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned executed source lineage without an explicit initiator."
+            )
+        }
         callerSegment = cValue.caller_segment
         callerOffset = cValue.caller_offset
         operandSegment = cValue.operand_segment
@@ -413,8 +444,27 @@ public struct EngineExecutedSourceReadContext: Codable, Equatable, Sendable {
         resolvedCartridgeOperand = cValue.resolved_cartridge_operand
     }
 
-    fileprivate init(cValue: swan_display_source_trace_v2_t) {
-        immediateCaller = cValue.immediate_caller
+    fileprivate init(cValue: swan_display_source_trace_v2_t) throws {
+        switch cValue.read_context_initiator {
+        case swan_display_source_read_initiator_t(
+            SWAN_DISPLAY_SOURCE_READ_INITIATOR_CPU
+        ):
+            initiator = .cpu
+            immediateCaller = cValue.immediate_caller_or_general_dma_source_operand
+            generalDMASourceOperand = nil
+        case swan_display_source_read_initiator_t(
+            SWAN_DISPLAY_SOURCE_READ_INITIATOR_GENERAL_DMA
+        ):
+            initiator = .generalDMA
+            immediateCaller = 0
+            generalDMASourceOperand =
+                cValue.immediate_caller_or_general_dma_source_operand
+        default:
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned executed source lineage without an explicit initiator."
+            )
+        }
         callerSegment = cValue.caller_segment
         callerOffset = cValue.caller_offset
         operandSegment = cValue.operand_segment
@@ -531,7 +581,7 @@ public struct EngineDisplaySourceTrace: Codable, Equatable, Sendable {
             & UInt32(SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW) != 0
         if cValue.read_context_flags
             & UInt32(SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED) != 0 {
-            executedReadContext = EngineExecutedSourceReadContext(cValue: cValue)
+            executedReadContext = try EngineExecutedSourceReadContext(cValue: cValue)
         } else {
             executedReadContext = nil
         }
@@ -570,7 +620,7 @@ public struct EngineDisplaySourceTrace: Codable, Equatable, Sendable {
             & UInt32(SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW) != 0
         if cValue.read_context_flags
             & UInt32(SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED) != 0 {
-            executedReadContext = EngineExecutedSourceReadContext(cValue: cValue)
+            executedReadContext = try EngineExecutedSourceReadContext(cValue: cValue)
         } else {
             executedReadContext = nil
         }

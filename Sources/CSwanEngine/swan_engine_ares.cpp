@@ -222,7 +222,10 @@ std::vector<uint8_t> deterministic_rtc(uint64_t unix_seconds) {
 }
 
 struct ExecutedReadContext {
+  swan_display_source_read_initiator_t initiator =
+      SWAN_DISPLAY_SOURCE_READ_INITIATOR_NONE;
   uint32_t immediate_caller = 0;
+  uint32_t general_dma_source_operand = 0;
   uint16_t caller_segment = 0;
   uint16_t caller_offset = 0;
   uint16_t operand_segment = 0;
@@ -261,6 +264,9 @@ struct SourceSet {
   static bool range_order(const SourceRange& lhs, const SourceRange& rhs) {
     if (lhs.lower != rhs.lower) return lhs.lower < rhs.lower;
     if (lhs.upper != rhs.upper) return lhs.upper < rhs.upper;
+    if (lhs.read_context.initiator != rhs.read_context.initiator) {
+      return lhs.read_context.initiator < rhs.read_context.initiator;
+    }
     if (lhs.read_context.immediate_caller != rhs.read_context.immediate_caller) {
       return lhs.read_context.immediate_caller < rhs.read_context.immediate_caller;
     }
@@ -287,6 +293,11 @@ struct SourceSet {
       return lhs.read_context.resolved_cartridge_operand <
           rhs.read_context.resolved_cartridge_operand;
     }
+    if (lhs.read_context.general_dma_source_operand !=
+        rhs.read_context.general_dma_source_operand) {
+      return lhs.read_context.general_dma_source_operand <
+          rhs.read_context.general_dma_source_operand;
+    }
     return lhs.read_context.fetch_context_cell_id <
         rhs.read_context.fetch_context_cell_id;
   }
@@ -296,7 +307,9 @@ struct SourceSet {
     const auto& left = lhs.read_context;
     const auto& right = rhs.read_context;
     if (left.executed != right.executed ||
+        left.initiator != right.initiator ||
         left.immediate_caller != right.immediate_caller ||
+        left.general_dma_source_operand != right.general_dma_source_operand ||
         left.caller_segment != right.caller_segment ||
         left.caller_offset != right.caller_offset ||
         left.operand_segment != right.operand_segment ||
@@ -304,10 +317,16 @@ struct SourceSet {
         left.mapper_bank != right.mapper_bank ||
         left.fetch_context_cell_id != right.fetch_context_cell_id) return false;
     if (!left.executed) return true;
-    return static_cast<uint64_t>(left.resolved_cartridge_operand) + rhs.lower ==
-            static_cast<uint64_t>(right.resolved_cartridge_operand) + lhs.lower &&
-        static_cast<uint64_t>(left.operand_offset) + rhs.lower ==
-            static_cast<uint64_t>(right.operand_offset) + lhs.lower;
+    const bool resolved_contiguous =
+        static_cast<uint64_t>(left.resolved_cartridge_operand) + rhs.lower ==
+            static_cast<uint64_t>(right.resolved_cartridge_operand) + lhs.lower;
+    if (!resolved_contiguous) return false;
+    if (left.initiator == SWAN_DISPLAY_SOURCE_READ_INITIATOR_GENERAL_DMA) {
+      return static_cast<uint64_t>(left.general_dma_source_operand) + rhs.lower ==
+          static_cast<uint64_t>(right.general_dma_source_operand) + lhs.lower;
+    }
+    return static_cast<uint64_t>(left.operand_offset) + rhs.lower ==
+        static_cast<uint64_t>(right.operand_offset) + lhs.lower;
   }
 
   void add(uint32_t lower, uint32_t upper,
@@ -1735,7 +1754,9 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       sources = &io_sources_[address];
     }
     if (sources) {
-      *sources = instruction_active_ ? instruction_sources_ : SourceSet{};
+      *sources = instruction_active_
+          ? instruction_sources_
+          : general_dma_active_ ? general_dma_sources_ : SourceSet{};
       if (instruction_active_ && !instruction_precise_copy_) {
         sources->mark_conservative(
             SWAN_DISPLAY_SOURCE_CONSERVATIVE_UNCLASSIFIED_INSTRUCTION,
@@ -1743,6 +1764,22 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       }
       if (instruction_active_ && !sources->empty()) sources->increment_hops();
     }
+  }
+
+  void wonderSwanGeneralDMABegin(u32 source_operand) override {
+    if (instruction_active_ || general_dma_active_) {
+      source_tracking_valid_ = false;
+      return;
+    }
+    general_dma_sources_ = {};
+    general_dma_source_operand_ = source_operand & 0xfffffu;
+    general_dma_active_ = true;
+  }
+
+  void wonderSwanGeneralDMAEnd() override {
+    general_dma_active_ = false;
+    general_dma_source_operand_ = 0;
+    general_dma_sources_ = {};
   }
 
   void wonderSwanInstructionBegin(u32 caller, u32 segment, u32 offset) override {
@@ -1808,27 +1845,30 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
   }
 
   void wonderSwanDataRead(u32 kind, u32 address) override {
-    if (!instruction_active_) return;
+    SourceSet* activeSources = instruction_active_
+        ? &instruction_sources_
+        : general_dma_active_ ? &general_dma_sources_ : nullptr;
+    if (!activeSources) return;
     if (kind == 1 && address < iram_sources_.size()) {
-      instruction_sources_.merge(iram_sources_[address]);
+      activeSources->merge(iram_sources_[address]);
       return;
     }
     if (kind == 2 && address < io_sources_.size()) {
-      instruction_sources_.merge(io_sources_[address]);
+      activeSources->merge(io_sources_[address]);
       return;
     }
     if (kind == 3 && rom_aperture_size_ != 0) {
       const uint32_t mapped = address & (rom_aperture_size_ - 1u);
       if (mapped >= rom_leading_padding_ &&
           mapped - rom_leading_padding_ < rom_file_size_) {
-        instruction_sources_.add(
+        activeSources->add(
             mapped - rom_leading_padding_, mapped - rom_leading_padding_ + 1u);
       } else {
-        instruction_sources_.unknown = true;
+        activeSources->unknown = true;
       }
       return;
     }
-    instruction_sources_.unknown = true;
+    activeSources->unknown = true;
   }
 
   void wonderSwanCartridgeDataRead(u32 resolved_operand,
@@ -1836,26 +1876,52 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
                                    u32 operand_offset,
                                    u32 mapper_window,
                                    u32 mapper_bank) override {
-    if (!instruction_active_ || rom_aperture_size_ == 0) return;
+    SourceSet* activeSources = instruction_active_
+        ? &instruction_sources_
+        : general_dma_active_ ? &general_dma_sources_ : nullptr;
+    if (!activeSources || rom_aperture_size_ == 0) return;
     const uint32_t mapped = resolved_operand & (rom_aperture_size_ - 1u);
     if (mapped >= rom_leading_padding_ &&
         mapped - rom_leading_padding_ < rom_file_size_) {
-      instruction_sources_.add(
+      const uint32_t dma_source_operand = static_cast<uint32_t>(
+          ((static_cast<uint64_t>(operand_segment) << 4u) + operand_offset)
+              & 0xfffffu
+      );
+      if (general_dma_active_ &&
+          dma_source_operand != general_dma_source_operand_ &&
+          dma_source_operand != ((general_dma_source_operand_ + 1u) & 0xfffffu)) {
+        activeSources->unknown = true;
+        return;
+      }
+      ExecutedReadContext context{};
+      context.initiator = instruction_active_
+          ? SWAN_DISPLAY_SOURCE_READ_INITIATOR_CPU
+          : SWAN_DISPLAY_SOURCE_READ_INITIATOR_GENERAL_DMA;
+      context.immediate_caller = instruction_active_ ? instruction_caller_ : 0;
+      context.general_dma_source_operand = general_dma_active_
+          ? dma_source_operand
+          : 0;
+      context.caller_segment = instruction_active_ ? instruction_segment_ : 0;
+      context.caller_offset = instruction_active_ ? instruction_offset_ : 0;
+      context.operand_segment = instruction_active_
+          ? static_cast<uint16_t>(operand_segment) : 0;
+      context.operand_offset = instruction_active_
+          ? static_cast<uint16_t>(operand_offset) : 0;
+      context.mapper_window = static_cast<uint16_t>(mapper_window);
+      context.mapper_bank = static_cast<uint16_t>(mapper_bank);
+      context.resolved_cartridge_operand = resolved_operand;
+      context.fetch_context_cell_id = instruction_active_ && !instruction_nested_
+          ? instruction_fetch_context_cell_id_ : 0;
+      context.executed = true;
+      activeSources->add(
           mapped - rom_leading_padding_, mapped - rom_leading_padding_ + 1u,
-          ExecutedReadContext{
-              instruction_caller_, instruction_segment_, instruction_offset_,
-              static_cast<uint16_t>(operand_segment),
-              static_cast<uint16_t>(operand_offset),
-              static_cast<uint16_t>(mapper_window),
-              static_cast<uint16_t>(mapper_bank), resolved_operand,
-              instruction_nested_ ? 0 : instruction_fetch_context_cell_id_,
-              true});
-      if (!instruction_nested_ && pending_fetch_context_ &&
+          context);
+      if (instruction_active_ && !instruction_nested_ && pending_fetch_context_ &&
           pending_fetch_context_->cell_id == instruction_fetch_context_cell_id_) {
         pending_fetch_context_->referenced_by_source_read = true;
       }
     } else {
-      instruction_sources_.unknown = true;
+      activeSources->unknown = true;
     }
   }
 
@@ -2104,7 +2170,12 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       }
       if (range.read_context.executed) {
         trace.read_context_flags = SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED;
-        trace.immediate_caller = range.read_context.immediate_caller;
+        trace.read_context_initiator = range.read_context.initiator;
+        trace.immediate_caller_or_general_dma_source_operand =
+            range.read_context.initiator ==
+                SWAN_DISPLAY_SOURCE_READ_INITIATOR_GENERAL_DMA
+            ? range.read_context.general_dma_source_operand
+            : range.read_context.immediate_caller;
         trace.caller_segment = range.read_context.caller_segment;
         trace.caller_offset = range.read_context.caller_offset;
         trace.operand_segment = range.read_context.operand_segment;
@@ -2156,9 +2227,11 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
         left.source_byte_count == right.source_byte_count &&
         left.minimum_instruction_hops == right.minimum_instruction_hops &&
         left.maximum_instruction_hops == right.maximum_instruction_hops &&
-        left.reserved == right.reserved && left.flags == right.flags &&
+        left.read_context_initiator == right.read_context_initiator &&
+        left.flags == right.flags &&
         left.read_context_flags == right.read_context_flags &&
-        left.immediate_caller == right.immediate_caller &&
+        left.immediate_caller_or_general_dma_source_operand ==
+            right.immediate_caller_or_general_dma_source_operand &&
         left.caller_segment == right.caller_segment &&
         left.caller_offset == right.caller_offset &&
         left.operand_segment == right.operand_segment &&
@@ -2185,10 +2258,18 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
          SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED) == 0) return true;
     const uint64_t delta =
         static_cast<uint64_t>(right.cartridge_offset) - left.cartridge_offset;
-    return static_cast<uint64_t>(left.resolved_cartridge_operand) + delta ==
-            right.resolved_cartridge_operand &&
-        static_cast<uint64_t>(left.operand_offset) + delta ==
-            right.operand_offset;
+    const bool resolvedContiguous =
+        static_cast<uint64_t>(left.resolved_cartridge_operand) + delta ==
+            right.resolved_cartridge_operand;
+    if (!resolvedContiguous) return false;
+    if (left.read_context_initiator ==
+        SWAN_DISPLAY_SOURCE_READ_INITIATOR_GENERAL_DMA) {
+      return static_cast<uint64_t>(
+          left.immediate_caller_or_general_dma_source_operand
+        ) + delta == right.immediate_caller_or_general_dma_source_operand;
+    }
+    return static_cast<uint64_t>(left.operand_offset) + delta ==
+        right.operand_offset;
   }
 
   static std::vector<swan_display_source_trace_t> normalize_legacy_traces(
@@ -2218,7 +2299,9 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     std::vector<uint64_t> result;
     if (trace.cartridge_length == 0 ||
         (trace.read_context_flags &
-         SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED) == 0) return result;
+         SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED) == 0 ||
+        trace.read_context_initiator !=
+            SWAN_DISPLAY_SOURCE_READ_INITIATOR_CPU) return result;
     const SourceSet sources = source_set_for(
         trace.source_address, trace.source_byte_count);
     const uint64_t trace_upper =
@@ -2230,7 +2313,9 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       if (range.lower >= trace.cartridge_offset &&
           range.upper <= trace_upper &&
           read.executed &&
-          read.immediate_caller == trace.immediate_caller &&
+          read.initiator == SWAN_DISPLAY_SOURCE_READ_INITIATOR_CPU &&
+          read.immediate_caller ==
+              trace.immediate_caller_or_general_dma_source_operand &&
           read.caller_segment == trace.caller_segment &&
           read.caller_offset == trace.caller_offset &&
           read.operand_segment == trace.operand_segment &&
@@ -2259,8 +2344,11 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     io_sources_.fill({});
     register_sources_.fill({});
     instruction_sources_ = {};
+    general_dma_sources_ = {};
     instruction_written_registers_ = 0;
     instruction_active_ = false;
+    general_dma_active_ = false;
+    general_dma_source_operand_ = 0;
     instruction_precise_copy_ = false;
     instruction_nested_ = false;
     instruction_caller_ = 0;
@@ -2327,8 +2415,11 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
   // AW/CW/DW/BW/SP/BP/IX/IY are retained as independent low/high bytes.
   std::array<SourceSet, 16> register_sources_{};
   SourceSet instruction_sources_{};
+  SourceSet general_dma_sources_{};
   uint32_t instruction_written_registers_ = 0;
   bool instruction_active_ = false;
+  bool general_dma_active_ = false;
+  uint32_t general_dma_source_operand_ = 0;
   bool instruction_precise_copy_ = false;
   bool instruction_nested_ = false;
   uint32_t instruction_caller_ = 0;

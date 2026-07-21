@@ -57,6 +57,18 @@ The signed public release is **SwanSong 0.7.0 (13)**.
   before owner/source queries, checked again afterward, and represented by the
   exact ordered private receipt. Wrong frame or framed fingerprint must leave
   no report, details, run directory, output, or closure.
+- **Signed source-probe handoff:** run
+  `check-signed-source-probe-helper.sh` on the Developer ID candidate after
+  signature verification. The installed MCP helper must advertise every
+  A2/M2/seal/run binding and launch only its bundled route-runner sibling.
+  Through that exact helper, prove public success, public blocked lineage,
+  wrong-frame rejection before any query, exactly 4,096 pixels accepted, and
+  4,097 rejected before run state. Tampered A/C/M/M2/seal/plan/ROM/runner or
+  engine bindings, plus missing CPU or General DMA executed-read context, must
+  fail without K. Each accepted run must pass K-last completed-tree validation
+  and return no private runner diagnostics or source fields. Confirm the
+  helper, runner, and engine dylib share the app's signing team before
+  notarization.
 - **Non-interactive local tools:** restart the trusted MCP clients and run the
   Swift wrapper with login-keychain access disabled. Neither path should ask
   for a macOS login password.

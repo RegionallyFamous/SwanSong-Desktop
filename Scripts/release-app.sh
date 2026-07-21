@@ -179,6 +179,7 @@ SWAN_EXPECTED_BUNDLE_ID="$EXPECTED_BUNDLE_ID" \
 SWAN_EXPECTED_TEAM_ID="$EXPECTED_TEAM_ID" \
   "$RELEASE_SCRIPT_DIR/verify-app-signature.sh" "$APP"
 "$RELEASE_SCRIPT_DIR/check-isolated-engine-service.sh" "$APP"
+"$RELEASE_SCRIPT_DIR/check-signed-source-probe-helper.sh" "$APP"
 
 if [ "$NOTARIZE" = "1" ]; then
   "$RELEASE_SCRIPT_DIR/notarize-app.sh" "$APP"

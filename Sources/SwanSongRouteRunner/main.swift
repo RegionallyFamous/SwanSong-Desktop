@@ -247,7 +247,7 @@ private struct SwanSongRouteRunner {
       SwanSongRouteRunner probe-rectangle-source --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original --frame 29 --rect 8,8,1,1 --components raster [--output RUN/report.json]
         --commercial-source-contract-kat --capture-frame-seal SEAL.json --authorization RUN/authorization.json --capability-receipt C.json --method-capability-receipt M.json --method-native-marker MARKER.json --run-directory RUN
         [--public-source-contract-wrong-frame-kat]
-      SwanSongRouteRunner probe-rectangle-source --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original --frame 1839 --rect 48,56,120,16 --components raster [--output RUN/report.json]
+      SwanSongRouteRunner probe-rectangle-source --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original --frame SEALED_FRAME --rect SEALED_X,SEALED_Y,SEALED_WIDTH,SEALED_HEIGHT --components SEALED_COMPONENTS [--output RUN/report.json]
         --commercial-authorized-source-probe --capture-frame-seal SEAL.json --authorization RUN/authorization.json --capability-receipt C.json --method-capability-receipt M.json --qualified-method-capability-receipt M2.json --method-native-marker MARKER.json --run-directory RUN
       SwanSongRouteRunner record-route --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json [--output REPORT.json]
       SwanSongRouteRunner verify-pair --enable-debug-tools --allow-project-writes --project PROJECT --route ROUTE.json [--output REPORT.json]

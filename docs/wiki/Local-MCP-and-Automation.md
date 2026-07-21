@@ -204,11 +204,31 @@ optional nonempty `components` selector (`mapCell`, `raster`, `palette`,
 selector limits only the in-rectangle source seeds; every outside display
 component sharing those ranges is still discovered. It privately retains exact
 half-open cartridge ranges, per-display-source instruction-hop chains, executed
-caller, operand, and mapper context, completeness/overflow flags, private
+reader and mapper context, completeness/overflow flags, private
 conservative-dataflow reason and origin, and visible consumers
 outside the chosen rectangle. Its MCP response remains source-free: only
 range/chain/context/consumer counts and hashes plus explicit completeness status
 leave the project.
+
+The installed MCP tool never runs that probe in-process. It launches only the
+signed `Contents/Helpers/SwanSongRouteRunner` beside itself and requires the
+commercial A2 authorization, base C receipt, method M receipt, qualified M2
+receipt, native marker, authenticated Original capture seal, private run
+directory, and authorized public-report destination. The seal supplies the
+frame, native rectangle, orientation, and selected components; those values
+must exactly match A2, the CLI request, project, plan, Original ROM, and replayed
+native-frame fingerprint. The native frame number must equal the zero-based plan
+frame plus one, and the rectangle may contain at most 4,096 native pixels.
+
+Every cartridge-backed selected trace and overlapping outside consumer must
+carry a real executed reader. CPU reads retain the immediate caller, code and
+operand segment/offset, mapper window and bank, and resolved cartridge operand.
+General DMA reads instead retain an explicit `generalDMA` initiator and the
+exact 20-bit DMA source operand; they never invent a CPU caller. Runtime-created
+lineage is the only context-free exception. These details stay in the private
+authorized artifact. MCP returns only the K-bound public report after rereading
+K, matching its report size and hash, and confirming K binds the current signed
+helper.
 
 Current source probes use private/report schema v4 and tile-aligned adaptive
 partition v2. A complete artifact may contain up to 256 normalized disjoint
