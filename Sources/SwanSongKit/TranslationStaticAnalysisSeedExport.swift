@@ -16,6 +16,22 @@ public struct TranslationStaticAnalysisSeedAnchor: Codable, Sendable {
     public let mapperWindow: UInt16
     public let mapperBank: UInt16
     public let resolvedMapperApertureOperand: UInt32
+    public let fetchContextID: UInt64?
+    public let fetchContextDigest: String?
+}
+
+public struct TranslationStaticAnalysisFetchContext: Codable, Equatable, Sendable {
+    public let id: UInt64
+    public let structuralID: UInt64
+    public let byteStart: UInt32
+    public let byteCount: UInt32
+    public let flags: UInt32
+    public let terminalOpcode: UInt8
+    public let continuing: Bool
+    public let logicalStartPhysical: UInt32
+    public let logicalStartSegment: UInt16
+    public let logicalStartOffset: UInt16
+    public let canonicalDigest: String
 }
 
 public struct TranslationStaticAnalysisSeedBindings: Codable, Sendable {
@@ -35,7 +51,8 @@ public struct TranslationStaticAnalysisSeedBindings: Codable, Sendable {
 }
 
 public struct TranslationStaticAnalysisSeed: Codable, Sendable {
-    public static let currentSchema = "swan-song-static-analysis-seed-v1"
+    public static let currentSchema = "swan-song-static-analysis-seed-v2"
+    public static let legacySchema = "swan-song-static-analysis-seed-v1"
 
     public let schema: String
     public let sourceProbeSchema: String
@@ -46,6 +63,8 @@ public struct TranslationStaticAnalysisSeed: Codable, Sendable {
     public let payloadRanges: [TranslationCartridgeSourceRange]
     public let anchors: [TranslationStaticAnalysisSeedAnchor]
     public let runtimeGeneratedTraceCount: Int
+    public let fetchContexts: [TranslationStaticAnalysisFetchContext]?
+    public let fetchBytes: [EngineInstructionFetchByte]?
     public let prototypeAuthorized: Bool
 }
 
@@ -53,15 +72,18 @@ public struct TranslationStaticAnalysisSeed: Codable, Sendable {
 /// ranges, CPU addresses, mapper values, and the output path never leave the
 /// selected translation project through MCP.
 public struct TranslationStaticAnalysisSeedReport: Codable, Sendable {
-    public static let currentSchema = "swan-song-static-analysis-seed-report-v1"
+    public static let currentSchema = "swan-song-static-analysis-seed-report-v2"
 
     public let schema: String
     public let sourceProbeSchema: String
     public let role: TranslationROMRole
     public let selectedComponents: [String]
+    public let privateSeedSchema: String
     public let anchorCount: Int
     public let payloadRangeCount: Int
     public let runtimeGeneratedTraceCount: Int
+    public let fetchContextCount: Int
+    public let fetchByteCount: Int
     public let componentCounts: [String: Int]
     public let scopeCounts: [String: Int]
     public let lineageComplete: Bool
@@ -78,12 +100,16 @@ public struct TranslationStaticAnalysisSeedReport: Codable, Sendable {
     public let nativeFrameSHA256: String
     public let payloadRangesSHA256: String
     public let anchorsSHA256: String
+    public let fetchContextsSHA256: String
+    public let fetchBytesSHA256: String
     public let privateSeedSHA256: String
 }
 
 public enum TranslationStaticAnalysisSeedExporter {
     private static let legacySeedV1BuildIDPattern =
         #"^ares-[0-9a-f]{40}-swan-abi9$"#
+    private static let seedV2BuildIDPattern =
+        #"^ares-[0-9a-f]{40}-swan-abi10$"#
 
     public static func isExactLegacySeedV1SourceProbeProfile(
         schema: String,
@@ -100,6 +126,21 @@ public enum TranslationStaticAnalysisSeedExporter {
         return buildIDRange == engine.buildID.startIndex..<engine.buildID.endIndex
     }
 
+    public static func isExactSeedV2SourceProbeProfile(
+        schema: String,
+        engine: TranslationRouteEngineIdentity
+    ) -> Bool {
+        guard schema == TranslationDisplaySourceProbeDetails.currentSchema,
+              engine.backend == "ares",
+              let buildIDRange = engine.buildID.range(
+                  of: seedV2BuildIDPattern,
+                  options: .regularExpression
+              ) else {
+            return false
+        }
+        return buildIDRange == engine.buildID.startIndex..<engine.buildID.endIndex
+    }
+
     public static func run(
         project: TranslationProject,
         sourceProbeDetailsURL: URL
@@ -108,7 +149,19 @@ public enum TranslationStaticAnalysisSeedExporter {
             project: project,
             sourceProbeDetailsURL: sourceProbeDetailsURL
         )
-        let seed = try makeSeed(details: details, detailsData: detailsData)
+        let consumedPrefetch = isExactSeedV2SourceProbeProfile(
+            schema: details.schema,
+            engine: details.engine
+        ) ? try replayConsumedPrefetch(
+            project: project,
+            details: details,
+            sourceProbeDetailsURL: sourceProbeDetailsURL
+        ) : nil
+        let seed = try makeSeed(
+            details: details,
+            detailsData: detailsData,
+            consumedPrefetch: consumedPrefetch
+        )
         let seedData = try encoded(seed)
         guard TranslationPrivateSourceEvidenceLimits.contains(byteCount: seedData.count) else {
             throw TranslationLabError.invalidProject(
@@ -125,14 +178,19 @@ public enum TranslationStaticAnalysisSeedExporter {
     ) -> TranslationStaticAnalysisSeedReport {
         let anchorStrings = seed.anchors.map(canonicalAnchor)
         let rangeStrings = seed.payloadRanges.map(canonicalRange)
+        let fetchContexts = seed.fetchContexts ?? []
+        let fetchBytes = seed.fetchBytes ?? []
         return TranslationStaticAnalysisSeedReport(
             schema: TranslationStaticAnalysisSeedReport.currentSchema,
             sourceProbeSchema: seed.sourceProbeSchema,
             role: seed.role,
             selectedComponents: seed.selectedComponents,
+            privateSeedSchema: seed.schema,
             anchorCount: seed.anchors.count,
             payloadRangeCount: seed.payloadRanges.count,
             runtimeGeneratedTraceCount: seed.runtimeGeneratedTraceCount,
+            fetchContextCount: fetchContexts.count,
+            fetchByteCount: fetchBytes.count,
             componentCounts: counts(seed.anchors.map(\.component)),
             scopeCounts: counts(seed.anchors.map(\.scope)),
             lineageComplete: true,
@@ -149,20 +207,26 @@ public enum TranslationStaticAnalysisSeedExporter {
             nativeFrameSHA256: seed.bindings.nativeFrameSHA256,
             payloadRangesSHA256: hashCanonical(rangeStrings),
             anchorsSHA256: hashCanonical(anchorStrings),
+            fetchContextsSHA256: hashCanonical(fetchContexts.map(canonicalFetchContext)),
+            fetchBytesSHA256: hashCanonical(fetchBytes.map(canonicalFetchByte)),
             privateSeedSHA256: sha256(seedData)
         )
     }
 
     static func makeSeed(
         details: TranslationDisplaySourceProbeDetails,
-        detailsData: Data
+        detailsData: Data,
+        consumedPrefetch: EngineConsumedPrefetchProbe? = nil
     ) throws -> TranslationStaticAnalysisSeed {
-        guard isExactLegacySeedV1SourceProbeProfile(
-            schema: details.schema,
-            engine: details.engine
-        ) else {
+        let legacyProfile = isExactLegacySeedV1SourceProbeProfile(
+            schema: details.schema, engine: details.engine
+        )
+        let seedV2Profile = isExactSeedV2SourceProbeProfile(
+            schema: details.schema, engine: details.engine
+        ) && consumedPrefetch != nil
+        guard legacyProfile || seedV2Profile else {
             throw TranslationLabError.invalidProject(
-                "static-analysis seed-v1 export requires an exact ABI-9/v4 engine profile"
+                "static-analysis export requires exact ABI-9/v4 seed-v1 or qualified ABI-10/v4 seed-v2 evidence"
             )
         }
         guard let projectDigest = details.project,
@@ -178,6 +242,10 @@ public enum TranslationStaticAnalysisSeedExporter {
             throw TranslationLabError.invalidProject(
                 "the upstream source probe is incomplete or lacks current project bindings"
             )
+        }
+
+        let fetchEvidence = try consumedPrefetch.map {
+            try validateConsumedPrefetch($0, details: details)
         }
 
         var runtimeGeneratedTraceCount = 0
@@ -257,6 +325,12 @@ public enum TranslationStaticAnalysisSeedExporter {
                 )
             }
             if trace.scope == .selected { selectedTraces.append(trace) }
+            let fetchBinding = fetchEvidence?.bindingByTrace[canonicalTracePrefix(trace)]
+            if seedV2Profile, fetchBinding == nil {
+                throw TranslationLabError.invalidProject(
+                    "an ABI-10 source anchor lacks its sealed consumed-prefetch context"
+                )
+            }
             let anchor = TranslationStaticAnalysisSeedAnchor(
                 scope: trace.scope.rawValue,
                 component: trace.component.rawValue,
@@ -274,7 +348,9 @@ public enum TranslationStaticAnalysisSeedExporter {
                 operandOffset: context.operandOffset,
                 mapperWindow: context.mapperWindow,
                 mapperBank: context.mapperBank,
-                resolvedMapperApertureOperand: context.resolvedCartridgeOperand
+                resolvedMapperApertureOperand: context.resolvedCartridgeOperand,
+                fetchContextID: fetchBinding?.id,
+                fetchContextDigest: fetchBinding?.digest
             )
             anchorsByCanonical[canonicalAnchor(anchor)] = anchor
         }
@@ -289,7 +365,9 @@ public enum TranslationStaticAnalysisSeedExporter {
         }
         let anchors = anchorsByCanonical.sorted { $0.key < $1.key }.map(\.value)
         return TranslationStaticAnalysisSeed(
-            schema: TranslationStaticAnalysisSeed.currentSchema,
+            schema: seedV2Profile
+                ? TranslationStaticAnalysisSeed.currentSchema
+                : TranslationStaticAnalysisSeed.legacySchema,
             sourceProbeSchema: details.schema,
             sourceProbeDetailsDigest: TranslationArtifactDigest(
                 byteCount: detailsData.count,
@@ -315,7 +393,282 @@ public enum TranslationStaticAnalysisSeedExporter {
             payloadRanges: details.cartridgeRanges,
             anchors: anchors,
             runtimeGeneratedTraceCount: runtimeGeneratedTraceCount,
+            fetchContexts: fetchEvidence?.contexts,
+            fetchBytes: fetchEvidence?.bytes,
             prototypeAuthorized: false
+        )
+    }
+
+    private struct QualifiedFetchEvidence {
+        struct Binding {
+            let id: UInt64
+            let digest: String
+        }
+
+        let bindingByTrace: [String: Binding]
+        let contexts: [TranslationStaticAnalysisFetchContext]
+        let bytes: [EngineInstructionFetchByte]
+    }
+
+    private static func validateConsumedPrefetch(
+        _ probe: EngineConsumedPrefetchProbe,
+        details: TranslationDisplaySourceProbeDetails
+    ) throws -> QualifiedFetchEvidence {
+        guard probe.traces.map(canonicalTracePrefix).sorted()
+                == details.traces.map(canonicalTracePrefix).sorted(),
+              !probe.contexts.isEmpty,
+              !probe.bytes.isEmpty else {
+            throw TranslationLabError.invalidProject(
+                "the ABI-10 consumed-prefetch replay does not match the authenticated source probe"
+            )
+        }
+        let aperture = try mappedApertureSize(romByteCount: details.rom.byteCount)
+        let leadingPadding = aperture - UInt32(details.rom.byteCount)
+        let contextsByID = Dictionary(grouping: probe.contexts, by: \.id)
+        guard contextsByID.count == probe.contexts.count else {
+            throw TranslationLabError.invalidProject(
+                "the ABI-10 consumed-prefetch context identity is not unique"
+            )
+        }
+
+        for context in probe.contexts {
+            let expectedPhysical = UInt32(
+                ((UInt64(context.logicalStartSegment) << 4)
+                    + UInt64(context.logicalStartOffset)) & 0xF_FFFF
+            )
+            let upper = UInt64(context.byteStart) + UInt64(context.byteCount)
+            guard context.id != 0,
+                  context.structuralID != 0,
+                  context.flags == EngineInstructionFetchContext.qualifiedSeedV2Flags,
+                  context.byteCount > 0,
+                  upper <= UInt64(probe.bytes.count),
+                  context.logicalStartPhysical == expectedPhysical,
+                  context.canonicalDigest.count == 64,
+                  context.canonicalDigest.allSatisfy({ $0.isHexDigit }),
+                  context.canonicalDigest != String(repeating: "0", count: 64) else {
+                throw TranslationLabError.invalidProject(
+                    "an ABI-10 consumed-prefetch context is not sealed and qualified"
+                )
+            }
+            let slice = probe.bytes[
+                Int(context.byteStart)..<Int(context.byteStart + context.byteCount)
+            ]
+            for (ordinal, byte) in slice.enumerated() {
+                let physical = UInt32(
+                    ((UInt64(byte.segment) << 4) + UInt64(byte.offset)) & 0xF_FFFF
+                )
+                let operandWindow = (physical & 0xF_0000) >> 16
+                let resolvedFromMapper: UInt32
+                if byte.mapperWindow == 2 || byte.mapperWindow == 3 {
+                    resolvedFromMapper = UInt32(
+                        ((UInt64(byte.mapperBank) << 16)
+                            | UInt64(physical & 0xFFFF)) & UInt64(aperture - 1)
+                    )
+                } else {
+                    resolvedFromMapper = UInt32(
+                        ((UInt64(byte.mapperBank) << 20) | UInt64(physical))
+                            & UInt64(aperture - 1)
+                    )
+                }
+                let mapped = byte.resolvedOperand & (aperture - 1)
+                guard byte.contextID == context.id,
+                      byte.ordinal == UInt32(ordinal),
+                      byte.token != 0,
+                      byte.sourceKind == 1,
+                      byte.eventContext != 0,
+                      byte.segment <= UInt32(UInt16.max),
+                      byte.offset <= UInt32(UInt16.max),
+                      byte.data <= UInt32(UInt8.max),
+                      byte.physicalAddress == physical,
+                      (2...15).contains(byte.mapperWindow),
+                      byte.mapperWindow == operandWindow,
+                      byte.resolvedOperand == resolvedFromMapper,
+                      mapped >= leadingPadding else {
+                    throw TranslationLabError.invalidProject(
+                        "an ABI-10 consumed-prefetch byte does not match V30MZ or mapper arithmetic"
+                    )
+                }
+            }
+        }
+
+        var bindingByTrace: [String: QualifiedFetchEvidence.Binding] = [:]
+        for trace in probe.traces where trace.cartridgeLength > 0 {
+            guard let id = trace.executionContextID,
+                  let flags = trace.fetchContextFlags,
+                  let context = contextsByID[id]?.first,
+                  flags == context.flags else {
+                throw TranslationLabError.invalidProject(
+                    "an ABI-10 source trace lacks a bijective consumed-prefetch association"
+                )
+            }
+            let key = canonicalTracePrefix(trace)
+            let binding = QualifiedFetchEvidence.Binding(
+                id: id,
+                digest: context.canonicalDigest
+            )
+            if let existing = bindingByTrace[key],
+               existing.id != binding.id || existing.digest != binding.digest {
+                throw TranslationLabError.invalidProject(
+                    "an ABI-10 source trace has conflicting consumed-prefetch associations"
+                )
+            }
+            bindingByTrace[key] = binding
+        }
+        let contexts = probe.contexts.map {
+            TranslationStaticAnalysisFetchContext(
+                id: $0.id,
+                structuralID: $0.structuralID,
+                byteStart: $0.byteStart,
+                byteCount: $0.byteCount,
+                flags: $0.flags,
+                terminalOpcode: $0.terminalOpcode,
+                continuing: $0.continuing,
+                logicalStartPhysical: $0.logicalStartPhysical,
+                logicalStartSegment: $0.logicalStartSegment,
+                logicalStartOffset: $0.logicalStartOffset,
+                canonicalDigest: $0.canonicalDigest
+            )
+        }
+        return QualifiedFetchEvidence(
+            bindingByTrace: bindingByTrace,
+            contexts: contexts,
+            bytes: probe.bytes
+        )
+    }
+
+    private static func replayConsumedPrefetch(
+        project: TranslationProject,
+        details: TranslationDisplaySourceProbeDetails,
+        sourceProbeDetailsURL: URL
+    ) throws -> EngineConsumedPrefetchProbe {
+        guard let components = details.selectedComponents,
+              !components.isEmpty,
+              let partition = details.partition else {
+            throw TranslationLabError.invalidProject(
+                "the ABI-10 source probe lacks its component or partition binding"
+            )
+        }
+        let planURL = sourceProbeDetailsURL.standardizedFileURL.deletingLastPathComponent()
+            .appendingPathComponent("plan.json")
+        let planData = try Data(contentsOf: planURL, options: [.mappedIfSafe])
+        guard planData.count == details.plan.byteCount,
+              sha256(planData) == details.plan.sha256 else {
+            throw TranslationLabError.invalidProject(
+                "the ABI-10 source plan changed before consumed-prefetch replay"
+            )
+        }
+        let plan = try JSONDecoder().decode(TranslationFrameInputPlan.self, from: planData)
+        let hardware = try project.routeHardwareModel
+        try plan.validate(for: hardware)
+        let rom = try Data(contentsOf: project.romURL(for: details.role), options: [.mappedIfSafe])
+        guard rom.count == details.rom.byteCount,
+              sha256(rom) == details.rom.sha256,
+              try EngineSession.inspect(rom: rom).computedChecksum
+                == details.romFooterChecksum else {
+            throw TranslationLabError.invalidProject(
+                "the ABI-10 source ROM changed before consumed-prefetch replay"
+            )
+        }
+        let engine = try EngineSession(
+            rtcMode: .deterministic(seedUnixSeconds: details.rtc.seedUnixSeconds),
+            hardwareModel: hardware.engineHardwareModel
+        )
+        let identity = TranslationRouteEngineIdentity(
+            backend: engine.backendName,
+            buildID: engine.buildID
+        )
+        guard identity == details.engine,
+              engine.capabilities.contains(.consumedPrefetchProvenance),
+              EngineConsumedPrefetchCapabilityProfile.exact(
+                  engineABI: engine.abiVersion,
+                  engineBuildID: engine.buildID,
+                  capabilities: engine.capabilities
+              ) != nil else {
+            throw TranslationLabError.invalidProject(
+                "the current engine does not match the authenticated ABI-10 source profile"
+            )
+        }
+        _ = try engine.load(rom: rom)
+        defer { try? engine.unload() }
+        guard engine.activeHardwareModel == hardware.engineHardwareModel else {
+            throw TranslationLabError.invalidProject(
+                "consumed-prefetch replay selected the wrong hardware model"
+            )
+        }
+        var frame: EngineVideoFrame?
+        for currentFrame in 0...details.planFrameIndex {
+            try engine.setInput(plan.input(at: currentFrame))
+            try engine.runFrame()
+            frame = try engine.videoFrame()
+        }
+        guard let frame,
+              frame.number == details.nativeFrameNumber,
+              try TranslationRouteCheckpoint.fingerprint(frame)
+                == details.nativeFrameSHA256 else {
+            throw TranslationLabError.invalidProject(
+                "consumed-prefetch replay did not reach the authenticated native frame"
+            )
+        }
+
+        var tracesByKey: [String: EngineDisplaySourceTrace] = [:]
+        var contextRows: [UInt64: (EngineInstructionFetchContext, [EngineInstructionFetchByte])] = [:]
+        for leaf in partition.leaves {
+            let result = try engine.consumedPrefetchSourceProbe(
+                rectangle: leaf.rectangle,
+                components: components
+            )
+            for trace in result.traces {
+                let key = canonicalTracePrefix(trace)
+                if let existing = tracesByKey[key], existing != trace {
+                    throw TranslationLabError.invalidProject(
+                        "consumed-prefetch replay returned conflicting trace associations"
+                    )
+                }
+                tracesByKey[key] = trace
+            }
+            for context in result.contexts {
+                let bytes = Array(result.bytes[
+                    Int(context.byteStart)..<Int(context.byteStart + context.byteCount)
+                ])
+                if let existing = contextRows[context.id] {
+                    guard existing.0.rebased(byteStart: 0)
+                            == context.rebased(byteStart: 0),
+                          existing.1 == bytes else {
+                        throw TranslationLabError.invalidProject(
+                            "consumed-prefetch replay returned a conflicting context identity"
+                        )
+                    }
+                } else {
+                    contextRows[context.id] = (context, bytes)
+                }
+            }
+        }
+        let after = try engine.videoFrame()
+        guard after.number == frame.number,
+              try TranslationRouteCheckpoint.fingerprint(after)
+                == details.nativeFrameSHA256 else {
+            throw TranslationLabError.invalidProject(
+                "the native frame drifted during consumed-prefetch replay"
+            )
+        }
+        var contexts: [EngineInstructionFetchContext] = []
+        var bytes: [EngineInstructionFetchByte] = []
+        for id in contextRows.keys.sorted() {
+            guard let row = contextRows[id],
+                  bytes.count <= Int(UInt32.max) else {
+                throw TranslationLabError.invalidProject(
+                    "consumed-prefetch replay exceeded its private byte index"
+                )
+            }
+            contexts.append(row.0.rebased(byteStart: UInt32(bytes.count)))
+            bytes.append(contentsOf: row.1)
+        }
+        return EngineConsumedPrefetchProbe(
+            traces: tracesByKey.values.sorted {
+                canonicalTracePrefix($0) < canonicalTracePrefix($1)
+            },
+            contexts: contexts,
+            bytes: bytes
         )
     }
 
@@ -588,7 +941,7 @@ public enum TranslationStaticAnalysisSeedExporter {
     private static func canonicalAnchor(
         _ anchor: TranslationStaticAnalysisSeedAnchor
     ) -> String {
-        String(
+        let prefix = String(
             format: "%@:%@:%08x:%08x:%04x:%04x:%d:%08x:%04x:%04x:%04x:%04x:%04x:%04x:%08x",
             anchor.scope,
             anchor.component,
@@ -605,6 +958,89 @@ public enum TranslationStaticAnalysisSeedExporter {
             anchor.mapperWindow,
             anchor.mapperBank,
             anchor.resolvedMapperApertureOperand
+        )
+        return "\(prefix):\(anchor.fetchContextID.map(String.init) ?? "-"):\(anchor.fetchContextDigest ?? "-")"
+    }
+
+    private static func canonicalTracePrefix(_ trace: EngineDisplaySourceTrace) -> String {
+        let read = trace.executedReadContext.map {
+            String(
+                format: "%08x:%04x:%04x:%04x:%04x:%04x:%04x:%08x",
+                $0.immediateCaller,
+                $0.callerSegment,
+                $0.callerOffset,
+                $0.operandSegment,
+                $0.operandOffset,
+                $0.mapperWindow,
+                $0.mapperBank,
+                $0.resolvedCartridgeOperand
+            )
+        } ?? "-"
+        let conservative = trace.conservativeOrigin.map {
+            String(
+                format: "%@:%08x:%04x:%04x",
+                $0.reason.rawValue,
+                $0.origin20Bit,
+                $0.segment,
+                $0.offset
+            )
+        } ?? "-"
+        return String(
+            format: "%04x:%04x:%@:%@:%08x:%04x:%04x:%04x:%08x:%08x:%d:%d:%d:%d:%d:%@:%@",
+            trace.x,
+            trace.y,
+            trace.scope.rawValue,
+            trace.component.rawValue,
+            trace.sourceAddress,
+            trace.sourceByteCount,
+            trace.minimumInstructionHops,
+            trace.maximumInstructionHops,
+            trace.cartridgeOffset,
+            trace.cartridgeLength,
+            trace.hasExactRange ? 1 : 0,
+            trace.isTransformed ? 1 : 0,
+            trace.hasUnknownDependency ? 1 : 0,
+            trace.rangeSetOverflowed ? 1 : 0,
+            trace.usesConservativeDataflow ? 1 : 0,
+            read,
+            conservative
+        )
+    }
+
+    private static func canonicalFetchContext(
+        _ context: TranslationStaticAnalysisFetchContext
+    ) -> String {
+        String(
+            format: "%llu:%llu:%08x:%08x:%08x:%02x:%d:%08x:%04x:%04x:%@",
+            context.id,
+            context.structuralID,
+            context.byteStart,
+            context.byteCount,
+            context.flags,
+            context.terminalOpcode,
+            context.continuing ? 1 : 0,
+            context.logicalStartPhysical,
+            context.logicalStartSegment,
+            context.logicalStartOffset,
+            context.canonicalDigest
+        )
+    }
+
+    private static func canonicalFetchByte(_ byte: EngineInstructionFetchByte) -> String {
+        String(
+            format: "%llu:%08x:%llu:%08x:%08x:%08x:%08x:%08x:%08x:%08x:%08x:%08x",
+            byte.contextID,
+            byte.ordinal,
+            byte.token,
+            byte.sourceKind,
+            byte.physicalAddress,
+            byte.resolvedOperand,
+            byte.mapperWindow,
+            byte.mapperBank,
+            byte.eventContext,
+            byte.segment,
+            byte.offset,
+            byte.data
         )
     }
 

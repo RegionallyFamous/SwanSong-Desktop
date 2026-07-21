@@ -295,15 +295,36 @@ public struct TranslationWorkspaceDocument: Codable, Equatable, Sendable {
     public var schemaVersion: Int
     public var projectPaths: [String]
     public var selectedProjectPath: String?
+    public var projectBookmarks: [String: Data]
 
     public init(
-        schemaVersion: Int = 1,
+        schemaVersion: Int = 2,
         projectPaths: [String] = [],
-        selectedProjectPath: String? = nil
+        selectedProjectPath: String? = nil,
+        projectBookmarks: [String: Data] = [:]
     ) {
         self.schemaVersion = schemaVersion
         self.projectPaths = projectPaths
         self.selectedProjectPath = selectedProjectPath
+        self.projectBookmarks = projectBookmarks
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case schemaVersion, projectPaths, selectedProjectPath, projectBookmarks
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        schemaVersion = try values.decode(Int.self, forKey: .schemaVersion)
+        projectPaths = try values.decode([String].self, forKey: .projectPaths)
+        selectedProjectPath = try values.decodeIfPresent(
+            String.self,
+            forKey: .selectedProjectPath
+        )
+        projectBookmarks = try values.decodeIfPresent(
+            [String: Data].self,
+            forKey: .projectBookmarks
+        ) ?? [:]
     }
 }
 
@@ -330,14 +351,14 @@ public struct TranslationWorkspaceStore: Sendable {
             TranslationWorkspaceDocument.self,
             from: Data(contentsOf: fileURL)
         )
-        guard document.schemaVersion == 1 else {
+        guard document.schemaVersion == 1 || document.schemaVersion == 2 else {
             throw CocoaError(.fileReadCorruptFile)
         }
         return document
     }
 
     public func save(_ document: TranslationWorkspaceDocument) throws {
-        guard document.schemaVersion == 1 else {
+        guard document.schemaVersion == 2 else {
             throw CocoaError(.fileWriteUnknown)
         }
         let directory = fileURL.deletingLastPathComponent()

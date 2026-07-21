@@ -136,8 +136,10 @@ ABI 8 extends those fixtures with raster-only selection, component-complete
 consumer discovery, and executed caller/mapper context for the transformed
 ROM-resident source table. ABI 9 adds private sprite OAM ownership,
 `spriteAttribute` selection, conservative-origin identity, support for more
-than eight disjoint exact ranges, and a 64 MiB private-evidence bound. The same
-live lane must continue to pass the monochrome fixture whose palette/control
+than eight disjoint exact ranges, and a 64 MiB private-evidence bound. The live
+lane also covers ABI 10 consumed-prefetch contexts and a deterministic seed-v2
+export whose exact fetch bytes remain private. It must continue to pass the
+monochrome fixture whose palette/control
 byte reaches PPU I/O through a real V30 `OUT`; a failed control makes commercial
 monochrome provenance inconclusive.
 

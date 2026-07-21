@@ -1,4 +1,5 @@
 import AppKit
+import SwanSongKit
 import SwiftUI
 
 enum LegalSupportSection: String, CaseIterable, Identifiable {
@@ -15,7 +16,7 @@ enum LegalSupportSection: String, CaseIterable, Identifiable {
         switch self {
         case .overview: "About SwanSong"
         case .updates: "Updates"
-        case .privacy: "Privacy"
+        case .privacy: "Privacy & Trust"
         case .support: "Support"
         case .license: "License"
         case .acknowledgements: "Acknowledgements"
@@ -112,6 +113,11 @@ struct LegalSupportView: View {
     private let bundledDocumentOverrides: [String: String]
     private let usesDeterministicSidebarForOffscreenSnapshots: Bool
     private let metadata: SwanSongMetadata
+    @State private var localControlEnabled = UserDefaults.standard.bool(
+        forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
+    )
+    @State private var supportBundleIsExporting = false
+    @State private var supportBundleMessage: String?
 
     init(
         updater: SwanSongUpdater = .shared,
@@ -224,7 +230,7 @@ struct LegalSupportView: View {
         case .updates:
             updates
         case .privacy:
-            bundledMarkdown(named: "PRIVACY")
+            privacyAndTrust
         case .support:
             support
         case .license:
@@ -340,6 +346,127 @@ struct LegalSupportView: View {
         }
     }
 
+    private var privacyAndTrust: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            sectionHeading(
+                "Private by Design",
+                detail: "Your games and projects stay on your Mac. SwanSong has no accounts, analytics, advertising, telemetry, or crash-reporting service."
+            )
+
+            trustCard(
+                title: "No Tracking or Data Collection",
+                symbol: "hand.raised.fill",
+                tint: .green,
+                detail: "The bundled Apple privacy manifest declares no tracking and no collected data."
+            )
+            trustCard(
+                title: "Signed, Notarized Updates",
+                symbol: updater.isConfigured ? "checkmark.seal.fill" : "exclamationmark.triangle.fill",
+                tint: updater.isConfigured ? .green : .orange,
+                detail: updater.isConfigured
+                    ? "Every update must match SwanSong’s embedded EdDSA key before Sparkle can install it. No system profile is sent."
+                    : "This development copy does not have the production update trust configuration."
+            )
+            trustCard(
+                title: "Homebrew Trust",
+                symbol: "shippingbox.fill",
+                tint: .blue,
+                detail: HomebrewCatalogProductionTrust.publicationStatus == .published
+                    ? "Catalog metadata and downloads are accepted only after their pinned signatures and hashes verify."
+                    : "The first-party catalog is not published, so this build cannot make catalog requests."
+            )
+            trustCard(
+                title: "Local Automation",
+                symbol: localControlEnabled ? "lock.open.fill" : "lock.fill",
+                tint: localControlEnabled ? .orange : .green,
+                detail: localControlEnabled
+                    ? "Enabled for SwanSong’s signed local helper. Requests use a private, same-user socket and never expose game bytes, saves, screenshots, memory, or project files."
+                    : "Off. Local tools cannot control SwanSong."
+            )
+
+            if localControlEnabled {
+                Button("Turn Off Local Automation") {
+                    UserDefaults.standard.set(
+                        false,
+                        forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
+                    )
+                    localControlEnabled = false
+                }
+                .buttonStyle(.bordered)
+            }
+
+            GroupBox("When SwanSong Goes Online") {
+                VStack(alignment: .leading, spacing: 10) {
+                    networkRow(
+                        "App updates",
+                        "raw.githubusercontent.com — only when you ask or enable automatic checks"
+                    )
+                    networkRow(
+                        "Releases and support",
+                        "github.com — opens in your browser only after you choose a link"
+                    )
+                    networkRow(
+                        "Homebrew catalog",
+                        "GitHub — only after you choose Browse Games, Refresh, or a download"
+                    )
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(4)
+            }
+
+            GroupBox("Your Data") {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Games managed by SwanSong, saves, states, artwork, preferences, and cached catalog data live in SwanSong’s private Application Support folder. Linked Translation Lab projects stay where you put them.")
+                        .foregroundStyle(.secondary)
+                    Button("Show SwanSong Data in Finder") {
+                        let url = SwanSongDataRootPolicy.defaultResolution().rootURL
+                        try? FileManager.default.createDirectory(
+                            at: url,
+                            withIntermediateDirectories: true
+                        )
+                        NSWorkspace.shared.activateFileViewerSelecting([url])
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(4)
+            }
+
+            Divider()
+            bundledMarkdown(named: "PRIVACY")
+        }
+    }
+
+    private func trustCard(
+        title: String,
+        symbol: String,
+        tint: Color,
+        detail: String
+    ) -> some View {
+        HStack(alignment: .top, spacing: 14) {
+            Image(systemName: symbol)
+                .font(.title2)
+                .foregroundStyle(tint)
+                .frame(width: 30)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title).font(.headline)
+                Text(detail).foregroundStyle(.secondary)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(14)
+        .background(
+            tint.opacity(0.06),
+            in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+        )
+    }
+
+    private func networkRow(_ title: String, _ detail: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title).fontWeight(.medium)
+            Text(detail).font(.callout).foregroundStyle(.secondary)
+        }
+    }
+
     var catalogOverviewText: String {
         switch HomebrewCatalogProductionTrust.publicationStatus {
         case .comingSoon:
@@ -388,6 +515,17 @@ struct LegalSupportView: View {
                     Label("Copy Support Information", systemImage: "doc.on.doc")
                 }
                 .buttonStyle(.bordered)
+
+                Button {
+                    createSupportBundle()
+                } label: {
+                    Label(
+                        supportBundleIsExporting ? "Creating…" : "Create Support Bundle…",
+                        systemImage: "shippingbox.and.arrow.backward"
+                    )
+                }
+                .buttonStyle(.bordered)
+                .disabled(supportBundleIsExporting)
             }
 
             Text(
@@ -395,6 +533,40 @@ struct LegalSupportView: View {
             )
             .font(.callout)
             .foregroundStyle(.secondary)
+
+            if let supportBundleMessage {
+                Label(supportBundleMessage, systemImage: "checkmark.circle.fill")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+
+            Button("Restart SwanSong in Safe Mode…") {
+                SwanSongLaunchRecovery.restartInSafeMode()
+            }
+            .buttonStyle(.link)
+        }
+    }
+
+    private func createSupportBundle() {
+        supportBundleIsExporting = true
+        supportBundleMessage = nil
+        let snapshot = SwanSongSupportBundleSnapshot.current(
+            metadata: metadata,
+            updater: updater,
+            safeMode: UserDefaults.standard.bool(
+                forKey: SwanSongLaunchRecovery.currentSafeModeDefaultsKey
+            )
+        )
+        Task { @MainActor in
+            defer { supportBundleIsExporting = false }
+            do {
+                guard let url = try await SwanSongSupportBundleExporter
+                    .chooseDestinationAndExport(snapshot: snapshot) else { return }
+                supportBundleMessage = "Support bundle created."
+                NSWorkspace.shared.activateFileViewerSelecting([url])
+            } catch {
+                supportBundleMessage = "The support bundle could not be created: \(error.localizedDescription)"
+            }
         }
     }
 

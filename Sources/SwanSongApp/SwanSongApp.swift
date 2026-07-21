@@ -21,12 +21,23 @@ func appLaunchDiagnostic(_ phase: String) {
 
 @MainActor
 private final class SwanSongAppDelegate: NSObject, NSApplicationDelegate {
-    let model = AppModel(deferStartupWork: true)
+    let model: AppModel
     let updater = SwanSongUpdater.shared
+    private let launchRecovery: SwanSongLaunchRecovery
     private var terminationTask: Task<Void, Never>?
     private var localMCPBridge: SwanSongLocalMCPBridge?
     private var statusItemController: SwanSongStatusItemController?
     private var didFinishDeferredLaunch = false
+
+    override init() {
+        let launchRecovery = SwanSongLaunchRecovery()
+        self.launchRecovery = launchRecovery
+        model = AppModel(deferStartupWork: true)
+        super.init()
+        if launchRecovery.isSafeMode {
+            model.activateSafeMode()
+        }
+    }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         appDiagnostic("applicationDidFinishLaunching windows=\(NSApp.windows.count) bundle=\(Bundle.main.bundleIdentifier ?? "nil")")
@@ -64,28 +75,25 @@ private final class SwanSongAppDelegate: NSObject, NSApplicationDelegate {
             forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
         ) {
             model.setLocalMCPControlEnabled(false)
-        } else if model.debugToolsEnabled, UserDefaults.standard.bool(
-            forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
-        ) {
-            do {
-                _ = try SwanSongLocalMCPAccess.ensureToken()
-            } catch {
-                UserDefaults.standard.set(
-                    false,
-                    forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
-                )
-                model.presentedError = "Local MCP control was turned off because its private token could not be prepared: \(error.localizedDescription)"
-            }
         }
-        let localMCPBridge = SwanSongLocalMCPBridge(model: model)
-        localMCPBridge.start()
-        self.localMCPBridge = localMCPBridge
-        if ProcessInfo.processInfo.environment["SWAN_SONG_HEADLESS"] != "1" {
+        if !model.isSafeMode {
+            let localMCPBridge = SwanSongLocalMCPBridge(model: model)
+            localMCPBridge.start()
+            self.localMCPBridge = localMCPBridge
+        }
+        if !model.isSafeMode,
+           ProcessInfo.processInfo.environment["SWAN_SONG_HEADLESS"] != "1" {
             statusItemController = SwanSongStatusItemController()
         }
-        updater.start()
-        model.handleInitialLaunchArguments()
+        if !model.isSafeMode {
+            updater.start()
+            model.handleInitialLaunchArguments()
+        }
         appLaunchDiagnostic("deferred application startup finished")
+    }
+
+    func applicationWillTerminate(_ notification: Notification) {
+        launchRecovery.markCleanTermination()
     }
 
     func applicationShouldTerminate(

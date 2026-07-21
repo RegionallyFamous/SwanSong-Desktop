@@ -46,6 +46,11 @@ final class EngineCapabilityProfileTests: XCTestCase {
     }
 
     func testLiveRunnerBindsSourceProbeV4ToExactABI10Profile() throws {
+        guard ProcessInfo.processInfo.environment["SWAN_ARES_ENGINE_DIR"] != nil else {
+            throw XCTSkip(
+                "The live ABI-10 capability contract runs only when a live engine is linked."
+            )
+        }
         let result = try runRouteRunner([
             "engine-capability", "--enable-debug-tools",
         ])

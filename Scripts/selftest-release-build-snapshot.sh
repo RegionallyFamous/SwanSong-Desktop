@@ -11,6 +11,7 @@ RELEASE_OUTPUT="$TEMP_ROOT/release-output"
 MUTATION_LOG="$TEMP_ROOT/live-source-mutated"
 PACKAGE_LOG="$TEMP_ROOT/private-package-commit"
 NOTARY_PREFLIGHT_LOG="$TEMP_ROOT/notary-preflight"
+NOTARY_KEY="$TEMP_ROOT/synthetic-notary.p8"
 LIVE_SOURCE_BACKUP="$TEMP_ROOT/Tracked.swift.original"
 STUB_BIN="$TEMP_ROOT/bin"
 VERSION=9.8.7
@@ -36,11 +37,16 @@ cat >"$STUB_BIN/xcrun" <<'EOF'
 set -eu
 [ "$1" = "notarytool" ]
 [ "$2" = "history" ]
-[ "$3" = "--keychain-profile" ]
-[ "$4" = "synthetic-notary-profile" ]
+[ "$3" = "--key" ]
+[ "$4" = "$SELFTEST_NOTARY_KEY" ]
+[ "$5" = "--key-id" ]
+[ "$6" = "SYNTHETICKEY" ]
+[ "$7" = "--issuer" ]
+[ "$8" = "00000000-0000-0000-0000-000000000000" ]
 : >"$SELFTEST_NOTARY_PREFLIGHT_LOG"
 EOF
 chmod +x "$STUB_BIN/xcrun"
+printf 'synthetic private key fixture\n' >"$NOTARY_KEY"
 
 cat >"$REPOSITORY/Sources/Tracked.swift" <<'EOF'
 let releaseSnapshotSentinel = "committed source"
@@ -172,6 +178,7 @@ EOF
 
 for script in \
   check-app-payload.sh \
+  check-isolated-engine-service.sh \
   verify-app-architectures.sh \
   verify-app-signature.sh \
   notarize-app.sh; do
@@ -226,12 +233,15 @@ SELFTEST_LIVE_SOURCE_BACKUP="$LIVE_SOURCE_BACKUP" \
 SELFTEST_MUTATION_LOG="$MUTATION_LOG" \
 SELFTEST_PACKAGE_LOG="$PACKAGE_LOG" \
 SELFTEST_NOTARY_PREFLIGHT_LOG="$NOTARY_PREFLIGHT_LOG" \
+SELFTEST_NOTARY_KEY="$NOTARY_KEY" \
 SWAN_APP_OUTPUT_DIR="$APP_OUTPUT" \
 SWAN_RELEASE_OUTPUT_DIR="$RELEASE_OUTPUT" \
 ARES_SOURCE_DIR="$ARES_REPOSITORY" \
 SWAN_SIGNING_MODE=developer-id \
 SWAN_NOTARIZE=1 \
-SWAN_NOTARY_PROFILE=synthetic-notary-profile \
+SWAN_NOTARY_KEY="$NOTARY_KEY" \
+SWAN_NOTARY_KEY_ID=SYNTHETICKEY \
+SWAN_NOTARY_ISSUER=00000000-0000-0000-0000-000000000000 \
 PATH="$STUB_BIN:$PATH" \
   "$REPOSITORY/Scripts/release-app.sh" >/dev/null
 

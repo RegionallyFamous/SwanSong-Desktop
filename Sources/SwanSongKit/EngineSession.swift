@@ -141,7 +141,7 @@ public struct EngineInput: OptionSet, Sendable {
     )
 }
 
-public struct EngineVideoFrame: Sendable {
+public struct EngineVideoFrame: Codable, Sendable {
     public let pixels: Data
     public let width: Int
     public let height: Int
@@ -166,7 +166,7 @@ public struct EngineVideoFrame: Sendable {
     }
 }
 
-public struct EngineAudioBatch: Sendable {
+public struct EngineAudioBatch: Codable, Sendable {
     public let interleavedSamples: [Float]
     public let channels: Int
     public let sampleRate: Int
@@ -412,6 +412,17 @@ public struct EngineExecutedSourceReadContext: Codable, Equatable, Sendable {
         mapperBank = cValue.mapper_bank
         resolvedCartridgeOperand = cValue.resolved_cartridge_operand
     }
+
+    fileprivate init(cValue: swan_display_source_trace_v2_t) {
+        immediateCaller = cValue.immediate_caller
+        callerSegment = cValue.caller_segment
+        callerOffset = cValue.caller_offset
+        operandSegment = cValue.operand_segment
+        operandOffset = cValue.operand_offset
+        mapperWindow = cValue.mapper_window
+        mapperBank = cValue.mapper_bank
+        resolvedCartridgeOperand = cValue.resolved_cartridge_operand
+    }
 }
 
 public enum EngineDisplaySourceConservativeReason: String, Codable, Equatable, Sendable {
@@ -456,6 +467,25 @@ public struct EngineDisplaySourceConservativeOrigin: Codable, Equatable, Sendabl
             )
         }
     }
+
+
+    fileprivate init(cValue: swan_display_source_trace_v2_t) throws {
+        reason = try EngineDisplaySourceConservativeReason(
+            cValue: cValue.conservative_reason
+        )
+        origin20Bit = cValue.conservative_origin
+        segment = cValue.conservative_origin_segment
+        offset = cValue.conservative_origin_offset
+        let expected = UInt32(
+            ((UInt64(segment) << 4) + UInt64(offset)) & 0xF_FFFF
+        )
+        guard origin20Bit == expected else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned an inconsistent conservative-dataflow origin."
+            )
+        }
+    }
 }
 
 public struct EngineDisplaySourceTrace: Codable, Equatable, Sendable {
@@ -476,6 +506,10 @@ public struct EngineDisplaySourceTrace: Codable, Equatable, Sendable {
     public let usesConservativeDataflow: Bool
     public let executedReadContext: EngineExecutedSourceReadContext?
     public let conservativeOrigin: EngineDisplaySourceConservativeOrigin?
+    /// ABI-10-only association with a sealed consumed-prefetch row.
+    public let executionContextID: UInt64?
+    /// ABI-10-only qualification flags copied from the associated row.
+    public let fetchContextFlags: UInt32?
 
     fileprivate init(cValue: swan_display_source_trace_t) throws {
         x = cValue.x
@@ -512,7 +546,169 @@ public struct EngineDisplaySourceTrace: Codable, Equatable, Sendable {
                 detail: "The engine returned inconsistent conservative-dataflow evidence."
             )
         }
+        executionContextID = nil
+        fetchContextFlags = nil
     }
+
+    fileprivate init(cValue: swan_display_source_trace_v2_t) throws {
+        x = cValue.x
+        y = cValue.y
+        scope = try EngineDisplaySourceScope(cValue: cValue.scope)
+        component = try EngineDisplaySourceComponent(cValue: cValue.component)
+        sourceAddress = cValue.source_address
+        sourceByteCount = cValue.source_byte_count
+        minimumInstructionHops = cValue.minimum_instruction_hops
+        maximumInstructionHops = cValue.maximum_instruction_hops
+        cartridgeOffset = cValue.cartridge_offset
+        cartridgeLength = cValue.cartridge_length
+        let flags = cValue.flags
+        hasExactRange = flags & UInt32(SWAN_DISPLAY_SOURCE_FLAG_EXACT) != 0
+        isTransformed = flags & UInt32(SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED) != 0
+        hasUnknownDependency = flags & UInt32(SWAN_DISPLAY_SOURCE_FLAG_UNKNOWN_DEPENDENCY) != 0
+        rangeSetOverflowed = flags & UInt32(SWAN_DISPLAY_SOURCE_FLAG_RANGE_OVERFLOW) != 0
+        usesConservativeDataflow = flags
+            & UInt32(SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW) != 0
+        if cValue.read_context_flags
+            & UInt32(SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED) != 0 {
+            executedReadContext = EngineExecutedSourceReadContext(cValue: cValue)
+        } else {
+            executedReadContext = nil
+        }
+        if cValue.conservative_reason != SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE {
+            conservativeOrigin = try EngineDisplaySourceConservativeOrigin(cValue: cValue)
+        } else {
+            conservativeOrigin = nil
+        }
+        guard usesConservativeDataflow == (conservativeOrigin != nil) else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned inconsistent conservative-dataflow evidence."
+            )
+        }
+        if cValue.execution_context_id == 0 {
+            executionContextID = nil
+            fetchContextFlags = nil
+        } else {
+            executionContextID = cValue.execution_context_id
+            fetchContextFlags = cValue.fetch_context_flags
+        }
+    }
+}
+
+public struct EngineInstructionFetchContext: Codable, Equatable, Sendable {
+    public static let qualifiedSeedV2Flags = UInt32(
+        SWAN_FETCH_CONTEXT_FLAG_SEALED
+            | SWAN_FETCH_CONTEXT_FLAG_EXACT_CARTRIDGE_RUN
+            | SWAN_FETCH_CONTEXT_FLAG_BIJECTIVE_IDENTITY
+            | SWAN_FETCH_CONTEXT_FLAG_PYPCODE_CHECK_REQUIRED
+            | SWAN_FETCH_CONTEXT_FLAG_EXACT_DATA_INCOMPLETE
+    )
+
+    public let id: UInt64
+    public let structuralID: UInt64
+    public let byteStart: UInt32
+    public let byteCount: UInt32
+    public let flags: UInt32
+    public let terminalOpcode: UInt8
+    public let continuing: Bool
+    public let logicalStartPhysical: UInt32
+    public let logicalStartSegment: UInt16
+    public let logicalStartOffset: UInt16
+    public let canonicalDigest: String
+
+    init(
+        id: UInt64,
+        structuralID: UInt64,
+        byteStart: UInt32,
+        byteCount: UInt32,
+        flags: UInt32,
+        terminalOpcode: UInt8,
+        continuing: Bool,
+        logicalStartPhysical: UInt32,
+        logicalStartSegment: UInt16,
+        logicalStartOffset: UInt16,
+        canonicalDigest: String
+    ) {
+        self.id = id
+        self.structuralID = structuralID
+        self.byteStart = byteStart
+        self.byteCount = byteCount
+        self.flags = flags
+        self.terminalOpcode = terminalOpcode
+        self.continuing = continuing
+        self.logicalStartPhysical = logicalStartPhysical
+        self.logicalStartSegment = logicalStartSegment
+        self.logicalStartOffset = logicalStartOffset
+        self.canonicalDigest = canonicalDigest
+    }
+
+    func rebased(byteStart: UInt32) -> Self {
+        Self(
+            id: id,
+            structuralID: structuralID,
+            byteStart: byteStart,
+            byteCount: byteCount,
+            flags: flags,
+            terminalOpcode: terminalOpcode,
+            continuing: continuing,
+            logicalStartPhysical: logicalStartPhysical,
+            logicalStartSegment: logicalStartSegment,
+            logicalStartOffset: logicalStartOffset,
+            canonicalDigest: canonicalDigest
+        )
+    }
+
+    fileprivate init(cValue: swan_instruction_fetch_context_t) {
+        id = cValue.id
+        structuralID = cValue.structural_id
+        byteStart = cValue.byte_start
+        byteCount = cValue.byte_count
+        flags = cValue.flags
+        terminalOpcode = cValue.terminal_opcode
+        continuing = cValue.continuing != 0
+        logicalStartPhysical = cValue.logical_start_physical
+        logicalStartSegment = cValue.logical_start_segment
+        logicalStartOffset = cValue.logical_start_offset
+        canonicalDigest = withUnsafeBytes(of: cValue.canonical_digest) { bytes in
+            bytes.map { String(format: "%02x", $0) }.joined()
+        }
+    }
+}
+
+public struct EngineInstructionFetchByte: Codable, Equatable, Sendable {
+    public let contextID: UInt64
+    public let ordinal: UInt32
+    public let token: UInt64
+    public let sourceKind: UInt32
+    public let physicalAddress: UInt32
+    public let resolvedOperand: UInt32
+    public let mapperWindow: UInt32
+    public let mapperBank: UInt32
+    public let eventContext: UInt32
+    public let segment: UInt32
+    public let offset: UInt32
+    public let data: UInt32
+
+    fileprivate init(cValue: swan_instruction_fetch_byte_t) {
+        contextID = cValue.context_id
+        ordinal = cValue.ordinal
+        token = cValue.token
+        sourceKind = cValue.source_kind
+        physicalAddress = cValue.physical_address
+        resolvedOperand = cValue.resolved_operand
+        mapperWindow = cValue.mapper_window
+        mapperBank = cValue.mapper_bank
+        eventContext = cValue.event_context
+        segment = cValue.segment
+        offset = cValue.offset
+        data = cValue.data
+    }
+}
+
+public struct EngineConsumedPrefetchProbe: Sendable {
+    public let traces: [EngineDisplaySourceTrace]
+    public let contexts: [EngineInstructionFetchContext]
+    public let bytes: [EngineInstructionFetchByte]
 }
 
 public enum EnginePersistenceKind: String, CaseIterable, Codable, Sendable {
@@ -533,7 +729,7 @@ public enum EnginePersistenceKind: String, CaseIterable, Codable, Sendable {
     }
 }
 
-public struct EnginePersistence: Sendable {
+public struct EnginePersistence: Codable, Sendable {
     public var regions: [EnginePersistenceKind: Data]
 
     public init(regions: [EnginePersistenceKind: Data] = [:]) {
@@ -571,7 +767,7 @@ enum EngineDisplaySourceProbeFailure: Equatable, Sendable {
 /// Selects how a WonderSwan cartridge's real-time clock observes host time.
 /// Normal play uses the Mac's clock; deterministic mode is intended for
 /// repeatable translation, capture, and regression-test sessions.
-public enum EngineRTCMode: Equatable, Sendable {
+public enum EngineRTCMode: Codable, Equatable, Sendable {
     case wallClock
     case deterministic(seedUnixSeconds: UInt64)
 }
@@ -893,6 +1089,152 @@ public final class EngineSession: @unchecked Sendable {
         return try raw.prefix(written).map(EngineDisplaySourceTrace.init(cValue:))
     }
 
+    /// ABI-10-only consumed-prefetch evidence. This is private decoder input,
+    /// not a claim that opcode bytes identify the final data operand by
+    /// themselves; the qualification flags intentionally retain that limit.
+    public func consumedPrefetchSourceProbe(
+        rectangle: EngineDisplayRectangle,
+        components: [EngineDisplaySourceComponent]
+    ) throws -> EngineConsumedPrefetchProbe {
+        guard capabilities.contains(.consumedPrefetchProvenance),
+              EngineConsumedPrefetchCapabilityProfile.exact(
+                  engineABI: abiVersion,
+                  engineBuildID: buildID,
+                  capabilities: capabilities
+              ) != nil else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_UNSUPPORTED.rawValue),
+                detail: "The active engine does not satisfy the exact ABI-10 consumed-prefetch profile."
+            )
+        }
+        guard !components.isEmpty, Set(components).count == components.count else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INVALID_ARGUMENT.rawValue),
+                detail: "Source probe components must be nonempty and unique."
+            )
+        }
+        var cRectangle = swan_display_rectangle_t(
+            struct_size: UInt32(MemoryLayout<swan_display_rectangle_t>.size),
+            x: rectangle.x,
+            y: rectangle.y,
+            width: rectangle.width,
+            height: rectangle.height
+        )
+        var options = swan_display_source_probe_options_t(
+            struct_size: UInt32(MemoryLayout<swan_display_source_probe_options_t>.size),
+            selected_component_mask: components.reduce(0) { $0 | $1.cMask }
+        )
+        var traceCount = 0
+        var contextCount = 0
+        var byteCount = 0
+        recordDisplayProvenanceQueryEntry(kind: .source)
+        try check(swan_engine_display_source_probe_v2(
+            handle,
+            &cRectangle,
+            &options,
+            nil,
+            0,
+            &traceCount,
+            nil,
+            0,
+            &contextCount,
+            nil,
+            0,
+            &byteCount
+        ))
+        guard traceCount <= 262_144,
+              contextCount <= 262_144,
+              byteCount <= 1_048_576 else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine exceeded the bounded consumed-prefetch evidence limit."
+            )
+        }
+        var rawTraces = [swan_display_source_trace_v2_t](
+            repeating: swan_display_source_trace_v2_t(),
+            count: traceCount
+        )
+        var rawContexts = [swan_instruction_fetch_context_t](
+            repeating: swan_instruction_fetch_context_t(),
+            count: contextCount
+        )
+        var rawBytes = [swan_instruction_fetch_byte_t](
+            repeating: swan_instruction_fetch_byte_t(),
+            count: byteCount
+        )
+        var writtenTraces = 0
+        var writtenContexts = 0
+        var writtenBytes = 0
+        let result = rawTraces.withUnsafeMutableBufferPointer { traces in
+            rawContexts.withUnsafeMutableBufferPointer { contexts in
+                rawBytes.withUnsafeMutableBufferPointer { bytes in
+                    swan_engine_display_source_probe_v2(
+                        handle,
+                        &cRectangle,
+                        &options,
+                        traces.baseAddress,
+                        traces.count,
+                        &writtenTraces,
+                        contexts.baseAddress,
+                        contexts.count,
+                        &writtenContexts,
+                        bytes.baseAddress,
+                        bytes.count,
+                        &writtenBytes
+                    )
+                }
+            }
+        }
+        try check(result)
+        guard writtenTraces == traceCount,
+              writtenContexts == contextCount,
+              writtenBytes == byteCount else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned incomplete consumed-prefetch evidence."
+            )
+        }
+        let traces = try rawTraces.map(EngineDisplaySourceTrace.init(cValue:))
+        let contexts = rawContexts.map(EngineInstructionFetchContext.init(cValue:))
+        let bytes = rawBytes.map(EngineInstructionFetchByte.init(cValue:))
+        let contextsByID = Dictionary(grouping: contexts, by: \.id)
+        guard contextsByID.count == contexts.count,
+              contexts.allSatisfy({ context in
+                  context.id != 0
+                      && context.structuralID != 0
+                      && context.byteCount > 0
+                      && UInt64(context.byteStart) + UInt64(context.byteCount)
+                          <= UInt64(bytes.count)
+                      && context.canonicalDigest.count == 64
+                      && context.canonicalDigest != String(repeating: "0", count: 64)
+              }),
+              contexts.allSatisfy({ context in
+                  bytes[Int(context.byteStart)..<Int(context.byteStart + context.byteCount)]
+                      .enumerated().allSatisfy { ordinal, byte in
+                          byte.contextID == context.id
+                              && byte.ordinal == UInt32(ordinal)
+                      }
+              }),
+              traces.allSatisfy({ trace in
+                  guard let id = trace.executionContextID,
+                        let flags = trace.fetchContextFlags,
+                        let context = contextsByID[id]?.first else {
+                      return trace.cartridgeLength == 0
+                  }
+                  return flags == context.flags
+              }) else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned inconsistent consumed-prefetch associations."
+            )
+        }
+        return EngineConsumedPrefetchProbe(
+            traces: traces,
+            contexts: contexts,
+            bytes: bytes
+        )
+    }
+
     public func displayProvenanceQuerySnapshot()
         -> EngineDisplayProvenanceQuerySnapshot
     {
@@ -1057,62 +1399,112 @@ public final class EngineSession: @unchecked Sendable {
 }
 
 public actor EmulationRunner {
-    package let engine: EngineSession
+    package let engine: EngineSession?
+    private let isolatedService: SwanSongEngineServiceClient?
+    private let serviceConfiguration: SwanSongEngineServiceConfiguration
+    private var serviceIsConfigured = false
 
     public init(
         sampleRate: UInt32 = 48_000,
         rtcMode: EngineRTCMode = .wallClock,
         hardwareModel: EngineHardwareModel = .automatic
     ) throws {
-        engine = try EngineSession(
+        serviceConfiguration = SwanSongEngineServiceConfiguration(
             sampleRate: sampleRate,
             rtcMode: rtcMode,
             hardwareModel: hardwareModel
         )
+        if SwanSongEngineServiceClient.isEmbeddedServiceAvailable {
+            isolatedService = SwanSongEngineServiceClient()
+            engine = nil
+        } else {
+            isolatedService = nil
+            engine = try EngineSession(
+                sampleRate: sampleRate,
+                rtcMode: rtcMode,
+                hardwareModel: hardwareModel
+            )
+        }
     }
 
     public var activeHardwareModel: EngineHardwareModel? {
-        engine.activeHardwareModel
+        engine?.activeHardwareModel
     }
 
-    public func load(rom data: Data) throws -> ROMMetadata {
-        try engine.load(rom: data)
+    public func load(rom data: Data) async throws -> ROMMetadata {
+        if let isolatedService {
+            try await configureServiceIfNeeded(isolatedService)
+            return try await isolatedService.load(rom: data)
+        }
+        guard let engine else { throw SwanSongEngineServiceClientError.unavailable }
+        return try engine.load(rom: data)
     }
 
-    public func stagePersistence(_ persistence: EnginePersistence) throws {
+    public func stagePersistence(_ persistence: EnginePersistence) async throws {
+        if let isolatedService {
+            try await configureServiceIfNeeded(isolatedService)
+            return try await isolatedService.stagePersistence(persistence)
+        }
+        guard let engine else { throw SwanSongEngineServiceClientError.unavailable }
         try engine.stagePersistence(persistence)
     }
 
-    public func nextFrame(input: EngineInput = []) throws -> (
+    public func nextFrame(input: EngineInput = []) async throws -> (
         video: EngineVideoFrame,
         audio: EngineAudioBatch
     ) {
+        if let isolatedService {
+            try await configureServiceIfNeeded(isolatedService)
+            let packet = try await isolatedService.nextFrame(input: input)
+            return (packet.video, packet.audio)
+        }
+        guard let engine else { throw SwanSongEngineServiceClientError.unavailable }
         try engine.setInput(input)
         try engine.runFrame()
         return (try engine.videoFrame(), try engine.audioBatch())
     }
 
-    public func reset() throws {
+    public func reset() async throws {
+        if let isolatedService { return try await isolatedService.reset() }
+        guard let engine else { throw SwanSongEngineServiceClientError.unavailable }
         try engine.reset()
     }
 
-    public func capturePersistence() throws -> EnginePersistence {
-        try engine.capturePersistence()
+    public func capturePersistence() async throws -> EnginePersistence {
+        if let isolatedService { return try await isolatedService.capturePersistence() }
+        guard let engine else { throw SwanSongEngineServiceClientError.unavailable }
+        return try engine.capturePersistence()
     }
 
-    public func captureState() throws -> Data {
-        try engine.captureState()
+    public func captureState() async throws -> Data {
+        if let isolatedService { return try await isolatedService.captureState() }
+        guard let engine else { throw SwanSongEngineServiceClientError.unavailable }
+        return try engine.captureState()
     }
 
-    public func captureMemory(_ region: EngineMemoryRegion) throws -> Data {
-        try engine.captureMemory(region)
+    public func captureMemory(_ region: EngineMemoryRegion) async throws -> Data {
+        if let isolatedService { return try await isolatedService.captureMemory(region) }
+        guard let engine else { throw SwanSongEngineServiceClientError.unavailable }
+        return try engine.captureMemory(region)
     }
 
-    public func restoreState(_ state: Data) throws {
+    public func restoreState(_ state: Data) async throws {
+        if let isolatedService { return try await isolatedService.restoreState(state) }
+        guard let engine else { throw SwanSongEngineServiceClientError.unavailable }
         try engine.restoreState(state)
     }
 
-    public func stop() throws {
+    public func stop() async throws {
+        if let isolatedService { return try await isolatedService.stop() }
+        guard let engine else { return }
         try engine.unload()
+    }
+
+    private func configureServiceIfNeeded(
+        _ service: SwanSongEngineServiceClient
+    ) async throws {
+        guard !serviceIsConfigured else { return }
+        try await service.configure(serviceConfiguration)
+        serviceIsConfigured = true
     }
 }

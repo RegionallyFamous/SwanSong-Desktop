@@ -51,9 +51,11 @@ git -C "$SPARKLE_REPOSITORY" commit -q -m "Synthetic Sparkle source"
 SPARKLE_COMMIT=$(git -C "$SPARKLE_REPOSITORY" rev-parse HEAD)
 
 mkdir -p "$REPOSITORY/Scripts" "$REPOSITORY/Dependencies" \
-  "$REPOSITORY/Engine" "$STUB_BIN" \
+  "$REPOSITORY/Engine" "$REPOSITORY/Packaging/YokoiHardware" "$STUB_BIN" \
   "$INPUT_APP/Contents/MacOS" \
   "$INPUT_APP/Contents/Helpers" \
+  "$INPUT_APP/Contents/Resources" \
+  "$INPUT_APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/MacOS" \
   "$INPUT_APP/Contents/Frameworks/Sparkle.framework/Versions/B/Resources" \
   "$INPUT_APP/Contents/Frameworks/Sparkle.framework/Versions/B/Updater.app/Contents/MacOS" \
   "$INPUT_APP/Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Installer.xpc/Contents/MacOS" \
@@ -62,15 +64,22 @@ cp "$SCRIPT_DIR/package-release.sh" "$REPOSITORY/Scripts/"
 cp "$SCRIPT_DIR/ares-source-state.sh" "$REPOSITORY/Scripts/"
 cp "$SCRIPT_DIR/materialize-ares-source.sh" "$REPOSITORY/Scripts/"
 cp "$SCRIPT_DIR/materialize-sparkle-source.sh" "$REPOSITORY/Scripts/"
+cp "$SCRIPT_DIR/generate-release-sbom.py" "$REPOSITORY/Scripts/"
 cat >"$REPOSITORY/Scripts/check-sparkle-dependency-lock.py" <<'EOF'
 #!/usr/bin/env python3
 raise SystemExit(0)
 EOF
 cat >"$REPOSITORY/Dependencies/ares.lock.json" <<EOF
-{"commit":"$ARES_COMMIT"}
+{"commit":"$ARES_COMMIT","repository":"https://example.invalid/ares.git"}
 EOF
 cat >"$REPOSITORY/Dependencies/sparkle.lock.json" <<EOF
-{"commit":"$SPARKLE_COMMIT"}
+{"commit":"$SPARKLE_COMMIT","repository":"https://example.invalid/Sparkle.git","version":"2.9.4","swiftPackageArtifactSHA256":"cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"}
+EOF
+cat >"$REPOSITORY/Dependencies/swansong-sdk.lock.json" <<'EOF'
+{"commit":"5555555555555555555555555555555555555555","repository":"https://example.invalid/swansong-sdk.git","version":"0.5.0","payloadRevision":"sha256:905d1b7683ea55aebb90703bc4dc708ae7a436c98dae1474e67c9df89601a35c"}
+EOF
+cat >"$REPOSITORY/Packaging/YokoiHardware/manifest.json" <<'EOF'
+{"version":"0.3.0","source":{"sha256":"ee0173435a9f6d898583504e1b35b156097b133443d335ab824a0a54bef89129"}}
 EOF
 printf 'synthetic Sparkle license\n' \
   >"$REPOSITORY/Dependencies/SPARKLE_LICENSE"
@@ -200,7 +209,12 @@ cat >"$INPUT_APP/Contents/Info.plist" <<EOF
 EOF
 printf 'before concurrent mutation\n' >"$INPUT_APP/Contents/MacOS/SwanSong"
 printf 'route runner\n' >"$INPUT_APP/Contents/Helpers/SwanSongRouteRunner"
+printf 'mcp helper\n' >"$INPUT_APP/Contents/Helpers/SwanSongMCP"
+printf 'engine service\n' \
+  >"$INPUT_APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/MacOS/SwanSongEngineService"
 printf 'engine\n' >"$INPUT_APP/Contents/Frameworks/libSwanAresEngine.dylib"
+printf 'synthetic privacy manifest\n' \
+  >"$INPUT_APP/Contents/Resources/PrivacyInfo.xcprivacy"
 SPARKLE_ROOT="$INPUT_APP/Contents/Frameworks/Sparkle.framework/Versions/B"
 cat >"$SPARKLE_ROOT/Resources/Info.plist" <<'EOF'
 <?xml version="1.0" encoding="UTF-8"?>

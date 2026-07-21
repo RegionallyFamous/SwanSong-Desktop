@@ -20,12 +20,13 @@ SOURCE_ARCHIVE=
 MANIFEST=
 CHECKSUMS=
 APP=
+SBOM=
 
 python3 "$SCRIPT_DIR/check-sparkle-dependency-lock.py" \
   --repository "$MACOS_DIR" >/dev/null
 
 usage() {
-  echo "usage: $0 --archive RELEASE.zip --source-archive SOURCE.tar.xz --manifest RELEASE.json --checksums SHA256SUMS.txt [--app SwanSong.app]" >&2
+  echo "usage: $0 --archive RELEASE.zip --source-archive SOURCE.tar.xz --sbom RELEASE.spdx.json --manifest RELEASE.json --checksums SHA256SUMS.txt [--app SwanSong.app]" >&2
   exit 64
 }
 
@@ -51,6 +52,11 @@ while [ "$#" -gt 0 ]; do
       MANIFEST=$2
       shift 2
       ;;
+    --sbom)
+      [ "$#" -ge 2 ] || usage
+      SBOM=$2
+      shift 2
+      ;;
     --checksums)
       [ "$#" -ge 2 ] || usage
       CHECKSUMS=$2
@@ -67,6 +73,10 @@ done
 
 [ -f "$ARCHIVE" ] || fail "archive not found"
 [ -f "$SOURCE_ARCHIVE" ] || fail "source archive not found"
+[ -n "$SBOM" ] || SBOM="$(dirname -- "$MANIFEST")/$(
+  /usr/bin/plutil -extract sbom raw -o - "$MANIFEST" 2>/dev/null || true
+)"
+[ -f "$SBOM" ] || fail "SBOM not found"
 [ -f "$MANIFEST" ] || fail "release manifest not found"
 [ -f "$CHECKSUMS" ] || fail "SHA256SUMS.txt not found"
 if [ -n "$APP" ] \
@@ -94,9 +104,9 @@ if ! awk '
     if (NF != 2 || length($1) != 64 || $1 !~ /^[0-9a-f]+$/) exit 1
     count++
   }
-  END { if (count != 2) exit 1 }
+  END { if (count != 3) exit 1 }
 ' "$CHECKSUMS"; then
-  fail "SHA256SUMS.txt must contain exactly two lowercase SHA-256 entries"
+  fail "SHA256SUMS.txt must contain exactly three lowercase SHA-256 entries"
 fi
 
 manifest_value() {
@@ -134,12 +144,17 @@ ARCHIVE_NAME=$(manifest_value archive)
 ARCHIVE_HASH=$(manifest_value sha256)
 SOURCE_ARCHIVE_NAME=$(manifest_value sourceArchive)
 SOURCE_ARCHIVE_HASH=$(manifest_value sourceSHA256)
+SBOM_NAME=$(manifest_value sbom)
+SBOM_HASH=$(manifest_value sbomSHA256)
 SOURCE_COMMIT=$(manifest_string_value sourceCommit)
 ARES_COMMIT=$(manifest_string_value aresCommit)
 SPARKLE_COMMIT=$(manifest_string_value sparkleCommit)
 APP_EXECUTABLE_HASH=$(manifest_value appExecutableSHA256)
 ROUTE_RUNNER_HASH=$(manifest_value routeRunnerSHA256)
+MCP_HELPER_HASH=$(manifest_value mcpHelperSHA256)
+ENGINE_SERVICE_HASH=$(manifest_value engineServiceSHA256)
 ENGINE_HASH=$(manifest_value engineSHA256)
+PRIVACY_MANIFEST_HASH=$(manifest_value privacyManifestSHA256)
 SPARKLE_VERSION=$(manifest_value sparkleVersion)
 SPARKLE_FRAMEWORK_HASH=$(manifest_value sparkleFrameworkExecutableSHA256)
 SPARKLE_AUTOUPDATE_HASH=$(manifest_value sparkleAutoupdateSHA256)
@@ -149,7 +164,7 @@ SPARKLE_DOWNLOADER_HASH=$(manifest_value sparkleDownloaderSHA256)
 ARCHITECTURE_0=$(manifest_value architectures.0)
 ARCHITECTURE_1=$(manifest_value architectures.1)
 
-[ "$SCHEMA" = "swan-song-release-v2" ] || fail "unknown manifest schema"
+[ "$SCHEMA" = "swan-song-release-v3" ] || fail "unknown manifest schema"
 printf '%s\n' "$VERSION" \
   | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z]+)*$' \
   || fail "manifest version is invalid"
@@ -168,18 +183,25 @@ fi
 
 EXPECTED_ARCHIVE_NAME="SwanSong-$VERSION-macOS-universal.zip"
 EXPECTED_SOURCE_ARCHIVE_NAME="SwanSong-$VERSION-source.tar.xz"
+EXPECTED_SBOM_NAME="SwanSong-$VERSION.spdx.json"
 [ "$ARCHIVE_NAME" = "$EXPECTED_ARCHIVE_NAME" ] \
   || fail "manifest archive name does not match its version"
 [ "$SOURCE_ARCHIVE_NAME" = "$EXPECTED_SOURCE_ARCHIVE_NAME" ] \
   || fail "manifest source archive name does not match its version"
+[ "$SBOM_NAME" = "$EXPECTED_SBOM_NAME" ] \
+  || fail "manifest SBOM name does not match its version"
 [ "$(basename -- "$ARCHIVE")" = "$ARCHIVE_NAME" ] \
   || fail "provided archive filename does not match the manifest"
 [ "$(basename -- "$SOURCE_ARCHIVE")" = "$SOURCE_ARCHIVE_NAME" ] \
   || fail "provided source archive filename does not match the manifest"
+[ "$(basename -- "$SBOM")" = "$SBOM_NAME" ] \
+  || fail "provided SBOM filename does not match the manifest"
 printf '%s\n' "$ARCHIVE_HASH" | grep -Eq '^[0-9a-f]{64}$' \
   || fail "manifest archive hash is invalid"
 printf '%s\n' "$SOURCE_ARCHIVE_HASH" | grep -Eq '^[0-9a-f]{64}$' \
   || fail "manifest source hash is invalid"
+printf '%s\n' "$SBOM_HASH" | grep -Eq '^[0-9a-f]{64}$' \
+  || fail "manifest SBOM hash is invalid"
 printf '%s\n' "$SOURCE_COMMIT" | grep -Eq '^[0-9a-f]{40}$' \
   || fail "manifest source commit is invalid"
 printf '%s\n' "$ARES_COMMIT" | grep -Eq '^[0-9a-f]{40}$' \
@@ -190,8 +212,14 @@ printf '%s\n' "$APP_EXECUTABLE_HASH" | grep -Eq '^[0-9a-f]{64}$' \
   || fail "manifest app executable hash is invalid"
 printf '%s\n' "$ROUTE_RUNNER_HASH" | grep -Eq '^[0-9a-f]{64}$' \
   || fail "manifest route runner hash is invalid"
+printf '%s\n' "$MCP_HELPER_HASH" | grep -Eq '^[0-9a-f]{64}$' \
+  || fail "manifest MCP helper hash is invalid"
+printf '%s\n' "$ENGINE_SERVICE_HASH" | grep -Eq '^[0-9a-f]{64}$' \
+  || fail "manifest engine service hash is invalid"
 printf '%s\n' "$ENGINE_HASH" | grep -Eq '^[0-9a-f]{64}$' \
   || fail "manifest engine hash is invalid"
+printf '%s\n' "$PRIVACY_MANIFEST_HASH" | grep -Eq '^[0-9a-f]{64}$' \
+  || fail "manifest privacy-manifest hash is invalid"
 [ "$SPARKLE_VERSION" = "$EXPECTED_SPARKLE_VERSION" ] \
   || fail "manifest Sparkle version is not the release-pinned version"
 for SPARKLE_HASH in \
@@ -210,8 +238,43 @@ ACTUAL_ARCHIVE_HASH=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
 ACTUAL_SOURCE_ARCHIVE_HASH=$(shasum -a 256 "$SOURCE_ARCHIVE" | awk '{ print $1 }')
 [ "$ACTUAL_SOURCE_ARCHIVE_HASH" = "$SOURCE_ARCHIVE_HASH" ] \
   || fail "source archive hash does not match the manifest"
+ACTUAL_SBOM_HASH=$(shasum -a 256 "$SBOM" | awk '{ print $1 }')
+[ "$ACTUAL_SBOM_HASH" = "$SBOM_HASH" ] \
+  || fail "SBOM hash does not match the manifest"
 verify_checksum_entry "$ARCHIVE_NAME" "$ARCHIVE_HASH"
 verify_checksum_entry "$SOURCE_ARCHIVE_NAME" "$SOURCE_ARCHIVE_HASH"
+verify_checksum_entry "$SBOM_NAME" "$SBOM_HASH"
+python3 - "$SBOM" "$VERSION" "$SOURCE_COMMIT" <<'PY' \
+  || fail "SPDX SBOM validation failed"
+import json
+import re
+import sys
+
+path, version, commit = sys.argv[1:]
+with open(path, encoding="utf-8") as source:
+    document = json.load(source)
+if document.get("spdxVersion") != "SPDX-2.3":
+    raise SystemExit("unexpected SPDX version")
+if document.get("SPDXID") != "SPDXRef-DOCUMENT":
+    raise SystemExit("unexpected document identifier")
+if document.get("name") != f"SwanSong-{version}":
+    raise SystemExit("unexpected SBOM name")
+if not document.get("documentNamespace", "").endswith(f"/{commit}"):
+    raise SystemExit("SBOM namespace does not bind the source commit")
+packages = document.get("packages")
+if not isinstance(packages, list) or len(packages) != 5:
+    raise SystemExit("unexpected SBOM package inventory")
+identifiers = {package.get("SPDXID") for package in packages}
+expected = {
+    "SPDXRef-SwanSong", "SPDXRef-ares", "SPDXRef-Sparkle",
+    "SPDXRef-SwanSongSDK", "SPDXRef-YokoiHardware",
+}
+if identifiers != expected:
+    raise SystemExit("SBOM component identifiers do not match")
+for package in packages:
+    if package.get("filesAnalyzed") is not False:
+        raise SystemExit("SBOM package analysis flag is invalid")
+PY
 if ! "$SCRIPT_DIR/check-source-archive-payload.sh" \
   --source-commit "$SOURCE_COMMIT" \
   --ares-commit "$ARES_COMMIT" \
@@ -352,7 +415,10 @@ if [ -n "$APP" ]; then
 
   APP_EXECUTABLE="$APP/Contents/MacOS/SwanSong"
   ROUTE_RUNNER="$APP/Contents/Helpers/SwanSongRouteRunner"
+  MCP_HELPER="$APP/Contents/Helpers/SwanSongMCP"
+  ENGINE_SERVICE="$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/MacOS/SwanSongEngineService"
   ENGINE="$APP/Contents/Frameworks/libSwanAresEngine.dylib"
+  PRIVACY_MANIFEST="$APP/Contents/Resources/PrivacyInfo.xcprivacy"
   SPARKLE_ROOT="$APP/Contents/Frameworks/Sparkle.framework/Versions/B"
   SPARKLE_FRAMEWORK="$SPARKLE_ROOT/Sparkle"
   SPARKLE_AUTOUPDATE="$SPARKLE_ROOT/Autoupdate"
@@ -363,8 +429,14 @@ if [ -n "$APP" ]; then
     || fail "app executable is missing or is not a regular file"
   [ -f "$ROUTE_RUNNER" ] && [ ! -L "$ROUTE_RUNNER" ] \
     || fail "route runner is missing or is not a regular file"
+  [ -f "$MCP_HELPER" ] && [ ! -L "$MCP_HELPER" ] \
+    || fail "MCP helper is missing or is not a regular file"
+  [ -f "$ENGINE_SERVICE" ] && [ ! -L "$ENGINE_SERVICE" ] \
+    || fail "engine service is missing or is not a regular file"
   [ -f "$ENGINE" ] && [ ! -L "$ENGINE" ] \
     || fail "engine is missing or is not a regular file"
+  [ -f "$PRIVACY_MANIFEST" ] && [ ! -L "$PRIVACY_MANIFEST" ] \
+    || fail "privacy manifest is missing or is not a regular file"
   for SPARKLE_BINARY in \
     "$SPARKLE_FRAMEWORK" \
     "$SPARKLE_AUTOUPDATE" \
@@ -379,8 +451,14 @@ if [ -n "$APP" ]; then
     "$APP_EXECUTABLE" | awk '{ print $1 }')
   ACTUAL_ROUTE_RUNNER_HASH=$(shasum -a 256 \
     "$ROUTE_RUNNER" | awk '{ print $1 }')
+  ACTUAL_MCP_HELPER_HASH=$(shasum -a 256 \
+    "$MCP_HELPER" | awk '{ print $1 }')
+  ACTUAL_ENGINE_SERVICE_HASH=$(shasum -a 256 \
+    "$ENGINE_SERVICE" | awk '{ print $1 }')
   ACTUAL_ENGINE_HASH=$(shasum -a 256 \
     "$ENGINE" | awk '{ print $1 }')
+  ACTUAL_PRIVACY_MANIFEST_HASH=$(shasum -a 256 \
+    "$PRIVACY_MANIFEST" | awk '{ print $1 }')
   ACTUAL_SPARKLE_FRAMEWORK_HASH=$(shasum -a 256 \
     "$SPARKLE_FRAMEWORK" | awk '{ print $1 }')
   ACTUAL_SPARKLE_AUTOUPDATE_HASH=$(shasum -a 256 \
@@ -395,8 +473,14 @@ if [ -n "$APP" ]; then
     || fail "app executable hash does not match manifest"
   [ "$ACTUAL_ROUTE_RUNNER_HASH" = "$ROUTE_RUNNER_HASH" ] \
     || fail "route runner hash does not match manifest"
+  [ "$ACTUAL_MCP_HELPER_HASH" = "$MCP_HELPER_HASH" ] \
+    || fail "MCP helper hash does not match manifest"
+  [ "$ACTUAL_ENGINE_SERVICE_HASH" = "$ENGINE_SERVICE_HASH" ] \
+    || fail "engine service hash does not match manifest"
   [ "$ACTUAL_ENGINE_HASH" = "$ENGINE_HASH" ] \
     || fail "engine hash does not match manifest"
+  [ "$ACTUAL_PRIVACY_MANIFEST_HASH" = "$PRIVACY_MANIFEST_HASH" ] \
+    || fail "privacy manifest hash does not match manifest"
   [ "$ACTUAL_SPARKLE_FRAMEWORK_HASH" = "$SPARKLE_FRAMEWORK_HASH" ] \
     || fail "Sparkle framework hash does not match manifest"
   [ "$ACTUAL_SPARKLE_AUTOUPDATE_HASH" = "$SPARKLE_AUTOUPDATE_HASH" ] \
@@ -418,6 +502,10 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents/Info.plist" \
     ! -path "$APP/Contents/MacOS/SwanSong" \
     ! -path "$APP/Contents/Helpers/SwanSongRouteRunner" \
+    ! -path "$APP/Contents/Helpers/SwanSongMCP" \
+    ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/Info.plist" \
+    ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/MacOS/SwanSongEngineService" \
+    ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/_CodeSignature/CodeResources" \
     ! -path "$APP/Contents/Frameworks/libSwanAresEngine.dylib" \
     ! -path "$APP/Contents/Frameworks/Sparkle.framework/*" \
     ! -path "$APP/Contents/Resources/AppIcon.icns" \
@@ -426,6 +514,7 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents/Resources/MenuBarSwan.png" \
     ! -path "$APP/Contents/Resources/LICENSE" \
     ! -path "$APP/Contents/Resources/PRIVACY.md" \
+    ! -path "$APP/Contents/Resources/PrivacyInfo.xcprivacy" \
     ! -path "$APP/Contents/Resources/SUPPORT.md" \
     ! -path "$APP/Contents/Resources/THIRD_PARTY_NOTICES.md" \
     ! -path "$APP/Contents/Resources/SPARKLE_LICENSE" \
@@ -440,6 +529,11 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents" \
     ! -path "$APP/Contents/MacOS" \
     ! -path "$APP/Contents/Helpers" \
+    ! -path "$APP/Contents/XPCServices" \
+    ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc" \
+    ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents" \
+    ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/MacOS" \
+    ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/_CodeSignature" \
     ! -path "$APP/Contents/Frameworks" \
     ! -path "$APP/Contents/Frameworks/Sparkle.framework" \
     ! -path "$APP/Contents/Frameworks/Sparkle.framework/*" \
@@ -478,7 +572,7 @@ if [ -n "$APP" ]; then
     "$SCRIPT_DIR/verify-app-architectures.sh" "$APP" >/dev/null
   LIPO=$(xcrun --find lipo)
   for BINARY in \
-    "$APP_EXECUTABLE" "$ROUTE_RUNNER" "$ENGINE" \
+    "$APP_EXECUTABLE" "$ROUTE_RUNNER" "$MCP_HELPER" "$ENGINE_SERVICE" "$ENGINE" \
     "$SPARKLE_FRAMEWORK" "$SPARKLE_AUTOUPDATE" "$SPARKLE_UPDATER" \
     "$SPARKLE_INSTALLER" "$SPARKLE_DOWNLOADER"; do
     BINARY_ARCHITECTURES=$("$LIPO" -archs "$BINARY")

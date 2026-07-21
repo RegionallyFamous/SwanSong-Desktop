@@ -19,9 +19,10 @@ tour. Everything else can wait until curiosity wins.
 - **Trust but verify:** inspect the privacy, source, build, signing,
   notarization, and release contracts behind the public app.
 
-The current public download is **SwanSong 0.6.1**. It includes the complete SDK
-0.5 Studio, expanded Story Forge, capture-bound Translation Lab automation, and
-Cartridge Tools. Versioned release notes remain authoritative for each build.
+The current public download is **SwanSong 0.7.0**. It includes the complete SDK
+0.5 Studio, Story Forge, deeper private Translation Lab provenance, Cartridge
+Tools, an isolated game engine, Safe Mode, and privacy-safe support tools.
+Versioned release notes remain authoritative for each build.
 
 ## How the pieces fit
 
@@ -52,7 +53,7 @@ Release payload and source-archive gates reject firmware binaries. Historical
 
 ## Homebrew publication status
 
-SwanSong 0.6.1 includes the first-party Homebrew Catalog public key and can add
+SwanSong 0.7.0 includes the first-party Homebrew Catalog public key and can add
 an authorized original game directly to the private library. It does not load
 the catalog at launch or merely because the page is open. **Browse Games**,
 **Refresh**, and a selected download are the only catalog network actions.
@@ -157,8 +158,9 @@ corresponding-source archive, checksums, machine-readable manifest, and release
 notes. The source archive includes the exact locked ares and Sparkle sources
 without either dependency's Git metadata. The release verifier binds the app
 identity, version/build,
-architectures, payload allowlist, signatures, notarization, and artifact
-hashes. It also binds the pinned Sparkle version and the framework, Autoupdate,
+architectures, payload allowlist, signatures, notarization, artifact hashes,
+privacy manifest, sandboxed engine service, signed MCP helper, and SPDX SBOM.
+It also binds the pinned Sparkle version and the framework, Autoupdate,
 Updater, Installer, and Downloader executable hashes, and requires the
 manifest source and ares commits to agree with the signed app's clean-build
 metadata and embedded ares lock. The Sparkle commit must agree with its archived
@@ -174,7 +176,7 @@ channel so stable-only clients do not offer them. Appcast publication follows
 uploaded-asset verification and requires its own signed-feed and
 previous-version update tests. The complete operator procedure is in the
 [release process](RELEASE_PROCESS.md); tester-facing boundaries are in the
-[0.6 release guide](RELEASE_TESTING.md).
+[0.7 release guide](RELEASE_TESTING.md).
 
 ## More documentation
 
@@ -194,6 +196,7 @@ previous-version update tests. The complete operator procedure is in the
 - [Privacy](../PRIVACY.md)
 - [Support](../SUPPORT.md)
 - [Source and fixture provenance](../SOURCE_PROVENANCE.md)
+- [0.7.0 release notes](releases/0.7.0.md)
 - [0.6.1 release notes](releases/0.6.1.md)
 - [0.6.0 release notes](releases/0.6.0.md)
 - [0.5.0 release notes](releases/0.5.0.md)

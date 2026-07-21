@@ -93,6 +93,7 @@ EOF
   --expected-version 9.8.7 \
   --expected-build 987 \
   --expected-channel beta \
+  --expected-rollout staged \
   --expected-archive-signature "$ARCHIVE_SIGNATURE" \
   --expected-release-notes "$RELEASE_NOTES" \
   --content-output "$CONTENT" \
@@ -213,6 +214,7 @@ EOF
   --expected-version 9.8.8 \
   --expected-build 988 \
   --expected-channel stable \
+  --expected-rollout staged \
   --expected-archive-signature "$ARCHIVE_SIGNATURE" \
   --expected-release-notes "$RELEASE_NOTES" \
   --content-output "$TEMP_ROOT/stable-content" \

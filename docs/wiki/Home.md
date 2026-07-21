@@ -47,7 +47,7 @@ Story Forge is included in SwanSong 0.5.0.
 ### I want to make a game
 
 [[SwanSong Studio]] puts New, Assets, Build, Test, Play, Profile, Evidence, and
-Release in one native workspace backed by SwanSong SDK. SwanSong 0.6.1 carries
+Release in one native workspace backed by SwanSong SDK. SwanSong 0.7.0 carries
 the complete content-verified SDK 0.5.0 toolset, including Utility App
 scaffolds, traced builds, scenario compilation, reviewed asset/audio workflows,
 semantic outcomes, budget history, project migration, and the expanded release
@@ -76,15 +76,15 @@ as the command reference. [[Signing and Notarization]] and [[Release Gates]]
 document the trusted-Mac path from a clean source tag to a signed, notarized,
 checksummed public build.
 
-## The 0.6 release
+## The 0.7 release
 
-The current public **0.6.1 release** opens faster, prevents an old Homebrew
-Catalog trust record from surprising you with a password dialog, and helps
-Studio find Python 3.11+ when SwanSong starts from Finder. It keeps the complete
-SDK 0.5.0 Studio, nine-part Story Forge, capture-bound Translation Lab,
-private player, library, Homebrew, and hardware workspaces from 0.6.0.
+The current public **0.7.0 release** makes SwanSong safer without making play
+more complicated. The engine runs in its own locked-down service, local
+automation proves who is asking, Safe Mode can rescue a launch, and Support
+Bundles leave private games and projects behind. Translation Lab follows
+source provenance farther while keeping exact ranges and writers private.
 
-Use [[0.6 Release Testing]] for the current tester checklist and the repository
+Use [[0.7 Release Testing]] for the current tester checklist and the repository
 [changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md)
 for the exact source and release history.
 

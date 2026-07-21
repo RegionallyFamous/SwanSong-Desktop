@@ -6,6 +6,69 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-07-20
+
+**A Safer SwanSong.** Version 0.7 puts the emulator, local automation, updates,
+and support tools behind clearer boundaries without making the app harder to
+use. Games still open the same way; there is simply much less that a damaged
+file or untrusted local process can reach.
+
+### Added
+
+- Runs the packaged emulation engine in its own sandboxed, hardened XPC service.
+  The app and engine exchange only bounded, typed data; ROM, state, persistence,
+  and frame payloads are size-checked before either side accepts them.
+- Replaces the live local-automation notification bridge with a private Unix
+  socket. SwanSong checks the caller's macOS user, signed helper identity, team,
+  request age, protocol version, message size, and one-use nonce before doing
+  anything. Local control remains off until the user enables Developer Tools.
+- Adds Safe Mode after repeated interrupted launches. Safe Mode opens the
+  library without controllers, local automation, background update work,
+  restored projects, or an initial game so a damaged session can be repaired.
+- Adds a privacy-safe Support Bundle creator. The bundle includes app and Mac
+  facts, settings, component hashes, and recent source-free diagnostics—never
+  games, saves, states, screenshots, manuscripts, project contents, or private
+  paths.
+- Adds a friendly **Privacy & Trust** screen that explains every network and
+  local-automation boundary, reveals the local data folder, and can revoke
+  local control immediately.
+- Adds Apple's privacy manifest to the signed app and a deterministic SPDX 2.3
+  software bill of materials to every release.
+- Adds CodeQL, dependency review, Dependabot security updates, AddressSanitizer,
+  UndefinedBehaviorSanitizer, a coverage-guided engine fuzzer, pinned GitHub
+  Actions, release artifact attestations, and SBOM attestations.
+- Adds critical and seven-day staged Sparkle rollout modes for future releases.
+
+### Changed
+
+- Stores Homebrew Catalog anti-rollback trust in a private owner-only file
+  instead of the login Keychain. Launch and catalog checks no longer need a
+  password prompt, while atomic locking and monotonic revision checks still
+  prevent rollback.
+- Remembers linked Translation Lab projects with macOS security-scoped
+  bookmarks, so only folders the user selected can be reopened across launches.
+- Extends private rectangle provenance with component-selective probing,
+  executed cartridge-read context, exact and candidate source ranges, and
+  outside-consumer discovery. MCP receives only source-free counts, hashes,
+  geometry, and completeness.
+- Adds qualified ABI 10 static-analysis seed-v2 export. SwanSong replays the
+  authenticated frame and binds private anchors to sealed consumed-prefetch
+  contexts and fetched cartridge bytes; MCP receives only counts and hashes.
+  Exact ABI 9 seed-v1 export remains available for legacy evidence.
+- Packages and verifies the local MCP helper, isolated engine service, privacy
+  manifest, exact source archive, checksums, release manifest, and SBOM as one
+  inseparable release set.
+
+### Fixed
+
+- Canonicalizes mixed-case Translation Lab capture names exactly like the
+  toolkit before authorizing output. Unit and real-toolkit regressions cover the
+  original mixed-case failure from command construction through final receipt.
+- Prevents malformed or oversized XPC payloads, stale or replayed local-control
+  messages, and mismatched local callers from reaching privileged app work.
+- Keeps a broken previous launch, stale project bookmark, or unavailable local
+  helper from holding the main window hostage.
+
 ## [0.6.1] - 2026-07-20
 
 **Open and Go.** SwanSong now gets its window on screen before waking the
@@ -537,7 +600,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.6.1...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.6.1...v0.7.0
 [0.6.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.3...v0.5.0

@@ -9,9 +9,10 @@ ARCHIVE=
 SOURCE_ARCHIVE=
 MANIFEST=
 CHECKSUMS=
+SBOM=
 
 usage() {
-  echo "usage: $0 [--source-archive SOURCE.tar.xz] [--manifest RELEASE.json] [--checksums SHA256SUMS.txt] RELEASE.zip" >&2
+  echo "usage: $0 [--source-archive SOURCE.tar.xz] [--sbom RELEASE.spdx.json] [--manifest RELEASE.json] [--checksums SHA256SUMS.txt] RELEASE.zip" >&2
   exit 64
 }
 
@@ -25,6 +26,11 @@ while [ "$#" -gt 0 ]; do
     --source-archive)
       [ "$#" -ge 2 ] || usage
       SOURCE_ARCHIVE=$2
+      shift 2
+      ;;
+    --sbom)
+      [ "$#" -ge 2 ] || usage
+      SBOM=$2
       shift 2
       ;;
     --checksums)
@@ -67,6 +73,9 @@ fi
 if [ -z "$CHECKSUMS" ]; then
   CHECKSUMS="$ARCHIVE_DIR/SHA256SUMS.txt"
 fi
+if [ -z "$SBOM" ]; then
+  SBOM="$ARCHIVE_DIR/SwanSong-$VERSION.spdx.json"
+fi
 [ -f "$MANIFEST" ] || {
   echo "release manifest not found: $MANIFEST" >&2
   exit 1
@@ -77,6 +86,10 @@ fi
 }
 [ -f "$CHECKSUMS" ] || {
   echo "release checksums not found: $CHECKSUMS" >&2
+  exit 1
+}
+[ -f "$SBOM" ] || {
+  echo "release SBOM not found: $SBOM" >&2
   exit 1
 }
 if [ ! -d "$INSTALL_DIR" ] || [ ! -w "$INSTALL_DIR" ]; then
@@ -96,6 +109,7 @@ ARCHIVE_COPY="$TEMP_ROOT/$ARCHIVE_NAME"
 SOURCE_ARCHIVE_COPY="$TEMP_ROOT/$(basename -- "$SOURCE_ARCHIVE")"
 MANIFEST_COPY="$TEMP_ROOT/$(basename -- "$MANIFEST")"
 CHECKSUMS_COPY="$TEMP_ROOT/SHA256SUMS.txt"
+SBOM_COPY="$TEMP_ROOT/$(basename -- "$SBOM")"
 EXTRACT_ROOT="$TEMP_ROOT/extracted"
 STAGED="$INSTALL_DIR/.SwanSong.installing.$$.app"
 BACKUP="$INSTALL_DIR/.SwanSong.backup.$$.app"
@@ -134,10 +148,12 @@ cp "$ARCHIVE" "$ARCHIVE_COPY"
 cp "$SOURCE_ARCHIVE" "$SOURCE_ARCHIVE_COPY"
 cp "$MANIFEST" "$MANIFEST_COPY"
 cp "$CHECKSUMS" "$CHECKSUMS_COPY"
+cp "$SBOM" "$SBOM_COPY"
 
 "$SCRIPT_DIR/verify-release-artifacts.sh" \
   --archive "$ARCHIVE_COPY" \
   --source-archive "$SOURCE_ARCHIVE_COPY" \
+  --sbom "$SBOM_COPY" \
   --manifest "$MANIFEST_COPY" \
   --checksums "$CHECKSUMS_COPY" >/dev/null
 
@@ -158,6 +174,7 @@ fi
 "$SCRIPT_DIR/verify-release-artifacts.sh" \
   --archive "$ARCHIVE_COPY" \
   --source-archive "$SOURCE_ARCHIVE_COPY" \
+  --sbom "$SBOM_COPY" \
   --manifest "$MANIFEST_COPY" \
   --checksums "$CHECKSUMS_COPY" \
   --app "$SOURCE_APP" >/dev/null

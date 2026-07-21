@@ -22,6 +22,7 @@ validate_source() {
 0.4-Beta-Testing.md
 0.5-Release-Testing.md
 0.6-Release-Testing.md
+0.7-Release-Testing.md
 Architecture-and-Source-Ownership.md
 Build-and-Test.md
 Cartridge-Lab.md

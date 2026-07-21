@@ -1,42 +1,30 @@
 import Foundation
-import LocalAuthentication
-import Security
 import SwanSongKit
 @testable import SwanSongApp
 import XCTest
 
 final class HomebrewCatalogHighWaterStoreTests: XCTestCase {
-    func testProductionQueryWorksWithoutProvisionedKeychainEntitlements() throws {
-        let backing = HomebrewCatalogKeychainHighWaterBacking()
-        let query = backing.baseQuery(
-            catalogID: "first-party-homebrew"
+    func testProductionFileStoreUsesPrivateOwnerOnlyFiles() throws {
+        let fixture = try HighWaterFixture()
+        defer { fixture.remove() }
+        let store = HomebrewCatalogFileHighWaterStore(
+            stateURL: fixture.stateURL,
+            lockURL: fixture.lockURL
         )
-        let insertion = try backing.insertionQuery(
-            catalogID: "first-party-homebrew",
-            data: Data("state".utf8)
-        )
+        let expected = state(revision: 3)
+        XCTAssertEqual(try store.advance(to: expected), expected)
+        XCTAssertEqual(try store.load(catalogID: expected.catalogID), expected)
 
-        XCTAssertNil(query[kSecUseDataProtectionKeychain])
-        XCTAssertNil(query[kSecAttrAccessGroup])
-        XCTAssertNil(insertion[kSecUseDataProtectionKeychain])
-        XCTAssertNil(insertion[kSecAttrAccessible])
-        XCTAssertNotNil(insertion[kSecAttrAccess])
-        XCTAssertEqual(
-            (query[kSecUseAuthenticationContext] as? LAContext)?.interactionNotAllowed,
-            true
+        let statePermissions = try XCTUnwrap(
+            FileManager.default.attributesOfItem(atPath: fixture.stateURL.path)[.posixPermissions]
+                as? NSNumber
         )
-        XCTAssertEqual(
-            query[kSecClass] as? String,
-            kSecClassGenericPassword as String
+        let directoryPermissions = try XCTUnwrap(
+            FileManager.default.attributesOfItem(atPath: fixture.rootURL.path)[.posixPermissions]
+                as? NSNumber
         )
-        XCTAssertEqual(
-            query[kSecAttrService] as? String,
-            "com.regionallyfamous.SwanSong.HomebrewCatalogTrust.v2"
-        )
-        XCTAssertEqual(
-            query[kSecAttrAccount] as? String,
-            "first-party-homebrew"
-        )
+        XCTAssertEqual(statePermissions.intValue & 0o777, 0o600)
+        XCTAssertEqual(directoryPermissions.intValue & 0o777, 0o700)
     }
 
     func testCompetingStoreInstancesCannotCommitARevisionRollback() async throws {

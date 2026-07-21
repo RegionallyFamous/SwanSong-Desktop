@@ -1,0 +1,60 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Sources/**"
+      - "Engine/**"
+      - "Package.swift"
+      - "Package.resolved"
+      - ".github/workflows/codeql.yml"
+  schedule:
+    - cron: "23 8 * * 2"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+concurrency:
+  group: codeql-${{ github.ref }}-${{ matrix.language }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: macos-14
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [swift, c-cpp]
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_16.2.app/Contents/Developer
+      SWAN_SWIFTPM_DISABLE_KEYCHAIN: "1"
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@7188fc363630916deb702c7fdcf4e481b751f97a # v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: manual
+
+      - name: Build the analyzed boundary
+        run: |
+          set -eu
+          ./Scripts/swift-package.sh build \
+            --package-path . \
+            --disable-index-store \
+            --jobs 3 \
+            --product SwanSongChecks
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@7188fc363630916deb702c7fdcf4e481b751f97a # v4
+        with:
+          category: "/language:${{ matrix.language }}"

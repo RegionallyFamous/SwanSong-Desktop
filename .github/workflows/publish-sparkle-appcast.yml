@@ -15,6 +15,14 @@ on:
         options:
           - beta
           - stable
+      rollout:
+        description: Staged seven-day rollout or immediate critical update
+        required: true
+        default: staged
+        type: choice
+        options:
+          - staged
+          - critical
 
 permissions:
   contents: write
@@ -41,6 +49,7 @@ jobs:
         env:
           RELEASE_VERSION: ${{ inputs.version }}
           RELEASE_CHANNEL: ${{ inputs.channel }}
+          RELEASE_ROLLOUT: ${{ inputs.rollout }}
         run: |
           set -euo pipefail
           [[ "$RELEASE_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
@@ -51,6 +60,10 @@ jobs:
             stable|beta) ;;
             *) echo "channel must be stable or beta" >&2; exit 64 ;;
           esac
+          case "$RELEASE_ROLLOUT" in
+            staged|critical) ;;
+            *) echo "rollout must be staged or critical" >&2; exit 64 ;;
+          esac
           release_notes="docs/releases/appcast/$RELEASE_VERSION.html"
           python3 Scripts/sparkle_release_notes.py \
             --file "$release_notes" \
@@ -58,6 +71,7 @@ jobs:
           printf 'RELEASE_VERSION=%s\n' "$RELEASE_VERSION" >>"$GITHUB_ENV"
           printf 'RELEASE_TAG=v%s\n' "$RELEASE_VERSION" >>"$GITHUB_ENV"
           printf 'RELEASE_CHANNEL=%s\n' "$RELEASE_CHANNEL" >>"$GITHUB_ENV"
+          printf 'RELEASE_ROLLOUT=%s\n' "$RELEASE_ROLLOUT" >>"$GITHUB_ENV"
 
       - name: Download immutable GitHub Release assets
         run: |
@@ -67,6 +81,7 @@ jobs:
           for asset in \
             "SwanSong-$RELEASE_VERSION-macOS-universal.zip" \
             "SwanSong-$RELEASE_VERSION-source.tar.xz" \
+            "SwanSong-$RELEASE_VERSION.spdx.json" \
             "SwanSong-$RELEASE_VERSION-release.json" \
             SHA256SUMS.txt; do
             curl --fail --location --silent --show-error \
@@ -96,10 +111,12 @@ jobs:
           ./Scripts/publish-sparkle-appcast.sh \
             --archive "dist/SwanSong-$RELEASE_VERSION-macOS-universal.zip" \
             --source-archive "dist/SwanSong-$RELEASE_VERSION-source.tar.xz" \
+            --sbom "dist/SwanSong-$RELEASE_VERSION.spdx.json" \
             --manifest "dist/SwanSong-$RELEASE_VERSION-release.json" \
             --checksums dist/SHA256SUMS.txt \
             --release-tag "$RELEASE_TAG" \
             --channel "$RELEASE_CHANNEL" \
+            --rollout "$RELEASE_ROLLOUT" \
             --release-notes "docs/releases/appcast/$RELEASE_VERSION.html"
 
       - name: Commit the review branch

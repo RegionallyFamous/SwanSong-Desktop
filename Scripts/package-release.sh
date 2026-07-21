@@ -93,8 +93,15 @@ APP_EXECUTABLE_SHA256=$(shasum -a 256 "$APP/Contents/MacOS/SwanSong" \
   | awk '{ print $1 }')
 ROUTE_RUNNER_SHA256=$(shasum -a 256 \
   "$APP/Contents/Helpers/SwanSongRouteRunner" | awk '{ print $1 }')
+MCP_HELPER_SHA256=$(shasum -a 256 \
+  "$APP/Contents/Helpers/SwanSongMCP" | awk '{ print $1 }')
+ENGINE_SERVICE_SHA256=$(shasum -a 256 \
+  "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/MacOS/SwanSongEngineService" \
+  | awk '{ print $1 }')
 ENGINE_SHA256=$(shasum -a 256 \
   "$APP/Contents/Frameworks/libSwanAresEngine.dylib" | awk '{ print $1 }')
+PRIVACY_MANIFEST_SHA256=$(shasum -a 256 \
+  "$APP/Contents/Resources/PrivacyInfo.xcprivacy" | awk '{ print $1 }')
 SPARKLE_ROOT="$APP/Contents/Frameworks/Sparkle.framework/Versions/B"
 SPARKLE_VERSION=$(plutil -extract CFBundleShortVersionString raw \
   "$SPARKLE_ROOT/Resources/Info.plist")
@@ -120,6 +127,8 @@ SOURCE_ARCHIVE_NAME="SwanSong-$VERSION-source.tar.xz"
 SOURCE_ARCHIVE="$DIST_DIR/$SOURCE_ARCHIVE_NAME"
 CHECKSUMS="$DIST_DIR/SHA256SUMS.txt"
 MANIFEST="$DIST_DIR/SwanSong-$VERSION-release.json"
+SBOM_NAME="SwanSong-$VERSION.spdx.json"
+SBOM="$DIST_DIR/$SBOM_NAME"
 
 PACKAGING_STARTED=1
 rm -rf "$DIST_DIR"
@@ -172,14 +181,12 @@ cmp -s "$SOURCE_ROOT/Dependencies/SPARKLE_LICENSE" "$SPARKLE_SOURCE/LICENSE" || 
 mkdir -p "$SOURCE_ROOT/Dependencies/ares-source"
 (
   cd "$ARES_SOURCE"
-  export COPYFILE_DISABLE=1
-  tar -cf - --exclude='./.git' --exclude='.git' .
+  COPYFILE_DISABLE=1 tar -cf - --exclude='./.git' --exclude='.git' .
 ) | COPYFILE_DISABLE=1 tar -xf - -C "$SOURCE_ROOT/Dependencies/ares-source"
 mkdir -p "$SOURCE_ROOT/Dependencies/sparkle-source"
 (
   cd "$SPARKLE_SOURCE"
-  export COPYFILE_DISABLE=1
-  tar -cf - --exclude='./.git' --exclude='.git' .
+  COPYFILE_DISABLE=1 tar -cf - --exclude='./.git' --exclude='.git' .
 ) | COPYFILE_DISABLE=1 tar -xf - -C "$SOURCE_ROOT/Dependencies/sparkle-source"
 cat >"$SOURCE_ROOT/SOURCE_ARCHIVE_PROVENANCE.json" <<EOF
 {
@@ -198,16 +205,26 @@ COPYFILE_DISABLE=1 tar -cJf "$SOURCE_ARCHIVE" -C "$SOURCE_TEMP" \
   "$SOURCE_ARCHIVE"
 
 verify_source_checkout
+CREATED_AT=$(git -C "$MACOS_DIR" show -s --format='%cI' "$SOURCE_COMMIT")
+python3 "$SCRIPT_DIR/generate-release-sbom.py" \
+  --repository "$SOURCE_ROOT" \
+  --version "$VERSION" \
+  --source-commit "$SOURCE_COMMIT" \
+  --created "$CREATED_AT" >"$SBOM.partial"
+plutil -convert binary1 -o /dev/null "$SBOM.partial"
+mv "$SBOM.partial" "$SBOM"
 ARCHIVE_SHA256=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
 SOURCE_SHA256=$(shasum -a 256 "$SOURCE_ARCHIVE" | awk '{ print $1 }')
+SBOM_SHA256=$(shasum -a 256 "$SBOM" | awk '{ print $1 }')
 (
   cd "$DIST_DIR"
-  shasum -a 256 "$ARCHIVE_NAME" "$SOURCE_ARCHIVE_NAME" >"$CHECKSUMS"
+  shasum -a 256 "$ARCHIVE_NAME" "$SOURCE_ARCHIVE_NAME" "$SBOM_NAME" \
+    >"$CHECKSUMS"
 )
 
 cat >"$MANIFEST" <<EOF
 {
-  "schema": "swan-song-release-v2",
+  "schema": "swan-song-release-v3",
   "version": "$VERSION",
   "build": "$BUILD",
   "bundleIdentifier": "$BUNDLE_ID",
@@ -222,7 +239,10 @@ cat >"$MANIFEST" <<EOF
   "swiftVersion": "$SWIFT_VERSION",
   "appExecutableSHA256": "$APP_EXECUTABLE_SHA256",
   "routeRunnerSHA256": "$ROUTE_RUNNER_SHA256",
+  "mcpHelperSHA256": "$MCP_HELPER_SHA256",
+  "engineServiceSHA256": "$ENGINE_SERVICE_SHA256",
   "engineSHA256": "$ENGINE_SHA256",
+  "privacyManifestSHA256": "$PRIVACY_MANIFEST_SHA256",
   "sparkleVersion": "$SPARKLE_VERSION",
   "sparkleFrameworkExecutableSHA256": "$SPARKLE_FRAMEWORK_SHA256",
   "sparkleAutoupdateSHA256": "$SPARKLE_AUTOUPDATE_SHA256",
@@ -232,7 +252,9 @@ cat >"$MANIFEST" <<EOF
   "archive": "$ARCHIVE_NAME",
   "sha256": "$ARCHIVE_SHA256",
   "sourceArchive": "$SOURCE_ARCHIVE_NAME",
-  "sourceSHA256": "$SOURCE_SHA256"
+  "sourceSHA256": "$SOURCE_SHA256",
+  "sbom": "$SBOM_NAME",
+  "sbomSHA256": "$SBOM_SHA256"
 }
 EOF
 
@@ -248,6 +270,7 @@ ditto -x -k "$ARCHIVE" "$VERIFY_ROOT"
 "$SCRIPT_DIR/verify-release-artifacts.sh" \
   --archive "$ARCHIVE" \
   --source-archive "$SOURCE_ARCHIVE" \
+  --sbom "$SBOM" \
   --manifest "$MANIFEST" \
   --checksums "$CHECKSUMS" \
   --app "$VERIFY_ROOT/SwanSong.app" >/dev/null
@@ -255,5 +278,6 @@ verify_source_checkout
 PACKAGING_COMPLETE=1
 echo "PASS packaged notarized release: $ARCHIVE"
 echo "$SOURCE_ARCHIVE"
+echo "$SBOM"
 echo "$CHECKSUMS"
 echo "$MANIFEST"

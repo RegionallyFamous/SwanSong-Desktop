@@ -1,0 +1,90 @@
+name: Attest release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Released version without the leading v
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+
+concurrency:
+  group: attest-release-${{ github.event.release.tag_name || inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  attest:
+    if: github.repository == 'RegionallyFamous/SwanSong-Desktop'
+    runs-on: macos-14
+    timeout-minutes: 25
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Resolve and download the immutable release
+        env:
+          EVENT_TAG: ${{ github.event.release.tag_name }}
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          if [[ -n "$EVENT_TAG" ]]; then
+            tag="$EVENT_TAG"
+          else
+            tag="v$INPUT_VERSION"
+          fi
+          [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
+            echo "release tag must use vX.Y.Z" >&2
+            exit 64
+          }
+          version=${tag#v}
+          git fetch --force origin "refs/tags/$tag:refs/tags/$tag"
+          git switch --detach "$tag"
+          mkdir dist
+          gh release download "$tag" \
+            --repo "$GITHUB_REPOSITORY" \
+            --dir dist \
+            --pattern "SwanSong-$version-macOS-universal.zip" \
+            --pattern "SwanSong-$version-source.tar.xz" \
+            --pattern "SwanSong-$version.spdx.json" \
+            --pattern "SwanSong-$version-release.json" \
+            --pattern SHA256SUMS.txt
+          printf 'VERSION=%s\n' "$version" >>"$GITHUB_ENV"
+
+      - name: Re-verify every published byte
+        run: |
+          set -euo pipefail
+          (cd dist && shasum -a 256 -c SHA256SUMS.txt)
+          ./Scripts/verify-release-artifacts.sh \
+            --archive "dist/SwanSong-$VERSION-macOS-universal.zip" \
+            --source-archive "dist/SwanSong-$VERSION-source.tar.xz" \
+            --sbom "dist/SwanSong-$VERSION.spdx.json" \
+            --manifest "dist/SwanSong-$VERSION-release.json" \
+            --checksums dist/SHA256SUMS.txt
+
+      - name: Attest verified release assets
+        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
+        with:
+          subject-path: |
+            dist/SwanSong-${{ env.VERSION }}-macOS-universal.zip
+            dist/SwanSong-${{ env.VERSION }}-source.tar.xz
+            dist/SwanSong-${{ env.VERSION }}.spdx.json
+            dist/SwanSong-${{ env.VERSION }}-release.json
+            dist/SHA256SUMS.txt
+
+      - name: Attach the SPDX inventory to the app archive
+        uses: actions/attest-sbom@4651f806c01d8637787e274ac3bdf724ef169f34 # v3
+        with:
+          subject-path: dist/SwanSong-${{ env.VERSION }}-macOS-universal.zip
+          sbom-path: dist/SwanSong-${{ env.VERSION }}.spdx.json

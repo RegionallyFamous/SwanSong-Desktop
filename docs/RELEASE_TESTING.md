@@ -1,11 +1,11 @@
-# SwanSong 0.6 release testing
+# SwanSong 0.7 release testing
 
-This guide covers the SwanSong Desktop 0.6 release. Test only games, manuscripts, homebrew,
+This guide covers the SwanSong Desktop 0.7 release. Test only games, manuscripts, homebrew,
 SDK projects, cartridges, and save data you own or are authorized to use. Never
 attach ROMs, saves, private screenshots or audio, manuscripts, cartridge-source
 evidence, or Translation Lab evidence to a public report.
 
-The signed public release is **SwanSong 0.6.1 (12)**.
+The signed public release is **SwanSong 0.7.0 (13)**.
 
 ## What this release is testing
 
@@ -43,10 +43,13 @@ The signed public release is **SwanSong 0.6.1 (12)**.
 - **Evidence-backed release:** inspect required PNG and WAV observations,
   record a hash-bound verdict for every scenario check, and confirm Release
   refuses stale, incomplete, or execution-only evidence.
-- **ABI 9 source provenance:** probe a small native rectangle and select map,
+- **Current source provenance:** probe a small native rectangle and select map,
   raster, palette, or sprite-attribute components. Private evidence may retain
   ownership and lineage; MCP must return only source-free hashes, counts, and
-  an honest completeness result.
+  an honest completeness result. Export one ABI 10 seed-v2 and confirm sealed
+  consumed-prefetch contexts and fetched bytes remain private while the receipt
+  exposes only their counts and hashes; retain the exact ABI 9 seed-v1 lane as
+  a compatibility check.
 - **Translation Lab automation:** retain deterministic routes, paired capture,
   display-owner and source probes, observed-play recovery, evidence browsing,
   and complete installed MCP-tool coverage.
@@ -60,6 +63,19 @@ The signed public release is **SwanSong 0.6.1 (12)**.
 - **The everyday player:** retain Open IPL, imports, controls, Time Ribbon,
   save states, portrait play, native 224×157 fitting, app updates, and relaunch
   on Apple silicon and Intel.
+- **Isolation and recovery:** confirm the packaged app uses the sandboxed engine
+  service, rejects oversized payloads, offers Safe Mode after two interrupted
+  launches, and restarts normally without changing library or save contents.
+  The Developer ID candidate must also pass `check-isolated-engine-service.sh`,
+  which verifies the profiled App Group and real XPC video path without a
+  debug-only capture hook.
+- **Private support:** create and inspect a Support Bundle. It may contain
+  versions, flags, hashes, and source-free diagnostics; it must not contain
+  games, saves, states, screenshots, projects, manuscripts, private paths, or
+  account information.
+- **Inspectable delivery:** verify the privacy manifest, exact source archive,
+  release manifest, three-file checksum list, SPDX SBOM, and GitHub artifact and
+  SBOM attestations before testing the Sparkle update.
 
 ## Story Forge guardrails
 
@@ -102,12 +118,13 @@ The signed public release is **SwanSong 0.6.1 (12)**.
   display chains, executed-read context, conservative origins, and outside
   consumers in the private project. Ambiguous or overflowing dataflow is
   marked incomplete rather than guessed.
-- Live MCP stays off by default, token-authenticated, and limited to its
-  documented data and tool allowlists.
+- Live MCP stays off by default and uses an owner-only Unix socket. It must
+  reject the wrong macOS user or signed identity, stale timestamps, replayed
+  nonces, unsupported protocol versions, and messages above one megabyte.
 
 ## Expected boundaries
 
-SwanSong 0.6.1 embeds SDK 0.5.0 but not Python or Wonderful. Install those
+SwanSong 0.7.0 embeds SDK 0.5.0 but not Python or Wonderful. Install those
 external dependencies before running Studio Doctor or a build. Studio should
 find Python 3.11+ in standard Homebrew, python.org, MacPorts, and system
 locations even when SwanSong opens from Finder. Story Forge also requires a
@@ -126,7 +143,7 @@ title-specific quirks still deserve hands-on attention.
 
 ## Before reporting a result
 
-1. Confirm **SwanSong 0.6.1 (12)** in **SwanSong > About SwanSong**.
+1. Confirm **SwanSong 0.7.0 (13)** in **SwanSong > About SwanSong**.
 2. Record the Mac model, macOS version, architecture, controller or cartridge
    hardware when relevant, SDK version, Python version, and Wonderful revision.
 3. For Story Forge, state the visible workspace and sanitized action/result;
@@ -140,8 +157,8 @@ title-specific quirks still deserve hands-on attention.
 7. For source provenance, report only the frame, rectangle dimensions,
    selected components, completeness, and source-free counts.
 8. For MCP, state whether SwanSong and the client were restarted, whether local
-   control was enabled, the tool name, and the sanitized error. Never share the
-   bearer token.
+   control was enabled, the tool name, and the sanitized error. Never attach the
+   private socket or its containing folder.
 9. Distinguish **Reached Video** from an end-to-end **Works** verdict.
 10. For updater issues, include installed and offered version/build, channel,
     opt-in settings, and exact visible error. Do not attach a rejected archive.

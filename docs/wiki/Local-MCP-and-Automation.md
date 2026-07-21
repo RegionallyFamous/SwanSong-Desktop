@@ -35,9 +35,12 @@ The repository-scoped MCP configuration is read only when the checkout is a
 trusted Codex project. It starts `Scripts/run-swansong-mcp.sh`, which builds and
 runs the pinned Swift MCP server with keychain access disabled and dependency
 resolution restricted to `Package.resolved`; restarting Codex must never cause
-a login-keychain password prompt. SwanSong creates a random local bearer token
-under its Application Support folder with user-only permissions. Turning the
-setting off immediately revokes that token.
+a login-keychain password prompt. SwanSong opens a private Unix-domain socket
+under its owner-only Application Support folder. It accepts only the current
+macOS user. Official builds also require SwanSong's signed MCP helper and the
+same Apple developer team. Version, one-megabyte size, 30-second freshness, and
+one-use nonce checks reject incompatible, oversized, stale, or replayed
+requests. Turning the setting off immediately closes and removes the socket.
 
 The live bridge must have the SwanSong app open. It exposes:
 
@@ -215,16 +218,19 @@ leaf. The Evidence browser continues to read legacy v1-v3 artifacts under their
 original contracts.
 
 `swansong_translation_export_static_analysis_seed` accepts only the exact private `details.json`
-from one current, complete ABI 9/v4 source probe. It revalidates the probe's
+from one current, complete v4 source probe. It revalidates the probe's
 project, ROM, plan, engine, RTC, persistence, native frame, lineage, ranges,
 executed caller arithmetic, and outside-consumer scope before atomically
 writing a deterministic private seed under
 `analysis/swan-song-lab/static-analysis-seeds/`. The seed contains exact
 cartridge ranges and caller, operand, and mapper anchors for a private Ghidra or
-pypcode workflow. Its MCP receipt contains only counts, completeness flags,
-binding hashes, and content hashes. It never authorizes a patch.
-The private seed and its source-free report remain schema v1; conservative or
-incomplete v4 lineage is rejected rather than serialized into an analyzer seed.
+pypcode workflow. ABI 10 seed-v2 also binds each anchor to the engine's sealed
+consumed-prefetch context and retains the exact fetch bytes privately for the
+required pypcode check. Its MCP receipt contains only counts, completeness
+flags, binding hashes, and content hashes. It never authorizes a patch. ABI 9
+seed-v1 remains readable and exportable for exact legacy probes; conservative,
+incomplete, or unqualified ABI 10 evidence is rejected rather than serialized
+into an analyzer seed.
 
 The other Translation tools return project paths and immutable evidence
 identifiers to the MCP client, but never ROM, state, RAM, persistence, or
@@ -324,10 +330,11 @@ either intake or either manifest integrity check fails.
 only after both evidence lanes and Capture Intake outputs re-index intact.
 `probe-rectangle` saves detailed owner evidence privately and prints only the
 source-free summary. `probe-rectangle-source` applies the same exact clean
-replay gate to ABI 9 upstream lineage; component selection is explicit and its
+replay gate to current upstream lineage; component selection is explicit and its
 exact ranges remain private. `export-static-analysis-seed` revalidates one
-current complete source probe before writing a private disassembly seed. None
-of these operations grants patch authority.
+current complete source probe before writing a private disassembly seed. ABI 10
+also replays and seals consumed-prefetch decoder evidence before export. None of
+these operations grants patch authority.
 
 ## Tests
 

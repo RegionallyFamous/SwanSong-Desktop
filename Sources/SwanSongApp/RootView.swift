@@ -224,6 +224,19 @@ struct RootView: View {
             }
             .padding(16)
         }
+        .overlay(alignment: .topLeading) {
+            if model.isSafeMode {
+                NoticeBanner(
+                    message: "Safe Mode is on. SwanSong skipped controllers, local automation, background updates, and project restore so you can get back in safely.",
+                    symbol: "cross.case.fill",
+                    tint: .orange,
+                    actionTitle: "Restart Normally",
+                    onAction: SwanSongLaunchRecovery.restartNormally,
+                    onDismiss: {}
+                )
+                .padding(16)
+            }
+        }
         .animation(
             reduceMotion ? nil : .easeInOut(duration: 0.18),
             value: model.presentedNotice
@@ -10551,6 +10564,22 @@ struct SettingsView: View {
                 Toggle("Pause when SwanSong is in the background", isOn: $pauseWhenInactive)
                 LabeledContent("Game engine", value: backendName)
                     .foregroundStyle(.secondary)
+            }
+            if model.isSafeMode {
+                Section("Safe Mode") {
+                    Label(
+                        "SwanSong recovered from repeated interrupted launches.",
+                        systemImage: "cross.case.fill"
+                    )
+                    Button("Restart Normally…") {
+                        SwanSongLaunchRecovery.restartNormally()
+                    }
+                    Text(
+                        "Safe Mode keeps your library available while leaving controllers, local automation, project restore, and automatic update checks off for this launch."
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                }
             }
             Section("Developer Tools") {
                 Toggle("Show developer tools", isOn: debugToolsBinding)

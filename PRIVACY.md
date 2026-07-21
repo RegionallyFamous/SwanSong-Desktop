@@ -2,7 +2,7 @@
 
 Effective July 20, 2026
 
-This policy describes SwanSong 0.6.1. Versioned release notes document the
+This policy describes SwanSong 0.7.0. Versioned release notes document the
 exact behavior of earlier published builds.
 
 <!-- homebrew-catalog-status: published -->
@@ -19,10 +19,12 @@ Catalog** or **Refresh** requests the signed catalog from GitHub; choosing
 ordinary connection information, but SwanSong does not attach library, save,
 state, screenshot, or Translation Lab data.
 
-The signed Homebrew Catalog's small anti-rollback record stays in the protected
-macOS Keychain. SwanSong checks it without allowing an authentication dialog;
-an unavailable or mismatched record fails closed instead of asking for the
-login Keychain password.
+The signed Homebrew Catalog's small anti-rollback record stays in SwanSong's
+private Application Support trust folder. Its directory is owner-only and its
+file is readable and writable only by the current macOS user. Updates use a
+locked, atomic, monotonic commit, so a stale catalog cannot replace a newer
+trusted revision. SwanSong does not place this record in the login Keychain and
+does not need a password dialog to read it.
 
 ## What stays on your Mac
 
@@ -53,6 +55,14 @@ game, RAM, save-state, and persistence bytes. Sparkle may hold a downloaded app
 update in temporary local storage while it verifies and installs that update;
 this contains the public SwanSong application archive, not user games or data.
 
+The packaged player sends bounded game, state, persistence, input, frame, and
+audio data to SwanSong's sandboxed engine service on the same Mac. The service
+has no network entitlement and accepts only the app's typed XPC protocol.
+Choosing **Create Support Bundle…** writes an allowlist-based ZIP containing
+versions, configuration flags, component hashes, and source-free diagnostics.
+It excludes games, saves, states, screenshots, project contents, private paths,
+and account information.
+
 Optional Developer Tools are off by default. A user-started input/frame log stays
 in memory until it is cleared or SwanSong quits and is written only when the
 user chooses an export destination. It contains the game title and ROM digest,
@@ -61,14 +71,18 @@ focus state, and timing. It does not contain ROM, save, RAM, persistence, or
 framebuffer bytes.
 
 Optional local MCP control is also off by default and is available only while
-Developer Tools is enabled. When local MCP control is enabled, SwanSong
-creates a random bearer token in its Application Support folder with
-user-only permissions and accepts a small allowlist of messages within the
-current macOS login session. The live bridge can return section, library
+Developer Tools is enabled. When local MCP control is enabled, SwanSong opens
+a private Unix-domain socket in its owner-only Application Support folder. It
+accepts a small allowlist of versioned messages only from the same macOS user;
+official builds additionally require SwanSong's signed MCP helper and the same
+Apple developer team. Requests have a one-megabyte maximum, a 30-second
+freshness window, and a one-use nonce so stale or replayed messages fail closed.
+No bearer credential is stored in the login Keychain. The live bridge can
+return section, library
 count, and playback readiness or control navigation and the already-selected
 game. It does not return game titles, paths, ROMs, saves, states, RAM,
 screenshots, inputs, or logs. Turning local control or Developer Tools off
-revokes the token. Turning Developer Tools off also disables developer task
+closes and removes the socket. Turning Developer Tools off also disables developer task
 notifications. The
 separate headless playtest tools can return one rendered game screenshot and
 audio window, a sequence of explicitly requested observed-play screenshots and
@@ -101,14 +115,17 @@ identities only in private project files and return only hashes and aggregate
 counts to the MCP client. Upstream source probes additionally keep exact and
 candidate cartridge ranges, emulated source addresses, per-display chains, and
 outside-consumer coordinates private while returning only hashes, counts, and
-completeness. ABI 9 source probes may select map, raster, palette, or
+completeness. Current source probes may select map, raster, palette, or
 `spriteAttribute` ownership. The private artifact retains immediate caller,
 code and operand segment/offset, mapper window/bank, resolved cartridge
 operand, sprite OAM addresses and byte counts, final writers, and
 conservative-dataflow reasons and V30 origins. None of those addresses, writers,
 reasons, or origins leave through MCP; its public response remains limited to
 source-free counts, hashes, geometry, completeness flags, and aggregate context
-counts. These tools do not return ROM, state, RAM, or persistence bytes.
+counts. ABI 10 static-analysis export may additionally retain sealed
+consumed-prefetch contexts and exact fetched cartridge bytes inside the private
+project. MCP receives only their counts and hashes. These tools do not return
+ROM, state, RAM, or persistence bytes.
 Capture-plan execution authenticates its project manifest, plan, ROMs,
 authorized private directory, and exact allowed outputs before launch. Capture
 Intake writes only its copied RAM and receipt into one fresh private directory.

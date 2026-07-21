@@ -56,6 +56,10 @@ component-complete. ABI 9 adds sprite-attribute ownership: the private owner
 sample records its OAM range and final writer, and upstream probing can select
 `spriteAttribute` separately. Conservative dataflow now retains the first
 private reason and V30 origin while continuing to withhold exact lineage.
+ABI 10 binds exact lineage to sealed consumed-prefetch contexts. Static-analysis
+seed-v2 keeps those contexts and fetched cartridge bytes inside the private
+project for the required decoder check; public automation sees only counts and
+hashes.
 During a clean replay the
 renderer can describe the final owner of a bounded native rectangle—layer,
 map/tile/raster/palette or sprite/OAM source, and last CPU writer—without

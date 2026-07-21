@@ -91,6 +91,54 @@ final class LocalMCPBridgeTests: XCTestCase {
         }
     }
 
+    func testPrivateSocketAcceptsFreshRequestsAndRejectsReplay() async throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "SwanSong-LocalMCP-Socket-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let model = makeModel(root: root)
+        model.setDebugToolsEnabled(true)
+        model.setLocalMCPControlEnabled(true)
+        let bridge = SwanSongLocalMCPBridge(model: model)
+        bridge.start()
+
+        let request = SwanSongLocalMCPRequest(
+            method: "status",
+            argumentsJSON: "{}"
+        )
+        let first = try await Task.detached {
+            try SwanSongUnixSocketIO.connectAndExchange(request: request)
+        }.value
+        XCTAssertNil(first.error)
+        XCTAssertTrue(first.json?.contains("libraryCount") == true)
+
+        let replay = try await Task.detached {
+            try SwanSongUnixSocketIO.connectAndExchange(request: request)
+        }.value
+        XCTAssertNil(replay.json)
+        XCTAssertTrue(replay.error?.contains("invalid or expired") == true)
+    }
+
+    func testPrivateSocketRequestFreshnessIsBounded() throws {
+        let stale = SwanSongLocalMCPRequest(
+            issuedAtUnixSeconds: 1,
+            method: "status",
+            argumentsJSON: "{}"
+        )
+        XCTAssertThrowsError(try stale.validateFreshness())
+
+        let oversized = SwanSongLocalMCPRequest(
+            method: "status",
+            argumentsJSON: String(
+                repeating: "x",
+                count: SwanSongLocalMCPAccess.maximumMessageBytes + 1
+            )
+        )
+        XCTAssertThrowsError(try oversized.validateFreshness())
+    }
+
     private func makeModel(root: URL) -> AppModel {
         let suite = "LocalMCPBridgeTests-\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suite)!

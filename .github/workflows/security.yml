@@ -1,0 +1,55 @@
+name: Security
+
+on:
+  pull_request:
+  schedule:
+    - cron: "41 8 * * 3"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dependency-review:
+    name: Dependency review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Reject newly introduced vulnerable dependencies
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          fail-on-severity: moderate
+
+  sanitizers-and-fuzzing:
+    name: Sanitizers and fuzzing
+    if: github.event_name != 'pull_request'
+    runs-on: macos-14
+    timeout-minutes: 35
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_16.2.app/Contents/Developer
+      SWAN_SWIFTPM_DISABLE_KEYCHAIN: "1"
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Run address-sanitized boundary regressions
+        run: |
+          set -eu
+          ./Scripts/swift-package.sh test \
+            --package-path . \
+            --disable-index-store \
+            --sanitize address \
+            --filter 'LocalMCPBridgeTests|TranslationLabAutomationTests|PocketCoreArchiveExtractorTests'
+      - name: Run coverage-guided hostile ROM-input fuzzing
+        env:
+          SWAN_FUZZ_SECONDS: "30"
+        run: ./Scripts/run-security-fuzzers.sh

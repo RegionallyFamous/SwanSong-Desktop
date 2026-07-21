@@ -191,10 +191,13 @@ project-writing commands close the autonomous evidence and diagnosis gaps:
   native endpoints, runs Capture Intake twice, re-indexes both immutable
   manifests, and returns their bound identities.
 
-All four commands require `--enable-debug-tools` and
+All four route/capture commands require `--enable-debug-tools` and
 `--allow-project-writes`. Inputs and optional report outputs must remain inside
-the project. They are also exposed by the opt-in local MCP server with an
-explicit `confirmProjectWrites` argument. Full schemas, commands, privacy
+the project. Two additional guarded commands, `probe-rectangle-source` and
+`export-static-analysis-seed`, keep bounded cartridge lineage and analyzer
+anchors private while returning only source-free receipts. All six are exposed
+by the opt-in local MCP server with an explicit `confirmProjectWrites`
+argument. Full schemas, commands, privacy
 boundaries, and failure behavior are in [[Local MCP and Automation]].
 
 The MCP server also supports one retained observed-play session for long

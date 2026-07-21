@@ -16,7 +16,7 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
         )
 
         XCTAssertEqual(try encoded(first), try encoded(second))
-        XCTAssertEqual(first.schema, TranslationStaticAnalysisSeed.currentSchema)
+        XCTAssertEqual(first.schema, TranslationStaticAnalysisSeed.legacySchema)
         XCTAssertEqual(first.sourceProbeSchema, TranslationDisplaySourceProbeDetails.currentSchema)
         XCTAssertEqual(first.payloadRanges.count, 1)
         XCTAssertEqual(first.anchors.count, 2)
@@ -41,7 +41,7 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
                 details: details,
                 detailsData: try encoded(details)
             )) { error in
-                XCTAssertTrue(error.localizedDescription.contains("ABI-9/v4 engine profile"))
+                XCTAssertTrue(error.localizedDescription.contains("exact ABI-9/v4 seed-v1"))
             }
         }
 
@@ -55,7 +55,7 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
                 details: details,
                 detailsData: try encoded(details)
             )) { error in
-                XCTAssertTrue(error.localizedDescription.contains("ABI-9/v4 engine profile"))
+                XCTAssertTrue(error.localizedDescription.contains("exact ABI-9/v4 seed-v1"))
             }
         }
 
@@ -144,11 +144,14 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
             seedData: try encoded(seed)
         )
 
-        XCTAssertEqual(seed.schema, "swan-song-static-analysis-seed-v1")
+        XCTAssertEqual(seed.schema, TranslationStaticAnalysisSeed.legacySchema)
         XCTAssertEqual(seed.sourceProbeSchema, TranslationDisplaySourceProbeDetails.currentSchema)
         XCTAssertEqual(seed.selectedComponents, ["spriteAttribute"])
         XCTAssertTrue(seed.anchors.allSatisfy { $0.component == "spriteAttribute" })
         XCTAssertEqual(report.componentCounts, ["spriteAttribute": 2])
+        XCTAssertEqual(report.privateSeedSchema, TranslationStaticAnalysisSeed.legacySchema)
+        XCTAssertEqual(report.fetchContextCount, 0)
+        XCTAssertEqual(report.fetchByteCount, 0)
         XCTAssertFalse(report.prototypeAuthorized)
 
         let publicText = String(decoding: try encoded(report), as: UTF8.self).lowercased()

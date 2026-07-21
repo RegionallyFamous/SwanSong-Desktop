@@ -42,6 +42,11 @@ let package = Package(
     ],
     products: [
         .executable(name: "SwanSong", targets: ["SwanSongApp"]),
+        .executable(name: "SwanSongMCP", targets: ["SwanSongMCP"]),
+        .executable(
+            name: "SwanSongEngineService",
+            targets: ["SwanSongEngineService"]
+        ),
         .executable(name: "SwanSongChecks", targets: ["SwanSongChecks"]),
         .executable(name: "SwanSongDifferential", targets: ["SwanSongDifferential"]),
         .executable(name: "SwanSongProbe", targets: ["SwanSongProbe"]),
@@ -110,6 +115,15 @@ let package = Package(
         ),
         .executableTarget(
             name: "SwanSongRouteRunner",
+            dependencies: ["SwanSongKit"]
+        ),
+        .executableTarget(
+            name: "SwanSongMCP",
+            dependencies: ["SwanSongKit"],
+            path: "Tools/SwanSongMCP/Sources/SwanSongMCP"
+        ),
+        .executableTarget(
+            name: "SwanSongEngineService",
             dependencies: ["SwanSongKit"]
         ),
         .executableTarget(

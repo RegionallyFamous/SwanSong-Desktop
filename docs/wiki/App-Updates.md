@@ -70,7 +70,7 @@ GitHub Release marked as a prerelease. Feeds must never reference mutable
 assets, or third-party hosts.
 
 The release archive is published before the manual GitHub workflow downloads
-all four public artifacts, resolves the pinned signer, and calls
+all five public artifacts, resolves the pinned signer, and calls
 `publish-sparkle-appcast.sh` with the masked secret. The publisher reruns the
 artifact verifier, signs the enclosure and feed through
 `sign_update --ed-key-file -`, independently verifies both signatures with
@@ -82,6 +82,11 @@ manual and opt-in automatic update tests. Beta releases must be
 invisible to stable-only clients and visible to beta-enabled clients. Tampered
 signature, unreachable feed, cancellation, interrupted download, and failed
 installation tests must preserve the prior app.
+
+An ordinary stable release can roll out across seven daily groups so an
+unexpected problem has a smaller first audience. A critical security release
+can bypass that schedule and reach every eligible user immediately. The choice
+is signed into the appcast entry and reviewed with the rest of the update.
 
 GitHub does not reveal an Actions secret after it is saved, so maintainers must
 keep a separately protected offline recovery copy. Losing the private seed

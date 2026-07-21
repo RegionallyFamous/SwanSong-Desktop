@@ -355,6 +355,22 @@ private struct SwanSongChecks {
                 ),
             "static-analysis seed-v1 exporter accepted an ABI-10/v4 profile"
         )
+        try expect(
+            TranslationStaticAnalysisSeedExporter
+                .isExactSeedV2SourceProbeProfile(
+                    schema: TranslationDisplaySourceProbeDetails.currentSchema,
+                    engine: abi10
+                ),
+            "static-analysis seed-v2 exporter rejected the exact ABI-10 profile"
+        )
+        try expect(
+            !TranslationStaticAnalysisSeedExporter
+                .isExactSeedV2SourceProbeProfile(
+                    schema: TranslationDisplaySourceProbeDetails.currentSchema,
+                    engine: valid
+                ),
+            "static-analysis seed-v2 exporter accepted an ABI-9/v4 profile"
+        )
 
         let trailingLineTerminator = TranslationRouteEngineIdentity(
             backend: "ares",
@@ -367,6 +383,18 @@ private struct SwanSongChecks {
                     engine: trailingLineTerminator
                 ),
             "static-analysis seed-v1 exporter accepted a non-exact ABI-9 build ID"
+        )
+        let abi10TrailingLineTerminator = TranslationRouteEngineIdentity(
+            backend: "ares",
+            buildID: "ares-\(digest)-swan-abi10\n"
+        )
+        try expect(
+            !TranslationStaticAnalysisSeedExporter
+                .isExactSeedV2SourceProbeProfile(
+                    schema: TranslationDisplaySourceProbeDetails.currentSchema,
+                    engine: abi10TrailingLineTerminator
+                ),
+            "static-analysis seed-v2 exporter accepted a non-exact ABI-10 build ID"
         )
     }
 

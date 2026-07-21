@@ -12,6 +12,10 @@ APP="$OUTPUT_DIR/SwanSong.app"
 NOTARIZE=${SWAN_NOTARIZE:-0}
 ALLOW_DIRTY=${SWAN_RELEASE_ALLOW_DIRTY:-0}
 ALLOW_UNTAGGED=${SWAN_RELEASE_ALLOW_UNTAGGED:-0}
+NOTARY_PROFILE=${SWAN_NOTARY_PROFILE:-}
+NOTARY_KEY=${SWAN_NOTARY_KEY:-}
+NOTARY_KEY_ID=${SWAN_NOTARY_KEY_ID:-}
+NOTARY_ISSUER=${SWAN_NOTARY_ISSUER:-}
 
 case "$SIGNING_MODE" in
   developer-id) ;;
@@ -49,9 +53,18 @@ printf '%s\n' "$SOURCE_COMMIT" | grep -Eq '^[0-9a-f]{40}$' || {
 case "$NOTARIZE" in
   0) ;;
   1)
-    if [ -z "${SWAN_NOTARY_PROFILE:-}" ]; then
-      echo "SWAN_NOTARY_PROFILE must name a notarytool Keychain profile when SWAN_NOTARIZE=1" >&2
+    if [ -n "$NOTARY_PROFILE" ]; then
+      if [ -n "$NOTARY_KEY$NOTARY_KEY_ID$NOTARY_ISSUER" ]; then
+        echo "choose either SWAN_NOTARY_PROFILE or the direct App Store Connect key settings" >&2
+        exit 64
+      fi
+    elif [ -z "$NOTARY_KEY" ] || [ -z "$NOTARY_KEY_ID" ] \
+        || [ -z "$NOTARY_ISSUER" ]; then
+      echo "notarization requires SWAN_NOTARY_PROFILE or SWAN_NOTARY_KEY, SWAN_NOTARY_KEY_ID, and SWAN_NOTARY_ISSUER" >&2
       exit 64
+    elif [ ! -f "$NOTARY_KEY" ] || [ ! -r "$NOTARY_KEY" ]; then
+      echo "the App Store Connect notarization key is not a readable regular file" >&2
+      exit 66
     fi
     ;;
   *)
@@ -66,10 +79,18 @@ esac
 # signing wastes the entire sealed build and hides the actionable problem at
 # the very end of the process.
 if [ "$NOTARIZE" = "1" ]; then
-  if ! xcrun notarytool history \
-      --keychain-profile "$SWAN_NOTARY_PROFILE" >/dev/null; then
-    echo "Apple notarization credentials are unavailable for profile '$SWAN_NOTARY_PROFILE'." >&2
-    echo "Restore or unlock that Keychain profile before starting the release build." >&2
+  if [ -n "$NOTARY_PROFILE" ]; then
+    if ! xcrun notarytool history \
+        --keychain-profile "$NOTARY_PROFILE" >/dev/null; then
+      echo "Apple notarization credentials are unavailable for profile '$NOTARY_PROFILE'." >&2
+      echo "Restore or unlock that Keychain profile before starting the release build." >&2
+      exit 69
+    fi
+  elif ! xcrun notarytool history \
+      --key "$NOTARY_KEY" \
+      --key-id "$NOTARY_KEY_ID" \
+      --issuer "$NOTARY_ISSUER" >/dev/null; then
+    echo "The direct App Store Connect notarization credential is unavailable or rejected." >&2
     exit 69
   fi
   echo "PASS Apple notarization credentials are ready"
@@ -157,6 +178,7 @@ SWAN_REQUIRE_DEVELOPER_ID=1 \
 SWAN_EXPECTED_BUNDLE_ID="$EXPECTED_BUNDLE_ID" \
 SWAN_EXPECTED_TEAM_ID="$EXPECTED_TEAM_ID" \
   "$RELEASE_SCRIPT_DIR/verify-app-signature.sh" "$APP"
+"$RELEASE_SCRIPT_DIR/check-isolated-engine-service.sh" "$APP"
 
 if [ "$NOTARIZE" = "1" ]; then
   "$RELEASE_SCRIPT_DIR/notarize-app.sh" "$APP"
@@ -172,7 +194,7 @@ if [ "$NOTARIZE" = "1" ]; then
     "$RELEASE_SCRIPT_DIR/package-release.sh" "$APP"
 else
   echo "Developer ID signing is complete; notarization was not requested." >&2
-  echo "Set SWAN_NOTARIZE=1 and SWAN_NOTARY_PROFILE to prepare a distributable build." >&2
+  echo "Set SWAN_NOTARIZE=1 with a Keychain profile or direct App Store Connect key to prepare a distributable build." >&2
 fi
 
 echo "$APP"

@@ -3,9 +3,9 @@
 Most problems have a quick fix. Make sure you have the newest SwanSong release,
 then start with the answers below. SwanSong requires macOS 14 or newer.
 
-The public download is currently 0.6.1. It includes the complete SDK 0.5
-Studio, expanded Story Forge, capture-bound Translation Lab automation, and
-Cartridge Lab alongside the private player and library.
+The public download is currently 0.7.0. It includes the private player and
+library, complete SDK 0.5 Studio, Story Forge, deeper Translation Lab source
+provenance, Safe Mode, and a privacy-safe Support Bundle.
 
 <!-- homebrew-catalog-status: published -->
 
@@ -23,6 +23,22 @@ Games saved in your library, saves, states, and preferences live in
 `~/Library/Application Support/SwanSong/`. Translation Lab keeps its evidence
 inside the private project you link. Back up important saves before deleting
 anything.
+
+### SwanSong did not finish opening. How do I use Safe Mode?
+
+After two interrupted launches, SwanSong offers Safe Mode automatically. You
+can also choose **Help > Restart in Safe Mode**. Safe Mode skips controllers,
+local automation, background update work, restored projects, and an initial
+game. Your library and saves stay put. Fix or unlink the troublesome item, then
+choose **Restart Normally** from the banner or Settings.
+
+### What is safe to attach to a bug report?
+
+Open **Help > SwanSong Support**, then choose **Create Support Bundle…**. Review
+the included README before sharing the ZIP. It contains versions, settings,
+component hashes, and recent source-free diagnostics. It deliberately excludes
+games, saves, states, screenshots, manuscripts, Translation Lab projects,
+private paths, and account information.
 
 ### Does SwanSong go online by itself?
 
@@ -111,6 +127,9 @@ If a controller or focus problem is hard to explain, turn on **Show developer
 tools** in Settings and reproduce it with the focus/input overlay visible.
 Review the exported log before sharing it: it can include the game title,
 digest, controller name, inputs, focus state, and frame timing.
+
+For most reports, prefer the built-in Support Bundle. Share a developer input
+log only when the report specifically needs it and only after reviewing it.
 
 Never upload games, original firmware, saves, save states, private screenshots,
 translation projects, or evidence bundles. For a possible security issue, use

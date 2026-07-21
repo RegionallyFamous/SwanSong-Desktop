@@ -42,6 +42,9 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--release-tag", required=True)
     result.add_argument("--published-at", required=True)
     result.add_argument("--channel", choices=("stable", "beta"), required=True)
+    result.add_argument(
+        "--rollout", choices=("staged", "critical"), default="staged"
+    )
     result.add_argument("--release-notes", type=Path, required=True)
     return result
 
@@ -156,6 +159,10 @@ def main() -> int:
         )
         if arguments.channel == "beta":
             ET.SubElement(item, sparkle("channel")).text = "beta"
+        if arguments.rollout == "critical":
+            ET.SubElement(item, sparkle("criticalUpdate"))
+        else:
+            ET.SubElement(item, sparkle("phasedRolloutInterval")).text = "86400"
 
         ET.SubElement(
             item,

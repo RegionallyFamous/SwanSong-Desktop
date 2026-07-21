@@ -5,7 +5,7 @@ let package = Package(
     name: "SwanSongMCP",
     platforms: [.macOS(.v14)],
     products: [
-        .executable(name: "SwanSongMCP", targets: ["SwanSongMCP"]),
+        .executable(name: "SwanSongMCP", targets: ["SwanSongMCPDeveloper"]),
     ],
     dependencies: [
         // Keep the dependency identity stable in renamed clones and Git
@@ -14,10 +14,11 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "SwanSongMCP",
+            name: "SwanSongMCPDeveloper",
             dependencies: [
                 .product(name: "SwanSongKit", package: "SwanSong-Desktop"),
-            ]
+            ],
+            path: "Sources/SwanSongMCP"
         ),
     ]
 )

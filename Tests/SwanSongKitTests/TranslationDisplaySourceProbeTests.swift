@@ -737,6 +737,14 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         XCTAssertTrue(firstSeedReport.executedReadContextsComplete)
         XCTAssertFalse(firstSeedReport.prototypeAuthorized)
         XCTAssertGreaterThan(firstSeedReport.anchorCount, 0)
+        XCTAssertEqual(
+            firstSeedReport.privateSeedSchema,
+            TranslationStaticAnalysisSeed.currentSchema
+        )
+        XCTAssertGreaterThan(firstSeedReport.fetchContextCount, 0)
+        XCTAssertGreaterThan(firstSeedReport.fetchByteCount, 0)
+        XCTAssertFalse(firstSeedReport.fetchContextsSHA256.isEmpty)
+        XCTAssertFalse(firstSeedReport.fetchBytesSHA256.isEmpty)
 
         let seedRoot = projectRoot
             .appendingPathComponent("analysis/swan-song-lab/static-analysis-seeds")
@@ -769,6 +777,11 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         XCTAssertFalse(seed.prototypeAuthorized)
         XCTAssertTrue(seed.anchors.contains { $0.scope == "selected" })
         XCTAssertTrue(seed.anchors.contains { $0.scope == "outsideConsumer" })
+        XCTAssertFalse(try XCTUnwrap(seed.fetchContexts).isEmpty)
+        XCTAssertFalse(try XCTUnwrap(seed.fetchBytes).isEmpty)
+        XCTAssertTrue(seed.anchors.allSatisfy {
+            $0.fetchContextID != nil && $0.fetchContextDigest?.count == 64
+        })
         let publicSeedText = String(
             decoding: try JSONEncoder().encode(firstSeedReport),
             as: UTF8.self
@@ -776,7 +789,8 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         for forbidden in [
             "sourceprobedetailspath", "cartridgerange", "lowerbound", "upperbound",
             "immediatecaller", "callersegment", "operandsegment", "mapperwindow",
-            "mapperbank", "resolvedmapperapertureoperand", projectRoot.path.lowercased(),
+            "mapperbank", "resolvedmapperapertureoperand", "fetchcontextid",
+            "fetchcontextdigest", projectRoot.path.lowercased(),
         ] {
             XCTAssertFalse(publicSeedText.contains(forbidden), forbidden)
         }

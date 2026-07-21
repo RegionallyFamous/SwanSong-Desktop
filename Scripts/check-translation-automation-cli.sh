@@ -314,8 +314,10 @@ report = json.loads(pathlib.Path(sys.argv[2]).read_text())
 report_b = json.loads(pathlib.Path(sys.argv[3]).read_text())
 if report != report_b:
     raise SystemExit("export-static-analysis-seed was not deterministic")
-if report.get("schema") != "swan-song-static-analysis-seed-report-v1":
+if report.get("schema") != "swan-song-static-analysis-seed-report-v2":
     raise SystemExit("static-analysis seed report schema mismatch")
+if report.get("privateSeedSchema") != "swan-song-static-analysis-seed-v2":
+    raise SystemExit("static-analysis seed report lost its qualified private schema")
 if report.get("selectedComponents") != ["raster"]:
     raise SystemExit("static-analysis seed changed the component selection")
 if not all(report.get(key) is True for key in (
@@ -324,12 +326,15 @@ if not all(report.get(key) is True for key in (
     raise SystemExit("static-analysis seed report lost a completeness gate")
 if report.get("prototypeAuthorized") is not False or report.get("anchorCount", 0) <= 0:
     raise SystemExit("static-analysis seed report overstated authority or lost anchors")
+if report.get("fetchContextCount", 0) <= 0 or report.get("fetchByteCount", 0) <= 0:
+    raise SystemExit("static-analysis seed report lost consumed-prefetch evidence counts")
 public_text = json.dumps(report, sort_keys=True).lower()
 for forbidden in (
     "sourceprobedetailspath", "cartridgerange", "lowerbound", "upperbound",
     "immediatecaller", "callersegment", "calleroffset", "operandsegment",
     "operandoffset", "mapperwindow", "mapperbank",
     "resolvedmapperapertureoperand", '"path"', '"anchors"', '"payloadranges"',
+    "fetchcontextid", "fetchcontextdigest",
     project.as_posix().lower(),
 ):
     if forbidden in public_text:
@@ -350,10 +355,17 @@ if payloads[0] != payloads[1]:
 if hashlib.sha256(payloads[0]).hexdigest() != report.get("privateSeedSHA256"):
     raise SystemExit("static-analysis seed receipt digest mismatch")
 seed = json.loads(payloads[0])
-if seed.get("schema") != "swan-song-static-analysis-seed-v1":
+if seed.get("schema") != "swan-song-static-analysis-seed-v2":
     raise SystemExit("private static-analysis seed schema mismatch")
 if seed.get("selectedComponents") != ["raster"] or not seed.get("anchors"):
     raise SystemExit("private static-analysis seed lost its exact raster anchors")
+if not seed.get("fetchContexts") or not seed.get("fetchBytes"):
+    raise SystemExit("private static-analysis seed lost consumed-prefetch evidence")
+if not all(
+    anchor.get("fetchContextID") and len(anchor.get("fetchContextDigest", "")) == 64
+    for anchor in seed["anchors"]
+):
+    raise SystemExit("private static-analysis seed lost an anchor-to-fetch binding")
 if seed.get("prototypeAuthorized") is not False:
     raise SystemExit("private static-analysis seed overstated patch authority")
 PY
