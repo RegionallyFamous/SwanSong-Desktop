@@ -6,6 +6,12 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+## [0.6.1] - 2026-07-20
+
+**Open and Go.** SwanSong now gets its window on screen before waking the
+workshop behind it, keeps an old catalog trust record from interrupting launch,
+and finds a modern Python installation when Studio starts from Finder.
+
 ### Changed
 
 - Makes Cartridge Tools a first-class sidebar destination and shows the complete
@@ -531,7 +537,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.6.1...HEAD
+[0.6.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.3...v0.5.0
 [0.4.3]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.4.2...v0.4.3
