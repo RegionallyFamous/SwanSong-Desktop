@@ -546,9 +546,12 @@ int main(int argc, char** argv) {
                              SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED) ||
             source.read_context_flags !=
                 SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED ||
+            source.read_context_initiator !=
+                SWAN_DISPLAY_SOURCE_READ_INITIATOR_CPU ||
             source.minimum_instruction_hops != 1 ||
             source.maximum_instruction_hops != 1 ||
-            source.immediate_caller != item.caller_offset ||
+            source.immediate_caller_or_general_dma_source_operand !=
+                item.caller_offset ||
             source.caller_segment != 0 ||
             source.caller_offset != item.caller_offset ||
             source.operand_segment != item.operand_segment ||
@@ -567,7 +570,8 @@ int main(int argc, char** argv) {
               source.source_byte_count, source.cartridge_offset,
               source.cartridge_length, source.flags, source.read_context_flags,
               source.minimum_instruction_hops, source.maximum_instruction_hops,
-              source.immediate_caller, source.caller_segment,
+              source.immediate_caller_or_general_dma_source_operand,
+              source.caller_segment,
               source.caller_offset, source.operand_segment,
               source.operand_offset, source.mapper_window, source.mapper_bank,
               source.resolved_cartridge_operand, source.conservative_reason);
@@ -626,7 +630,8 @@ int main(int argc, char** argv) {
         mix_trace(source.cartridge_length);
         mix_trace(source.flags);
         mix_trace(source.read_context_flags);
-        mix_trace(source.immediate_caller);
+        mix_trace(source.read_context_initiator);
+        mix_trace(source.immediate_caller_or_general_dma_source_operand);
         mix_trace(source.caller_segment);
         mix_trace(source.caller_offset);
         mix_trace(source.operand_segment);
@@ -822,7 +827,10 @@ int main(int argc, char** argv) {
                                 SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED) ||
           seed_source.read_context_flags !=
               SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED ||
-          seed_source.immediate_caller != kFetchOffset + 1u ||
+          seed_source.read_context_initiator !=
+              SWAN_DISPLAY_SOURCE_READ_INITIATOR_CPU ||
+          seed_source.immediate_caller_or_general_dma_source_operand !=
+              kFetchOffset + 1u ||
           seed_source.caller_segment != 0x2000 ||
           seed_source.caller_offset != 0x8005 ||
           seed_source.operand_segment != 0x2000 ||
@@ -1434,7 +1442,9 @@ int main(int argc, char** argv) {
                    trace.minimum_instruction_hops > 0 &&
                    (trace.read_context_flags &
                     SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED) != 0 &&
-                   trace.immediate_caller ==
+                   trace.read_context_initiator ==
+                       SWAN_DISPLAY_SOURCE_READ_INITIATOR_CPU &&
+                   trace.immediate_caller_or_general_dma_source_operand ==
                        (((uint32_t)trace.caller_segment << 4) +
                         trace.caller_offset) % 0x100000u &&
                    ((((uint32_t)trace.operand_segment << 4) +
@@ -1507,7 +1517,9 @@ int main(int argc, char** argv) {
                lhs.source_byte_count == rhs.source_byte_count &&
                lhs.cartridge_offset == rhs.cartridge_offset &&
                lhs.cartridge_length == rhs.cartridge_length &&
-               lhs.immediate_caller == rhs.immediate_caller &&
+               lhs.read_context_initiator == rhs.read_context_initiator &&
+               lhs.immediate_caller_or_general_dma_source_operand ==
+                   rhs.immediate_caller_or_general_dma_source_operand &&
                lhs.caller_segment == rhs.caller_segment &&
                lhs.caller_offset == rhs.caller_offset &&
                lhs.operand_segment == rhs.operand_segment &&

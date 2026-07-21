@@ -672,7 +672,10 @@ public enum TranslationToolkitStage: Sendable {
         for scalar in stem.lowercased().unicodeScalars {
             let isASCIIAlpha = scalar.value >= 97 && scalar.value <= 122
             let isASCIIDigit = scalar.value >= 48 && scalar.value <= 57
-            let isLiteral = scalar == "." || scalar == "_"
+            // Match the toolkit's [a-z0-9._-] allowlist exactly. A literal
+            // hyphen is data, so repeated hyphens must not be collapsed with
+            // runs of characters that are being replaced by a hyphen.
+            let isLiteral = scalar == "." || scalar == "_" || scalar == "-"
             if isASCIIAlpha || isASCIIDigit || isLiteral {
                 result.unicodeScalars.append(scalar)
                 previousWasDash = false

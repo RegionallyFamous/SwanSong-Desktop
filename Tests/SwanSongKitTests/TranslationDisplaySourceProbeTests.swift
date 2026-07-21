@@ -40,7 +40,7 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
             "probe-rectangle-source", "--enable-debug-tools", "--allow-project-writes",
             "--project", root.appendingPathComponent("project").path,
             "--plan", root.appendingPathComponent("plan.json").path,
-            "--role", "original", "--frame", "1839", "--rect", "48,56,120,16",
+            "--role", "original", "--frame", "0", "--rect", "0,0,1,1",
             "--components", "raster", "--commercial-authorized-source-probe",
             "--capture-frame-seal", root.appendingPathComponent("seal.json").path,
             "--authorization", run.appendingPathComponent("authorization.json").path,
@@ -213,6 +213,96 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         )) { error in
             XCTAssertTrue(error.localizedDescription.contains("incomplete"))
         }
+    }
+
+    func testLeafRequiresExecutedContextForSelectedAndOutsideCartridgeLineage() throws {
+        let rectangle = EngineDisplayRectangle(x: 0, y: 0, width: 8, height: 8)
+        let owners = [try decodedOwnerSample(x: 0)]
+        let selected = [try decodedTrace(
+            scope: "selected",
+            component: "mapCell",
+            x: 0,
+            cartridgeOffset: 0x100
+        )]
+        let missingSelected = [try decodedTrace(
+            scope: "selected",
+            component: "mapCell",
+            x: 0,
+            cartridgeOffset: 0x100,
+            includeExecutedContext: false
+        )]
+        XCTAssertThrowsError(try TranslationDisplaySourceProbe.validateLeaf(
+            rectangle: rectangle,
+            ownerSamples: owners,
+            selected: missingSelected,
+            consumers: [],
+            components: [.mapCell]
+        )) { error in
+            XCTAssertTrue(error.localizedDescription.contains("executed-read context"))
+        }
+
+        let missingConsumer = try decodedTrace(
+            scope: "outsideConsumer",
+            component: "raster",
+            x: 9,
+            cartridgeOffset: 0x100,
+            includeExecutedContext: false
+        )
+        XCTAssertThrowsError(try TranslationDisplaySourceProbe.validateLeaf(
+            rectangle: rectangle,
+            ownerSamples: owners,
+            selected: selected,
+            consumers: [missingConsumer],
+            components: [.mapCell]
+        )) { error in
+            XCTAssertTrue(error.localizedDescription.contains("executed-read context"))
+        }
+    }
+
+    func testLeafAcceptsExplicitGeneralDMAContextAndRejectsFabricatedCPUCaller() throws {
+        let rectangle = EngineDisplayRectangle(x: 0, y: 0, width: 8, height: 8)
+        let owners = [try decodedOwnerSample(x: 0)]
+        let dma = try decodedDMATrace(
+            scope: "selected",
+            component: "mapCell",
+            x: 0,
+            cartridgeOffset: 0x100,
+            sourceOperand: 0x8_0100
+        )
+        XCTAssertEqual(dma.executedReadContext?.effectiveInitiator, .generalDMA)
+        XCTAssertEqual(dma.executedReadContext?.generalDMASourceOperand, 0x8_0100)
+        XCTAssertNoThrow(try TranslationDisplaySourceProbe.validateLeaf(
+            rectangle: rectangle,
+            ownerSamples: owners,
+            selected: [dma],
+            consumers: [],
+            components: [.mapCell]
+        ))
+
+        let fabricatedCPU = try decodedDMATrace(
+            scope: "selected",
+            component: "mapCell",
+            x: 0,
+            cartridgeOffset: 0x100,
+            sourceOperand: 0x8_0100,
+            immediateCaller: 0x1234
+        )
+        XCTAssertThrowsError(try TranslationDisplaySourceProbe.validateLeaf(
+            rectangle: rectangle,
+            ownerSamples: owners,
+            selected: [fabricatedCPU],
+            consumers: [],
+            components: [.mapCell]
+        )) { error in
+            XCTAssertTrue(error.localizedDescription.contains("executed-read context"))
+        }
+    }
+
+    func testSignedReleaseExecutedReadContextControlRejectsCPUAndDMAOmissions() throws {
+        XCTAssertEqual(
+            try TranslationDisplaySourceProbe.signedReleaseExecutedReadContextKAT(),
+            "PASS signed source-lineage context control cpu-missing=reject dma-missing=reject"
+        )
     }
 
     func testABI9SpriteOAMAndConservativeOriginStayInPrivateTypes() throws {
@@ -1101,7 +1191,8 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         unknown: Bool,
         overflow: Bool,
         conservative: Bool,
-        conservativeOrigin: Bool = false
+        conservativeOrigin: Bool = false,
+        includeExecutedContext: Bool = true
     ) throws -> EngineDisplaySourceTrace {
         var object: [String: Any] = [
             "x": x,
@@ -1128,6 +1219,61 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
                 "offset": 0x5678,
             ]
         }
+        if length > 0 && includeExecutedContext {
+            object["executedReadContext"] = [
+                "immediateCaller": 0x179B8,
+                "callerSegment": 0x1234,
+                "callerOffset": 0x5678,
+                "operandSegment": 0x2000,
+                "operandOffset": cartridgeOffset,
+                "mapperWindow": 2,
+                "mapperBank": 0,
+                "resolvedCartridgeOperand": cartridgeOffset,
+            ]
+        }
+        return try JSONDecoder().decode(
+            EngineDisplaySourceTrace.self,
+            from: JSONSerialization.data(withJSONObject: object)
+        )
+    }
+
+    private func decodedDMATrace(
+        scope: String,
+        component: String,
+        x: Int,
+        cartridgeOffset: Int,
+        sourceOperand: Int,
+        immediateCaller: Int = 0
+    ) throws -> EngineDisplaySourceTrace {
+        let object: [String: Any] = [
+            "x": x,
+            "y": 0,
+            "scope": scope,
+            "component": component,
+            "sourceAddress": 0x4000 + x,
+            "sourceByteCount": 2,
+            "minimumInstructionHops": 1,
+            "maximumInstructionHops": 2,
+            "cartridgeOffset": cartridgeOffset,
+            "cartridgeLength": 1,
+            "hasExactRange": true,
+            "isTransformed": false,
+            "hasUnknownDependency": false,
+            "rangeSetOverflowed": false,
+            "usesConservativeDataflow": false,
+            "executedReadContext": [
+                "initiator": "generalDMA",
+                "immediateCaller": immediateCaller,
+                "callerSegment": 0,
+                "callerOffset": 0,
+                "operandSegment": 0,
+                "operandOffset": 0,
+                "mapperWindow": 2,
+                "mapperBank": 0,
+                "resolvedCartridgeOperand": cartridgeOffset,
+                "generalDMASourceOperand": sourceOperand,
+            ],
+        ]
         return try JSONDecoder().decode(
             EngineDisplaySourceTrace.self,
             from: JSONSerialization.data(withJSONObject: object)
@@ -1139,7 +1285,8 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         component: String,
         x: Int,
         cartridgeOffset: Int,
-        overflow: Bool = false
+        overflow: Bool = false,
+        includeExecutedContext: Bool = true
     ) throws -> EngineDisplaySourceTrace {
         try decodedTrace(
             scope: scope,
@@ -1150,7 +1297,8 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
             exact: true,
             unknown: false,
             overflow: overflow,
-            conservative: false
+            conservative: false,
+            includeExecutedContext: includeExecutedContext
         )
     }
 

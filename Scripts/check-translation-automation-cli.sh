@@ -736,6 +736,27 @@ process = subprocess.Popen(
 )
 assert process.stdin and process.stdout
 
+process.stdin.write(json.dumps({
+    "jsonrpc": "2.0",
+    "id": -2,
+    "method": "tools/list",
+    "params": {},
+}, separators=(",", ":")) + "\n")
+process.stdin.flush()
+tools_response = json.loads(process.stdout.readline())
+source_tool = next((tool for tool in tools_response.get("result", {}).get("tools", [])
+    if tool.get("name") == "swansong_translation_probe_rectangle_source"), None)
+if source_tool is None:
+    raise SystemExit("authorized source-probe MCP tool is missing")
+source_schema = source_tool.get("inputSchema", {})
+required_source_arguments = {
+    "authorizationPath", "capabilityReceiptPath", "methodCapabilityReceiptPath",
+    "qualifiedMethodCapabilityReceiptPath", "methodNativeMarkerPath",
+    "captureFrameSealPath", "runDirectoryPath", "reportPath",
+}
+if not required_source_arguments.issubset(set(source_schema.get("required", []))):
+    raise SystemExit("authorized source-probe MCP schema lost its complete A2 input set")
+
 def call(request_id, name, arguments):
     process.stdin.write(json.dumps({
         "jsonrpc": "2.0",

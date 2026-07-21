@@ -1052,7 +1052,7 @@ index 029c8de9..3b867492 100644
  struct Platform {
    virtual auto attach(Node::Object) -> void {}
    virtual auto detach(Node::Object) -> void {}
-@@ -25,6 +57,20 @@ struct Platform {
+@@ -25,6 +57,22 @@ struct Platform {
    virtual auto audio(Node::Audio::Stream) -> void {}
    virtual auto input(Node::Input::Input) -> void {}
    virtual auto cheat(u32 addr) -> maybe<u32> { return nothing; }
@@ -1060,6 +1060,8 @@ index 029c8de9..3b867492 100644
 +  virtual auto wonderSwanInstructionBegin(u32 writer, u32 segment, u32 offset) -> void {}
 +  virtual auto wonderSwanInstructionDataflow(u32 kind) -> void {}
 +  virtual auto wonderSwanInstructionEnd() -> void {}
++  virtual auto wonderSwanGeneralDMABegin(u32 sourceOperand) -> void {}
++  virtual auto wonderSwanGeneralDMAEnd() -> void {}
 +  virtual auto wonderSwanInstructionFetch(const WonderSwanInstructionFetchOrigin&) -> void {}
 +  virtual auto wonderSwanInstructionBoundary(u32 opcode, u64 opcodeOrigin, bool continuing) -> void {}
 +  virtual auto wonderSwanPrefetchFlush(u32 generation) -> void {}
@@ -2231,21 +2233,18 @@ diff --git a/ares/ws/cpu/dma.cpp b/ares/ws/cpu/dma.cpp
 index 267a30e6..a10d53ed 100644
 --- a/ares/ws/cpu/dma.cpp
 +++ b/ares/ws/cpu/dma.cpp
-@@ -15,10 +15,17 @@ auto CPU::DMA::transfer() -> void {
+@@ -15,10 +15,14 @@ auto CPU::DMA::transfer() -> void {
      u16 data = 0;
      //once DMA is started; SRAM reads still incur time penalty, but do not transfer
      if(valid(source)) {
-+      if(platform) platform->wonderSwanInstructionBegin(
-+        (((u32)cpu.PS << 4) + cpu.PC) & 0xfffff, cpu.PS, cpu.PC
-+      );
-+      if(platform) platform->wonderSwanInstructionDataflow(1);
++      if(platform) platform->wonderSwanGeneralDMABegin(source);
 +      self.provenanceDataRead(source + 0, source >> 4, source & 15);
 +      self.provenanceDataRead(source + 1, (source + 1) >> 4, (source + 1) & 15);
        data |= self.read(source + 0) << 0;
        data |= self.read(source + 1) << 8;
        self.write(target + 0, data >> 0);
        self.write(target + 1, data >> 8);
-+      if(platform) platform->wonderSwanInstructionEnd();
++      if(platform) platform->wonderSwanGeneralDMAEnd();
      }
      source += direction ? -2 : +2;
      target += direction ? -2 : +2;

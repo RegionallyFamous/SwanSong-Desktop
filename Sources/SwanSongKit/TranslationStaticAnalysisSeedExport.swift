@@ -280,6 +280,12 @@ public enum TranslationStaticAnalysisSeedExporter {
                     "an exported source trace does not have complete exact ABI-9 lineage"
                 )
             }
+            guard context.effectiveInitiator == .cpu,
+                  context.generalDMASourceOperand == nil else {
+                throw TranslationLabError.invalidProject(
+                    "a General DMA source trace is complete private lineage but is not a CPU disassembly anchor"
+                )
+            }
             let expectedCaller = UInt32(
                 ((UInt64(context.callerSegment) << 4) + UInt64(context.callerOffset))
                     & 0xF_FFFF

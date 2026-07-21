@@ -92,6 +92,18 @@ not routine release metadata.
    metadata all validate. Publish the signed catalog before building an app
    that advertises it as available. Never put the private signing key in this
    repository or on the catalog host.
+
+   Also prove that neither the shipped runtime nor non-interactive local tools
+   can consult the login Keychain:
+
+   ```sh
+   ./Scripts/check-no-password-prompts.sh
+   ```
+
+   This is a source-level release boundary, not merely a UI test. It rejects
+   Keychain item APIs and the retired Homebrew Catalog trust service
+   anywhere in the shipped Swift runtime, and requires every SwiftPM-backed
+   local automation launcher to disable Keychain lookup.
 4. Run the engine, Swift, app runtime, UI, translation, architecture, payload,
    embedded-Sparkle-framework, and personally owned acceptance lanes
    appropriate to the release. After building the app, verify the feed/key,
@@ -155,6 +167,20 @@ not routine release metadata.
    Before the long build, `selftest-notarization-credentials.sh` proves both
    supported credential modes reach `notarytool` intact and that mixed or
    incomplete settings fail closed.
+
+   After Developer ID signature verification and the isolated-engine check,
+   `release-app.sh` runs `check-signed-source-probe-helper.sh` against the
+   actual `Contents/Helpers/SwanSongMCP`. The gate confirms the MCP helper,
+   route runner, and engine dylib belong to the same signed app, then exercises
+   the complete A2/M2 path through that installed helper. It proves public
+   success and blocked lineage, accepts exactly 4,096 pixels, rejects 4,097
+   before run state, rejects a wrong frame before any engine query, and rejects
+   tampered A/C/M/M2/seal/plan/ROM/runner/engine bindings without K. A fixed
+   source-free helper control also proves missing CPU and General DMA
+   executed-read context fails closed. Every accepted run must finish with an
+   exclusively written, reread K that validates the exact completed tree and
+   binds the helper that launched it. The gate runs before any bytes are
+   submitted to Apple.
 
 8. Inspect `dist/`: the universal ZIP, corresponding-source archive,
    deterministic SPDX 2.3 SBOM, `SHA256SUMS.txt`, and release manifest must
