@@ -69,6 +69,7 @@ MATERIAL_REPO="$TEST_ROOT/material-repo"
 PARENT_REPO="$TEST_ROOT/parent-repo"
 NESTED_PATCH="$TEST_ROOT/nested.patch"
 NESTED_DESTINATION="$PARENT_REPO/ignored/materialized"
+NO_OPTIONAL_DESTINATION="$PARENT_REPO/ignored/materialized-no-optional-firmware"
 mkdir -p \
   "$MATERIAL_REPO/ares/ares" \
   "$MATERIAL_REPO/ares/ws/system" \
@@ -108,3 +109,18 @@ grep -F 'option(ARES_HEADLESS_CORE_ONLY' "$NESTED_DESTINATION/CMakeLists.txt" >/
   "$NESTED_DESTINATION" "$MATERIAL_COMMIT" "$NESTED_PATCH"
 
 echo "nested parent-worktree materialization self-test passed"
+
+# Regression: the pinned ares revision does not always contain every optional
+# multi-system firmware directory. Absence is already clean and must not make a
+# source-only WonderSwan materialization fail.
+/usr/bin/git -C "$MATERIAL_REPO" rm -q mia/Firmware/.keep
+/usr/bin/git -C "$MATERIAL_REPO" commit -q -m "remove optional firmware directory"
+NO_OPTIONAL_COMMIT=$(/usr/bin/git -C "$MATERIAL_REPO" rev-parse HEAD)
+/bin/sh "$SCRIPT_DIR/materialize-ares-source.sh" \
+  "$MATERIAL_REPO" "$NO_OPTIONAL_COMMIT" \
+  "$NO_OPTIONAL_DESTINATION" "$NESTED_PATCH" >/dev/null
+[ ! -e "$NO_OPTIONAL_DESTINATION/mia/Firmware" ]
+/bin/sh "$SCRIPT_DIR/ares-source-state.sh" check \
+  "$NO_OPTIONAL_DESTINATION" "$NO_OPTIONAL_COMMIT" "$NESTED_PATCH"
+
+echo "missing optional ares firmware-directory self-test passed"

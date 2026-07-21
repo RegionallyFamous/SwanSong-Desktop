@@ -27,18 +27,23 @@ git -C "$SOURCE_DIR" apply "$MACOS_DIR/Engine/ares-headless.patch"
 # SwanSong builds only the WonderSwan core and supplies its own Open IPL. These
 # payloads are neither corresponding source nor required build inputs, so keep
 # them out of the prepared checkout and every corresponding-source archive.
-find "$SOURCE_DIR/ares/System" "$SOURCE_DIR/mia/Firmware" \
-  -type f \
-  \( -iname '*.rom' -o -iname '*.srom' -o -iname '*.mrom' \) \
-  -delete
-
-if find "$SOURCE_DIR/ares/System" "$SOURCE_DIR/mia/Firmware" \
-  -type f \
-  \( -iname '*.rom' -o -iname '*.srom' -o -iname '*.mrom' \) \
-  -print -quit | grep -q .; then
-  echo "firmware binaries remain in the prepared ares checkout" >&2
-  exit 1
-fi
+for firmware_directory in \
+  "$SOURCE_DIR/ares/System" \
+  "$SOURCE_DIR/mia/Firmware"; do
+  if [ -d "$firmware_directory" ]; then
+    find "$firmware_directory" \
+      -type f \
+      \( -iname '*.rom' -o -iname '*.srom' -o -iname '*.mrom' \) \
+      -delete
+    if find "$firmware_directory" \
+      -type f \
+      \( -iname '*.rom' -o -iname '*.srom' -o -iname '*.mrom' \) \
+      -print -quit | grep -q .; then
+      echo "firmware binaries remain in the prepared ares checkout" >&2
+      exit 1
+    fi
+  fi
+done
 
 actual=$(git -C "$SOURCE_DIR" rev-parse HEAD)
 if [ "$actual" != "$commit" ]; then
