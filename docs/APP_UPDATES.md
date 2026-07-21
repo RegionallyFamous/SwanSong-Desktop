@@ -86,7 +86,7 @@ the installed app.
    installation verification.
 4. From the GitHub Actions page on `main`, manually run **Publish Sparkle
    appcast** with the release version and stable/beta channel. The workflow
-   downloads all four public artifacts from the exact GitHub Release, resolves
+   downloads all five public artifacts from the exact GitHub Release, resolves
    the pinned Sparkle signer, and calls the tracked publisher with the masked
    repository secret. The publisher compares those artifacts byte-for-byte
    with its verified inputs, repeats the artifact verifier, signs the exact
@@ -102,6 +102,7 @@ the installed app.
    ./Scripts/publish-sparkle-appcast.sh \
      --archive dist/SwanSong-X.Y.Z-macOS-universal.zip \
      --source-archive dist/SwanSong-X.Y.Z-source.tar.xz \
+     --sbom dist/SwanSong-X.Y.Z.spdx.json \
      --manifest dist/SwanSong-X.Y.Z-release.json \
      --checksums dist/SHA256SUMS.txt \
      --release-tag vX.Y.Z \
@@ -111,7 +112,9 @@ the installed app.
 
    Export the private seed from a protected input before a local fallback; do
    not paste it into the command or shell history. Use `--channel beta` only
-   for a GitHub prerelease.
+   for a GitHub prerelease. Add `--rollout staged` for an ordinary seven-group,
+   seven-day rollout or `--rollout critical` only when an urgent security fix
+   should reach every eligible user immediately.
 5. Review the workflow's branch diff, enclosure URL, byte length,
    version/build, minimum macOS, signature, release notes, and stable/beta
    channel. Merge that reviewed branch to `main` only after the immutable

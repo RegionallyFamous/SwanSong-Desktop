@@ -1,8 +1,8 @@
 #!/bin/sh
 set -eu
 
-SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-MACOS_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
+SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+MACOS_DIR=$(CDPATH='' cd -- "$SCRIPT_DIR/.." && pwd)
 APP=${1:-"$MACOS_DIR/.build/app/SwanSong.app"}
 
 if [ ! -d "$APP/Contents" ]; then
@@ -12,8 +12,14 @@ fi
 
 unexpected_file=$(find "$APP/Contents" -type f \
   ! -path "$APP/Contents/Info.plist" \
+  ! -path "$APP/Contents/embedded.provisionprofile" \
   ! -path "$APP/Contents/MacOS/SwanSong" \
   ! -path "$APP/Contents/Helpers/SwanSongRouteRunner" \
+  ! -path "$APP/Contents/Helpers/SwanSongMCP" \
+  ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/Info.plist" \
+  ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/embedded.provisionprofile" \
+  ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/MacOS/SwanSongEngineService" \
+  ! -path "$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/_CodeSignature/CodeResources" \
   ! -path "$APP/Contents/Frameworks/libSwanAresEngine.dylib" \
   ! -path "$APP/Contents/Frameworks/Sparkle.framework/*" \
   ! -path "$APP/Contents/Resources/AppIcon.icns" \
@@ -22,6 +28,7 @@ unexpected_file=$(find "$APP/Contents" -type f \
   ! -path "$APP/Contents/Resources/MenuBarSwan.png" \
   ! -path "$APP/Contents/Resources/LICENSE" \
   ! -path "$APP/Contents/Resources/PRIVACY.md" \
+  ! -path "$APP/Contents/Resources/PrivacyInfo.xcprivacy" \
   ! -path "$APP/Contents/Resources/SUPPORT.md" \
   ! -path "$APP/Contents/Resources/THIRD_PARTY_NOTICES.md" \
   ! -path "$APP/Contents/Resources/SPARKLE_LICENSE" \
@@ -35,6 +42,17 @@ if [ -n "$unexpected_file" ]; then
   echo "the app bundle contains an unexpected payload: $unexpected_file" >&2
   exit 1
 fi
+
+PRIVACY_MANIFEST="$APP/Contents/Resources/PrivacyInfo.xcprivacy"
+plutil -lint "$PRIVACY_MANIFEST" >/dev/null
+[ "$(plutil -extract NSPrivacyTracking raw "$PRIVACY_MANIFEST")" = "false" ] || {
+  echo "the bundled privacy manifest must declare tracking disabled" >&2
+  exit 1
+}
+[ "$(plutil -extract NSPrivacyCollectedDataTypes json -o - "$PRIVACY_MANIFEST")" = "[]" ] || {
+  echo "the bundled privacy manifest must declare no collected data" >&2
+  exit 1
+}
 
 "$SCRIPT_DIR/check-swansong-sdk-payload.sh" \
   "$APP/Contents/Resources/SwanSongSDK" >/dev/null

@@ -25,14 +25,18 @@ python3 - \
   "$MCP_PACKAGE/Package.resolved" \
   "$ROOT/Package.resolved" <<'PY'
 import json
+import hashlib
 import pathlib
+import shutil
 import subprocess
 import sys
+import tempfile
 
 binary = pathlib.Path(sys.argv[1])
 config = pathlib.Path(sys.argv[2])
 resolution = json.loads(pathlib.Path(sys.argv[3]).read_text())
 root_resolution = json.loads(pathlib.Path(sys.argv[4]).read_text())
+root = config.parent.parent
 if not binary.is_file():
     raise SystemExit("SwanSong MCP product was not linked")
 if "default_tools_approval_mode = \"prompt\"" not in config.read_text():
@@ -64,6 +68,16 @@ def receive(expected_id):
         message = json.loads(line)
         if message.get("id") == expected_id:
             return message
+
+def assert_error_without_artifacts(result, label, expected_fragment=None):
+    if result.get("isError") is not True:
+        raise SystemExit(f"{label} was not rejected")
+    if "structuredContent" in result:
+        raise SystemExit(f"{label} returned structured output")
+    if [item.get("type") for item in result.get("content", [])] != ["text"]:
+        raise SystemExit(f"{label} returned media or resource artifacts")
+    if expected_fragment and expected_fragment not in json.dumps(result):
+        raise SystemExit(f"{label} lost its expected failure")
 
 send({
     "jsonrpc": "2.0",
@@ -123,6 +137,9 @@ if playtest_required != {"romPath", "plan", "confirmShareCapture"}:
 playtest_properties = by_name["swansong_playtest_plan"]["inputSchema"]["properties"]
 if not {"captureSDKTrace", "confirmShareSDKTrace"} <= set(playtest_properties):
     raise SystemExit("SwanSong playtest tool lost its guarded SDK trace contract")
+playtest_total_frames = playtest_properties["plan"]["properties"]["totalFrames"]
+if playtest_total_frames.get("maximum") != 12_000:
+    raise SystemExit("SwanSong playtest MCP frame ceiling changed")
 for name in (
     "swansong_observed_play_start",
     "swansong_observed_play_resume",
@@ -215,6 +232,54 @@ send({
 trace_guard = receive(30)["result"]
 if trace_guard.get("isError") is not True or "confirmShareSDKTrace" not in json.dumps(trace_guard):
     raise SystemExit("SwanSong playtest runtime lost its semantic-trace sharing guard")
+
+send({
+    "jsonrpc": "2.0",
+    "id": 31,
+    "method": "tools/call",
+    "params": {"name": "swansong_playtest_plan_local", "arguments": {}},
+})
+local_tool_denied = receive(31)["result"]
+assert_error_without_artifacts(
+    local_tool_denied,
+    "local-only playtest MCP dispatch",
+    "Unknown SwanSong tool",
+)
+
+fixture = root / "testroms/ws-test-suite/80186_quirks/80186_quirks.ws"
+with tempfile.TemporaryDirectory(prefix="swansong-main-mcp-limit-") as temporary:
+    temporary_root = pathlib.Path(temporary)
+    copied_fixture = temporary_root / "private-over-limit.ws"
+    shutil.copyfile(fixture, copied_fixture)
+    before_entries = {path.name for path in temporary_root.iterdir()}
+    before_digest = hashlib.sha256(copied_fixture.read_bytes()).hexdigest()
+    send({
+        "jsonrpc": "2.0",
+        "id": 32,
+        "method": "tools/call",
+        "params": {
+            "name": "swansong_playtest_plan",
+            "arguments": {
+                "romPath": str(copied_fixture),
+                "plan": {
+                    "schema": "swan-song-frame-input-plan-v1",
+                    "totalFrames": 12001,
+                    "events": [{"frameIndex": 0, "inputs": []}],
+                },
+                "confirmShareCapture": True,
+            },
+        },
+    })
+    over_limit_denied = receive(32)["result"]
+    assert_error_without_artifacts(
+        over_limit_denied,
+        "12,001-frame main MCP playtest",
+        "12000",
+    )
+    if {path.name for path in temporary_root.iterdir()} != before_entries:
+        raise SystemExit("over-limit main MCP playtest created adjacent artifacts")
+    if hashlib.sha256(copied_fixture.read_bytes()).hexdigest() != before_digest:
+        raise SystemExit("over-limit main MCP playtest changed its ROM")
 
 for request_id, name in enumerate(
     (

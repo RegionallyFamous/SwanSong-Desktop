@@ -134,12 +134,72 @@ case "$SIGNING_MODE" in
     ;;
 esac
 
+SWAN_APP_GROUP=3J8H48TP7P.com.regionallyfamous.swansong
+SWAN_TEAM_ID=3J8H48TP7P
+USE_REGISTERED_APP_GROUP=0
+APP_PROVISIONING_PROFILE=
+ENGINE_PROVISIONING_PROFILE=
+if [ "$SIGNING_IDENTITY" != "-" ] \
+  && signing_identity_matches "$SIGNING_IDENTITY" "Developer ID Application:"; then
+  USE_REGISTERED_APP_GROUP=1
+
+  find_release_profile() {
+    profile_name=$1
+    application_identifier=$2
+    explicit_path=$3
+    if [ -n "$explicit_path" ]; then
+      python3 "$SCRIPT_DIR/provisioning-profile.py" find \
+        --name "$profile_name" \
+        --application-identifier "$application_identifier" \
+        --app-group "$SWAN_APP_GROUP" \
+        --explicit "$explicit_path"
+    else
+      python3 "$SCRIPT_DIR/provisioning-profile.py" find \
+        --name "$profile_name" \
+        --application-identifier "$application_identifier" \
+        --app-group "$SWAN_APP_GROUP"
+    fi
+  }
+
+  APP_PROVISIONING_PROFILE=$(find_release_profile \
+    "SwanSong Developer ID 0.7" \
+    "$SWAN_TEAM_ID.com.regionallyfamous.swansong" \
+    "${SWAN_APP_PROVISIONING_PROFILE:-}")
+  ENGINE_PROVISIONING_PROFILE=$(find_release_profile \
+    "SwanSong Engine Developer ID 0.7" \
+    "$SWAN_TEAM_ID.$SWAN_TEAM_ID.com.regionallyfamous.swansong.engine-service" \
+    "${SWAN_ENGINE_PROVISIONING_PROFILE:-}")
+fi
+
 sign_code() {
   path=$1
   if [ "$SIGNING_IDENTITY" = "-" ]; then
     codesign --force --sign - "$path"
   else
     codesign --force --timestamp --options runtime \
+      --sign "$SIGNING_IDENTITY" "$path"
+  fi
+}
+
+sign_identified_code() {
+  path=$1
+  identifier=$2
+  if [ "$SIGNING_IDENTITY" = "-" ]; then
+    codesign --force --identifier "$identifier" --sign - "$path"
+  else
+    codesign --force --timestamp --options runtime \
+      --identifier "$identifier" --sign "$SIGNING_IDENTITY" "$path"
+  fi
+}
+
+sign_sandboxed_bundle() {
+  path=$1
+  entitlements=$2
+  if [ "$SIGNING_IDENTITY" = "-" ]; then
+    codesign --force --entitlements "$entitlements" \
+      --sign - "$path"
+  else
+    codesign --force --timestamp --options runtime --entitlements "$entitlements" \
       --sign "$SIGNING_IDENTITY" "$path"
   fi
 }
@@ -183,6 +243,20 @@ if [ "$UNIVERSAL" = "1" ]; then
     --sdk "$SDK_PATH"
   SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
     --package-path "$MACOS_DIR" \
+    --product SwanSongMCP \
+    --configuration "$CONFIGURATION" \
+    --scratch-path "$ARM_SCRATCH" \
+    --triple arm64-apple-macosx14.0 \
+    --sdk "$SDK_PATH"
+  SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
+    --package-path "$MACOS_DIR" \
+    --product SwanSongEngineService \
+    --configuration "$CONFIGURATION" \
+    --scratch-path "$ARM_SCRATCH" \
+    --triple arm64-apple-macosx14.0 \
+    --sdk "$SDK_PATH"
+  SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
+    --package-path "$MACOS_DIR" \
     --product SwanSongRouteRunner \
     --configuration "$CONFIGURATION" \
     --scratch-path "$ARM_SCRATCH" \
@@ -200,6 +274,20 @@ if [ "$UNIVERSAL" = "1" ]; then
   SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
     --package-path "$MACOS_DIR" \
     --product SwanSong \
+    --configuration "$CONFIGURATION" \
+    --scratch-path "$INTEL_SCRATCH" \
+    --triple x86_64-apple-macosx14.0 \
+    --sdk "$SDK_PATH"
+  SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
+    --package-path "$MACOS_DIR" \
+    --product SwanSongMCP \
+    --configuration "$CONFIGURATION" \
+    --scratch-path "$INTEL_SCRATCH" \
+    --triple x86_64-apple-macosx14.0 \
+    --sdk "$SDK_PATH"
+  SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
+    --package-path "$MACOS_DIR" \
+    --product SwanSongEngineService \
     --configuration "$CONFIGURATION" \
     --scratch-path "$INTEL_SCRATCH" \
     --triple x86_64-apple-macosx14.0 \
@@ -227,6 +315,14 @@ else
   SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
     --package-path "$MACOS_DIR" \
     --product SwanSongRouteRunner \
+    --configuration "$CONFIGURATION"
+  SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
+    --package-path "$MACOS_DIR" \
+    --product SwanSongMCP \
+    --configuration "$CONFIGURATION"
+  SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" build \
+    --package-path "$MACOS_DIR" \
+    --product SwanSongEngineService \
     --configuration "$CONFIGURATION"
 fi
 
@@ -266,6 +362,7 @@ mkdir -p "$APP_DIR/Contents/MacOS"
 mkdir -p "$APP_DIR/Contents/Helpers"
 mkdir -p "$APP_DIR/Contents/Frameworks"
 mkdir -p "$APP_DIR/Contents/Resources"
+mkdir -p "$APP_DIR/Contents/XPCServices/SwanSongEngineService.xpc/Contents/MacOS"
 
 if [ "$UNIVERSAL" = "1" ]; then
   xcrun lipo -create \
@@ -276,10 +373,30 @@ if [ "$UNIVERSAL" = "1" ]; then
     "$ARM_BIN_DIR/SwanSongRouteRunner" \
     "$INTEL_BIN_DIR/SwanSongRouteRunner" \
     -output "$APP_DIR/Contents/Helpers/SwanSongRouteRunner"
+  xcrun lipo -create \
+    "$ARM_BIN_DIR/SwanSongMCP" \
+    "$INTEL_BIN_DIR/SwanSongMCP" \
+    -output "$APP_DIR/Contents/Helpers/SwanSongMCP"
+  xcrun lipo -create \
+    "$ARM_BIN_DIR/SwanSongEngineService" \
+    "$INTEL_BIN_DIR/SwanSongEngineService" \
+    -output "$APP_DIR/Contents/XPCServices/SwanSongEngineService.xpc/Contents/MacOS/SwanSongEngineService"
 else
   cp "$MACOS_DIR/.build/$CONFIGURATION/SwanSong" "$APP_DIR/Contents/MacOS/SwanSong"
   cp "$MACOS_DIR/.build/$CONFIGURATION/SwanSongRouteRunner" \
     "$APP_DIR/Contents/Helpers/SwanSongRouteRunner"
+  cp "$MACOS_DIR/.build/$CONFIGURATION/SwanSongMCP" \
+    "$APP_DIR/Contents/Helpers/SwanSongMCP"
+  cp "$MACOS_DIR/.build/$CONFIGURATION/SwanSongEngineService" \
+    "$APP_DIR/Contents/XPCServices/SwanSongEngineService.xpc/Contents/MacOS/SwanSongEngineService"
+fi
+cp "$MACOS_DIR/Packaging/EngineService-Info.plist" \
+  "$APP_DIR/Contents/XPCServices/SwanSongEngineService.xpc/Contents/Info.plist"
+if [ "$USE_REGISTERED_APP_GROUP" = "1" ]; then
+  cp "$APP_PROVISIONING_PROFILE" \
+    "$APP_DIR/Contents/embedded.provisionprofile"
+  cp "$ENGINE_PROVISIONING_PROFILE" \
+    "$APP_DIR/Contents/XPCServices/SwanSongEngineService.xpc/Contents/embedded.provisionprofile"
 fi
 cp "$BUILD_DIR/libSwanAresEngine.dylib" "$APP_DIR/Contents/Frameworks/libSwanAresEngine.dylib"
 ditto "$SPARKLE_FRAMEWORK_SOURCE" \
@@ -293,6 +410,9 @@ cp "$MACOS_DIR/Packaging/MenuBarSwan.png" \
   "$APP_DIR/Contents/Resources/MenuBarSwan.png"
 cp "$MACOS_DIR/LICENSE" "$APP_DIR/Contents/Resources/LICENSE"
 cp "$MACOS_DIR/PRIVACY.md" "$APP_DIR/Contents/Resources/PRIVACY.md"
+cp "$MACOS_DIR/Packaging/PrivacyInfo.xcprivacy" \
+  "$APP_DIR/Contents/Resources/PrivacyInfo.xcprivacy"
+plutil -lint "$APP_DIR/Contents/Resources/PrivacyInfo.xcprivacy" >/dev/null
 cp "$MACOS_DIR/SUPPORT.md" "$APP_DIR/Contents/Resources/SUPPORT.md"
 cp "$MACOS_DIR/Dependencies/THIRD_PARTY_NOTICES.md" \
   "$APP_DIR/Contents/Resources/THIRD_PARTY_NOTICES.md"
@@ -325,7 +445,8 @@ list_rpaths() {
 
 for executable in \
   "$APP_DIR/Contents/MacOS/SwanSong" \
-  "$APP_DIR/Contents/Helpers/SwanSongRouteRunner"; do
+  "$APP_DIR/Contents/Helpers/SwanSongRouteRunner" \
+  "$APP_DIR/Contents/Helpers/SwanSongMCP"; do
   if otool -l "$executable" | grep -Fq "path $BUILD_DIR"; then
     install_name_tool -delete_rpath "$BUILD_DIR" "$executable"
   fi
@@ -356,6 +477,23 @@ EOF
   fi
 done
 
+ENGINE_SERVICE_EXECUTABLE="$APP_DIR/Contents/XPCServices/SwanSongEngineService.xpc/Contents/MacOS/SwanSongEngineService"
+if otool -l "$ENGINE_SERVICE_EXECUTABLE" | grep -Fq "path $BUILD_DIR"; then
+  install_name_tool -delete_rpath "$BUILD_DIR" "$ENGINE_SERVICE_EXECUTABLE"
+fi
+service_development_rpaths=$(list_rpaths "$ENGINE_SERVICE_EXECUTABLE" \
+  | grep -E '^/(Library/Developer/CommandLineTools|Applications/.*Xcode[^/]*)/.*swift' \
+  | sort -u || true)
+while IFS= read -r rpath; do
+  if [ -n "$rpath" ]; then
+    install_name_tool -delete_rpath "$rpath" "$ENGINE_SERVICE_EXECUTABLE"
+  fi
+done <<EOF
+$service_development_rpaths
+EOF
+install_name_tool -add_rpath "@executable_path/../../../../Frameworks" \
+  "$ENGINE_SERVICE_EXECUTABLE"
+
 # Bind the exact source snapshot into the signed app. Recheck immediately
 # before signing so a commit change or working-tree mutation during the build
 # cannot be recorded as a clean build.
@@ -383,9 +521,41 @@ sign_sparkle_code "$SPARKLE_VERSION_ROOT/Updater.app"
 sign_sparkle_code "$APP_DIR/Contents/Frameworks/Sparkle.framework"
 sign_code "$APP_DIR/Contents/Frameworks/libSwanAresEngine.dylib"
 sign_code "$APP_DIR/Contents/Helpers/SwanSongRouteRunner"
-sign_code "$APP_DIR"
+sign_identified_code "$APP_DIR/Contents/Helpers/SwanSongMCP" \
+  "com.regionallyfamous.swansong.mcp"
+ENGINE_SERVICE_ENTITLEMENTS="$MACOS_DIR/Packaging/EngineService-AdHoc.entitlements"
+if [ "$USE_REGISTERED_APP_GROUP" = "1" ]; then
+  ENGINE_SERVICE_ENTITLEMENTS="$MACOS_DIR/Packaging/EngineService.entitlements"
+else
+  # Local and CI bundles do not carry the registered Developer ID profiles.
+  # They retain the private XPC process boundary but omit App Sandbox so they
+  # remain launchable without production signing assets.
+  ENGINE_SERVICE_ENTITLEMENTS="$MACOS_DIR/Packaging/EngineService-AdHoc.entitlements"
+fi
+sign_sandboxed_bundle \
+  "$APP_DIR/Contents/XPCServices/SwanSongEngineService.xpc" \
+  "$ENGINE_SERVICE_ENTITLEMENTS"
+if [ "$USE_REGISTERED_APP_GROUP" = "1" ]; then
+  sign_sandboxed_bundle "$APP_DIR" "$MACOS_DIR/Packaging/App.entitlements"
+else
+  sign_code "$APP_DIR"
+fi
 
 codesign --verify --deep --strict "$APP_DIR"
+if [ "$USE_REGISTERED_APP_GROUP" = "1" ]; then
+  python3 "$SCRIPT_DIR/provisioning-profile.py" verify \
+    --profile "$APP_DIR/Contents/embedded.provisionprofile" \
+    --signed-bundle "$APP_DIR" \
+    --name "SwanSong Developer ID 0.7" \
+    --application-identifier "$SWAN_TEAM_ID.com.regionallyfamous.swansong" \
+    --app-group "$SWAN_APP_GROUP"
+  python3 "$SCRIPT_DIR/provisioning-profile.py" verify \
+    --profile "$APP_DIR/Contents/XPCServices/SwanSongEngineService.xpc/Contents/embedded.provisionprofile" \
+    --signed-bundle "$APP_DIR/Contents/XPCServices/SwanSongEngineService.xpc" \
+    --name "SwanSong Engine Developer ID 0.7" \
+    --application-identifier "$SWAN_TEAM_ID.$SWAN_TEAM_ID.com.regionallyfamous.swansong.engine-service" \
+    --app-group "$SWAN_APP_GROUP"
+fi
 if [ "$SIGNING_IDENTITY" = "-" ]; then
   echo "Built an ad-hoc-signed app bundle." >&2
 else

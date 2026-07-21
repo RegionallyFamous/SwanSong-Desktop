@@ -16,7 +16,7 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
         )
 
         XCTAssertEqual(try encoded(first), try encoded(second))
-        XCTAssertEqual(first.schema, TranslationStaticAnalysisSeed.currentSchema)
+        XCTAssertEqual(first.schema, TranslationStaticAnalysisSeed.legacySchema)
         XCTAssertEqual(first.sourceProbeSchema, TranslationDisplaySourceProbeDetails.currentSchema)
         XCTAssertEqual(first.payloadRanges.count, 1)
         XCTAssertEqual(first.anchors.count, 2)
@@ -41,7 +41,21 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
                 details: details,
                 detailsData: try encoded(details)
             )) { error in
-                XCTAssertTrue(error.localizedDescription.contains("ABI-9/v4"))
+                XCTAssertTrue(error.localizedDescription.contains("exact ABI-9/v4 seed-v1"))
+            }
+        }
+
+        for buildID in [
+            "fixture-abi9",
+            "ares-\(String(repeating: "a", count: 40))-swan-abi10",
+            "ares-\(String(repeating: "a", count: 40))-swan-abi9\n",
+        ] {
+            let details = try fixtureDetails(engineBuildID: buildID)
+            XCTAssertThrowsError(try TranslationStaticAnalysisSeedExporter.makeSeed(
+                details: details,
+                detailsData: try encoded(details)
+            )) { error in
+                XCTAssertTrue(error.localizedDescription.contains("exact ABI-9/v4 seed-v1"))
             }
         }
 
@@ -130,11 +144,14 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
             seedData: try encoded(seed)
         )
 
-        XCTAssertEqual(seed.schema, "swan-song-static-analysis-seed-v1")
+        XCTAssertEqual(seed.schema, TranslationStaticAnalysisSeed.legacySchema)
         XCTAssertEqual(seed.sourceProbeSchema, TranslationDisplaySourceProbeDetails.currentSchema)
         XCTAssertEqual(seed.selectedComponents, ["spriteAttribute"])
         XCTAssertTrue(seed.anchors.allSatisfy { $0.component == "spriteAttribute" })
         XCTAssertEqual(report.componentCounts, ["spriteAttribute": 2])
+        XCTAssertEqual(report.privateSeedSchema, TranslationStaticAnalysisSeed.legacySchema)
+        XCTAssertEqual(report.fetchContextCount, 0)
+        XCTAssertEqual(report.fetchByteCount, 0)
         XCTAssertFalse(report.prototypeAuthorized)
 
         let publicText = String(decoding: try encoded(report), as: UTF8.self).lowercased()
@@ -205,7 +222,8 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
         schema: String = TranslationDisplaySourceProbeDetails.currentSchema,
         component: String = "raster",
         mutation: String? = nil,
-        romByteCount: Int = 0x4_0000
+        romByteCount: Int = 0x4_0000,
+        engineBuildID: String = "ares-\(String(repeating: "a", count: 40))-swan-abi9"
     ) throws -> TranslationDisplaySourceProbeDetails {
         var selected = trace(scope: "selected", component: component, x: 0)
         let duplicate = trace(scope: "selected", component: component, x: 1)
@@ -261,7 +279,7 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
             "project": digest(byteCount: 128, value: "22"),
             "rom": digest(byteCount: romByteCount, value: "33"),
             "romFooterChecksum": 0x1234,
-            "engine": ["backend": "ares", "buildID": "fixture-abi9"],
+            "engine": ["backend": "ares", "buildID": engineBuildID],
             "engineSHA256": String(repeating: "4", count: 64),
             "rtc": ["mode": "deterministic", "seedUnixSeconds": 946_684_800],
             "rtcSHA256": String(repeating: "5", count: 64),

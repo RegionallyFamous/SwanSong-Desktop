@@ -150,6 +150,21 @@ public struct TranslationDisplaySourceProbeReport: Codable, Equatable, Sendable 
     public let privateDetailsSHA256: String
 }
 
+public struct TranslationDisplaySourcePreexecutionFrameMismatch:
+    LocalizedError, Equatable, Sendable
+{
+    public let expectedPlanFrameIndex: UInt64
+    public let actualPlanFrameIndex: UInt64
+    public let expectedNativeFrameNumber: UInt64
+    public let actualNativeFrameNumber: UInt64
+    public let expectedNativeFrameSHA256: String
+    public let actualNativeFrameSHA256: String
+
+    public var errorDescription: String? {
+        "STOP_PREEXECUTION_CAPABILITY: authenticated frame mismatch before provenance"
+    }
+}
+
 public struct TranslationDisplaySourceProbeAuthorizedResult: Sendable {
     public let report: TranslationDisplaySourceProbeReport
     public let details: TranslationDisplaySourceProbeDetails
@@ -182,16 +197,19 @@ public struct TranslationDisplaySourceNativeQueryReceipt:
     Codable, Equatable, Sendable
 {
     public static let currentSchema =
-        "swan-song-display-source-native-query-receipt-v1"
+        "swan-song-display-source-native-query-receipt-v2"
 
     public let schema: String
+    public let observationSource: String
     public let stages: [TranslationDisplaySourceNativeQueryStage]
     public let expectedNativeFrameNumber: UInt64
     public let expectedNativeFrameSHA256: String
     public let actualNativeFrameNumberBeforeQueries: UInt64
     public let actualNativeFrameSHA256BeforeQueries: String
-    public let firstOwnerQuerySequencePosition: Int
-    public let firstSourceQuerySequencePosition: Int
+    public let engineObservedQueryEntries: [EngineDisplayProvenanceQueryEntry]
+    public let firstOwnerEngineQuerySequence: UInt64
+    public let firstSourceEngineQuerySequence: UInt64
+    public let ownerQueryCount: Int
     public let actualNativeFrameNumberAfterQueries: UInt64
     public let actualNativeFrameSHA256AfterQueries: String
     public let sourceQueryCount: Int
@@ -254,6 +272,18 @@ public struct TranslationDisplaySourceProbeBlockedDiagnostic:
     public var errorDescription: String? {
         "the upstream source probe stopped at its first incomplete-lineage leaf"
     }
+}
+
+/// Capture-bound blocked execution retains the same native query-order receipt
+/// as a complete execution while preserving the original privacy-safe blocked
+/// diagnostic as its public payload.
+public struct TranslationDisplaySourceCaptureBoundBlockedDiagnostic:
+    Error, LocalizedError, Sendable
+{
+    public let diagnostic: TranslationDisplaySourceProbeBlockedDiagnostic
+    public let nativeQueryReceipt: TranslationDisplaySourceNativeQueryReceipt
+
+    public var errorDescription: String? { diagnostic.errorDescription }
 }
 
 struct TranslationDisplaySourcePartitionPayload<Element> {
@@ -498,7 +528,8 @@ public enum TranslationDisplaySourceProbe {
             rectangle: rectangle,
             components: components,
             publishInProject: true,
-            expectedFrame: nil
+            expectedFrame: nil,
+            querySnapshotObserver: nil
         ).report
     }
 
@@ -521,7 +552,8 @@ public enum TranslationDisplaySourceProbe {
             rectangle: rectangle,
             components: components,
             publishInProject: false,
-            expectedFrame: nil
+            expectedFrame: nil,
+            querySnapshotObserver: nil
         )
     }
 
@@ -534,7 +566,9 @@ public enum TranslationDisplaySourceProbe {
         frameIndex: UInt64,
         rectangle: EngineDisplayRectangle,
         components: [EngineDisplaySourceComponent],
-        expectedFrame: TranslationDisplaySourceExpectedFrame
+        expectedFrame: TranslationDisplaySourceExpectedFrame,
+        querySnapshotObserver:
+            ((EngineDisplayProvenanceQuerySnapshot) -> Void)? = nil
     ) throws -> TranslationDisplaySourceProbeAuthorizedResult {
         try runResult(
             project: project,
@@ -544,7 +578,8 @@ public enum TranslationDisplaySourceProbe {
             rectangle: rectangle,
             components: components,
             publishInProject: false,
-            expectedFrame: expectedFrame
+            expectedFrame: expectedFrame,
+            querySnapshotObserver: querySnapshotObserver
         )
     }
 
@@ -556,7 +591,9 @@ public enum TranslationDisplaySourceProbe {
         rectangle: EngineDisplayRectangle,
         components: [EngineDisplaySourceComponent],
         publishInProject: Bool,
-        expectedFrame: TranslationDisplaySourceExpectedFrame?
+        expectedFrame: TranslationDisplaySourceExpectedFrame?,
+        querySnapshotObserver:
+            ((EngineDisplayProvenanceQuerySnapshot) -> Void)?
     ) throws -> TranslationDisplaySourceProbeAuthorizedResult {
         let hardware = try project.routeHardwareModel
         try plan.validate(for: hardware)
@@ -622,6 +659,9 @@ public enum TranslationDisplaySourceProbe {
         }
         _ = try engine.load(rom: rom)
         defer { try? engine.unload() }
+        defer {
+            querySnapshotObserver?(engine.displayProvenanceQuerySnapshot())
+        }
         guard engine.activeHardwareModel == hardware.engineHardwareModel else {
             throw TranslationLabError.invalidRoute(
                 "the engine selected hardware different from the translation project"
@@ -637,18 +677,22 @@ public enum TranslationDisplaySourceProbe {
         guard let frame else { throw TranslationLabError.noRecordedFrames }
         let nativeFrameNumberBeforeQueries = frame.number
         let nativeFrameSHA256BeforeQueries = try TranslationRouteCheckpoint.fingerprint(frame)
-        var nativeQueryStages: [TranslationDisplaySourceNativeQueryStage] = []
-        var firstOwnerQuerySequencePosition: Int?
-        var firstSourceQuerySequencePosition: Int?
-        var sourceQueryCount = 0
 
         if let expectedFrame {
             try validateExpectedFrame(
                 expectedFrame,
                 frameIndex: frameIndex,
-                frame: frame
+                frame: frame,
+                actualFrameSHA256: nativeFrameSHA256BeforeQueries
             )
-            nativeQueryStages.append(.frameValidated)
+            let prequerySnapshot = engine.displayProvenanceQuerySnapshot()
+            guard prequerySnapshot.entries.isEmpty,
+                  prequerySnapshot.ownerEntryCount == 0,
+                  prequerySnapshot.sourceEntryCount == 0 else {
+                throw TranslationLabError.invalidRoute(
+                    "STOP_PREEXECUTION_CAPABILITY: provenance query entry preceded frame validation"
+                )
+            }
         }
 
         let raster = try TranslationRouteCheckpoint.canonicalGameRaster(frame)
@@ -661,11 +705,19 @@ public enum TranslationDisplaySourceProbe {
             )
         }
 
-        if expectedFrame != nil {
-            firstOwnerQuerySequencePosition = nativeQueryStages.count + 1
-            nativeQueryStages.append(.ownerQueryStarted)
-        }
         let ownerSamples = try engine.displayOwnerProbe(rectangle: rectangle)
+        if expectedFrame != nil {
+            let ownerSnapshot = engine.displayProvenanceQuerySnapshot()
+            guard ownerSnapshot.entries.count == 1,
+                  ownerSnapshot.entries.first?.kind == .owner,
+                  ownerSnapshot.entries.first?.sequence == 1,
+                  ownerSnapshot.ownerEntryCount == 1,
+                  ownerSnapshot.sourceEntryCount == 0 else {
+                throw TranslationLabError.invalidRoute(
+                    "STOP_PREEXECUTION_CAPABILITY: native owner-query entry order is invalid"
+                )
+            }
+        }
         guard ownerSamples.count == pixelCount,
               ownerSamples.allSatisfy(validCurrentOwnerSample) else {
             throw TranslationLabError.invalidRoute(
@@ -692,12 +744,6 @@ public enum TranslationDisplaySourceProbe {
             partitionResult = try TranslationDisplaySourcePartitioner.run(
                 rectangle: rectangle
             ) { leafRectangle, depth in
-                sourceQueryCount += 1
-                if expectedFrame != nil,
-                   firstSourceQuerySequencePosition == nil {
-                    firstSourceQuerySequencePosition = nativeQueryStages.count + 1
-                    nativeQueryStages.append(.sourceQueryStarted)
-                }
                 let leafTraces = try engine.displaySourceProbe(
                     rectangle: leafRectangle,
                     components: selectedComponents
@@ -752,6 +798,22 @@ public enum TranslationDisplaySourceProbe {
                   currentProjectData == projectData else {
                 throw TranslationLabError.invalidRoute(
                     "the probe context drifted before its blocked-leaf diagnostic could be returned"
+                )
+            }
+            if let expectedFrame {
+                let nativeQueryReceipt = try makeNativeQueryReceipt(
+                    expectedFrame: expectedFrame,
+                    nativeFrameNumberBeforeQueries: nativeFrameNumberBeforeQueries,
+                    nativeFrameSHA256BeforeQueries: nativeFrameSHA256BeforeQueries,
+                    nativeFrameNumberAfterQueries: currentFrame.number,
+                    nativeFrameSHA256AfterQueries:
+                        try TranslationRouteCheckpoint.fingerprint(currentFrame),
+                    engineObservedQueryEntries:
+                        engine.displayProvenanceQuerySnapshot().entries
+                )
+                throw TranslationDisplaySourceCaptureBoundBlockedDiagnostic(
+                    diagnostic: diagnostic,
+                    nativeQueryReceipt: nativeQueryReceipt
                 )
             }
             throw diagnostic
@@ -825,9 +887,6 @@ public enum TranslationDisplaySourceProbe {
             throw TranslationLabError.invalidRoute(
                 "the native frame drifted while adaptive upstream source leaves were queried"
             )
-        }
-        if expectedFrame != nil {
-            nativeQueryStages.append(.frameRevalidated)
         }
         let currentProjectData = try Data(contentsOf: projectURL)
         guard currentProjectData == projectData else {
@@ -1016,21 +1075,15 @@ public enum TranslationDisplaySourceProbe {
             privateDetailsSHA256: sha256(detailsData)
         )
         let nativeQueryReceipt: TranslationDisplaySourceNativeQueryReceipt?
-        if let expectedFrame,
-           let firstOwnerQuerySequencePosition,
-           let firstSourceQuerySequencePosition {
-            nativeQueryReceipt = TranslationDisplaySourceNativeQueryReceipt(
-                schema: TranslationDisplaySourceNativeQueryReceipt.currentSchema,
-                stages: nativeQueryStages,
-                expectedNativeFrameNumber: expectedFrame.nativeFrameNumber,
-                expectedNativeFrameSHA256: expectedFrame.checkpoint.sha256,
-                actualNativeFrameNumberBeforeQueries: nativeFrameNumberBeforeQueries,
-                actualNativeFrameSHA256BeforeQueries: nativeFrameSHA256BeforeQueries,
-                firstOwnerQuerySequencePosition: firstOwnerQuerySequencePosition,
-                firstSourceQuerySequencePosition: firstSourceQuerySequencePosition,
-                actualNativeFrameNumberAfterQueries: nativeFrameNumberAfterQueries,
-                actualNativeFrameSHA256AfterQueries: nativeFrameSHA256AfterQueries,
-                sourceQueryCount: sourceQueryCount
+        if let expectedFrame {
+            nativeQueryReceipt = try makeNativeQueryReceipt(
+                expectedFrame: expectedFrame,
+                nativeFrameNumberBeforeQueries: nativeFrameNumberBeforeQueries,
+                nativeFrameSHA256BeforeQueries: nativeFrameSHA256BeforeQueries,
+                nativeFrameNumberAfterQueries: nativeFrameNumberAfterQueries,
+                nativeFrameSHA256AfterQueries: nativeFrameSHA256AfterQueries,
+                engineObservedQueryEntries:
+                    engine.displayProvenanceQuerySnapshot().entries
             )
         } else {
             nativeQueryReceipt = nil
@@ -1042,18 +1095,78 @@ public enum TranslationDisplaySourceProbe {
         )
     }
 
+    private static func makeNativeQueryReceipt(
+        expectedFrame: TranslationDisplaySourceExpectedFrame,
+        nativeFrameNumberBeforeQueries: UInt64,
+        nativeFrameSHA256BeforeQueries: String,
+        nativeFrameNumberAfterQueries: UInt64,
+        nativeFrameSHA256AfterQueries: String,
+        engineObservedQueryEntries: [EngineDisplayProvenanceQueryEntry]
+    ) throws -> TranslationDisplaySourceNativeQueryReceipt {
+        let ownerEntries = engineObservedQueryEntries.filter { $0.kind == .owner }
+        let sourceEntries = engineObservedQueryEntries.filter { $0.kind == .source }
+        guard nativeFrameNumberBeforeQueries == expectedFrame.nativeFrameNumber,
+              nativeFrameSHA256BeforeQueries == expectedFrame.checkpoint.sha256,
+              nativeFrameNumberAfterQueries == expectedFrame.nativeFrameNumber,
+              nativeFrameSHA256AfterQueries == expectedFrame.checkpoint.sha256,
+              ownerEntries.count == 1,
+              !sourceEntries.isEmpty,
+              engineObservedQueryEntries.first?.kind == .owner,
+              engineObservedQueryEntries.dropFirst().allSatisfy({ $0.kind == .source }),
+              engineObservedQueryEntries.enumerated().allSatisfy({ index, entry in
+                entry.sequence == UInt64(index + 1)
+              }),
+              let firstOwner = ownerEntries.first,
+              let firstSource = sourceEntries.first else {
+            throw TranslationLabError.invalidRoute(
+                "STOP_PREEXECUTION_CAPABILITY: native provenance query-order receipt is incomplete"
+            )
+        }
+        return TranslationDisplaySourceNativeQueryReceipt(
+            schema: TranslationDisplaySourceNativeQueryReceipt.currentSchema,
+            observationSource: "engine-session-provenance-query-entry-v1",
+            stages: [
+                .frameValidated,
+                .ownerQueryStarted,
+                .sourceQueryStarted,
+                .frameRevalidated,
+            ],
+            expectedNativeFrameNumber: expectedFrame.nativeFrameNumber,
+            expectedNativeFrameSHA256: expectedFrame.checkpoint.sha256,
+            actualNativeFrameNumberBeforeQueries: nativeFrameNumberBeforeQueries,
+            actualNativeFrameSHA256BeforeQueries: nativeFrameSHA256BeforeQueries,
+            engineObservedQueryEntries: engineObservedQueryEntries,
+            firstOwnerEngineQuerySequence: firstOwner.sequence,
+            firstSourceEngineQuerySequence: firstSource.sequence,
+            ownerQueryCount: ownerEntries.count,
+            actualNativeFrameNumberAfterQueries: nativeFrameNumberAfterQueries,
+            actualNativeFrameSHA256AfterQueries: nativeFrameSHA256AfterQueries,
+            sourceQueryCount: sourceEntries.count
+        )
+    }
+
     private static func validateExpectedFrame(
         _ expectedFrame: TranslationDisplaySourceExpectedFrame,
         frameIndex: UInt64,
-        frame: EngineVideoFrame
+        frame: EngineVideoFrame,
+        actualFrameSHA256: String
     ) throws {
         guard expectedFrame.checkpoint.frameIndex == frameIndex,
               expectedFrame.nativeFrameNumber == frame.number,
               expectedFrame.checkpoint.pixelEncoding
                 == TranslationRouteCheckpoint.pixelEncoding,
-              expectedFrame.checkpoint.matches(frame) else {
-            throw TranslationLabError.invalidRoute(
-                "STOP_PREEXECUTION_CAPABILITY: authenticated frame mismatch before provenance"
+              expectedFrame.checkpoint.width == frame.width,
+              expectedFrame.checkpoint.height == frame.height,
+              expectedFrame.checkpoint.orientation
+                == (frame.isVertical ? .vertical : .horizontal),
+              expectedFrame.checkpoint.sha256 == actualFrameSHA256 else {
+            throw TranslationDisplaySourcePreexecutionFrameMismatch(
+                expectedPlanFrameIndex: expectedFrame.checkpoint.frameIndex,
+                actualPlanFrameIndex: frameIndex,
+                expectedNativeFrameNumber: expectedFrame.nativeFrameNumber,
+                actualNativeFrameNumber: frame.number,
+                expectedNativeFrameSHA256: expectedFrame.checkpoint.sha256,
+                actualNativeFrameSHA256: actualFrameSHA256
             )
         }
     }

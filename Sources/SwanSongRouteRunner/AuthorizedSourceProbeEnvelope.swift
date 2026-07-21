@@ -21,6 +21,7 @@ struct AuthorizedSourceProbeInvocation {
     let runDirectoryURL: URL
     let publicDiagnosticKAT: Bool
     let commercialContractKAT: Bool
+    let publicWrongFrameContractKAT: Bool
     let commercialAuthorizedSourceProbe: Bool
 
     var commercialSourceContractKAT: Bool { commercialContractKAT }
@@ -28,6 +29,14 @@ struct AuthorizedSourceProbeInvocation {
 
 private struct AuthorizedSourceProbeError: LocalizedError {
     let message: String
+    var errorDescription: String? { message }
+}
+
+private struct AuthorizedSourceProbeStructuredFailure:
+    LocalizedError, RouteRunnerStructuredFailure
+{
+    let message: String
+    let routeRunnerStructuredFailureData: Data
     var errorDescription: String? { message }
 }
 
@@ -64,6 +73,13 @@ private enum AuthorizedSourceProbeMode: Equatable {
 }
 
 private struct AuthorizedSourceProbeContext {
+    private struct EngineProfile: Equatable {
+        let abi: Int
+        let backend: String
+        let buildID: String
+        let runnerCapabilitySchema: String
+    }
+
     static let method = "probe-rectangle-source"
     static let authorizationSchema = "wstrans-swansong-method-authorization-v1"
     static let captureBoundAuthorizationSchema =
@@ -74,12 +90,16 @@ private struct AuthorizedSourceProbeContext {
         "wstrans-swansong-source-probe-method-capability-v2"
     static let markerSchema = "swan-song-method-native-authorization-marker-v1"
     static let publicCaptureFrameSealSchema =
-        "wstrans-swansong-public-capture-frame-seal-v1"
+        "wstrans-swansong-public-source-capture-frame-seal-v2"
     static let commercialCaptureFrameSealSchema =
         "wstrans-swansong-original-capture-frame-seal-v2"
     static let closureSchema = "swan-song-authorized-method-closure-v1"
     static let completeReportSchema = "swan-song-authorized-display-source-probe-report-v1"
     static let blockedReportSchema = "swan-song-authorized-display-source-probe-blocked-report-v1"
+    static let captureBoundCompleteReportSchema =
+        "swan-song-authorized-capture-bound-display-source-probe-report-v2"
+    static let captureBoundBlockedReportSchema =
+        "swan-song-authorized-capture-bound-display-source-probe-blocked-report-v2"
     static let privateSchema = "swan-song-authorized-display-source-probe-private-v1"
     static let planArtifactSchema = "swan-song-authorized-display-source-probe-plan-v1"
     static let baseReportSchema = "swan-song-display-source-probe-report-v4"
@@ -92,6 +112,17 @@ private struct AuthorizedSourceProbeContext {
     static let linkPolicy = "regular-single-link-no-symlink"
     static let maximumRectanglePixels = 4_096
     static let maximumPlanFrames = 1_000_000
+    static let legacyRunnerCapabilitySchema =
+        "swan-song-route-runner-engine-capability-v1"
+    static let consumedPrefetchRunnerCapabilitySchema =
+        "swan-song-route-runner-engine-capability-v2"
+    static let requiredSourceCapabilities = [
+        "displayProvenance",
+        "displaySourceProvenance",
+        "displaySourceComponentSelection",
+        "executedSourceReadContext",
+        "displaySpriteAttributeProvenance",
+    ]
 
     let invocation: AuthorizedSourceProbeInvocation
     let authorizationFile: BoundFile
@@ -107,6 +138,7 @@ private struct AuthorizedSourceProbeContext {
     let marker: [String: Any]
     let captureFrameSeal: [String: Any]?
     let expectedFrame: TranslationDisplaySourceExpectedFrame?
+    private let engineProfile: EngineProfile
     let mode: AuthorizedSourceProbeMode
     let nonce: String
     let runDirectory: URL
@@ -117,6 +149,16 @@ private struct AuthorizedSourceProbeContext {
 
     var commercialEvidenceAuthorized: Bool {
         mode == .commercialCaptureBound
+    }
+
+    var activeCompleteReportSchema: String {
+        mode == .publicDiagnostic
+            ? Self.completeReportSchema : Self.captureBoundCompleteReportSchema
+    }
+
+    var activeBlockedReportSchema: String {
+        mode == .publicDiagnostic
+            ? Self.blockedReportSchema : Self.captureBoundBlockedReportSchema
     }
 
     static func prepare(_ invocation: AuthorizedSourceProbeInvocation) throws -> Self {
@@ -198,14 +240,20 @@ private struct AuthorizedSourceProbeContext {
             try jsonObject($0, label: "capture-frame seal")
         }
 
-        try validateCapability(capability, file: capabilityFile)
-        try validateMarker(marker, capability: capability, file: markerFile)
+        let engineProfile = try validateCapability(capability, file: capabilityFile)
+        try validateMarker(
+            marker,
+            capability: capability,
+            engineProfile: engineProfile,
+            file: markerFile
+        )
         try validateMethodCapability(
             methodCapability,
             capability: capability,
             capabilityFile: capabilityFile,
             marker: marker,
-            markerFile: markerFile
+            markerFile: markerFile,
+            engineProfile: engineProfile
         )
         if let qualifiedMethodCapability,
            let qualifiedMethodFile {
@@ -217,10 +265,11 @@ private struct AuthorizedSourceProbeContext {
                 markerFile: markerFile
             )
         }
-        let expectedFrame = try captureFrameSeal.map {
+        let sealedExpectedFrame = try captureFrameSeal.map {
             try validateCaptureFrameSeal(
                 $0,
                 file: captureFrameSealFile!,
+                capability: capability,
                 invocation: invocation,
                 mode: mode
             )
@@ -241,12 +290,20 @@ private struct AuthorizedSourceProbeContext {
             runDirectory: runDirectory,
             mode: mode
         )
+        let expectedFrame = sealedExpectedFrame.map { sealed in
+            guard invocation.publicWrongFrameContractKAT else { return sealed }
+            return TranslationDisplaySourceExpectedFrame(
+                checkpoint: sealed.checkpoint,
+                nativeFrameNumber: sealed.nativeFrameNumber + 1
+            )
+        }
         let image = try loadedEngineImage()
         try validateCurrentExecutor(
             authorization: authorization,
             capability: capability,
             methodCapability: methodCapability,
             marker: marker,
+            engineProfile: engineProfile,
             loadedDylib: image
         )
         let result = Self(
@@ -264,6 +321,7 @@ private struct AuthorizedSourceProbeContext {
             marker: marker,
             captureFrameSeal: captureFrameSeal,
             expectedFrame: expectedFrame,
+            engineProfile: engineProfile,
             mode: mode,
             nonce: validated.nonce,
             runDirectory: runDirectory,
@@ -272,11 +330,16 @@ private struct AuthorizedSourceProbeContext {
             planRole: validated.planRole,
             loadedDylib: image
         )
-        try result.validateCurrentInputs(expectOutputs: false, status: nil)
+        _ = try result.validateCurrentInputs(expectOutputs: false, status: nil)
         return result
     }
 
-    func validateCurrentInputs(expectOutputs: Bool, status: String?) throws {
+    @discardableResult
+    func validateCurrentInputs(
+        expectOutputs: Bool,
+        status: String?,
+        closureExpected: Bool = false
+    ) throws -> BoundFile {
         for (expected, url, label, exactMode) in [
             (authorizationFile, invocation.authorizationURL, "method authorization", Self.fileMode),
             (capabilityFile, invocation.capabilityReceiptURL, "base capability receipt", Self.fileMode),
@@ -322,12 +385,22 @@ private struct AuthorizedSourceProbeContext {
               currentImage.url.path == loadedDylib.url.path else {
             throw Self.stop("the loaded engine image drifted during authorized execution")
         }
+        try Self.validateCurrentExecutor(
+            authorization: authorization,
+            capability: capability,
+            methodCapability: methodCapability,
+            marker: marker,
+            engineProfile: engineProfile,
+            loadedDylib: currentImage
+        )
         let expectedFiles: Set<String>
         if expectOutputs, let status {
-            var files = [
-                authorizationFile.url.path,
-                Self.childURL(runDirectory, relativePath: "closure.json").path,
-            ]
+            var files = [authorizationFile.url.path]
+            if closureExpected {
+                files.append(
+                    Self.childURL(runDirectory, relativePath: "closure.json").path
+                )
+            }
             files.append(reportRole.destination.path)
             if status == "complete" {
                 files.append(detailsRole.destination.path)
@@ -342,6 +415,122 @@ private struct AuthorizedSourceProbeContext {
             roles: [detailsRole, planRole, reportRole],
             expectedFiles: expectedFiles
         )
+        return currentImage
+    }
+
+    func wrongFramePreexecutionStop(
+        mismatch: TranslationDisplaySourcePreexecutionFrameMismatch,
+        querySnapshot: EngineDisplayProvenanceQuerySnapshot,
+        currentImage: BoundFile
+    ) throws -> [String: Any] {
+        guard mode == .publicCaptureBoundContract,
+              invocation.publicWrongFrameContractKAT,
+              expectedFrame != nil,
+              captureFrameSeal?["sourceControlProfile"] as? String == "success",
+              let captureFrameSealFile,
+              querySnapshot.entries.isEmpty,
+              querySnapshot.ownerEntryCount == 0,
+              querySnapshot.sourceEntryCount == 0 else {
+            throw Self.stop(
+                "wrong-frame control did not stop before every provenance query"
+            )
+        }
+        let currentRunner = try Self.readBoundFile(
+            try Self.executableURL(),
+            label: "running route runner"
+        )
+        let capabilityRunner = try Self.object(
+            capability["routeRunner"],
+            label: "base route runner"
+        )
+        guard Self.sameArtifact(
+            currentRunner.artifact,
+            try Self.identityOnly(
+                capabilityRunner["executable"],
+                label: "base route runner executable"
+            )
+        ) else {
+            throw Self.stop("the wrong-frame control runner differs from C")
+        }
+        var mismatchFields: [String] = []
+        if mismatch.expectedPlanFrameIndex != mismatch.actualPlanFrameIndex {
+            mismatchFields.append("planFrameIndex")
+        }
+        if mismatch.expectedNativeFrameNumber != mismatch.actualNativeFrameNumber {
+            mismatchFields.append("nativeFrameNumber")
+        }
+        if mismatch.expectedNativeFrameSHA256 != mismatch.actualNativeFrameSHA256 {
+            mismatchFields.append("nativeFrameSHA256")
+        }
+        guard mismatchFields.count == 1, let mismatchField = mismatchFields.first else {
+            throw Self.stop(
+                "wrong-frame control did not isolate exactly one authenticated frame mismatch"
+            )
+        }
+        guard let expectedFrame,
+              mismatchField == "nativeFrameNumber",
+              mismatch.expectedPlanFrameIndex == expectedFrame.checkpoint.frameIndex,
+              mismatch.actualPlanFrameIndex == expectedFrame.checkpoint.frameIndex,
+              mismatch.expectedNativeFrameNumber == expectedFrame.nativeFrameNumber,
+              mismatch.actualNativeFrameNumber + 1
+                == mismatch.expectedNativeFrameNumber,
+              mismatch.expectedNativeFrameSHA256 == expectedFrame.checkpoint.sha256,
+              mismatch.actualNativeFrameSHA256 == expectedFrame.checkpoint.sha256 else {
+            throw Self.stop(
+                "wrong-frame control is not the exact A-bound native-frame-number fault"
+            )
+        }
+        let request = try Self.object(
+            authorization["request"],
+            label: "authorization request"
+        )
+        let projectTree = try Self.object(
+            request["projectTree"],
+            label: "authorization project tree"
+        )
+        let sourceState = try Self.object(
+            capability["sourceState"],
+            label: "base capability source state"
+        )
+        let entryPayload = querySnapshot.entries.map { entry in
+            [
+                "sequence": Int(entry.sequence),
+                "kind": entry.kind.rawValue,
+            ] as [String: Any]
+        }
+        return [
+            "schema": "swan-song-capture-bound-source-probe-preexecution-stop-v1",
+            "method": Self.method,
+            "errorCode": "authenticated-frame-mismatch-before-provenance",
+            "mismatchField": mismatchField,
+            "expectedPlanFrameIndex": Int(mismatch.expectedPlanFrameIndex),
+            "actualPlanFrameIndex": Int(mismatch.actualPlanFrameIndex),
+            "expectedNativeFrameNumber": Int(mismatch.expectedNativeFrameNumber),
+            "actualNativeFrameNumber": Int(mismatch.actualNativeFrameNumber),
+            "expectedNativeFrameSHA256": mismatch.expectedNativeFrameSHA256,
+            "actualNativeFrameSHA256": mismatch.actualNativeFrameSHA256,
+            "observationSource": "engine-session-provenance-query-entry-v1",
+            "engineObservedQueryEntries": entryPayload,
+            "engineObservedOwnerQueryCount": querySnapshot.ownerEntryCount,
+            "engineObservedSourceQueryCount": querySnapshot.sourceEntryCount,
+            "authorization": authorizationFile.artifact,
+            "capabilityReceipt": capabilityFile.artifact,
+            "methodCapabilityReceipt": methodFile.artifact,
+            "methodNativeMarker": markerFile.artifact,
+            "captureFrameSeal": captureFrameSealFile.artifact,
+            "routeRunner": currentRunner.artifact,
+            "loadedDylib": currentImage.artifact,
+            "sourceState": sourceState,
+            "projectTree": projectTree,
+            "projectTreeRevalidated": true,
+            "currentExecutorRevalidated": true,
+            "authorizationOnlyRunTree": true,
+            "reportWritten": false,
+            "privateArtifactsWritten": false,
+            "closureWritten": false,
+            "commercialEvidenceAuthorized": false,
+            "promotionEligible": false,
+        ]
     }
 
     private static func executionMode(
@@ -356,7 +545,8 @@ private struct AuthorizedSourceProbeContext {
             throw stop("authorized source probing requires exactly one execution mode")
         }
         if invocation.commercialAuthorizedSourceProbe {
-            guard invocation.qualifiedMethodCapabilityReceiptURL != nil,
+            guard !invocation.publicWrongFrameContractKAT,
+                  invocation.qualifiedMethodCapabilityReceiptURL != nil,
                   invocation.captureFrameSealURL != nil else {
                 throw stop(
                     "commercial source probing requires qualified M2 and an authenticated capture-frame seal"
@@ -373,7 +563,8 @@ private struct AuthorizedSourceProbeContext {
             }
             return .publicCaptureBoundContract
         }
-        guard invocation.qualifiedMethodCapabilityReceiptURL == nil,
+        guard !invocation.publicWrongFrameContractKAT,
+              invocation.qualifiedMethodCapabilityReceiptURL == nil,
               invocation.captureFrameSealURL == nil else {
             throw stop("the public diagnostic source probe cannot consume capture-bound authority")
         }
@@ -400,19 +591,38 @@ private struct AuthorizedSourceProbeContext {
         }
     }
 
-    private static func validateCapability(_ value: [String: Any], file: BoundFile) throws {
+    private static func validateCapability(
+        _ value: [String: Any],
+        file: BoundFile
+    ) throws -> EngineProfile {
         guard try string(value["schema"], label: "base capability schema") == capabilitySchema,
               try string(value["classification"], label: "base capability classification")
                 == "ad-hoc-development" else {
-            throw stop("C is not the expected ad-hoc ABI-9 capability")
+            throw stop("C is not the expected ad-hoc source-probe capability")
         }
         let engine = try object(value["engine"], label: "base capability engine")
-        guard try integer(engine["abi"], label: "base engine ABI") == 9,
-              try string(engine["backend"], label: "base engine backend") == "ares",
-              !(try string(engine["buildID"], label: "base engine build ID")).isEmpty else {
-            throw stop("C does not bind the required ABI-9 ares engine")
+        let abi = try integer(engine["abi"], label: "base engine ABI")
+        let backend = try string(engine["backend"], label: "base engine backend")
+        let buildID = try string(engine["buildID"], label: "base engine build ID")
+        guard [9, 10].contains(abi), backend == "ares", !buildID.isEmpty else {
+            throw stop("C does not bind a supported ABI-9 or ABI-10 ares engine")
         }
         let runner = try object(value["routeRunner"], label: "base route runner")
+        let expectedRunnerCapabilitySchema = abi == 9
+            ? legacyRunnerCapabilitySchema : consumedPrefetchRunnerCapabilitySchema
+        let runnerCapabilitySchema = try string(
+            runner["capabilityReportSchema"],
+            label: "base runner capability schema"
+        )
+        guard runnerCapabilitySchema == expectedRunnerCapabilitySchema,
+              try string(runner["engineBuildID"], label: "base runner build ID")
+                == buildID,
+              abi != 10
+                || buildID.hasSuffix(
+                    EngineConsumedPrefetchCapabilityProfile.requiredBuildIDSuffix
+                ) else {
+            throw stop("C does not bind the exact ABI-specific runner capability profile")
+        }
         let methods = try object(runner["methods"], label: "base method table")
         let source = try object(methods["probeRectangleSource"], label: "base source method")
         guard try string(source["command"], label: "base source command") == method,
@@ -423,7 +633,17 @@ private struct AuthorizedSourceProbeContext {
               try integer(source["maximumPlanFrames"], label: "base plan bound") == maximumPlanFrames,
               try integer(source["maximumRectanglePixels"], label: "base rectangle bound")
                 == maximumRectanglePixels,
-              try integer(source["requiresEngineABI"], label: "base source ABI") == 9,
+              try integer(source["maximumTraceRecords"], label: "base trace bound")
+                == TranslationDisplaySourceProbe.maximumTraceRecords,
+              try integer(source["requiresEngineABI"], label: "base source ABI") == abi,
+              try stringArray(
+                source["requiredEngineCapabilities"],
+                label: "base source capabilities"
+              ) == requiredSourceCapabilities,
+              try stringArray(
+                source["selectedComponents"],
+                label: "base selected source components"
+              ) == EngineDisplaySourceComponent.allCases.map(\.rawValue),
               try boolean(source["requiresDebugGuard"], label: "base debug guard"),
               try boolean(source["requiresProjectWriteGuard"], label: "base project-write guard"),
               try boolean(source["cleanBootReplay"], label: "base clean replay"),
@@ -437,13 +657,30 @@ private struct AuthorizedSourceProbeContext {
             throw stop("C has an invalid downstream-evidence boundary")
         }
         _ = try artifact(try object(runner["executable"], label: "base runner artifact"), label: "base runner artifact", modeRequired: true)
-        _ = try artifact(try object(engine["dylib"], label: "base dylib artifact"), label: "base dylib artifact", modeRequired: true)
+        let dylib = try artifact(
+            try object(engine["dylib"], label: "base dylib artifact"),
+            label: "base dylib artifact",
+            modeRequired: true
+        )
+        guard try string(
+            engine["loadedDylibSHA256"],
+            label: "base loaded dylib digest"
+        ) == dylib.sha256 else {
+            throw stop("C's loaded dylib digest differs from its bound dylib artifact")
+        }
         guard file.mode == fileMode else { throw stop("C permissions drifted") }
+        return EngineProfile(
+            abi: abi,
+            backend: backend,
+            buildID: buildID,
+            runnerCapabilitySchema: runnerCapabilitySchema
+        )
     }
 
     private static func validateMarker(
         _ value: [String: Any],
         capability: [String: Any],
+        engineProfile: EngineProfile,
         file: BoundFile
     ) throws {
         try exactKeys(value, [
@@ -477,10 +714,14 @@ private struct AuthorizedSourceProbeContext {
               try boolean(value["rejectsMissingAuthorization"], label: "marker missing-auth rejection"),
               try boolean(value["runnerNativeEmbeddingValidated"], label: "marker native validation"),
               !(try boolean(value["capturePlanAuthorized"], label: "marker capture authorization")),
-              try integer(engine["abi"], label: "marker engine ABI") == 9,
-              try string(engine["backend"], label: "marker engine backend") == "ares",
+              try integer(engine["abi"], label: "marker engine ABI")
+                == engineProfile.abi,
+              try string(engine["backend"], label: "marker engine backend")
+                == engineProfile.backend,
               try string(engine["buildID"], label: "marker build ID")
-                == string(cEngine["buildID"], label: "base build ID") else {
+                == engineProfile.buildID,
+              try string(cEngine["buildID"], label: "base build ID")
+                == engineProfile.buildID else {
             throw stop("the method-native source-probe marker is invalid")
         }
         guard !(try boolean(value["commercialEvidenceEmbeddingReady"], label: "marker commercial readiness")) else {
@@ -495,7 +736,8 @@ private struct AuthorizedSourceProbeContext {
         capability: [String: Any],
         capabilityFile: BoundFile,
         marker: [String: Any],
-        markerFile: BoundFile
+        markerFile: BoundFile,
+        engineProfile: EngineProfile
     ) throws {
         try exactKeys(value, [
             "authorizationContract", "capabilityReceipt", "capturePlanAuthorized",
@@ -536,10 +778,14 @@ private struct AuthorizedSourceProbeContext {
                 try object(executor["loadedDylib"], label: "M loaded dylib"),
                 try identityOnly(cEngine["dylib"], label: "base dylib")
               ),
-              try integer(executor["engineABI"], label: "M engine ABI") == 9,
-              try string(executor["engineBackend"], label: "M engine backend") == "ares",
+              try integer(executor["engineABI"], label: "M engine ABI")
+                == engineProfile.abi,
+              try string(executor["engineBackend"], label: "M engine backend")
+                == engineProfile.backend,
               try string(executor["engineBuildID"], label: "M build ID")
-                == string(cEngine["buildID"], label: "base build ID"),
+                == engineProfile.buildID,
+              try string(cEngine["buildID"], label: "base build ID")
+                == engineProfile.buildID,
               try string(executor["loadedDylibPathSHA256"], label: "M dylib path digest")
                 == pathDigest(try string(cEngine["loadedDylibPath"], label: "base dylib path")) else {
             throw stop("M executor differs from C")
@@ -618,6 +864,7 @@ private struct AuthorizedSourceProbeContext {
     private static func validateCaptureFrameSeal(
         _ value: [String: Any],
         file: BoundFile,
+        capability: [String: Any],
         invocation: AuthorizedSourceProbeInvocation,
         mode: AuthorizedSourceProbeMode
     ) throws -> TranslationDisplaySourceExpectedFrame {
@@ -626,16 +873,28 @@ private struct AuthorizedSourceProbeContext {
         let expectedNativeFrame: Int
         let expectedTransport: (width: Int, height: Int)
         let expectedRectangle: (x: Int, y: Int, width: Int, height: Int)
+        let publicSourceControlProfile: String?
+        var publicControlNativeFrameSHA256: String? = nil
         switch mode {
         case .publicDiagnostic:
             throw stop("the public diagnostic mode has no capture-frame seal")
         case .publicCaptureBoundContract:
             expectedSchema = publicCaptureFrameSealSchema
-            expectedPlanFrame = 29
-            expectedNativeFrame = 30
-            expectedTransport = (224, 157)
-            expectedRectangle = (8, 8, 1, 1)
+            let profile = try string(
+                value["sourceControlProfile"],
+                label: "public source control profile"
+            )
+            guard profile == "success" || profile == "blocked" else {
+                throw stop("the public source capture profile is not exact")
+            }
+            publicSourceControlProfile = profile
+            expectedPlanFrame = 2
+            expectedNativeFrame = 3
+            expectedTransport = (237, 144)
+            expectedRectangle = profile == "success"
+                ? (8, 8, 1, 1) : (0, 0, 1, 1)
         case .commercialCaptureBound:
+            publicSourceControlProfile = nil
             expectedSchema = commercialCaptureFrameSealSchema
             expectedPlanFrame = 1_839
             expectedNativeFrame = 1_840
@@ -720,6 +979,66 @@ private struct AuthorizedSourceProbeContext {
         ) else {
             throw stop("the capture-frame seal does not bind the exact project ROM")
         }
+        if let publicSourceControlProfile {
+            let publicControls = try object(
+                capability["publicControls"],
+                label: "C public controls"
+            )
+            let successControl = try object(
+                publicControls["displaySourceProbe"],
+                label: "C success source control"
+            )
+            let blockedControl = try object(
+                publicControls["blockedDisplaySourceProbe"],
+                label: "C blocked source control"
+            )
+            let selectedControl = publicSourceControlProfile == "success"
+                ? successControl : blockedControl
+            let expectedFixture = try object(
+                selectedControl["fixture"],
+                label: "C selected source fixture"
+            )
+            publicControlNativeFrameSHA256 = try string(
+                selectedControl["nativeFrameSHA256"],
+                label: "C source native-frame fingerprint"
+            )
+            guard sameArtifact(projectManifest.artifact,
+                    try object(selectedControl["project"], label: "C source project")),
+                  sameArtifact(planFile.artifact,
+                    try object(selectedControl["plan"], label: "C source plan")),
+                  sameArtifact(romFile.artifact, expectedFixture),
+                  relativeROM == "rom/original.wsc",
+                  try integer(selectedControl["frameIndex"], label: "C source frame")
+                    == expectedPlanFrame,
+                  try integer(
+                    selectedControl["nativeFrameNumber"],
+                    label: "C source native frame"
+                  ) == expectedNativeFrame,
+                  try integer(
+                    selectedControl["executedFrames"],
+                    label: "C source executed frames"
+                  ) == expectedNativeFrame,
+                  try integer(selectedControl["rectangleX"], label: "C source x")
+                    == expectedRectangle.x,
+                  try integer(selectedControl["rectangleY"], label: "C source y")
+                    == expectedRectangle.y,
+                  try integer(
+                    selectedControl["rectangleWidth"],
+                    label: "C source width"
+                  ) == expectedRectangle.width,
+                  try integer(
+                    selectedControl["rectangleHeight"],
+                    label: "C source height"
+                  ) == expectedRectangle.height,
+                  try stringArray(
+                    selectedControl["selectedComponents"],
+                    label: "C source components"
+                  ) == ["raster"] else {
+                throw stop(
+                    "the public source seal does not bind its exact C fixture profile"
+                )
+            }
+        }
 
         let transport = try object(value["transportFrame"], label: "sealed transport frame")
         _ = try artifact(
@@ -758,7 +1077,9 @@ private struct AuthorizedSourceProbeContext {
               (try string(
                 gameRaster["rasterBGRA8888SHA256"],
                 label: "sealed raw raster digest"
-              )) != framedFingerprint else {
+              )) != framedFingerprint,
+              publicControlNativeFrameSHA256 == nil
+                || publicControlNativeFrameSHA256 == framedFingerprint else {
             throw stop("the capture-frame seal has an invalid game-raster fingerprint binding")
         }
         let topFingerprintKey = mode == .commercialCaptureBound
@@ -869,7 +1190,9 @@ private struct AuthorizedSourceProbeContext {
         case .publicDiagnostic:
             expectedPurpose = "public-fixture-validation"
         case .publicCaptureBoundContract:
-            expectedPurpose = "public-capture-bound-contract-validation"
+            expectedPurpose = invocation.publicWrongFrameContractKAT
+                ? "public-capture-bound-wrong-frame-control"
+                : "public-capture-bound-contract-validation"
         case .commercialCaptureBound:
             expectedPurpose = "commercial-evidence"
         }
@@ -932,7 +1255,8 @@ private struct AuthorizedSourceProbeContext {
         )
         let graph = try validateOutputGraph(
             try object(value["allowedOutputGraph"], label: "allowed output graph"),
-            runDirectory: runDirectory
+            runDirectory: runDirectory,
+            mode: mode
         )
         try assertRunTree(
             runDirectory: runDirectory,
@@ -1047,11 +1371,98 @@ private struct AuthorizedSourceProbeContext {
             throw stop("A does not bind the exact CLI project and plan")
         }
         let arguments = try object(request["arguments"], label: "request arguments")
-        try exactKeys(arguments, ["components", "frameIndex", "rectangle", "role"], label: "request arguments")
+        var argumentKeys = ["components", "frameIndex", "rectangle", "role"]
+        if mode != .publicDiagnostic { argumentKeys.append("faultInjection") }
+        if mode == .publicCaptureBoundContract {
+            argumentKeys.append("sourceControlProfile")
+        }
+        try exactKeys(arguments, argumentKeys, label: "request arguments")
         let role = try string(arguments["role"], label: "request role")
         guard role == invocation.role.rawValue,
               try integer(arguments["frameIndex"], label: "request frame") == Int(invocation.frameIndex) else {
             throw stop("A role or exact native frame differs from the CLI")
+        }
+        if invocation.publicWrongFrameContractKAT {
+            guard mode == .publicCaptureBoundContract,
+                  try string(
+                    arguments["faultInjection"],
+                    label: "request fault injection"
+                  ) == "expected-native-frame-number-plus-one" else {
+                throw stop("wrong-frame control is not explicitly bound by A")
+            }
+        } else if mode != .publicDiagnostic {
+            guard arguments["faultInjection"] is NSNull else {
+                throw stop("source A carries an unauthorized fault injection")
+            }
+        }
+        if mode == .publicCaptureBoundContract {
+            guard let captureFrameSealFile else {
+                throw stop("public source A omitted its capture-frame seal")
+            }
+            let seal = try jsonObject(
+                captureFrameSealFile,
+                label: "public source capture-frame seal"
+            )
+            let profile = try string(
+                arguments["sourceControlProfile"],
+                label: "request source control profile"
+            )
+            guard profile == (try string(
+                seal["sourceControlProfile"],
+                label: "sealed source control profile"
+            )) else {
+                throw stop("public source A and seal select different C fixtures")
+            }
+            let publicControls = try object(
+                capability["publicControls"],
+                label: "C public controls"
+            )
+            let successControl = try object(
+                publicControls["displaySourceProbe"],
+                label: "C success source control"
+            )
+            let blockedControl = try object(
+                publicControls["blockedDisplaySourceProbe"],
+                label: "C blocked source control"
+            )
+            let selectedControl = profile == "success"
+                ? successControl : blockedControl
+            let expectedFixture = try object(
+                selectedControl["fixture"],
+                label: "C selected source fixture"
+            )
+            guard profile == "success" || profile == "blocked",
+                  sameArtifact(project.artifact,
+                    try object(selectedControl["project"], label: "C source project")),
+                  sameArtifact(plan.artifact,
+                    try object(selectedControl["plan"], label: "C source plan")),
+                  sameArtifact(rom.artifact, expectedFixture),
+                  invocation.role == .original,
+                  Int(invocation.frameIndex) == (try integer(
+                    selectedControl["frameIndex"], label: "C source frame"
+                  )),
+                  Int(invocation.rectangle.x) == (try integer(
+                    selectedControl["rectangleX"], label: "C source x"
+                  )),
+                  Int(invocation.rectangle.y) == (try integer(
+                    selectedControl["rectangleY"], label: "C source y"
+                  )),
+                  Int(invocation.rectangle.width) == (try integer(
+                    selectedControl["rectangleWidth"], label: "C source width"
+                  )),
+                  Int(invocation.rectangle.height) == (try integer(
+                    selectedControl["rectangleHeight"], label: "C source height"
+                  )),
+                  invocation.components.map(\.rawValue) == (try stringArray(
+                    selectedControl["selectedComponents"],
+                    label: "C source components"
+                  )) else {
+                throw stop("public source A is not the exact C fixture profile")
+            }
+            try validateExactPublicProjectTree(
+                root: projectRoot,
+                fixtureArtifact: expectedFixture
+            )
         }
         let rectangle = try object(arguments["rectangle"], label: "request rectangle")
         try exactKeys(rectangle, ["height", "width", "x", "y"], label: "request rectangle")
@@ -1161,6 +1572,7 @@ private struct AuthorizedSourceProbeContext {
         capability: [String: Any],
         methodCapability: [String: Any],
         marker: [String: Any],
+        engineProfile: EngineProfile,
         loadedDylib: BoundFile
     ) throws {
         let executor = try object(authorization["executor"], label: "authorization executor")
@@ -1183,31 +1595,68 @@ private struct AuthorizedSourceProbeContext {
               sameArtifact(aRunner.artifact, try object(mExecutor["routeRunner"], label: "M runner")),
               sameArtifact(aRunner.artifact, markerRunner),
               aDylib.url.path == loadedDylib.url.path,
+              aDylib.url.path
+                == (try string(
+                    cEngine["loadedDylibPath"],
+                    label: "base loaded dylib path"
+                )),
               sameArtifact(aDylib.artifact, loadedDylib.artifact),
               sameArtifact(aDylib.artifact, try identityOnly(cEngine["dylib"], label: "base dylib")),
               sameArtifact(aDylib.artifact, try object(mExecutor["loadedDylib"], label: "M dylib")),
               directory.path == loadedDylib.url.deletingLastPathComponent().path,
               try string(engineDirectory["canonicalPathSHA256"], label: "A engine directory digest") == pathDigest(directory.path),
-              try integer(executor["engineABI"], label: "A engine ABI") == 9,
-              try string(executor["engineBackend"], label: "A engine backend") == "ares",
+              try integer(executor["engineABI"], label: "A engine ABI")
+                == engineProfile.abi,
+              try string(executor["engineBackend"], label: "A engine backend")
+                == engineProfile.backend,
               try string(executor["engineBuildID"], label: "A build ID")
-                == string(cEngine["buildID"], label: "base build ID") else {
+                == engineProfile.buildID,
+              try string(cEngine["buildID"], label: "base build ID")
+                == engineProfile.buildID else {
             throw stop("the executing runner or loaded dylib differs from C/M/A/marker")
         }
         let session = try EngineSession(
             rtcMode: .deterministic(seedUnixSeconds: 946_684_800),
             hardwareModel: .wonderSwanColor
         )
-        guard session.abiVersion == 9,
-              session.backendName == "ares",
-              session.buildID == (try string(cEngine["buildID"], label: "base build ID")) else {
+        let liveProfileMatches = Int(session.abiVersion) == engineProfile.abi
+            && session.backendName == engineProfile.backend
+            && session.buildID == engineProfile.buildID
+        let liveMethodCapabilities = [
+            EngineCapabilities.displayProvenance,
+            .displaySourceProvenance,
+            .displaySourceComponentSelection,
+            .executedSourceReadContext,
+            .displaySpriteAttributeProvenance,
+        ]
+        let liveMethodProfileMatches = liveMethodCapabilities.allSatisfy {
+            session.capabilities.contains($0)
+        }
+        let liveABIProfileMatches: Bool
+        if engineProfile.abi == 10 {
+            liveABIProfileMatches = EngineConsumedPrefetchCapabilityProfile.exact(
+                engineABI: session.abiVersion,
+                engineBuildID: session.buildID,
+                capabilities: session.capabilities
+            ) != nil
+                && engineProfile.runnerCapabilitySchema
+                    == consumedPrefetchRunnerCapabilitySchema
+        } else {
+            liveABIProfileMatches = engineProfile.abi == 9
+                && engineProfile.runnerCapabilitySchema
+                    == legacyRunnerCapabilitySchema
+        }
+        guard liveProfileMatches,
+              liveMethodProfileMatches,
+              liveABIProfileMatches else {
             throw stop("the live engine identity differs from C/M/A")
         }
     }
 
     private static func validateOutputGraph(
         _ graph: [String: Any],
-        runDirectory: URL
+        runDirectory: URL,
+        mode executionMode: AuthorizedSourceProbeMode
     ) throws -> (roles: [AuthorizedOutputRole], maximumTotalBytes: Int) {
         try exactKeys(graph, ["maximumArtifactCount", "maximumTotalBytes", "roles", "unexpectedArtifacts"], label: "allowed output graph")
         guard let rawRoles = graph["roles"] as? [Any], rawRoles.count == 3,
@@ -1254,8 +1703,12 @@ private struct AuthorizedSourceProbeContext {
                 throw stop("an output role has unsafe bounds or permissions")
             }
             if visibility == "public-report" {
-                guard completeSchema == completeReportSchema,
-                      blockedSchema == blockedReportSchema,
+                let expectedCompleteSchema = executionMode == .publicDiagnostic
+                    ? completeReportSchema : captureBoundCompleteReportSchema
+                let expectedBlockedSchema = executionMode == .publicDiagnostic
+                    ? blockedReportSchema : captureBoundBlockedReportSchema
+                guard completeSchema == expectedCompleteSchema,
+                      blockedSchema == expectedBlockedSchema,
                       completeCount == 1, blockedCount == 1 else {
                     throw stop("the report role does not bind both authorized schemas")
                 }
@@ -1703,6 +2156,7 @@ enum AuthorizedSourceProbeRunner {
         var publicPayload: Any = NSNull()
         var privatePayload: Any?
         var nativeQueryReceiptPayload: Any = NSNull()
+        var finalQuerySnapshot = EngineDisplayProvenanceQuerySnapshot(entries: [])
         do {
             let result: TranslationDisplaySourceProbeAuthorizedResult
             if let expectedFrame = context.expectedFrame {
@@ -1713,7 +2167,8 @@ enum AuthorizedSourceProbeRunner {
                     frameIndex: invocation.frameIndex,
                     rectangle: invocation.rectangle,
                     components: invocation.components,
-                    expectedFrame: expectedFrame
+                    expectedFrame: expectedFrame,
+                    querySnapshotObserver: { finalQuerySnapshot = $0 }
                 )
             } else {
                 result = try TranslationDisplaySourceProbe.runAuthorized(
@@ -1731,16 +2186,81 @@ enum AuthorizedSourceProbeRunner {
             if let nativeQueryReceipt = result.nativeQueryReceipt {
                 nativeQueryReceiptPayload = try encodedJSONObject(nativeQueryReceipt)
             }
+        } catch let blocked as TranslationDisplaySourceCaptureBoundBlockedDiagnostic {
+            status = "blocked"
+            publicPayload = try encodedJSONObject(blocked.diagnostic)
+            privatePayload = nil
+            nativeQueryReceiptPayload = try encodedJSONObject(
+                blocked.nativeQueryReceipt
+            )
         } catch let diagnostic as TranslationDisplaySourceProbeBlockedDiagnostic {
             status = "blocked"
             publicPayload = try encodedJSONObject(diagnostic)
             privatePayload = nil
+        } catch let mismatch as TranslationDisplaySourcePreexecutionFrameMismatch {
+            guard context.expectedFrame != nil else { throw mismatch }
+            let currentImage = try context.validateCurrentInputs(
+                expectOutputs: false,
+                status: nil
+            )
+            let diagnostic = try context.wrongFramePreexecutionStop(
+                mismatch: mismatch,
+                querySnapshot: finalQuerySnapshot,
+                currentImage: currentImage
+            )
+            throw AuthorizedSourceProbeStructuredFailure(
+                message: mismatch.localizedDescription,
+                routeRunnerStructuredFailureData: try encodedJSON(diagnostic)
+            )
+        } catch let labError as TranslationLabError {
+            let ownerCount = finalQuerySnapshot.ownerEntryCount
+            let sourceCount = finalQuerySnapshot.sourceEntryCount
+            throw AuthorizedSourceProbeError(
+                message: "\(labError.localizedDescription); "
+                    + "engineObservedOwnerQueryCount=\(ownerCount); "
+                    + "engineObservedSourceQueryCount=\(sourceCount)"
+            )
+        } catch {
+            guard context.expectedFrame != nil else { throw error }
+            let ownerCount = finalQuerySnapshot.ownerEntryCount
+            let sourceCount = finalQuerySnapshot.sourceEntryCount
+            throw AuthorizedSourceProbeError(
+                message: "\(error.localizedDescription); "
+                    + "engineObservedOwnerQueryCount=\(ownerCount); "
+                    + "engineObservedSourceQueryCount=\(sourceCount)"
+            )
+        }
+
+        if context.mode == .publicCaptureBoundContract,
+           !invocation.publicWrongFrameContractKAT {
+            guard let profile = context.captureFrameSeal?["sourceControlProfile"]
+                    as? String,
+                  (profile == "success" && status == "complete")
+                    || (profile == "blocked" && status == "blocked") else {
+                throw AuthorizedSourceProbeError(
+                    message: "STOP_PREEXECUTION_CAPABILITY: public source result does not match its C fixture profile"
+                )
+            }
+        }
+
+        if context.expectedFrame != nil {
+            guard !(nativeQueryReceiptPayload is NSNull) else {
+                throw AuthorizedSourceProbeError(
+                    message: "STOP_PREEXECUTION_CAPABILITY: capture-bound source result lacks its native query receipt"
+                )
+            }
+        } else {
+            guard nativeQueryReceiptPayload is NSNull else {
+                throw AuthorizedSourceProbeError(
+                    message: "STOP_PREEXECUTION_CAPABILITY: diagnostic source result unexpectedly carries capture authority"
+                )
+            }
         }
 
         try context.validateCurrentInputs(expectOutputs: false, status: nil)
         let reportSchema = status == "complete"
-            ? AuthorizedSourceProbeContext.completeReportSchema
-            : AuthorizedSourceProbeContext.blockedReportSchema
+            ? context.activeCompleteReportSchema
+            : context.activeBlockedReportSchema
         let report = [
             "schema": reportSchema,
             "method": AuthorizedSourceProbeContext.method,
@@ -1824,14 +2344,45 @@ enum AuthorizedSourceProbeRunner {
             file: reportFile,
             schema: reportSchema
         )
-        let currentImage = try AuthorizedSourceProbeContext.loadedEngineImage()
+        let currentImage = try context.validateCurrentInputs(
+            expectOutputs: true,
+            status: status,
+            closureExpected: false
+        )
+        let currentReport = try AuthorizedSourceProbeContext.readBoundFile(
+            context.reportRole.destination,
+            label: "authorized public report before closure",
+            exactMode: AuthorizedSourceProbeContext.fileMode
+        )
         guard AuthorizedSourceProbeContext.sameArtifact(
-                currentImage.artifact,
-                context.loadedDylib.artifact
-              ), currentImage.url.path == context.loadedDylib.url.path else {
+            currentReport.artifact,
+            reportFile.artifact
+        ) else {
             throw AuthorizedSourceProbeError(
-                message: "STOP_PREEXECUTION_CAPABILITY: loaded engine drifted before closure"
+                message: "STOP_PREEXECUTION_CAPABILITY: public report drifted before closure"
             )
+        }
+        if status == "complete" {
+            for (role, label) in [
+                (context.detailsRole, "authorized private details before closure"),
+                (context.planRole, "authorized private plan before closure"),
+            ] {
+                let current = try AuthorizedSourceProbeContext.readBoundFile(
+                    role.destination,
+                    label: label,
+                    exactMode: AuthorizedSourceProbeContext.fileMode
+                )
+                guard let record = privateRecords.first(where: {
+                    $0["role"] as? String == role.role
+                }), AuthorizedSourceProbeContext.sameArtifact(
+                    current.artifact,
+                    record
+                ) else {
+                    throw AuthorizedSourceProbeError(
+                        message: "STOP_PREEXECUTION_CAPABILITY: \(role.role) drifted before closure"
+                    )
+                }
+            }
         }
         let graphRecords: [Any] = [reportRecord] + privateRecords
         let privateCanonical = try canonicalJSON(privateRecords)
@@ -1873,24 +2424,26 @@ enum AuthorizedSourceProbeRunner {
         let closureURL = URL(
             fileURLWithPath: "\(context.runDirectory.path)/closure.json"
         )
-        try writeExclusive(closureData, to: closureURL, mode: AuthorizedSourceProbeContext.fileMode)
-        let closureFile = try AuthorizedSourceProbeContext.readBoundFile(
-            closureURL,
-            label: "authorized method closure",
-            exactMode: AuthorizedSourceProbeContext.fileMode
-        )
-        try context.validateCurrentInputs(expectOutputs: true, status: status)
-
+        let closureArtifact: [String: Any] = [
+            "byteCount": closureData.count,
+            "sha256": digest(closureData),
+        ]
         let summary: [String: Any] = [
             "schema": "swan-song-authorized-method-closure-summary-v1",
             "method": AuthorizedSourceProbeContext.method,
             "status": status,
             "nonce": context.nonce,
-            "closure": closureFile.artifact,
+            "closure": closureArtifact,
             "commercialEvidenceAuthorized": status == "complete"
                 && context.commercialEvidenceAuthorized,
         ]
-        FileHandle.standardOutput.write(try encodedJSON(summary))
+        let summaryData = try encodedJSON(summary)
+        try writeExclusive(
+            closureData,
+            to: closureURL,
+            mode: AuthorizedSourceProbeContext.fileMode
+        )
+        FileHandle.standardOutput.write(summaryData)
     }
 
     private static func boundedWrite(_ data: Data, role: AuthorizedOutputRole) throws {

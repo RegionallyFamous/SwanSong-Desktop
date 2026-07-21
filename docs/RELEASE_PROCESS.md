@@ -5,20 +5,30 @@ must not receive the Developer ID private key or notarization credentials.
 
 ## One-time signing setup
 
-Install a valid **Developer ID Application** identity with its private key, then
-store Apple notarization credentials interactively:
+Install a valid **Developer ID Application** identity with its private key.
+For unattended releases, keep an App Store Connect API key in a private,
+owner-only path outside this repository and pass only its path and public
+identifiers to the one-shot release command. This avoids login-Keychain
+password prompts. A named Keychain profile remains available for interactive
+releases:
 
 ```sh
 xcrun notarytool store-credentials swan-song-notary
 ```
 
-The credential is stored in Keychain; it is never committed or passed to an
-agent, environment file, or build log.
+The credential is stored in Keychain; it is never committed, copied into the
+working tree, placed in an environment file, or written to a build log.
 
-`release-app.sh` validates that named profile with Apple's notarization service
-before it creates a sealed worktree or compiles either architecture. If the
-profile is missing, locked, or revoked, restore it first; the release stops in
-seconds instead of wasting a complete build.
+`release-app.sh` validates the selected direct key or named profile with
+Apple's notarization service before it creates a sealed worktree or compiles
+either architecture. If the credential is missing, locked, unreadable, or
+revoked, the release stops in seconds instead of wasting a complete build.
+
+Install the two production Developer ID profiles named `SwanSong Developer ID
+0.7` and `SwanSong Engine Developer ID 0.7`. Both authorize the macOS App Group
+`3J8H48TP7P.com.regionallyfamous.swansong`; the engine service identifier is a
+child of that group. The build rejects a profile made for a different signing
+certificate, even when its name and bundle ID look correct.
 
 Provision the Sparkle EdDSA private seed once as the encrypted GitHub Actions
 repository secret `SPARKLE_ED25519_PRIVATE_KEY`. Commit only the matching
@@ -92,7 +102,13 @@ not routine release metadata.
    ```sh
    ./Scripts/check-sparkle-configuration.sh .build/app/SwanSong.app
    ./Scripts/check-sparkle-framework.sh .build/app/SwanSong.app
+   ./Scripts/check-isolated-engine-service.sh .build/app/SwanSong.app
    ```
+
+   The last check launches the actual signed bundle through Launch Services,
+   opens an included public test fixture, confirms the sandboxed XPC process
+   starts, and waits for durable meaningful-video evidence. It does not depend
+   on debug-only screenshot hooks.
 
    Run the complete Swift/XCTest package lane with full Xcode selected because
    Command Line Tools alone may not provide XCTest:
@@ -129,13 +145,20 @@ not routine release metadata.
 
    ```sh
    SWAN_NOTARIZE=1 \
-   SWAN_NOTARY_PROFILE=swan-song-notary \
+   SWAN_NOTARY_KEY=/private/path/AuthKey_KEYID.p8 \
+   SWAN_NOTARY_KEY_ID=KEYID \
+   SWAN_NOTARY_ISSUER=00000000-0000-0000-0000-000000000000 \
    SWAN_SDK_SOURCE_REPOSITORY=/path/to/swansong-sdk \
    ./Scripts/release-app.sh
    ```
 
+   Before the long build, `selftest-notarization-credentials.sh` proves both
+   supported credential modes reach `notarytool` intact and that mixed or
+   incomplete settings fail closed.
+
 8. Inspect `dist/`: the universal ZIP, corresponding-source archive,
-   `SHA256SUMS.txt`, and release manifest must agree with the tag. The source
+   deterministic SPDX 2.3 SBOM, `SHA256SUMS.txt`, and release manifest must
+   agree with the tag. The source
    archive gate must also confirm that the sanitized ares tree and exact locked
    Sparkle source are present without Git metadata; the Sparkle source must
    include its license, package manifest, and public header. Its Python 3
@@ -171,6 +194,7 @@ not routine release metadata.
    ./Scripts/verify-release-artifacts.sh \
      --archive dist/SwanSong-X.Y.Z-macOS-universal.zip \
      --source-archive dist/SwanSong-X.Y.Z-source.tar.xz \
+     --sbom dist/SwanSong-X.Y.Z.spdx.json \
      --manifest dist/SwanSong-X.Y.Z-release.json \
      --checksums dist/SHA256SUMS.txt \
      --app .build/app/SwanSong.app
@@ -197,7 +221,7 @@ not routine release metadata.
     checksum, manifest, Developer ID, notarization, Gatekeeper, architecture,
     and source-provenance verification before updating the feed.
     Manually run **Publish Sparkle appcast** from GitHub Actions on `main`. It
-    downloads all four public artifacts, resolves the pinned Sparkle signer,
+    downloads all five public artifacts, resolves the pinned Sparkle signer,
     and calls the tracked publisher with the masked repository secret. The
     publisher reruns the full artifact verifier, signs the exact published app
     archive and feed through standard input, verifies both signatures with
@@ -209,6 +233,7 @@ not routine release metadata.
     ./Scripts/publish-sparkle-appcast.sh \
       --archive dist/SwanSong-X.Y.Z-macOS-universal.zip \
       --source-archive dist/SwanSong-X.Y.Z-source.tar.xz \
+      --sbom dist/SwanSong-X.Y.Z.spdx.json \
       --manifest dist/SwanSong-X.Y.Z-release.json \
       --checksums dist/SHA256SUMS.txt \
       --release-tag vX.Y.Z \
@@ -216,7 +241,9 @@ not routine release metadata.
       --release-notes docs/releases/appcast/X.Y.Z.html
     ```
 
-    Use `--channel beta` only for a GitHub prerelease. Review version/build,
+    Use `--channel beta` only for a GitHub prerelease. Use `--rollout staged`
+    for an ordinary seven-day stable rollout and `--rollout critical` only for
+    an urgent security release. Review version/build,
     minimum macOS, archive byte length, release notes, enclosure signature,
     feed signature, and enclosure URL. Every enclosure must be immutable and
     exact-tagged:
@@ -249,6 +276,7 @@ not routine release metadata.
    ```sh
    ./Scripts/install-release-local.sh \
      --source-archive /path/to/SwanSong-X.Y.Z-source.tar.xz \
+     --sbom /path/to/SwanSong-X.Y.Z.spdx.json \
      --manifest /path/to/SwanSong-X.Y.Z-release.json \
      --checksums /path/to/SHA256SUMS.txt \
      /path/to/SwanSong-X.Y.Z-macOS-universal.zip

@@ -78,7 +78,7 @@ runtime, and app-payload checks reject a missing, modified, linked, extra, or
 malformed payload. The GPLv3 text, notices, and corresponding source location
 ship beside them under `Resources/YokoiHardware`.
 
-The `0.2.0-prototype.1` payload corresponds to SwanSong Core commit
+The shipped `0.2.0-prototype.1` payload corresponds to SwanSong Core commit
 `94e9a1ae3d09f8d9eab776d36296144e85c72f1d`. Its manifest links that immutable
 source tree, and `SWAN_RELEASE_BUILD=1` requires the source-publication gate to
 remain explicitly unlocked.

@@ -25,6 +25,7 @@
 - [[Build and Test]]
 - [[Signing and Notarization]]
 - [[Release Gates]]
+- [[0.7 Release Testing]]
 - [[0.6 Release Testing]]
 - [[0.5 Release Testing]]
 - [[0.4 Beta Testing]]

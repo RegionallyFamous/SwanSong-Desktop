@@ -46,7 +46,8 @@ BootFriend. They are not linked into SwanSong and contain no original Bandai
 firmware or commercial game data. Their complete GPLv3 license, notices,
 verified artifact manifest, and corresponding-source location are included at
 `Resources/YokoiHardware`. The corresponding Yokoi source is pinned to
-SwanSong Core revision `94e9a1ae3d09f8d9eab776d36296144e85c72f1d`.
+SwanSong Core revision
+`94e9a1ae3d09f8d9eab776d36296144e85c72f1d`.
 
 ## Stack-less Just-In-Time compiler (SLJIT)
 

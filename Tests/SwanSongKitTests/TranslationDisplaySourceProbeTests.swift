@@ -487,6 +487,10 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
                 )
             )
         let queryReceipt = try XCTUnwrap(captureBoundResult.nativeQueryReceipt)
+        XCTAssertEqual(
+            queryReceipt.observationSource,
+            "engine-session-provenance-query-entry-v1"
+        )
         XCTAssertEqual(queryReceipt.stages, [
             .frameValidated,
             .ownerQueryStarted,
@@ -497,13 +501,21 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         XCTAssertEqual(queryReceipt.expectedNativeFrameSHA256, checkpoint.sha256)
         XCTAssertEqual(queryReceipt.actualNativeFrameNumberBeforeQueries, expectedFrame.number)
         XCTAssertEqual(queryReceipt.actualNativeFrameSHA256BeforeQueries, checkpoint.sha256)
-        XCTAssertEqual(queryReceipt.firstOwnerQuerySequencePosition, 2)
-        XCTAssertEqual(queryReceipt.firstSourceQuerySequencePosition, 3)
+        XCTAssertEqual(queryReceipt.firstOwnerEngineQuerySequence, 1)
+        XCTAssertEqual(queryReceipt.firstSourceEngineQuerySequence, 2)
+        XCTAssertEqual(queryReceipt.ownerQueryCount, 1)
+        XCTAssertEqual(queryReceipt.engineObservedQueryEntries.first?.kind, .owner)
+        XCTAssertTrue(
+            queryReceipt.engineObservedQueryEntries.dropFirst().allSatisfy {
+                $0.kind == .source
+            }
+        )
         XCTAssertEqual(queryReceipt.actualNativeFrameNumberAfterQueries, expectedFrame.number)
         XCTAssertEqual(queryReceipt.actualNativeFrameSHA256AfterQueries, checkpoint.sha256)
         XCTAssertGreaterThan(queryReceipt.sourceQueryCount, 0)
         XCTAssertFalse(FileManager.default.fileExists(atPath: analysisURL.path))
 
+        var wrongFrameQuerySnapshot = EngineDisplayProvenanceQuerySnapshot(entries: [])
         XCTAssertThrowsError(try TranslationDisplaySourceProbe.runCaptureBoundAuthorized(
             project: project,
             role: .original,
@@ -514,15 +526,23 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
             expectedFrame: TranslationDisplaySourceExpectedFrame(
                 checkpoint: checkpoint,
                 nativeFrameNumber: expectedFrame.number + 1
-            )
+            ),
+            querySnapshotObserver: { wrongFrameQuerySnapshot = $0 }
         )) { error in
-            XCTAssertEqual(
-                error as? TranslationLabError,
-                .invalidRoute(
-                    "STOP_PREEXECUTION_CAPABILITY: authenticated frame mismatch before provenance"
-                )
-            )
+            guard let mismatch = error as?
+                    TranslationDisplaySourcePreexecutionFrameMismatch else {
+                return XCTFail("expected a typed preexecution frame mismatch")
+            }
+            XCTAssertEqual(mismatch.expectedPlanFrameIndex, 2)
+            XCTAssertEqual(mismatch.actualPlanFrameIndex, 2)
+            XCTAssertEqual(mismatch.expectedNativeFrameNumber, expectedFrame.number + 1)
+            XCTAssertEqual(mismatch.actualNativeFrameNumber, expectedFrame.number)
+            XCTAssertEqual(mismatch.expectedNativeFrameSHA256, checkpoint.sha256)
+            XCTAssertEqual(mismatch.actualNativeFrameSHA256, checkpoint.sha256)
         }
+        XCTAssertTrue(wrongFrameQuerySnapshot.entries.isEmpty)
+        XCTAssertEqual(wrongFrameQuerySnapshot.ownerEntryCount, 0)
+        XCTAssertEqual(wrongFrameQuerySnapshot.sourceEntryCount, 0)
         XCTAssertFalse(FileManager.default.fileExists(atPath: analysisURL.path))
 
         let wrongFingerprint = TranslationRouteCheckpoint(
@@ -533,6 +553,8 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
             pixelEncoding: checkpoint.pixelEncoding,
             sha256: String(repeating: "0", count: 64)
         )
+        var wrongFingerprintQuerySnapshot =
+            EngineDisplayProvenanceQuerySnapshot(entries: [])
         XCTAssertThrowsError(try TranslationDisplaySourceProbe.runCaptureBoundAuthorized(
             project: project,
             role: .original,
@@ -543,15 +565,23 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
             expectedFrame: TranslationDisplaySourceExpectedFrame(
                 checkpoint: wrongFingerprint,
                 nativeFrameNumber: expectedFrame.number
-            )
+            ),
+            querySnapshotObserver: { wrongFingerprintQuerySnapshot = $0 }
         )) { error in
-            XCTAssertEqual(
-                error as? TranslationLabError,
-                .invalidRoute(
-                    "STOP_PREEXECUTION_CAPABILITY: authenticated frame mismatch before provenance"
-                )
-            )
+            guard let mismatch = error as?
+                    TranslationDisplaySourcePreexecutionFrameMismatch else {
+                return XCTFail("expected a typed preexecution frame mismatch")
+            }
+            XCTAssertEqual(mismatch.expectedPlanFrameIndex, 2)
+            XCTAssertEqual(mismatch.actualPlanFrameIndex, 2)
+            XCTAssertEqual(mismatch.expectedNativeFrameNumber, expectedFrame.number)
+            XCTAssertEqual(mismatch.actualNativeFrameNumber, expectedFrame.number)
+            XCTAssertEqual(mismatch.expectedNativeFrameSHA256, wrongFingerprint.sha256)
+            XCTAssertEqual(mismatch.actualNativeFrameSHA256, checkpoint.sha256)
         }
+        XCTAssertTrue(wrongFingerprintQuerySnapshot.entries.isEmpty)
+        XCTAssertEqual(wrongFingerprintQuerySnapshot.ownerEntryCount, 0)
+        XCTAssertEqual(wrongFingerprintQuerySnapshot.sourceEntryCount, 0)
         XCTAssertFalse(FileManager.default.fileExists(atPath: analysisURL.path))
 
         let report = try TranslationDisplaySourceProbe.run(
@@ -707,6 +737,14 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         XCTAssertTrue(firstSeedReport.executedReadContextsComplete)
         XCTAssertFalse(firstSeedReport.prototypeAuthorized)
         XCTAssertGreaterThan(firstSeedReport.anchorCount, 0)
+        XCTAssertEqual(
+            firstSeedReport.privateSeedSchema,
+            TranslationStaticAnalysisSeed.currentSchema
+        )
+        XCTAssertGreaterThan(firstSeedReport.fetchContextCount, 0)
+        XCTAssertGreaterThan(firstSeedReport.fetchByteCount, 0)
+        XCTAssertFalse(firstSeedReport.fetchContextsSHA256.isEmpty)
+        XCTAssertFalse(firstSeedReport.fetchBytesSHA256.isEmpty)
 
         let seedRoot = projectRoot
             .appendingPathComponent("analysis/swan-song-lab/static-analysis-seeds")
@@ -739,6 +777,11 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         XCTAssertFalse(seed.prototypeAuthorized)
         XCTAssertTrue(seed.anchors.contains { $0.scope == "selected" })
         XCTAssertTrue(seed.anchors.contains { $0.scope == "outsideConsumer" })
+        XCTAssertFalse(try XCTUnwrap(seed.fetchContexts).isEmpty)
+        XCTAssertFalse(try XCTUnwrap(seed.fetchBytes).isEmpty)
+        XCTAssertTrue(seed.anchors.allSatisfy {
+            $0.fetchContextID != nil && $0.fetchContextDigest?.count == 64
+        })
         let publicSeedText = String(
             decoding: try JSONEncoder().encode(firstSeedReport),
             as: UTF8.self
@@ -746,7 +789,8 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         for forbidden in [
             "sourceprobedetailspath", "cartridgerange", "lowerbound", "upperbound",
             "immediatecaller", "callersegment", "operandsegment", "mapperwindow",
-            "mapperbank", "resolvedmapperapertureoperand", projectRoot.path.lowercased(),
+            "mapperbank", "resolvedmapperapertureoperand", "fetchcontextid",
+            "fetchcontextdigest", projectRoot.path.lowercased(),
         ] {
             XCTAssertFalse(publicSeedText.contains(forbidden), forbidden)
         }
@@ -865,6 +909,114 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
             $0.directoryURL == artifact.directoryURL
         })
         XCTAssertFalse(tampered.isIntact)
+    }
+
+    func testCaptureBoundBlockedProbeRetainsEngineEntryReceiptWithoutPublishing() throws {
+        let availability = try EngineSession()
+        guard availability.backendName == "ares",
+              availability.capabilities.contains(.displaySourceProvenance),
+              availability.capabilities.contains(.displaySourceComponentSelection),
+              availability.capabilities.contains(.executedSourceReadContext) else {
+            throw XCTSkip("requires the live ABI 9 ares display-source provenance engine")
+        }
+
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "swan-source-probe-blocked-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        defer { try? FileManager.default.removeItem(at: root) }
+        let projectRoot = root.appendingPathComponent(
+            "toolkit/projects/fixture",
+            isDirectory: true
+        )
+        for relativePath in ["rom", "build"] {
+            try FileManager.default.createDirectory(
+                at: projectRoot.appendingPathComponent(relativePath, isDirectory: true),
+                withIntermediateDirectories: true
+            )
+        }
+        let toolkit = projectRoot.deletingLastPathComponent().deletingLastPathComponent()
+        try FileManager.default.createDirectory(
+            at: toolkit.appendingPathComponent("bin", isDirectory: true),
+            withIntermediateDirectories: true
+        )
+        try Data("#!/usr/bin/env node\n".utf8).write(
+            to: toolkit.appendingPathComponent("bin/wstrans.mjs")
+        )
+        let projectJSON = #"{"game":{"title":"Blocked Source Probe Fixture","platform":"WonderSwan Color","sourceLanguage":"ja","targetLanguage":"en"},"rom":{"original":"rom/original.wsc","patched":"build/patched.wsc"}}"#
+        try Data(projectJSON.utf8).write(
+            to: projectRoot.appendingPathComponent("project.json")
+        )
+        let repository = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+        let fixtureROM = repository.appendingPathComponent(
+            "testroms/swan-song/display_provenance/source_lineage_blocked.wsc"
+        )
+        for relativePath in ["rom/original.wsc", "build/patched.wsc"] {
+            try FileManager.default.copyItem(
+                at: fixtureROM,
+                to: projectRoot.appendingPathComponent(relativePath)
+            )
+        }
+
+        let project = try TranslationProject(projectDirectory: projectRoot)
+        let plan = TranslationFrameInputPlan(
+            totalFrames: 3,
+            events: [TranslationFrameInputPlanEvent(frameIndex: 0, inputs: [])]
+        )
+        let expectedFrame = try replayedFrame(
+            project: project,
+            role: .original,
+            plan: plan,
+            frameIndex: 2
+        )
+        let checkpoint = try TranslationRouteCheckpoint(
+            frameIndex: 2,
+            frame: expectedFrame
+        )
+        var finalSnapshot = EngineDisplayProvenanceQuerySnapshot(entries: [])
+        XCTAssertThrowsError(try TranslationDisplaySourceProbe.runCaptureBoundAuthorized(
+            project: project,
+            role: .original,
+            plan: plan,
+            frameIndex: 2,
+            rectangle: EngineDisplayRectangle(x: 0, y: 0, width: 1, height: 1),
+            components: [.raster],
+            expectedFrame: TranslationDisplaySourceExpectedFrame(
+                checkpoint: checkpoint,
+                nativeFrameNumber: expectedFrame.number
+            ),
+            querySnapshotObserver: { finalSnapshot = $0 }
+        )) { error in
+            guard let blocked = error
+                as? TranslationDisplaySourceCaptureBoundBlockedDiagnostic else {
+                return XCTFail("expected capture-bound blocked diagnostic, got \(error)")
+            }
+            XCTAssertEqual(blocked.diagnostic.errorCode, "blocked-leaf-lineage")
+            XCTAssertEqual(
+                blocked.nativeQueryReceipt.observationSource,
+                "engine-session-provenance-query-entry-v1"
+            )
+            XCTAssertEqual(blocked.nativeQueryReceipt.ownerQueryCount, 1)
+            XCTAssertGreaterThan(blocked.nativeQueryReceipt.sourceQueryCount, 0)
+            XCTAssertEqual(
+                blocked.nativeQueryReceipt.engineObservedQueryEntries,
+                finalSnapshot.entries
+            )
+            XCTAssertEqual(blocked.nativeQueryReceipt.stages, [
+                .frameValidated,
+                .ownerQueryStarted,
+                .sourceQueryStarted,
+                .frameRevalidated,
+            ])
+        }
+        XCTAssertEqual(finalSnapshot.ownerEntryCount, 1)
+        XCTAssertGreaterThan(finalSnapshot.sourceEntryCount, 0)
+        XCTAssertFalse(FileManager.default.fileExists(
+            atPath: projectRoot.appendingPathComponent("analysis").path
+        ))
     }
 
     private func blockedDiagnosticFixtureTraces() throws -> [EngineDisplaySourceTrace] {

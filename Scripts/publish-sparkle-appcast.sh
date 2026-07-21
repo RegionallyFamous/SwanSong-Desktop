@@ -16,12 +16,14 @@ ARCHIVE=
 SOURCE_ARCHIVE=
 MANIFEST=
 CHECKSUMS=
+SBOM=
 RELEASE_TAG=
 CHANNEL=
 RELEASE_NOTES=
+ROLLOUT=staged
 
 usage() {
-  echo "usage: $0 --archive RELEASE.zip --source-archive SOURCE.tar.xz --manifest RELEASE.json --checksums SHA256SUMS.txt --release-tag vX.Y.Z --channel stable|beta --release-notes NOTES.html [--feed updates/appcast.xml]" >&2
+  echo "usage: $0 --archive RELEASE.zip --source-archive SOURCE.tar.xz --sbom RELEASE.spdx.json --manifest RELEASE.json --checksums SHA256SUMS.txt --release-tag vX.Y.Z --channel stable|beta --rollout staged|critical --release-notes NOTES.html [--feed updates/appcast.xml]" >&2
   exit 64
 }
 
@@ -35,9 +37,11 @@ while [ "$#" -gt 0 ]; do
     --archive) [ "$#" -ge 2 ] || usage; ARCHIVE=$2; shift 2 ;;
     --source-archive) [ "$#" -ge 2 ] || usage; SOURCE_ARCHIVE=$2; shift 2 ;;
     --manifest) [ "$#" -ge 2 ] || usage; MANIFEST=$2; shift 2 ;;
+    --sbom) [ "$#" -ge 2 ] || usage; SBOM=$2; shift 2 ;;
     --checksums) [ "$#" -ge 2 ] || usage; CHECKSUMS=$2; shift 2 ;;
     --release-tag) [ "$#" -ge 2 ] || usage; RELEASE_TAG=$2; shift 2 ;;
     --channel) [ "$#" -ge 2 ] || usage; CHANNEL=$2; shift 2 ;;
+    --rollout) [ "$#" -ge 2 ] || usage; ROLLOUT=$2; shift 2 ;;
     --release-notes) [ "$#" -ge 2 ] || usage; RELEASE_NOTES=$2; shift 2 ;;
     --feed) [ "$#" -ge 2 ] || usage; FEED=$2; shift 2 ;;
     *) usage ;;
@@ -46,11 +50,13 @@ done
 
 [ -f "$ARCHIVE" ] || fail "release archive not found"
 [ -f "$SOURCE_ARCHIVE" ] || fail "source archive not found"
+[ -f "$SBOM" ] || fail "SBOM not found"
 [ -f "$MANIFEST" ] || fail "release manifest not found"
 [ -f "$CHECKSUMS" ] || fail "release checksums not found"
 [ -f "$RELEASE_NOTES" ] || fail "reviewed appcast release notes not found"
 [ -f "$FEED" ] || fail "tracked appcast not found"
 case "$CHANNEL" in stable|beta) ;; *) usage ;; esac
+case "$ROLLOUT" in staged|critical) ;; *) usage ;; esac
 [ -n "$PRIVATE_KEY" ] \
   || fail "SPARKLE_ED25519_PRIVATE_KEY is required; publication never reads Keychain"
 [ "${#PRIVATE_KEY}" -eq 44 ] \
@@ -70,6 +76,8 @@ MANIFEST_ARCHIVE=$(plutil -extract archive raw "$MANIFEST" 2>/dev/null) \
   || fail "manifest archive is missing"
 MANIFEST_SOURCE=$(plutil -extract sourceArchive raw "$MANIFEST" 2>/dev/null) \
   || fail "manifest sourceArchive is missing"
+MANIFEST_SBOM=$(plutil -extract sbom raw "$MANIFEST" 2>/dev/null) \
+  || fail "manifest sbom is missing"
 [ "$RELEASE_TAG" = "v$VERSION" ] \
   || fail "release tag must exactly match v$VERSION"
 python3 "$SCRIPT_DIR/sparkle_release_notes.py" \
@@ -80,6 +88,8 @@ python3 "$SCRIPT_DIR/sparkle_release_notes.py" \
   || fail "archive filename does not match manifest"
 [ "$(basename -- "$SOURCE_ARCHIVE")" = "$MANIFEST_SOURCE" ] \
   || fail "source archive filename does not match manifest"
+[ "$(basename -- "$SBOM")" = "$MANIFEST_SBOM" ] \
+  || fail "SBOM filename does not match manifest"
 
 TAG_REFS=$(git ls-remote --tags \
   https://github.com/RegionallyFamous/SwanSong-Desktop.git \
@@ -140,6 +150,7 @@ EXISTING_SIGNATURE=$(tr -d '\r\n' <"$EXISTING_SIGNATURE_FILE")
 REMOTE_ROOT="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/$RELEASE_TAG"
 REMOTE_ARCHIVE="$TEMP_ROOT/$MANIFEST_ARCHIVE"
 REMOTE_SOURCE="$TEMP_ROOT/$MANIFEST_SOURCE"
+REMOTE_SBOM="$TEMP_ROOT/$MANIFEST_SBOM"
 REMOTE_MANIFEST="$TEMP_ROOT/$(basename -- "$MANIFEST")"
 REMOTE_CHECKSUMS="$TEMP_ROOT/$(basename -- "$CHECKSUMS")"
 download_asset() {
@@ -153,6 +164,7 @@ download_asset() {
 }
 download_asset "$MANIFEST_ARCHIVE" $((64 * 1024 * 1024))
 download_asset "$MANIFEST_SOURCE" $((64 * 1024 * 1024))
+download_asset "$MANIFEST_SBOM" $((1024 * 1024))
 download_asset "$(basename -- "$MANIFEST")" $((1024 * 1024))
 download_asset "$(basename -- "$CHECKSUMS")" $((64 * 1024))
 
@@ -183,7 +195,8 @@ download_release_metadata \
   || fail "could not read the published GitHub release metadata"
 python3 - "$GITHUB_RELEASE_JSON" "$RELEASE_TAG" "$CHANNEL" \
   "$MANIFEST_ARCHIVE" "$MANIFEST_SOURCE" \
-  "$(basename -- "$MANIFEST")" "$(basename -- "$CHECKSUMS")" <<'PY'
+  "$MANIFEST_SBOM" "$(basename -- "$MANIFEST")" \
+  "$(basename -- "$CHECKSUMS")" <<'PY'
 import json
 import sys
 
@@ -197,7 +210,13 @@ if release.get("draft") is not False:
 if release.get("prerelease") is not (channel == "beta"):
     raise SystemExit("GitHub prerelease flag does not match the appcast channel")
 assets = release.get("assets", [])
-limits = [64 * 1024 * 1024, 64 * 1024 * 1024, 1024 * 1024, 64 * 1024]
+limits = [
+    64 * 1024 * 1024,
+    64 * 1024 * 1024,
+    1024 * 1024,
+    1024 * 1024,
+    64 * 1024,
+]
 if len(expected_assets) != len(limits):
     raise SystemExit("internal GitHub asset limit mismatch")
 for expected, maximum in zip(expected_assets, limits):
@@ -213,6 +232,8 @@ cmp -s "$ARCHIVE" "$REMOTE_ARCHIVE" \
   || fail "published GitHub archive differs from the verified local archive"
 cmp -s "$SOURCE_ARCHIVE" "$REMOTE_SOURCE" \
   || fail "published GitHub source differs from the verified local source"
+cmp -s "$SBOM" "$REMOTE_SBOM" \
+  || fail "published GitHub SBOM differs from the verified local SBOM"
 cmp -s "$MANIFEST" "$REMOTE_MANIFEST" \
   || fail "published GitHub manifest differs from the verified local manifest"
 cmp -s "$CHECKSUMS" "$REMOTE_CHECKSUMS" \
@@ -221,6 +242,7 @@ cmp -s "$CHECKSUMS" "$REMOTE_CHECKSUMS" \
 "$SCRIPT_DIR/verify-release-artifacts.sh" \
   --archive "$REMOTE_ARCHIVE" \
   --source-archive "$REMOTE_SOURCE" \
+  --sbom "$REMOTE_SBOM" \
   --manifest "$REMOTE_MANIFEST" \
   --checksums "$REMOTE_CHECKSUMS" >/dev/null
 EXTRACTED="$TEMP_ROOT/extracted"
@@ -229,6 +251,7 @@ ditto -x -k "$REMOTE_ARCHIVE" "$EXTRACTED"
 "$SCRIPT_DIR/verify-release-artifacts.sh" \
   --archive "$REMOTE_ARCHIVE" \
   --source-archive "$REMOTE_SOURCE" \
+  --sbom "$REMOTE_SBOM" \
   --manifest "$REMOTE_MANIFEST" \
   --checksums "$REMOTE_CHECKSUMS" \
   --app "$EXTRACTED/SwanSong.app" >/dev/null
@@ -255,6 +278,7 @@ UNSIGNED_FEED="$TEMP_ROOT/appcast.xml"
   --release-tag "$RELEASE_TAG" \
   --published-at "$PUBLISHED_AT" \
   --channel "$CHANNEL" \
+  --rollout "$ROLLOUT" \
   --release-notes "$RELEASE_NOTES"
 
 sign_with_private_key --disable-signing-warning \
@@ -267,6 +291,7 @@ FEED_SIGNATURE_FILE="$TEMP_ROOT/appcast-signature.txt"
   --expected-version "$VERSION" \
   --expected-build "$BUILD" \
   --expected-channel "$CHANNEL" \
+  --expected-rollout "$ROLLOUT" \
   --expected-archive-signature "$ARCHIVE_SIGNATURE" \
   --expected-release-notes "$RELEASE_NOTES" \
   --content-output "$FEED_CONTENT" \

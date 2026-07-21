@@ -98,10 +98,16 @@ fi
 # Upstream includes convenience firmware for many systems. SwanSong builds
 # WonderSwan only and supplies Open IPL, so these are neither required build
 # inputs nor corresponding source.
-find "$DESTINATION/ares/System" "$DESTINATION/mia/Firmware" \
-  -type f \
-  \( -iname '*.rom' -o -iname '*.srom' -o -iname '*.mrom' \) \
-  -delete
+for firmware_directory in \
+  "$DESTINATION/ares/System" \
+  "$DESTINATION/mia/Firmware"; do
+  if [ -d "$firmware_directory" ]; then
+    find "$firmware_directory" \
+      -type f \
+      \( -iname '*.rom' -o -iname '*.srom' -o -iname '*.mrom' \) \
+      -delete
+  fi
+done
 if find "$DESTINATION" -type f \
   \( -iname '*.rom' -o -iname '*.srom' -o -iname '*.mrom' \
      -o -iname '*.bios' -o -iname '*.bin' \) \

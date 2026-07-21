@@ -16,6 +16,7 @@ struct AuthorizedCapturePlanInvocation {
     let runDirectoryURL: URL
     let blockedPrefix: String
     let publicDiagnosticKAT: Bool
+    let publicSourceProbeCaptureKAT: String?
     let commercialAuthorizedCapture: Bool
     let commercialContractKAT: Bool
 }
@@ -207,13 +208,20 @@ private struct AuthorizedCapturePlanContext {
     static func prepare(_ invocation: AuthorizedCapturePlanInvocation) throws -> Self {
         let modeCount = [
             invocation.publicDiagnosticKAT,
+            invocation.publicSourceProbeCaptureKAT != nil,
             invocation.commercialAuthorizedCapture,
             invocation.commercialContractKAT,
         ].filter { $0 }.count
         guard modeCount == 1 else {
             throw stop("authorized capture-plan requires exactly one execution mode")
         }
-        if invocation.commercialAuthorizedCapture || invocation.commercialContractKAT {
+        if let profile = invocation.publicSourceProbeCaptureKAT,
+           profile != "success" && profile != "blocked" {
+            throw stop("the public source capture profile is not exact")
+        }
+        if invocation.commercialAuthorizedCapture
+            || invocation.commercialContractKAT
+            || invocation.publicSourceProbeCaptureKAT != nil {
             guard invocation.blockedPrefix == "none" else {
                 throw stop("commercial capture does not authorize a closable blocked prefix")
             }
@@ -306,6 +314,7 @@ private struct AuthorizedCapturePlanContext {
         let validated = try validateAuthorization(
             authorization,
             authorizationFile: authorizationFile,
+            capability: capability,
             capabilityFile: capabilityFile,
             intakeCapability: intakeCapability,
             intakeCapabilityFile: intakeCapabilityFile,
@@ -622,6 +631,7 @@ private struct AuthorizedCapturePlanContext {
     private static func validateAuthorization(
         _ value: [String: Any],
         authorizationFile: CaptureBoundFile,
+        capability: [String: Any],
         capabilityFile: CaptureBoundFile,
         intakeCapability: [String: Any],
         intakeCapabilityFile: CaptureBoundFile,
@@ -648,6 +658,7 @@ private struct AuthorizedCapturePlanContext {
         let nonce = try string(value["nonce"], label: "A nonce")
         let commercial = invocation.commercialAuthorizedCapture
         let commercialContract = invocation.commercialContractKAT
+        let sourceCaptureProfile = invocation.publicSourceProbeCaptureKAT
         let commercialGraphMode = commercial || commercialContract
         let expectedAuthorizationSchema = commercial
             ? commercialAuthorizationSchema
@@ -658,7 +669,9 @@ private struct AuthorizedCapturePlanContext {
             ? "commercial-evidence"
             : (commercialContract
                 ? "public-commercial-contract-validation"
-                : "public-fixture-validation")
+                : (sourceCaptureProfile != nil
+                    ? "public-source-probe-capture-validation"
+                    : "public-fixture-validation"))
         let expectedFault = invocation.blockedPrefix == "original-complete"
             ? "after-original-complete" : nil
         guard try string(value["schema"], label: "A schema")
@@ -825,6 +838,42 @@ private struct AuthorizedCapturePlanContext {
                     throw stop("commercial-contract A is not the pinned distinct-ROM public fixture")
                 }
             }
+        } else if let sourceCaptureProfile {
+            try validateIsolatedEmptyPersistence(request["persistence"])
+            let publicControls = try object(
+                capability["publicControls"],
+                label: "C public controls"
+            )
+            let successControl = try object(
+                publicControls["displaySourceProbe"],
+                label: "C success source control"
+            )
+            let blockedControl = try object(
+                publicControls["blockedDisplaySourceProbe"],
+                label: "C blocked source control"
+            )
+            let selectedControl = sourceCaptureProfile == "success"
+                ? successControl : blockedControl
+            let expectedFixture = try object(
+                selectedControl["fixture"],
+                label: "C selected source fixture"
+            )
+            guard sameArtifact(
+                    project.artifact,
+                    try object(selectedControl["project"], label: "C source project")
+                  ),
+                  sameArtifact(
+                    plan.artifact,
+                    try object(selectedControl["plan"], label: "C source plan")
+                  ),
+                  sameArtifact(original.artifact, expectedFixture),
+                  sameArtifact(patched.artifact, expectedFixture),
+                  projectROMs["original"] as? String == "rom/original.wsc",
+                  projectROMs["patched"] as? String == "build/patched.wsc" else {
+                throw stop(
+                    "source-capture A is not the exact C-bound success or blocked fixture"
+                )
+            }
         } else {
             guard project.sha256 == publicProjectSHA256,
                   plan.sha256 == publicPlanSHA256,
@@ -866,6 +915,23 @@ private struct AuthorizedCapturePlanContext {
                              label: "contract A M0 path") == methodFile.url.path else {
                 throw stop("commercial-contract A does not bind the exact native arguments")
             }
+        } else if let sourceCaptureProfile {
+            try exactKeys(arguments, [
+                "baseCapabilityReceiptPath", "bootstrapCapabilityPath",
+                "captureIntakeCapabilityReceiptPath", "faultInjection",
+                "maximumPlanFrames", "publicDiagnosticKAT",
+                "publicSourceProbeCaptureKAT",
+            ], label: "source-capture A arguments")
+            guard !(try boolean(
+                    arguments["publicDiagnosticKAT"],
+                    label: "source-capture public diagnostic boundary"
+                  )),
+                  try string(
+                    arguments["publicSourceProbeCaptureKAT"],
+                    label: "source-capture profile"
+                  ) == sourceCaptureProfile else {
+                throw stop("source-capture A does not bind its exact native profile")
+            }
         } else {
             guard try boolean(arguments["publicDiagnosticKAT"], label: "A public KAT") else {
                 throw stop("A does not bind the exact public execution mode")
@@ -880,7 +946,12 @@ private struct AuthorizedCapturePlanContext {
               !planEvents.isEmpty else {
             throw stop("the authorized capture plan is outside its exact frame contract")
         }
-        if !commercial && (planFrames != 30 || planEvents.count != 1) {
+        if sourceCaptureProfile != nil
+            && (planFrames != 3 || planEvents.count != 1) {
+            throw stop("the public source capture plan is not the exact 3-frame fixture")
+        }
+        if !commercial && sourceCaptureProfile == nil
+            && (planFrames != 30 || planEvents.count != 1) {
             throw stop("the public capture plan is not the pinned 30-frame fixture")
         }
         if commercialGraphMode {

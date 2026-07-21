@@ -3,9 +3,9 @@
 Most problems have a quick fix. Make sure you have the newest SwanSong release,
 then start with the answers below. SwanSong requires macOS 14 or newer.
 
-The public download is currently 0.6.1. It includes the complete SDK 0.5
-Studio, expanded Story Forge, capture-bound Translation Lab automation, and
-Cartridge Lab alongside the private player and library.
+The public download is currently 0.7.0. It includes the private player and
+library, complete SDK 0.5 Studio, Story Forge, deeper Translation Lab source
+provenance, Safe Mode, and a privacy-safe Support Bundle.
 
 <!-- homebrew-catalog-status: published -->
 
@@ -23,6 +23,22 @@ Games saved in your library, saves, states, and preferences live in
 `~/Library/Application Support/SwanSong/`. Translation Lab keeps its evidence
 inside the private project you link. Back up important saves before deleting
 anything.
+
+### SwanSong did not finish opening. How do I use Safe Mode?
+
+After two interrupted launches, SwanSong offers Safe Mode automatically. You
+can also choose **Help > Restart in Safe Mode**. Safe Mode skips controllers,
+local automation, background update work, restored projects, and an initial
+game. Your library and saves stay put. Fix or unlink the troublesome item, then
+choose **Restart Normally** from the banner or Settings.
+
+### What is safe to attach to a bug report?
+
+Open **Help > SwanSong Support**, then choose **Create Support Bundle…**. Review
+the included README before sharing the ZIP. It contains versions, settings,
+component hashes, and recent source-free diagnostics. It deliberately excludes
+games, saves, states, screenshots, manuscripts, Translation Lab projects,
+private paths, and account information.
 
 ### Does SwanSong go online by itself?
 
@@ -79,14 +95,16 @@ confirmed. Eject the card in Finder before removing it.
 
 ### How do I read my own cartridge?
 
-Open **Hardware > Open Cartridge Lab**. Use a 3.3 V ExtFriend-compatible USB
-serial adapter—never a PC RS-232 cable—and insert the cartridge before powering
-on the WonderSwan. A Color or
+Choose **Cartridge Tools** in the main sidebar, or open **Hardware > Open
+Cartridge Tools**. A USB cable cannot connect directly to a WonderSwan: use a
+3.3 V ExtFriend-compatible EXT-to-USB adapter and a data-capable USB cable—never
+a PC RS-232 cable—and insert the cartridge before powering on. A Color or
 SwanCrystal with Yokoi Boot installed can load the temporary cartridge service,
 create a verified game/save backup, or restore an exact-size save after both
 the Mac warning and A+B on the console.
+The original monochrome WonderSwan cannot use this Yokoi Boot workflow.
 
-If Yokoi Boot is not installed, use Cartridge Lab's **Install Yokoi Boot** tab
+If Yokoi Boot is not installed, use Cartridge Tools' **Set Up Yokoi Boot** tab
 to add the installer to an SD-based flash cartridge. Copying the file does not
 program an arbitrary cartridge; its existing menu must be able to launch
 `.wsc` files and it must provide at least 8 KiB of SRAM. Keep the installer
@@ -105,10 +123,13 @@ Use the repository's issue form and include:
 - the steps that led to the problem; and
 - the exact message you saw.
 
-If a controller or focus problem is hard to explain, turn on **Show testing
+If a controller or focus problem is hard to explain, turn on **Show developer
 tools** in Settings and reproduce it with the focus/input overlay visible.
 Review the exported log before sharing it: it can include the game title,
 digest, controller name, inputs, focus state, and frame timing.
+
+For most reports, prefer the built-in Support Bundle. Share a developer input
+log only when the report specifically needs it and only after reviewing it.
 
 Never upload games, original firmware, saves, save states, private screenshots,
 translation projects, or evidence bundles. For a possible security issue, use

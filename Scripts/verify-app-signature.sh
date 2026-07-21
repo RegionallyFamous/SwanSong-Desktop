@@ -92,6 +92,73 @@ if [ "${SWAN_REQUIRE_DEVELOPER_ID:-0}" = "1" ]; then
     "$APP/Contents/Frameworks/libSwanAresEngine.dylib"
   verify_component "the route runner" \
     "$APP/Contents/Helpers/SwanSongRouteRunner"
+  verify_component "the local MCP client" \
+    "$APP/Contents/Helpers/SwanSongMCP"
+  MCP_IDENTIFIER=$(codesign -dv --verbose=4 \
+    "$APP/Contents/Helpers/SwanSongMCP" 2>&1 \
+    | awk -F= '/^Identifier=/{print $2; exit}')
+  if [ "$MCP_IDENTIFIER" != "com.regionallyfamous.swansong.mcp" ]; then
+    echo "the local MCP client has an unexpected signing identifier" >&2
+    exit 1
+  fi
+  verify_component "the sandboxed engine service" \
+    "$APP/Contents/XPCServices/SwanSongEngineService.xpc"
+  # `--entitlements -` became a human-readable diagnostic in newer codesign
+  # releases. Request the raw plist so the security gate remains stable across
+  # supported macOS/Xcode versions.
+  ENGINE_SERVICE_ENTITLEMENTS=$(codesign -d --entitlements :- \
+    "$APP/Contents/XPCServices/SwanSongEngineService.xpc" 2>/dev/null)
+  if ! printf '%s\n' "$ENGINE_SERVICE_ENTITLEMENTS" \
+    | grep -Fq '<key>com.apple.security.app-sandbox</key>'; then
+    echo "the engine service is not protected by App Sandbox" >&2
+    exit 1
+  fi
+  APP_GROUP=3J8H48TP7P.com.regionallyfamous.swansong
+  APP_ENTITLEMENTS=$(codesign -d --entitlements :- "$APP" 2>/dev/null)
+  for entitlement_set in "$APP_ENTITLEMENTS" "$ENGINE_SERVICE_ENTITLEMENTS"; do
+    if ! printf '%s\n' "$entitlement_set" \
+      | grep -Fq "<string>$APP_GROUP</string>"; then
+      echo "the app and engine service do not share the authorized App Group" >&2
+      exit 1
+    fi
+  done
+  if printf '%s\n' "$APP_ENTITLEMENTS" \
+    | grep -Fq '<key>com.apple.security.app-sandbox</key>'; then
+    echo "the desktop app unexpectedly enables App Sandbox" >&2
+    exit 1
+  fi
+  APP_PROFILE="$APP/Contents/embedded.provisionprofile"
+  ENGINE_PROFILE="$APP/Contents/XPCServices/SwanSongEngineService.xpc/Contents/embedded.provisionprofile"
+  for profile in "$APP_PROFILE" "$ENGINE_PROFILE"; do
+    if [ ! -f "$profile" ] || [ -L "$profile" ]; then
+      echo "the Developer ID bundle is missing a required provisioning profile" >&2
+      exit 1
+    fi
+  done
+  python3 "$SCRIPT_DIR/provisioning-profile.py" verify \
+    --profile "$APP_PROFILE" \
+    --signed-bundle "$APP" \
+    --name "SwanSong Developer ID 0.7" \
+    --application-identifier "3J8H48TP7P.com.regionallyfamous.swansong" \
+    --app-group "$APP_GROUP"
+  python3 "$SCRIPT_DIR/provisioning-profile.py" verify \
+    --profile "$ENGINE_PROFILE" \
+    --signed-bundle "$APP/Contents/XPCServices/SwanSongEngineService.xpc" \
+    --name "SwanSong Engine Developer ID 0.7" \
+    --application-identifier "3J8H48TP7P.3J8H48TP7P.com.regionallyfamous.swansong.engine-service" \
+    --app-group "$APP_GROUP"
+  for forbidden_entitlement in \
+    com.apple.security.network.client \
+    com.apple.security.network.server \
+    com.apple.security.cs.disable-library-validation \
+    com.apple.security.cs.allow-jit \
+    com.apple.security.cs.allow-unsigned-executable-memory; do
+    if printf '%s\n' "$ENGINE_SERVICE_ENTITLEMENTS" \
+      | grep -Fq "<key>$forbidden_entitlement</key>"; then
+      echo "the engine service has forbidden entitlement $forbidden_entitlement" >&2
+      exit 1
+    fi
+  done
   verify_component "Sparkle.framework" \
     "$APP/Contents/Frameworks/Sparkle.framework"
   verify_component "Sparkle Autoupdate" "$SPARKLE_ROOT/Autoupdate"

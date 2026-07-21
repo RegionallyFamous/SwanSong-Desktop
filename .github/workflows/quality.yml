@@ -221,6 +221,7 @@ jobs:
         run: |
           set -eu
           ./Scripts/selftest-ares-source-state.sh
+          ./Scripts/selftest-notarization-credentials.sh
           ./Scripts/selftest-release-build-snapshot.sh
           ./Scripts/selftest-package-release-snapshots.sh
           ./Scripts/selftest-release-artifacts.sh
@@ -253,9 +254,10 @@ jobs:
           fi
           ./Scripts/check-app-payload.sh .build/app/SwanSong.app
           SWAN_REQUIRED_ARCHITECTURES="$required_architectures" \
-            ./Scripts/verify-app-architectures.sh .build/app/SwanSong.app
+          ./Scripts/verify-app-architectures.sh .build/app/SwanSong.app
           ./Scripts/check-sparkle-configuration.sh .build/app/SwanSong.app
           ./Scripts/check-sparkle-framework.sh .build/app/SwanSong.app
+          ./Scripts/check-isolated-engine-service.sh .build/app/SwanSong.app
 
       - name: Run public-fixture compatibility matrix
         if: env.RUN_COMPATIBILITY == 'true'

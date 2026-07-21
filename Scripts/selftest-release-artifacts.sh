@@ -6,14 +6,19 @@ TEMP_ROOT=$(mktemp -d "${TMPDIR:-/tmp}/swan-song-release-selftest.XXXXXX")
 VERSION=9.8.7
 ARCHIVE_NAME="SwanSong-$VERSION-macOS-universal.zip"
 SOURCE_ARCHIVE_NAME="SwanSong-$VERSION-source.tar.xz"
+SBOM_NAME="SwanSong-$VERSION.spdx.json"
 ARCHIVE="$TEMP_ROOT/$ARCHIVE_NAME"
 SOURCE_ARCHIVE="$TEMP_ROOT/$SOURCE_ARCHIVE_NAME"
+SBOM="$TEMP_ROOT/$SBOM_NAME"
 SOURCE_ROOT="$TEMP_ROOT/source-payload/SwanSong-$VERSION-source"
 MANIFEST="$TEMP_ROOT/SwanSong-$VERSION-release.json"
 CHECKSUMS="$TEMP_ROOT/SHA256SUMS.txt"
 APP_EXECUTABLE_HASH=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 ROUTE_RUNNER_HASH=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+MCP_HELPER_HASH=6666666666666666666666666666666666666666666666666666666666666666
+ENGINE_SERVICE_HASH=5555555555555555555555555555555555555555555555555555555555555555
 ENGINE_HASH=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+PRIVACY_MANIFEST_HASH=1212121212121212121212121212121212121212121212121212121212121212
 SPARKLE_FRAMEWORK_HASH=eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 SPARKLE_AUTOUPDATE_HASH=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 SPARKLE_UPDATER_HASH=9999999999999999999999999999999999999999999999999999999999999999
@@ -22,6 +27,16 @@ SPARKLE_DOWNLOADER_HASH=77777777777777777777777777777777777777777777777777777777
 SOURCE_COMMIT=1111111111111111111111111111111111111111
 ARES_COMMIT=2222222222222222222222222222222222222222
 SPARKLE_COMMIT=4444444444444444444444444444444444444444
+
+write_checksums() {
+  archive_checksum=$1
+  source_checksum=$2
+  sbom_checksum=$(shasum -a 256 "$SBOM" | awk '{ print $1 }')
+  printf '%s  %s\n%s  %s\n%s  %s\n' \
+    "$archive_checksum" "$ARCHIVE_NAME" \
+    "$source_checksum" "$SOURCE_ARCHIVE_NAME" \
+    "$sbom_checksum" "$SBOM_NAME" >"$CHECKSUMS"
+}
 
 cleanup() {
   rm -rf "$TEMP_ROOT"
@@ -122,9 +137,28 @@ EOF
     -C "$TEMP_ROOT/source-payload" \
     "SwanSong-$VERSION-source"
   source_hash=$(shasum -a 256 "$SOURCE_ARCHIVE" | awk '{ print $1 }')
+  cat >"$SBOM" <<EOF
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "SwanSong-$VERSION",
+  "documentNamespace": "https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v$VERSION/spdx/$SOURCE_COMMIT",
+  "creationInfo": {"created": "2026-07-20T00:00:00Z", "creators": ["Tool: selftest"]},
+  "packages": [
+    {"SPDXID":"SPDXRef-SwanSong","name":"SwanSong","filesAnalyzed":false},
+    {"SPDXID":"SPDXRef-ares","name":"ares","filesAnalyzed":false},
+    {"SPDXID":"SPDXRef-Sparkle","name":"Sparkle","filesAnalyzed":false},
+    {"SPDXID":"SPDXRef-SwanSongSDK","name":"SDK","filesAnalyzed":false},
+    {"SPDXID":"SPDXRef-YokoiHardware","name":"Yokoi","filesAnalyzed":false}
+  ],
+  "relationships": []
+}
+EOF
+  sbom_hash=$(shasum -a 256 "$SBOM" | awk '{ print $1 }')
   cat >"$MANIFEST" <<EOF
 {
-  "schema": "swan-song-release-v2",
+  "schema": "swan-song-release-v3",
   "version": "$VERSION",
   "build": "42",
   "bundleIdentifier": "com.regionallyfamous.swansong",
@@ -137,7 +171,10 @@ EOF
   "sparkleCommit": "$SPARKLE_COMMIT",
   "appExecutableSHA256": "$APP_EXECUTABLE_HASH",
   "routeRunnerSHA256": "$ROUTE_RUNNER_HASH",
+  "mcpHelperSHA256": "$MCP_HELPER_HASH",
+  "engineServiceSHA256": "$ENGINE_SERVICE_HASH",
   "engineSHA256": "$ENGINE_HASH",
+  "privacyManifestSHA256": "$PRIVACY_MANIFEST_HASH",
   "sparkleVersion": "2.9.4",
   "sparkleFrameworkExecutableSHA256": "$SPARKLE_FRAMEWORK_HASH",
   "sparkleAutoupdateSHA256": "$SPARKLE_AUTOUPDATE_HASH",
@@ -147,12 +184,12 @@ EOF
   "archive": "$ARCHIVE_NAME",
   "sha256": "$archive_hash",
   "sourceArchive": "$SOURCE_ARCHIVE_NAME",
-  "sourceSHA256": "$source_hash"
+  "sourceSHA256": "$source_hash",
+  "sbom": "$SBOM_NAME",
+  "sbomSHA256": "$sbom_hash"
 }
 EOF
-  printf '%s  %s\n%s  %s\n' \
-    "$archive_hash" "$ARCHIVE_NAME" \
-    "$source_hash" "$SOURCE_ARCHIVE_NAME" >"$CHECKSUMS"
+  write_checksums "$archive_hash" "$source_hash"
 }
 
 rewrite_manifest_for_current_source() {
@@ -165,9 +202,7 @@ rewrite_manifest_for_current_source() {
   source_hash=$(shasum -a 256 "$SOURCE_ARCHIVE" | awk '{ print $1 }')
   sed "s/$previous_source_hash/$source_hash/" "$MANIFEST" >"$output"
   archive_hash=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
-  printf '%s  %s\n%s  %s\n' \
-    "$archive_hash" "$ARCHIVE_NAME" \
-    "$source_hash" "$SOURCE_ARCHIVE_NAME" >"$CHECKSUMS"
+  write_checksums "$archive_hash" "$source_hash"
 }
 
 expect_failure() {
@@ -183,6 +218,7 @@ verify_fixture() {
   "$SCRIPT_DIR/verify-release-artifacts.sh" \
     --archive "$ARCHIVE" \
     --source-archive "$SOURCE_ARCHIVE" \
+    --sbom "$SBOM" \
     --manifest "$MANIFEST" \
     --checksums "$CHECKSUMS"
 }
@@ -324,9 +360,7 @@ zip -q -j "$ARCHIVE" "$TEMP_ROOT/Unexpected.txt"
 new_archive_hash=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
 sed "s/$old_archive_hash/$new_archive_hash/" "$MANIFEST" \
   >"$TEMP_ROOT/unsafe-path.json"
-printf '%s  %s\n%s  %s\n' \
-  "$new_archive_hash" "$ARCHIVE_NAME" \
-  "$source_hash" "$SOURCE_ARCHIVE_NAME" >"$CHECKSUMS"
+write_checksums "$new_archive_hash" "$source_hash"
 expect_failure "an unexpected archive path" \
   "$SCRIPT_DIR/verify-release-artifacts.sh" \
     --archive "$ARCHIVE" \
@@ -344,9 +378,7 @@ ditto -c -k --keepParent \
 new_archive_hash=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
 sed "s/$old_archive_hash/$new_archive_hash/" "$MANIFEST" \
   >"$TEMP_ROOT/unsafe-app-root.json"
-printf '%s  %s\n%s  %s\n' \
-  "$new_archive_hash" "$ARCHIVE_NAME" \
-  "$source_hash" "$SOURCE_ARCHIVE_NAME" >"$CHECKSUMS"
+write_checksums "$new_archive_hash" "$source_hash"
 expect_failure "an unexpected app-root payload" \
   "$SCRIPT_DIR/verify-release-artifacts.sh" \
     --archive "$ARCHIVE" \
@@ -364,9 +396,7 @@ ditto -c -k --keepParent \
 new_archive_hash=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
 sed "s/$old_archive_hash/$new_archive_hash/" "$MANIFEST" \
   >"$TEMP_ROOT/unsafe-link.json"
-printf '%s  %s\n%s  %s\n' \
-  "$new_archive_hash" "$ARCHIVE_NAME" \
-  "$source_hash" "$SOURCE_ARCHIVE_NAME" >"$CHECKSUMS"
+write_checksums "$new_archive_hash" "$source_hash"
 expect_failure "an unapproved symbolic-link archive entry" \
   "$SCRIPT_DIR/verify-release-artifacts.sh" \
     --archive "$ARCHIVE" \
@@ -385,9 +415,7 @@ ditto -c -k --keepParent \
 new_archive_hash=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
 sed "s/$old_archive_hash/$new_archive_hash/" "$MANIFEST" \
   >"$TEMP_ROOT/unsafe-sparkle-link.json"
-printf '%s  %s\n%s  %s\n' \
-  "$new_archive_hash" "$ARCHIVE_NAME" \
-  "$source_hash" "$SOURCE_ARCHIVE_NAME" >"$CHECKSUMS"
+write_checksums "$new_archive_hash" "$source_hash"
 expect_failure "a Sparkle symbolic link with an unsafe target" \
   "$SCRIPT_DIR/verify-release-artifacts.sh" \
     --archive "$ARCHIVE" \
@@ -417,9 +445,7 @@ ditto -c -k --keepParent \
 new_archive_hash=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
 sed "s/$old_archive_hash/$new_archive_hash/" "$MANIFEST" \
   >"$TEMP_ROOT/too-many-entries.json"
-printf '%s  %s\n%s  %s\n' \
-  "$new_archive_hash" "$ARCHIVE_NAME" \
-  "$source_hash" "$SOURCE_ARCHIVE_NAME" >"$CHECKSUMS"
+write_checksums "$new_archive_hash" "$source_hash"
 expect_failure "too many archive entries" \
   "$SCRIPT_DIR/verify-release-artifacts.sh" \
     --archive "$ARCHIVE" \
@@ -437,9 +463,7 @@ ditto -c -k --keepParent \
 new_archive_hash=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
 sed "s/$old_archive_hash/$new_archive_hash/" "$MANIFEST" \
   >"$TEMP_ROOT/oversized-entry.json"
-printf '%s  %s\n%s  %s\n' \
-  "$new_archive_hash" "$ARCHIVE_NAME" \
-  "$source_hash" "$SOURCE_ARCHIVE_NAME" >"$CHECKSUMS"
+write_checksums "$new_archive_hash" "$source_hash"
 expect_failure "an oversized uncompressed entry" \
   "$SCRIPT_DIR/verify-release-artifacts.sh" \
     --archive "$ARCHIVE" \
@@ -459,9 +483,7 @@ ditto -c -k --keepParent \
 new_archive_hash=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
 sed "s/$old_archive_hash/$new_archive_hash/" "$MANIFEST" \
   >"$TEMP_ROOT/oversized-total.json"
-printf '%s  %s\n%s  %s\n' \
-  "$new_archive_hash" "$ARCHIVE_NAME" \
-  "$source_hash" "$SOURCE_ARCHIVE_NAME" >"$CHECKSUMS"
+write_checksums "$new_archive_hash" "$source_hash"
 expect_failure "an oversized total uncompressed payload" \
   "$SCRIPT_DIR/verify-release-artifacts.sh" \
     --archive "$ARCHIVE" \

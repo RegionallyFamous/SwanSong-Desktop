@@ -185,6 +185,7 @@ final class AppModel {
         case favorites = "Favorites"
         case recent = "Recently Played"
         case homebrew = "Homebrew"
+        case cartridgeTools = "Cartridge Tools"
         case pocketCore = "Analogue Pocket"
         case translationLab = "Translation Lab"
         case storyForge = "Story Forge"
@@ -198,11 +199,29 @@ final class AppModel {
             case .favorites: "star"
             case .recent: "clock"
             case .homebrew: "shippingbox"
+            case .cartridgeTools: "externaldrive.connected.to.line.below"
             case .pocketCore: "sdcard"
             case .translationLab: "character.book.closed"
             case .storyForge: "book.pages"
             case .gameStudio: "hammer"
             }
+        }
+
+        var requiresDeveloperTools: Bool {
+            self == .gameStudio
+        }
+
+        static func toolSections(developerToolsEnabled: Bool) -> [Self] {
+            var sections: [Self] = [
+                .cartridgeTools,
+                .pocketCore,
+                .translationLab,
+                .storyForge,
+            ]
+            if developerToolsEnabled {
+                sections.append(.gameStudio)
+            }
+            return sections
         }
     }
 
@@ -338,6 +357,7 @@ final class AppModel {
     var connectedControllerName: String?
     var controllerBatterySummary: ControllerBatterySummary?
     private(set) var debugToolsEnabled = false
+    private(set) var isSafeMode = false
     var debugOverlayIsVisible = false
     private(set) var debugGameplayHasFocus = false
     private(set) var debugLastEffectiveInput: EngineInput = []
@@ -487,6 +507,7 @@ final class AppModel {
     private let artworkStore: GameArtworkStore
     private let controllerProfileStore: ControllerProfileStore
     private let translationWorkspaceStore: TranslationWorkspaceStore
+    @ObservationIgnored private var translationSecurityScopedURLs: [String: URL] = [:]
     private let translationEvidenceStore = TranslationEvidenceStore()
     private let translationPrivateArtifactStore = TranslationPrivateArtifactStore()
     private let importer = GameImporter()
@@ -646,7 +667,7 @@ final class AppModel {
         homebrewCatalogClientOverride: HomebrewCatalogClient? = nil,
         homebrewCatalogCacheStore: HomebrewCatalogCacheStore? = nil,
         homebrewCatalogSignatureVerifier: HomebrewCatalogSignatureVerifier = HomebrewCatalogProductionTrust.verifier,
-        homebrewCatalogHighWaterStore: any HomebrewCatalogHighWaterStoring = HomebrewCatalogKeychainHighWaterStore(),
+        homebrewCatalogHighWaterStore: any HomebrewCatalogHighWaterStoring = HomebrewCatalogFileHighWaterStore(),
         homebrewCatalogMinimumRevision: Int = HomebrewCatalogProductionTrust.minimumRevision,
         artworkStore: GameArtworkStore = .defaultStore(),
         controllerProfileStore: ControllerProfileStore = .defaultStore(),
@@ -722,22 +743,24 @@ final class AppModel {
         appLaunchDiagnostic("deferred model startup began")
 
         controllerProfile = (try? controllerProfileStore.load()) ?? .default
-        controller.onChange = { [weak self] elements in
-            self?.handleControllerElements(elements)
-        }
-        controller.onConnectionChange = { [weak self] name, availableElements, batterySummary in
-            self?.connectedControllerName = name
-            self?.controllerAvailableElements = availableElements
-            self?.controllerBatterySummary = batterySummary
-            if name == nil {
-                self?.controllerLearningControl = nil
+        if !isSafeMode {
+            controller.onChange = { [weak self] elements in
+                self?.handleControllerElements(elements)
             }
+            controller.onConnectionChange = { [weak self] name, availableElements, batterySummary in
+                self?.connectedControllerName = name
+                self?.controllerAvailableElements = availableElements
+                self?.controllerBatterySummary = batterySummary
+                if name == nil {
+                    self?.controllerLearningControl = nil
+                }
+            }
+            connectedControllerName = controller.connectedControllerName
+            controllerBatterySummary = controller.batterySummary
+            controllerPhysicalElements = controller.pressedElements
+            controllerAvailableElements = controller.availableElements
+            controllerInput = controllerProfile.input(for: controllerPhysicalElements)
         }
-        connectedControllerName = controller.connectedControllerName
-        controllerBatterySummary = controller.batterySummary
-        controllerPhysicalElements = controller.pressedElements
-        controllerAvailableElements = controller.availableElements
-        controllerInput = controllerProfile.input(for: controllerPhysicalElements)
         do {
             games = try store.load().games
             loadGameArtwork()
@@ -747,11 +770,20 @@ final class AppModel {
         } catch {
             presentedError = "The game library could not be read: \(error.localizedDescription)"
         }
-        loadCachedHomebrewCatalog()
-        loadTranslationWorkspace()
+        if !isSafeMode {
+            loadCachedHomebrewCatalog()
+            loadTranslationWorkspace()
+        }
         refreshManagedGameHealth()
         isPreparingLibrary = false
         appLaunchDiagnostic("deferred model startup finished")
+    }
+
+    func activateSafeMode() {
+        guard !didCompleteDeferredStartup else { return }
+        isSafeMode = true
+        debugToolsEnabled = false
+        section = .library
     }
 
     func handleInitialLaunchArguments() {
@@ -825,6 +857,8 @@ final class AppModel {
                 .filter { $0.lastPlayedAt != nil }
                 .sorted { ($0.lastPlayedAt ?? .distantPast) > ($1.lastPlayedAt ?? .distantPast) }
         case .homebrew:
+            []
+        case .cartridgeTools:
             []
         case .pocketCore:
             []
@@ -1984,6 +2018,7 @@ final class AppModel {
             let discovered = try TranslationProject.discover(at: url)
             var addedCount = 0
             for project in discovered where !translationProjects.contains(where: { $0.id == project.id }) {
+                _ = try retainTranslationProjectAccess(project.rootURL)
                 translationProjects.append(project)
                 addedCount += 1
             }
@@ -2046,6 +2081,11 @@ final class AppModel {
             return
         }
         guard let current = translationProject else { return }
+        if let scopedURL = translationSecurityScopedURLs.removeValue(
+            forKey: current.rootURL.path
+        ) {
+            scopedURL.stopAccessingSecurityScopedResource()
+        }
         let removedIndex = translationProjects.firstIndex(where: { $0.id == current.id }) ?? 0
         translationProjects.removeAll { $0.id == current.id }
         translationProject = translationProjects.isEmpty
@@ -4022,7 +4062,7 @@ final class AppModel {
             phase: hadProducedFrame ? .playback : .launch
         )
         appDiagnostic(
-            "player failure presented phase=\(hadProducedFrame ? "playback" : "launch") title=\(failedGame.title)"
+            "player failure presented phase=\(hadProducedFrame ? "playback" : "launch") title=\(failedGame.title) issue=\(error.localizedDescription)"
         )
     }
 
@@ -4658,9 +4698,19 @@ final class AppModel {
         debugToolsEnabled = enabled
         UserDefaults.standard.set(enabled, forKey: Self.debugToolsDefaultsKey)
         if !enabled {
+            if section.requiresDeveloperTools {
+                section = .library
+            }
             debugOverlayIsVisible = false
             debugLastEffectiveInput = []
             stopDebugLogRegardless()
+            UserDefaults.standard.set(
+                false,
+                forKey: SwanSongTaskNotificationCenter.enabledDefaultsKey
+            )
+            if localMCPControlEnabled {
+                setLocalMCPControlEnabled(false)
+            }
         }
     }
 
@@ -4672,19 +4722,18 @@ final class AppModel {
         guard localMCPControlEnabled != enabled else { return }
         do {
             if enabled {
-                _ = try SwanSongLocalMCPAccess.ensureToken()
+                try SwanSongLocalMCPAccess.preparePrivateDirectory()
                 UserDefaults.standard.set(
                     true,
                     forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
                 )
-                presentedNotice = "Local MCP control is ready for trusted tools on this Mac."
+                presentedNotice = "Local MCP control is ready for SwanSong’s signed helper on this Mac."
             } else {
                 UserDefaults.standard.set(
                     false,
                     forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
                 )
-                try SwanSongLocalMCPAccess.revokeToken()
-                presentedNotice = "Local MCP control is off and its access token was revoked."
+                presentedNotice = "Local MCP control is off. New automation requests will be rejected."
             }
         } catch {
             UserDefaults.standard.set(
@@ -6452,7 +6501,11 @@ final class AppModel {
 
         var document = (try? translationWorkspaceStore.load()) ?? TranslationWorkspaceDocument()
         translationProjects = document.projectPaths.compactMap { path in
-            try? TranslationProject(projectDirectory: URL(fileURLWithPath: path, isDirectory: true))
+            let url = restoreTranslationProjectAccess(
+                path: path,
+                bookmark: document.projectBookmarks[path]
+            )
+            return try? TranslationProject(projectDirectory: url)
         }
         var seen = Set<String>()
         translationProjects = translationProjects.filter { seen.insert($0.id).inserted }
@@ -6480,13 +6533,57 @@ final class AppModel {
         guard !translationWorkspaceIsEnvironmentConfigured else { return }
         let document = TranslationWorkspaceDocument(
             projectPaths: translationProjects.map { $0.rootURL.path },
-            selectedProjectPath: translationProject?.rootURL.path
+            selectedProjectPath: translationProject?.rootURL.path,
+            projectBookmarks: Dictionary(
+                uniqueKeysWithValues: translationProjects.compactMap { project in
+                    guard let bookmark = try? retainTranslationProjectAccess(
+                        project.rootURL
+                    ) else { return nil }
+                    return (project.rootURL.path, bookmark)
+                }
+            )
         )
         do {
             try translationWorkspaceStore.save(document)
         } catch {
             presentedError = "Translation Lab could not save its workspace: \(error.localizedDescription)"
         }
+    }
+
+    private func retainTranslationProjectAccess(_ url: URL) throws -> Data {
+        let canonical = url.resolvingSymlinksInPath().standardizedFileURL
+        let bookmark = try canonical.bookmarkData(
+            options: [.withSecurityScope],
+            includingResourceValuesForKeys: nil,
+            relativeTo: nil
+        )
+        if translationSecurityScopedURLs[canonical.path] == nil {
+            _ = canonical.startAccessingSecurityScopedResource()
+            translationSecurityScopedURLs[canonical.path] = canonical
+        }
+        return bookmark
+    }
+
+    private func restoreTranslationProjectAccess(
+        path: String,
+        bookmark: Data?
+    ) -> URL {
+        guard let bookmark else {
+            return URL(fileURLWithPath: path, isDirectory: true)
+        }
+        var stale = false
+        guard let resolved = try? URL(
+            resolvingBookmarkData: bookmark,
+            options: [.withSecurityScope, .withoutUI],
+            relativeTo: nil,
+            bookmarkDataIsStale: &stale
+        ) else {
+            return URL(fileURLWithPath: path, isDirectory: true)
+        }
+        let canonical = resolved.resolvingSymlinksInPath().standardizedFileURL
+        _ = canonical.startAccessingSecurityScopedResource()
+        translationSecurityScopedURLs[canonical.path] = canonical
+        return canonical
     }
 
     private func resetTranslationProjectState() {

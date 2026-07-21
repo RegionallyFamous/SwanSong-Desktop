@@ -20,7 +20,7 @@ its editorial, rights, continuity, ImageGen art, and soundtrack gates, choose
 Studio without copying prose, inventing a second story schema, or treating game
 execution as editorial approval.
 
-Story Forge and Studio are included in SwanSong 0.6.1 with the verified SDK
+Story Forge and Studio are included in SwanSong 0.7.0 with the verified SDK
 0.5.0 workflow in the signed Desktop app.
 
 ## Your first project
@@ -122,7 +122,7 @@ reset. This keeps device writes out of path-free unattended automation.
 
 ## SDK 0.5 tools
 
-SwanSong 0.6.1 is pinned to released SDK 0.5.0 and exposes its public contracts
+SwanSong 0.7.0 is pinned to released SDK 0.5.0 and exposes its public contracts
 without inventing private project models. Alongside the retained SDK 0.4
 authoring and replay contracts, Studio includes:
 

@@ -12,6 +12,7 @@ ARCHIVE="$TEMP_ROOT/SwanSong-$VERSION-macOS-universal.zip"
 SOURCE_ARCHIVE="$TEMP_ROOT/SwanSong-$VERSION-source.tar.xz"
 MANIFEST="$TEMP_ROOT/SwanSong-$VERSION-release.json"
 CHECKSUMS="$TEMP_ROOT/SHA256SUMS.txt"
+SBOM="$TEMP_ROOT/SwanSong-$VERSION.spdx.json"
 TARGET="$INSTALL_DIR/SwanSong.app"
 
 cleanup() {
@@ -43,6 +44,7 @@ tar -cJf "$SOURCE_ARCHIVE" -C "$TEMP_ROOT" \
   "SwanSong-$VERSION-source"
 printf '{}\n' >"$MANIFEST"
 printf 'synthetic checksums\n' >"$CHECKSUMS"
+printf '{}\n' >"$SBOM"
 
 cat >"$TEST_SCRIPTS/verify-release-artifacts.sh" <<'EOF'
 #!/bin/sh

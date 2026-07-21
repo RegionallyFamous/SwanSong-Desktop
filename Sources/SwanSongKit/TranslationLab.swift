@@ -295,15 +295,36 @@ public struct TranslationWorkspaceDocument: Codable, Equatable, Sendable {
     public var schemaVersion: Int
     public var projectPaths: [String]
     public var selectedProjectPath: String?
+    public var projectBookmarks: [String: Data]
 
     public init(
-        schemaVersion: Int = 1,
+        schemaVersion: Int = 2,
         projectPaths: [String] = [],
-        selectedProjectPath: String? = nil
+        selectedProjectPath: String? = nil,
+        projectBookmarks: [String: Data] = [:]
     ) {
         self.schemaVersion = schemaVersion
         self.projectPaths = projectPaths
         self.selectedProjectPath = selectedProjectPath
+        self.projectBookmarks = projectBookmarks
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case schemaVersion, projectPaths, selectedProjectPath, projectBookmarks
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        schemaVersion = try values.decode(Int.self, forKey: .schemaVersion)
+        projectPaths = try values.decode([String].self, forKey: .projectPaths)
+        selectedProjectPath = try values.decodeIfPresent(
+            String.self,
+            forKey: .selectedProjectPath
+        )
+        projectBookmarks = try values.decodeIfPresent(
+            [String: Data].self,
+            forKey: .projectBookmarks
+        ) ?? [:]
     }
 }
 
@@ -330,14 +351,14 @@ public struct TranslationWorkspaceStore: Sendable {
             TranslationWorkspaceDocument.self,
             from: Data(contentsOf: fileURL)
         )
-        guard document.schemaVersion == 1 else {
+        guard document.schemaVersion == 1 || document.schemaVersion == 2 else {
             throw CocoaError(.fileReadCorruptFile)
         }
         return document
     }
 
     public func save(_ document: TranslationWorkspaceDocument) throws {
-        guard document.schemaVersion == 1 else {
+        guard document.schemaVersion == 2 else {
             throw CocoaError(.fileWriteUnknown)
         }
         let directory = fileURL.deletingLastPathComponent()
@@ -645,10 +666,23 @@ public enum TranslationToolkitStage: Sendable {
     }
 
     private static func safeName(_ value: String) -> String {
-        let allowed = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-_"))
-        let mapped = value.unicodeScalars.map { allowed.contains($0) ? Character(String($0)) : "-" }
-        let result = String(mapped).trimmingCharacters(in: CharacterSet(charactersIn: "-"))
-        return result.isEmpty ? "swan-song-capture" : String(result.prefix(80))
+        let stem = URL(fileURLWithPath: value).deletingPathExtension().lastPathComponent
+        var result = ""
+        var previousWasDash = false
+        for scalar in stem.lowercased().unicodeScalars {
+            let isASCIIAlpha = scalar.value >= 97 && scalar.value <= 122
+            let isASCIIDigit = scalar.value >= 48 && scalar.value <= 57
+            let isLiteral = scalar == "." || scalar == "_"
+            if isASCIIAlpha || isASCIIDigit || isLiteral {
+                result.unicodeScalars.append(scalar)
+                previousWasDash = false
+            } else if !previousWasDash {
+                result.append("-")
+                previousWasDash = true
+            }
+        }
+        result = result.trimmingCharacters(in: CharacterSet(charactersIn: "-"))
+        return result.isEmpty ? "dump" : result
     }
 }
 
@@ -1029,21 +1063,27 @@ public enum TranslationToolkitRunner {
         }
         let sourceRelativePath = try project.relativePath(for: expectation.inputRAMURL)
         let outputRelativePath = try project.relativePath(for: expectation.outputRAMURL)
-        guard receipt.kind == "capture-intake",
-              receipt.version == 1,
-              receipt.captureName == expectation.captureName,
-              receipt.actualSize == copiedRAM.count,
-              receipt.source.kind == "raw-ram",
-              receipt.source.path == sourceRelativePath,
-              receipt.source.size == copiedRAM.count,
-              receipt.source.sha256 == ramSHA256,
-              receipt.output.path == outputRelativePath,
-              receipt.output.size == copiedRAM.count,
-              receipt.output.sha256 == ramSHA256,
-              receipt.output.copied == true,
-              receipt.output.alreadyCurrent == false else {
+        let bindingChecks: [(String, Bool)] = [
+            ("kind", receipt.kind == "capture-intake"),
+            ("version", receipt.version == 1),
+            ("captureName", receipt.captureName == expectation.captureName),
+            ("actualSize", receipt.actualSize == copiedRAM.count),
+            ("source.kind", receipt.source.kind == "raw-ram"),
+            ("source.path", receipt.source.path == sourceRelativePath),
+            ("source.size", receipt.source.size == copiedRAM.count),
+            ("source.sha256", receipt.source.sha256 == ramSHA256),
+            ("output.path", receipt.output.path == outputRelativePath),
+            ("output.size", receipt.output.size == copiedRAM.count),
+            ("output.sha256", receipt.output.sha256 == ramSHA256),
+            ("output.copied", receipt.output.copied == true),
+            ("output.alreadyCurrent", receipt.output.alreadyCurrent == false),
+        ]
+        let failedBindings = bindingChecks.compactMap { name, passes in
+            passes ? nil : name
+        }
+        guard failedBindings.isEmpty else {
             throw TranslationLabError.invalidProject(
-                "authorized Capture Intake receipt does not bind the exact RAM readback"
+                "authorized Capture Intake receipt mismatch [\(failedBindings.joined(separator: ","))]"
             )
         }
     }

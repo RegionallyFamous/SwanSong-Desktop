@@ -1,8 +1,8 @@
 #!/bin/sh
 set -eu
 
-SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-MACOS_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
+SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+MACOS_DIR=$(CDPATH='' cd -- "$SCRIPT_DIR/.." && pwd)
 APP=${1:-"$MACOS_DIR/.build/app/SwanSong.app"}
 REQUIRED_ARCHITECTURES=${SWAN_REQUIRED_ARCHITECTURES:-"arm64 x86_64"}
 
@@ -33,6 +33,8 @@ verify_binary() {
 
 verify_binary "Contents/MacOS/SwanSong"
 verify_binary "Contents/Helpers/SwanSongRouteRunner"
+verify_binary "Contents/Helpers/SwanSongMCP"
+verify_binary "Contents/XPCServices/SwanSongEngineService.xpc/Contents/MacOS/SwanSongEngineService"
 verify_binary "Contents/Frameworks/libSwanAresEngine.dylib"
 verify_binary "Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle"
 verify_binary "Contents/Frameworks/Sparkle.framework/Versions/B/Autoupdate"

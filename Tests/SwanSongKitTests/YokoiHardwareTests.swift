@@ -124,6 +124,30 @@ final class YokoiHardwareTests: XCTestCase {
         )
     }
 
+    func testAmbiguousSRAMRestoreStaysLockedInNativeClient() throws {
+        let response = try YokoiProtocolCodec.encode(
+            command: 0x82,
+            sequence: 0,
+            payload: Data([
+                0x00, 0x1F, 0x82, 0x00, 0x01, 0x00,
+                0x00, 0x00, 0x01, 0x00,
+                0x00, 0x20, 0x00, 0x00,
+            ]) + Data(repeating: 0, count: 16)
+        )
+        let connection = FixtureConnection(input: response)
+        let session = YokoiCartridgeSession(connection: connection)
+        let info = try session.cartridgeInfo()
+
+        XCTAssertTrue(info.saveGeometryIsAmbiguous)
+        XCTAssertThrowsError(try session.restoreSave(Data(repeating: 0, count: 8_192), using: info)) { error in
+            XCTAssertTrue(error.localizedDescription.contains("ambiguous"))
+        }
+        XCTAssertEqual(
+            connection.output,
+            try YokoiProtocolCodec.encode(command: 0x02, sequence: 0)
+        )
+    }
+
     func testInstallerMediaNeverOverwritesDifferentFile() throws {
         let payload = try YokoiHardwarePayloadLoader.load(at: payloadRoot())
         let root = FileManager.default.temporaryDirectory.appendingPathComponent(

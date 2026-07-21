@@ -1,15 +1,15 @@
-# Cartridge Lab
+# Cartridge Tools
 
-Cartridge Lab lets the Mac and the real handheld work together. Instead of
+Cartridge Tools lets the Mac and the real handheld work together. Instead of
 asking a generic USB reader to guess what is on the cartridge, SwanSong loads a
 small open-source service on a WonderSwan Color or SwanCrystal and lets the
 console read its own cartridge bus.
 
-From one native window you can inspect an inserted cartridge, make a
+From one native page you can inspect an inserted cartridge, make a
 checksum-verified ROM backup, back up SRAM or EEPROM, and restore an exact-size
 save with confirmation on both screens.
 
-Cartridge Lab is included in SwanSong 0.5.0.
+Cartridge Tools is included in SwanSong 0.5.0 and appears in the main sidebar.
 
 ## What you need
 
@@ -21,17 +21,22 @@ Cartridge Lab is included in SwanSong 0.5.0.
 
 Never connect the WonderSwan EXT port to a PC RS-232 socket. RS-232 voltage
 levels are not the 3.3 V serial connection this workflow expects.
+A USB cable by itself is not an adapter: the safe connection is WonderSwan EXT
+→ ExtFriend-compatible 3.3 V adapter → data-capable USB cable → Mac.
+The open [ExtFriend project](https://github.com/asiekierka/ws-extfriend) provides
+the current RP2040/Pico firmware and hardware build instructions.
 
 The original monochrome WonderSwan does not have the Color custom-splash area
 used by Yokoi Boot and is not supported by this workflow.
 
 ## Back up a cartridge
 
-1. Open **Hardware → Open Cartridge Lab…**.
+1. Choose **Cartridge Tools** in SwanSong's main sidebar. The **Hardware →
+   Open Cartridge Tools…** command opens the same page.
 2. Connect the ExtFriend-compatible adapter and choose **Refresh Devices** if
    it does not appear immediately.
 3. Insert the cartridge before powering on the WonderSwan.
-4. Choose **Connect & Load Service**, then power on the console when SwanSong
+4. Choose **Connect WonderSwan**, then power on the console when SwanSong
    asks.
 5. Review the detected console, cartridge size, and save type.
 6. Choose the ROM or save backup action and select a destination.
@@ -41,7 +46,7 @@ to a temporary sibling, checked as it arrives, promoted only when complete,
 and reported with its byte count and SHA-256. A partial transfer never becomes
 the file you asked to save.
 
-Cartridge Lab can read cartridge mask ROM plus supported SRAM or EEPROM. It
+Cartridge Tools can read cartridge mask ROM plus supported SRAM or EEPROM. It
 does not offer to rewrite retail game ROM.
 
 ## Restore a save
@@ -60,7 +65,7 @@ size. The service keeps the write disarmed until the physical A+B confirmation,
 and SwanSong verifies the complete result after writing. A mismatch or lost
 connection is a failure, not a “probably finished” result.
 
-## Install Yokoi Boot
+## Set Up Yokoi Boot
 
 A completely stock console cannot receive its first loader through EXT alone.
 The first Yokoi Boot installation needs one of these bootstrap paths:
@@ -72,7 +77,7 @@ The first Yokoi Boot installation needs one of these bootstrap paths:
 
 For the flash-cartridge route:
 
-1. Open **Install Yokoi Boot** in Cartridge Lab.
+1. Open **Set Up Yokoi Boot** in Cartridge Tools.
 2. Choose the folder the flash cartridge's own SD menu browses.
 3. SwanSong adds `Yokoi Boot Installer.wsc` and reads it back.
 4. Eject the SD card in Finder, return it to the cartridge, and launch the
@@ -88,7 +93,7 @@ already be able to launch it.
 
 ## Privacy and ownership
 
-Cartridge Lab makes no network request. Serial discovery stays on the Mac. ROM
+Cartridge Tools makes no network request. Serial discovery stays on the Mac. ROM
 and save backups are written only to destinations you choose, and restore reads
 only the save file you select. The installer-card workflow checks only enough
 of the chosen folder to avoid a naming collision and verify its own write; it

@@ -97,6 +97,13 @@ playtest_properties = next(
 )["inputSchema"]["properties"]
 if not {"captureSDKTrace", "confirmShareSDKTrace"} <= set(playtest_properties):
     raise SystemExit("playtest tool lost its guarded SDK trace contract")
+for tool in tools:
+    maximum = (
+        tool["inputSchema"]["properties"]["plan"]
+        ["properties"]["totalFrames"].get("maximum")
+    )
+    if maximum != 12_000:
+        raise SystemExit(f"{tool['name']} MCP frame ceiling changed")
 if required["swansong_compare_playtest_plan"] != {
     "originalROMPath", "patchedROMPath", "plan", "confirmShareCapture",
 }:
@@ -141,6 +148,10 @@ neutral_plan = {
 def assert_private_tool_error(result, secret_paths, label, expected_fragment=None):
     if result.get("isError") is not True:
         raise SystemExit(f"{label} was not rejected")
+    if "structuredContent" in result:
+        raise SystemExit(f"{label} returned structured output")
+    if [item.get("type") for item in result.get("content", [])] != ["text"]:
+        raise SystemExit(f"{label} returned media or resource artifacts")
     serialized = json.dumps(result)
     for secret_path in secret_paths:
         path = pathlib.Path(secret_path)
@@ -148,6 +159,17 @@ def assert_private_tool_error(result, secret_paths, label, expected_fragment=Non
             raise SystemExit(f"{label} leaked a submitted path or basename")
     if expected_fragment and expected_fragment not in serialized:
         raise SystemExit(f"{label} lost its bounded domain error")
+
+local_tool_denied = exchange({
+    "jsonrpc": "2.0", "id": 301, "method": "tools/call",
+    "params": {"name": "swansong_playtest_plan_local", "arguments": {}},
+})["result"]
+assert_private_tool_error(
+    local_tool_denied,
+    [],
+    "local-only dedicated MCP dispatch",
+    "Unknown SwanSong playtest tool",
+)
 
 same_path_denied = exchange({
     "jsonrpc": "2.0", "id": 5, "method": "tools/call",
@@ -177,6 +199,73 @@ invalid_plan = {
 fixture = root / "testroms/ws-test-suite/80186_quirks/80186_quirks.ws"
 with tempfile.TemporaryDirectory(prefix="swansong-playtest-mcp-") as temporary:
     temporary_root = pathlib.Path(temporary)
+    over_limit_fixture = temporary_root / "private-over-limit.ws"
+    over_limit_patched = temporary_root / "private-over-limit-patched.ws"
+    shutil.copyfile(fixture, over_limit_fixture)
+    shutil.copyfile(
+        root / "testroms/ws-test-suite/interrupts/interrupts.ws",
+        over_limit_patched,
+    )
+    over_limit_entries = {path.name for path in temporary_root.iterdir()}
+    over_limit_digest = hashlib.sha256(over_limit_fixture.read_bytes()).hexdigest()
+    over_limit_patched_digest = hashlib.sha256(
+        over_limit_patched.read_bytes()
+    ).hexdigest()
+    if over_limit_digest == over_limit_patched_digest:
+        raise SystemExit("over-limit comparison fixtures have the same digest")
+    over_limit_denied = exchange({
+        "jsonrpc": "2.0", "id": 302, "method": "tools/call",
+        "params": {
+            "name": "swansong_playtest_plan",
+            "arguments": {
+                "romPath": str(over_limit_fixture),
+                "plan": {
+                    "schema": "swan-song-frame-input-plan-v1",
+                    "totalFrames": 12001,
+                    "events": [{"frameIndex": 0, "inputs": []}],
+                },
+                "confirmShareCapture": True,
+            },
+        },
+    })["result"]
+    assert_private_tool_error(
+        over_limit_denied,
+        [over_limit_fixture],
+        "12,001-frame dedicated MCP playtest",
+        "bounded playtest",
+    )
+    if {path.name for path in temporary_root.iterdir()} != over_limit_entries:
+        raise SystemExit("over-limit dedicated MCP playtest created adjacent artifacts")
+    if hashlib.sha256(over_limit_fixture.read_bytes()).hexdigest() != over_limit_digest:
+        raise SystemExit("over-limit dedicated MCP playtest changed its ROM")
+    over_limit_compare_denied = exchange({
+        "jsonrpc": "2.0", "id": 303, "method": "tools/call",
+        "params": {
+            "name": "swansong_compare_playtest_plan",
+            "arguments": {
+                "originalROMPath": str(over_limit_fixture),
+                "patchedROMPath": str(over_limit_patched),
+                "plan": {
+                    "schema": "swan-song-frame-input-plan-v1",
+                    "totalFrames": 12001,
+                    "events": [{"frameIndex": 0, "inputs": []}],
+                },
+                "confirmShareCapture": True,
+            },
+        },
+    })["result"]
+    assert_private_tool_error(
+        over_limit_compare_denied,
+        [over_limit_fixture, over_limit_patched],
+        "12,001-frame dedicated MCP comparison",
+        "bounded playtest",
+    )
+    if {path.name for path in temporary_root.iterdir()} != over_limit_entries:
+        raise SystemExit("over-limit dedicated MCP comparison created adjacent artifacts")
+    if hashlib.sha256(over_limit_fixture.read_bytes()).hexdigest() != over_limit_digest:
+        raise SystemExit("over-limit dedicated MCP comparison changed Original")
+    if hashlib.sha256(over_limit_patched.read_bytes()).hexdigest() != over_limit_patched_digest:
+        raise SystemExit("over-limit dedicated MCP comparison changed Patched")
     missing = temporary_root / "private-missing-rom-name.ws"
     single_missing = exchange({
         "jsonrpc": "2.0", "id": 6, "method": "tools/call",

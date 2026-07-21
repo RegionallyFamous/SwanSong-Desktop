@@ -5,10 +5,16 @@ import UniformTypeIdentifiers
 
 struct StoryForgeWorkspaceView: View {
     @State private var workspace: StoryForgeWorkspaceModel
+    let developerToolsEnabled: Bool
     let openGameStudio: () -> Void
 
-    init(workspace: StoryForgeWorkspaceModel, openGameStudio: @escaping () -> Void) {
+    init(
+        workspace: StoryForgeWorkspaceModel,
+        developerToolsEnabled: Bool,
+        openGameStudio: @escaping () -> Void
+    ) {
         _workspace = State(initialValue: workspace)
+        self.developerToolsEnabled = developerToolsEnabled
         self.openGameStudio = openGameStudio
     }
 
@@ -292,16 +298,18 @@ struct StoryForgeWorkspaceView: View {
                         .disabled(workspace.isRunning)
                 }
             }
-            StoryForgeCard {
-                HStack {
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("WonderSwan adaptation").font(.headline)
-                        Text("Carry stable scene IDs, continuity, signature moments, ImageGen art rules, and soundtrack motifs into SwanSong Studio after revision.")
-                            .font(.callout).foregroundStyle(.secondary)
+            if developerToolsEnabled {
+                StoryForgeCard {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("WonderSwan adaptation").font(.headline)
+                            Text("Carry stable scene IDs, continuity, signature moments, ImageGen art rules, and soundtrack motifs into SwanSong Studio after revision.")
+                                .font(.callout).foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Button("Continue in Studio", systemImage: "hammer", action: openGameStudio)
+                            .disabled(summary.stage == .concept || summary.stage == .outline || summary.stage == .draft)
                     }
-                    Spacer()
-                    Button("Continue in Studio", systemImage: "hammer", action: openGameStudio)
-                        .disabled(summary.stage == .concept || summary.stage == .outline || summary.stage == .draft)
                 }
             }
         }
@@ -684,17 +692,19 @@ struct StoryForgeWorkspaceView: View {
                         }
                     }
                 }
-                StoryForgeCard {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Label("Production checklist", systemImage: "checklist") .font(.headline)
-                        adaptationCheck("Author VN-specific beats and meaningful choices; do not dump prose onto the screen.")
-                        adaptationCheck("Use approved ImageGen production art—never fallback programmer graphics.")
-                        adaptationCheck("Pass the novel revision gate and preserve each ending's residue.")
-                        adaptationCheck("Build with the WonderSwan workflow and run exhaustive SwanSong routes, save/replay, fades, and native audio.")
-                        HStack {
-                            Spacer()
-                            Button("Continue in Studio", systemImage: "hammer", action: openGameStudio)
-                                .disabled(workspace.projectSummary?.stage == .concept || workspace.projectSummary?.stage == .outline)
+                if developerToolsEnabled {
+                    StoryForgeCard {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Label("Production checklist", systemImage: "checklist") .font(.headline)
+                            adaptationCheck("Author VN-specific beats and meaningful choices; do not dump prose onto the screen.")
+                            adaptationCheck("Use approved ImageGen production art—never fallback programmer graphics.")
+                            adaptationCheck("Pass the novel revision gate and preserve each ending's residue.")
+                            adaptationCheck("Build with the WonderSwan workflow and run exhaustive SwanSong routes, save/replay, fades, and native audio.")
+                            HStack {
+                                Spacer()
+                                Button("Continue in Studio", systemImage: "hammer", action: openGameStudio)
+                                    .disabled(workspace.projectSummary?.stage == .concept || workspace.projectSummary?.stage == .outline)
+                            }
                         }
                     }
                 }

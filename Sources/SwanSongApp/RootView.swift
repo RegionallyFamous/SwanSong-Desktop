@@ -224,6 +224,19 @@ struct RootView: View {
             }
             .padding(16)
         }
+        .overlay(alignment: .topLeading) {
+            if model.isSafeMode {
+                NoticeBanner(
+                    message: "Safe Mode is on. SwanSong skipped controllers, local automation, background updates, and project restore so you can get back in safely.",
+                    symbol: "cross.case.fill",
+                    tint: .orange,
+                    actionTitle: "Restart Normally",
+                    onAction: SwanSongLaunchRecovery.restartNormally,
+                    onDismiss: {}
+                )
+                .padding(16)
+            }
+        }
         .animation(
             reduceMotion ? nil : .easeInOut(duration: 0.18),
             value: model.presentedNotice
@@ -719,6 +732,8 @@ private struct LibraryShell: View {
                     usesDeterministicSidebarForOffscreenSnapshots:
                         usesDeterministicSidebarForOffscreenSnapshots
                 )
+            } else if model.section == .cartridgeTools {
+                CartridgeLabView(appModel: model)
             } else if model.section == .pocketCore {
                 PocketCoreSetupView()
             } else if model.section == .translationLab {
@@ -729,6 +744,7 @@ private struct LibraryShell: View {
             } else if model.section == .storyForge {
                 StoryForgeWorkspaceView(
                     workspace: model.storyForgeWorkspace,
+                    developerToolsEnabled: model.debugToolsEnabled,
                     openGameStudio: { model.section = .gameStudio }
                 )
             } else if model.section == .gameStudio {
@@ -771,29 +787,14 @@ private struct AppSidebar: View {
                     .tag(AppModel.Section.homebrew)
                 }
                 Section("Tools") {
-                    Label(
-                        AppModel.Section.pocketCore.rawValue,
-                        systemImage: AppModel.Section.pocketCore.symbol
-                    )
-                    .tag(AppModel.Section.pocketCore)
-
-                    Label(
-                        AppModel.Section.translationLab.rawValue,
-                        systemImage: AppModel.Section.translationLab.symbol
-                    )
-                    .tag(AppModel.Section.translationLab)
-
-                    Label(
-                        AppModel.Section.storyForge.rawValue,
-                        systemImage: AppModel.Section.storyForge.symbol
-                    )
-                    .tag(AppModel.Section.storyForge)
-
-                    Label(
-                        AppModel.Section.gameStudio.rawValue,
-                        systemImage: AppModel.Section.gameStudio.symbol
-                    )
-                    .tag(AppModel.Section.gameStudio)
+                    ForEach(
+                        AppModel.Section.toolSections(
+                            developerToolsEnabled: model.debugToolsEnabled
+                        )
+                    ) { section in
+                        Label(section.rawValue, systemImage: section.symbol)
+                            .tag(section)
+                    }
                 }
             }
             .listStyle(.sidebar)
@@ -819,7 +820,9 @@ private struct TranslationOverviewSnapshotSidebar: View {
                 snapshotGroup("DISCOVER", sections: [.homebrew])
                 snapshotGroup(
                     "TOOLS",
-                    sections: [.pocketCore, .translationLab, .storyForge, .gameStudio]
+                    sections: AppModel.Section.toolSections(
+                        developerToolsEnabled: model.debugToolsEnabled
+                    )
                 )
             }
             .padding(.horizontal, 8)
@@ -1652,6 +1655,7 @@ private struct LibraryView: View {
         case .favorites: .favorites
         case .recent: .recentlyPlayed
         case .homebrew: .all
+        case .cartridgeTools: .all
         case .pocketCore: .all
         case .translationLab: .all
         case .storyForge: .all
@@ -1670,6 +1674,7 @@ private struct LibraryView: View {
         case .favorites: "No favorites yet"
         case .recent: "Nothing played recently"
         case .homebrew: "No homebrew games yet"
+        case .cartridgeTools: "No cartridge connected"
         case .pocketCore: "No Pocket SD card selected"
         case .translationLab: "No translation project yet"
         case .storyForge: "No novel project open"
@@ -1683,6 +1688,7 @@ private struct LibraryView: View {
         case .favorites: "star"
         case .recent: "clock"
         case .homebrew: "shippingbox"
+        case .cartridgeTools: "externaldrive.connected.to.line.below"
         case .pocketCore: "sdcard"
         case .translationLab: "character.book.closed"
         case .storyForge: "book.pages"
@@ -1696,6 +1702,7 @@ private struct LibraryView: View {
         case .favorites: "Star a favorite and it’ll always be easy to find."
         case .recent: "Games show up here after you play them."
         case .homebrew: "Browse SwanSong’s signed catalog, or add a game you already have on your Mac."
+        case .cartridgeTools: "Connect a supported WonderSwan through its EXT adapter to read a cartridge or back up a save."
         case .pocketCore: "Choose Analogue Pocket to add or update the official SwanSong Core."
         case .translationLab: "Add a private translation project to keep its progress, tests, and captures together."
         case .storyForge: "Create a novel, run editorial gates, commission ImageGen art, and prepare polished editions."
@@ -10558,40 +10565,58 @@ struct SettingsView: View {
                 LabeledContent("Game engine", value: backendName)
                     .foregroundStyle(.secondary)
             }
-            Section("Testing Tools") {
-                Toggle("Show testing tools", isOn: debugToolsBinding)
+            if model.isSafeMode {
+                Section("Safe Mode") {
+                    Label(
+                        "SwanSong recovered from repeated interrupted launches.",
+                        systemImage: "cross.case.fill"
+                    )
+                    Button("Restart Normally…") {
+                        SwanSongLaunchRecovery.restartNormally()
+                    }
+                    Text(
+                        "Safe Mode keeps your library available while leaving controllers, local automation, project restore, and automatic update checks off for this launch."
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                }
+            }
+            Section("Developer Tools") {
+                Toggle("Show developer tools", isOn: debugToolsBinding)
                     .accessibilityIdentifier("settings-enable-debug-tools")
                 Text(
                     model.debugToolsEnabled
-                        ? "Testing overlays, input and frame logs, and the Debug menu are now available. The route runner still needs its own debug flag."
-                        : "Off by default. Turn this on when you want extra tools for testing a game."
+                        ? "SwanSong Studio, testing overlays, diagnostic logs, local automation, and hardware protocol details are now available."
+                        : "Off by default. Turn this on only when developing or diagnosing WonderSwan software."
                 )
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
             }
-            Section("Trusted Local Tools") {
-                Toggle("Let trusted local tools control SwanSong", isOn: localMCPControlBinding)
-                    .accessibilityIdentifier("settings-enable-local-mcp")
-                Text(
-                    "Off by default. This local MCP bridge can share limited app status and control navigation or playback. It never exposes games, saves, memory, screenshots, or file contents."
-                )
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-            }
-            Section("Notifications") {
-                Toggle(
-                    "Tell me when Studio finishes in the background",
-                    isOn: taskCompletionNotificationsBinding
-                )
-                .accessibilityIdentifier("settings-task-completion-notifications")
-                Text(
-                    "Off by default. Notifications show only the task and result—never project paths, game names, diagnostics, or evidence."
-                )
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
+            if model.debugToolsEnabled {
+                Section("Trusted Local Developer Tools") {
+                    Toggle("Let trusted local tools control SwanSong", isOn: localMCPControlBinding)
+                        .accessibilityIdentifier("settings-enable-local-mcp")
+                    Text(
+                        "Off by default. This local MCP bridge can share limited app status and control navigation or playback. It never exposes games, saves, memory, screenshots, or file contents."
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                }
+                Section("Developer Notifications") {
+                    Toggle(
+                        "Tell me when Studio finishes in the background",
+                        isOn: taskCompletionNotificationsBinding
+                    )
+                    .accessibilityIdentifier("settings-task-completion-notifications")
+                    Text(
+                        "Off by default. Notifications show only the task and result—never project paths, game names, diagnostics, or evidence."
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                }
             }
         }
         .formStyle(.grouped)

@@ -80,7 +80,9 @@ public distribution.
 
 ```sh
 SWAN_NOTARIZE=1 \
-SWAN_NOTARY_PROFILE=swan-song-notary \
+SWAN_NOTARY_KEY=/private/path/AuthKey_KEYID.p8 \
+SWAN_NOTARY_KEY_ID=KEYID \
+SWAN_NOTARY_ISSUER=00000000-0000-0000-0000-000000000000 \
 ./Scripts/release-app.sh
 ```
 
@@ -89,6 +91,7 @@ stapled, Gatekeeper-assessed, and universal. `dist/` must contain:
 
 - `SwanSong-X.Y.Z-macOS-universal.zip`;
 - `SwanSong-X.Y.Z-source.tar.xz` with exact corresponding source;
+- `SwanSong-X.Y.Z.spdx.json` with the deterministic SPDX 2.3 SBOM;
 - `SwanSong-X.Y.Z-release.json`; and
 - `SHA256SUMS.txt`.
 
@@ -112,6 +115,7 @@ identity is checked again after the engine targets finish.
 ./Scripts/verify-release-artifacts.sh \
   --archive dist/SwanSong-X.Y.Z-macOS-universal.zip \
   --source-archive dist/SwanSong-X.Y.Z-source.tar.xz \
+  --sbom dist/SwanSong-X.Y.Z.spdx.json \
   --manifest dist/SwanSong-X.Y.Z-release.json \
   --checksums dist/SHA256SUMS.txt \
   --app .build/app/SwanSong.app
@@ -124,7 +128,7 @@ tables, public monochrome smoke output, and exact route-runner `dladdr`
 path/digest binding. A mismatch is a release stop even when executable section
 hashes happen to agree.
 
-The manifest, checksums, both archives, installed app, bundle identity,
+The manifest, checksums, both archives, SBOM, installed app, bundle identity,
 architectures, signatures, notarization, Gatekeeper result, and binary hashes
 must agree. The manifest also binds the pinned Sparkle version and the
 framework, Autoupdate, Updater, Installer, and Downloader executable hashes.
@@ -160,7 +164,7 @@ Only after that verification, manually run **Publish Sparkle appcast** from
 GitHub Actions on `main`. The workflow obtains the private EdDSA seed only from
 the masked `SPARKLE_ED25519_PRIVATE_KEY` repository secret and passes it to the
 pinned signer through standard input; pull requests and forks cannot trigger
-it. The publisher re-downloads and byte-compares all four release artifacts,
+it. The publisher re-downloads and byte-compares all five release artifacts,
 reruns the complete artifact verifier, signs the enclosure and feed, verifies
 both signatures with the committed public key, and atomically updates
 `updates/appcast.xml` on a dedicated review branch. Its enclosure must be the
@@ -168,6 +172,11 @@ immutable exact-tag GitHub Release URL. Merge the reviewed branch to `main`
 before the live update test. Stable entries
 omit a channel. Prereleases use the `beta` channel and must remain invisible to
 stable-only clients.
+
+After publication, GitHub emits artifact and SBOM attestations for the verified
+release files. An ordinary stable release may use a seven-group, seven-day
+Sparkle rollout; an urgent security update may be marked critical and reach all
+eligible users immediately.
 
 The workflow writes no secret artifact or log output. Local publication fails
 closed when `SPARKLE_ED25519_PRIVATE_KEY` is missing. GitHub cannot reveal the

@@ -1,4 +1,3 @@
-import Dispatch
 import Foundation
 import SwanSongKit
 
@@ -9,87 +8,32 @@ private struct SwanSongMCPError: LocalizedError {
     var errorDescription: String? { message }
 }
 
-private final class BridgeResponseBox: @unchecked Sendable {
-    private let lock = NSLock()
-    private var value: Result<(String, JSONDictionary), Error>?
-
-    func store(_ value: Result<(String, JSONDictionary), Error>) {
-        lock.lock()
-        defer { lock.unlock() }
-        guard self.value == nil else { return }
-        self.value = value
-    }
-
-    func load() -> Result<(String, JSONDictionary), Error>? {
-        lock.lock()
-        defer { lock.unlock() }
-        return value
-    }
-}
-
 private final class LiveAppClient: @unchecked Sendable {
     func request(
         method: String,
         arguments: JSONDictionary = [:]
     ) throws -> (String, JSONDictionary) {
-        guard let token = try SwanSongLocalMCPAccess.readToken() else {
-            throw SwanSongMCPError(
-                message: "Local MCP control is off. Open SwanSong Settings and enable Allow local MCP control."
-            )
-        }
-        let requestID = UUID().uuidString
         let argumentData = try JSONSerialization.data(
             withJSONObject: arguments,
             options: [.sortedKeys, .withoutEscapingSlashes]
         )
         let argumentJSON = String(decoding: argumentData, as: UTF8.self)
-        let box = BridgeResponseBox()
-        let semaphore = DispatchSemaphore(value: 0)
-        let observer = DistributedNotificationCenter.default().addObserver(
-            forName: SwanSongLocalMCPAccess.responseNotification,
-            object: nil,
-            queue: nil
-        ) { notification in
-            guard let values = notification.userInfo as? [String: String],
-                  values["requestID"] == requestID,
-                  values["token"] == token else { return }
-            if let error = values["error"] {
-                box.store(.failure(SwanSongMCPError(message: error)))
-            } else if let json = values["json"] {
-                do {
-                    let object = try JSONSerialization.jsonObject(with: Data(json.utf8))
-                    guard let dictionary = object as? JSONDictionary else {
-                        throw SwanSongMCPError(message: "SwanSong returned a non-object response.")
-                    }
-                    box.store(.success((json, dictionary)))
-                } catch {
-                    box.store(.failure(error))
-                }
-            } else {
-                box.store(.failure(SwanSongMCPError(message: "SwanSong returned an empty response.")))
-            }
-            semaphore.signal()
-        }
-        defer { DistributedNotificationCenter.default().removeObserver(observer) }
-
-        DistributedNotificationCenter.default().postNotificationName(
-            SwanSongLocalMCPAccess.requestNotification,
-            object: nil,
-            userInfo: [
-                "requestID": requestID,
-                "token": token,
-                "method": method,
-                "arguments": argumentJSON,
-            ],
-            deliverImmediately: true
-        )
-        guard semaphore.wait(timeout: .now() + 5) == .success,
-              let response = box.load() else {
-            throw SwanSongMCPError(
-                message: "SwanSong did not answer. Make sure the app is open and local MCP control is enabled."
+        let response = try SwanSongUnixSocketIO.connectAndExchange(
+            request: SwanSongLocalMCPRequest(
+                method: method,
+                argumentsJSON: argumentJSON
             )
+        )
+        if let error = response.error {
+            throw SwanSongMCPError(message: error)
         }
-        return try response.get()
+        guard let json = response.json,
+              let dictionary = try JSONSerialization.jsonObject(
+                with: Data(json.utf8)
+              ) as? JSONDictionary else {
+            throw SwanSongMCPError(message: "SwanSong returned an invalid response.")
+        }
+        return (json, dictionary)
     }
 }
 

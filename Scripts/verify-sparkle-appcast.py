@@ -40,6 +40,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--expected-version")
     result.add_argument("--expected-build")
     result.add_argument("--expected-channel", choices=("stable", "beta"))
+    result.add_argument("--expected-rollout", choices=("staged", "critical"))
     result.add_argument("--expected-archive-signature")
     result.add_argument("--expected-release-notes", type=Path)
     result.add_argument("--content-output", type=Path, required=True)
@@ -172,6 +173,16 @@ def main() -> int:
                 )
                 if expected_item.findtext("description", "").strip() != expected_notes:
                     fail("expected appcast update message does not match")
+            if arguments.expected_rollout is not None:
+                is_critical = expected_item.find(sparkle("criticalUpdate")) is not None
+                phased_interval = expected_item.findtext(
+                    sparkle("phasedRolloutInterval")
+                )
+                if arguments.expected_rollout == "critical":
+                    if not is_critical or phased_interval is not None:
+                        fail("expected update is not an immediate critical rollout")
+                elif is_critical or phased_interval != "86400":
+                    fail("expected update is not a seven-day staged rollout")
             if arguments.archive is None:
                 fail("an archive is required when verifying an expected build")
             enclosure = expected_item.find("enclosure")

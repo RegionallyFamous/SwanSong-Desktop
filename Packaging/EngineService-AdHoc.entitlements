@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!--
+      Local ad-hoc and Apple Development signatures do not carry SwanSong's
+      Developer ID App Group profiles. They use process isolation
+      without App Sandbox so local builds remain launchable. Public Developer
+      ID builds always use EngineService.entitlements, both embedded profiles,
+      App Sandbox, and same-team library validation.
+    -->
+</dict>
+</plist>

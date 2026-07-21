@@ -15,8 +15,8 @@ No account. No ads. No telemetry. No BIOS scavenger hunt. Just your games and
 a really nice place to play them.
 
 <p align="center">
-  <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.6.1</strong></a>
-  · <a href="docs/releases/0.6.1.md">See what’s new</a>
+  <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.7</strong></a>
+  · <a href="docs/releases/0.7.0.md">See what’s new</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -76,11 +76,13 @@ it.
 
 Take a WonderSwan project from New to Release in one native workspace. Build
 assets, run the game, inspect frames and audio, replay failures, and package
-only after the evidence is ready. SwanSong 0.6.1 carries the complete,
+only after the evidence is ready. SwanSong 0.7 carries the complete,
 content-verified SwanSong SDK 0.5.0 toolset: Utility Apps, traced builds,
 scenarios, semantic outcomes, budget history, project migration, and a deeper
 release lane. Doctor clearly shows the few development tools that still need
 to be installed on the Mac.
+Turn on **Show developer tools** in Settings when you want Studio; it stays out
+of the everyday library by default.
 
 ### Homebrew and Analogue Pocket
 
@@ -100,13 +102,14 @@ letting a score pretend to be an editor. Map the story, draft with live scene
 context, preserve revisions, work with unprimed readers and research, audition
 ImageGen art and music, then hand a source-mapped adaptation to SwanSong Studio.
 
-### Cartridge Lab
+### Cartridge Tools
 
 Put the real handheld back in the loop. With a WonderSwan Color or SwanCrystal,
-Yokoi Boot, and a 3.3 V ExtFriend-compatible USB adapter, Cartridge Lab can
+Yokoi Boot, and a 3.3 V ExtFriend-compatible USB adapter, Cartridge Tools can
 inspect an inserted cartridge, make checksum-verified ROM and save backups,
 and restore an exact-size save only after confirmation on both the Mac and the
 console.
+The original monochrome WonderSwan cannot use this Yokoi Boot workflow.
 
 SwanSong can also prepare the verified Yokoi Boot installer for a compatible
 SD-based flash cartridge. The
@@ -130,20 +133,27 @@ Official downloads are universal, Developer ID signed, notarized by Apple,
 and published with matching checksums, a release manifest, and corresponding
 source.
 
-## The latest release: SwanSong 0.6.1
+## The latest release: SwanSong 0.7
 
-The public **0.6.1 release** makes SwanSong ready sooner and keeps setup out of
-your way:
+The public **0.7 release** is the one you can trust more without thinking about
+it more:
 
-- the main window appears before the library and workshop finish waking up;
-- old Homebrew Catalog trust records no longer interrupt launch with a macOS
-  password dialog;
-- Studio finds Python 3.11+ from Homebrew, python.org, or MacPorts even when
-  SwanSong opens from Finder; and
-- the complete Studio, Story Forge, Translation Lab, player, and library from
-  0.6 remain right where you left them.
+- games run in their own locked-down engine service;
+- local automation accepts only fresh requests from SwanSong's signed helper;
+- Safe Mode gets you back into the app after a troubled launch;
+- a one-click Support Bundle explains problems without scooping up private
+  games, saves, screenshots, or projects;
+- the new Privacy & Trust screen makes every connection and local permission
+  easy to see and revoke; and
+- every download arrives with exact source, checksums, an SPDX software bill of
+  materials, and independently verifiable release attestations.
 
-Read the [0.6.1 release notes](docs/releases/0.6.1.md) for the guided tour or
+Translation Lab also gains deeper, private source provenance and fixes
+mixed-case capture names all the way through the real toolkit. None of the
+addresses, cartridge ranges, project paths, or frame contents leave through
+local automation.
+
+Read the [0.7 release notes](docs/releases/0.7.0.md) for the guided tour or
 the [changelog](CHANGELOG.md) for the complete history.
 
 ## Start exploring
@@ -155,14 +165,14 @@ keeps the deeper guides out of your way until you need them:
 - [Build deterministic translation evidence](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
 - [Make games in SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/SwanSong-Studio)
 - [Write and publish novels with Story Forge](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Story-Forge)
-- [Work with real cartridges in Cartridge Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Cartridge-Lab)
+- [Work with real cartridges in Cartridge Tools](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Cartridge-Lab)
 - [Prepare an Analogue Pocket SD card safely](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
 - [Understand local automation and privacy](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
 - [Build, test, sign, and release SwanSong](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Build-and-Test)
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.6.1 release notes](docs/releases/0.6.1.md).
+[0.7 release notes](docs/releases/0.7.0.md).
 
 ## Free, open, and independent
 

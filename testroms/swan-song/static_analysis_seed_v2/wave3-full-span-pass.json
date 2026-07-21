@@ -1,0 +1,39 @@
+{
+  "schema": "swan-song.public-kat-evidence-wave.v1",
+  "fixture": "static_analysis_seed_v2",
+  "wave": 3,
+  "status": "TARGETED_PASS",
+  "commercialContent": false,
+  "priorStopReceipt": {
+    "name": "wave2-stop.json",
+    "sha256": "1b156ebf29e18b5696a6f43b57223dfd48f9b928af61d8f47bb3f248dba6aef5"
+  },
+  "method": "Complete aligned raster-owner overwrite from one contiguous source span at the retained old-bank instruction boundary.",
+  "attemptCount": 1,
+  "artifact": {
+    "bytes": 2097152,
+    "sha256": "f7a57414097e951fe927ec7e78f79b3ef3530baad8ca9ac0242911d91deaac94"
+  },
+  "result": {
+    "visibleConfinedPass": true,
+    "abi9ExactFullSpanPass": true,
+    "abi9Conservative": false,
+    "abi10SealedPass": true,
+    "sourceFetchMapperDistinctPass": true,
+    "atomicUndersizedTableCount": 3,
+    "restoreV2StopPass": true,
+    "traceCount": 1,
+    "contextCount": 2,
+    "consumedByteCount": 4,
+    "videoDigest": "424bab4a90dd7a7c"
+  },
+  "fullSuite": "PASS",
+  "fullSuiteRunCount": 1,
+  "scope": {
+    "timingVariantAttempted": false,
+    "valueVariantAttempted": false,
+    "bridgeOrCoreFilesChangedByFixtureLane": false,
+    "operandRegisterExportAttempted": false,
+    "runtimeV5ExportAttempted": false
+  }
+}
