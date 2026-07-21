@@ -222,6 +222,7 @@ jobs:
           set -eu
           ./Scripts/selftest-ares-source-state.sh
           ./Scripts/selftest-notarization-credentials.sh
+          python3 ./Scripts/selftest-app-payload-allowlists.py
           ./Scripts/selftest-release-build-snapshot.sh
           ./Scripts/selftest-package-release-snapshots.sh
           ./Scripts/selftest-release-artifacts.sh
