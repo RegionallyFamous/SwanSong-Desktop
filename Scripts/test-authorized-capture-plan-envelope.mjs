@@ -29,7 +29,7 @@ const ROLE_SUFFIXES = [
   "pair/plan.json", "pair/original.png", "pair/patched.png",
   "pair/pixel-diff.json", "pair/manifest.json", "report.json",
 ];
-const OFFICIAL_FULL_C_SHA256 =
+const LEGACY_OFFICIAL_FULL_C_SHA256 =
   "5d55f817a0fbb321c35d5034e234d4ffe34603a7d9d587f4ccf2160d08b61c37";
 
 function fail(message) {
@@ -461,6 +461,15 @@ const officialBaseCapabilityPath = phase === "success"
     ?? path.join(repositoryRoot, ".engine", "capability-c.vSIWur", "receipts",
       "full-c-v5.json"))
   : null;
+const expectedFullC_SHA256 = process.env.SWAN_CAPTURE_KAT_FULL_C_SHA256
+  ?? LEGACY_OFFICIAL_FULL_C_SHA256;
+if (!/^[0-9a-f]{64}$/u.test(expectedFullC_SHA256)) {
+  fail("SWAN_CAPTURE_KAT_FULL_C_SHA256 must be one lowercase SHA-256 digest");
+}
+const selectedEngineProfileName = process.env.SWAN_CAPTURE_KAT_ENGINE_PROFILE ?? "abi9";
+if (!["abi9", "abi10", "abi10-capture"].includes(selectedEngineProfileName)) {
+  fail("SWAN_CAPTURE_KAT_ENGINE_PROFILE is not one supported exact profile");
+}
 const authModulePath = phase === "success"
   ? path.join(toolkitSource, "lib", "swansong-capture-plan-authorization.mjs") : null;
 const intakeModulePath = phase === "success"
@@ -518,16 +527,23 @@ if (phase === "success") {
   const engineModule = await import(pathToFileURL(copiedEngineModulePath));
   const methodModule = await import(pathToFileURL(copiedMethodModulePath));
   const officialBaseBytes = fs.readFileSync(officialBaseCapabilityPath);
-  assert.equal(sha256(officialBaseBytes), OFFICIAL_FULL_C_SHA256,
+  assert.equal(sha256(officialBaseBytes), expectedFullC_SHA256,
     "the official full-C receipt digest must be exact");
   assert.equal(requirePrivateRegularFile(officialBaseCapabilityPath,
-    "external official full C").sha256, OFFICIAL_FULL_C_SHA256);
+    "external official full C").sha256, expectedFullC_SHA256);
   const officialBaseCapability = JSON.parse(officialBaseBytes);
+  const engineProfile = new Map([
+    ["abi9", engineModule.SWANSONG_ENGINE_PROFILE_ABI9],
+    ["abi10", engineModule.SWANSONG_ENGINE_PROFILE_ABI10],
+    ["abi10-capture", engineModule.SWANSONG_ENGINE_PROFILE_ABI10_CAPTURE],
+  ]).get(selectedEngineProfileName);
+  if (!engineProfile) fail("selected engine profile is unavailable in the copied toolkit");
   const engineCapabilityOptions = {
     swanSongRoot: repositoryRoot,
     aresSourceRoot,
     engineDirectory,
     routeRunner: runnerPath,
+    engineProfile,
   };
   const preM0Current = engineModule.collectSwanSongEngineCapability(engineCapabilityOptions);
   engineModule.validateSwanSongEngineCapabilityReceipt(officialBaseCapability, preM0Current);
@@ -538,7 +554,7 @@ if (phase === "success") {
   writePrivate(baseCapabilityPath, officialBaseBytes);
   const localBaseArtifact = requirePrivateRegularFile(baseCapabilityPath,
     "bundle-local full C");
-  assert.equal(localBaseArtifact.sha256, OFFICIAL_FULL_C_SHA256);
+  assert.equal(localBaseArtifact.sha256, expectedFullC_SHA256);
   assert.deepEqual(fs.readFileSync(baseCapabilityPath), officialBaseBytes,
     "bundle-local full C must be the exact raw official bytes");
   const baseCapability = JSON.parse(fs.readFileSync(baseCapabilityPath));
@@ -581,7 +597,7 @@ if (phase === "success") {
   assert.deepEqual(postM0Bytes, fs.readFileSync(baseCapabilityPath),
     "fresh post-M0 full C must equal the bundle-local receipt byte-for-byte");
   assert.equal(requirePrivateRegularFile(baseCapabilityPath,
-    "post-M0 bundle-local full C").sha256, OFFICIAL_FULL_C_SHA256);
+    "post-M0 bundle-local full C").sha256, expectedFullC_SHA256);
   intakeModule.validateSwanSongCaptureIntakeCapabilityReceipt(intakeCapability, {
     toolkitRoot,
     nodeExecutable: nodePath,
@@ -750,7 +766,8 @@ if (phase === "success") {
       executable: true,
     }),
     fullCapability: {
-      officialReceiptSHA256: OFFICIAL_FULL_C_SHA256,
+      officialReceiptSHA256: expectedFullC_SHA256,
+      engineProfileID: engineProfile.id,
       localReceipt: fileBinding(baseCapabilityPath, "bundle-local full C", {
         mode: FILE_MODE,
       }),
@@ -933,7 +950,7 @@ if (phase === "success") {
     successExecutionCount: 1,
     successPayloadCount: successProof.closure.privateArtifacts.count,
     sameROMNativeZeroDiff: true,
-    fullCapabilitySHA256: OFFICIAL_FULL_C_SHA256,
+    fullCapabilitySHA256: expectedFullC_SHA256,
     coordinatorManifestSHA256: identityOnly(coordinatorManifestPath).sha256,
     successPhaseReceiptSHA256: identityOnly(successPhaseReceiptPath).sha256,
     durableBundle: temporaryRoot,
@@ -1020,14 +1037,14 @@ if (phase === "success") {
   const engineModule = await import(pathToFileURL(copiedEngineModulePath));
   const methodModule = await import(pathToFileURL(copiedMethodModulePath));
   assert.equal(coordinatorManifest.fullCapability.officialReceiptSHA256,
-    OFFICIAL_FULL_C_SHA256);
+    expectedFullC_SHA256);
   assert.equal(coordinatorManifest.fullCapability.localReceiptIsSoleDownstreamBasePath, true);
   validateFileBinding(coordinatorManifest.fullCapability.localReceipt,
     "bundle-local full C", { mode: FILE_MODE });
   assert.equal(coordinatorManifest.fullCapability.localReceipt.canonicalPath,
     baseCapabilityPath);
   assert.equal(coordinatorManifest.fullCapability.localReceipt.artifact.sha256,
-    OFFICIAL_FULL_C_SHA256);
+    expectedFullC_SHA256);
   validateFileBinding(coordinatorManifest.captureIntakeCapability,
     "Capture Intake capability", { mode: FILE_MODE });
   validateFileBinding(coordinatorManifest.bootstrapCapability,
@@ -1066,11 +1083,19 @@ if (phase === "success") {
     { toolkitRoot, helperPath: overBoundHelperPath, launcherPath: runnerLauncherPath },
   );
   const baseCapability = JSON.parse(fs.readFileSync(baseCapabilityPath, "utf8"));
+  const retainedEngineProfile = new Map([
+    ["swan-song-engine-profile-abi9-v1", engineModule.SWANSONG_ENGINE_PROFILE_ABI9],
+    ["swan-song-engine-profile-abi10-v3", engineModule.SWANSONG_ENGINE_PROFILE_ABI10],
+    ["swan-song-engine-profile-abi10-capture-v1",
+      engineModule.SWANSONG_ENGINE_PROFILE_ABI10_CAPTURE],
+  ]).get(coordinatorManifest.fullCapability.engineProfileID);
+  if (!retainedEngineProfile) fail("retained engine profile is unavailable");
   const engineCapabilityOptions = {
     swanSongRoot: repositoryRoot,
     aresSourceRoot,
     engineDirectory,
     routeRunner: runnerPath,
+    engineProfile: retainedEngineProfile,
   };
   const currentEngineCapability =
     engineModule.collectSwanSongEngineCapability(engineCapabilityOptions);
@@ -1451,7 +1476,7 @@ if (phase === "success") {
     overBoundNoWrite: true,
     extraOutputRuntimeExecuted: false,
     crossMethodRuntimeExecuted: false,
-    fullCapabilitySHA256: OFFICIAL_FULL_C_SHA256,
+    fullCapabilitySHA256: expectedFullC_SHA256,
     methodCapabilitySHA256: identityOnly(methodCapabilityPath).sha256,
     bundleManifestSHA256: identityOnly(finalBundleManifestPath).sha256,
     durableBundle: temporaryRoot,

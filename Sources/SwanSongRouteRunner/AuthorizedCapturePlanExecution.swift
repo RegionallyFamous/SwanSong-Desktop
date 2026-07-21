@@ -42,6 +42,7 @@ enum AuthorizedCapturePlanExecutor {
         plan: TranslationFrameInputPlan,
         originalROM: Data,
         patchedROM: Data,
+        expectedEngineABI: UInt32,
         comparisonPolicy: ComparisonPolicy
     ) throws -> AuthorizedCapturePlanExecution {
         let hardware = try project.routeHardwareModel
@@ -56,7 +57,11 @@ enum AuthorizedCapturePlanExecutor {
             let recordingEngine = try proofEngine(hardware: hardware)
             _ = try recordingEngine.load(rom: originalROM)
             defer { try? recordingEngine.unload() }
-            try validate(engine: recordingEngine, hardware: hardware)
+            try validate(
+                engine: recordingEngine,
+                hardware: hardware,
+                expectedEngineABI: expectedEngineABI
+            )
             let start = TranslationRouteStartContext(
                 hardwareModel: hardware,
                 firmware: TranslationRouteFirmware(
@@ -97,14 +102,16 @@ enum AuthorizedCapturePlanExecutor {
             project: project,
             rom: originalROM,
             route: route,
-            hardware: hardware
+            hardware: hardware,
+            expectedEngineABI: expectedEngineABI
         )
         let patched = try replay(
             role: .patched,
             project: project,
             rom: patchedROM,
             route: route,
-            hardware: hardware
+            hardware: hardware,
+            expectedEngineABI: expectedEngineABI
         )
         guard original.frameNumber == patched.frameNumber else {
             throw TranslationLabError.invalidRoute(
@@ -168,7 +175,8 @@ enum AuthorizedCapturePlanExecutor {
         project: TranslationProject,
         rom: Data,
         route: TranslationRoute,
-        hardware: TranslationRouteHardwareModel
+        hardware: TranslationRouteHardwareModel,
+        expectedEngineABI: UInt32
     ) throws -> AuthorizedCapturePlanExecution.Endpoint {
         let romURL = try project.romURL(for: role)
         if role == .original {
@@ -185,7 +193,11 @@ enum AuthorizedCapturePlanExecutor {
         let engine = try proofEngine(hardware: hardware)
         _ = try engine.load(rom: rom)
         defer { try? engine.unload() }
-        try validate(engine: engine, hardware: hardware)
+        try validate(
+            engine: engine,
+            hardware: hardware,
+            expectedEngineABI: expectedEngineABI
+        )
         guard let start = route.start,
               engine.backendName == start.engine.backend,
               engine.buildID == start.engine.buildID else {
@@ -234,13 +246,14 @@ enum AuthorizedCapturePlanExecutor {
 
     private static func validate(
         engine: EngineSession,
-        hardware: TranslationRouteHardwareModel
+        hardware: TranslationRouteHardwareModel,
+        expectedEngineABI: UInt32
     ) throws {
         guard engine.capabilities.contains(.execution),
               engine.capabilities.contains(.saveStates),
               engine.capabilities.contains(.debugger),
               engine.backendName == "ares",
-              engine.abiVersion == 9,
+              engine.abiVersion == expectedEngineABI,
               engine.activeHardwareModel == hardware.engineHardwareModel else {
             throw TranslationLabError.invalidRoute(
                 "the loaded engine does not satisfy the authorized capture contract"
