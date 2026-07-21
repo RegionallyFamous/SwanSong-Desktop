@@ -6,6 +6,26 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.7.1</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.7.1</link>
+      <description sparkle:format="html">&lt;h2&gt;Translation Lab can follow the pixels.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.7.1 gives source probing a signed, capture-authorized path from a visible rectangle back to its real cartridge lineage—while private game details stay inside your project.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Probe the frame you captured.&lt;/strong&gt; The project, ROM, plan, frame, rectangle, helper, runner, and engine must all agree.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Change with confidence.&lt;/strong&gt; Select map, raster, palette, or sprite ownership and still discover other display elements sharing the same source.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep private evidence private.&lt;/strong&gt; Automation receives safe counts, hashes, geometry, and completeness—not addresses, cartridge ranges, mapper state, or source bytes.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Trust the finished proof.&lt;/strong&gt; SwanSong writes the closure last, reads it back, and validates the complete evidence tree.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Skip the password box.&lt;/strong&gt; Runtime and local-tool release gates keep ordinary SwanSong use away from the login Keychain.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;SwanSong includes no games or original system firmware.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.7.1"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Tue, 21 Jul 2026 07:16:27 -0500</pubDate>
+      <sparkle:version>14</sparkle:version>
+      <sparkle:shortVersionString>0.7.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:phasedRolloutInterval>86400</sparkle:phasedRolloutInterval>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.7.1/SwanSong-0.7.1-macOS-universal.zip" length="35049641" type="application/octet-stream" sparkle:edSignature="w+l2YgMo0fsfcr+A3lfsWgPkkrLQmtRGAld2bKF29E9NdpDh2cphS5SRuoKY4Xsh0skJni9Hm1KiOZu3Z9zuAA==" />
+    </item>
+    <item>
       <title>SwanSong 0.7.0</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.7.0</link>
       <description sparkle:format="html">&lt;h2&gt;A safer SwanSong—without more fuss.&lt;/h2&gt;
@@ -204,6 +224,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: sOlzGIKd90m5Bed17zKLIsvGf8xBOzyR1tkknbclHMQWP390g3StqTl5jlQeQFfKqAZnqKsp5ylbJxBOT4PVAg==
-length: 21355
+edSignature: nxfr+6KI6RImALgO3WH79nXi4EfUMuhDcLq9RNWP/U4qRnuTCMct5z+BPBvb5C2FnAuwFIK+7bZJEmrFsS1kDw==
+length: 23603
 -->
