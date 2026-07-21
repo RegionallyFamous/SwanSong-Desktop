@@ -645,7 +645,6 @@ public final class YokoiCartridgeSession: @unchecked Sendable {
         var prepare = Data([info.saveKind.rawValue])
         prepare.append(Self.littleEndian(UInt32(image.count)))
         prepare.append(Self.littleEndian(crc32))
-        prepare.append(0) // v0.3 write flags: never accept ambiguous SRAM implicitly.
         let prepared = try request(.prepareWrite, payload: prepare)
         guard prepared.count == 2 else {
             throw YokoiHardwareError.unexpectedResponse("The write-arm token was malformed.")

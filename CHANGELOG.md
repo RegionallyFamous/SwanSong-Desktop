@@ -83,10 +83,6 @@ and finds a modern Python installation when Studio starts from Finder.
 - Renames the opt-in testing preference to Developer Tools. SwanSong Studio,
   local MCP control, diagnostic logs, raw cartridge protocol details, and Story
   Forge's Studio handoff now stay hidden until that toggle is enabled.
-- Updates the embedded development payload to Yokoi Boot and Yokoi Cart Service
-  0.3, teaches Desktop the v0.3 guarded-write flags and ambiguity/timeout
-  statuses, and bundles the exact preferred-form firmware source. Release builds
-  remain locked until the physical hardware matrix is complete.
 - Opens the main window before preparing the library, controller, local tools,
   and updater. Studio and Story Forge now wake only when opened, with optional
   launch timing available for future performance work.

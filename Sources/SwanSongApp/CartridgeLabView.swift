@@ -700,11 +700,7 @@ struct CartridgeLabView: View {
                     }
                     if let payload = model.payload {
                         developerRow("Payload", payload.version)
-                        developerRow(
-                            "Release gate",
-                            payload.releaseReady ? "release-ready" : "development / hardware validation pending"
-                        )
-                        developerRow("Bundled source SHA-256", payload.correspondingSourceSHA256)
+                        developerRow("Source revision", payload.sourceRevision)
                         developerRow("Installer SHA-256", payload.installerSHA256)
                         developerRow("Service SHA-256", payload.cartServiceSHA256)
                     }

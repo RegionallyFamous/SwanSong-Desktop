@@ -75,15 +75,13 @@ and Yokoi Cart Service RAM program. They contain no original Bandai startup
 firmware or commercial game data and are not linked into the GPL-2.0-only Mac
 executable. Their manifest pins decoded sizes and SHA-256 values; build,
 runtime, and app-payload checks reject a missing, modified, linked, extra, or
-malformed payload. The GPLv3 text, notices, and corresponding source archive
+malformed payload. The GPLv3 text, notices, and corresponding source location
 ship beside them under `Resources/YokoiHardware`.
 
-The current-source `0.3.0-development.1` payload bundles a deterministic Yokoi
-Toolkit containing the exact preferred-form build source, source logo, tests,
-protocol, upstream record, licenses, and built programs. The outer payload
-pins the toolkit's size and SHA-256; the toolkit pins every member independently.
-It remains `releaseReady: false`, and `SWAN_RELEASE_BUILD=1` rejects it until the
-physical hardware matrix and publication gate are completed.
+The shipped `0.2.0-prototype.1` payload corresponds to SwanSong Core commit
+`94e9a1ae3d09f8d9eab776d36296144e85c72f1d`. Its manifest links that immutable
+source tree, and `SWAN_RELEASE_BUILD=1` requires the source-publication gate to
+remain explicitly unlocked.
 
 SwanSong's native serial, XMODEM, and cartridge-service client is independently
 implemented against the documented wire contract. The GPLv3 programs execute
