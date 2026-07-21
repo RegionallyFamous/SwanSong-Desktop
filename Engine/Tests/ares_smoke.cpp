@@ -73,11 +73,14 @@ int main(int argc, char** argv) {
   const bool static_analysis_seed_v2_fixture =
       argc == 3 &&
       std::strcmp(argv[1], "--static-analysis-seed-v2-fixture") == 0;
+  const bool dma_provenance_fixture =
+      argc == 3 &&
+      std::strcmp(argv[1], "--dma-provenance-fixture") == 0;
   const bool input_frame_fixture =
       argc == 3 && std::strcmp(argv[1], "--input-frame-fixture") == 0;
   const char* rom_path = provenance_fixture || mono_palette_fixture ||
           mapper_window_fixture || static_analysis_seed_v2_fixture ||
-          input_frame_fixture
+          dma_provenance_fixture || input_frame_fixture
       ? argv[2] : (argc > 1 ? argv[1] : nullptr);
   const uint8_t expected_raster_bytes = provenance_fixture
       ? static_cast<uint8_t>(std::strcmp(argv[3], "packed") == 0 ? 1 : 4)
@@ -169,6 +172,146 @@ int main(int argc, char** argv) {
         video_hash ^= frame.pixels[offset];
         video_hash *= 1099511628211ull;
       }
+    }
+
+    if (dma_provenance_fixture) {
+      if (frame_width != 237 || frame_height != 144) {
+        std::fputs("general-DMA fixture exposed the wrong native frame\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      swan_video_frame_t dma_frame{};
+      result = swan_engine_video_frame(engine, &dma_frame);
+      const auto pixel_at = [&](uint16_t x, uint16_t y) {
+        std::array<uint8_t, 4> pixel{};
+        const size_t offset = static_cast<size_t>(y) * dma_frame.stride_bytes +
+            static_cast<size_t>(x) * pixel.size();
+        std::copy_n(dma_frame.pixels + offset, pixel.size(), pixel.begin());
+        return pixel;
+      };
+      if (result != SWAN_RESULT_OK || !dma_frame.pixels ||
+          dma_frame.stride_bytes < dma_frame.width * 4 ||
+          pixel_at(8, 8) == pixel_at(9, 8)) {
+        std::fputs("general-DMA fixture lost its isolated visible pixel\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      swan_display_rectangle_t dma_rectangle{};
+      dma_rectangle.struct_size = sizeof(dma_rectangle);
+      dma_rectangle.x = 8;
+      dma_rectangle.y = 8;
+      dma_rectangle.width = 1;
+      dma_rectangle.height = 1;
+      swan_display_owner_sample_t dma_owner{};
+      size_t dma_owner_count = 0;
+      result = swan_engine_display_owner_probe(
+          engine, &dma_rectangle, &dma_owner, 1, &dma_owner_count);
+      if (result != SWAN_RESULT_OK || dma_owner_count != 1 ||
+          dma_owner.struct_size != sizeof(dma_owner) ||
+          dma_owner.layer != SWAN_DISPLAY_LAYER_SCREEN_1 ||
+          dma_owner.source_kind != SWAN_DISPLAY_SOURCE_TILEMAP ||
+          dma_owner.cell_address != 0x1842 || dma_owner.tile_index != 1 ||
+          dma_owner.cell_attributes != 1 ||
+          dma_owner.raster_address != 0x4020 ||
+          dma_owner.raster_byte_count != 4 ||
+          dma_owner.raster_writer_pc == UINT32_MAX) {
+        std::fputs("general-DMA fixture owner was not exact\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      swan_display_source_probe_options_t dma_options{};
+      dma_options.struct_size = sizeof(dma_options);
+      dma_options.selected_component_mask =
+          SWAN_DISPLAY_SOURCE_COMPONENT_MASK_RASTER;
+      size_t dma_source_count = 0;
+      result = swan_engine_display_source_probe(
+          engine, &dma_rectangle, &dma_options,
+          nullptr, 0, &dma_source_count);
+      std::vector<swan_display_source_trace_t> dma_sources(dma_source_count);
+      size_t dma_source_written = 0;
+      if (result == SWAN_RESULT_OK) {
+        result = swan_engine_display_source_probe(
+            engine, &dma_rectangle, &dma_options,
+            dma_sources.data(), dma_sources.size(), &dma_source_written);
+      }
+      bool exact_dma = result == SWAN_RESULT_OK && dma_source_count == 4 &&
+          dma_source_written == dma_sources.size();
+      std::array<uint32_t, 4> cartridge_offsets{};
+      std::array<uint32_t, 4> dma_operands{};
+      for (size_t index = 0; exact_dma && index < dma_sources.size(); ++index) {
+        const auto& source = dma_sources[index];
+        exact_dma = source.struct_size == sizeof(source) &&
+            source.x == 8 && source.y == 8 &&
+            source.scope == SWAN_DISPLAY_SOURCE_SCOPE_SELECTED &&
+            source.component == SWAN_DISPLAY_SOURCE_COMPONENT_RASTER &&
+            source.source_address == 0x4020 &&
+            source.source_byte_count == 4 &&
+            source.cartridge_length == 1 &&
+            source.flags == SWAN_DISPLAY_SOURCE_FLAG_EXACT &&
+            source.read_context_flags ==
+                SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED &&
+            source.read_context_initiator ==
+                SWAN_DISPLAY_SOURCE_READ_INITIATOR_GENERAL_DMA &&
+            source.minimum_instruction_hops == 0 &&
+            source.maximum_instruction_hops == 0 &&
+            source.immediate_caller_or_general_dma_source_operand != 0 &&
+            source.caller_segment == 0 && source.caller_offset == 0 &&
+            source.operand_segment == 0 && source.operand_offset == 0 &&
+            source.mapper_window >= 2 && source.mapper_window <= 15 &&
+            source.cartridge_offset == source.resolved_cartridge_operand &&
+            source.cartridge_offset < rom.size() &&
+            source.conservative_reason ==
+                SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE;
+        cartridge_offsets[index] = source.cartridge_offset;
+        dma_operands[index] =
+            source.immediate_caller_or_general_dma_source_operand;
+      }
+      std::sort(cartridge_offsets.begin(), cartridge_offsets.end());
+      std::sort(dma_operands.begin(), dma_operands.end());
+      for (size_t index = 1; exact_dma && index < cartridge_offsets.size();
+           ++index) {
+        exact_dma = cartridge_offsets[index] == cartridge_offsets[0] + index &&
+            dma_operands[index] == dma_operands[0] + index;
+      }
+      constexpr std::array<uint8_t, 4> kExpectedSource = {0x80, 0, 0, 0};
+      if (exact_dma) {
+        exact_dma = cartridge_offsets[0] <= rom.size() - kExpectedSource.size() &&
+            std::equal(kExpectedSource.begin(), kExpectedSource.end(),
+                       rom.begin() + cartridge_offsets[0]);
+      }
+      if (!exact_dma) {
+        std::fprintf(
+            stderr,
+            "general-DMA provenance mismatch result=%u count=%zu/%zu first=%08x operand=%05x\n",
+            result, dma_source_count, dma_source_written,
+            cartridge_offsets[0], dma_operands[0]);
+        for (const auto& source : dma_sources) {
+          std::fprintf(
+              stderr,
+              "trace scope=%u component=%u address=%05x/%u range=%08x/%u flags=%x read=%x initiator=%u hops=%u-%u dma=%05x caller=%04x:%04x operand=%04x:%04x window=%u bank=%04x resolved=%08x conservative=%u\n",
+              source.scope, source.component, source.source_address,
+              source.source_byte_count, source.cartridge_offset,
+              source.cartridge_length, source.flags,
+              source.read_context_flags, source.read_context_initiator,
+              source.minimum_instruction_hops, source.maximum_instruction_hops,
+              source.immediate_caller_or_general_dma_source_operand,
+              source.caller_segment, source.caller_offset,
+              source.operand_segment, source.operand_offset,
+              source.mapper_window, source.mapper_bank,
+              source.resolved_cartridge_operand, source.conservative_reason);
+        }
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      std::printf(
+          "PASS general-DMA source lineage exact=4 initiator=dma source=%08x operand=%05x\n",
+          cartridge_offsets[0], dma_operands[0]);
+      swan_engine_destroy(engine);
+      return 0;
     }
 
     if (input_frame_fixture) {

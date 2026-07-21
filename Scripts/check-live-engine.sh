@@ -93,6 +93,26 @@ check_mapper_window_fixture() {
   echo "$first"
 }
 
+check_dma_provenance_fixture() {
+  fixture=$1
+  expected_sha256=$2
+  expected=$3
+  actual_sha256=$(shasum -a 256 "$fixture" | awk '{print $1}')
+  if [ "$actual_sha256" != "$expected_sha256" ]; then
+    echo "general-DMA provenance fixture hash mismatch: $fixture" >&2
+    exit 1
+  fi
+  first=$("$BUILD_DIR/SwanAresSmoke" --dma-provenance-fixture "$fixture")
+  second=$("$BUILD_DIR/SwanAresSmoke" --dma-provenance-fixture "$fixture")
+  if [ "$first" != "$expected" ] || [ "$second" != "$expected" ]; then
+    echo "general-DMA provenance fixture failed or was nondeterministic" >&2
+    echo "$first" >&2
+    echo "$second" >&2
+    exit 1
+  fi
+  echo "$first"
+}
+
 check_static_analysis_seed_v2_fixture() {
   fixture=$1
   expected_json=$2
@@ -136,6 +156,10 @@ check_provenance_fixture \
   "$MACOS_DIR/testroms/swan-song/display_provenance/display_provenance_vertical.wsc" \
   packed \
   9d70e8b632783d0858f9e3e446b829061b9e5fee6f219cb8c796d1dd66ea9f95
+check_dma_provenance_fixture \
+  "$MACOS_DIR/testroms/swan-song/display_provenance/general_dma_source_lineage.wsc" \
+  593e96231de93e77e1df63d6345698641eb4935d5c7f17f28c85417fa690ce49 \
+  'PASS general-DMA source lineage exact=4 initiator=dma source=0001fe78 operand=ffe78'
 check_mono_palette_fixture \
   "$MACOS_DIR/testroms/swan-song/display_provenance/mono_palette_out_owner.ws" \
   d38b05b8d062d662e97456ccb3499ed8b8fae17a0409ea0a800558cfae142b0d
