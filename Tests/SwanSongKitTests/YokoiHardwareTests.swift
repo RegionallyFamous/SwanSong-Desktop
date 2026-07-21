@@ -84,7 +84,7 @@ final class YokoiHardwareTests: XCTestCase {
         expected.append(try YokoiProtocolCodec.encode(
             command: 0x30,
             sequence: 1,
-            payload: Data([0x01, 0x04, 0x00, 0x00, 0x00, 0xCD, 0xFB, 0x3C, 0xB6])
+            payload: Data([0x01, 0x04, 0x00, 0x00, 0x00, 0xCD, 0xFB, 0x3C, 0xB6, 0x00])
         ))
         expected.append(try YokoiProtocolCodec.encode(
             command: 0x31,
@@ -106,21 +106,47 @@ final class YokoiHardwareTests: XCTestCase {
 
     func testPackagedPayloadDecodesToPinnedArtifacts() throws {
         let payload = try YokoiHardwarePayloadLoader.load(at: payloadRoot())
-        XCTAssertEqual(payload.version, "0.2.0-prototype.1")
+        XCTAssertEqual(payload.version, "0.3.0-development.1")
+        XCTAssertFalse(payload.releaseReady)
         XCTAssertEqual(
-            payload.sourceRevision,
-            "94e9a1ae3d09f8d9eab776d36296144e85c72f1d"
+            payload.correspondingSourceSHA256,
+            "ee0173435a9f6d898583504e1b35b156097b133443d335ab824a0a54bef89129"
         )
+        XCTAssertEqual(payload.correspondingSourceURL.lastPathComponent, "SwanSong-Yokoi-Toolkit.zip")
         XCTAssertEqual(payload.installerROM.count, 131_072)
         XCTAssertEqual(
             payload.installerSHA256,
-            "8a2d6e580ebb0bc53b52929166d9517e90840db39849804717880439682db8f3"
+            "71a55077e9abf4ba626dd4bf35b7ad026094c9b27fc429f67e604a23ecf3c53a"
         )
         XCTAssertEqual(payload.cartService.prefix(2), Data([0x62, 0x46]))
-        XCTAssertEqual(payload.cartService.count, 4_484)
+        XCTAssertEqual(payload.cartService.count, 5_515)
         XCTAssertEqual(
             payload.cartServiceSHA256,
-            "b650bc62ddbbec6027783b577baee5319ffd25d25ce06d38c1353174dc0d1ce0"
+            "efe2fd2e5d3240cb7a9c607a9d33be0b125fb275f969013240aafe8e542d280c"
+        )
+    }
+
+    func testAmbiguousSRAMRestoreStaysLockedInNativeClient() throws {
+        let response = try YokoiProtocolCodec.encode(
+            command: 0x82,
+            sequence: 0,
+            payload: Data([
+                0x00, 0x1F, 0x82, 0x00, 0x01, 0x00,
+                0x00, 0x00, 0x01, 0x00,
+                0x00, 0x20, 0x00, 0x00,
+            ]) + Data(repeating: 0, count: 16)
+        )
+        let connection = FixtureConnection(input: response)
+        let session = YokoiCartridgeSession(connection: connection)
+        let info = try session.cartridgeInfo()
+
+        XCTAssertTrue(info.saveGeometryIsAmbiguous)
+        XCTAssertThrowsError(try session.restoreSave(Data(repeating: 0, count: 8_192), using: info)) { error in
+            XCTAssertTrue(error.localizedDescription.contains("ambiguous"))
+        }
+        XCTAssertEqual(
+            connection.output,
+            try YokoiProtocolCodec.encode(command: 0x02, sequence: 0)
         )
     }
 

@@ -30,6 +30,9 @@ final class SwanSongLocalMCPBridge {
               let method = values["method"] else { return }
 
         do {
+            guard model.debugToolsEnabled else {
+                throw BridgeError("Turn on Developer Tools in SwanSong Settings before using local MCP control.")
+            }
             guard UserDefaults.standard.bool(
                 forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
             ) else {
@@ -158,7 +161,7 @@ final class SwanSongLocalMCPBridge {
         guard let requested = arguments["section"] as? String,
               let section = section(named: requested) else {
             throw BridgeError(
-                "section must be library, favorites, recent, homebrew, pocket, translation, story, or studio"
+                "section must be library, favorites, recent, homebrew, cartridges, pocket, translation, story, or studio"
             )
         }
         guard !model.isPlaying else {
@@ -199,6 +202,7 @@ final class SwanSongLocalMCPBridge {
         case "favorites": .favorites
         case "recent": .recent
         case "homebrew": .homebrew
+        case "cartridges": .cartridgeTools
         case "pocket": .pocketCore
         case "translation": .translationLab
         case "story": .storyForge
@@ -213,6 +217,7 @@ final class SwanSongLocalMCPBridge {
         case .favorites: "favorites"
         case .recent: "recent"
         case .homebrew: "homebrew"
+        case .cartridgeTools: "cartridges"
         case .pocketCore: "pocket"
         case .translationLab: "translation"
         case .storyForge: "story"

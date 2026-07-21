@@ -355,6 +355,10 @@ public struct YokoiCartridgeInfo: Equatable, Sendable {
         flags & 0x02 != 0 && flags & 0x04 != 0
     }
 
+    public var saveGeometryIsAmbiguous: Bool {
+        flags & 0x10 != 0
+    }
+
     public var consoleName: String {
         switch consoleModel {
         case 0x82: "WonderSwan Color"
@@ -627,6 +631,11 @@ public final class YokoiCartridgeSession: @unchecked Sendable {
                 "The cartridge does not declare writable SRAM or EEPROM."
             )
         }
+        guard !info.saveGeometryIsAmbiguous else {
+            throw YokoiHardwareError.unsupportedCartridge(
+                "This cartridge's SRAM footer is ambiguous, so save restoration remains locked until its physical geometry is identified."
+            )
+        }
         guard image.count == Int(info.saveSize) else {
             throw YokoiHardwareError.verificationFailed(
                 "The selected save is \(image.count) bytes; this cartridge requires \(info.saveSize) bytes."
@@ -636,6 +645,7 @@ public final class YokoiCartridgeSession: @unchecked Sendable {
         var prepare = Data([info.saveKind.rawValue])
         prepare.append(Self.littleEndian(UInt32(image.count)))
         prepare.append(Self.littleEndian(crc32))
+        prepare.append(0) // v0.3 write flags: never accept ambiguous SRAM implicitly.
         let prepared = try request(.prepareWrite, payload: prepare)
         guard prepared.count == 2 else {
             throw YokoiHardwareError.unexpectedResponse("The write-arm token was malformed.")
@@ -829,6 +839,8 @@ public final class YokoiCartridgeSession: @unchecked Sendable {
         case 0x09: "The WonderSwan could not verify data written to the cartridge."
         case 0x0A: "The save-write sequence is invalid."
         case 0x0B: "The completed save image did not match its CRC32."
+        case 0x0C: "The cartridge save-write session timed out. No further data was written."
+        case 0x0D: "This cartridge's SRAM size is ambiguous, so save restoration remains locked."
         default: String(format: "The cartridge service returned error 0x%02X.", status)
         }
     }

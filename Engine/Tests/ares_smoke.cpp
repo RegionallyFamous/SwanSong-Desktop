@@ -52,10 +52,12 @@ int main(int argc, char** argv) {
   const bool sprite_attribute_provenance_ok =
       (capabilities &
        SWAN_CAPABILITY_DISPLAY_SPRITE_ATTRIBUTE_PROVENANCE) != 0;
+  const bool consumed_prefetch_provenance_ok =
+      (capabilities & SWAN_CAPABILITY_CONSUMED_PREFETCH_PROVENANCE) != 0;
 
   if (!backend_ok || !execution_ok || !audio_ok || !provenance_ok ||
       !source_provenance_ok || !source_selection_ok || !source_read_context_ok ||
-      !sprite_attribute_provenance_ok) {
+      !sprite_attribute_provenance_ok || !consumed_prefetch_provenance_ok) {
     std::fputs("ares backend did not advertise the expected live capabilities\n", stderr);
     swan_engine_destroy(engine);
     return 1;
@@ -68,10 +70,14 @@ int main(int argc, char** argv) {
   const bool mapper_window_fixture =
       argc == 3 &&
       std::strcmp(argv[1], "--mapper-window-owner-matrix") == 0;
+  const bool static_analysis_seed_v2_fixture =
+      argc == 3 &&
+      std::strcmp(argv[1], "--static-analysis-seed-v2-fixture") == 0;
   const bool input_frame_fixture =
       argc == 3 && std::strcmp(argv[1], "--input-frame-fixture") == 0;
   const char* rom_path = provenance_fixture || mono_palette_fixture ||
-          mapper_window_fixture || input_frame_fixture
+          mapper_window_fixture || static_analysis_seed_v2_fixture ||
+          input_frame_fixture
       ? argv[2] : (argc > 1 ? argv[1] : nullptr);
   const uint8_t expected_raster_bytes = provenance_fixture
       ? static_cast<uint8_t>(std::strcmp(argv[3], "packed") == 0 ? 1 : 4)
@@ -359,6 +365,10 @@ int main(int argc, char** argv) {
       }
     }
 
+    size_t static_seed_trace_count = 0;
+    size_t static_seed_context_count = 0;
+    size_t static_seed_byte_count = 0;
+
     if (mapper_window_fixture) {
       constexpr size_t kExpectedROMSize = 2u * 1024u * 1024u;
       constexpr std::array<uint32_t, 4> kActiveOffsets = {
@@ -565,6 +575,45 @@ int main(int argc, char** argv) {
           return 1;
         }
 
+        size_t v2_trace_count = 0;
+        size_t v2_context_count = 0;
+        size_t v2_byte_count = 0;
+        result = swan_engine_display_source_probe_v2(
+            engine, &selected_rectangle, &raster_options,
+            nullptr, 0, &v2_trace_count,
+            nullptr, 0, &v2_context_count,
+            nullptr, 0, &v2_byte_count);
+        swan_display_source_trace_v2_t v2_trace{};
+        size_t v2_trace_written = 0;
+        size_t v2_context_written = 0;
+        size_t v2_byte_written = 0;
+        if (result == SWAN_RESULT_OK && v2_trace_count == 1 &&
+            v2_context_count == 0 && v2_byte_count == 0) {
+          result = swan_engine_display_source_probe_v2(
+              engine, &selected_rectangle, &raster_options,
+              &v2_trace, 1, &v2_trace_written,
+              nullptr, 0, &v2_context_written,
+              nullptr, 0, &v2_byte_written);
+        }
+        if (result != SWAN_RESULT_OK || v2_trace_written != 1 ||
+            v2_context_written != 0 || v2_byte_written != 0 ||
+            v2_trace.execution_context_id != 0 ||
+            v2_trace.fetch_context_flags != 0 ||
+            std::memcmp(
+                reinterpret_cast<const uint8_t*>(&v2_trace) + 4,
+                reinterpret_cast<const uint8_t*>(&source) + 4,
+                sizeof(source) - 4) != 0) {
+          std::fprintf(
+              stderr,
+              "ABI10 incorrectly derived caller bytes from an IRAM reader result=%u counts=%zu/%zu/%zu written=%zu/%zu/%zu id=%llu flags=%x\n",
+              result, v2_trace_count, v2_context_count, v2_byte_count,
+              v2_trace_written, v2_context_written, v2_byte_written,
+              static_cast<unsigned long long>(v2_trace.execution_context_id),
+              v2_trace.fetch_context_flags);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+
         mix_trace(source.x);
         mix_trace(source.y);
         mix_trace(source.scope);
@@ -644,6 +693,308 @@ int main(int argc, char** argv) {
           static_cast<unsigned long long>(video_hash));
       swan_engine_destroy(engine);
       return 0;
+    }
+
+    if (static_analysis_seed_v2_fixture) {
+      constexpr size_t kExpectedROMSize = 2u * 1024u * 1024u;
+      constexpr uint32_t kFetchOffset = 0x028004;
+      constexpr uint32_t kRefetchOffset = 0x068004;
+      constexpr uint32_t kSourceDecoyOffset = 0x029000;
+      constexpr uint32_t kSourceOffset = 0x069000;
+      constexpr std::array<uint8_t, 2> kRetainedInstruction = {0xf3, 0xa5};
+      constexpr std::array<uint8_t, 2> kRefetchDecoy = {0xf4, 0xa5};
+      constexpr std::array<uint8_t, 4> kSourceDecoy = {0, 0, 0, 0};
+      constexpr std::array<uint8_t, 4> kVisibleSource = {0x80, 0, 0, 0};
+      if (rom.size() != kExpectedROMSize ||
+          !std::equal(kRetainedInstruction.begin(), kRetainedInstruction.end(),
+                      rom.begin() + kFetchOffset) ||
+          !std::equal(kRefetchDecoy.begin(), kRefetchDecoy.end(),
+                      rom.begin() + kRefetchOffset) ||
+          !std::equal(kSourceDecoy.begin(), kSourceDecoy.end(),
+                      rom.begin() + kSourceDecoyOffset) ||
+          !std::equal(kVisibleSource.begin(), kVisibleSource.end(),
+                      rom.begin() + kSourceOffset)) {
+        std::fputs("static-analysis seed-v2 ROM layout was not exact\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      if (frame_width != 237 || frame_height != 144) {
+        std::fputs("static-analysis seed-v2 exposed the wrong native frame\n",
+                   stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      swan_video_frame_t seed_frame{};
+      result = swan_engine_video_frame(engine, &seed_frame);
+      const auto frame_pixel = [&](uint16_t x, uint16_t y) {
+        std::array<uint8_t, 4> pixel{};
+        const size_t offset = static_cast<size_t>(y) * seed_frame.stride_bytes +
+            static_cast<size_t>(x) * pixel.size();
+        std::copy_n(seed_frame.pixels + offset, pixel.size(), pixel.begin());
+        return pixel;
+      };
+      if (result != SWAN_RESULT_OK || !seed_frame.pixels ||
+          seed_frame.stride_bytes < seed_frame.width * 4 ||
+          frame_pixel(0, 0) == frame_pixel(1, 0)) {
+        std::fputs("static-analysis seed-v2 visible pixel was absent\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      const auto seed_backdrop = frame_pixel(1, 0);
+      for (uint16_t y = 0; y < 144; ++y) {
+        for (uint16_t x = 0; x < 224; ++x) {
+          if (x == 0 && y == 0) continue;
+          if (frame_pixel(x, y) != seed_backdrop) {
+            std::fputs(
+                "static-analysis seed-v2 visible delta escaped its rectangle\n",
+                stderr);
+            swan_engine_destroy(engine);
+            return 1;
+          }
+        }
+      }
+
+      swan_display_rectangle_t seed_rectangle{};
+      seed_rectangle.struct_size = sizeof(seed_rectangle);
+      seed_rectangle.width = 1;
+      seed_rectangle.height = 1;
+      swan_display_owner_sample_t seed_owner{};
+      size_t seed_owner_count = 0;
+      result = swan_engine_display_owner_probe(
+          engine, &seed_rectangle, &seed_owner, 1, &seed_owner_count);
+      if (result != SWAN_RESULT_OK || seed_owner_count != 1 ||
+          seed_owner.struct_size != sizeof(seed_owner) ||
+          seed_owner.x != 0 || seed_owner.y != 0 ||
+          seed_owner.layer != SWAN_DISPLAY_LAYER_SCREEN_1 ||
+          seed_owner.source_kind != SWAN_DISPLAY_SOURCE_TILEMAP ||
+          seed_owner.cell_address != 0x1800 || seed_owner.tile_index != 1 ||
+          seed_owner.cell_attributes != 1 ||
+          seed_owner.raster_address != 0x4020 ||
+          seed_owner.raster_byte_count != 4 ||
+          seed_owner.palette_index != 0 || seed_owner.palette_color != 1 ||
+          seed_owner.palette_address != 0xfe02 ||
+          seed_owner.palette_byte_count != 2 ||
+          seed_owner.cell_writer_pc == UINT32_MAX ||
+          seed_owner.raster_writer_pc != 0x028006 ||
+          seed_owner.palette_writer_pc == UINT32_MAX ||
+          seed_owner.oam_address != 0xffff || seed_owner.oam_byte_count != 0 ||
+          seed_owner.oam_writer_pc != UINT32_MAX) {
+        std::fputs("static-analysis seed-v2 visible owner was not exact\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      swan_display_source_probe_options_t seed_options{};
+      seed_options.struct_size = sizeof(seed_options);
+      seed_options.selected_component_mask =
+          SWAN_DISPLAY_SOURCE_COMPONENT_MASK_RASTER;
+      size_t seed_source_count = 0;
+      result = swan_engine_display_source_probe(
+          engine, &seed_rectangle, &seed_options,
+          nullptr, 0, &seed_source_count);
+      std::vector<swan_display_source_trace_t> seed_sources(seed_source_count);
+      size_t seed_source_written = 0;
+      if (result == SWAN_RESULT_OK) {
+        result = swan_engine_display_source_probe(
+            engine, &seed_rectangle, &seed_options,
+            seed_sources.data(), seed_sources.size(), &seed_source_written);
+      }
+      if (result != SWAN_RESULT_OK || seed_source_count != 1 ||
+          seed_source_written != seed_sources.size()) {
+        std::fputs("static-analysis seed-v2 ABI9 source count was not exact\n",
+                   stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      const auto& seed_source = seed_sources.front();
+      if (seed_source.struct_size != sizeof(seed_source) ||
+          seed_source.x != 0 || seed_source.y != 0 ||
+          seed_source.scope != SWAN_DISPLAY_SOURCE_SCOPE_SELECTED ||
+          seed_source.component != SWAN_DISPLAY_SOURCE_COMPONENT_RASTER ||
+          seed_source.source_address != 0x4020 ||
+          seed_source.source_byte_count != 4 ||
+          seed_source.minimum_instruction_hops != 1 ||
+          seed_source.maximum_instruction_hops != 1 ||
+          seed_source.cartridge_offset != kSourceOffset ||
+          seed_source.cartridge_length != 4 ||
+          seed_source.flags != (SWAN_DISPLAY_SOURCE_FLAG_EXACT |
+                                SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED) ||
+          seed_source.read_context_flags !=
+              SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED ||
+          seed_source.immediate_caller != kFetchOffset + 1u ||
+          seed_source.caller_segment != 0x2000 ||
+          seed_source.caller_offset != 0x8005 ||
+          seed_source.operand_segment != 0x2000 ||
+          seed_source.operand_offset != 0x9000 ||
+          seed_source.mapper_window != 2 ||
+          seed_source.mapper_bank != 0xffe6 ||
+          seed_source.resolved_cartridge_operand != kSourceOffset ||
+          seed_source.conservative_reason !=
+              SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE) {
+        std::fputs("static-analysis seed-v2 ABI9 source fields were not exact\n",
+                   stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      result = swan_engine_display_source_probe_v2(
+          engine, &seed_rectangle, &seed_options,
+          nullptr, 0, &static_seed_trace_count,
+          nullptr, 0, &static_seed_context_count,
+          nullptr, 0, &static_seed_byte_count);
+      if (result != SWAN_RESULT_OK || static_seed_trace_count != 1 ||
+          static_seed_context_count != 2 || static_seed_byte_count != 4) {
+        std::fputs("static-analysis seed-v2 ABI10 sizing was not exact\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+
+      const auto unchanged = [](const auto& records) {
+        const auto* begin = reinterpret_cast<const uint8_t*>(records.data());
+        return std::all_of(
+            begin, begin + records.size() * sizeof(records.front()),
+            [](uint8_t byte) { return byte == 0xa5; });
+      };
+      for (uint8_t undersized_table = 0; undersized_table < 3;
+           ++undersized_table) {
+        std::vector<swan_display_source_trace_v2_t> atomic_traces(
+            static_seed_trace_count);
+        std::vector<swan_instruction_fetch_context_t> atomic_contexts(
+            static_seed_context_count);
+        std::vector<swan_instruction_fetch_byte_t> atomic_bytes(
+            static_seed_byte_count);
+        std::memset(atomic_traces.data(), 0xa5,
+                    atomic_traces.size() * sizeof(atomic_traces.front()));
+        std::memset(atomic_contexts.data(), 0xa5,
+                    atomic_contexts.size() * sizeof(atomic_contexts.front()));
+        std::memset(atomic_bytes.data(), 0xa5,
+                    atomic_bytes.size() * sizeof(atomic_bytes.front()));
+        size_t atomic_trace_count = 0;
+        size_t atomic_context_count = 0;
+        size_t atomic_byte_count = 0;
+        const size_t trace_capacity = static_seed_trace_count -
+            (undersized_table == 0 ? 1u : 0u);
+        const size_t context_capacity = static_seed_context_count -
+            (undersized_table == 1 ? 1u : 0u);
+        const size_t byte_capacity = static_seed_byte_count -
+            (undersized_table == 2 ? 1u : 0u);
+        result = swan_engine_display_source_probe_v2(
+            engine, &seed_rectangle, &seed_options,
+            atomic_traces.data(), trace_capacity, &atomic_trace_count,
+            atomic_contexts.data(), context_capacity, &atomic_context_count,
+            atomic_bytes.data(), byte_capacity, &atomic_byte_count);
+        if (result != SWAN_RESULT_SOURCE_RANGE_OVERFLOW ||
+            atomic_trace_count != static_seed_trace_count ||
+            atomic_context_count != static_seed_context_count ||
+            atomic_byte_count != static_seed_byte_count ||
+            !unchanged(atomic_traces) || !unchanged(atomic_contexts) ||
+            !unchanged(atomic_bytes)) {
+          std::fputs("static-analysis seed-v2 ABI10 output was not atomic\n",
+                     stderr);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+      }
+
+      std::vector<swan_display_source_trace_v2_t> seed_v2_traces(
+          static_seed_trace_count);
+      std::vector<swan_instruction_fetch_context_t> seed_contexts(
+          static_seed_context_count);
+      std::vector<swan_instruction_fetch_byte_t> seed_bytes(
+          static_seed_byte_count);
+      size_t seed_v2_trace_written = 0;
+      size_t seed_context_written = 0;
+      size_t seed_byte_written = 0;
+      result = swan_engine_display_source_probe_v2(
+          engine, &seed_rectangle, &seed_options,
+          seed_v2_traces.data(), seed_v2_traces.size(),
+          &seed_v2_trace_written,
+          seed_contexts.data(), seed_contexts.size(), &seed_context_written,
+          seed_bytes.data(), seed_bytes.size(), &seed_byte_written);
+      if (result != SWAN_RESULT_OK ||
+          seed_v2_trace_written != static_seed_trace_count ||
+          seed_context_written != static_seed_context_count ||
+          seed_byte_written != static_seed_byte_count) {
+        std::fputs("static-analysis seed-v2 ABI10 retrieval was incomplete\n",
+                   stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      const auto& seed_v2_trace = seed_v2_traces.front();
+      const uint32_t required_fetch_flags =
+          SWAN_FETCH_CONTEXT_FLAG_SEALED |
+          SWAN_FETCH_CONTEXT_FLAG_EXACT_CARTRIDGE_RUN |
+          SWAN_FETCH_CONTEXT_FLAG_BIJECTIVE_IDENTITY |
+          SWAN_FETCH_CONTEXT_FLAG_PYPCODE_CHECK_REQUIRED |
+          SWAN_FETCH_CONTEXT_FLAG_EXACT_DATA_INCOMPLETE;
+      if (seed_v2_trace.struct_size != sizeof(seed_v2_trace) ||
+          std::memcmp(
+              reinterpret_cast<const uint8_t*>(&seed_v2_trace) + 4,
+              reinterpret_cast<const uint8_t*>(&seed_source) + 4,
+              sizeof(seed_source) - 4) != 0 ||
+          seed_v2_trace.execution_context_id == 0 ||
+          seed_v2_trace.execution_context_id != seed_contexts.front().id ||
+          seed_v2_trace.fetch_context_flags != seed_contexts.front().flags) {
+        std::fputs("static-analysis seed-v2 association was not exact\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      for (size_t context_index = 0; context_index < seed_contexts.size();
+           ++context_index) {
+        const auto& seed_context = seed_contexts[context_index];
+        if (seed_context.struct_size != sizeof(seed_context) ||
+            seed_context.id == 0 || seed_context.structural_id == 0 ||
+            seed_context.byte_start != context_index * 2 ||
+            seed_context.byte_count != 2 ||
+            seed_context.flags != required_fetch_flags ||
+            seed_context.terminal_opcode != 0xa5 ||
+            seed_context.continuing != (context_index == 0 ? 1u : 0u) ||
+            seed_context.logical_start_physical != kFetchOffset ||
+            seed_context.logical_start_segment != 0x2000 ||
+            seed_context.logical_start_offset != 0x8004 ||
+            std::all_of(
+                std::begin(seed_context.canonical_digest),
+                std::end(seed_context.canonical_digest),
+                [](uint8_t byte) { return byte == 0; })) {
+          std::fputs("static-analysis seed-v2 fetch context was not sealed\n",
+                     stderr);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+        if (context_index != 0 &&
+            (seed_context.id == seed_contexts.front().id ||
+             seed_context.structural_id != seed_contexts.front().structural_id ||
+             std::memcmp(seed_context.canonical_digest,
+                         seed_contexts.front().canonical_digest,
+                         sizeof(seed_context.canonical_digest)) != 0)) {
+          std::fputs("static-analysis seed-v2 REP contexts diverged\n", stderr);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+        for (uint32_t ordinal = 0; ordinal < 2; ++ordinal) {
+          const auto& seed_byte = seed_bytes[seed_context.byte_start + ordinal];
+          if (seed_byte.struct_size != sizeof(seed_byte) ||
+              seed_byte.context_id != seed_context.id ||
+              seed_byte.ordinal != ordinal || seed_byte.token == 0 ||
+              seed_byte.source_kind != 1 ||
+              seed_byte.physical_address != kFetchOffset + ordinal ||
+              seed_byte.resolved_operand != kFetchOffset + ordinal ||
+              seed_byte.mapper_window != 2 || seed_byte.mapper_bank != 0xffe2 ||
+              seed_byte.event_context == 0 || seed_byte.segment != 0x2000 ||
+              seed_byte.offset != 0x8004 + ordinal ||
+              seed_byte.data != kRetainedInstruction[ordinal] ||
+              seed_source.mapper_bank == seed_byte.mapper_bank ||
+              seed_source.cartridge_offset ==
+                  (seed_byte.resolved_operand &
+                   (static_cast<uint32_t>(info.mapped_size) - 1u))) {
+            std::fputs("static-analysis seed-v2 consumed byte was not exact\n",
+                       stderr);
+            swan_engine_destroy(engine);
+            return 1;
+          }
+        }
+      }
     }
 
     if (mono_palette_fixture) {
@@ -1188,6 +1539,148 @@ int main(int argc, char** argv) {
           return 1;
         }
       }
+
+      size_t v2_trace_count = 0;
+      size_t v2_context_count = 0;
+      size_t v2_byte_count = 0;
+      result = swan_engine_display_source_probe_v2(
+          engine, &source_rectangle, &raster_options,
+          nullptr, 0, &v2_trace_count,
+          nullptr, 0, &v2_context_count,
+          nullptr, 0, &v2_byte_count);
+      if (result != SWAN_RESULT_OK || v2_trace_count != raster_only.size() ||
+          v2_context_count == 0 || v2_byte_count == 0) {
+        std::fprintf(
+            stderr,
+            "ABI10 consumed-prefetch sizing failed result=%u traces=%zu contexts=%zu bytes=%zu error=%s\n",
+            result, v2_trace_count, v2_context_count, v2_byte_count,
+            swan_engine_last_error(engine));
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      std::vector<swan_display_source_trace_v2_t> v2_traces(v2_trace_count);
+      std::vector<swan_instruction_fetch_context_t> v2_contexts(
+          v2_context_count);
+      std::vector<swan_instruction_fetch_byte_t> v2_bytes(v2_byte_count);
+      size_t v2_trace_written = 0;
+      size_t v2_context_written = 0;
+      size_t v2_byte_written = 0;
+      result = swan_engine_display_source_probe_v2(
+          engine, &source_rectangle, &raster_options,
+          v2_traces.data(), v2_traces.size(), &v2_trace_written,
+          v2_contexts.data(), v2_contexts.size(), &v2_context_written,
+          v2_bytes.data(), v2_bytes.size(), &v2_byte_written);
+      if (result != SWAN_RESULT_OK || v2_trace_written != v2_traces.size() ||
+          v2_context_written != v2_contexts.size() ||
+          v2_byte_written != v2_bytes.size()) {
+        std::fputs("ABI10 consumed-prefetch retrieval was incomplete\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      for (size_t index = 0; index < v2_traces.size(); ++index) {
+        if (v2_traces[index].struct_size != sizeof(v2_traces[index]) ||
+            std::memcmp(
+                reinterpret_cast<const uint8_t*>(&v2_traces[index]) + 4,
+                reinterpret_cast<const uint8_t*>(&raster_only[index]) + 4,
+                sizeof(swan_display_source_trace_t) - 4) != 0) {
+          std::fputs("ABI10 trace changed its ABI9 field prefix\n", stderr);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+      }
+      const uint32_t required_fetch_flags =
+          SWAN_FETCH_CONTEXT_FLAG_SEALED |
+          SWAN_FETCH_CONTEXT_FLAG_EXACT_CARTRIDGE_RUN |
+          SWAN_FETCH_CONTEXT_FLAG_BIJECTIVE_IDENTITY |
+          SWAN_FETCH_CONTEXT_FLAG_PYPCODE_CHECK_REQUIRED |
+          SWAN_FETCH_CONTEXT_FLAG_EXACT_DATA_INCOMPLETE;
+      for (const auto& context : v2_contexts) {
+        const size_t matching_contexts = std::count_if(
+            v2_contexts.begin(), v2_contexts.end(), [&](const auto& candidate) {
+              return candidate.id == context.id;
+            });
+        if (context.struct_size != sizeof(context) || context.id == 0 ||
+            matching_contexts != 1 ||
+            context.structural_id == 0 ||
+            (context.flags & required_fetch_flags) != required_fetch_flags ||
+            context.byte_count == 0 ||
+            context.byte_count > v2_bytes.size() ||
+            context.byte_start > v2_bytes.size() - context.byte_count) {
+          std::fputs("ABI10 emitted an ineligible fetch context\n", stderr);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+        const auto& first = v2_bytes[context.byte_start];
+        size_t terminal_index = 0;
+        const auto supported_prefix = [](uint32_t byte) {
+          return byte == 0x26 || byte == 0x2e || byte == 0x36 ||
+                 byte == 0x3e || byte == 0xf0 || byte == 0xf2 ||
+                 byte == 0xf3;
+        };
+        while (terminal_index < context.byte_count &&
+               supported_prefix(
+                   v2_bytes[context.byte_start + terminal_index].data)) {
+          ++terminal_index;
+        }
+        if (context.logical_start_segment != first.segment ||
+            context.logical_start_offset != first.offset ||
+            context.logical_start_physical != first.physical_address ||
+            terminal_index == context.byte_count ||
+            v2_bytes[context.byte_start + terminal_index].data !=
+                context.terminal_opcode ||
+            context.terminal_opcode == 0x0f || context.terminal_opcode == 0x64 ||
+            context.terminal_opcode == 0x65 || context.terminal_opcode == 0x66 ||
+            context.terminal_opcode == 0x67) {
+          std::fputs("ABI10 logical instruction start was inconsistent\n", stderr);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+        for (uint32_t ordinal = 0; ordinal < context.byte_count; ++ordinal) {
+          const auto& byte = v2_bytes[context.byte_start + ordinal];
+          const uint32_t mapped = byte.resolved_operand &
+              (static_cast<uint32_t>(info.mapped_size) - 1u);
+          const uint32_t padding = static_cast<uint32_t>(
+              info.mapped_size - rom.size());
+          if (byte.struct_size != sizeof(byte) || byte.context_id != context.id ||
+              byte.ordinal != ordinal || byte.token == 0 ||
+              byte.source_kind != 1 || byte.event_context == 0 ||
+              byte.mapper_window != first.mapper_window ||
+              byte.mapper_bank != first.mapper_bank ||
+              byte.resolved_operand != first.resolved_operand + ordinal ||
+              byte.physical_address != first.physical_address + ordinal ||
+              byte.segment != first.segment ||
+              byte.offset != first.offset + ordinal ||
+              mapped < padding || mapped - padding >= rom.size() ||
+              byte.data != rom[mapped - padding]) {
+            std::fputs("ABI10 fetch byte did not match its exact ROM origin\n", stderr);
+            swan_engine_destroy(engine);
+            return 1;
+          }
+        }
+      }
+      bool selected_execution_association = false;
+      for (const auto& trace : v2_traces) {
+        if (trace.execution_context_id == 0) continue;
+        const auto context = std::find_if(
+            v2_contexts.begin(), v2_contexts.end(), [&](const auto& candidate) {
+              return candidate.id == trace.execution_context_id;
+            });
+        if (context == v2_contexts.end() ||
+            trace.fetch_context_flags != context->flags) {
+          std::fputs("ABI10 trace did not resolve to its sealed execution row\n", stderr);
+          swan_engine_destroy(engine);
+          return 1;
+        }
+        if (trace.scope == SWAN_DISPLAY_SOURCE_SCOPE_SELECTED &&
+            trace.x == source_rectangle.x && trace.y == source_rectangle.y) {
+          selected_execution_association = true;
+        }
+      }
+      if (!selected_execution_association) {
+        std::fputs("ABI10 raster trace had no sealed execution context\n", stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
     }
 
     size_t state_size = 0;
@@ -1233,6 +1726,32 @@ int main(int argc, char** argv) {
       std::fputs("restored state incorrectly retained CPU-writer provenance\n", stderr);
       swan_engine_destroy(engine);
       return 1;
+    }
+    if (result == SWAN_RESULT_OK && static_analysis_seed_v2_fixture) {
+      swan_display_rectangle_t restored_seed_rectangle{};
+      restored_seed_rectangle.struct_size = sizeof(restored_seed_rectangle);
+      restored_seed_rectangle.width = 1;
+      restored_seed_rectangle.height = 1;
+      swan_display_source_probe_options_t restored_seed_options{};
+      restored_seed_options.struct_size = sizeof(restored_seed_options);
+      restored_seed_options.selected_component_mask =
+          SWAN_DISPLAY_SOURCE_COMPONENT_MASK_RASTER;
+      size_t restored_trace_count = 7;
+      size_t restored_context_count = 7;
+      size_t restored_byte_count = 7;
+      const auto restored_v2_probe = swan_engine_display_source_probe_v2(
+          engine, &restored_seed_rectangle, &restored_seed_options,
+          nullptr, 0, &restored_trace_count,
+          nullptr, 0, &restored_context_count,
+          nullptr, 0, &restored_byte_count);
+      if (restored_v2_probe != SWAN_RESULT_UNSUPPORTED ||
+          restored_trace_count != 0 || restored_context_count != 0 ||
+          restored_byte_count != 0) {
+        std::fputs("restored state incorrectly retained ABI10 fetch provenance\n",
+                   stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
     }
     if (result == SWAN_RESULT_OK) (void)run_and_hash();
     const uint64_t actual_replay = result == SWAN_RESULT_OK ? run_and_hash() : 0;
@@ -1299,10 +1818,18 @@ int main(int argc, char** argv) {
         return 1;
       }
     }
-    std::printf(
-        "PASS ares executed and replayed state at %ux%u with %zu audio frames; video=%016llx\n",
-        frame_width, frame_height, audio.frame_count,
-        static_cast<unsigned long long>(video_hash));
+    if (static_analysis_seed_v2_fixture) {
+      std::printf(
+          "PASS static-analysis-seed-v2 visible=1 abi9=1 abi10=1 distinct=1 atomic=3 restore-stop=1 traces=%zu contexts=%zu bytes=%zu video=%016llx\n",
+          static_seed_trace_count, static_seed_context_count,
+          static_seed_byte_count,
+          static_cast<unsigned long long>(video_hash));
+    } else {
+      std::printf(
+          "PASS ares executed and replayed state at %ux%u with %zu audio frames; video=%016llx\n",
+          frame_width, frame_height, audio.frame_count,
+          static_cast<unsigned long long>(video_hash));
+    }
   } else {
     std::puts("PASS pinned WonderSwan-only ares backend linked");
   }

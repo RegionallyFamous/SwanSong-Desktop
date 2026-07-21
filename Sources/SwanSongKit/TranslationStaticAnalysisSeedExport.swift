@@ -82,6 +82,24 @@ public struct TranslationStaticAnalysisSeedReport: Codable, Sendable {
 }
 
 public enum TranslationStaticAnalysisSeedExporter {
+    private static let legacySeedV1BuildIDPattern =
+        #"^ares-[0-9a-f]{40}-swan-abi9$"#
+
+    public static func isExactLegacySeedV1SourceProbeProfile(
+        schema: String,
+        engine: TranslationRouteEngineIdentity
+    ) -> Bool {
+        guard schema == TranslationDisplaySourceProbeDetails.currentSchema,
+              engine.backend == "ares",
+              let buildIDRange = engine.buildID.range(
+                  of: legacySeedV1BuildIDPattern,
+                  options: .regularExpression
+              ) else {
+            return false
+        }
+        return buildIDRange == engine.buildID.startIndex..<engine.buildID.endIndex
+    }
+
     public static func run(
         project: TranslationProject,
         sourceProbeDetailsURL: URL
@@ -139,9 +157,12 @@ public enum TranslationStaticAnalysisSeedExporter {
         details: TranslationDisplaySourceProbeDetails,
         detailsData: Data
     ) throws -> TranslationStaticAnalysisSeed {
-        guard details.schema == TranslationDisplaySourceProbeDetails.currentSchema else {
+        guard isExactLegacySeedV1SourceProbeProfile(
+            schema: details.schema,
+            engine: details.engine
+        ) else {
             throw TranslationLabError.invalidProject(
-                "static-analysis export requires a current ABI-9/v4 upstream source probe"
+                "static-analysis seed-v1 export requires an exact ABI-9/v4 engine profile"
             )
         }
         guard let projectDigest = details.project,

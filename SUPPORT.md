@@ -79,14 +79,16 @@ confirmed. Eject the card in Finder before removing it.
 
 ### How do I read my own cartridge?
 
-Open **Hardware > Open Cartridge Lab**. Use a 3.3 V ExtFriend-compatible USB
-serial adapter—never a PC RS-232 cable—and insert the cartridge before powering
-on the WonderSwan. A Color or
+Choose **Cartridge Tools** in the main sidebar, or open **Hardware > Open
+Cartridge Tools**. A USB cable cannot connect directly to a WonderSwan: use a
+3.3 V ExtFriend-compatible EXT-to-USB adapter and a data-capable USB cable—never
+a PC RS-232 cable—and insert the cartridge before powering on. A Color or
 SwanCrystal with Yokoi Boot installed can load the temporary cartridge service,
 create a verified game/save backup, or restore an exact-size save after both
 the Mac warning and A+B on the console.
+The original monochrome WonderSwan cannot use this Yokoi Boot workflow.
 
-If Yokoi Boot is not installed, use Cartridge Lab's **Install Yokoi Boot** tab
+If Yokoi Boot is not installed, use Cartridge Tools' **Set Up Yokoi Boot** tab
 to add the installer to an SD-based flash cartridge. Copying the file does not
 program an arbitrary cartridge; its existing menu must be able to launch
 `.wsc` files and it must provide at least 8 KiB of SRAM. Keep the installer
@@ -105,7 +107,7 @@ Use the repository's issue form and include:
 - the steps that led to the problem; and
 - the exact message you saw.
 
-If a controller or focus problem is hard to explain, turn on **Show testing
+If a controller or focus problem is hard to explain, turn on **Show developer
 tools** in Settings and reproduce it with the focus/input overlay visible.
 Review the exported log before sharing it: it can include the game title,
 digest, controller name, inputs, focus state, and frame timing.

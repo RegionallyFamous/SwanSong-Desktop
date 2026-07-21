@@ -123,11 +123,12 @@ moving or replacing them.
 The save exchange feature is separate from [[Analogue Pocket SD Setup]]. SD
 setup installs only a verified Core package and does not copy or alter saves.
 
-## Debug tools
+## Developer tools
 
-Game-testing surfaces are off by default. Turn on **Show testing tools** in
+Game-testing surfaces are off by default. Turn on **Show developer tools** in
 Settings to show the live focus/input overlay, player diagnostics, and bounded
-input/frame recorder.
+input/frame recorder. The same toggle reveals SwanSong Studio, local MCP
+control, and low-level hardware diagnostics.
 
 The recorder exports source-free `swan-song-input-frame-log-v2` JSON containing
 frame geometry and timing, separate keyboard and controller masks, effective

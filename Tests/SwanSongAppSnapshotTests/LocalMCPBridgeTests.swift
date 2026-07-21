@@ -40,6 +40,11 @@ final class LocalMCPBridgeTests: XCTestCase {
             argumentsJSON: #"{"section":"story"}"#
         )
         XCTAssertEqual(model.section, .storyForge)
+        _ = try bridge.response(
+            method: "navigate",
+            argumentsJSON: #"{"section":"cartridges"}"#
+        )
+        XCTAssertEqual(model.section, .cartridgeTools)
         XCTAssertThrowsError(
             try bridge.response(
                 method: "navigate",

@@ -1,21 +1,25 @@
 {
-  "schema": "swan-song-yokoi-hardware-v1",
-  "version": "0.2.0-prototype.1",
-  "releaseReady": true,
-  "source": "https://github.com/RegionallyFamous/swansong-core/tree/94e9a1ae3d09f8d9eab776d36296144e85c72f1d/firmware",
-  "sourceRevision": "94e9a1ae3d09f8d9eab776d36296144e85c72f1d",
+  "schema": "swan-song-yokoi-hardware-v2",
+  "version": "0.3.0-development.1",
+  "releaseReady": false,
+  "source": {
+    "kind": "bundled-toolkit",
+    "file": "SwanSong-Yokoi-Toolkit.zip",
+    "byteCount": 182983,
+    "sha256": "ee0173435a9f6d898583504e1b35b156097b133443d335ab824a0a54bef89129"
+  },
   "installer": {
     "encodedFile": "yokoi-boot-installer.zlib.b64",
     "outputFile": "Yokoi Boot Installer.wsc",
     "compression": "raw-deflate+base64",
     "byteCount": 131072,
-    "sha256": "8a2d6e580ebb0bc53b52929166d9517e90840db39849804717880439682db8f3"
+    "sha256": "71a55077e9abf4ba626dd4bf35b7ad026094c9b27fc429f67e604a23ecf3c53a"
   },
   "cartService": {
     "encodedFile": "yokoi-cart-service.zlib.b64",
     "outputFile": "yokoi-cart-service.bfb",
     "compression": "raw-deflate+base64",
-    "byteCount": 4484,
-    "sha256": "b650bc62ddbbec6027783b577baee5319ffd25d25ce06d38c1353174dc0d1ce0"
+    "byteCount": 5515,
+    "sha256": "efe2fd2e5d3240cb7a9c607a9d33be0b125fb275f969013240aafe8e542d280c"
   }
 }

@@ -18,7 +18,7 @@ library, Time Ribbon, visual save states, Translation Lab, SwanSong Studio with
 the verified SDK 0.5.0, the signed Homebrew Catalog, native updates, and the
 guarded Analogue Pocket setup workflow. Story Forge now includes its Story
 Room, map, chapter editor, readers, research, art, music, revision, and
-adaptation workspaces. Cartridge Lab remains available for authorized physical
+adaptation workspaces. Cartridge Tools remains available for authorized physical
 cartridge work.
 
 ## Does it include games or require a BIOS?
@@ -120,7 +120,7 @@ not run the Core installer.
 
 ## Can SwanSong back up a physical cartridge?
 
-Cartridge Lab can use a WonderSwan Color or SwanCrystal as the reader. With
+Cartridge Tools can use a WonderSwan Color or SwanCrystal as the reader. With
 Yokoi Boot and a 3.3 V ExtFriend-compatible USB serial adapter, it
 can inspect an inserted cartridge, make checksum-verified ROM and SRAM/EEPROM
 backups, and restore an exact-size save after confirmation on both the Mac and

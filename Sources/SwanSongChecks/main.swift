@@ -163,6 +163,7 @@ private func makeRouteFrame(
 private struct SwanSongChecks {
     static func main() async throws {
         try checkCapabilities()
+        try checkStaticAnalysisSeedEngineProfileGate()
         try checkPocketChallengeV2BoundaryContract()
         try checkROMInspection()
         try checkCompactRejection()
@@ -325,6 +326,48 @@ private struct SwanSongChecks {
                 "backend name mismatch"
             )
         }
+    }
+
+    private static func checkStaticAnalysisSeedEngineProfileGate() throws {
+        let digest = String(repeating: "a", count: 40)
+        let valid = TranslationRouteEngineIdentity(
+            backend: "ares",
+            buildID: "ares-\(digest)-swan-abi9"
+        )
+        try expect(
+            TranslationStaticAnalysisSeedExporter
+                .isExactLegacySeedV1SourceProbeProfile(
+                    schema: TranslationDisplaySourceProbeDetails.currentSchema,
+                    engine: valid
+                ),
+            "static-analysis seed exporter rejected the exact ABI-9 profile"
+        )
+
+        let abi10 = TranslationRouteEngineIdentity(
+            backend: "ares",
+            buildID: "ares-\(digest)-swan-abi10"
+        )
+        try expect(
+            !TranslationStaticAnalysisSeedExporter
+                .isExactLegacySeedV1SourceProbeProfile(
+                    schema: TranslationDisplaySourceProbeDetails.currentSchema,
+                    engine: abi10
+                ),
+            "static-analysis seed-v1 exporter accepted an ABI-10/v4 profile"
+        )
+
+        let trailingLineTerminator = TranslationRouteEngineIdentity(
+            backend: "ares",
+            buildID: "ares-\(digest)-swan-abi9\n"
+        )
+        try expect(
+            !TranslationStaticAnalysisSeedExporter
+                .isExactLegacySeedV1SourceProbeProfile(
+                    schema: TranslationDisplaySourceProbeDetails.currentSchema,
+                    engine: trailingLineTerminator
+                ),
+            "static-analysis seed-v1 exporter accepted a non-exact ABI-9 build ID"
+        )
     }
 
     private static func checkPocketChallengeV2BoundaryContract() throws {

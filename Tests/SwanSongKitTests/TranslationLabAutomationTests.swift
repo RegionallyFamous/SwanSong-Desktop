@@ -67,6 +67,79 @@ final class TranslationLabAutomationTests: XCTestCase {
         ])
     }
 
+    func testCaptureIntakeNameMatchesToolkitCanonicalization() throws {
+        let fixture = try makeToolkitFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.root) }
+        let ramURL = fixture.project.rootURL
+            .appendingPathComponent("analysis/swan-song-lab/capture/ram.bin")
+
+        let arguments = try TranslationToolkitStage.captureIntake(
+            ramURL: ramURL,
+            name: "Capture-2026-07-21T02-39-25Z-Original-DA82A391"
+        ).arguments(project: fixture.project)
+
+        let nameIndex = try XCTUnwrap(arguments.firstIndex(of: "--name"))
+        XCTAssertEqual(
+            arguments[nameIndex + 1],
+            "capture-2026-07-21t02-39-25z-original-da82a391"
+        )
+    }
+
+    func testCaptureIntakeReportsOnlyPrivacySafeBindingFieldNames() throws {
+        let fixture = try makeToolkitFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.root) }
+        let nodeURL = fixture.root.appendingPathComponent("fixture-node")
+        let nodeScript = """
+        #!/bin/sh
+        project="$3"
+        ram=""
+        out=""
+        receipt=""
+        previous=""
+        for argument in "$@"; do
+          case "$previous" in
+            --ram) ram="$argument" ;;
+            --out) out="$argument" ;;
+            --receipt) receipt="$argument" ;;
+          esac
+          previous="$argument"
+        done
+        /bin/cp "$ram" "$out"
+        /bin/chmod 600 "$out"
+        digest=$(/usr/bin/shasum -a 256 "$ram" | /usr/bin/awk '{print $1}')
+        bytes=$(/usr/bin/wc -c < "$ram")
+        source_relative=${ram#"$project"/}
+        output_relative=${out#"$project"/}
+        /usr/bin/printf '{"kind":"capture-intake","version":1,"captureName":"wrong-private-name","source":{"kind":"raw-ram","path":"%s","size":%s,"sha256":"%s"},"output":{"path":"%s","size":%s,"sha256":"%s","copied":true,"alreadyCurrent":false},"actualSize":%s}\n' "$source_relative" "$bytes" "$digest" "$output_relative" "$bytes" "$digest" "$bytes" > "$receipt"
+        /bin/chmod 600 "$receipt"
+        """
+        try Data(nodeScript.utf8).write(to: nodeURL)
+        try FileManager.default.setAttributes(
+            [.posixPermissions: 0o700],
+            ofItemAtPath: nodeURL.path
+        )
+        let ramURL = fixture.project.rootURL
+            .appendingPathComponent("analysis/swan-song-lab/capture/ram.bin")
+        try FileManager.default.createDirectory(
+            at: ramURL.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        try Data(repeating: 0, count: 16 * 1_024).write(to: ramURL)
+
+        XCTAssertThrowsError(
+            try TranslationToolkitRunner.run(
+                .captureIntake(ramURL: ramURL, name: "Public-Capture"),
+                project: fixture.project,
+                nodeURL: nodeURL
+            )
+        ) { error in
+            let description = String(describing: error)
+            XCTAssertTrue(description.contains("receipt mismatch [captureName]"))
+            XCTAssertFalse(description.contains("wrong-private-name"))
+            XCTAssertFalse(description.contains(fixture.project.rootURL.path))
+        }
+    }
+
     func testToolkitRunnerBindsWorkingDirectoryAndReportsRedactedLaunchSummary() throws {
         let fixture = try makeToolkitFixture()
         defer { try? FileManager.default.removeItem(at: fixture.root) }
@@ -332,7 +405,7 @@ final class TranslationLabAutomationTests: XCTestCase {
         let before = try projectTree(at: projectURL)
         let temporaryLogsBefore = try temporaryToolkitLogs()
         let result = try TranslationToolkitRunner.run(
-            .captureIntake(ramURL: ramURL, name: "public-capture"),
+            .captureIntake(ramURL: ramURL, name: "Public-Capture"),
             project: project
         )
 

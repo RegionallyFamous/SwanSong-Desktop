@@ -8,6 +8,16 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ### Changed
 
+- Makes Cartridge Tools a first-class sidebar destination and shows the complete
+  WonderSwan EXT adapter-to-USB connection path in the app instead of relying on
+  an easy-to-miss menu command.
+- Renames the opt-in testing preference to Developer Tools. SwanSong Studio,
+  local MCP control, diagnostic logs, raw cartridge protocol details, and Story
+  Forge's Studio handoff now stay hidden until that toggle is enabled.
+- Updates the embedded development payload to Yokoi Boot and Yokoi Cart Service
+  0.3, teaches Desktop the v0.3 guarded-write flags and ambiguity/timeout
+  statuses, and bundles the exact preferred-form firmware source. Release builds
+  remain locked until the physical hardware matrix is complete.
 - Opens the main window before preparing the library, controller, local tools,
   and updater. Studio and Story Forge now wake only when opened, with optional
   launch timing available for future performance work.
@@ -19,6 +29,9 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ### Fixed
 
+- Turns off local MCP control and developer task notifications when Developer
+  Tools is disabled, so a hidden developer feature cannot remain active from an
+  older preference.
 - Prevents old Homebrew Catalog Keychain permissions from opening a login
   password dialog. New anti-rollback records use a stable signed-app access
   rule, and automatic reads always fail closed without user interaction.

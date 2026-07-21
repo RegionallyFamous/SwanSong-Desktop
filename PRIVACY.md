@@ -53,20 +53,23 @@ game, RAM, save-state, and persistence bytes. Sparkle may hold a downloaded app
 update in temporary local storage while it verifies and installs that update;
 this contains the public SwanSong application archive, not user games or data.
 
-Optional Debug Tools are off by default. A user-started input/frame log stays
+Optional Developer Tools are off by default. A user-started input/frame log stays
 in memory until it is cleared or SwanSong quits and is written only when the
 user chooses an export destination. It contains the game title and ROM digest,
 app/engine identity, controller name, frame numbers and geometry, input masks,
 focus state, and timing. It does not contain ROM, save, RAM, persistence, or
 framebuffer bytes.
 
-Optional local MCP control is also off by default. When enabled, SwanSong
+Optional local MCP control is also off by default and is available only while
+Developer Tools is enabled. When local MCP control is enabled, SwanSong
 creates a random bearer token in its Application Support folder with
 user-only permissions and accepts a small allowlist of messages within the
 current macOS login session. The live bridge can return section, library
 count, and playback readiness or control navigation and the already-selected
 game. It does not return game titles, paths, ROMs, saves, states, RAM,
-screenshots, inputs, or logs. Turning the setting off revokes the token. The
+screenshots, inputs, or logs. Turning local control or Developer Tools off
+revokes the token. Turning Developer Tools off also disables developer task
+notifications. The
 separate headless playtest tools can return one rendered game screenshot and
 audio window, a sequence of explicitly requested observed-play screenshots and
 audio windows, or a paired Original/Patched capture and source-free delta report.

@@ -8,6 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import zipfile
 import zlib
 
 
@@ -15,10 +16,11 @@ EXPECTED_FILES = {
     "manifest.json",
     "NOTICE.md",
     "COPYING.GPL-3.0",
+    "SwanSong-Yokoi-Toolkit.zip",
     "yokoi-boot-installer.zlib.b64",
     "yokoi-cart-service.zlib.b64",
 }
-SCHEMA = "swan-song-yokoi-hardware-v1"
+SCHEMA = "swan-song-yokoi-hardware-v2"
 
 
 def fail(message: str) -> "NoReturn":
@@ -78,6 +80,89 @@ def decode_artifact(root: Path, value: object, maximum: int) -> tuple[bytes, str
     return data, output_name
 
 
+def verify_bundled_source(root: Path, value: object) -> None:
+    if not isinstance(value, dict) or set(value) != {
+        "kind", "file", "byteCount", "sha256"
+    }:
+        fail("corresponding-source contract is malformed")
+    if value["kind"] != "bundled-toolkit":
+        fail("corresponding source is not the bundled toolkit")
+    file_name = safe_name(value["file"])
+    if file_name != "SwanSong-Yokoi-Toolkit.zip":
+        fail("corresponding-source filename is unsupported")
+    if not isinstance(value["byteCount"], int) or not 0 < value["byteCount"] <= 4 * 1024 * 1024:
+        fail("corresponding-source byte count is invalid")
+    expected_digest = value["sha256"]
+    if (
+        not isinstance(expected_digest, str)
+        or len(expected_digest) != 64
+        or expected_digest.lower() != expected_digest
+        or any(character not in "0123456789abcdef" for character in expected_digest)
+    ):
+        fail("corresponding-source digest is invalid")
+    payload = regular_file(root / file_name, 4 * 1024 * 1024)
+    if len(payload) != value["byteCount"] or hashlib.sha256(payload).hexdigest() != expected_digest:
+        fail("corresponding-source archive identity does not match")
+
+    required = {
+        "SwanSong-Yokoi-Toolkit/source/firmware/yokoi-bootfriend/yokoi_boot.asm",
+        "SwanSong-Yokoi-Toolkit/source/firmware/yokoi-bootfriend/installer/src/main.c",
+        "SwanSong-Yokoi-Toolkit/source/firmware/yokoi-cart-service/src/main.c",
+        "SwanSong-Yokoi-Toolkit/source/website/public/art/yokoi-logo.png",
+    }
+    try:
+        with zipfile.ZipFile(root / file_name) as archive:
+            entries = archive.infolist()
+            if not 1 <= len(entries) <= 128:
+                fail("corresponding-source archive has an invalid member count")
+            names = {entry.filename for entry in entries}
+            if len(names) != len(entries) or not required.issubset(names):
+                fail("corresponding-source archive is incomplete or has duplicate names")
+            total = 0
+            contents: dict[str, bytes] = {}
+            for entry in entries:
+                path = Path(entry.filename)
+                mode = (entry.external_attr >> 16) & 0o170000
+                if (
+                    entry.is_dir()
+                    or entry.flag_bits & 0x1
+                    or path.is_absolute()
+                    or ".." in path.parts
+                    or mode == 0o120000
+                    or entry.file_size > 1024 * 1024
+                ):
+                    fail("corresponding-source archive contains an unsafe member")
+                total += entry.file_size
+                if total > 4 * 1024 * 1024:
+                    fail("corresponding-source archive expands beyond its limit")
+                contents[entry.filename] = archive.read(entry)
+    except (OSError, zipfile.BadZipFile) as error:
+        fail(f"corresponding-source archive is invalid: {error}")
+
+    manifest_name = "SwanSong-Yokoi-Toolkit/manifest.json"
+    try:
+        toolkit_manifest = json.loads(contents[manifest_name])
+        records = toolkit_manifest["members"]
+    except (KeyError, TypeError, json.JSONDecodeError):
+        fail("corresponding-source archive manifest is invalid")
+    if toolkit_manifest.get("schema") != "swan-song-yokoi-toolkit-v1" or not isinstance(records, dict):
+        fail("corresponding-source archive manifest identity is invalid")
+    expected_names = {
+        name.removeprefix("SwanSong-Yokoi-Toolkit/")
+        for name in contents
+        if name != manifest_name
+    }
+    if set(records) != expected_names:
+        fail("corresponding-source archive manifest does not cover every member")
+    for relative, record in records.items():
+        data = contents[f"SwanSong-Yokoi-Toolkit/{relative}"]
+        if not isinstance(record, dict) or record != {
+            "size": len(data),
+            "sha256": hashlib.sha256(data).hexdigest(),
+        }:
+            fail(f"corresponding-source archive member mismatch: {relative}")
+
+
 def main() -> None:
     arguments = sys.argv[1:]
     release = False
@@ -95,28 +180,13 @@ def main() -> None:
 
     manifest = json.loads(regular_file(root / "manifest.json", 64 * 1024))
     if not isinstance(manifest, dict) or set(manifest) != {
-        "schema", "version", "releaseReady", "source", "sourceRevision",
+        "schema", "version", "releaseReady", "source",
         "installer", "cartService"
     }:
         fail("manifest shape is malformed")
     if manifest["schema"] != SCHEMA or not isinstance(manifest["version"], str):
         fail("manifest identity is unsupported")
-    if not isinstance(manifest["source"], str) or not manifest["source"].startswith("https://"):
-        fail("source URL must use HTTPS")
-    revision = manifest["sourceRevision"]
-    if (
-        not isinstance(revision, str)
-        or len(revision) != 40
-        or revision.lower() != revision
-        or any(character not in "0123456789abcdef" for character in revision)
-    ):
-        fail("source revision must be a full lowercase Git commit")
-    expected_source = (
-        "https://github.com/RegionallyFamous/swansong-core/tree/"
-        f"{revision}/firmware"
-    )
-    if manifest["source"] != expected_source:
-        fail("source URL is not pinned to the declared revision")
+    verify_bundled_source(root, manifest["source"])
     if not isinstance(manifest["releaseReady"], bool):
         fail("release readiness must be a Boolean")
     if release and not manifest["releaseReady"]:

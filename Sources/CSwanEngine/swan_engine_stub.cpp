@@ -128,6 +128,23 @@ class StubBackend final : public SwanEngineBackend {
     return SWAN_RESULT_UNSUPPORTED;
   }
 
+  swan_result_t display_source_probe_v2(
+      const swan_display_rectangle_t&,
+      uint32_t,
+      std::span<swan_display_source_trace_v2_t>,
+      size_t& trace_count,
+      std::span<swan_instruction_fetch_context_t>,
+      size_t& context_count,
+      std::span<swan_instruction_fetch_byte_t>,
+      size_t& byte_count,
+      std::string& error) const override {
+    trace_count = 0;
+    context_count = 0;
+    byte_count = 0;
+    error = "consumed-prefetch provenance requires the live ares backend";
+    return SWAN_RESULT_UNSUPPORTED;
+  }
+
  private:
   swan_result_t unavailable(std::string& error) const {
     if (rom_.empty()) return SWAN_RESULT_NOT_LOADED;

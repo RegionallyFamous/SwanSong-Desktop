@@ -1,0 +1,62 @@
+{
+  "schema": "swan-song.static-analysis-seed-v2-kat.v1",
+  "romSha256": "f7a57414097e951fe927ec7e78f79b3ef3530baad8ca9ac0242911d91deaac94",
+  "romBytes": 2097152,
+  "pass": {
+    "build": true,
+    "cleanRebuildDigestMatch": null,
+    "runtime": true,
+    "runtimeDeterministic": true
+  },
+  "runtime": {
+    "frameWidth": 237,
+    "frameHeight": 144,
+    "audioFrames": 636,
+    "videoDigest": "424bab4a90dd7a7c",
+    "traceCount": 1,
+    "contextCount": 2,
+    "consumedByteCount": 4,
+    "atomicUndersizedTableCount": 3,
+    "restoreV2Stop": true
+  },
+  "visible": {
+    "x": 0,
+    "y": 0,
+    "component": "raster",
+    "rasterAddress": 16416,
+    "rasterByteCount": 4,
+    "sourceByte": 128,
+    "neighborX": 1,
+    "neighborSourceByte": 0
+  },
+  "sourceRead": {
+    "cartridgeOffset": 430080,
+    "cartridgeLength": 4,
+    "callerSegment": 8192,
+    "callerOffset": 32773,
+    "operandSegment": 8192,
+    "operandOffset": 36864,
+    "mapperWindow": 2,
+    "mapperBank": 65510,
+    "resolvedCartridgeOperand": 430080
+  },
+  "execution": {
+    "terminalOpcode": 165,
+    "byteCount": 2,
+    "executionCount": 2,
+    "logicalStartSegment": 8192,
+    "logicalStartOffset": 32772,
+    "physicalAddress": 163844,
+    "mapperWindow": 2,
+    "mapperBank": 65506,
+    "resolvedCartridgeOperand": 163844,
+    "cartridgeOffset": 163844,
+    "requiredFlags": [
+      "sealed",
+      "exactCartridgeRun",
+      "bijectiveIdentity",
+      "pypcodeCheckRequired",
+      "exactDataIncomplete"
+    ]
+  }
+}

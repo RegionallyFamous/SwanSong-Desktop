@@ -25,7 +25,7 @@ check_fixture "$MACOS_DIR/testroms/ws-test-suite/80186_quirks/80186_quirks.ws"
 check_fixture "$MACOS_DIR/testroms/ws-test-suite/tile_screen_extended_range/tile_screen_extended_range.wsc"
 
 check_consumed_prefetch_control() {
-  expected='PASS consumed-prefetch-v1 retained-origin=1 mixed-origin-stop=1 trace=d649922ce84e7b9c'
+  expected='PASS consumed-prefetch-v4 retained-origin=1 mixed-origin-stop=1 prefix-rep=1 rep-discard=1 flush-generation=1 queue-mismatch-stop=1 restore-invalidation-stop=1 trace=f2ef41c9ff21227a'
   first=$("$BUILD_DIR/SwanV30PrefetchOriginControl")
   second=$("$BUILD_DIR/SwanV30PrefetchOriginControl")
   if [ "$first" != "$expected" ] || [ "$second" != "$expected" ]; then
@@ -93,6 +93,41 @@ check_mapper_window_fixture() {
   echo "$first"
 }
 
+check_static_analysis_seed_v2_fixture() {
+  fixture=$1
+  expected_json=$2
+  expected_json_sha256=$3
+  actual_json_sha256=$(shasum -a 256 "$expected_json" | awk '{print $1}')
+  if [ "$actual_json_sha256" != "$expected_json_sha256" ]; then
+    echo "static-analysis seed-v2 expected metadata hash mismatch" >&2
+    exit 1
+  fi
+  expected_rom_sha256=$(awk -F'"' '/"romSha256"/ {print $4; exit}' "$expected_json")
+  expected_video=$(awk -F'"' '/"videoDigest"/ {print $4; exit}' "$expected_json")
+  expected_traces=$(awk '/"traceCount"/ {gsub(/[^0-9]/, ""); print; exit}' "$expected_json")
+  expected_contexts=$(awk '/"contextCount"/ {gsub(/[^0-9]/, ""); print; exit}' "$expected_json")
+  expected_bytes=$(awk '/"consumedByteCount"/ {gsub(/[^0-9]/, ""); print; exit}' "$expected_json")
+  expected_atomic=$(awk '/"atomicUndersizedTableCount"/ {gsub(/[^0-9]/, ""); print; exit}' "$expected_json")
+  actual_rom_sha256=$(shasum -a 256 "$fixture" | awk '{print $1}')
+  if [ -z "$expected_rom_sha256" ] || [ -z "$expected_video" ] ||
+     [ -z "$expected_traces" ] || [ -z "$expected_contexts" ] ||
+     [ -z "$expected_bytes" ] || [ -z "$expected_atomic" ] ||
+     [ "$actual_rom_sha256" != "$expected_rom_sha256" ]; then
+    echo "static-analysis seed-v2 fixture metadata was incomplete or stale" >&2
+    exit 1
+  fi
+  expected="PASS static-analysis-seed-v2 visible=1 abi9=1 abi10=1 distinct=1 atomic=$expected_atomic restore-stop=1 traces=$expected_traces contexts=$expected_contexts bytes=$expected_bytes video=$expected_video"
+  first=$("$BUILD_DIR/SwanAresSmoke" --static-analysis-seed-v2-fixture "$fixture")
+  second=$("$BUILD_DIR/SwanAresSmoke" --static-analysis-seed-v2-fixture "$fixture")
+  if [ "$first" != "$expected" ] || [ "$second" != "$expected" ]; then
+    echo "static-analysis seed-v2 fixture failed or was nondeterministic" >&2
+    echo "$first" >&2
+    echo "$second" >&2
+    exit 1
+  fi
+  echo "$first"
+}
+
 check_provenance_fixture \
   "$MACOS_DIR/testroms/swan-song/display_provenance/display_provenance_horizontal.wsc" \
   planar \
@@ -107,6 +142,10 @@ check_mono_palette_fixture \
 check_mapper_window_fixture \
   "$MACOS_DIR/testroms/swan-song/mapper_window_owner_matrix/mapper_window_owner_matrix.wsc" \
   db524b14401b16ad763cad3c2e78646a5be5d92060eef88c6fb6495f68a3b009
+check_static_analysis_seed_v2_fixture \
+  "$MACOS_DIR/testroms/swan-song/static_analysis_seed_v2/static_analysis_seed_v2.wsc" \
+  "$MACOS_DIR/testroms/swan-song/static_analysis_seed_v2/expected.json" \
+  3fd943796994d72f6d59f0043d3832f1108c07c9cf6b796f34a69582e366ef54
 
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$SCRIPT_DIR/swift-package.sh" run \
   --package-path "$MACOS_DIR" \

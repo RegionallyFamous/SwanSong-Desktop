@@ -2,7 +2,7 @@
 #include "swan_engine_backend.hpp"
 
 #ifndef SWAN_ENGINE_BUILD_ID
-#define SWAN_ENGINE_BUILD_ID "inspection-stub-swan-abi9"
+#define SWAN_ENGINE_BUILD_ID "inspection-stub-swan-abi10"
 #endif
 
 #include <algorithm>
@@ -22,6 +22,11 @@ static_assert(sizeof(swan_display_rectangle_t) == 12);
 static_assert(sizeof(swan_display_owner_sample_t) == 56);
 static_assert(sizeof(swan_display_source_probe_options_t) == 8);
 static_assert(sizeof(swan_display_source_trace_t) == 76);
+static_assert(offsetof(swan_display_source_trace_v2_t,
+                       execution_context_id) == 80);
+static_assert(sizeof(swan_display_source_trace_v2_t) == 96);
+static_assert(sizeof(swan_instruction_fetch_context_t) == 80);
+static_assert(sizeof(swan_instruction_fetch_byte_t) == 72);
 
 constexpr size_t kFooterSize = 16;
 constexpr size_t kBankSize = 64u * 1024u;
@@ -549,6 +554,75 @@ swan_result_t swan_engine_display_source_probe(
       engine->backend->display_source_probe(
           *rectangle, options->selected_component_mask,
           output, *out_count, error),
+      std::move(error));
+}
+
+swan_result_t swan_engine_display_source_probe_v2(
+    swan_engine_t* engine,
+    const swan_display_rectangle_t* rectangle,
+    const swan_display_source_probe_options_t* options,
+    swan_display_source_trace_v2_t* out_traces,
+    size_t trace_capacity,
+    size_t* out_trace_count,
+    swan_instruction_fetch_context_t* out_contexts,
+    size_t context_capacity,
+    size_t* out_context_count,
+    swan_instruction_fetch_byte_t* out_bytes,
+    size_t byte_capacity,
+    size_t* out_byte_count) {
+  if (!engine || !rectangle || !options || !out_trace_count ||
+      !out_context_count || !out_byte_count ||
+      (!out_traces && trace_capacity != 0) ||
+      (!out_contexts && context_capacity != 0) ||
+      (!out_bytes && byte_capacity != 0) ||
+      rectangle->struct_size < sizeof(swan_display_rectangle_t) ||
+      options->struct_size < sizeof(swan_display_source_probe_options_t) ||
+      options->selected_component_mask == 0 ||
+      (options->selected_component_mask &
+       ~SWAN_DISPLAY_SOURCE_COMPONENT_MASK_ALL) != 0 ||
+      rectangle->width == 0 || rectangle->height == 0) {
+    return SWAN_RESULT_INVALID_ARGUMENT;
+  }
+  *out_trace_count = 0;
+  *out_context_count = 0;
+  *out_byte_count = 0;
+  if (!engine->loaded) return SWAN_RESULT_NOT_LOADED;
+  if ((engine->backend->capabilities() &
+       SWAN_CAPABILITY_CONSUMED_PREFETCH_PROVENANCE) == 0) {
+    engine->last_error =
+        "consumed-prefetch provenance is unavailable in this backend";
+    return SWAN_RESULT_UNSUPPORTED;
+  }
+  if ((options->selected_component_mask &
+       SWAN_DISPLAY_SOURCE_COMPONENT_MASK_SPRITE_ATTRIBUTE) != 0 &&
+      (engine->backend->capabilities() &
+       SWAN_CAPABILITY_DISPLAY_SPRITE_ATTRIBUTE_PROVENANCE) == 0) {
+    engine->last_error =
+        "sprite-attribute source provenance is unavailable in this backend";
+    return SWAN_RESULT_UNSUPPORTED;
+  }
+  const size_t width = rectangle->width;
+  const size_t height = rectangle->height;
+  if (height > 4096u / width) return SWAN_RESULT_INVALID_ARGUMENT;
+
+  std::string error;
+  const auto trace_output = out_traces
+      ? std::span<swan_display_source_trace_v2_t>(out_traces, trace_capacity)
+      : std::span<swan_display_source_trace_v2_t>();
+  const auto context_output = out_contexts
+      ? std::span<swan_instruction_fetch_context_t>(out_contexts,
+                                                     context_capacity)
+      : std::span<swan_instruction_fetch_context_t>();
+  const auto byte_output = out_bytes
+      ? std::span<swan_instruction_fetch_byte_t>(out_bytes, byte_capacity)
+      : std::span<swan_instruction_fetch_byte_t>();
+  return finish_backend_call(
+      engine,
+      engine->backend->display_source_probe_v2(
+          *rectangle, options->selected_component_mask,
+          trace_output, *out_trace_count,
+          context_output, *out_context_count,
+          byte_output, *out_byte_count, error),
       std::move(error));
 }
 

@@ -734,6 +734,16 @@ final class UISnapshotRegressionTests: XCTestCase {
         XCTAssertTrue(AppModel.Section.allCases.contains(.pocketCore))
         XCTAssertEqual(AppModel.Section.pocketCore.rawValue, "Analogue Pocket")
         XCTAssertEqual(AppModel.Section.pocketCore.symbol, "sdcard")
+        XCTAssertEqual(
+            AppModel.Section.toolSections(developerToolsEnabled: false),
+            [.cartridgeTools, .pocketCore, .translationLab, .storyForge]
+        )
+        XCTAssertEqual(
+            AppModel.Section.toolSections(developerToolsEnabled: true),
+            [.cartridgeTools, .pocketCore, .translationLab, .storyForge, .gameStudio]
+        )
+        XCTAssertFalse(AppModel.Section.cartridgeTools.requiresDeveloperTools)
+        XCTAssertTrue(AppModel.Section.gameStudio.requiresDeveloperTools)
     }
 
     func testPocketChallengeV2LibraryContracts() throws {
@@ -1396,6 +1406,10 @@ final class UISnapshotRegressionTests: XCTestCase {
         )
         let emptyLibraryModel = makeModel(root: root.appendingPathComponent("empty-library"))
         emptyLibraryModel.section = .library
+        let cartridgeToolsModel = makeModel(
+            root: root.appendingPathComponent("cartridge-tools")
+        )
+        cartridgeToolsModel.section = .cartridgeTools
         let emptyTranslationModel = makeModel(
             root: root.appendingPathComponent("empty-translation")
         )
@@ -1488,8 +1502,13 @@ final class UISnapshotRegressionTests: XCTestCase {
                     )
                 )
             },
-            Scenario(name: "cartridge-lab-setup-wide", size: CGSize(width: 820, height: 700)) {
-                AnyView(CartridgeLabView(appModel: emptyLibraryModel))
+            Scenario(name: "cartridge-lab-setup-wide", size: CGSize(width: 1_040, height: 700)) {
+                AnyView(
+                    RootView(
+                        model: cartridgeToolsModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
             },
             Scenario(name: "support-overview-wide", size: CGSize(width: 820, height: 640)) {
                 AnyView(

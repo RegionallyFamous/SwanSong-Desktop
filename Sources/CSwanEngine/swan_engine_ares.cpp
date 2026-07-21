@@ -17,6 +17,7 @@
 #include <mutex>
 #include <optional>
 #include <span>
+#include <tuple>
 #include <vector>
 
 namespace {
@@ -229,6 +230,7 @@ struct ExecutedReadContext {
   uint16_t mapper_window = 0;
   uint16_t mapper_bank = 0;
   uint32_t resolved_cartridge_operand = 0;
+  uint64_t fetch_context_cell_id = 0;
   bool executed = false;
 
   bool operator==(const ExecutedReadContext&) const = default;
@@ -280,8 +282,13 @@ struct SourceSet {
     if (lhs.read_context.mapper_bank != rhs.read_context.mapper_bank) {
       return lhs.read_context.mapper_bank < rhs.read_context.mapper_bank;
     }
-    return lhs.read_context.resolved_cartridge_operand <
-        rhs.read_context.resolved_cartridge_operand;
+    if (lhs.read_context.resolved_cartridge_operand !=
+        rhs.read_context.resolved_cartridge_operand) {
+      return lhs.read_context.resolved_cartridge_operand <
+          rhs.read_context.resolved_cartridge_operand;
+    }
+    return lhs.read_context.fetch_context_cell_id <
+        rhs.read_context.fetch_context_cell_id;
   }
 
   static bool mergeable_context(const SourceRange& lhs,
@@ -294,7 +301,8 @@ struct SourceSet {
         left.caller_offset != right.caller_offset ||
         left.operand_segment != right.operand_segment ||
         left.mapper_window != right.mapper_window ||
-        left.mapper_bank != right.mapper_bank) return false;
+        left.mapper_bank != right.mapper_bank ||
+        left.fetch_context_cell_id != right.fetch_context_cell_id) return false;
     if (!left.executed) return true;
     return static_cast<uint64_t>(left.resolved_cartridge_operand) + rhs.lower ==
             static_cast<uint64_t>(right.resolved_cartridge_operand) + lhs.lower &&
@@ -475,6 +483,128 @@ static_assert([]() consteval {
   return selected.overflow;
 }());
 
+struct FetchByteFact {
+  uint64_t token = 0;
+  uint32_t source_kind = 0;
+  uint32_t physical_address = 0;
+  uint32_t resolved_operand = 0;
+  uint32_t mapper_window = 0;
+  uint32_t mapper_bank = 0;
+  uint32_t event_context = 0;
+  uint32_t segment = 0;
+  uint32_t offset = 0;
+  uint32_t data = 0;
+
+  bool operator==(const FetchByteFact&) const = default;
+};
+
+struct PendingFetchContext {
+  uint64_t cell_id = 0;
+  std::vector<FetchByteFact> bytes;
+  bool referenced_by_source_read = false;
+};
+
+struct SealedFetchContext {
+  uint64_t cell_id = 0;
+  uint64_t structural_id = 0;
+  uint32_t flags = SWAN_FETCH_CONTEXT_FLAG_PYPCODE_CHECK_REQUIRED |
+                   SWAN_FETCH_CONTEXT_FLAG_EXACT_DATA_INCOMPLETE;
+  uint8_t terminal_opcode = 0;
+  bool continuing = false;
+  std::array<uint8_t, 32> canonical_digest{};
+  std::vector<FetchByteFact> bytes;
+};
+
+struct InstructionTransactionState {
+  SourceSet sources{};
+  uint32_t written_registers = 0;
+  bool active = false;
+  bool precise_copy = false;
+  bool nested = false;
+  uint32_t caller = 0;
+  uint16_t segment = 0;
+  uint16_t offset = 0;
+  uint64_t fetch_context_cell_id = 0;
+};
+
+constexpr uint32_t rotate_right(uint32_t value, uint32_t count) {
+  return (value >> count) | (value << (32u - count));
+}
+
+std::array<uint8_t, 32> sha256(std::span<const uint8_t> input) {
+  static constexpr std::array<uint32_t, 64> k{
+      0x428a2f98u, 0x71374491u, 0xb5c0fbcfu, 0xe9b5dba5u,
+      0x3956c25bu, 0x59f111f1u, 0x923f82a4u, 0xab1c5ed5u,
+      0xd807aa98u, 0x12835b01u, 0x243185beu, 0x550c7dc3u,
+      0x72be5d74u, 0x80deb1feu, 0x9bdc06a7u, 0xc19bf174u,
+      0xe49b69c1u, 0xefbe4786u, 0x0fc19dc6u, 0x240ca1ccu,
+      0x2de92c6fu, 0x4a7484aau, 0x5cb0a9dcu, 0x76f988dau,
+      0x983e5152u, 0xa831c66du, 0xb00327c8u, 0xbf597fc7u,
+      0xc6e00bf3u, 0xd5a79147u, 0x06ca6351u, 0x14292967u,
+      0x27b70a85u, 0x2e1b2138u, 0x4d2c6dfcu, 0x53380d13u,
+      0x650a7354u, 0x766a0abbu, 0x81c2c92eu, 0x92722c85u,
+      0xa2bfe8a1u, 0xa81a664bu, 0xc24b8b70u, 0xc76c51a3u,
+      0xd192e819u, 0xd6990624u, 0xf40e3585u, 0x106aa070u,
+      0x19a4c116u, 0x1e376c08u, 0x2748774cu, 0x34b0bcb5u,
+      0x391c0cb3u, 0x4ed8aa4au, 0x5b9cca4fu, 0x682e6ff3u,
+      0x748f82eeu, 0x78a5636fu, 0x84c87814u, 0x8cc70208u,
+      0x90befffau, 0xa4506cebu, 0xbef9a3f7u, 0xc67178f2u,
+  };
+  std::array<uint32_t, 8> hash{
+      0x6a09e667u, 0xbb67ae85u, 0x3c6ef372u, 0xa54ff53au,
+      0x510e527fu, 0x9b05688cu, 0x1f83d9abu, 0x5be0cd19u,
+  };
+  std::vector<uint8_t> message(input.begin(), input.end());
+  const uint64_t bit_count = static_cast<uint64_t>(message.size()) * 8u;
+  message.push_back(0x80u);
+  while ((message.size() & 63u) != 56u) message.push_back(0);
+  for (int shift = 56; shift >= 0; shift -= 8) {
+    message.push_back(static_cast<uint8_t>(bit_count >> shift));
+  }
+  for (size_t block = 0; block < message.size(); block += 64) {
+    std::array<uint32_t, 64> words{};
+    for (size_t index = 0; index < 16; ++index) {
+      const size_t at = block + index * 4;
+      words[index] = static_cast<uint32_t>(message[at]) << 24 |
+                     static_cast<uint32_t>(message[at + 1]) << 16 |
+                     static_cast<uint32_t>(message[at + 2]) << 8 |
+                     static_cast<uint32_t>(message[at + 3]);
+    }
+    for (size_t index = 16; index < 64; ++index) {
+      const uint32_t s0 = rotate_right(words[index - 15], 7) ^
+                          rotate_right(words[index - 15], 18) ^
+                          (words[index - 15] >> 3);
+      const uint32_t s1 = rotate_right(words[index - 2], 17) ^
+                          rotate_right(words[index - 2], 19) ^
+                          (words[index - 2] >> 10);
+      words[index] = words[index - 16] + s0 + words[index - 7] + s1;
+    }
+    auto [a, b, c, d, e, f, g, h] = hash;
+    for (size_t index = 0; index < 64; ++index) {
+      const uint32_t s1 = rotate_right(e, 6) ^ rotate_right(e, 11) ^
+                          rotate_right(e, 25);
+      const uint32_t choose = (e & f) ^ (~e & g);
+      const uint32_t temp1 = h + s1 + choose + k[index] + words[index];
+      const uint32_t s0 = rotate_right(a, 2) ^ rotate_right(a, 13) ^
+                          rotate_right(a, 22);
+      const uint32_t majority = (a & b) ^ (a & c) ^ (b & c);
+      const uint32_t temp2 = s0 + majority;
+      h = g; g = f; f = e; e = d + temp1;
+      d = c; c = b; b = a; a = temp1 + temp2;
+    }
+    hash[0] += a; hash[1] += b; hash[2] += c; hash[3] += d;
+    hash[4] += e; hash[5] += f; hash[6] += g; hash[7] += h;
+  }
+  std::array<uint8_t, 32> digest{};
+  for (size_t index = 0; index < hash.size(); ++index) {
+    digest[index * 4] = static_cast<uint8_t>(hash[index] >> 24);
+    digest[index * 4 + 1] = static_cast<uint8_t>(hash[index] >> 16);
+    digest[index * 4 + 2] = static_cast<uint8_t>(hash[index] >> 8);
+    digest[index * 4 + 3] = static_cast<uint8_t>(hash[index]);
+  }
+  return digest;
+}
+
 class AresBackend final : public SwanEngineBackend, private ares::Platform {
  public:
   explicit AresBackend(const swan_engine_config_t& config)
@@ -499,7 +629,8 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
            SWAN_CAPABILITY_DISPLAY_SOURCE_PROVENANCE |
            SWAN_CAPABILITY_DISPLAY_SOURCE_COMPONENT_SELECTION |
            SWAN_CAPABILITY_EXECUTED_SOURCE_READ_CONTEXT |
-           SWAN_CAPABILITY_DISPLAY_SPRITE_ATTRIBUTE_PROVENANCE;
+           SWAN_CAPABILITY_DISPLAY_SPRITE_ATTRIBUTE_PROVENANCE |
+           SWAN_CAPABILITY_CONSUMED_PREFETCH_PROVENANCE;
   }
 
   swan_result_t load(std::span<const uint8_t> rom,
@@ -905,6 +1036,11 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       error = "save-state data has an invalid size";
       return SWAN_RESULT_INVALID_ARGUMENT;
     }
+    // No restore attempt, successful or not, can retain live provenance.
+    writers_valid_ = false;
+    source_tracking_valid_ = false;
+    fetch_tracking_valid_ = false;
+    provenance_ready_ = false;
     serializer serialized(state.data(), static_cast<u32>(state.size()));
     if (!root_->unserialize(serialized)) {
       error = "save state is incompatible with this ares WonderSwan core";
@@ -921,9 +1057,6 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     }
     // Writer identities are intentionally not serialized by ares. A caller
     // must replay from boot before requesting an honest owner probe.
-    writers_valid_ = false;
-    source_tracking_valid_ = false;
-    provenance_ready_ = false;
     error.clear();
     return SWAN_RESULT_OK;
   }
@@ -1042,6 +1175,7 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     });
 
     constexpr size_t kMaximumTraceRecords = 262'144u;
+    collected = normalize_legacy_traces(std::move(collected));
     if (collected.size() > kMaximumTraceRecords) {
       error = "outside display consumers exceeded the bounded source-trace limit";
       return SWAN_RESULT_UNSUPPORTED;
@@ -1056,6 +1190,170 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       return SWAN_RESULT_INVALID_ARGUMENT;
     }
     std::copy(collected.begin(), collected.end(), traces.begin());
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t display_source_probe_v2(
+      const swan_display_rectangle_t& rectangle,
+      uint32_t selected_component_mask,
+      std::span<swan_display_source_trace_v2_t> traces,
+      size_t& trace_count,
+      std::span<swan_instruction_fetch_context_t> contexts,
+      size_t& context_count,
+      std::span<swan_instruction_fetch_byte_t> bytes,
+      size_t& byte_count,
+      std::string& error) const override {
+    trace_count = 0;
+    context_count = 0;
+    byte_count = 0;
+    if (!fetch_tracking_valid_) {
+      error = "consumed-prefetch provenance was invalidated during execution";
+      return SWAN_RESULT_UNSUPPORTED;
+    }
+
+    size_t legacy_count = 0;
+    auto result = display_source_probe(
+        rectangle, selected_component_mask, {}, legacy_count, error);
+    if (result != SWAN_RESULT_OK) return result;
+    std::vector<swan_display_source_trace_t> legacy(legacy_count);
+    result = display_source_probe(
+        rectangle, selected_component_mask, legacy, legacy_count, error);
+    if (result != SWAN_RESULT_OK) return result;
+
+    std::vector<swan_display_source_trace_v2_t> collected_traces;
+    collected_traces.reserve(legacy.size());
+    std::map<uint64_t, const SealedFetchContext*> selected_contexts;
+    for (const auto& old : legacy) {
+      swan_display_source_trace_v2_t trace{};
+      static_assert(sizeof(old) == 76);
+      std::memcpy(&trace, &old, sizeof(old));
+      trace.struct_size = sizeof(trace);
+      const auto cell_ids = fetch_context_cells_for_trace(old);
+      const SealedFetchContext* unanimous = nullptr;
+      bool context_complete = true;
+      const bool has_zero_cell = std::find(
+          cell_ids.begin(), cell_ids.end(), uint64_t{0}) != cell_ids.end();
+      const bool has_nonzero_cell = std::any_of(
+          cell_ids.begin(), cell_ids.end(),
+          [](uint64_t cell_id) { return cell_id != 0; });
+      if (has_zero_cell && has_nonzero_cell) {
+        error =
+            "a source trace mixes non-cartridge and cartridge instruction origins";
+        return SWAN_RESULT_UNSUPPORTED;
+      }
+      std::vector<const SealedFetchContext*> execution_contexts;
+      for (const uint64_t cell_id : cell_ids) {
+        if (cell_id == 0) continue;
+        const auto found = sealed_fetch_contexts_.find(cell_id);
+        if (found == sealed_fetch_contexts_.end()) {
+          error = "a source read references an unsealed execution context";
+          return SWAN_RESULT_UNSUPPORTED;
+        }
+        if (found->second.structural_id == 0) {
+          error = "a sealed source-read execution context is ineligible";
+          return SWAN_RESULT_UNSUPPORTED;
+        }
+        const auto& candidate = found->second;
+        execution_contexts.push_back(&candidate);
+        if (!unanimous) {
+          unanimous = &candidate;
+        } else if (unanimous->structural_id != candidate.structural_id ||
+                   unanimous->canonical_digest !=
+                       candidate.canonical_digest) {
+          context_complete = false;
+          break;
+        }
+      }
+      if (context_complete && unanimous) {
+        trace.execution_context_id = unanimous->cell_id;
+        trace.fetch_context_flags = unanimous->flags;
+        for (const auto* execution : execution_contexts) {
+          const auto [inserted, unique] = selected_contexts.emplace(
+              execution->cell_id, execution);
+          if (!unique &&
+              (inserted->second->structural_id != execution->structural_id ||
+               inserted->second->canonical_digest !=
+                   execution->canonical_digest)) {
+            error = "execution-context identity is not bijective";
+            return SWAN_RESULT_INTERNAL_ERROR;
+          }
+        }
+      } else if (unanimous) {
+        trace.fetch_context_flags =
+            SWAN_FETCH_CONTEXT_FLAG_PYPCODE_CHECK_REQUIRED |
+            SWAN_FETCH_CONTEXT_FLAG_EXACT_DATA_INCOMPLETE;
+      }
+      collected_traces.push_back(trace);
+    }
+
+    std::vector<swan_instruction_fetch_context_t> collected_contexts;
+    std::vector<swan_instruction_fetch_byte_t> collected_bytes;
+    collected_contexts.reserve(selected_contexts.size());
+    for (const auto& [execution_id, context] : selected_contexts) {
+      if (context->bytes.size() >
+          std::numeric_limits<uint32_t>::max() - collected_bytes.size()) {
+        error = "consumed-fetch byte table exceeded its bounded index space";
+        return SWAN_RESULT_UNSUPPORTED;
+      }
+      swan_instruction_fetch_context_t output{};
+      output.struct_size = sizeof(output);
+      output.id = execution_id;
+      output.structural_id = context->structural_id;
+      output.byte_start = static_cast<uint32_t>(collected_bytes.size());
+      output.byte_count = static_cast<uint32_t>(context->bytes.size());
+      output.flags = context->flags;
+      output.terminal_opcode = context->terminal_opcode;
+      output.continuing = context->continuing ? 1u : 0u;
+      if (!context->bytes.empty()) {
+        const auto& logical_start = context->bytes.front();
+        output.logical_start_physical =
+            ((logical_start.segment << 4) + logical_start.offset) & 0xfffffu;
+        output.logical_start_segment =
+            static_cast<uint16_t>(logical_start.segment);
+        output.logical_start_offset =
+            static_cast<uint16_t>(logical_start.offset);
+      }
+      std::copy(context->canonical_digest.begin(),
+                context->canonical_digest.end(), output.canonical_digest);
+      collected_contexts.push_back(output);
+      for (size_t ordinal = 0; ordinal < context->bytes.size(); ++ordinal) {
+        const auto& fact = context->bytes[ordinal];
+        swan_instruction_fetch_byte_t byte{};
+        byte.struct_size = sizeof(byte);
+        byte.context_id = execution_id;
+        byte.ordinal = static_cast<uint32_t>(ordinal);
+        byte.token = fact.token;
+        byte.source_kind = fact.source_kind;
+        byte.physical_address = fact.physical_address;
+        byte.resolved_operand = fact.resolved_operand;
+        byte.mapper_window = fact.mapper_window;
+        byte.mapper_bank = fact.mapper_bank;
+        byte.event_context = fact.event_context;
+        byte.segment = fact.segment;
+        byte.offset = fact.offset;
+        byte.data = fact.data;
+        collected_bytes.push_back(byte);
+      }
+    }
+
+    trace_count = collected_traces.size();
+    context_count = collected_contexts.size();
+    byte_count = collected_bytes.size();
+    const bool sizing = traces.empty() && contexts.empty() && bytes.empty();
+    if (sizing) {
+      error.clear();
+      return SWAN_RESULT_OK;
+    }
+    if (traces.size() < trace_count || contexts.size() < context_count ||
+        bytes.size() < byte_count) {
+      error = "atomic consumed-prefetch output buffers are too small";
+      return SWAN_RESULT_SOURCE_RANGE_OVERFLOW;
+    }
+    std::copy(collected_traces.begin(), collected_traces.end(), traces.begin());
+    std::copy(collected_contexts.begin(), collected_contexts.end(),
+              contexts.begin());
+    std::copy(collected_bytes.begin(), collected_bytes.end(), bytes.begin());
     error.clear();
     return SWAN_RESULT_OK;
   }
@@ -1144,6 +1442,281 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     return chrono::timestamp();
   }
 
+  static bool supported_prefix(uint32_t opcode) {
+    return opcode == 0x26u || opcode == 0x2eu || opcode == 0x36u ||
+           opcode == 0x3eu || opcode == 0xf0u || opcode == 0xf2u ||
+           opcode == 0xf3u;
+  }
+
+  static bool disputed_terminal(uint32_t opcode) {
+    return opcode == 0x0fu || opcode == 0x64u || opcode == 0x65u ||
+           opcode == 0x66u || opcode == 0x67u;
+  }
+
+  static void append_u32(std::vector<uint8_t>& output, uint32_t value) {
+    for (uint32_t shift = 0; shift < 32; shift += 8) {
+      output.push_back(static_cast<uint8_t>(value >> shift));
+    }
+  }
+
+  static std::vector<uint8_t> canonical_fetch_origin(
+      const FetchByteFact& fact) {
+    std::vector<uint8_t> output;
+    output.reserve(32u);
+    append_u32(output, fact.source_kind);
+    append_u32(output, fact.physical_address);
+    append_u32(output, fact.resolved_operand);
+    append_u32(output, fact.mapper_window);
+    append_u32(output, fact.mapper_bank);
+    append_u32(output, fact.segment);
+    append_u32(output, fact.offset);
+    append_u32(output, fact.data);
+    return output;
+  }
+
+  bool exact_fetch_run(const std::vector<FetchByteFact>& facts) {
+    if (facts.empty() || facts.size() > 16u || rom_aperture_size_ == 0) {
+      return false;
+    }
+    const auto& first = facts.front();
+    if (first.source_kind != 1u || first.token == 0) return false;
+    const uint32_t first_mapped =
+        first.resolved_operand & (rom_aperture_size_ - 1u);
+    if (first_mapped < rom_leading_padding_ ||
+        first_mapped - rom_leading_padding_ >= rom_file_size_) return false;
+    const uint32_t first_file_offset = first_mapped - rom_leading_padding_;
+    const auto last_index = facts.size() - 1u;
+    if (static_cast<uint64_t>(first.physical_address) + last_index > 0xfffffu ||
+        static_cast<uint64_t>(first.resolved_operand) + last_index >
+            std::numeric_limits<uint32_t>::max() ||
+        static_cast<uint64_t>(first.offset) + last_index > 0xffffu) {
+      return false;
+    }
+    for (size_t index = 0; index < facts.size(); ++index) {
+      const auto& fact = facts[index];
+      const uint32_t mapped =
+          fact.resolved_operand & (rom_aperture_size_ - 1u);
+      if (fact.source_kind != first.source_kind || fact.token == 0 ||
+          fact.mapper_window != first.mapper_window ||
+          fact.mapper_bank != first.mapper_bank ||
+          mapped < rom_leading_padding_ ||
+          mapped - rom_leading_padding_ >= rom_file_size_ ||
+          mapped - rom_leading_padding_ != first_file_offset + index ||
+          fact.resolved_operand != first.resolved_operand + index ||
+          fact.physical_address != first.physical_address + index ||
+          fact.segment != first.segment ||
+          fact.offset != first.offset + index) {
+        return false;
+      }
+      const auto prior_token = fetch_origin_by_token_.find(fact.token);
+      if (prior_token != fetch_origin_by_token_.end() &&
+          prior_token->second != fact) return false;
+      fetch_origin_by_token_[fact.token] = fact;
+    }
+    return true;
+  }
+
+  std::vector<uint8_t> canonical_context_preimage(
+      const std::vector<FetchByteFact>& facts) const {
+    static constexpr uint8_t domain[] = {
+        'S','W','A','N','-','F','E','T','C','H','-','C','O','N','T','E','X','T',
+        '-','V','2',0,
+    };
+    std::vector<uint8_t> canonical(std::begin(domain), std::end(domain));
+    append_u32(canonical, static_cast<uint32_t>(facts.size()));
+    for (const auto& fact : facts) {
+      const auto encoded = canonical_fetch_origin(fact);
+      canonical.insert(canonical.end(), encoded.begin(), encoded.end());
+    }
+    return canonical;
+  }
+
+  uint64_t intern_structural_context(
+      const std::array<uint8_t, 32>& digest,
+      const std::vector<uint8_t>& canonical_preimage) {
+    uint64_t structural_id = 0;
+    for (size_t index = 0; index < 8; ++index) {
+      structural_id = (structural_id << 8) | digest[index];
+    }
+    if (structural_id == 0) return 0;
+    const auto by_digest = structural_id_by_digest_.find(digest);
+    if (by_digest != structural_id_by_digest_.end()) {
+      if (by_digest->second != structural_id) return 0;
+      const auto canonical = canonical_preimage_by_structural_id_.find(
+          structural_id);
+      if (canonical == canonical_preimage_by_structural_id_.end() ||
+          canonical->second != canonical_preimage) return 0;
+      return structural_id;
+    }
+    const auto by_id = digest_by_structural_id_.find(structural_id);
+    if (by_id != digest_by_structural_id_.end() && by_id->second != digest) {
+      return 0;
+    }
+    structural_id_by_digest_[digest] = structural_id;
+    digest_by_structural_id_[structural_id] = digest;
+    canonical_preimage_by_structural_id_[structural_id] = canonical_preimage;
+    return structural_id;
+  }
+
+  void invalidate_current_fetch_context() {
+    if (pending_fetch_context_ &&
+        pending_fetch_context_->referenced_by_source_read) {
+      SealedFetchContext invalid{};
+      invalid.cell_id = pending_fetch_context_->cell_id;
+      invalid.bytes = pending_fetch_context_->bytes;
+      sealed_fetch_contexts_[invalid.cell_id] = std::move(invalid);
+    }
+    pending_fetch_context_.reset();
+    scheduler_fetch_bytes_.clear();
+  }
+
+  void wonderSwanInstructionFetch(
+      const ares::WonderSwanInstructionFetchOrigin& input) override {
+    if (!fetch_tracking_valid_ || instruction_nested_) return;
+    const uint32_t generation = static_cast<uint32_t>(input.token >> 32);
+    if (!prefetch_generation_known_ || generation != prefetch_generation_) {
+      fetch_tracking_valid_ = false;
+      invalidate_current_fetch_context();
+      retained_prefix_bytes_.clear();
+      return;
+    }
+    FetchByteFact fact{
+        input.token,
+        input.sourceKind,
+        input.physicalAddress,
+        input.resolvedOperand,
+        input.mapperWindow,
+        input.mapperBank,
+        input.eventContext,
+        input.segment,
+        input.offset,
+        input.data,
+    };
+    scheduler_fetch_bytes_.push_back(fact);
+    if (scheduler_fetch_bytes_.size() == 1u && supported_prefix(fact.data)) {
+      return;
+    }
+    if (!pending_fetch_context_) {
+      const bool has_cartridge_origin = std::any_of(
+          retained_prefix_bytes_.begin(), retained_prefix_bytes_.end(),
+          [](const auto& byte) { return byte.source_kind == 1u; }) ||
+          std::any_of(
+              scheduler_fetch_bytes_.begin(), scheduler_fetch_bytes_.end(),
+              [](const auto& byte) { return byte.source_kind == 1u; });
+      if (!has_cartridge_origin) {
+        instruction_fetch_context_cell_id_ = 0;
+        return;
+      }
+      if (next_fetch_context_cell_id_ == 0 ||
+          sealed_fetch_contexts_.size() >= kMaximumFetchContexts) {
+        fetch_tracking_valid_ = false;
+        return;
+      }
+      PendingFetchContext pending{};
+      pending.cell_id = next_fetch_context_cell_id_++;
+      pending.bytes = retained_prefix_bytes_;
+      pending.bytes.insert(pending.bytes.end(), scheduler_fetch_bytes_.begin(),
+                           scheduler_fetch_bytes_.end());
+      pending_fetch_context_ = std::move(pending);
+      instruction_fetch_context_cell_id_ = pending_fetch_context_->cell_id;
+      return;
+    }
+    pending_fetch_context_->bytes.push_back(fact);
+  }
+
+  void wonderSwanInstructionBoundary(
+      u32 opcode, u64 opcode_origin, bool continuing) override {
+    if (!fetch_tracking_valid_ || instruction_nested_) return;
+    if (scheduler_fetch_bytes_.empty() ||
+        scheduler_fetch_bytes_.front().token != opcode_origin ||
+        scheduler_fetch_bytes_.front().data != (opcode & 0xffu)) {
+      fetch_tracking_valid_ = false;
+      invalidate_current_fetch_context();
+      return;
+    }
+    if (supported_prefix(opcode)) {
+      if (!continuing || scheduler_fetch_bytes_.size() != 1u ||
+          pending_fetch_context_) {
+        fetch_tracking_valid_ = false;
+        invalidate_current_fetch_context();
+        return;
+      }
+      retained_prefix_bytes_.insert(retained_prefix_bytes_.end(),
+                                    scheduler_fetch_bytes_.begin(),
+                                    scheduler_fetch_bytes_.end());
+      scheduler_fetch_bytes_.clear();
+      return;
+    }
+    if (!pending_fetch_context_) {
+      const bool has_cartridge_origin = std::any_of(
+          retained_prefix_bytes_.begin(), retained_prefix_bytes_.end(),
+          [](const auto& byte) { return byte.source_kind == 1u; }) ||
+          std::any_of(
+              scheduler_fetch_bytes_.begin(), scheduler_fetch_bytes_.end(),
+              [](const auto& byte) { return byte.source_kind == 1u; });
+      if (!has_cartridge_origin) {
+        scheduler_fetch_bytes_.clear();
+        instruction_fetch_context_cell_id_ = 0;
+        if (!continuing) retained_prefix_bytes_.clear();
+        return;
+      }
+      fetch_tracking_valid_ = false;
+      invalidate_current_fetch_context();
+      return;
+    }
+    if (pending_fetch_context_->cell_id != instruction_fetch_context_cell_id_) {
+      fetch_tracking_valid_ = false;
+      invalidate_current_fetch_context();
+      return;
+    }
+
+    if (pending_fetch_context_->referenced_by_source_read) {
+      SealedFetchContext sealed{};
+      sealed.cell_id = pending_fetch_context_->cell_id;
+      sealed.terminal_opcode = static_cast<uint8_t>(opcode);
+      sealed.continuing = continuing;
+      sealed.bytes = pending_fetch_context_->bytes;
+      const bool exact = !disputed_terminal(opcode) && exact_fetch_run(sealed.bytes);
+      if (exact) {
+        const auto canonical_preimage = canonical_context_preimage(sealed.bytes);
+        sealed.canonical_digest = sha256(canonical_preimage);
+        sealed.structural_id = intern_structural_context(
+            sealed.canonical_digest, canonical_preimage);
+        if (sealed.structural_id != 0) {
+          sealed.flags |= SWAN_FETCH_CONTEXT_FLAG_SEALED |
+                          SWAN_FETCH_CONTEXT_FLAG_EXACT_CARTRIDGE_RUN |
+                          SWAN_FETCH_CONTEXT_FLAG_BIJECTIVE_IDENTITY;
+        }
+      }
+      sealed_fetch_contexts_[sealed.cell_id] = std::move(sealed);
+    }
+    pending_fetch_context_.reset();
+    scheduler_fetch_bytes_.clear();
+    instruction_fetch_context_cell_id_ = 0;
+    if (!continuing) retained_prefix_bytes_.clear();
+  }
+
+  void wonderSwanPrefetchFlush(u32 generation) override {
+    retained_prefix_bytes_.clear();
+    if (!fetch_tracking_valid_) return;
+    const uint32_t expected = prefetch_generation_ + 1u;
+    if (generation == 0u ||
+        (prefetch_generation_known_ &&
+         (expected == 0u || generation != expected))) {
+      fetch_tracking_valid_ = false;
+      invalidate_current_fetch_context();
+      return;
+    }
+    prefetch_generation_ = generation;
+    prefetch_generation_known_ = true;
+  }
+
+  void wonderSwanPrefetchInvalid() override {
+    fetch_tracking_valid_ = false;
+    invalidate_current_fetch_context();
+    retained_prefix_bytes_.clear();
+  }
+
   void wonderSwanSourceWrite(u32 kind, u32 address, u32 writer) override {
     WriterRecord* record = nullptr;
     if (kind == 1 && address < iram_writers_.size()) {
@@ -1173,13 +1746,28 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
   }
 
   void wonderSwanInstructionBegin(u32 caller, u32 segment, u32 offset) override {
+    const bool nested = instruction_active_;
+    if (nested) {
+      if (instruction_transaction_depth_ >= instruction_transaction_stack_.size()) {
+        fetch_tracking_valid_ = false;
+        source_tracking_valid_ = false;
+        return;
+      }
+      instruction_transaction_stack_[instruction_transaction_depth_++] = {
+          instruction_sources_, instruction_written_registers_,
+          instruction_active_, instruction_precise_copy_, instruction_nested_,
+          instruction_caller_, instruction_segment_, instruction_offset_,
+          instruction_fetch_context_cell_id_};
+    }
     instruction_sources_ = {};
     instruction_written_registers_ = 0;
     instruction_active_ = true;
     instruction_precise_copy_ = false;
+    instruction_nested_ = nested;
     instruction_caller_ = caller & 0xfffffu;
     instruction_segment_ = static_cast<uint16_t>(segment);
     instruction_offset_ = static_cast<uint16_t>(offset);
+    instruction_fetch_context_cell_id_ = 0;
   }
 
   void wonderSwanInstructionDataflow(u32 kind) override {
@@ -1201,6 +1789,22 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     }
     instruction_active_ = false;
     instruction_precise_copy_ = false;
+    instruction_fetch_context_cell_id_ = 0;
+    if (instruction_transaction_depth_ != 0) {
+      const auto parent =
+          instruction_transaction_stack_[--instruction_transaction_depth_];
+      instruction_sources_ = parent.sources;
+      instruction_written_registers_ = parent.written_registers;
+      instruction_active_ = parent.active;
+      instruction_precise_copy_ = parent.precise_copy;
+      instruction_nested_ = parent.nested;
+      instruction_caller_ = parent.caller;
+      instruction_segment_ = parent.segment;
+      instruction_offset_ = parent.offset;
+      instruction_fetch_context_cell_id_ = parent.fetch_context_cell_id;
+    } else {
+      instruction_nested_ = false;
+    }
   }
 
   void wonderSwanDataRead(u32 kind, u32 address) override {
@@ -1243,7 +1847,13 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
               static_cast<uint16_t>(operand_segment),
               static_cast<uint16_t>(operand_offset),
               static_cast<uint16_t>(mapper_window),
-              static_cast<uint16_t>(mapper_bank), resolved_operand, true});
+              static_cast<uint16_t>(mapper_bank), resolved_operand,
+              instruction_nested_ ? 0 : instruction_fetch_context_cell_id_,
+              true});
+      if (!instruction_nested_ && pending_fetch_context_ &&
+          pending_fetch_context_->cell_id == instruction_fetch_context_cell_id_) {
+        pending_fetch_context_->referenced_by_source_read = true;
+      }
     } else {
       instruction_sources_.unknown = true;
     }
@@ -1537,6 +2147,110 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     }
   }
 
+  static bool legacy_trace_identity_equal(
+      const swan_display_source_trace_t& left,
+      const swan_display_source_trace_t& right) {
+    return left.x == right.x && left.y == right.y &&
+        left.scope == right.scope && left.component == right.component &&
+        left.source_address == right.source_address &&
+        left.source_byte_count == right.source_byte_count &&
+        left.minimum_instruction_hops == right.minimum_instruction_hops &&
+        left.maximum_instruction_hops == right.maximum_instruction_hops &&
+        left.reserved == right.reserved && left.flags == right.flags &&
+        left.read_context_flags == right.read_context_flags &&
+        left.immediate_caller == right.immediate_caller &&
+        left.caller_segment == right.caller_segment &&
+        left.caller_offset == right.caller_offset &&
+        left.operand_segment == right.operand_segment &&
+        left.mapper_window == right.mapper_window &&
+        left.mapper_bank == right.mapper_bank &&
+        left.conservative_reason == right.conservative_reason &&
+        left.conservative_origin == right.conservative_origin &&
+        left.conservative_origin_segment ==
+            right.conservative_origin_segment &&
+        left.conservative_origin_offset == right.conservative_origin_offset;
+  }
+
+  static bool legacy_trace_mergeable(
+      const swan_display_source_trace_t& left,
+      const swan_display_source_trace_t& right) {
+    if (!legacy_trace_identity_equal(left, right)) return false;
+    const uint64_t left_upper =
+        static_cast<uint64_t>(left.cartridge_offset) + left.cartridge_length;
+    const uint64_t right_upper =
+        static_cast<uint64_t>(right.cartridge_offset) + right.cartridge_length;
+    if (left.cartridge_offset > right_upper ||
+        right.cartridge_offset > left_upper) return false;
+    if ((left.read_context_flags &
+         SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED) == 0) return true;
+    const uint64_t delta =
+        static_cast<uint64_t>(right.cartridge_offset) - left.cartridge_offset;
+    return static_cast<uint64_t>(left.resolved_cartridge_operand) + delta ==
+            right.resolved_cartridge_operand &&
+        static_cast<uint64_t>(left.operand_offset) + delta ==
+            right.operand_offset;
+  }
+
+  static std::vector<swan_display_source_trace_t> normalize_legacy_traces(
+      std::vector<swan_display_source_trace_t> traces) {
+    std::vector<swan_display_source_trace_t> normalized;
+    normalized.reserve(traces.size());
+    for (const auto& trace : traces) {
+      if (!normalized.empty() &&
+          legacy_trace_mergeable(normalized.back(), trace)) {
+        auto& prior = normalized.back();
+        const uint64_t upper = std::max(
+            static_cast<uint64_t>(prior.cartridge_offset) +
+                prior.cartridge_length,
+            static_cast<uint64_t>(trace.cartridge_offset) +
+                trace.cartridge_length);
+        prior.cartridge_length =
+            static_cast<uint32_t>(upper - prior.cartridge_offset);
+      } else {
+        normalized.push_back(trace);
+      }
+    }
+    return normalized;
+  }
+
+  std::vector<uint64_t> fetch_context_cells_for_trace(
+      const swan_display_source_trace_t& trace) const {
+    std::vector<uint64_t> result;
+    if (trace.cartridge_length == 0 ||
+        (trace.read_context_flags &
+         SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED) == 0) return result;
+    const SourceSet sources = source_set_for(
+        trace.source_address, trace.source_byte_count);
+    const uint64_t trace_upper =
+        static_cast<uint64_t>(trace.cartridge_offset) +
+        trace.cartridge_length;
+    for (size_t index = 0; index < sources.count; ++index) {
+      const auto& range = sources.ranges[index];
+      const auto& read = range.read_context;
+      if (range.lower >= trace.cartridge_offset &&
+          range.upper <= trace_upper &&
+          read.executed &&
+          read.immediate_caller == trace.immediate_caller &&
+          read.caller_segment == trace.caller_segment &&
+          read.caller_offset == trace.caller_offset &&
+          read.operand_segment == trace.operand_segment &&
+          read.mapper_window == trace.mapper_window &&
+          read.mapper_bank == trace.mapper_bank &&
+          static_cast<uint64_t>(trace.resolved_cartridge_operand) +
+                  (range.lower - trace.cartridge_offset) ==
+              read.resolved_cartridge_operand &&
+          static_cast<uint64_t>(trace.operand_offset) +
+                  (range.lower - trace.cartridge_offset) ==
+              read.operand_offset) {
+        if (std::find(result.begin(), result.end(),
+                      read.fetch_context_cell_id) == result.end()) {
+          result.push_back(read.fetch_context_cell_id);
+        }
+      }
+    }
+    return result;
+  }
+
   void reset_provenance_tracking() {
     writer_sequence_ = 0;
     iram_writers_.fill({});
@@ -1548,9 +2262,24 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     instruction_written_registers_ = 0;
     instruction_active_ = false;
     instruction_precise_copy_ = false;
+    instruction_nested_ = false;
     instruction_caller_ = 0;
     instruction_segment_ = 0;
     instruction_offset_ = 0;
+    instruction_fetch_context_cell_id_ = 0;
+    instruction_transaction_depth_ = 0;
+    scheduler_fetch_bytes_.clear();
+    retained_prefix_bytes_.clear();
+    pending_fetch_context_.reset();
+    sealed_fetch_contexts_.clear();
+    fetch_origin_by_token_.clear();
+    structural_id_by_digest_.clear();
+    digest_by_structural_id_.clear();
+    canonical_preimage_by_structural_id_.clear();
+    next_fetch_context_cell_id_ = 1;
+    prefetch_generation_ = 0;
+    prefetch_generation_known_ = false;
+    fetch_tracking_valid_ = true;
     for (auto& record : iram_writers_) {
       record.program_counter = 0xffffffffu;
     }
@@ -1601,9 +2330,29 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
   uint32_t instruction_written_registers_ = 0;
   bool instruction_active_ = false;
   bool instruction_precise_copy_ = false;
+  bool instruction_nested_ = false;
   uint32_t instruction_caller_ = 0;
   uint16_t instruction_segment_ = 0;
   uint16_t instruction_offset_ = 0;
+  uint64_t instruction_fetch_context_cell_id_ = 0;
+  static constexpr size_t kInstructionTransactionDepth = 4;
+  std::array<InstructionTransactionState, kInstructionTransactionDepth>
+      instruction_transaction_stack_{};
+  size_t instruction_transaction_depth_ = 0;
+  static constexpr size_t kMaximumFetchContexts = 262'144u;
+  std::vector<FetchByteFact> scheduler_fetch_bytes_;
+  std::vector<FetchByteFact> retained_prefix_bytes_;
+  std::optional<PendingFetchContext> pending_fetch_context_;
+  std::map<uint64_t, SealedFetchContext> sealed_fetch_contexts_;
+  std::map<uint64_t, FetchByteFact> fetch_origin_by_token_;
+  std::map<std::array<uint8_t, 32>, uint64_t> structural_id_by_digest_;
+  std::map<uint64_t, std::array<uint8_t, 32>> digest_by_structural_id_;
+  std::map<uint64_t, std::vector<uint8_t>>
+      canonical_preimage_by_structural_id_;
+  uint64_t next_fetch_context_cell_id_ = 1;
+  uint32_t prefetch_generation_ = 0;
+  bool prefetch_generation_known_ = false;
+  bool fetch_tracking_valid_ = false;
   uint32_t rom_file_size_ = 0;
   uint32_t rom_aperture_size_ = 0;
   uint32_t rom_leading_padding_ = 0;

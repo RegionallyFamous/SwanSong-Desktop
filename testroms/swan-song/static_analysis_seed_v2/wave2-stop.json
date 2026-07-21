@@ -1,0 +1,26 @@
+{
+  "schema": "swan-song.public-kat-stop.v1",
+  "fixture": "static_analysis_seed_v2",
+  "status": "STOP",
+  "commercialContent": false,
+  "attemptCount": 2,
+  "ownershipGranularityBytes": 4,
+  "sourceOverwriteBytes": 1,
+  "attempts": [
+    {
+      "method": "one-byte source overwrite after library initialization",
+      "visibleOwnerPass": true,
+      "abi9ExactPass": false,
+      "conservative": true
+    },
+    {
+      "method": "one-byte source overwrite after fixed-code field clearing",
+      "visibleOwnerPass": true,
+      "abi9ExactPass": false,
+      "conservative": true
+    }
+  ],
+  "boundedNegativeResult": "Both one-byte overwrite variants remained conservative because the selected raster owner covers a four-byte composed field.",
+  "fullSuiteRun": false,
+  "resumeRequires": "New executed evidence supporting a different ownership granularity or evidence path."
+}

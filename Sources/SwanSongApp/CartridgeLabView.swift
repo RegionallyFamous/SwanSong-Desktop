@@ -34,7 +34,7 @@ final class CartridgeLabModel {
     var cartridgeInfo: YokoiCartridgeInfo?
     var operation: Operation?
     var progress: YokoiTransferProgress?
-    var status = "Choose a serial adapter, then connect and power on the WonderSwan."
+    var status = "Connect the EXT adapter, choose it below, then power on the WonderSwan when asked."
     var issue: String?
     var payloadIssue: String?
     var lastROMDump: YokoiDumpResult?
@@ -88,6 +88,9 @@ final class CartridgeLabModel {
         isConnected && (cartridgeInfo?.saveKind == .sram || cartridgeInfo?.saveKind == .eeprom)
             && (cartridgeInfo?.saveSize ?? 0) > 0
     }
+    var canRestoreSave: Bool {
+        canReadSave && cartridgeInfo?.saveGeometryIsAmbiguous == false
+    }
 
     func refreshPorts() {
         let previous = selectedSerialPortPath
@@ -106,7 +109,7 @@ final class CartridgeLabModel {
             return
         }
         guard !selectedSerialPortPath.isEmpty else {
-            issue = "Connect an ExtFriend-compatible USB serial adapter, then refresh the device list."
+            issue = "Connect a 3.3 V WonderSwan EXT-to-USB adapter, then refresh the device list."
             return
         }
         disconnect()
@@ -151,7 +154,7 @@ final class CartridgeLabModel {
             case let .connected(identity, info):
                 serviceIdentity = identity
                 cartridgeInfo = info
-                status = "Connected to \(info.consoleName). Cartridge service \(identity.version) is ready."
+                status = "Connected to \(info.consoleName). The cartridge is ready."
             case let .failed(message):
                 self.session = nil
                 serviceIdentity = nil
@@ -292,14 +295,14 @@ final class CartridgeLabModel {
     }
 
     func requestRestore(from source: URL) {
-        guard canReadSave, !isBusy else { return }
+        guard canRestoreSave, !isBusy else { return }
         pendingRestoreURL = source
         restoreConfirmationIsPresented = true
     }
 
     func confirmRestore() {
         guard let session, let info = cartridgeInfo, let source = pendingRestoreURL,
-              canReadSave, !isBusy else { return }
+              canRestoreSave, !isBusy else { return }
         pendingRestoreURL = nil
         restoreConfirmationIsPresented = false
         operation = .restoringSave
@@ -413,7 +416,7 @@ final class CartridgeLabModel {
 struct CartridgeLabView: View {
     private enum Section: String, CaseIterable, Identifiable {
         case cartridges = "Cartridges"
-        case setup = "Install Yokoi Boot"
+        case setup = "Set Up Yokoi Boot"
         var id: Self { self }
     }
 
@@ -425,7 +428,7 @@ struct CartridgeLabView: View {
         VStack(spacing: 0) {
             header
             Divider()
-            Picker("Cartridge Lab section", selection: $section) {
+            Picker("Cartridge Tools section", selection: $section) {
                 ForEach(Section.allCases) { section in
                     Text(section.rawValue).tag(section)
                 }
@@ -450,7 +453,7 @@ struct CartridgeLabView: View {
         .frame(minWidth: 720, idealWidth: 820, minHeight: 600, idealHeight: 700)
         .background(SwanTheme.libraryBackground.ignoresSafeArea())
         .alert(
-            "Cartridge Lab",
+            "Cartridge Tools",
             isPresented: Binding(
                 get: { model.issue != nil },
                 set: { if !$0 { model.issue = nil } }
@@ -483,8 +486,8 @@ struct CartridgeLabView: View {
         HStack(spacing: 14) {
             SwanIconTile(symbol: "externaldrive.connected.to.line.below", tint: SwanTheme.cyan, size: 48)
             VStack(alignment: .leading, spacing: 3) {
-                Text("Cartridge Lab").font(.title2.bold())
-                Text("Use a Color or SwanCrystal as a cartridge reader and guarded save writer.")
+                Text("Cartridge Tools").font(.title2.bold())
+                Text("Read cartridges and safely manage saves with a WonderSwan Color or SwanCrystal.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
             }
@@ -500,27 +503,29 @@ struct CartridgeLabView: View {
 
     private var cartridgeSection: some View {
         VStack(alignment: .leading, spacing: 16) {
+            cableGuide
+
             labCard {
                 VStack(alignment: .leading, spacing: 12) {
-                    Label("WonderSwan connection", systemImage: "cable.connector")
+                    Label("Connect the WonderSwan", systemImage: "cable.connector")
                         .font(.headline)
                     Text(
-                        "Connect an ExtFriend-compatible 3.3 V USB adapter. Insert the cartridge before powering on; never connect the EXT port to a PC RS-232 socket."
+                        "Insert the cartridge while the console is off. Connect the EXT adapter, choose the USB device below, then let SwanSong tell you when to power on."
                     )
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     HStack {
-                        Picker("Serial adapter", selection: $model.selectedSerialPortPath) {
+                        Picker("USB adapter", selection: $model.selectedSerialPortPath) {
                             if model.serialPorts.isEmpty {
-                                Text("No USB serial adapters found").tag("")
+                                Text("No EXT adapters found").tag("")
                             }
                             ForEach(model.serialPorts) { port in
                                 Text(port.displayName).tag(port.path)
                             }
                         }
                         .frame(maxWidth: 360)
-                        Button("Refresh", systemImage: "arrow.clockwise") { model.refreshPorts() }
-                        Button("Connect & Load Service") { model.connectAndLoadService() }
+                        Button("Refresh Devices", systemImage: "arrow.clockwise") { model.refreshPorts() }
+                        Button("Connect WonderSwan") { model.connectAndLoadService() }
                             .buttonStyle(.borderedProminent)
                             .disabled(model.selectedSerialPortPath.isEmpty || model.isBusy || model.payload == nil)
                     }
@@ -543,10 +548,9 @@ struct CartridgeLabView: View {
                             infoRow(
                                 "Save memory",
                                 info.saveSize > 0
-                                    ? "\(info.saveKind.title), \(ByteCountFormatter.string(fromByteCount: Int64(info.saveSize), countStyle: .memory))"
+                                    ? "\(info.saveKind.title), \(ByteCountFormatter.string(fromByteCount: Int64(info.saveSize), countStyle: .memory))\(info.saveGeometryIsAmbiguous ? " (size needs confirmation)" : "")"
                                     : info.saveKind.title
                             )
-                            infoRow("Footer", info.footer.map { String(format: "%02x", $0) }.joined())
                         }
                         Divider()
                         HStack {
@@ -556,7 +560,15 @@ struct CartridgeLabView: View {
                             Button("Back Up Save…") { chooseSaveDestination() }
                                 .disabled(!model.canReadSave || model.isBusy)
                             Button("Restore Save…") { chooseSaveToRestore() }
-                                .disabled(!model.canReadSave || model.isBusy)
+                                .disabled(!model.canRestoreSave || model.isBusy)
+                        }
+                        if info.saveGeometryIsAmbiguous {
+                            Label(
+                                "This footer's SRAM code is used by more than one physical size. Backup is available, but SwanSong will not restore a save until the cartridge geometry is identified.",
+                                systemImage: "exclamationmark.triangle.fill"
+                            )
+                            .font(.caption)
+                            .foregroundStyle(.orange)
                         }
                     }
                 }
@@ -577,6 +589,10 @@ struct CartridgeLabView: View {
                 }
             }
 
+            if appModel.debugToolsEnabled {
+                developerDiagnostics
+            }
+
             labCard(tint: .orange) {
                 Label("ROM writing remains locked", systemImage: "lock.fill")
                     .font(.headline)
@@ -586,6 +602,129 @@ struct CartridgeLabView: View {
                 .font(.callout)
                 .foregroundStyle(.secondary)
             }
+        }
+    }
+
+    private var cableGuide: some View {
+        labCard(tint: SwanTheme.cyan) {
+            VStack(alignment: .leading, spacing: 12) {
+                Label("USB needs a WonderSwan EXT adapter", systemImage: "cable.connector.horizontal")
+                    .font(.headline)
+                Text(
+                    "A USB cable cannot plug directly into a WonderSwan. Use an ExtFriend-compatible adapter that converts the console's 3.3 V EXT connection to USB, then use a normal data-capable USB cable from the adapter to your Mac."
+                )
+                .font(.callout)
+                .foregroundStyle(.secondary)
+
+                HStack(spacing: 10) {
+                    connectionNode("WonderSwan", detail: "EXT port", symbol: "gamecontroller.fill")
+                    Image(systemName: "arrow.right").foregroundStyle(.secondary)
+                    connectionNode("3.3 V adapter", detail: "ExtFriend-compatible", symbol: "memorychip")
+                    Image(systemName: "arrow.right").foregroundStyle(.secondary)
+                    connectionNode("Mac", detail: "USB data cable", symbol: "laptopcomputer")
+                }
+                .frame(maxWidth: .infinity)
+
+                Label(
+                    "Do not use a PC RS-232 cable or connect loose EXT pins directly to USB.",
+                    systemImage: "exclamationmark.triangle.fill"
+                )
+                .font(.caption.weight(.medium))
+                .foregroundStyle(.orange)
+                Text(
+                    "Console support: WonderSwan Color and SwanCrystal. The original monochrome WonderSwan cannot use this Yokoi Boot workflow."
+                )
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                Link(
+                    "Open the ExtFriend adapter build guide",
+                    destination: URL(string: "https://github.com/asiekierka/ws-extfriend")!
+                )
+                .font(.caption.weight(.medium))
+            }
+        }
+        .accessibilityIdentifier("cartridge-usb-cable-guide")
+    }
+
+    private func connectionNode(
+        _ title: String,
+        detail: String,
+        symbol: String
+    ) -> some View {
+        VStack(spacing: 5) {
+            Image(systemName: symbol)
+                .font(.title3)
+                .foregroundStyle(SwanTheme.cyan)
+            Text(title).font(.caption.weight(.semibold))
+            Text(detail)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, minHeight: 70)
+        .padding(.horizontal, 8)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 10))
+    }
+
+    private var developerDiagnostics: some View {
+        labCard(tint: SwanTheme.violet) {
+            VStack(alignment: .leading, spacing: 10) {
+                Label("Developer diagnostics", systemImage: "wrench.and.screwdriver.fill")
+                    .font(.headline)
+                Text("Visible because Developer Tools is enabled in Settings.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Grid(alignment: .leading, horizontalSpacing: 18, verticalSpacing: 7) {
+                    developerRow(
+                        "Serial device",
+                        model.selectedSerialPortPath.isEmpty ? "Not selected" : model.selectedSerialPortPath
+                    )
+                    developerRow("Transport", "38,400 baud · 8-N-1 · protocol v1")
+                    developerRow("Boot transfer", "128-byte XMODEM checksum blocks")
+                    if let identity = model.serviceIdentity {
+                        developerRow("Service", "Yokoi Cart Service \(identity.version)")
+                        developerRow(
+                            "Capabilities",
+                            String(format: "0x%04X · max transfer %d bytes", identity.capabilities, identity.maximumTransfer)
+                        )
+                    }
+                    if let info = model.cartridgeInfo {
+                        developerRow(
+                            "Console registers",
+                            String(format: "model 0x%02X · control 0x%02X · flags 0x%02X", info.consoleModel, info.systemControl, info.flags)
+                        )
+                        developerRow("EEPROM address bits", String(info.eepromAddressBits))
+                        developerRow(
+                            "Raw footer",
+                            info.footer.map { String(format: "%02X", $0) }.joined(separator: " ")
+                        )
+                    }
+                    if let payload = model.payload {
+                        developerRow("Payload", payload.version)
+                        developerRow(
+                            "Release gate",
+                            payload.releaseReady ? "release-ready" : "development / hardware validation pending"
+                        )
+                        developerRow("Bundled source SHA-256", payload.correspondingSourceSHA256)
+                        developerRow("Installer SHA-256", payload.installerSHA256)
+                        developerRow("Service SHA-256", payload.cartServiceSHA256)
+                    }
+                }
+            }
+        }
+        .accessibilityIdentifier("cartridge-developer-diagnostics")
+    }
+
+    @ViewBuilder
+    private func developerRow(_ title: String, _ value: String) -> some View {
+        GridRow {
+            Text(title)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            Text(value)
+                .font(.caption.monospaced())
+                .lineLimit(1)
+                .truncationMode(.middle)
+                .textSelection(.enabled)
         }
     }
 
@@ -605,7 +744,7 @@ struct CartridgeLabView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(model.payload == nil || model.isBusy)
-                    if let payload = model.payload {
+                    if let payload = model.payload, appModel.debugToolsEnabled {
                         Text("Payload \(payload.version) · SHA-256 \(payload.installerSHA256)")
                             .font(.caption.monospaced())
                             .foregroundStyle(.secondary)
@@ -633,6 +772,10 @@ struct CartridgeLabView: View {
                         }
                     }
                 }
+            }
+
+            if appModel.debugToolsEnabled {
+                developerDiagnostics
             }
 
             labCard {
@@ -710,10 +853,12 @@ struct CartridgeLabView: View {
         labCard(tint: .green) {
             Label(title, systemImage: "checkmark.seal.fill").font(.headline)
             Text(result.url.path).font(.callout.monospaced()).textSelection(.enabled)
-            Text("SHA-256 \(result.sha256)")
-                .font(.caption.monospaced())
-                .foregroundStyle(.secondary)
-                .textSelection(.enabled)
+            if appModel.debugToolsEnabled {
+                Text("SHA-256 \(result.sha256)")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+                    .textSelection(.enabled)
+            }
             Button(actionTitle, action: action)
         }
     }

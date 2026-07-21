@@ -185,6 +185,7 @@ final class AppModel {
         case favorites = "Favorites"
         case recent = "Recently Played"
         case homebrew = "Homebrew"
+        case cartridgeTools = "Cartridge Tools"
         case pocketCore = "Analogue Pocket"
         case translationLab = "Translation Lab"
         case storyForge = "Story Forge"
@@ -198,11 +199,29 @@ final class AppModel {
             case .favorites: "star"
             case .recent: "clock"
             case .homebrew: "shippingbox"
+            case .cartridgeTools: "externaldrive.connected.to.line.below"
             case .pocketCore: "sdcard"
             case .translationLab: "character.book.closed"
             case .storyForge: "book.pages"
             case .gameStudio: "hammer"
             }
+        }
+
+        var requiresDeveloperTools: Bool {
+            self == .gameStudio
+        }
+
+        static func toolSections(developerToolsEnabled: Bool) -> [Self] {
+            var sections: [Self] = [
+                .cartridgeTools,
+                .pocketCore,
+                .translationLab,
+                .storyForge,
+            ]
+            if developerToolsEnabled {
+                sections.append(.gameStudio)
+            }
+            return sections
         }
     }
 
@@ -825,6 +844,8 @@ final class AppModel {
                 .filter { $0.lastPlayedAt != nil }
                 .sorted { ($0.lastPlayedAt ?? .distantPast) > ($1.lastPlayedAt ?? .distantPast) }
         case .homebrew:
+            []
+        case .cartridgeTools:
             []
         case .pocketCore:
             []
@@ -4658,9 +4679,19 @@ final class AppModel {
         debugToolsEnabled = enabled
         UserDefaults.standard.set(enabled, forKey: Self.debugToolsDefaultsKey)
         if !enabled {
+            if section.requiresDeveloperTools {
+                section = .library
+            }
             debugOverlayIsVisible = false
             debugLastEffectiveInput = []
             stopDebugLogRegardless()
+            UserDefaults.standard.set(
+                false,
+                forKey: SwanSongTaskNotificationCenter.enabledDefaultsKey
+            )
+            if localMCPControlEnabled {
+                setLocalMCPControlEnabled(false)
+            }
         }
     }
 

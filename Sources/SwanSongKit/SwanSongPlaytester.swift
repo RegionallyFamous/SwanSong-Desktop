@@ -175,18 +175,81 @@ struct PlaytestAudioAccumulator {
 public enum SwanSongPlaytester {
     public static let maximumROMBytes = GameROMValidationPolicy.maximumByteCount
     public static let maximumMCPFrames: UInt64 = 12_000
+    package static let maximumLocalReplayFrames = TranslationFrameInputPlan.maximumFrames
 
     public static func run(
         image: LibraryGameImportImage,
         plan: TranslationFrameInputPlan,
         captureSDKTrace: Bool = false
     ) throws -> SwanSongPlaytestCapture {
-        guard plan.totalFrames <= maximumMCPFrames else {
-            throw SwanEngineError(
-                code: -1,
-                detail: "An MCP playtest is limited to \(maximumMCPFrames) frames per observation."
-            )
+        try validateMCPFrameLimit(plan)
+        return try execute(
+            image: image,
+            plan: plan,
+            captureSDKTrace: captureSDKTrace,
+            maximumFrames: maximumMCPFrames,
+            frameLimitDetail: "An MCP playtest is limited to \(maximumMCPFrames) frames per observation."
+        )
+    }
+
+    /// Runs an explicit local ROM and plan without exposing the larger frame
+    /// budget through the MCP playtest surface.
+    package static func runLocalPlan(
+        image: LibraryGameImportImage,
+        plan: TranslationFrameInputPlan
+    ) throws -> SwanSongPlaytestCapture {
+        try validateLocalReplayFrameLimit(plan)
+        return try execute(
+            image: image,
+            plan: plan,
+            captureSDKTrace: false,
+            maximumFrames: maximumLocalReplayFrames,
+            frameLimitDetail: "A local plan replay is limited to \(maximumLocalReplayFrames) frames."
+        )
+    }
+
+    package static func validateMCPFrameLimit(
+        _ plan: TranslationFrameInputPlan
+    ) throws {
+        try validateFrameLimit(
+            plan,
+            maximumFrames: maximumMCPFrames,
+            detail: "An MCP playtest is limited to \(maximumMCPFrames) frames per observation."
+        )
+    }
+
+    package static func validateLocalReplayFrameLimit(
+        _ plan: TranslationFrameInputPlan
+    ) throws {
+        try validateFrameLimit(
+            plan,
+            maximumFrames: maximumLocalReplayFrames,
+            detail: "A local plan replay is limited to \(maximumLocalReplayFrames) frames."
+        )
+    }
+
+    private static func validateFrameLimit(
+        _ plan: TranslationFrameInputPlan,
+        maximumFrames: UInt64,
+        detail: String
+    ) throws {
+        guard plan.totalFrames <= maximumFrames else {
+            throw SwanEngineError(code: -1, detail: detail)
         }
+    }
+
+    private static func execute(
+        image: LibraryGameImportImage,
+        plan: TranslationFrameInputPlan,
+        captureSDKTrace: Bool,
+        maximumFrames: UInt64,
+        frameLimitDetail: String
+    ) throws -> SwanSongPlaytestCapture {
+        try validateFrameLimit(
+            plan,
+            maximumFrames: maximumFrames,
+            detail: frameLimitDetail
+        )
         let hardware = try TranslationRouteHardwareModel(
             engineHardwareModel: image.hardwareModel
         )

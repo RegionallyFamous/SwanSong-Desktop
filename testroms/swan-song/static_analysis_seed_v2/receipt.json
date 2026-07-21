@@ -1,0 +1,84 @@
+{
+  "schema": "swan-song.public-kat-receipt.v1",
+  "fixture": "static_analysis_seed_v2",
+  "license": "CC0-1.0",
+  "commercialContent": false,
+  "artifact": {
+    "name": "static_analysis_seed_v2.wsc",
+    "bytes": 2097152,
+    "sha256": "f7a57414097e951fe927ec7e78f79b3ef3530baad8ca9ac0242911d91deaac94"
+  },
+  "inputs": [
+    {
+      "role": "build",
+      "name": "Makefile",
+      "sha256": "e62689083b1bbef767e6628cde40cbdbbd8b4f8336fc25c8e9e314b76acf14ad"
+    },
+    {
+      "role": "program",
+      "name": "main.c",
+      "sha256": "d630d6e4dea2281717507627cb9dc0103a94de43d2e72ca452a1fe32f80c3466"
+    },
+    {
+      "role": "program",
+      "name": "retained_fetch.s",
+      "sha256": "1c74546438ca034e1f87cd7220aff5ac2f47a9a0dc392e6a072eb943b6505111"
+    },
+    {
+      "role": "cartridgeConfig",
+      "name": "wfconfig.toml",
+      "sha256": "8b38210d55e484e45d566b8802ea6591508bf040c1ee1ee6a33c9162805619e9"
+    },
+    {
+      "role": "linkedRuntimeLicense",
+      "name": "LICENSE.target-wswan-syslibs",
+      "sha256": "3be471c11495b76b4ef48e86a61ce17867334dccaa39f44b863038e3bb65e113"
+    }
+  ],
+  "metadata": {
+    "readmeSha256": "8069ec0b0c5192176fb9ea9870d30acef2924139af39159fdc0b95d34f2e6aac",
+    "expectedSha256": "3fd943796994d72f6d59f0043d3832f1108c07c9cf6b796f34a69582e366ef54"
+  },
+  "toolchain": {
+    "targetWswan": "0.1.0-3",
+    "targetWswanSyslibs": "0.2.0.r254.d7d97ce-1",
+    "gccIa16": "6.3.0.r147159.e7507d1845e-1",
+    "binutilsIa16": "2.43.1.r119451.5cc0e071551-1",
+    "compilerSha256": "57510dfff7604753a44226a5ed4e858b730d2f0329c239b6c537493f0df841b5",
+    "romBuilderSha256": "21ccaaef4130b883bb7777f408d798723607034da19440289e9e61cbbb1258da",
+    "crtSha256": "410efb249fde46dcc68b3562004eaea3639ba00c40ac1b761acbf0bd4695ed6b",
+    "linkerScriptSha256": "7ef5b0686b96a2bbafaa124fecead2f87e4872c0581d91298992b1d9b5b04e9f"
+  },
+  "engine": {
+    "buildId": "ares-541fdc0df8d7c84454ef5fc1a567cc2427fd13c8-swan-abi10",
+    "smokeExecutableSha256": "4c657a6a269af0dbbdaf435983d3f5b9b01d6ca3eb2b04bae5fac47273c94991",
+    "librarySha256": "6751f0a820131b2dec2fc1cbf8570fa0fb16355f987d71188bab3af292fe4cc9"
+  },
+  "result": {
+    "buildPass": true,
+    "cleanRebuildDigestMatch": null,
+    "runtimeRunCount": 3,
+    "runtimePassCount": 3,
+    "runtimeDeterministic": true,
+    "frameWidth": 237,
+    "frameHeight": 144,
+    "videoDigest": "424bab4a90dd7a7c",
+    "visibleConfinedPass": true,
+    "abi9ExactFullSpanPass": true,
+    "abi9Conservative": false,
+    "abi10SealedPass": true,
+    "sourceFetchMapperDistinctPass": true,
+    "traceCount": 1,
+    "contextCount": 2,
+    "consumedByteCount": 4,
+    "atomicUndersizedTableCount": 3,
+    "restoreV2StopPass": true,
+    "fullSuiteRun": true,
+    "fullSuitePass": true
+  },
+  "scope": {
+    "bridgeOrCoreFilesChangedByFixtureLane": false,
+    "operandRegisterExportAttempted": false,
+    "runtimeV5ExportAttempted": false
+  }
+}

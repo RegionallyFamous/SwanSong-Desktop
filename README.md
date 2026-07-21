@@ -81,6 +81,8 @@ content-verified SwanSong SDK 0.5.0 toolset: Utility Apps, traced builds,
 scenarios, semantic outcomes, budget history, project migration, and a deeper
 release lane. Doctor clearly shows the few development tools that still need
 to be installed on the Mac.
+Turn on **Show developer tools** in Settings when you want Studio; it stays out
+of the everyday library by default.
 
 ### Homebrew and Analogue Pocket
 
@@ -100,13 +102,14 @@ letting a score pretend to be an editor. Map the story, draft with live scene
 context, preserve revisions, work with unprimed readers and research, audition
 ImageGen art and music, then hand a source-mapped adaptation to SwanSong Studio.
 
-### Cartridge Lab
+### Cartridge Tools
 
 Put the real handheld back in the loop. With a WonderSwan Color or SwanCrystal,
-Yokoi Boot, and a 3.3 V ExtFriend-compatible USB adapter, Cartridge Lab can
+Yokoi Boot, and a 3.3 V ExtFriend-compatible USB adapter, Cartridge Tools can
 inspect an inserted cartridge, make checksum-verified ROM and save backups,
 and restore an exact-size save only after confirmation on both the Mac and the
 console.
+The original monochrome WonderSwan cannot use this Yokoi Boot workflow.
 
 SwanSong can also prepare the verified Yokoi Boot installer for a compatible
 SD-based flash cartridge. The
@@ -153,7 +156,7 @@ keeps the deeper guides out of your way until you need them:
 - [Build deterministic translation evidence](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
 - [Make games in SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/SwanSong-Studio)
 - [Write and publish novels with Story Forge](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Story-Forge)
-- [Work with real cartridges in Cartridge Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Cartridge-Lab)
+- [Work with real cartridges in Cartridge Tools](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Cartridge-Lab)
 - [Prepare an Analogue Pocket SD card safely](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Analogue-Pocket-SD-Setup)
 - [Understand local automation and privacy](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Local-MCP-and-Automation)
 - [Build, test, sign, and release SwanSong](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Build-and-Test)

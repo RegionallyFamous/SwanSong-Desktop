@@ -46,6 +46,47 @@ public struct EngineCapabilities: OptionSet, Sendable {
     public static let displaySpriteAttributeProvenance = Self(
         rawValue: UInt64(SWAN_CAPABILITY_DISPLAY_SPRITE_ATTRIBUTE_PROVENANCE)
     )
+    public static let consumedPrefetchProvenance = Self(
+        rawValue: UInt64(SWAN_CAPABILITY_CONSUMED_PREFETCH_PROVENANCE)
+    )
+}
+
+public struct EngineConsumedPrefetchCapabilityProfile: Codable, Equatable, Sendable {
+    public static let currentSchema = "swan-song-consumed-prefetch-capability-v1"
+    public static let requiredEngineABI: UInt32 = 10
+    public static let requiredBuildIDSuffix = "-swan-abi10"
+    public static let futureSourceProbeProfile = "diagnostic-future-source-probe-v5"
+
+    public let schema: String
+    public let engineABI: UInt32
+    public let engineBuildID: String
+    public let engineCapabilitiesRaw: UInt64
+    public let requiredEngineABI: UInt32
+    public let requiredBuildIDSuffix: String
+    public let capabilityBitRaw: UInt64
+    public let sourceProbeProfile: String
+
+    public static func exact(
+        engineABI: UInt32,
+        engineBuildID: String,
+        capabilities: EngineCapabilities
+    ) -> Self? {
+        guard engineABI == requiredEngineABI,
+              engineBuildID.hasSuffix(requiredBuildIDSuffix),
+              capabilities.contains(.consumedPrefetchProvenance) else {
+            return nil
+        }
+        return Self(
+            schema: currentSchema,
+            engineABI: engineABI,
+            engineBuildID: engineBuildID,
+            engineCapabilitiesRaw: capabilities.rawValue,
+            requiredEngineABI: requiredEngineABI,
+            requiredBuildIDSuffix: requiredBuildIDSuffix,
+            capabilityBitRaw: EngineCapabilities.consumedPrefetchProvenance.rawValue,
+            sourceProbeProfile: futureSourceProbeProfile
+        )
+    }
 }
 
 public struct EngineInput: OptionSet, Sendable {
@@ -133,6 +174,36 @@ public struct EngineAudioBatch: Sendable {
     public var frameCount: Int {
         guard channels > 0 else { return 0 }
         return interleavedSamples.count / channels
+    }
+}
+
+/// A logical entry into one of the native display-provenance APIs. These
+/// events are emitted by `EngineSession` immediately before the corresponding
+/// C ABI call, after that call's capability and argument checks have passed.
+public enum EngineDisplayProvenanceQueryKind: String, Codable, Equatable, Sendable {
+    case owner
+    case source
+}
+
+public struct EngineDisplayProvenanceQueryEntry: Codable, Equatable, Sendable {
+    public let sequence: UInt64
+    public let kind: EngineDisplayProvenanceQueryKind
+
+    public init(sequence: UInt64, kind: EngineDisplayProvenanceQueryKind) {
+        self.sequence = sequence
+        self.kind = kind
+    }
+}
+
+public struct EngineDisplayProvenanceQuerySnapshot: Codable, Equatable, Sendable {
+    public let entries: [EngineDisplayProvenanceQueryEntry]
+    public let ownerEntryCount: Int
+    public let sourceEntryCount: Int
+
+    public init(entries: [EngineDisplayProvenanceQueryEntry]) {
+        self.entries = entries
+        ownerEntryCount = entries.filter { $0.kind == .owner }.count
+        sourceEntryCount = entries.filter { $0.kind == .source }.count
     }
 }
 
@@ -544,6 +615,9 @@ public final class EngineSession: @unchecked Sendable {
     package let handle: OpaquePointer
     public let rtcMode: EngineRTCMode
     public let hardwareModel: EngineHardwareModel
+    private let displayProvenanceQueryLock = NSLock()
+    private var displayProvenanceQuerySequence: UInt64 = 0
+    private var displayProvenanceQueryEntries: [EngineDisplayProvenanceQueryEntry] = []
 
     public init(
         sampleRate: UInt32 = 48_000,
@@ -718,6 +792,7 @@ public final class EngineSession: @unchecked Sendable {
             count: expected
         )
         var count = 0
+        recordDisplayProvenanceQueryEntry(kind: .owner)
         let result = raw.withUnsafeMutableBufferPointer { buffer in
             swan_engine_display_owner_probe(
                 handle,
@@ -778,6 +853,7 @@ public final class EngineSession: @unchecked Sendable {
             selected_component_mask: components.reduce(0) { $0 | $1.cMask }
         )
         var count = 0
+        recordDisplayProvenanceQueryEntry(kind: .source)
         try check(swan_engine_display_source_probe(
             handle,
             &cRectangle,
@@ -815,6 +891,28 @@ public final class EngineSession: @unchecked Sendable {
             )
         }
         return try raw.prefix(written).map(EngineDisplaySourceTrace.init(cValue:))
+    }
+
+    public func displayProvenanceQuerySnapshot()
+        -> EngineDisplayProvenanceQuerySnapshot
+    {
+        displayProvenanceQueryLock.lock()
+        defer { displayProvenanceQueryLock.unlock() }
+        return EngineDisplayProvenanceQuerySnapshot(
+            entries: displayProvenanceQueryEntries
+        )
+    }
+
+    private func recordDisplayProvenanceQueryEntry(
+        kind: EngineDisplayProvenanceQueryKind
+    ) {
+        displayProvenanceQueryLock.lock()
+        defer { displayProvenanceQueryLock.unlock() }
+        displayProvenanceQuerySequence += 1
+        displayProvenanceQueryEntries.append(EngineDisplayProvenanceQueryEntry(
+            sequence: displayProvenanceQuerySequence,
+            kind: kind
+        ))
     }
 
     public func stagePersistence(_ persistence: EnginePersistence) throws {

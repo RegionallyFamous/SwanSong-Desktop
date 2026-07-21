@@ -60,7 +60,11 @@ private final class SwanSongAppDelegate: NSObject, NSApplicationDelegate {
         didFinishDeferredLaunch = true
         appLaunchDiagnostic("deferred application startup began")
         model.completeDeferredStartup()
-        if UserDefaults.standard.bool(
+        if !model.debugToolsEnabled, UserDefaults.standard.bool(
+            forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
+        ) {
+            model.setLocalMCPControlEnabled(false)
+        } else if model.debugToolsEnabled, UserDefaults.standard.bool(
             forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
         ) {
             do {
@@ -145,7 +149,7 @@ struct SwanSongApp: App {
         .defaultSize(width: 1040, height: 680)
         .commands {
             SidebarCommands()
-            CartridgeLabCommands()
+            CartridgeLabCommands(model: model)
 
             LegalSupportCommands(updater: appDelegate.updater)
             CommandGroup(after: .toolbar) {
@@ -156,6 +160,7 @@ struct SwanSongApp: App {
                 .disabled(
                     model.isPlaying
                         || model.section == .homebrew
+                        || model.section == .cartridgeTools
                         || model.section == .pocketCore
                         || model.section == .translationLab
                         || model.section == .storyForge
@@ -473,11 +478,6 @@ struct SwanSongApp: App {
             }
         }
 
-        Window("Cartridge Lab", id: "cartridge-lab") {
-            CartridgeLabView(appModel: model)
-        }
-        .defaultSize(width: 820, height: 700)
-
         Settings {
             SettingsView(model: model, updater: appDelegate.updater)
                 .frame(
@@ -492,18 +492,27 @@ struct SwanSongApp: App {
 
 private struct CartridgeLabCommands: Commands {
     @Environment(\.openWindow) private var openWindow
+    let model: AppModel
 
     var body: some Commands {
         CommandMenu("Hardware") {
-            Button("Open Cartridge Lab") {
-                openWindow(id: "cartridge-lab")
+            Button("Open Cartridge Tools") {
+                showCartridgeTools()
             }
             .keyboardShortcut("h", modifiers: [.command, .shift])
         }
         CommandGroup(after: .newItem) {
-            Button("Open Cartridge Lab…") {
-                openWindow(id: "cartridge-lab")
+            Button("Open Cartridge Tools…") {
+                showCartridgeTools()
             }
         }
+    }
+
+    private func showCartridgeTools() {
+        if model.isPlaying {
+            model.stopPlaying()
+        }
+        model.section = .cartridgeTools
+        openWindow(id: "main")
     }
 }

@@ -14,14 +14,14 @@ tour. Everything else can wait until curiosity wins.
 - **Make:** build and prove WonderSwan projects in SwanSong Studio.
 - **Write:** develop a light novel in Story Forge, then carry it into Studio
   for a WonderSwan adaptation.
-- **Preserve:** use Cartridge Lab with a real WonderSwan Color or
+- **Preserve:** use Cartridge Tools with a real WonderSwan Color or
   SwanCrystal to make verified cartridge and save backups.
 - **Trust but verify:** inspect the privacy, source, build, signing,
   notarization, and release contracts behind the public app.
 
 The current public download is **SwanSong 0.6.0**. It includes the complete SDK
 0.5 Studio, expanded Story Forge, capture-bound Translation Lab automation, and
-Cartridge Lab. Versioned release notes remain authoritative for each build.
+Cartridge Tools. Versioned release notes remain authoritative for each build.
 
 ## How the pieces fit
 
@@ -30,7 +30,7 @@ Cartridge Lab. Versioned release notes remain authoritative for each build.
 | Story Forge novel framework | [RegionallyFamous/swansong-story-forge](https://github.com/RegionallyFamous/swansong-story-forge) | Separate schema-v3 narrative policy and tool source. Desktop invokes only its typed local allowlist against explicitly selected projects. |
 | SwanSong Desktop for macOS | [`RegionallyFamous/SwanSong-Desktop`](https://github.com/RegionallyFamous/SwanSong-Desktop) | This repository: SwiftUI app, library, translation workbench, C ABI, release tooling, and tests. |
 | SwanSong for Analogue Pocket | [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core) | Separate FPGA project, artifacts, hardware qualification, and release lane. Desktop can merge only an immutable, authorized stable Core release onto a user-selected card; it does not build or publish the FPGA product. |
-| Yokoi hardware utilities | Yokoi Boot and Yokoi Cart Service at the immutable SwanSong Core revision recorded in [`SOURCE_PROVENANCE.md`](../SOURCE_PROVENANCE.md) | Separately executable GPLv3 WonderSwan programs used by Cartridge Lab. Desktop verifies their payload, license, notice, and corresponding-source location without linking them into the GPLv2 Mac executable. |
+| Yokoi hardware utilities | Yokoi Boot and Yokoi Cart Service with the deterministic corresponding-source toolkit recorded in [`SOURCE_PROVENANCE.md`](../SOURCE_PROVENANCE.md) | Separately executable GPLv3 WonderSwan programs used by Cartridge Tools. Desktop verifies their payload, license, notice, and bundled preferred-form source without linking them into the GPLv2 Mac executable. |
 | First-party homebrew catalog | [`RegionallyFamous/swansong-catalog`](https://github.com/RegionallyFamous/swansong-catalog) | Separate signed catalog and publication record. SwanSong loads it only after the user asks. |
 | WonderSwan software engine | Upstream ares at the revision in [`Dependencies/ares.lock.json`](../Dependencies/ares.lock.json) | Prepared into ignored `.engine/` build storage; official source archives include the exact sanitized corresponding source and integration patch. |
 | SwanSong Desktop update feed and app releases | This repository's [`updates/appcast.xml`](../updates/appcast.xml) and [GitHub Releases](https://github.com/RegionallyFamous/SwanSong-Desktop/releases) | Sparkle updates the macOS app only. It does not distribute homebrew or invoke the separate Pocket installer. |

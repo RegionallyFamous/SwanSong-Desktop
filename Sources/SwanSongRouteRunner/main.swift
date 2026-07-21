@@ -22,10 +22,12 @@ private enum AutomationCommand: String {
 
 private enum PlaytestCommand: String {
     case playtestPlan = "playtest-plan"
+    case playtestPlanLocal = "playtest-plan-local"
 }
 
 private enum CapabilityCommand: String {
     case engineCapability = "engine-capability"
+    case playtestPlanLocalCapability = "playtest-plan-local-capability"
 }
 
 private struct CapabilityOptions {
@@ -61,8 +63,33 @@ private struct SourceProbeMethodCapability: Codable {
     let saveStateRestoreAllowed: Bool
 }
 
+private struct LocalPlaytestMethodCapability: Codable {
+    let command: String
+    let reportSchema: String
+    let planSchema: String
+    let minimumPlanFrames: UInt64
+    let maximumPlanFrames: UInt64
+    let maximumPlanBytes: Int
+    let maximumROMBytes: Int
+    let requiresDebugGuard: Bool
+    let explicitROMRequired: Bool
+    let acceptsProjectArgument: Bool
+    let requiresProjectWriteGuard: Bool
+    let projectWritesAllowed: Bool
+    let cleanBootReplay: Bool
+    let saveStateRestoreAllowed: Bool
+    let persistencePolicy: String
+    let rtcMode: String
+    let rtcSeedUnixSeconds: UInt64
+    let sdkTraceCaptureAllowed: Bool
+    let qualifiedOutputRoles: [String]
+    let writeOrder: [String]
+}
+
 private struct RouteRunnerEngineCapabilityReport: Codable {
-    static let currentSchema = "swan-song-route-runner-engine-capability-v1"
+    static let legacyABI9Schema = "swan-song-route-runner-engine-capability-v1"
+    static let consumedPrefetchABI10Schema =
+        "swan-song-route-runner-engine-capability-v2"
 
     let schema: String
     let engineABI: UInt32
@@ -74,6 +101,21 @@ private struct RouteRunnerEngineCapabilityReport: Codable {
     let loadedDylibSHA256: String
     let capturePlan: AutomationMethodCapability
     let probeRectangleSource: SourceProbeMethodCapability
+    let consumedPrefetchProvenance: EngineConsumedPrefetchCapabilityProfile?
+}
+
+private struct RouteRunnerLocalPlaytestCapabilityReport: Codable {
+    static let currentSchema = "swan-song-route-runner-local-playtest-capability-v1"
+
+    let schema: String
+    let engineABI: UInt32
+    let engineBackend: String
+    let engineBuildID: String
+    let engineCapabilitiesRaw: UInt64
+    let loadedDylibPath: String
+    let loadedDylibByteCount: Int
+    let loadedDylibSHA256: String
+    let playtestPlanLocal: LocalPlaytestMethodCapability
 }
 
 private struct PlaytestOptions {
@@ -82,6 +124,12 @@ private struct PlaytestOptions {
     var planURL: URL?
     var outputURL: URL?
     var captureURL: URL?
+}
+
+private struct PublishedPrivatePlaytestOutput {
+    let url: URL
+    let device: dev_t
+    let inode: ino_t
 }
 
 private struct AutomationOptions {
@@ -107,8 +155,12 @@ private struct AutomationOptions {
     var publicDiagnosticKAT = false
     var commercialAuthorizedCapture = false
     var commercialCaptureContractKAT = false
+    var publicSourceProbeCaptureKAT: String?
+    var publicSourceProbeCaptureKATWasProvided = false
     var commercialAuthorizedSourceProbe = false
     var commercialSourceContractKAT = false
+    var publicSourceWrongFrameKAT = false
+    var publicSourceWrongFrameKATWasProvided = false
     var publicCaptureBlockedPrefix = "none"
     var publicCaptureBlockedPrefixWasProvided = false
     var baseCapabilityKAT = false
@@ -125,8 +177,10 @@ private struct AutomationOptions {
             || publicDiagnosticKAT
             || commercialAuthorizedCapture
             || commercialCaptureContractKAT
+            || publicSourceProbeCaptureKATWasProvided
             || commercialAuthorizedSourceProbe
             || commercialSourceContractKAT
+            || publicSourceWrongFrameKAT
             || publicCaptureBlockedPrefixWasProvided
     }
 }
@@ -168,14 +222,21 @@ private struct RouteRunnerError: LocalizedError {
     var errorDescription: String? { message }
 }
 
+protocol RouteRunnerStructuredFailure: Error {
+    var routeRunnerStructuredFailureData: Data { get }
+}
+
 private struct SwanSongRouteRunner {
     private static let usage = """
     Usage:
       SwanSongRouteRunner --enable-debug-tools --rom GAME.wsc --route ROUTE.json [--output REPORT.json] [--capture FINAL.png]
       SwanSongRouteRunner engine-capability --enable-debug-tools [--output REPORT.json]
+      SwanSongRouteRunner playtest-plan-local-capability --enable-debug-tools [--output REPORT.json]
       SwanSongRouteRunner playtest-plan --enable-debug-tools --rom GAME.wsc --plan PLAN.json [--output REPORT.json] [--capture FINAL.png]
+      SwanSongRouteRunner playtest-plan-local --enable-debug-tools --rom GAME.wsc --plan PLAN.json [--output REPORT.json] [--capture FINAL.png]
       SwanSongRouteRunner capture-plan --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json [--output REPORT.json]
         [--public-diagnostic-kat --authorization RUN/authorization.json --capability-receipt C.json --capture-intake-capability-receipt CAPTURE_INTAKE_C.json --method-capability-receipt M.json --run-directory RUN]
+        [--public-source-probe-capture-kat success|blocked --authorization RUN/authorization.json --capability-receipt C.json --capture-intake-capability-receipt CAPTURE_INTAKE_C.json --method-capability-receipt M.json --run-directory RUN]
         [--public-capture-blocked-prefix none|original-complete]
       SwanSongRouteRunner export-static-analysis-seed --enable-debug-tools --allow-project-writes --project PROJECT --source-probe SOURCE_PROBE_DETAILS.json [--output REPORT.json]
       SwanSongRouteRunner probe-rectangle --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original|patched --frame INDEX --rect X,Y,WIDTH,HEIGHT [--output REPORT.json]
@@ -185,13 +246,16 @@ private struct SwanSongRouteRunner {
         [--public-diagnostic-kat --authorization RUN/authorization.json --capability-receipt C.json --method-capability-receipt M.json --method-native-marker MARKER.json --run-directory RUN]
       SwanSongRouteRunner probe-rectangle-source --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original --frame 29 --rect 8,8,1,1 --components raster [--output RUN/report.json]
         --commercial-source-contract-kat --capture-frame-seal SEAL.json --authorization RUN/authorization.json --capability-receipt C.json --method-capability-receipt M.json --method-native-marker MARKER.json --run-directory RUN
+        [--public-source-contract-wrong-frame-kat]
       SwanSongRouteRunner probe-rectangle-source --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original --frame 1839 --rect 48,56,120,16 --components raster [--output RUN/report.json]
         --commercial-authorized-source-probe --capture-frame-seal SEAL.json --authorization RUN/authorization.json --capability-receipt C.json --method-capability-receipt M.json --qualified-method-capability-receipt M2.json --method-native-marker MARKER.json --run-directory RUN
       SwanSongRouteRunner record-route --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json [--output REPORT.json]
       SwanSongRouteRunner verify-pair --enable-debug-tools --allow-project-writes --project PROJECT --route ROUTE.json [--output REPORT.json]
 
     The legacy form replays an existing deterministic route. playtest-plan
-    runs a bounded visual/audio observation without writing game state.
+    runs an MCP-bounded visual/audio observation without writing game state;
+    playtest-plan-local keeps the same explicit-ROM isolation and supports the
+    larger local frame/input-plan limit without changing the MCP surface.
     capture-plan privately persists the exact plan, both native frames, all
     deterministic context bindings, and a pixel-diff report after Capture
     Intake succeeds. probe-rectangle replays one project role from clean boot,
@@ -231,9 +295,15 @@ private struct SwanSongRouteRunner {
             let passed = try runReplay()
             if !passed { exit(1) }
         } catch {
-            FileHandle.standardError.write(
-                Data("SwanSongRouteRunner: \(error.localizedDescription)\n".utf8)
-            )
+            if let structured = error as? RouteRunnerStructuredFailure {
+                FileHandle.standardError.write(
+                    structured.routeRunnerStructuredFailureData
+                )
+            } else {
+                FileHandle.standardError.write(
+                    Data("SwanSongRouteRunner: \(error.localizedDescription)\n".utf8)
+                )
+            }
             exit(1)
         }
     }
@@ -260,14 +330,29 @@ private struct SwanSongRouteRunner {
                 (.executedSourceReadContext, "executedSourceReadContext"),
                 (.displaySpriteAttributeProvenance, "displaySpriteAttributeProvenance"),
             ]
-            guard engine.abiVersion == 9,
+            let consumedPrefetchProfile =
+                EngineConsumedPrefetchCapabilityProfile.exact(
+                    engineABI: engine.abiVersion,
+                    engineBuildID: engine.buildID,
+                    capabilities: capabilities
+                )
+            let legacyABI9 = engine.abiVersion == 9
+            let sourceProbeRequiredEngineABI: UInt32?
+            if legacyABI9 {
+                sourceProbeRequiredEngineABI = 9
+            } else {
+                sourceProbeRequiredEngineABI = consumedPrefetchProfile?.engineABI
+            }
+            guard let sourceProbeRequiredEngineABI,
                   required.allSatisfy({ capabilities.contains($0.0) }) else {
                 throw RouteRunnerError(
-                    message: "The loaded engine does not satisfy the ABI-9 source-probe method contract."
+                    message: "The loaded engine does not satisfy the ABI-9 method contract or the exact ABI-10 consumed-prefetch capability profile."
                 )
             }
             let report = RouteRunnerEngineCapabilityReport(
-                schema: RouteRunnerEngineCapabilityReport.currentSchema,
+                schema: legacyABI9
+                    ? RouteRunnerEngineCapabilityReport.legacyABI9Schema
+                    : RouteRunnerEngineCapabilityReport.consumedPrefetchABI10Schema,
                 engineABI: engine.abiVersion,
                 engineBackend: engine.backendName,
                 engineBuildID: engine.buildID,
@@ -294,12 +379,59 @@ private struct SwanSongRouteRunner {
                     maximumRectanglePixels: TranslationDisplaySourceProbe.maximumRectanglePixels,
                     maximumTraceRecords: TranslationDisplaySourceProbe.maximumTraceRecords,
                     selectedComponents: EngineDisplaySourceComponent.allCases.map(\.rawValue),
-                    requiresEngineABI: 9,
+                    requiresEngineABI: sourceProbeRequiredEngineABI,
                     requiredEngineCapabilities: required.map(\.1),
                     requiresDebugGuard: true,
                     requiresProjectWriteGuard: true,
                     cleanBootReplay: true,
                     saveStateRestoreAllowed: false
+                ),
+                consumedPrefetchProvenance: consumedPrefetchProfile
+            )
+            try emit(report, to: options.outputURL)
+        case .playtestPlanLocalCapability:
+            let engine = try EngineSession(
+                rtcMode: .deterministic(
+                    seedUnixSeconds: TranslationRouteRTCContext.proofSeedUnixSeconds
+                ),
+                hardwareModel: .wonderSwanColor
+            )
+            let image = try loadedEngineImage()
+            guard engine.capabilities.contains(.execution) else {
+                throw RouteRunnerError(
+                    message: "The loaded engine does not satisfy the local playtest execution contract."
+                )
+            }
+            let report = RouteRunnerLocalPlaytestCapabilityReport(
+                schema: RouteRunnerLocalPlaytestCapabilityReport.currentSchema,
+                engineABI: engine.abiVersion,
+                engineBackend: engine.backendName,
+                engineBuildID: engine.buildID,
+                engineCapabilitiesRaw: engine.capabilities.rawValue,
+                loadedDylibPath: image.url.path,
+                loadedDylibByteCount: image.data.count,
+                loadedDylibSHA256: sha256(image.data),
+                playtestPlanLocal: LocalPlaytestMethodCapability(
+                    command: PlaytestCommand.playtestPlanLocal.rawValue,
+                    reportSchema: SwanSongPlaytestReport.currentSchema,
+                    planSchema: TranslationFrameInputPlan.currentSchema,
+                    minimumPlanFrames: 3,
+                    maximumPlanFrames: SwanSongPlaytester.maximumLocalReplayFrames,
+                    maximumPlanBytes: 1_048_576,
+                    maximumROMBytes: SwanSongPlaytester.maximumROMBytes,
+                    requiresDebugGuard: true,
+                    explicitROMRequired: true,
+                    acceptsProjectArgument: false,
+                    requiresProjectWriteGuard: false,
+                    projectWritesAllowed: false,
+                    cleanBootReplay: true,
+                    saveStateRestoreAllowed: false,
+                    persistencePolicy: TranslationRouteStartContext.isolatedPersistencePolicy,
+                    rtcMode: "deterministic",
+                    rtcSeedUnixSeconds: TranslationRouteRTCContext.proofSeedUnixSeconds,
+                    sdkTraceCaptureAllowed: false,
+                    qualifiedOutputRoles: ["capturePNG", "reportJSON"],
+                    writeOrder: ["capturePNG", "reportJSON"]
                 )
             )
             try emit(report, to: options.outputURL)
@@ -389,6 +521,7 @@ private struct SwanSongRouteRunner {
                 TranslationFrameInputPlan.self,
                 from: planData
             )
+            try SwanSongPlaytester.validateMCPFrameLimit(plan)
             let image = try LibraryGameImageImporter.image(from: romURL)
             let result = try SwanSongPlaytester.run(image: image, plan: plan)
             if let captureURL = options.captureURL {
@@ -398,6 +531,50 @@ private struct SwanSongRouteRunner {
                 )
             }
             try emit(result.report, to: options.outputURL)
+        case .playtestPlanLocal:
+            let planData = try readCanonicalLocalFile(
+                planURL,
+                maximumBytes: 1_048_576,
+                label: "frame/input plan"
+            )
+            let plan = try JSONDecoder().decode(
+                TranslationFrameInputPlan.self,
+                from: planData
+            )
+            try SwanSongPlaytester.validateLocalReplayFrameLimit(plan)
+            let destinations = try validatePlaytestDestinations(
+                outputURL: options.outputURL,
+                captureURL: options.captureURL,
+                inputURLs: [romURL, planURL]
+            )
+            let canonicalROM = URL(fileURLWithPath:
+                try SwanSongAuthorizedPathPolicy.canonicalExistingPath(romURL.path)
+            )
+            let image = try LibraryGameImageImporter.image(from: canonicalROM)
+            let result = try SwanSongPlaytester.runLocalPlan(image: image, plan: plan)
+            let reportData = try encodedReport(result.report)
+            var published: [PublishedPrivatePlaytestOutput] = []
+            do {
+                if let captureURL = destinations.captureURL {
+                    published.append(try publishPrivatePlaytestOutput(
+                        result.png,
+                        to: captureURL
+                    ))
+                }
+                if let outputURL = destinations.outputURL {
+                    published.append(try publishPrivatePlaytestOutput(
+                        reportData,
+                        to: outputURL
+                    ))
+                } else {
+                    FileHandle.standardOutput.write(reportData)
+                }
+            } catch {
+                for output in published.reversed() {
+                    removePublishedPrivatePlaytestOutput(output)
+                }
+                throw error
+            }
         }
     }
 
@@ -559,6 +736,7 @@ private struct SwanSongRouteRunner {
                 options.publicDiagnosticKAT,
                 options.commercialAuthorizedCapture,
                 options.commercialCaptureContractKAT,
+                options.publicSourceProbeCaptureKAT != nil,
             ].filter { $0 }.count
             guard let planURL = options.planURL,
                   let authorizationURL = options.authorizationURL,
@@ -576,7 +754,8 @@ private struct SwanSongRouteRunner {
                   options.methodNativeMarkerURL == nil,
                   options.captureFrameSealURL == nil,
                   !options.commercialAuthorizedSourceProbe,
-                  !options.commercialSourceContractKAT else {
+                  !options.commercialSourceContractKAT,
+                  !options.publicSourceWrongFrameKAT else {
                 throw RouteRunnerError(
                     message: "STOP_PREEXECUTION_CAPABILITY: an authorized capture-plan requires exactly one public, public commercial-contract, or commercial mode and the complete mode-specific A/C/Capture-Intake-C/M/run-directory input set; source-probe markers are not part of this contract.\n\n\(usage)"
                 )
@@ -595,6 +774,8 @@ private struct SwanSongRouteRunner {
                 runDirectoryURL: runDirectoryURL,
                 blockedPrefix: options.publicCaptureBlockedPrefix,
                 publicDiagnosticKAT: options.publicDiagnosticKAT,
+                publicSourceProbeCaptureKAT:
+                    options.publicSourceProbeCaptureKAT,
                 commercialAuthorizedCapture: options.commercialAuthorizedCapture,
                 commercialContractKAT: options.commercialCaptureContractKAT
             ))
@@ -630,6 +811,9 @@ private struct SwanSongRouteRunner {
                     ? options.captureFrameSealURL == nil
                     : options.captureFrameSealURL != nil,
                   options.captureIntakeCapabilityReceiptURL == nil,
+                  options.publicSourceProbeCaptureKAT == nil,
+                  (!options.publicSourceWrongFrameKAT
+                    || options.commercialSourceContractKAT),
                   !options.publicCaptureBlockedPrefixWasProvided else {
                 throw RouteRunnerError(
                     message: "STOP_PREEXECUTION_CAPABILITY: an authorized source probe requires exactly one diagnostic, public capture-contract, or commercial mode and its complete A/C/M/marker/seal/M2 input set.\n\n\(usage)"
@@ -657,6 +841,8 @@ private struct SwanSongRouteRunner {
                 runDirectoryURL: runDirectoryURL,
                 publicDiagnosticKAT: options.publicDiagnosticKAT,
                 commercialContractKAT: options.commercialSourceContractKAT,
+                publicWrongFrameContractKAT:
+                    options.publicSourceWrongFrameKAT,
                 commercialAuthorizedSourceProbe:
                     options.commercialAuthorizedSourceProbe
             ))
@@ -922,8 +1108,31 @@ private struct SwanSongRouteRunner {
             case "--commercial-capture-contract-kat":
                 options.commercialCaptureContractKAT = true
                 index += 1
+            case "--public-source-probe-capture-kat":
+                guard !options.publicSourceProbeCaptureKATWasProvided,
+                      index + 1 < CommandLine.arguments.count,
+                      ["success", "blocked"].contains(
+                        CommandLine.arguments[index + 1]
+                      ) else {
+                    throw RouteRunnerError(
+                        message: "--public-source-probe-capture-kat must be provided once as success or blocked.\n\n\(usage)"
+                    )
+                }
+                options.publicSourceProbeCaptureKAT =
+                    CommandLine.arguments[index + 1]
+                options.publicSourceProbeCaptureKATWasProvided = true
+                index += 2
             case "--commercial-source-contract-kat":
                 options.commercialSourceContractKAT = true
+                index += 1
+            case "--public-source-contract-wrong-frame-kat":
+                guard !options.publicSourceWrongFrameKATWasProvided else {
+                    throw RouteRunnerError(
+                        message: "Duplicate --public-source-contract-wrong-frame-kat.\n\n\(usage)"
+                    )
+                }
+                options.publicSourceWrongFrameKAT = true
+                options.publicSourceWrongFrameKATWasProvided = true
                 index += 1
             case "--commercial-authorized-source-probe":
                 options.commercialAuthorizedSourceProbe = true
@@ -1074,6 +1283,66 @@ private struct SwanSongRouteRunner {
         return options
     }
 
+    private static func validatePlaytestDestinations(
+        outputURL: URL?,
+        captureURL: URL?,
+        inputURLs: [URL]
+    ) throws -> (outputURL: URL?, captureURL: URL?) {
+        let canonicalOutputURL = try outputURL.map {
+            URL(fileURLWithPath: try SwanSongAuthorizedPathPolicy.canonicalFuturePath($0.path))
+        }
+        let canonicalCaptureURL = try captureURL.map {
+            URL(fileURLWithPath: try SwanSongAuthorizedPathPolicy.canonicalFuturePath($0.path))
+        }
+        let destinations = [canonicalOutputURL, canonicalCaptureURL]
+            .compactMap { $0?.path }
+        guard Set(destinations).count == destinations.count else {
+            throw RouteRunnerError(
+                message: "The playtest report and capture destinations must be distinct."
+            )
+        }
+        let inputPaths = Set(try inputURLs.map {
+            let inputPath = $0.path
+            var status = stat()
+            if lstat(inputPath, &status) == 0 {
+                return try SwanSongAuthorizedPathPolicy.canonicalExistingPath(inputPath)
+            }
+            guard errno == ENOENT else {
+                throw TranslationLabError.unsafePath(inputPath)
+            }
+            return try SwanSongAuthorizedPathPolicy.canonicalFuturePath(inputPath)
+        })
+        for destinationPath in destinations {
+            let destination = URL(fileURLWithPath: destinationPath)
+            let parent = destination.deletingLastPathComponent()
+            let parentValues = try parent.resourceValues(forKeys: [
+                .isDirectoryKey,
+                .isSymbolicLinkKey,
+            ])
+            var status = stat()
+            let destinationStatus = lstat(destination.path, &status)
+            let destinationAbsent = destinationStatus == -1 && errno == ENOENT
+            guard !inputPaths.contains(destinationPath) else {
+                throw RouteRunnerError(
+                    message: "A playtest output must be disjoint from the ROM and plan."
+                )
+            }
+            guard parentValues.isDirectory == true,
+                  parentValues.isSymbolicLink != true else {
+                throw RouteRunnerError(
+                    message: "A playtest output parent must be a nonsymlink directory."
+                )
+            }
+            guard destinationAbsent else {
+                throw RouteRunnerError(
+                    message: "Each playtest output must be a new absent file."
+                )
+            }
+        }
+        _ = umask(0o077)
+        return (canonicalOutputURL, canonicalCaptureURL)
+    }
+
     private static func readLocalFile(
         _ url: URL,
         maximumBytes: Int,
@@ -1101,6 +1370,106 @@ private struct SwanSongRouteRunner {
             throw RouteRunnerError(message: "The \(label) changed while it was being read.")
         }
         return data
+    }
+
+    private static func readCanonicalLocalFile(
+        _ url: URL,
+        maximumBytes: Int,
+        label: String
+    ) throws -> Data {
+        let canonical = try SwanSongAuthorizedPathPolicy.canonicalExistingPath(url.path)
+        let resolved = URL(fileURLWithPath: canonical)
+        let values = try resolved.resourceValues(forKeys: [
+            .isRegularFileKey,
+            .isSymbolicLinkKey,
+            .fileSizeKey,
+        ])
+        guard values.isRegularFile == true,
+              values.isSymbolicLink != true,
+              let byteCount = values.fileSize,
+              byteCount > 0,
+              byteCount <= maximumBytes else {
+            throw RouteRunnerError(
+                message: "The \(label) must be a bounded, nonsymlink regular file."
+            )
+        }
+        let data = try Data(contentsOf: resolved, options: [.mappedIfSafe])
+        guard data.count == byteCount else {
+            throw RouteRunnerError(message: "The \(label) changed while it was being read.")
+        }
+        return data
+    }
+
+    private static func publishPrivatePlaytestOutput(
+        _ data: Data,
+        to url: URL
+    ) throws -> PublishedPrivatePlaytestOutput {
+        let descriptor = open(
+            url.path,
+            O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW,
+            mode_t(0o600)
+        )
+        guard descriptor >= 0 else {
+            throw RouteRunnerError(
+                message: "A private playtest output already exists or cannot be created."
+            )
+        }
+        var status = stat()
+        guard fstat(descriptor, &status) == 0,
+              status.st_mode & S_IFMT == S_IFREG,
+              status.st_nlink == 1,
+              status.st_uid == geteuid() else {
+            _ = close(descriptor)
+            _ = unlink(url.path)
+            throw RouteRunnerError(
+                message: "A private playtest output did not have the required file identity."
+            )
+        }
+        let identity = PublishedPrivatePlaytestOutput(
+            url: url,
+            device: status.st_dev,
+            inode: status.st_ino
+        )
+        let complete = data.withUnsafeBytes { bytes -> Bool in
+            guard let base = bytes.baseAddress else { return data.isEmpty }
+            var written = 0
+            while written < data.count {
+                let count = Darwin.write(
+                    descriptor,
+                    base.advanced(by: written),
+                    data.count - written
+                )
+                if count <= 0 { return false }
+                written += count
+            }
+            return true
+        }
+        guard complete,
+              fchmod(descriptor, mode_t(0o600)) == 0,
+              fsync(descriptor) == 0,
+              close(descriptor) == 0 else {
+            _ = close(descriptor)
+            removePublishedPrivatePlaytestOutput(identity)
+            throw RouteRunnerError(
+                message: "A private playtest output could not be committed completely."
+            )
+        }
+        return identity
+    }
+
+    private static func removePublishedPrivatePlaytestOutput(
+        _ output: PublishedPrivatePlaytestOutput
+    ) {
+        var status = stat()
+        guard lstat(output.url.path, &status) == 0,
+              status.st_dev == output.device,
+              status.st_ino == output.inode,
+              status.st_mode & S_IFMT == S_IFREG,
+              status.st_nlink == 1,
+              status.st_uid == geteuid() else {
+            return
+        }
+        _ = unlink(output.url.path)
     }
 
     private static func readProjectFile(
@@ -1157,16 +1526,21 @@ private struct SwanSongRouteRunner {
     }
 
     private static func emit<T: Encodable>(_ report: T, to outputURL: URL?) throws {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
-        encoder.dateEncodingStrategy = .iso8601
-        var data = try encoder.encode(report)
-        data.append(0x0A)
+        let data = try encodedReport(report)
         if let outputURL {
             try data.write(to: outputURL.standardizedFileURL, options: [.withoutOverwriting])
         } else {
             FileHandle.standardOutput.write(data)
         }
+    }
+
+    private static func encodedReport<T: Encodable>(_ report: T) throws -> Data {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+        encoder.dateEncodingStrategy = .iso8601
+        var data = try encoder.encode(report)
+        data.append(0x0A)
+        return data
     }
 
     private static func sha256(_ data: Data) -> String {

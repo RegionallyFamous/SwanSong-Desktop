@@ -41,7 +41,21 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
                 details: details,
                 detailsData: try encoded(details)
             )) { error in
-                XCTAssertTrue(error.localizedDescription.contains("ABI-9/v4"))
+                XCTAssertTrue(error.localizedDescription.contains("ABI-9/v4 engine profile"))
+            }
+        }
+
+        for buildID in [
+            "fixture-abi9",
+            "ares-\(String(repeating: "a", count: 40))-swan-abi10",
+            "ares-\(String(repeating: "a", count: 40))-swan-abi9\n",
+        ] {
+            let details = try fixtureDetails(engineBuildID: buildID)
+            XCTAssertThrowsError(try TranslationStaticAnalysisSeedExporter.makeSeed(
+                details: details,
+                detailsData: try encoded(details)
+            )) { error in
+                XCTAssertTrue(error.localizedDescription.contains("ABI-9/v4 engine profile"))
             }
         }
 
@@ -205,7 +219,8 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
         schema: String = TranslationDisplaySourceProbeDetails.currentSchema,
         component: String = "raster",
         mutation: String? = nil,
-        romByteCount: Int = 0x4_0000
+        romByteCount: Int = 0x4_0000,
+        engineBuildID: String = "ares-\(String(repeating: "a", count: 40))-swan-abi9"
     ) throws -> TranslationDisplaySourceProbeDetails {
         var selected = trace(scope: "selected", component: component, x: 0)
         let duplicate = trace(scope: "selected", component: component, x: 1)
@@ -261,7 +276,7 @@ final class TranslationStaticAnalysisSeedExportTests: XCTestCase {
             "project": digest(byteCount: 128, value: "22"),
             "rom": digest(byteCount: romByteCount, value: "33"),
             "romFooterChecksum": 0x1234,
-            "engine": ["backend": "ares", "buildID": "fixture-abi9"],
+            "engine": ["backend": "ares", "buildID": engineBuildID],
             "engineSHA256": String(repeating: "4", count: 64),
             "rtc": ["mode": "deterministic", "seedUnixSeconds": 946_684_800],
             "rtcSHA256": String(repeating: "5", count: 64),

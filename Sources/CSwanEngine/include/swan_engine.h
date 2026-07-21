@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-#define SWAN_ENGINE_ABI_VERSION 9u
+#define SWAN_ENGINE_ABI_VERSION 10u
 
 typedef struct swan_engine swan_engine_t;
 
@@ -104,6 +104,7 @@ enum {
   SWAN_CAPABILITY_DISPLAY_SOURCE_COMPONENT_SELECTION = 1ull << 10,
   SWAN_CAPABILITY_EXECUTED_SOURCE_READ_CONTEXT = 1ull << 11,
   SWAN_CAPABILITY_DISPLAY_SPRITE_ATTRIBUTE_PROVENANCE = 1ull << 12,
+  SWAN_CAPABILITY_CONSUMED_PREFETCH_PROVENANCE = 1ull << 13,
 };
 
 typedef enum swan_display_layer {
@@ -251,6 +252,89 @@ typedef struct swan_display_source_trace {
   uint16_t conservative_origin_offset;
 } swan_display_source_trace_t;
 
+enum {
+  /* The context was sealed at the terminal opcode boundary. */
+  SWAN_FETCH_CONTEXT_FLAG_SEALED = 1u << 0,
+  /* Every consumed byte belongs to one exact contiguous cartridge run. */
+  SWAN_FETCH_CONTEXT_FLAG_EXACT_CARTRIDGE_RUN = 1u << 1,
+  /* The structural context ID and canonical digest are bijective. */
+  SWAN_FETCH_CONTEXT_FLAG_BIJECTIVE_IDENTITY = 1u << 2,
+  /* A separately qualified pinned decoder must still validate the seed. */
+  SWAN_FETCH_CONTEXT_FLAG_PYPCODE_CHECK_REQUIRED = 1u << 3,
+  /* ABI 10 does not export operand/post-transform semantics. */
+  SWAN_FETCH_CONTEXT_FLAG_EXACT_DATA_INCOMPLETE = 1u << 4,
+};
+
+/**
+ * ABI-10 source trace. The ABI-9 prefix remains field-for-field compatible;
+ * execution_context_id names one atomic sealed execution row when nonzero.
+ */
+typedef struct swan_display_source_trace_v2 {
+  uint32_t struct_size;
+  uint16_t x;
+  uint16_t y;
+  swan_display_source_scope_t scope;
+  swan_display_source_component_t component;
+  uint32_t source_address;
+  uint16_t source_byte_count;
+  uint16_t minimum_instruction_hops;
+  uint16_t maximum_instruction_hops;
+  uint16_t reserved;
+  uint32_t cartridge_offset;
+  uint32_t cartridge_length;
+  uint32_t flags;
+  uint32_t read_context_flags;
+  uint32_t immediate_caller;
+  uint16_t caller_segment;
+  uint16_t caller_offset;
+  uint16_t operand_segment;
+  uint16_t operand_offset;
+  uint16_t mapper_window;
+  uint16_t mapper_bank;
+  uint32_t resolved_cartridge_operand;
+  swan_display_source_conservative_reason_t conservative_reason;
+  uint32_t conservative_origin;
+  uint16_t conservative_origin_segment;
+  uint16_t conservative_origin_offset;
+  uint64_t execution_context_id;
+  uint32_t fetch_context_flags;
+  uint32_t reserved_v2;
+} swan_display_source_trace_v2_t;
+
+/** One interned logical-instruction consumed-prefetch context. */
+typedef struct swan_instruction_fetch_context {
+  uint32_t struct_size;
+  uint64_t id;
+  uint64_t structural_id;
+  uint32_t byte_start;
+  uint32_t byte_count;
+  uint32_t flags;
+  uint8_t terminal_opcode;
+  uint8_t continuing;
+  uint16_t reserved;
+  uint32_t logical_start_physical;
+  uint16_t logical_start_segment;
+  uint16_t logical_start_offset;
+  uint8_t canonical_digest[32];
+} swan_instruction_fetch_context_t;
+
+/** One consumed byte, retaining its exact pinned-engine prefetch origin. */
+typedef struct swan_instruction_fetch_byte {
+  uint32_t struct_size;
+  uint64_t context_id;
+  uint32_t ordinal;
+  uint64_t token;
+  uint32_t source_kind;
+  uint32_t physical_address;
+  uint32_t resolved_operand;
+  uint32_t mapper_window;
+  uint32_t mapper_bank;
+  uint32_t event_context;
+  uint32_t segment;
+  uint32_t offset;
+  uint32_t data;
+} swan_instruction_fetch_byte_t;
+
 typedef struct swan_engine_config {
   uint32_t struct_size;
   uint32_t abi_version;
@@ -383,6 +467,19 @@ SWAN_ENGINE_API swan_result_t swan_engine_display_source_probe(
     swan_display_source_trace_t* out_traces,
     size_t capacity,
     size_t* out_count);
+SWAN_ENGINE_API swan_result_t swan_engine_display_source_probe_v2(
+    swan_engine_t* engine,
+    const swan_display_rectangle_t* rectangle,
+    const swan_display_source_probe_options_t* options,
+    swan_display_source_trace_v2_t* out_traces,
+    size_t trace_capacity,
+    size_t* out_trace_count,
+    swan_instruction_fetch_context_t* out_contexts,
+    size_t context_capacity,
+    size_t* out_context_count,
+    swan_instruction_fetch_byte_t* out_bytes,
+    size_t byte_capacity,
+    size_t* out_byte_count);
 
 #ifdef __cplusplus
 }

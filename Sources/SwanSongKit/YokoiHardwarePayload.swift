@@ -9,8 +9,9 @@ public struct YokoiHardwarePayload: Equatable, Sendable {
     public let installerSHA256: String
     public let cartService: Data
     public let cartServiceSHA256: String
-    public let sourceURL: URL
-    public let sourceRevision: String
+    public let correspondingSourceURL: URL
+    public let correspondingSourceSHA256: String
+    public let releaseReady: Bool
 
     public init(
         version: String,
@@ -19,8 +20,9 @@ public struct YokoiHardwarePayload: Equatable, Sendable {
         installerSHA256: String,
         cartService: Data,
         cartServiceSHA256: String,
-        sourceURL: URL,
-        sourceRevision: String
+        correspondingSourceURL: URL,
+        correspondingSourceSHA256: String,
+        releaseReady: Bool
     ) {
         self.version = version
         self.installerROM = installerROM
@@ -28,13 +30,21 @@ public struct YokoiHardwarePayload: Equatable, Sendable {
         self.installerSHA256 = installerSHA256
         self.cartService = cartService
         self.cartServiceSHA256 = cartServiceSHA256
-        self.sourceURL = sourceURL
-        self.sourceRevision = sourceRevision
+        self.correspondingSourceURL = correspondingSourceURL
+        self.correspondingSourceSHA256 = correspondingSourceSHA256
+        self.releaseReady = releaseReady
     }
 }
 
 public enum YokoiHardwarePayloadLoader {
     private struct Manifest: Decodable {
+        struct Source: Decodable {
+            let kind: String
+            let file: String
+            let byteCount: Int
+            let sha256: String
+        }
+
         struct Artifact: Decodable {
             let encodedFile: String
             let outputFile: String
@@ -45,8 +55,8 @@ public enum YokoiHardwarePayloadLoader {
 
         let schema: String
         let version: String
-        let source: String
-        let sourceRevision: String
+        let releaseReady: Bool
+        let source: Source
         let installer: Artifact
         let cartService: Artifact
     }
@@ -79,16 +89,30 @@ public enum YokoiHardwarePayloadLoader {
         let manifestURL = resolvedRoot.appendingPathComponent("manifest.json")
         let manifestData = try readRegularFile(manifestURL, maximum: 64 * 1_024)
         let manifest = try JSONDecoder().decode(Manifest.self, from: manifestData)
-        guard manifest.schema == "swan-song-yokoi-hardware-v1",
+        guard manifest.schema == "swan-song-yokoi-hardware-v2",
               !manifest.version.isEmpty,
-              let sourceURL = URL(string: manifest.source),
-              sourceURL.scheme == "https",
-              manifest.sourceRevision.count == 40,
-              manifest.sourceRevision == manifest.sourceRevision.lowercased(),
-              manifest.sourceRevision.allSatisfy(\.isHexDigit),
-              manifest.source == "https://github.com/RegionallyFamous/swansong-core/tree/\(manifest.sourceRevision)/firmware" else {
+              manifest.source.kind == "bundled-toolkit",
+              safeName(manifest.source.file),
+              manifest.source.file == "SwanSong-Yokoi-Toolkit.zip",
+              manifest.source.byteCount > 0,
+              manifest.source.byteCount <= 4 * 1_024 * 1_024,
+              validSHA256(manifest.source.sha256) else {
             throw YokoiHardwareError.invalidFirmware(
                 "The Yokoi hardware-support manifest has an unsupported identity."
+            )
+        }
+
+        let correspondingSourceURL = resolvedRoot.appendingPathComponent(
+            manifest.source.file
+        )
+        let correspondingSource = try readRegularFile(
+            correspondingSourceURL,
+            maximum: 4 * 1_024 * 1_024
+        )
+        guard correspondingSource.count == manifest.source.byteCount,
+              sha256(correspondingSource) == manifest.source.sha256 else {
+            throw YokoiHardwareError.invalidFirmware(
+                "The bundled Yokoi corresponding-source archive did not match its manifest."
             )
         }
 
@@ -109,8 +133,9 @@ public enum YokoiHardwarePayloadLoader {
             installerSHA256: manifest.installer.sha256,
             cartService: service,
             cartServiceSHA256: manifest.cartService.sha256,
-            sourceURL: sourceURL,
-            sourceRevision: manifest.sourceRevision
+            correspondingSourceURL: correspondingSourceURL,
+            correspondingSourceSHA256: manifest.source.sha256,
+            releaseReady: manifest.releaseReady
         )
     }
 
@@ -124,9 +149,7 @@ public enum YokoiHardwarePayloadLoader {
               artifact.byteCount <= maximum,
               safeName(artifact.encodedFile),
               safeName(artifact.outputFile),
-              artifact.sha256.count == 64,
-              artifact.sha256 == artifact.sha256.lowercased(),
-              artifact.sha256.allSatisfy(\.isHexDigit) else {
+              validSHA256(artifact.sha256) else {
             throw YokoiHardwareError.invalidFirmware(
                 "A Yokoi hardware artifact has an unsafe manifest entry."
             )
@@ -192,6 +215,12 @@ public enum YokoiHardwarePayloadLoader {
     private static func safeName(_ value: String) -> Bool {
         !value.isEmpty && value == URL(fileURLWithPath: value).lastPathComponent
             && !value.contains("/") && !value.contains("\\")
+    }
+
+    private static func validSHA256(_ value: String) -> Bool {
+        value.count == 64
+            && value == value.lowercased()
+            && value.allSatisfy(\.isHexDigit)
     }
 
     private static func sha256(_ data: Data) -> String {
