@@ -6,6 +6,25 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.7.2</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.7.2</link>
+      <description sparkle:format="html">&lt;h2&gt;Translation evidence keeps its real source.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.7.2 makes authenticated capture plans follow their qualified engine profile and keeps General DMA cartridge lineage exact through nested callbacks.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Use the authorized engine profile.&lt;/strong&gt; Capture plans support qualified ABI 9 and ABI 10 lanes while rejecting profile or engine drift.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep DMA provenance honest.&lt;/strong&gt; General DMA reads retain their real initiator, source operand, and cartridge origin.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Catch regressions without game data.&lt;/strong&gt; A clean-room public fixture covers exact DMA lineage in the live-engine release lane.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep private evidence private.&lt;/strong&gt; Game addresses, source bytes, mapper state, and project details remain local.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;SwanSong includes no games or original system firmware.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.7.2"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Tue, 21 Jul 2026 20:38:11 -0500</pubDate>
+      <sparkle:version>15</sparkle:version>
+      <sparkle:shortVersionString>0.7.2</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:phasedRolloutInterval>86400</sparkle:phasedRolloutInterval>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.7.2/SwanSong-0.7.2-macOS-universal.zip" length="35054080" type="application/octet-stream" sparkle:edSignature="6znnWsYa1AnOyRqL68gZJGUQHU9T0FPrEN4OLl2Na239Fig6KQg/+dB56wYikDll9+qZB0lf7FDCdeDWDQq4DA==" />
+    </item>
+    <item>
       <title>SwanSong 0.7.1</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.7.1</link>
       <description sparkle:format="html">&lt;h2&gt;Translation Lab can follow the pixels.&lt;/h2&gt;
@@ -224,6 +243,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: nxfr+6KI6RImALgO3WH79nXi4EfUMuhDcLq9RNWP/U4qRnuTCMct5z+BPBvb5C2FnAuwFIK+7bZJEmrFsS1kDw==
-length: 23603
+edSignature: G88vOyu+VBeltPEvCrIWKYTOSdk4rUekSbq0A9DEAJa0axeavUzEB0choSlpaFtt37aeyDswNLErHUs8wRK6Dg==
+length: 25600
 -->
