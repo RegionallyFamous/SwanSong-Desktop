@@ -174,7 +174,11 @@ struct PlaytestAudioAccumulator {
 /// SDK's bounded, structurally validated semantic trace.
 public enum SwanSongPlaytester {
     public static let maximumROMBytes = GameROMValidationPolicy.maximumByteCount
-    public static let maximumMCPFrames: UInt64 = 12_000
+    /// Matches the bounded SwanSong SDK production-plan ceiling. At the
+    /// WonderSwan's native refresh this permits a little over five minutes of
+    /// deterministic observation without exposing the unbounded local replay
+    /// allowance through MCP.
+    public static let maximumMCPFrames: UInt64 = 24_000
     package static let maximumLocalReplayFrames = TranslationFrameInputPlan.maximumFrames
 
     public static func run(
