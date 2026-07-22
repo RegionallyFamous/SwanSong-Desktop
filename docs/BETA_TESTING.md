@@ -1,6 +1,6 @@
 # SwanSong beta testing
 
-The active public build is the stable SwanSong 0.7.1 release. Use the
+The active public build is the stable SwanSong 0.7.2 release. Use the
 [0.7 release testing guide](RELEASE_TESTING.md) for current checks.
 
 Historical beta checklists remain in the Wiki:

@@ -6,6 +6,26 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+## [0.7.2] - 2026-07-21
+
+**Keep the Trail Exact.** SwanSong 0.7.2 makes authenticated Translation Lab
+captures follow the engine profile they were authorized to use and preserves
+the real cartridge source when display data moves through General DMA.
+
+### Changed
+
+- Lets authorized capture plans select their exact qualified ABI 9 or ABI 10
+  engine profile, while still rejecting a plan, capability receipt, or loaded
+  engine whose ABI does not match the authenticated request.
+
+### Fixed
+
+- Preserves CPU and fetch provenance across nested General DMA callbacks so a
+  DMA read keeps its real initiator, source operand, and cartridge origin
+  instead of inheriting synthetic callback context.
+- Adds a clean-room General DMA display-provenance fixture to the live-engine
+  release lane, covering exact source lineage without shipping game data.
+
 ## [0.7.1] - 2026-07-21
 
 **Follow the Evidence.** SwanSong 0.7.1 gives Translation Lab a signed,
@@ -636,7 +656,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.1...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.2...HEAD
+[0.7.2]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.6.1...v0.7.0
 [0.6.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.6.0...v0.6.1
