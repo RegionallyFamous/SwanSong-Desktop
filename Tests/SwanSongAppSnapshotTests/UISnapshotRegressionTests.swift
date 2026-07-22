@@ -143,6 +143,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             "librarySortOption",
             "showsLibraryInspector",
             "settingsPane",
+            "SwanSong.debugToolsEnabled.v1",
         ].map { key in
             (key, UserDefaults.standard.object(forKey: key))
         }
@@ -624,6 +625,12 @@ final class UISnapshotRegressionTests: XCTestCase {
             28
         )
         XCTAssertEqual(GameConfidenceAccessibility.panel, "game-confidence-panel")
+        XCTAssertFalse(
+            GameConfidencePresentation.isVisible(developerToolsEnabled: false)
+        )
+        XCTAssertTrue(
+            GameConfidencePresentation.isVisible(developerToolsEnabled: true)
+        )
         XCTAssertEqual(
             GameConfidenceAccessibility.launchReadiness,
             "game-confidence-launch-readiness"
@@ -775,6 +782,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             "libraryWindowHeight",
             "librarySortOption",
             "showsLibraryInspector",
+            "SwanSong.debugToolsEnabled.v1",
         ].map { key in
             (key, UserDefaults.standard.object(forKey: key))
         }
@@ -789,6 +797,7 @@ final class UISnapshotRegressionTests: XCTestCase {
         let fixture = try gameConfidenceFixture(
             root: root.appendingPathComponent("game-confidence-geometry")
         )
+        fixture.model.setDebugToolsEnabled(true)
         XCTAssertEqual(fixture.model.games.count, 4)
         XCTAssertEqual(
             fixture.model.gameConfidence(for: fixture.readyUntested),
@@ -1635,6 +1644,7 @@ final class UISnapshotRegressionTests: XCTestCase {
                 AnyView(TranslationTextIntakeView(model: translationTextDraftingModel))
             },
             Scenario(name: "game-confidence-compact", size: CGSize(width: 820, height: 560)) {
+                confidenceFixture.model.setDebugToolsEnabled(true)
                 UserDefaults.standard.set(false, forKey: "showsLibraryInspector")
                 return AnyView(
                     RootView(
@@ -1644,6 +1654,7 @@ final class UISnapshotRegressionTests: XCTestCase {
                 )
             },
             Scenario(name: "game-confidence-wide", size: CGSize(width: 1_040, height: 680)) {
+                confidenceFixture.model.setDebugToolsEnabled(true)
                 UserDefaults.standard.set(true, forKey: "showsLibraryInspector")
                 return AnyView(
                     RootView(
@@ -1653,6 +1664,7 @@ final class UISnapshotRegressionTests: XCTestCase {
                 )
             },
             Scenario(name: "pocket-challenge-v2-compact", size: CGSize(width: 820, height: 560)) {
+                pocketChallengeFixture.model.setDebugToolsEnabled(false)
                 UserDefaults.standard.set(false, forKey: "showsLibraryInspector")
                 return AnyView(
                     RootView(
@@ -1668,6 +1680,7 @@ final class UISnapshotRegressionTests: XCTestCase {
                     self.scrollLibraryInspectorToBottom(in: host)
                 }
             ) {
+                pocketChallengeFixture.model.setDebugToolsEnabled(false)
                 UserDefaults.standard.set(true, forKey: "showsLibraryInspector")
                 return AnyView(
                     RootView(
@@ -1711,6 +1724,7 @@ final class UISnapshotRegressionTests: XCTestCase {
                 size: CGSize(width: 640, height: 620),
                 usesPolishOutput: true
             ) {
+                confidenceFixture.model.setDebugToolsEnabled(false)
                 UserDefaults.standard.set(1, forKey: "settingsPane")
                 return AnyView(self.settingsSurface(model: confidenceFixture.model))
             },
@@ -1719,6 +1733,7 @@ final class UISnapshotRegressionTests: XCTestCase {
                 size: CGSize(width: 900, height: 608),
                 usesPolishOutput: true
             ) {
+                confidenceFixture.model.setDebugToolsEnabled(false)
                 UserDefaults.standard.set(1, forKey: "settingsPane")
                 return AnyView(self.settingsSurface(model: confidenceFixture.model))
             },
@@ -1727,6 +1742,7 @@ final class UISnapshotRegressionTests: XCTestCase {
                 size: CGSize(width: 900, height: 608),
                 usesPolishOutput: true
             ) {
+                confidenceFixture.model.setDebugToolsEnabled(false)
                 UserDefaults.standard.set(0, forKey: "settingsPane")
                 return AnyView(self.settingsSurface(model: confidenceFixture.model))
             },
@@ -1735,6 +1751,7 @@ final class UISnapshotRegressionTests: XCTestCase {
                 size: CGSize(width: 900, height: 608),
                 usesPolishOutput: true
             ) {
+                confidenceFixture.model.setDebugToolsEnabled(false)
                 UserDefaults.standard.set(3, forKey: "settingsPane")
                 return AnyView(self.settingsSurface(model: confidenceFixture.model))
             },
@@ -1770,6 +1787,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             game: game,
             artwork: model.gameArtwork[game.id],
             confidence: model.gameConfidence(for: game),
+            developerToolsEnabled: true,
             canPlay: model.canPlayGame(game),
             managedHealth: model.managedGameHealth[game.id],
             isCheckingManagedCopy: model.checkingManagedGameIDs.contains(game.id),
