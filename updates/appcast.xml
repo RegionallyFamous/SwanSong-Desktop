@@ -6,6 +6,26 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.8.0</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.8.0</link>
+      <description sparkle:format="html">&lt;h2&gt;Prove the whole game, one named surface at a time.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.8 turns Translation Lab captures into complete, resumable surface suites with exact native review and one immutable certification handoff.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Run the whole matrix.&lt;/strong&gt; Case-specific viewer ROMs, input plans, and named checkpoints execute from clean boot on the selected qualified ABI.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Catch obvious misses early.&lt;/strong&gt; Wrong screens, zero delta, stale routes, and protected-region changes fail before human review.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Review what the handheld shows.&lt;/strong&gt; Original, Patched, blink, and difference views stay at exact native 1× with separate meaning, microcopy, and fit verdicts.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep quality human.&lt;/strong&gt; Narrative Pulse, live-reader moments, and Story Proof expose evidence without manufacturing an approval score.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Enjoy a clearer Homebrew shelf.&lt;/strong&gt; Bundled title screens and a compact native inspector make signed catalog entries easier to browse.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;SwanSong includes no games or original system firmware.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.8.0"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Wed, 22 Jul 2026 14:55:56 -0500</pubDate>
+      <sparkle:version>16</sparkle:version>
+      <sparkle:shortVersionString>0.8.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:phasedRolloutInterval>86400</sparkle:phasedRolloutInterval>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.8.0/SwanSong-0.8.0-macOS-universal.zip" length="37234846" type="application/octet-stream" sparkle:edSignature="eTXIHeUQ9d7cDubw4RRkLOjN4vnHJYkbiktSGZ+tSjGMtDhCrwpwuN3Mmrk2s838u9KN7InzktagM/hf/jUnAg==" />
+    </item>
+    <item>
       <title>SwanSong 0.7.2</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.7.2</link>
       <description sparkle:format="html">&lt;h2&gt;Translation evidence keeps its real source.&lt;/h2&gt;
@@ -243,6 +263,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: G88vOyu+VBeltPEvCrIWKYTOSdk4rUekSbq0A9DEAJa0axeavUzEB0choSlpaFtt37aeyDswNLErHUs8wRK6Dg==
-length: 25600
+edSignature: Dbdr41LrL1Y8igaNwzyNZxt+15YZ0wS1VhHH/vg7QRorzpJqv6Bvvy8Qk9gHyCfRfIw/CvZLxvcAN9YKW+IMDA==
+length: 27852
 -->
