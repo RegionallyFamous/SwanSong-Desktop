@@ -7,8 +7,20 @@ APP=${1:-"$REPOSITORY/.build/app/SwanSong.app"}
 MCP="$APP/Contents/Helpers/SwanSongMCP"
 RUNNER="$APP/Contents/Helpers/SwanSongRouteRunner"
 ENGINE="$APP/Contents/Frameworks/libSwanAresEngine.dylib"
-KAT_TEMP_PARENT="$REPOSITORY/.build"
+KAT_TEMP_PARENT=${SWAN_SIGNED_SOURCE_KAT_TEMP_PARENT:-"$REPOSITORY/.build"}
+case "$KAT_TEMP_PARENT" in
+  /*) ;;
+  *)
+    echo "the signed source-probe temporary parent must be an absolute path" >&2
+    exit 64
+    ;;
+esac
 mkdir -p "$KAT_TEMP_PARENT"
+if [ ! -d "$KAT_TEMP_PARENT" ] || [ -L "$KAT_TEMP_PARENT" ]; then
+  echo "the signed source-probe temporary parent must be a real directory" >&2
+  exit 64
+fi
+KAT_TEMP_PARENT=$(CDPATH='' cd -- "$KAT_TEMP_PARENT" && pwd -P)
 TEMP_ROOT=$(mktemp -d "$KAT_TEMP_PARENT/signed-source-helper.XXXXXX")
 
 cleanup() {

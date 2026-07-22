@@ -180,7 +180,6 @@ for script in \
   check-app-payload.sh \
   check-isolated-engine-service.sh \
   check-no-password-prompts.sh \
-  check-signed-source-probe-helper.sh \
   verify-app-architectures.sh \
   verify-app-signature.sh \
   notarize-app.sh; do
@@ -196,6 +195,27 @@ for argument in "$@"; do
 done
 EOF
 done
+
+cat >"$REPOSITORY/Scripts/check-signed-source-probe-helper.sh" <<'EOF'
+#!/bin/sh
+set -eu
+SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+"$SCRIPT_DIR/assert-private-source.sh"
+LIVE_REPOSITORY=$(CDPATH='' cd -- "$SELFTEST_LIVE_REPOSITORY" && pwd -P)
+KAT_REPOSITORY=$(CDPATH='' cd -- \
+  "$(dirname -- "$SWAN_SIGNED_SOURCE_KAT_TEMP_PARENT")" && pwd -P)
+[ "$SWAN_SIGNED_SOURCE_KAT_TEMP_PARENT" \
+    = "$(dirname -- "$SWAN_SIGNED_SOURCE_KAT_TEMP_PARENT")/.build" ] \
+  && [ "$KAT_REPOSITORY" = "$LIVE_REPOSITORY" ] || {
+  echo "signed source-probe KAT did not use the live private build root" >&2
+  exit 1
+}
+for argument in "$@"; do
+  if [ -d "$argument" ]; then
+    [ -f "$argument/build-source-root" ]
+  fi
+done
+EOF
 
 cat >"$REPOSITORY/Scripts/package-release.sh" <<'EOF'
 #!/bin/sh
