@@ -102,7 +102,7 @@ for tool in tools:
         tool["inputSchema"]["properties"]["plan"]
         ["properties"]["totalFrames"].get("maximum")
     )
-    if maximum != 12_000:
+    if maximum != 24_000:
         raise SystemExit(f"{tool['name']} MCP frame ceiling changed")
 if required["swansong_compare_playtest_plan"] != {
     "originalROMPath", "patchedROMPath", "plan", "confirmShareCapture",
@@ -221,7 +221,7 @@ with tempfile.TemporaryDirectory(prefix="swansong-playtest-mcp-") as temporary:
                 "romPath": str(over_limit_fixture),
                 "plan": {
                     "schema": "swan-song-frame-input-plan-v1",
-                    "totalFrames": 12001,
+                    "totalFrames": 24001,
                     "events": [{"frameIndex": 0, "inputs": []}],
                 },
                 "confirmShareCapture": True,
@@ -231,7 +231,7 @@ with tempfile.TemporaryDirectory(prefix="swansong-playtest-mcp-") as temporary:
     assert_private_tool_error(
         over_limit_denied,
         [over_limit_fixture],
-        "12,001-frame dedicated MCP playtest",
+        "24,001-frame dedicated MCP playtest",
         "bounded playtest",
     )
     if {path.name for path in temporary_root.iterdir()} != over_limit_entries:
@@ -247,7 +247,7 @@ with tempfile.TemporaryDirectory(prefix="swansong-playtest-mcp-") as temporary:
                 "patchedROMPath": str(over_limit_patched),
                 "plan": {
                     "schema": "swan-song-frame-input-plan-v1",
-                    "totalFrames": 12001,
+                    "totalFrames": 24001,
                     "events": [{"frameIndex": 0, "inputs": []}],
                 },
                 "confirmShareCapture": True,
@@ -257,7 +257,7 @@ with tempfile.TemporaryDirectory(prefix="swansong-playtest-mcp-") as temporary:
     assert_private_tool_error(
         over_limit_compare_denied,
         [over_limit_fixture, over_limit_patched],
-        "12,001-frame dedicated MCP comparison",
+        "24,001-frame dedicated MCP comparison",
         "bounded playtest",
     )
     if {path.name for path in temporary_root.iterdir()} != over_limit_entries:

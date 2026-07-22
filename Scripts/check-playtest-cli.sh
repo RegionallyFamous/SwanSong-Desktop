@@ -25,7 +25,7 @@ printf '%s\n' \
 printf '%s\n' \
   '{' \
   '  "schema": "swan-song-frame-input-plan-v1",' \
-  '  "totalFrames": 12001,' \
+  '  "totalFrames": 24001,' \
   '  "events": [{"frameIndex": 0, "inputs": []}]' \
   '}' >"$TEMP_ROOT/local-plan.json"
 
@@ -99,10 +99,10 @@ if SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" playtest-plan \
   --output "$TEMP_ROOT/mcp-over-limit.json" \
   --capture "$TEMP_ROOT/mcp-over-limit.png" \
   2>"$TEMP_ROOT/mcp-over-limit.err"; then
-  echo "playtest-plan accepted more than its 12,000-frame MCP limit" >&2
+  echo "playtest-plan accepted more than its 24,000-frame MCP limit" >&2
   exit 1
 fi
-if ! grep -F "An MCP playtest is limited to 12000 frames per observation." \
+if ! grep -F "An MCP playtest is limited to 24000 frames per observation." \
   "$TEMP_ROOT/mcp-over-limit.err" >/dev/null; then
   echo "playtest-plan did not report the exact MCP frame limit" >&2
   exit 1
@@ -122,7 +122,7 @@ if SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" playtest-plan \
   echo "playtest-plan accepted an over-limit plan with a missing ROM" >&2
   exit 1
 fi
-if ! grep -F "An MCP playtest is limited to 12000 frames per observation." \
+if ! grep -F "An MCP playtest is limited to 24000 frames per observation." \
   "$TEMP_ROOT/missing-rom-mcp-over-limit.err" >/dev/null; then
   echo "the MCP frame-limit check did not run before ROM import" >&2
   exit 1
@@ -385,13 +385,13 @@ if sorted(path.name for path in local_b_root.iterdir()) != ["capture.png", "repo
 local_a = json.loads((local_a_root / "report.json").read_text())
 local_b = json.loads((local_b_root / "report.json").read_text())
 if local_a != local_b:
-    raise SystemExit("two 12,001-frame local replays did not reproduce exactly")
+    raise SystemExit("two 24,001-frame local replays did not reproduce exactly")
 if (local_a_root / "capture.png").read_bytes() != (local_b_root / "capture.png").read_bytes():
-    raise SystemExit("two 12,001-frame local captures differ")
+    raise SystemExit("two 24,001-frame local captures differ")
 if local_a.get("romSHA256") != "b44090665f0165c7e3279da13359a0b27c69e3127823d55b2bb16f3dd4a2eb1c":
     raise SystemExit("local replay report lost the pinned public ROM identity")
-if local_a.get("totalFrames") != 12001 or local_a.get("finalFrameNumber") != 12001:
-    raise SystemExit("local replay did not reach the exact 12,001-frame endpoint")
+if local_a.get("totalFrames") != 24001 or local_a.get("finalFrameNumber") != 24001:
+    raise SystemExit("local replay did not reach the exact 24,001-frame endpoint")
 if local_a.get("plan") != json.loads((root / "local-plan.json").read_text()):
     raise SystemExit("local replay report lost the exact long plan")
 if local_a.get("persistencePolicy") != "isolated-empty-v1":

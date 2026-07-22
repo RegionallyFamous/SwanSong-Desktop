@@ -5,6 +5,26 @@ import Foundation
 import XCTest
 
 final class SwanSDKDesktopIntegrationTests: XCTestCase {
+    func testMCPPlaytestFrameBudgetMatchesSDKProductionContract() throws {
+        XCTAssertEqual(SwanSongPlaytester.maximumMCPFrames, 24_000)
+
+        let accepted = TranslationFrameInputPlan(
+            totalFrames: 24_000,
+            events: [TranslationFrameInputPlanEvent(frameIndex: 0, inputs: [])]
+        )
+        XCTAssertNoThrow(try SwanSongPlaytester.validateMCPFrameLimit(accepted))
+
+        let rejected = TranslationFrameInputPlan(
+            totalFrames: 24_001,
+            events: [TranslationFrameInputPlanEvent(frameIndex: 0, inputs: [])]
+        )
+        XCTAssertThrowsError(
+            try SwanSongPlaytester.validateMCPFrameLimit(rejected)
+        ) { error in
+            XCTAssertTrue(error.localizedDescription.contains("24000"))
+        }
+    }
+
     func testCommandsMatchDocumentedSwanParserArguments() {
         let root = URL(fileURLWithPath: "/tmp/lamp-game", isDirectory: true)
         let manifest = root.appendingPathComponent("swan.toml")

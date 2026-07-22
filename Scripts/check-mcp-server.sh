@@ -138,7 +138,7 @@ playtest_properties = by_name["swansong_playtest_plan"]["inputSchema"]["properti
 if not {"captureSDKTrace", "confirmShareSDKTrace"} <= set(playtest_properties):
     raise SystemExit("SwanSong playtest tool lost its guarded SDK trace contract")
 playtest_total_frames = playtest_properties["plan"]["properties"]["totalFrames"]
-if playtest_total_frames.get("maximum") != 12_000:
+if playtest_total_frames.get("maximum") != 24_000:
     raise SystemExit("SwanSong playtest MCP frame ceiling changed")
 for name in (
     "swansong_observed_play_start",
@@ -272,7 +272,7 @@ with tempfile.TemporaryDirectory(prefix="swansong-main-mcp-limit-") as temporary
                 "romPath": str(copied_fixture),
                 "plan": {
                     "schema": "swan-song-frame-input-plan-v1",
-                    "totalFrames": 12001,
+                    "totalFrames": 24001,
                     "events": [{"frameIndex": 0, "inputs": []}],
                 },
                 "confirmShareCapture": True,
@@ -282,8 +282,8 @@ with tempfile.TemporaryDirectory(prefix="swansong-main-mcp-limit-") as temporary
     over_limit_denied = receive(32)["result"]
     assert_error_without_artifacts(
         over_limit_denied,
-        "12,001-frame main MCP playtest",
-        "12000",
+        "24,001-frame main MCP playtest",
+        "24000",
     )
     if {path.name for path in temporary_root.iterdir()} != before_entries:
         raise SystemExit("over-limit main MCP playtest created adjacent artifacts")
