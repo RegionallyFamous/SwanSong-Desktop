@@ -152,6 +152,13 @@ server remains running:
 - `swansong_observed_play_step` holds one native input combination for 1–600
   frames, returns that visible endpoint and audio window only with
   `confirmShareCapture: true`, and atomically extends the cumulative plan;
+- `swansong_observed_play_sequence` appends 1–256 input holds in one atomic
+  operation, with at most 600 frames per hold and 24,000 total frames, and
+  returns only the selected named checkpoint frames plus the final frame and
+  audio window when sharing is confirmed;
+- `swansong_observed_play_branch` creates a new active session from an exact
+  saved prefix, reconstructing it by clean-boot replay before closing and
+  retaining the source session's private plan;
 - `swansong_observed_play_finish` closes the live engine, replays the exact
   plan from boot, and produces the normal immutable Original/Patched persisted
   capture; and

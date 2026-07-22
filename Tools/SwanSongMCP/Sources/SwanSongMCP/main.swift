@@ -96,6 +96,34 @@ private final class ObservedPlayRegistry: @unchecked Sendable {
         return try current.step(inputs: inputs, frames: frames)
     }
 
+    func sequence(
+        sessionID: String,
+        segments: [TranslationObservedPlaySequenceSegment]
+    ) throws -> TranslationObservedPlaySequenceCapture {
+        lock.lock()
+        defer { lock.unlock() }
+        let current = try requireSession(sessionID)
+        return try current.stepSequence(segments)
+    }
+
+    func branch(
+        sessionID: String,
+        throughFrame: UInt64
+    ) throws -> TranslationObservedPlayBranchReport {
+        lock.lock()
+        defer { lock.unlock() }
+        let current = try requireSession(sessionID)
+        let branch = try current.branch(throughFrame: throughFrame)
+        do {
+            _ = try current.cancel()
+            session = branch.session
+            return branch.report
+        } catch {
+            _ = try? branch.session.cancel()
+            throw error
+        }
+    }
+
     func finish(sessionID: String) throws -> TranslationObservedPlayFinishReport {
         lock.lock()
         defer { lock.unlock() }
@@ -342,6 +370,24 @@ private enum SwanSongMCPServer {
                 idempotent: false
             ),
             tool(
+                name: "swansong_observed_play_sequence",
+                title: "Append Observed Play Sequence",
+                description: "Atomically append a bounded sequence of native input holds, capture selected named checkpoints, and return the final native frame and audio window. The cumulative plan is saved only after every segment succeeds.",
+                inputSchema: observedPlaySequenceSchema(),
+                readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
+                name: "swansong_observed_play_branch",
+                title: "Branch Observed Play Prefix",
+                description: "Create a new active observed-play route from an exact saved prefix by replaying that prefix from clean boot, then close the source session while preserving its private plan.",
+                inputSchema: observedPlayBranchSchema(),
+                readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
                 name: "swansong_observed_play_finish",
                 title: "Finish Observed Play",
                 description: "Close the retained live state and replay its exact cumulative plan from clean boot against Original and Patched, producing the normal immutable paired capture evidence.",
@@ -486,6 +532,10 @@ private enum SwanSongMCPServer {
                 return try observedPlayResume(arguments: arguments)
             case "swansong_observed_play_step":
                 return try observedPlayStep(arguments: arguments)
+            case "swansong_observed_play_sequence":
+                return try observedPlaySequence(arguments: arguments)
+            case "swansong_observed_play_branch":
+                return try observedPlayBranch(arguments: arguments)
             case "swansong_observed_play_finish":
                 return try observedPlayFinish(arguments: arguments)
             case "swansong_observed_play_cancel":
@@ -1129,6 +1179,92 @@ private enum SwanSongMCPServer {
         ]
     }
 
+    private static func observedPlaySequence(
+        arguments: JSONDictionary
+    ) throws -> JSONDictionary {
+        guard arguments["confirmShareCapture"] as? Bool == true else {
+            throw SwanSongMCPError(
+                message: "Set confirmShareCapture to true after confirming that the selected checkpoint frames and audio window may be shared with this MCP client."
+            )
+        }
+        guard let sessionID = arguments["sessionID"] as? String,
+              let segmentObjects = arguments["segments"] as? [JSONDictionary],
+              !segmentObjects.isEmpty else {
+            throw SwanSongMCPError(message: "sessionID and segments are required")
+        }
+        let segments = try segmentObjects.map { object in
+            guard let inputs = object["inputs"] as? [String],
+                  let frameNumber = object["frames"] as? NSNumber,
+                  frameNumber.int64Value >= 1 else {
+                throw SwanSongMCPError(
+                    message: "Every observed-play sequence segment requires inputs and frames."
+                )
+            }
+            return TranslationObservedPlaySequenceSegment(
+                inputs: inputs,
+                frames: UInt64(frameNumber.int64Value),
+                checkpointID: object["checkpointID"] as? String
+            )
+        }
+        let capture = try observedPlay.sequence(
+            sessionID: sessionID,
+            segments: segments
+        )
+        let (reportText, reportObject) = try encodedReport(capture.report)
+        var content: [JSONDictionary] = [
+            ["type": "text", "text": reportText],
+            [
+                "type": "image",
+                "data": capture.finalPNG.base64EncodedString(),
+                "mimeType": "image/png",
+            ],
+        ]
+        for checkpoint in capture.checkpointPNGs {
+            content.append([
+                "type": "text",
+                "text": "Checkpoint \(checkpoint.checkpointID)",
+            ])
+            content.append([
+                "type": "image",
+                "data": checkpoint.png.base64EncodedString(),
+                "mimeType": "image/png",
+            ])
+        }
+        content.append([
+            "type": "audio",
+            "data": capture.audioWAV.base64EncodedString(),
+            "mimeType": "audio/wav",
+        ])
+        return [
+            "content": content,
+            "structuredContent": reportObject,
+            "isError": false,
+        ]
+    }
+
+    private static func observedPlayBranch(
+        arguments: JSONDictionary
+    ) throws -> JSONDictionary {
+        guard arguments["confirmProjectWrites"] as? Bool == true else {
+            throw SwanSongMCPError(
+                message: "Set confirmProjectWrites to true before creating a clean-boot branch and closing the source session."
+            )
+        }
+        guard let sessionID = arguments["sessionID"] as? String,
+              let frameNumber = arguments["throughFrame"] as? NSNumber,
+              frameNumber.int64Value >= 3 else {
+            throw SwanSongMCPError(
+                message: "sessionID and a throughFrame of at least 3 are required"
+            )
+        }
+        return try reportResult(
+            observedPlay.branch(
+                sessionID: sessionID,
+                throughFrame: UInt64(frameNumber.int64Value)
+            )
+        )
+    }
+
     private static func observedPlayResume(
         arguments: JSONDictionary
     ) throws -> JSONDictionary {
@@ -1458,6 +1594,75 @@ private enum SwanSongMCPServer {
                 ],
             ],
             required: ["sessionID", "inputs", "frames", "confirmShareCapture"]
+        )
+    }
+
+    private static func observedPlaySequenceSchema() -> JSONDictionary {
+        objectSchema(
+            properties: [
+                "sessionID": [
+                    "type": "string",
+                    "description": "Identifier returned by observed-play start, resume, or branch.",
+                ],
+                "segments": [
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": TranslationObservedPlaySession.maximumSequenceSegments,
+                    "items": objectSchema(
+                        properties: [
+                            "inputs": [
+                                "type": "array",
+                                "uniqueItems": true,
+                                "items": enumSchema(
+                                    TranslationFrameInputPlan.acceptedInputNames,
+                                    description: "Native input held for this segment."
+                                ),
+                            ],
+                            "frames": [
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": Int(TranslationObservedPlaySession.maximumStepFrames),
+                                "description": "Frames to hold this segment's input combination.",
+                            ],
+                            "checkpointID": [
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 96,
+                                "description": "Optional stable lowercase ID for a frame captured after this segment.",
+                            ],
+                        ],
+                        required: ["inputs", "frames"]
+                    ),
+                    "description": "A sequence of input holds totaling no more than \(TranslationObservedPlaySession.maximumSequenceFrames) frames.",
+                ],
+                "confirmShareCapture": [
+                    "type": "boolean",
+                    "description": "Must be true to return selected checkpoint frames, the final frame, and final audio window.",
+                ],
+            ],
+            required: ["sessionID", "segments", "confirmShareCapture"]
+        )
+    }
+
+    private static func observedPlayBranchSchema() -> JSONDictionary {
+        objectSchema(
+            properties: [
+                "sessionID": [
+                    "type": "string",
+                    "description": "Identifier of the active observed-play source session.",
+                ],
+                "throughFrame": [
+                    "type": "integer",
+                    "minimum": 3,
+                    "maximum": Int(TranslationFrameInputPlan.maximumFrames),
+                    "description": "Exact cumulative prefix length replayed from clean boot into the new active branch.",
+                ],
+                "confirmProjectWrites": [
+                    "type": "boolean",
+                    "description": "Must be true to create the new private branch and close the source session.",
+                ],
+            ],
+            required: ["sessionID", "throughFrame", "confirmProjectWrites"]
         )
     }
 

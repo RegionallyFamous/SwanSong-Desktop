@@ -113,6 +113,8 @@ expected = {
     "swansong_observed_play_start",
     "swansong_observed_play_resume",
     "swansong_observed_play_step",
+    "swansong_observed_play_sequence",
+    "swansong_observed_play_branch",
     "swansong_observed_play_finish",
     "swansong_observed_play_cancel",
     "swansong_translation_capture_plan",
@@ -143,6 +145,7 @@ if playtest_total_frames.get("maximum") != 24_000:
 for name in (
     "swansong_observed_play_start",
     "swansong_observed_play_resume",
+    "swansong_observed_play_branch",
     "swansong_observed_play_finish",
     "swansong_observed_play_cancel",
     "swansong_translation_capture_plan",
@@ -161,6 +164,25 @@ observed_step_required = set(
 )
 if observed_step_required != {"sessionID", "inputs", "frames", "confirmShareCapture"}:
     raise SystemExit("observed-play step lost its explicit capture-sharing contract")
+
+observed_sequence_schema = by_name["swansong_observed_play_sequence"]["inputSchema"]
+observed_sequence_required = set(observed_sequence_schema.get("required", []))
+if observed_sequence_required != {"sessionID", "segments", "confirmShareCapture"}:
+    raise SystemExit("observed-play sequence lost its explicit capture-sharing contract")
+observed_sequence_segments = observed_sequence_schema["properties"]["segments"]
+if observed_sequence_segments.get("minItems") != 1 or observed_sequence_segments.get("maxItems") != 256:
+    raise SystemExit("observed-play sequence segment bounds changed")
+observed_sequence_segment = observed_sequence_segments["items"]
+if set(observed_sequence_segment.get("required", [])) != {"inputs", "frames"}:
+    raise SystemExit("observed-play sequence segment contract changed")
+if observed_sequence_segment["properties"]["frames"].get("maximum") != 600:
+    raise SystemExit("observed-play sequence per-segment frame ceiling changed")
+
+observed_branch_required = set(
+    by_name["swansong_observed_play_branch"]["inputSchema"].get("required", [])
+)
+if observed_branch_required != {"sessionID", "throughFrame", "confirmProjectWrites"}:
+    raise SystemExit("observed-play branch lost its explicit project-write contract")
 
 source_schema = by_name["swansong_translation_probe_rectangle_source"]["inputSchema"]
 source_required = set(source_schema.get("required", []))
@@ -329,9 +351,19 @@ send({
     "jsonrpc": "2.0",
     "id": 21,
     "method": "tools/call",
+    "params": {"name": "swansong_observed_play_sequence", "arguments": {}},
+})
+observed_sequence_guard = receive(21)["result"]
+if observed_sequence_guard.get("isError") is not True or "confirmShareCapture" not in json.dumps(observed_sequence_guard):
+    raise SystemExit("observed-play sequence runtime lost its capture-sharing guard")
+
+send({
+    "jsonrpc": "2.0",
+    "id": 22,
+    "method": "tools/call",
     "params": {"name": "swansong_studio_action", "arguments": {}},
 })
-studio_guard = receive(21)["result"]
+studio_guard = receive(22)["result"]
 if studio_guard.get("isError") is not True or "confirmProjectWrites" not in json.dumps(studio_guard):
     raise SystemExit("Studio MCP runtime lost its project-write guard")
 
@@ -342,4 +374,4 @@ if process.returncode != 0:
     raise SystemExit(f"MCP server exited {process.returncode}: {stderr}")
 PY
 
-echo "PASS SwanSong MCP initializes with seventeen scoped, correctly annotated tools"
+echo "PASS SwanSong MCP initializes with nineteen scoped, correctly annotated tools"
