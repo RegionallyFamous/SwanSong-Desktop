@@ -5,7 +5,7 @@ SDK projects, cartridges, and save data you own or are authorized to use. Never
 attach ROMs, saves, private screenshots or audio, manuscripts, cartridge-source
 evidence, or Translation Lab evidence to a public report.
 
-The signed public release is **SwanSong 0.7.1 (14)**.
+The signed public release is **SwanSong 0.7.2 (15)**.
 
 ## What this release is testing
 
@@ -57,6 +57,13 @@ The signed public release is **SwanSong 0.7.1 (14)**.
   before owner/source queries, checked again afterward, and represented by the
   exact ordered private receipt. Wrong frame or framed fingerprint must leave
   no report, details, run directory, output, or closure.
+- **Profile-selected capture ABI:** run authorized capture plans against the
+  qualified ABI 9 and ABI 10 profiles. Each plan must accept only the exact ABI
+  selected by its authenticated capability receipt and reject profile, digest,
+  or loaded-engine drift before capture work begins.
+- **General DMA source lineage:** run the clean-room General DMA fixture and
+  confirm its display writes retain the DMA initiator, exact source operand,
+  and cartridge origin through nested callbacks without borrowing CPU context.
 - **Signed source-probe handoff:** run
   `check-signed-source-probe-helper.sh` on the Developer ID candidate after
   signature verification. The installed MCP helper must advertise every
@@ -138,7 +145,7 @@ The signed public release is **SwanSong 0.7.1 (14)**.
 
 ## Expected boundaries
 
-SwanSong 0.7.1 embeds SDK 0.5.0 but not Python or Wonderful. Install those
+SwanSong 0.7.2 embeds SDK 0.5.0 but not Python or Wonderful. Install those
 external dependencies before running Studio Doctor or a build. Studio should
 find Python 3.11+ in standard Homebrew, python.org, MacPorts, and system
 locations even when SwanSong opens from Finder. Story Forge also requires a
@@ -157,7 +164,7 @@ title-specific quirks still deserve hands-on attention.
 
 ## Before reporting a result
 
-1. Confirm **SwanSong 0.7.1 (14)** in **SwanSong > About SwanSong**.
+1. Confirm **SwanSong 0.7.2 (15)** in **SwanSong > About SwanSong**.
 2. Record the Mac model, macOS version, architecture, controller or cartridge
    hardware when relevant, SDK version, Python version, and Wonderful revision.
 3. For Story Forge, state the visible workspace and sanitized action/result;

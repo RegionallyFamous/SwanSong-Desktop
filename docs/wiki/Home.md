@@ -47,7 +47,7 @@ Story Forge is included in SwanSong 0.5.0.
 ### I want to make a game
 
 [[SwanSong Studio]] puts New, Assets, Build, Test, Play, Profile, Evidence, and
-Release in one native workspace backed by SwanSong SDK. SwanSong 0.7.1 carries
+Release in one native workspace backed by SwanSong SDK. SwanSong 0.7.2 carries
 the complete content-verified SDK 0.5.0 toolset, including Utility App
 scaffolds, traced builds, scenario compilation, reviewed asset/audio workflows,
 semantic outcomes, budget history, project migration, and the expanded release
@@ -78,7 +78,7 @@ checksummed public build.
 
 ## The 0.7 release
 
-The current public **0.7.1 release** makes SwanSong safer without making play
+The current public **0.7.2 release** makes SwanSong safer without making play
 more complicated. The engine runs in its own locked-down service, local
 automation proves who is asking, Safe Mode can rescue a launch, and Support
 Bundles leave private games and projects behind. Translation Lab follows
