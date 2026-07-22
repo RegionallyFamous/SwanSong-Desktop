@@ -29,7 +29,8 @@ included with SwanSong 0.2 and later.
 
 [[Translation Lab]] is the complete guide to deterministic routes, Original
 and Patched frame pairs, First Visual Change, on-device text intake, observed
-play, private display provenance, and durable evidence review.
+play, private display provenance, whole-game Translation Surface Suites, and
+durable native-1× evidence review.
 
 If a trusted local agent will help with a long route or evidence task, read
 [[Local MCP and Automation]] before enabling anything.
@@ -47,7 +48,7 @@ Story Forge is included in SwanSong 0.5.0.
 ### I want to make a game
 
 [[SwanSong Studio]] puts New, Assets, Build, Test, Play, Profile, Evidence, and
-Release in one native workspace backed by SwanSong SDK. SwanSong 0.7.2 carries
+Release in one native workspace backed by SwanSong SDK. SwanSong 0.8.0 carries
 the complete content-verified SDK 0.5.0 toolset, including Utility App
 scaffolds, traced builds, scenario compilation, reviewed asset/audio workflows,
 semantic outcomes, budget history, project migration, and the expanded release
@@ -76,15 +77,16 @@ as the command reference. [[Signing and Notarization]] and [[Release Gates]]
 document the trusted-Mac path from a clean source tag to a signed, notarized,
 checksummed public build.
 
-## The 0.7 release
+## The 0.8 release
 
-The current public **0.7.2 release** makes SwanSong safer without making play
-more complicated. The engine runs in its own locked-down service, local
+The current public **0.8.0 release** adds whole-game Translation Surface Suites,
+exact native review, resumable certification, Narrative Pulse, live-reader
+moments, Story Proof, bundled Homebrew title screens, and a compact catalog
+inspector. The 0.7 safety foundation remains: the engine stays isolated, local
 automation proves who is asking, Safe Mode can rescue a launch, and Support
-Bundles leave private games and projects behind. Translation Lab follows
-source provenance farther while keeping exact ranges and writers private.
+Bundles leave private games and projects behind.
 
-Use [[0.7 Release Testing]] for the current tester checklist and the repository
+Use [[0.8 Release Testing]] for the current tester checklist and the repository
 [changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md)
 for the exact source and release history.
 

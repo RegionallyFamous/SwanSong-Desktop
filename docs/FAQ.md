@@ -13,14 +13,14 @@ development desk, light-novel workspace, and guarded physical-cartridge lab.
 
 ## What is included in the public release?
 
-The signed public download is SwanSong 0.7.2. It includes the player,
-library, Time Ribbon, visual save states, Translation Lab, SwanSong Studio with
-the verified SDK 0.5.0, the signed Homebrew Catalog, native updates, and the
-guarded Analogue Pocket setup workflow. Story Forge now includes its Story
-Room, causal and Narrative Pulse maps, chapter editor, packet and live-bookmark
-Reader Labs, research, ImageGen art, music, revision, adaptation drift, and
-SwanSong-backed Story Proof/Story Ribbon workspaces. Cartridge Tools remains available for authorized physical
-cartridge work.
+The signed public download is SwanSong 0.8.0. It includes the player, library,
+Time Ribbon, visual save states, whole-game Translation Surface Suites,
+SwanSong Studio with the verified SDK 0.5.0, the visual signed Homebrew Catalog,
+native updates, and the guarded Analogue Pocket setup workflow. Story Forge
+includes its Story Room, causal and Narrative Pulse maps, chapter editor,
+packet and live-bookmark Reader Labs, research, ImageGen art, music, revision,
+adaptation drift, and SwanSong-backed Story Proof/Story Ribbon workspaces.
+Cartridge Tools remains available for authorized physical cartridge work.
 
 ## Does it include games or require a BIOS?
 
@@ -33,10 +33,11 @@ versioned release notes.
 
 ## Can SwanSong install homebrew directly from GitHub?
 
-Yes. SwanSong 0.7.2 can browse its signed first-party Homebrew Catalog and add
-an authorized original game to your private library. It connects only after
-you choose **Browse Games**, **Refresh**, or a specific download. **Add From
-Mac** remains available for local homebrew.
+Yes. SwanSong 0.8.0 can browse its signed first-party Homebrew Catalog, show
+approved bundled title screens, and add an authorized original game to your
+private library. It connects only after you choose **Browse Games**,
+**Refresh**, or a specific download. **Add From Mac** remains available for
+local homebrew.
 
 ## Does it collect anything?
 
