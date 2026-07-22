@@ -67,6 +67,11 @@ final class StoryForgeWorkspaceModel {
     var revisionReviewer = ""
     var readerPacketID = "reader-01"
     var readerType: StoryForgeReaderType = .general
+    var readerSessionID = "live-reader-01"
+    var readerName = ""
+    var readerSignal: StoryForgeReaderSignal = .laughed
+    var readerBookmarkNote = ""
+    var storyProofPlaythroughURL: URL?
     var selectedArtMomentID = ""
     var artPrompt = ""
     var artPromptNotes = ""
@@ -152,6 +157,7 @@ final class StoryForgeWorkspaceModel {
 
     var storyRoomURL: URL? { projectRoot?.appendingPathComponent("workbench/story-room.md") }
     var storyMapURL: URL? { projectRoot?.appendingPathComponent("workbench/story-map.html") }
+    var storyPulseURL: URL? { projectRoot?.appendingPathComponent("workbench/story-pulse.html") }
     var sceneContextURL: URL? { projectRoot?.appendingPathComponent("workbench/scene-context.json") }
     var researchNotebookURL: URL? { projectRoot?.appendingPathComponent("workbench/research-notebook.json") }
     var genreReportURL: URL? { projectRoot?.appendingPathComponent("workbench/genre-specialist.json") }
@@ -162,6 +168,12 @@ final class StoryForgeWorkspaceModel {
         guard let projectRoot, let slug = projectSummary?.slug else { return nil }
         return projectRoot.appendingPathComponent("workbench/adaptation/\(slug).wscvn.json")
     }
+    var storyProofContractURL: URL? {
+        adaptationProjectURL?.deletingPathExtension().appendingPathExtension("story-proof.contract.json")
+    }
+    var storyProofReportURL: URL? { projectRoot?.appendingPathComponent("workbench/adaptation/story-proof-report.json") }
+    var storyRibbonURL: URL? { projectRoot?.appendingPathComponent("workbench/adaptation/story-ribbon.html") }
+    var readerLabURL: URL? { projectRoot?.appendingPathComponent("workbench/reader-lab", isDirectory: true) }
     var revisionTimelineURL: URL? { projectRoot?.appendingPathComponent("workbench/revisions/decisions.jsonl") }
     var readerPacketsURL: URL? { projectRoot?.appendingPathComponent("workbench/reader-packets", isDirectory: true) }
 
@@ -304,6 +316,7 @@ final class StoryForgeWorkspaceModel {
     func showNextActions() { runWorkbench(.next, title: "Next Best Actions") }
     func prepareStoryRoom() { runWorkbench(.storyRoom, title: "Prepare Story Room") }
     func buildStoryMap() { runWorkbench(.storyMap, title: "Build Story Map") }
+    func buildStoryPulse() { runWorkbench(.storyPulse, title: "Build Narrative Pulse") }
 
     func refreshSceneContext() {
         guard !selectedSceneID.isEmpty else { issue = "Choose a scene first."; return }
@@ -349,6 +362,26 @@ final class StoryForgeWorkspaceModel {
         runWorkbench(.readerImport(response: url), title: "Import Reader Response")
     }
 
+    func beginReaderLab() {
+        let session = readerSessionID.trimmingCharacters(in: .whitespacesAndNewlines)
+        let reader = readerName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard Self.isValidSlug(session), !reader.isEmpty else {
+            issue = "Enter a lowercase hyphenated session name and the real reader's name."
+            return
+        }
+        runWorkbench(.readerLabInit(sessionID: session, readerName: reader, readerType: readerType), title: "Begin Live Reader Lab")
+    }
+
+    func recordReaderBookmark() {
+        let session = readerSessionID.trimmingCharacters(in: .whitespacesAndNewlines)
+        let note = readerBookmarkNote.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard Self.isValidSlug(session), !selectedSceneID.isEmpty, !note.isEmpty else {
+            issue = "Choose a live session and scene, then preserve the reader's short note."
+            return
+        }
+        runWorkbench(.readerBookmark(sessionID: session, sceneID: selectedSceneID, signal: readerSignal, note: note), title: "Record Reader Moment")
+    }
+
     func initializeResearch() { runWorkbench(.researchInit, title: "Create Research Notebook") }
     func checkResearch() { runWorkbench(.researchReport, title: "Check Research Notebook") }
     func checkGenre() { runWorkbench(.genreReport, title: "Genre Specialist") }
@@ -374,6 +407,19 @@ final class StoryForgeWorkspaceModel {
     func checkAdaptationDrift() {
         guard let adaptationProjectURL else { issue = "Compile the adaptation scaffold first."; return }
         runWorkbench(.adaptationDrift(project: adaptationProjectURL), title: "Check Adaptation Drift")
+    }
+
+    func runStoryProof() {
+        guard let project = adaptationProjectURL else { issue = "Compile the adaptation scaffold first."; return }
+        guard let contract = storyProofContractURL, FileManager.default.fileExists(atPath: contract.path) else {
+            issue = "The Story Proof contract is missing. Compile the scaffold, then complete its production evidence."
+            return
+        }
+        guard let playthrough = storyProofPlaythroughURL else {
+            issue = "Choose the exhaustive SwanSong playthrough report first."
+            return
+        }
+        runWorkbench(.storyProof(project: project, contract: contract, playthrough: playthrough), title: "Prove Story Delivery")
     }
 
     func createProject() {

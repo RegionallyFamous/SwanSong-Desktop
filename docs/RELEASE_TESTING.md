@@ -19,10 +19,12 @@ The signed public release is **SwanSong 0.7.2 (15)**.
 - **Story-to-game handoff:** choose **Continue in Studio** after Revision and
   confirm the novel remains open while SwanSong Studio opens for adaptation.
 - **A complete native writing room:** prepare all eight proposal-only Story
-  Room packets, build the causal map, edit and explicitly save a chapter,
+  Room packets, build the causal and Narrative Pulse maps, edit and explicitly save a chapter,
   inspect live scene context, preserve and compare a revision, exchange an
-  unprimed reader packet, check research, intake an ImageGen result, render
-  music auditions, and compile then drift-check an adaptation scaffold.
+  unprimed reader packet, record a hash-bound live reader moment, check
+  research, intake an ImageGen result, render music auditions, compile and
+  drift-check an adaptation scaffold, then build a Story Ribbon from a passing
+  exhaustive SwanSong playthrough.
 - **Cartridge Lab reads:** with authorized hardware, inspect a cartridge and
   create exact, checksum-reported ROM and save backups. Interrupt a controlled
   transfer and confirm no partial destination is promoted.
@@ -105,6 +107,8 @@ The signed public release is **SwanSong 0.7.2 (15)**.
   commands or silently approve editorial, reader, rights, or art review.
 - ImageGen briefs and review packets do not turn procedural placeholders into
   production illustration.
+- Story Proof may establish route, input, presentation, fade, audio, and ending
+  delivery only. It must not present its result as literary or reader approval.
 - Catalog comparisons are review leads, not automatic originality verdicts.
 - Manuscripts, reports, art, music, rights records, approvals, and editions
   stay in the selected local project and must never appear through MCP.

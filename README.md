@@ -99,8 +99,10 @@ publishes an authorized stable release.
 
 Take a light novel from the first idea to a finished EPUB or PDF without
 letting a score pretend to be an editor. Map the story, draft with live scene
-context, preserve revisions, work with unprimed readers and research, audition
-ImageGen art and music, then hand a source-mapped adaptation to SwanSong Studio.
+context, inspect Narrative Pulse, preserve revisions, work with unprimed readers
+and live reaction bookmarks, audition ImageGen art and music, then hand a
+source-mapped adaptation to SwanSong Studio and prove its delivery with the
+visual Story Ribbon.
 
 ### Cartridge Tools
 

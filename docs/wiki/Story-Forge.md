@@ -4,10 +4,12 @@ Writing a novel is not a progress bar. Story Forge gives the whole process a
 home—idea, outline, draft, revision, art, continuity, rights, and release—while
 leaving taste and approval with actual people.
 
-The native workspace can run a proposal-only Story Room, show a causal map,
+The native workspace can run a proposal-only Story Room, show causal and
+Narrative Pulse maps,
 edit chapters with live scene context, preserve revision branches, manage
-unprimed readers and research, prepare ImageGen art, author music auditions,
-measure WonderSwan adaptation drift, manage a catalog, and build EPUB/PDF
+unprimed readers plus live reaction bookmarks and research, prepare ImageGen
+art, author music auditions, measure WonderSwan adaptation drift, prove story
+delivery against exhaustive SwanSong evidence, manage a catalog, and build EPUB/PDF
 editions without turning an automated score into a claim that a book is good.
 
 Story Forge is included in SwanSong 0.5.0.
@@ -15,6 +17,27 @@ Story Forge is included in SwanSong 0.5.0.
 Story Forge remains the source of narrative policy and tools. SwanSong Desktop
 provides the fixed, visible interface. This avoids a second story engine whose
 rules could drift from the repository that owns the framework.
+
+## Why these tools exist
+
+The repository's dated
+[story-quality research note](https://github.com/RegionallyFamous/swansong-story-forge/blob/main/docs/story-quality-research.md)
+connects the product decisions to primary research on causal memory,
+narrative transportation, suspense, and soundtrack interpretation. The short
+version is:
+
+- connected causes help events remain available in memory, so Pulse shows
+  causal load and missing setup/payoff links;
+- attention, affect, imagery, and character engagement matter, so Story Forge
+  keeps human reader reactions instead of manufacturing a quality score;
+- suspense depends on meaningful anticipation and concern, not arbitrary
+  confusion, so open questions retain stakes and consequences; and
+- music changes empathy and scene interpretation, so motif intent and native
+  playback are checked together.
+
+Those findings justify diagnostic questions, not a required emotional curve.
+Every automated report remains subordinate to editors, real readers, players,
+and named human approvals.
 
 ## Connect the framework
 
@@ -64,6 +87,10 @@ visible, and saves only when asked. Choose a stable scene ID to refresh live
 context: goal, pressure, turn, decision, consequence, adjacent scenes,
 relationships, rhythm, art, music, and warnings.
 
+**Build Pulse** adds load-bearing events, open reader questions, motif
+appearances, and long stretches whose tension, warmth, humor, and wonder barely
+change. It is a revision aid, not a required emotional curve or quality score.
+
 Revision snapshots are immutable. Compare any named snapshot with the current
 manuscript, then append an accept, partial, or reject decision and rationale to
 the timeline. Existing decisions are never rewritten.
@@ -93,6 +120,12 @@ not prime readers with the outline or desired revision. Import requires the
 current manuscript hash, a real reader identity, every answer, explicit local
 storage consent, and a response that has not already been imported.
 
+**Live Reader Moments** begins a manuscript-hash-bound session for a named real
+reader. During or immediately after the read, preserve the scene and the
+reader's own short note as laughed, moved, confused, paused, bored, or wanted
+more. SwanSong keeps those moments separate and never turns them into an
+average taste score. A manuscript change requires a fresh session.
+
 The research notebook links sources to claims, claims to scenes, confidence,
 sensitivity, and authenticity review. The genre specialist adds mystery clue
 fairness, romance boundary and reciprocity, cozy sincerity, comedy escalation,
@@ -120,11 +153,20 @@ decides whether the exact music is fun.
 
 ### Adaptation
 
-**Compile Scaffold** creates a `.wscvn.json` authoring project and source map
-that preserve novel scene IDs, turns, decisions, consequences, setups, payoffs,
+**Compile Scaffold** creates a `.wscvn.json` authoring project, source map, and
+per-scene Story Proof contract that preserve novel scene IDs, turns, decisions, consequences, setups, payoffs,
 and lossless 26×4 text pagination. It always says `production_ready: false`.
 **Check Drift** exposes missing mappings, stale manuscript hashes, and possible
 over-condensation after either source changes.
+
+After the production project passes its exhaustive SwanSong playthrough,
+choose that playthrough report and select **Prove Story Delivery**. Story Proof
+checks each declared turn and consequence against the route that reached it,
+accepted input, reachable next state, ImageGen presentation, effective motif,
+presented-raster fade continuity, native audio, and captured ending where
+required. The generated **Story Ribbon** is a readable checkpoint timeline.
+It proves that a beat arrived in the running ROM; it does not prove that the
+beat is well written or replace readers and editors.
 
 Continue in Studio only begins the actual adaptation pass. Production still
 requires authored VN beats and choices, approved ImageGen art, the novel
@@ -134,7 +176,9 @@ fade, and native-audio testing.
 Long route matrices show a flushed `route-N (current/total)` line and retain
 `wall_time_seconds` for every route. The Story Forge doctor terminates the whole
 emulator process group on timeout, so a child player cannot survive and make a
-failed test look like a silent hang.
+failed test look like a silent hang. Its whole-game deadline scales from the
+enumerated route count, within fixed safety bounds; long stories are not given
+the same total wall-clock allowance as four-route stories.
 
 ### Catalog
 

@@ -61,6 +61,33 @@ final class StoryForgeDesktopIntegrationTests: XCTestCase {
             ["--json", "reader-export", manifest.path, "--packet-id", "cold-reader-01", "--reader-type", "intended-audience"]
         )
         XCTAssertEqual(
+            StoryForgeCommand.workbench(action: .storyPulse, manifest: manifest).arguments,
+            ["--json", "story-pulse", manifest.path]
+        )
+        XCTAssertEqual(
+            StoryForgeCommand.workbench(
+                action: .readerBookmark(
+                    sessionID: "live-reader-01",
+                    sceneID: "scene-03",
+                    signal: .wantedMore,
+                    note: "I wanted to see the answer immediately."
+                ),
+                manifest: manifest
+            ).arguments,
+            ["--json", "reader-bookmark", manifest.path, "--session", "live-reader-01", "--scene", "scene-03", "--signal", "wanted-more", "--note", "I wanted to see the answer immediately."]
+        )
+        XCTAssertEqual(
+            StoryForgeCommand.workbench(
+                action: .storyProof(
+                    project: URL(fileURLWithPath: "/tmp/game.wscvn.json"),
+                    contract: URL(fileURLWithPath: "/tmp/story-proof.json"),
+                    playthrough: URL(fileURLWithPath: "/tmp/playthrough.json")
+                ),
+                manifest: manifest
+            ).arguments,
+            ["--json", "story-proof", manifest.path, "--project", "/tmp/game.wscvn.json", "--contract", "/tmp/story-proof.json", "--playthrough", "/tmp/playthrough.json"]
+        )
+        XCTAssertEqual(
             Set(StoryForgeReportKind.allCases.map(\.scriptName)).count,
             StoryForgeReportKind.allCases.count
         )

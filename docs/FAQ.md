@@ -17,8 +17,9 @@ The signed public download is SwanSong 0.7.2. It includes the player,
 library, Time Ribbon, visual save states, Translation Lab, SwanSong Studio with
 the verified SDK 0.5.0, the signed Homebrew Catalog, native updates, and the
 guarded Analogue Pocket setup workflow. Story Forge now includes its Story
-Room, map, chapter editor, readers, research, art, music, revision, and
-adaptation workspaces. Cartridge Tools remains available for authorized physical
+Room, causal and Narrative Pulse maps, chapter editor, packet and live-bookmark
+Reader Labs, research, ImageGen art, music, revision, adaptation drift, and
+SwanSong-backed Story Proof/Story Ribbon workspaces. Cartridge Tools remains available for authorized physical
 cartridge work.
 
 ## Does it include games or require a BIOS?
