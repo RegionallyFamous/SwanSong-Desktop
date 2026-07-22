@@ -13,10 +13,12 @@ the evidence beside the project. The ROM never enters the normal game library.
 
 - record a deterministic test from clean boot;
 - compare Original and Patched at the exact same frame;
+- run a source-free matrix of case-specific diagnostic viewers;
 - build a suite of routes and run them together;
 - locate the first frame where the two builds diverge;
 - turn reviewed on-screen text into a private translation draft;
-- advance long observed-play sequences one visible step at a time; and
+- append bounded observed-play sequences, capture named checkpoints, and branch
+  from a clean-boot-replayed prefix; and
 - investigate a selected rectangle without sending private source addresses
   or cartridge lineage through automation.
 
@@ -44,6 +46,54 @@ output, or a failed command stops before mutation. The linked project identity
 is pinned across asynchronous stages, and every successful Status re-indexes
 route, evidence, baseline, and suite history so externally changed artifacts
 cannot keep a stale integrity label.
+
+## Translation Surface Suite
+
+The **Translation Surface Suite** is the certification layer above ordinary
+route captures. A title-specific toolkit builder remains responsible for
+creating diagnostic viewer ROMs. SwanSong imports only a source-free
+`swan-song-translation-surface-suite-v1` manifest and owns generic execution,
+native review, and the final evidence handoff.
+
+Each stable case ID binds:
+
+- a family name and exact Original and Patched diagnostic ROM byte counts and
+  SHA-256 digests;
+- one bounded `swan-song-frame-input-plan-v1` file and digest;
+- one or more strictly ordered named checkpoints;
+- exact expected Original and Patched native game-raster hashes at every
+  checkpoint; and
+- one or more native-pixel rectangles where change is allowed.
+
+Import validates every project-contained file before execution. Absolute,
+escaping, symlinked, changed, oversized, and `.partial-*` paths fail closed.
+The selected ABI must match both the manifest and SwanSong's bundled ares
+engine.
+
+**Run Suite** creates a new deterministic engine session for each case and each
+lane, always using clean power-on, empty isolated persistence, Open IPL, and the
+fixed proof RTC. A single replay can capture several named screens. A case
+fails automatically when either endpoint hash is wrong, the pixel delta is
+zero, orientation or dimensions drift, or any pixel outside the declared
+change regions changes. Pixel difference is still only a review target.
+
+Progress is saved after every case. **Resume Failed** rehashes the retained
+artifacts for every passing case and re-runs only failed or damaged cases from
+clean boot. Once all machine assertions pass, SwanSong writes an immutable
+execution report and opens the stable-ID review queue.
+
+The queue presents Original, Patched, blink, and difference views at exact
+native 1×. Reviewers record separate Semantic, Functional microcopy, and Visual
+fit verdicts. Condensed rendering must be flagged and approved explicitly, and
+audio must be marked observed with no issue. No visual or audio hash approves
+itself.
+
+**Create Final Certificate** rehashes every stable evidence path, rejects
+staging paths, requires all review dimensions and audio observations, and
+writes one immutable `swan-song-translation-surface-certification-v1` report.
+The handoff includes engine identity, ABI, coverage counts, endpoint and change-
+region results, native image and audio paths/digests, and the exact review
+sidecars.
 
 ## Deterministic route tests
 
@@ -201,9 +251,11 @@ argument. Full schemas, commands, privacy
 boundaries, and failure behavior are in [[Local MCP and Automation]].
 
 The MCP server also supports one retained observed-play session for long
-tactical sequences. Each visible bounded step atomically extends a private
-from-boot plan. If the MCP host exits, Resume Observed Play validates the
-private bindings and replays that plan from boot before accepting another
+tactical sequences. A single step or a bounded multi-event sequence atomically
+extends a private from-boot plan; sequences can return selected named
+checkpoints. A branch creates a new active route only after replaying its saved
+prefix from clean boot. If the MCP host exits, Resume Observed Play validates
+the private bindings and replays that plan from boot before accepting another
 step. Finishing unloads the live session and sends that exact plan through
 `capture-plan`; live state or a save-state shortcut is never accepted as final
 evidence.

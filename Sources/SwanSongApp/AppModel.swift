@@ -18,6 +18,25 @@ private final class StateLoadUndoActionTarget: NSObject {
     }
 }
 
+private final class TranslationSurfaceProgressRelay: @unchecked Sendable {
+    weak var model: AppModel?
+    let projectID: String
+
+    @MainActor
+    init(model: AppModel, projectID: String) {
+        self.model = model
+        self.projectID = projectID
+    }
+
+    @MainActor
+    func update(completed: Int, total: Int, caseID: String) {
+        guard model?.translationProject?.id == projectID else { return }
+        model?.translationSurfaceCompletedCaseCount = completed
+        model?.translationSurfaceTotalCaseCount = total
+        model?.translationSurfaceCurrentCaseID = caseID.isEmpty ? nil : caseID
+    }
+}
+
 private enum HomebrewCatalogAppError: LocalizedError {
     case libraryChanged
 
@@ -119,6 +138,21 @@ final class AppModel {
             pointerReport: TranslationRAMPointerReport?,
             pointerIssue: String?
         )
+        case failure(String)
+    }
+
+    private enum TranslationSurfaceRunOutcome: Sendable {
+        case success(TranslationSurfaceSuiteRunResult)
+        case failure(String)
+    }
+
+    private enum TranslationSurfaceLoadOutcome: Sendable {
+        case success(TranslationSurfaceSuiteLoadedManifest)
+        case failure(String)
+    }
+
+    private enum TranslationSurfaceCertificationOutcome: Sendable {
+        case success(TranslationSurfaceCertificationReport, URL)
         case failure(String)
     }
 
@@ -474,6 +508,26 @@ final class AppModel {
     var translationSuiteCurrentCaseIndex: Int?
     var translationSuiteTotalCaseCount = 0
     var translationSuiteCaseResults: [TranslationSuiteCaseResult] = []
+    var translationSurfaceSuite: TranslationSurfaceSuiteLoadedManifest?
+    var translationSurfaceProgress: TranslationSurfaceSuiteProgress?
+    var translationSurfaceExecutionReport: TranslationSurfaceExecutionReport?
+    var translationSurfaceExecutionReportURL: URL?
+    var translationSurfaceReviews: [TranslationSurfaceCaseReview] = []
+    var selectedTranslationSurfaceCaseID: String?
+    var selectedTranslationSurfaceCheckpointID: String?
+    var translationSurfaceIsRunning = false
+    var translationSurfaceCompletedCaseCount = 0
+    var translationSurfaceTotalCaseCount = 0
+    var translationSurfaceCurrentCaseID: String?
+    var translationSurfaceCertificationURL: URL?
+    var translationSurfaceSelectedEngineABI: UInt32 = 10
+    var translationSurfaceSemanticVerdict: TranslationSurfaceReviewVerdict = .pending
+    var translationSurfaceFunctionalMicrocopyVerdict: TranslationSurfaceReviewVerdict = .pending
+    var translationSurfaceVisualFitVerdict: TranslationSurfaceReviewVerdict = .pending
+    var translationSurfaceCondensedRendering = false
+    var translationSurfaceCondensedRenderingVerdict: TranslationSurfaceReviewVerdict = .pending
+    var translationSurfaceAudioStatus: TranslationSurfaceAudioReviewStatus = .notObserved
+    var translationSurfaceReviewNotes = ""
     var isCapturingTranslationEvidence = false
     var translationComparisonPhase: TranslationComparisonPhase?
     var fitWindowRequestID = 0
@@ -628,6 +682,7 @@ final class AppModel {
     private var translationComparisonRoute: TranslationRoute?
     private var translationSuiteQueue: [TranslationRouteSummary] = []
     private var translationSuiteStartedAt: Date?
+    private var translationSurfaceTask: Task<Void, Never>?
     private var translationComparisonIsTransitioning = false
     private var translationVisualDivergenceTask: Task<Void, Never>?
     private var translationVisualDivergenceRoute: TranslationRoute?
@@ -1586,6 +1641,64 @@ final class AppModel {
         )
     }
 
+    var canRunTranslationSurfaceSuite: Bool {
+        engineCanExecute
+            && !isPlaying
+            && !translationToolIsRunning
+            && !translationSurfaceIsRunning
+            && translationSurfaceSuite != nil
+    }
+
+    var translationSurfaceRunProgress: Double {
+        guard translationSurfaceTotalCaseCount > 0 else { return 0 }
+        return min(
+            Double(translationSurfaceCompletedCaseCount)
+                / Double(translationSurfaceTotalCaseCount),
+            1
+        )
+    }
+
+    var selectedTranslationSurfaceCaseResult: TranslationSurfaceCaseResult? {
+        guard let selectedTranslationSurfaceCaseID else { return nil }
+        return translationSurfaceExecutionReport?.cases.first {
+            $0.id == selectedTranslationSurfaceCaseID
+        }
+    }
+
+    var selectedTranslationSurfaceCheckpointResult: TranslationSurfaceCheckpointResult? {
+        guard let selectedTranslationSurfaceCheckpointID else { return nil }
+        return selectedTranslationSurfaceCaseResult?.checkpoints.first {
+            $0.id == selectedTranslationSurfaceCheckpointID
+        }
+    }
+
+    var translationSurfaceFailedCaseCount: Int {
+        translationSurfaceProgress?.cases.count(where: { $0.status == .failed }) ?? 0
+    }
+
+    var translationSurfaceApprovedReviewCount: Int {
+        translationSurfaceReviews.count(where: \.isApprovedForCertification)
+    }
+
+    var canCertifyTranslationSurfaceSuite: Bool {
+        !translationSurfaceIsRunning
+            && translationSurfaceExecutionReport != nil
+            && translationSurfaceExecutionReportURL != nil
+            && translationSurfaceReviews.count
+                == translationSurfaceExecutionReport?.cases.count
+            && translationSurfaceReviews.allSatisfy(\.isApprovedForCertification)
+            && translationSurfaceCertificationURL == nil
+    }
+
+    func translationSurfaceURL(
+        for binding: TranslationSurfaceArtifactBinding
+    ) -> URL? {
+        guard let project = translationProject else { return nil }
+        let url = project.rootURL.appendingPathComponent(binding.path).standardizedFileURL
+        guard project.contains(url) else { return nil }
+        return url
+    }
+
     func translationBaseline(
         for route: TranslationRouteSummary
     ) -> TranslationRouteBaselineSummary? {
@@ -2209,6 +2322,289 @@ final class AppModel {
         translationComparisonPhase = .preparing
         presentedNotice = nil
         runGuardedTranslationPack(completion: .verifyRoute(route))
+    }
+
+    func chooseTranslationSurfaceSuite() {
+        guard translationProject != nil else { return }
+        let panel = NSOpenPanel()
+        panel.title = "Import Translation Surface Suite"
+        panel.message = "Choose a source-free suite manifest inside this private translation project."
+        panel.prompt = "Import Suite"
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        panel.canChooseFiles = true
+        panel.allowedContentTypes = [.json]
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        importTranslationSurfaceSuite(at: url)
+    }
+
+    func importTranslationSurfaceSuite(at url: URL) {
+        guard let project = translationProject, !translationSurfaceIsRunning else { return }
+        translationSurfaceTask?.cancel()
+        translationSurfaceIsRunning = true
+        translationSurfaceCurrentCaseID = "Checking manifest"
+        translationSurfaceTask = Task { [weak self] in
+            let worker = Task.detached(priority: .userInitiated) {
+                do {
+                    return TranslationSurfaceLoadOutcome.success(
+                        try TranslationSurfaceSuiteRunner.load(
+                            manifestURL: url,
+                            project: project
+                        )
+                    )
+                } catch {
+                    return TranslationSurfaceLoadOutcome.failure(error.localizedDescription)
+                }
+            }
+            let outcome = await withTaskCancellationHandler {
+                await worker.value
+            } onCancel: {
+                worker.cancel()
+            }
+            guard let self, self.translationProject?.id == project.id else { return }
+            self.translationSurfaceIsRunning = false
+            self.translationSurfaceCurrentCaseID = nil
+            self.translationSurfaceTask = nil
+            switch outcome {
+            case let .success(loaded):
+                self.translationSurfaceSuite = loaded
+                self.translationSurfaceProgress = nil
+                self.translationSurfaceExecutionReport = nil
+                self.translationSurfaceExecutionReportURL = nil
+                self.translationSurfaceReviews = []
+                self.translationSurfaceCertificationURL = nil
+                self.translationSurfaceSelectedEngineABI = loaded.manifest.requiredEngineABI
+                self.translationSurfaceCompletedCaseCount = 0
+                self.translationSurfaceTotalCaseCount = loaded.manifest.cases.count
+                self.selectedTranslationSurfaceCaseID = loaded.manifest.cases.first?.id
+                self.selectedTranslationSurfaceCheckpointID = loaded.manifest.cases.first?
+                    .checkpoints.first?.id
+                self.loadTranslationSurfaceReviewDraft()
+                self.presentedNotice = "Imported \(loaded.manifest.cases.count) translation surfaces across \(Set(loaded.manifest.cases.map(\.family)).count) families."
+            case let .failure(detail):
+                self.presentedError = detail
+            }
+        }
+    }
+
+    func runTranslationSurfaceSuite() {
+        guard let project = translationProject,
+              let loaded = translationSurfaceSuite,
+              canRunTranslationSurfaceSuite else { return }
+        let selectedABI = translationSurfaceSelectedEngineABI
+        translationSurfaceTask?.cancel()
+        translationSurfaceIsRunning = true
+        translationSurfaceCompletedCaseCount = 0
+        translationSurfaceTotalCaseCount = loaded.manifest.cases.count
+        translationSurfaceCurrentCaseID = nil
+        presentedNotice = nil
+        let progressRelay = TranslationSurfaceProgressRelay(
+            model: self,
+            projectID: project.id
+        )
+        translationSurfaceTask = Task { [weak self] in
+            let worker = Task.detached(priority: .userInitiated) {
+                do {
+                    let result = try TranslationSurfaceSuiteRunner.run(
+                        loaded,
+                        project: project,
+                        selectedEngineABI: selectedABI,
+                        shouldCancel: { Task.isCancelled },
+                        progressChanged: { completed, total, caseID in
+                            Task { @MainActor in
+                                progressRelay.update(
+                                    completed: completed,
+                                    total: total,
+                                    caseID: caseID
+                                )
+                            }
+                        }
+                    )
+                    return TranslationSurfaceRunOutcome.success(result)
+                } catch {
+                    return TranslationSurfaceRunOutcome.failure(error.localizedDescription)
+                }
+            }
+            let outcome = await withTaskCancellationHandler {
+                await worker.value
+            } onCancel: {
+                worker.cancel()
+            }
+            guard let self, self.translationProject?.id == project.id else { return }
+            self.translationSurfaceIsRunning = false
+            self.translationSurfaceCurrentCaseID = nil
+            self.translationSurfaceTask = nil
+            switch outcome {
+            case let .success(result):
+                self.translationSurfaceProgress = result.progress
+                self.translationSurfaceExecutionReport = result.report
+                self.translationSurfaceExecutionReportURL = result.reportURL
+                self.translationSurfaceCompletedCaseCount = result.progress.cases.count
+                if let reportURL = result.reportURL {
+                    do {
+                        self.translationSurfaceReviews = try TranslationSurfaceSuiteReviewStore
+                            .loadReviews(executionReportURL: reportURL, project: project)
+                    } catch {
+                        self.presentedError = "The native review queue could not be read: \(error.localizedDescription)"
+                    }
+                }
+                if let first = result.report?.cases.first {
+                    self.selectTranslationSurfaceCase(first.id)
+                }
+                let failures = result.progress.cases.count(where: { $0.status == .failed })
+                if failures > 0 {
+                    self.presentedNotice = "\(failures) surface case\(failures == 1 ? "" : "s") failed. Run again to resume only the failed cases."
+                } else if let report = result.report {
+                    self.presentedNotice = "All \(report.coverage.caseCount) surfaces passed their endpoint and change-region checks. Native review is ready."
+                }
+            case let .failure(detail):
+                self.presentedError = detail
+            }
+        }
+    }
+
+    func selectTranslationSurfaceCase(_ id: String) {
+        guard let result = translationSurfaceExecutionReport?.cases.first(where: { $0.id == id }) else {
+            selectedTranslationSurfaceCaseID = id
+            selectedTranslationSurfaceCheckpointID = translationSurfaceSuite?.manifest.cases
+                .first(where: { $0.id == id })?.checkpoints.first?.id
+            loadTranslationSurfaceReviewDraft()
+            return
+        }
+        selectedTranslationSurfaceCaseID = result.id
+        if !result.checkpoints.contains(where: { $0.id == selectedTranslationSurfaceCheckpointID }) {
+            selectedTranslationSurfaceCheckpointID = result.checkpoints.first?.id
+        }
+        loadTranslationSurfaceReviewDraft()
+    }
+
+    func selectTranslationSurfaceCheckpoint(_ id: String) {
+        guard selectedTranslationSurfaceCaseResult?.checkpoints.contains(where: { $0.id == id }) == true else {
+            return
+        }
+        selectedTranslationSurfaceCheckpointID = id
+        loadTranslationSurfaceReviewDraft()
+    }
+
+    func saveTranslationSurfaceReview() {
+        guard let project = translationProject,
+              let reportURL = translationSurfaceExecutionReportURL,
+              let execution = translationSurfaceExecutionReport,
+              let result = selectedTranslationSurfaceCaseResult,
+              let checkpointID = selectedTranslationSurfaceCheckpointID else { return }
+        var existingByID = Dictionary(
+            uniqueKeysWithValues: translationSurfaceReviews
+                .first(where: { $0.caseID == result.id })?
+                .checkpoints.map { ($0.checkpointID, $0) } ?? []
+        )
+        let trimmedNotes = translationSurfaceReviewNotes.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
+        existingByID[checkpointID] = TranslationSurfaceCheckpointReview(
+            checkpointID: checkpointID,
+            semantic: translationSurfaceSemanticVerdict,
+            functionalMicrocopy: translationSurfaceFunctionalMicrocopyVerdict,
+            visualFit: translationSurfaceVisualFitVerdict,
+            condensedRendering: translationSurfaceCondensedRendering,
+            condensedRenderingVerdict: translationSurfaceCondensedRendering
+                ? translationSurfaceCondensedRenderingVerdict
+                : nil,
+            notes: trimmedNotes.isEmpty ? nil : trimmedNotes
+        )
+        let checkpoints = result.checkpoints.map { checkpoint in
+            existingByID[checkpoint.id] ?? TranslationSurfaceCheckpointReview(
+                checkpointID: checkpoint.id,
+                semantic: .pending,
+                functionalMicrocopy: .pending,
+                visualFit: .pending,
+                condensedRendering: false
+            )
+        }
+        let review = TranslationSurfaceCaseReview(
+            suiteID: execution.suiteID,
+            caseID: result.id,
+            audioStatus: translationSurfaceAudioStatus,
+            checkpoints: checkpoints
+        )
+        do {
+            _ = try TranslationSurfaceSuiteReviewStore.save(
+                review,
+                executionReportURL: reportURL,
+                project: project
+            )
+            translationSurfaceReviews = try TranslationSurfaceSuiteReviewStore.loadReviews(
+                executionReportURL: reportURL,
+                project: project
+            )
+            loadTranslationSurfaceReviewDraft()
+            presentedNotice = review.isApprovedForCertification
+                ? "Approved native review for \(result.id)."
+                : "Saved the separate review verdicts for \(result.id)."
+        } catch {
+            presentedError = error.localizedDescription
+        }
+    }
+
+    func certifyTranslationSurfaceSuite() {
+        guard let project = translationProject,
+              let reportURL = translationSurfaceExecutionReportURL,
+              canCertifyTranslationSurfaceSuite else { return }
+        translationSurfaceTask?.cancel()
+        translationSurfaceIsRunning = true
+        translationSurfaceCurrentCaseID = "Preparing final handoff"
+        translationSurfaceTask = Task { [weak self] in
+            let worker = Task.detached(priority: .userInitiated) {
+                do {
+                    let result = try TranslationSurfaceSuiteReviewStore.certify(
+                        executionReportURL: reportURL,
+                        project: project
+                    )
+                    return TranslationSurfaceCertificationOutcome.success(
+                        result.report,
+                        result.url
+                    )
+                } catch {
+                    return TranslationSurfaceCertificationOutcome.failure(
+                        error.localizedDescription
+                    )
+                }
+            }
+            let outcome = await withTaskCancellationHandler {
+                await worker.value
+            } onCancel: {
+                worker.cancel()
+            }
+            guard let self, self.translationProject?.id == project.id else { return }
+            self.translationSurfaceIsRunning = false
+            self.translationSurfaceCurrentCaseID = nil
+            self.translationSurfaceTask = nil
+            switch outcome {
+            case let .success(report, url):
+                self.translationSurfaceCertificationURL = url
+                self.presentedNotice = "Created the immutable certificate for \(report.coverage.caseCount) surfaces and \(report.nativeFrameReviewCount) native-frame reviews."
+                NSWorkspace.shared.activateFileViewerSelecting([url])
+            case let .failure(detail):
+                self.presentedError = detail
+            }
+        }
+    }
+
+    private func loadTranslationSurfaceReviewDraft() {
+        let caseReview = translationSurfaceReviews.first {
+            $0.caseID == selectedTranslationSurfaceCaseID
+        }
+        let checkpointReview = caseReview?.checkpoints.first {
+            $0.checkpointID == selectedTranslationSurfaceCheckpointID
+        }
+        translationSurfaceSemanticVerdict = checkpointReview?.semantic ?? .pending
+        translationSurfaceFunctionalMicrocopyVerdict = checkpointReview?.functionalMicrocopy
+            ?? .pending
+        translationSurfaceVisualFitVerdict = checkpointReview?.visualFit ?? .pending
+        translationSurfaceCondensedRendering = checkpointReview?.condensedRendering ?? false
+        translationSurfaceCondensedRenderingVerdict = checkpointReview?.condensedRenderingVerdict
+            ?? .pending
+        translationSurfaceAudioStatus = caseReview?.audioStatus ?? .notObserved
+        translationSurfaceReviewNotes = checkpointReview?.notes ?? ""
     }
 
     func verifyTranslationSuite() {
@@ -6588,6 +6984,21 @@ final class AppModel {
 
     private func resetTranslationProjectState() {
         resetTranslationTextIntake()
+        translationSurfaceTask?.cancel()
+        translationSurfaceTask = nil
+        translationSurfaceSuite = nil
+        translationSurfaceProgress = nil
+        translationSurfaceExecutionReport = nil
+        translationSurfaceExecutionReportURL = nil
+        translationSurfaceReviews = []
+        selectedTranslationSurfaceCaseID = nil
+        selectedTranslationSurfaceCheckpointID = nil
+        translationSurfaceIsRunning = false
+        translationSurfaceCompletedCaseCount = 0
+        translationSurfaceTotalCaseCount = 0
+        translationSurfaceCurrentCaseID = nil
+        translationSurfaceCertificationURL = nil
+        translationSurfaceSelectedEngineABI = 10
         translationVisualDivergenceGeneration = UUID()
         translationVisualDivergenceTask?.cancel()
         translationVisualDivergenceTask = nil

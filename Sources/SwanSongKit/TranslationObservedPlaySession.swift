@@ -160,6 +160,93 @@ public struct TranslationObservedPlayStepCapture: Sendable {
     public let audioWAV: Data
 }
 
+public struct TranslationObservedPlaySequenceSegment: Codable, Equatable, Sendable {
+    public let inputs: [String]
+    public let frames: UInt64
+    public let checkpointID: String?
+
+    public init(inputs: [String], frames: UInt64, checkpointID: String? = nil) {
+        self.inputs = inputs
+        self.frames = frames
+        self.checkpointID = checkpointID
+    }
+}
+
+public struct TranslationObservedPlaySequenceCheckpointReport: Codable, Equatable, Sendable {
+    public let checkpointID: String
+    public let segmentIndex: Int
+    public let cumulativeFrames: UInt64
+    public let frameNumber: UInt64
+    public let gameRasterSHA256: String
+    public let captureWidth: Int
+    public let captureHeight: Int
+    public let capturePNG_SHA256: String
+}
+
+public struct TranslationObservedPlaySequenceReport: Codable, Equatable, Sendable {
+    public static let currentSchema = "swan-song-observed-play-sequence-report-v1"
+
+    public let schema: String
+    public let sessionID: String
+    public let segmentCount: Int
+    public let sequenceFrames: UInt64
+    public let cumulativeFrames: UInt64
+    public let scheduledInputTransitions: Int
+    public let scheduledInputFrames: UInt64
+    public let finalFrameNumber: UInt64
+    public let finalGameRasterSHA256: String
+    public let finalCaptureWidth: Int
+    public let finalCaptureHeight: Int
+    public let finalCapturePNG_SHA256: String
+    public let checkpoints: [TranslationObservedPlaySequenceCheckpointReport]
+    public let audio: SwanSongPlaytestAudioReport
+    public let planSHA256: String
+    public let privateManifestSHA256: String
+}
+
+public struct TranslationObservedPlaySequenceCheckpointCapture: Sendable {
+    public let checkpointID: String
+    public let png: Data
+
+    public init(checkpointID: String, png: Data) {
+        self.checkpointID = checkpointID
+        self.png = png
+    }
+}
+
+public struct TranslationObservedPlaySequenceCapture: Sendable {
+    public let report: TranslationObservedPlaySequenceReport
+    public let finalPNG: Data
+    public let checkpointPNGs: [TranslationObservedPlaySequenceCheckpointCapture]
+    public let audioWAV: Data
+
+    public init(
+        report: TranslationObservedPlaySequenceReport,
+        finalPNG: Data,
+        checkpointPNGs: [TranslationObservedPlaySequenceCheckpointCapture],
+        audioWAV: Data
+    ) {
+        self.report = report
+        self.finalPNG = finalPNG
+        self.checkpointPNGs = checkpointPNGs
+        self.audioWAV = audioWAV
+    }
+}
+
+public struct TranslationObservedPlayBranchReport: Codable, Equatable, Sendable {
+    public static let currentSchema = "swan-song-observed-play-branch-report-v1"
+
+    public let schema: String
+    public let sourceSessionID: String
+    public let sessionID: String
+    public let cumulativeFrames: UInt64
+    public let scheduledInputTransitions: Int
+    public let scheduledInputFrames: UInt64
+    public let planSHA256: String
+    public let privateManifestSHA256: String
+    public let replayedFromBoot: Bool
+}
+
 public struct TranslationObservedPlayFinishReport: Codable, Equatable, Sendable {
     public static let currentSchema = "swan-song-observed-play-finish-report-v1"
 
@@ -188,6 +275,8 @@ public struct TranslationObservedPlayCancelReport: Codable, Equatable, Sendable 
 /// sends the exact accumulated plan through the clean-boot paired proof path.
 public final class TranslationObservedPlaySession: @unchecked Sendable {
     public static let maximumStepFrames: UInt64 = 600
+    public static let maximumSequenceFrames: UInt64 = 24_000
+    public static let maximumSequenceSegments = 256
 
     public let id: String
     public let role: TranslationROMRole
@@ -671,6 +760,201 @@ public final class TranslationObservedPlaySession: @unchecked Sendable {
         }
     }
 
+    /// Atomically appends several bounded input holds and captures only the
+    /// named intermediate endpoints requested by the author. The cumulative
+    /// plan is persisted once, after every segment succeeds.
+    public func stepSequence(
+        _ segments: [TranslationObservedPlaySequenceSegment]
+    ) throws -> TranslationObservedPlaySequenceCapture {
+        guard status == .active, !engineClosed else {
+            throw TranslationLabError.invalidRoute(
+                "the observed-play session is no longer accepting input"
+            )
+        }
+        guard !segments.isEmpty, segments.count <= Self.maximumSequenceSegments else {
+            throw TranslationLabError.invalidRoute(
+                "an observed-play sequence must contain 1 through \(Self.maximumSequenceSegments) segments"
+            )
+        }
+        var sequenceFrames: UInt64 = 0
+        var checkpointIDs: Set<String> = []
+        var resolvedInputs: [EngineInput] = []
+        for segment in segments {
+            guard segment.frames >= 1, segment.frames <= Self.maximumStepFrames,
+                  sequenceFrames <= Self.maximumSequenceFrames - segment.frames else {
+                throw TranslationLabError.invalidRoute(
+                    "an observed-play sequence exceeds its bounded frame or segment limits"
+                )
+            }
+            guard Set(segment.inputs).count == segment.inputs.count else {
+                throw TranslationLabError.invalidRoute(
+                    "an observed-play sequence segment repeats a control"
+                )
+            }
+            let input = try TranslationFrameInputPlan.engineInput(named: segment.inputs)
+            guard input.rawValue & ~hardware.validInputMask == 0 else {
+                throw TranslationLabError.invalidRoute(
+                    "an observed-play sequence uses controls for different hardware"
+                )
+            }
+            if let checkpointID = segment.checkpointID {
+                guard Self.isValidCheckpointID(checkpointID),
+                      checkpointIDs.insert(checkpointID).inserted else {
+                    throw TranslationLabError.invalidRoute(
+                        "an observed-play sequence checkpoint ID is invalid or repeated"
+                    )
+                }
+            }
+            sequenceFrames += segment.frames
+            resolvedInputs.append(input)
+        }
+        guard cumulativeFrames <= TranslationFrameInputPlan.maximumFrames - sequenceFrames else {
+            throw TranslationLabError.invalidRoute(
+                "the observed-play session reached the maximum cumulative plan length"
+            )
+        }
+
+        let rollbackState = try engine.captureState()
+        let previousFrames = cumulativeFrames
+        let previousInputFrames = scheduledInputFrames
+        let previousEvents = events
+        let previousInput = lastInput
+        do {
+            var nextFrames = cumulativeFrames
+            var nextInputFrames = scheduledInputFrames
+            var nextEvents = events
+            var nextInput = lastInput
+            var audio = PlaytestAudioAccumulator()
+            var checkpointReports: [TranslationObservedPlaySequenceCheckpointReport] = []
+            var checkpointCaptures: [TranslationObservedPlaySequenceCheckpointCapture] = []
+
+            for (index, segment) in segments.enumerated() {
+                let input = resolvedInputs[index]
+                if nextInput == nil || nextInput?.rawValue != input.rawValue {
+                    nextEvents.append(
+                        TranslationFrameInputPlanEvent(
+                            frameIndex: nextFrames,
+                            inputs: segment.inputs
+                        )
+                    )
+                }
+                for _ in 0..<segment.frames {
+                    try engine.setInput(input)
+                    try engine.runFrame()
+                    audio.append(try engine.audioBatch())
+                }
+                nextFrames += segment.frames
+                if !input.isEmpty { nextInputFrames += segment.frames }
+                nextInput = input
+                if let checkpointID = segment.checkpointID {
+                    let frame = try engine.videoFrame()
+                    let png = try EngineFramePNGCodec.encode(frame)
+                    checkpointReports.append(
+                        TranslationObservedPlaySequenceCheckpointReport(
+                            checkpointID: checkpointID,
+                            segmentIndex: index,
+                            cumulativeFrames: nextFrames,
+                            frameNumber: frame.number,
+                            gameRasterSHA256: try TranslationRouteCheckpoint.fingerprint(frame),
+                            captureWidth: frame.width,
+                            captureHeight: frame.height,
+                            capturePNG_SHA256: Self.sha256(png)
+                        )
+                    )
+                    checkpointCaptures.append(
+                        TranslationObservedPlaySequenceCheckpointCapture(
+                            checkpointID: checkpointID,
+                            png: png
+                        )
+                    )
+                }
+            }
+
+            let finalFrame = try engine.videoFrame()
+            let finalPNG = try EngineFramePNGCodec.encode(finalFrame)
+            let audioWAV = audio.encodeFinalWindowWAV()
+            cumulativeFrames = nextFrames
+            scheduledInputFrames = nextInputFrames
+            events = nextEvents
+            lastInput = nextInput
+            if cumulativeFrames >= 3 { try plan.validate(for: hardware) }
+            let manifestDigest = try persist(status: .active)
+            let report = TranslationObservedPlaySequenceReport(
+                schema: TranslationObservedPlaySequenceReport.currentSchema,
+                sessionID: id,
+                segmentCount: segments.count,
+                sequenceFrames: sequenceFrames,
+                cumulativeFrames: cumulativeFrames,
+                scheduledInputTransitions: events.count,
+                scheduledInputFrames: scheduledInputFrames,
+                finalFrameNumber: finalFrame.number,
+                finalGameRasterSHA256: try TranslationRouteCheckpoint.fingerprint(finalFrame),
+                finalCaptureWidth: finalFrame.width,
+                finalCaptureHeight: finalFrame.height,
+                finalCapturePNG_SHA256: Self.sha256(finalPNG),
+                checkpoints: checkpointReports,
+                audio: audio.finish(finalWindowWAV: audioWAV),
+                planSHA256: Self.sha256(try Self.encoded(plan)),
+                privateManifestSHA256: manifestDigest
+            )
+            return TranslationObservedPlaySequenceCapture(
+                report: report,
+                finalPNG: finalPNG,
+                checkpointPNGs: checkpointCaptures,
+                audioWAV: audioWAV
+            )
+        } catch {
+            cumulativeFrames = previousFrames
+            scheduledInputFrames = previousInputFrames
+            events = previousEvents
+            lastInput = previousInput
+            try? engine.restoreState(rollbackState)
+            _ = try? persist(status: .active)
+            throw error
+        }
+    }
+
+    /// Creates a new retained session by replaying an exact prefix from clean
+    /// boot. Callers decide when to close the source session and adopt the branch.
+    public func branch(
+        throughFrame: UInt64
+    ) throws -> (session: TranslationObservedPlaySession, report: TranslationObservedPlayBranchReport) {
+        guard status == .active, !engineClosed else {
+            throw TranslationLabError.invalidRoute(
+                "the observed-play session cannot branch in its current state"
+            )
+        }
+        guard throughFrame >= 3, throughFrame <= cumulativeFrames else {
+            throw TranslationLabError.invalidRoute(
+                "an observed-play branch must retain 3 through \(cumulativeFrames) frames"
+            )
+        }
+        let prefix = TranslationFrameInputPlan(
+            totalFrames: throughFrame,
+            events: events.filter { $0.frameIndex < throughFrame }
+        )
+        try prefix.validate(for: hardware)
+        let branched = try TranslationObservedPlaySession(project: project, role: role)
+        do {
+            let manifestDigest = try branched.applyPrefix(prefix)
+            let report = TranslationObservedPlayBranchReport(
+                schema: TranslationObservedPlayBranchReport.currentSchema,
+                sourceSessionID: id,
+                sessionID: branched.id,
+                cumulativeFrames: throughFrame,
+                scheduledInputTransitions: prefix.events.count,
+                scheduledInputFrames: Self.scheduledInputFrames(in: prefix),
+                planSHA256: Self.sha256(try Self.encoded(prefix)),
+                privateManifestSHA256: manifestDigest,
+                replayedFromBoot: true
+            )
+            return (branched, report)
+        } catch {
+            _ = try? branched.cancel()
+            throw error
+        }
+    }
+
     public func finish() throws -> TranslationObservedPlayFinishReport {
         guard status == .active || status == .proofFailed else {
             throw TranslationLabError.invalidRoute(
@@ -735,6 +1019,35 @@ public final class TranslationObservedPlaySession: @unchecked Sendable {
 
     private var plan: TranslationFrameInputPlan {
         TranslationFrameInputPlan(totalFrames: cumulativeFrames, events: events)
+    }
+
+    private func applyPrefix(_ prefix: TranslationFrameInputPlan) throws -> String {
+        guard cumulativeFrames == 0, events.isEmpty, status == .active, !engineClosed else {
+            throw TranslationLabError.invalidRoute(
+                "an observed-play prefix can only initialize a new branch"
+            )
+        }
+        try prefix.validate(for: hardware)
+        let rollbackState = try engine.captureState()
+        do {
+            for frameIndex in 0..<prefix.totalFrames {
+                try engine.setInput(prefix.input(at: frameIndex))
+                try engine.runFrame()
+            }
+            cumulativeFrames = prefix.totalFrames
+            events = prefix.events
+            scheduledInputFrames = Self.scheduledInputFrames(in: prefix)
+            lastInput = try prefix.input(at: prefix.totalFrames - 1)
+            return try persist(status: .active)
+        } catch {
+            cumulativeFrames = 0
+            events = []
+            scheduledInputFrames = 0
+            lastInput = nil
+            try? engine.restoreState(rollbackState)
+            _ = try? persist(status: .active)
+            throw error
+        }
     }
 
     @discardableResult
@@ -921,6 +1234,16 @@ public final class TranslationObservedPlaySession: @unchecked Sendable {
             total += end - event.frameIndex
         }
         return total
+    }
+
+    private static func isValidCheckpointID(_ value: String) -> Bool {
+        guard !value.isEmpty, value.count <= 96,
+              value.first != ".", !value.contains("..") else { return false }
+        return value.unicodeScalars.allSatisfy { scalar in
+            (scalar.value >= 97 && scalar.value <= 122)
+                || (scalar.value >= 48 && scalar.value <= 57)
+                || scalar == "-" || scalar == "_" || scalar == "."
+        }
     }
 
     private static func replacingStatus(

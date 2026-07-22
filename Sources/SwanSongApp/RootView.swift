@@ -2883,6 +2883,40 @@ private struct TranslationLabOverviewElementGeometryReader: View {
     }
 }
 
+private struct TranslationSurfaceNativeFrame: View {
+    let image: NSImage?
+    let pixelWidth: Int
+    let pixelHeight: Int
+
+    init(url: URL) {
+        let image = NSImage(contentsOf: url)
+        self.image = image
+        self.pixelWidth = image?.representations.map(\.pixelsWide).max() ?? 0
+        self.pixelHeight = image?.representations.map(\.pixelsHigh).max() ?? 0
+    }
+
+    var body: some View {
+        if let image, pixelWidth > 0, pixelHeight > 0 {
+            Image(nsImage: image)
+                .resizable()
+                .interpolation(.none)
+                .frame(width: CGFloat(pixelWidth), height: CGFloat(pixelHeight))
+                .fixedSize()
+                .background(.black)
+                .overlay {
+                    Rectangle().stroke(Color.primary.opacity(0.18))
+                }
+                .accessibilityLabel("Native frame at exact 1×")
+        } else {
+            ContentUnavailableView(
+                "Frame unavailable",
+                systemImage: "photo.badge.exclamationmark"
+            )
+            .frame(width: 224, height: 144)
+        }
+    }
+}
+
 private struct TranslationLabView: View {
     @Bindable var model: AppModel
     var overviewGeometryProbe: TranslationLabOverviewGeometryProbe? = nil
@@ -3533,6 +3567,7 @@ private struct TranslationLabView: View {
             count: model.translationRoutes.count
         ) {
             VStack(spacing: 10) {
+                translationSurfaceSuiteDashboard
                 if model.translationRoutes.isEmpty {
                     HStack(spacing: 14) {
                         SwanIconTile(symbol: "record.circle", tint: .orange, size: 48)
@@ -3567,6 +3602,442 @@ private struct TranslationLabView: View {
                     }
                 }
             }
+        }
+    }
+
+    private var translationSurfaceSuiteDashboard: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(alignment: .center, spacing: 13) {
+                SwanIconTile(
+                    symbol: "rectangle.3.group.bubble.left.fill",
+                    tint: .indigo,
+                    size: 50
+                )
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Translation Surface Suite")
+                        .font(.title3.weight(.semibold))
+                    Text("Run case-specific diagnostic viewers, review every native screen at exact 1×, then create one immutable certificate.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Button(
+                    model.translationSurfaceSuite == nil ? "Import Manifest…" : "Replace Manifest…",
+                    systemImage: "doc.badge.plus"
+                ) {
+                    model.chooseTranslationSurfaceSuite()
+                }
+                .disabled(model.translationSurfaceIsRunning || model.isPlaying)
+            }
+
+            if let loaded = model.translationSurfaceSuite {
+                Divider()
+                HStack(alignment: .center, spacing: 14) {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(loaded.manifest.title)
+                            .font(.headline)
+                        Text(loaded.manifest.id)
+                            .font(.caption.monospaced())
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    surfaceSummaryMetric(
+                        value: "\(loaded.manifest.cases.count)",
+                        label: "Surfaces"
+                    )
+                    surfaceSummaryMetric(
+                        value: "\(Set(loaded.manifest.cases.map(\.family)).count)",
+                        label: "Families"
+                    )
+                    surfaceSummaryMetric(
+                        value: "\(loaded.manifest.cases.reduce(0) { $0 + $1.checkpoints.count })",
+                        label: "Checkpoints"
+                    )
+                    Picker("Engine ABI", selection: $model.translationSurfaceSelectedEngineABI) {
+                        Text("ABI 9").tag(UInt32(9))
+                        Text("ABI 10").tag(UInt32(10))
+                    }
+                    .pickerStyle(.menu)
+                    .frame(width: 104)
+                    .disabled(model.translationSurfaceIsRunning)
+                    .help("The selected ABI must match the manifest and the engine bundled with SwanSong.")
+
+                    Button(
+                        model.translationSurfaceFailedCaseCount > 0 ? "Resume Failed" : "Run Suite",
+                        systemImage: model.translationSurfaceFailedCaseCount > 0
+                            ? "arrow.clockwise"
+                            : "play.fill"
+                    ) {
+                        model.runTranslationSurfaceSuite()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(!model.canRunTranslationSurfaceSuite)
+                }
+
+                if model.translationSurfaceIsRunning {
+                    VStack(alignment: .leading, spacing: 7) {
+                        ProgressView(value: model.translationSurfaceRunProgress)
+                            .tint(.indigo)
+                        HStack {
+                            Text(
+                                model.translationSurfaceCurrentCaseID
+                                    ?? "Preparing clean-boot execution"
+                            )
+                            Spacer()
+                            Text("\(model.translationSurfaceCompletedCaseCount) / \(model.translationSurfaceTotalCaseCount)")
+                                .monospacedDigit()
+                        }
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    }
+                } else if let progress = model.translationSurfaceProgress,
+                          model.translationSurfaceExecutionReport == nil {
+                    VStack(alignment: .leading, spacing: 7) {
+                        Label(
+                            "\(model.translationSurfaceFailedCaseCount) case\(model.translationSurfaceFailedCaseCount == 1 ? "" : "s") need another run",
+                            systemImage: "exclamationmark.triangle.fill"
+                        )
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.orange)
+                        ForEach(progress.cases.filter { $0.status == .failed }.prefix(6), id: \.id) { result in
+                            Text("\(result.id) · \(result.failure ?? "Execution failed")")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .lineLimit(2)
+                        }
+                    }
+                    .padding(12)
+                    .swanSurface(.recessed, tint: .orange, cornerRadius: 13)
+                }
+
+                if let report = model.translationSurfaceExecutionReport {
+                    translationSurfaceReviewQueue(report)
+                }
+            } else {
+                HStack(spacing: 13) {
+                    Image(systemName: "doc.text.magnifyingglass")
+                        .font(.title2)
+                        .foregroundStyle(.indigo)
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text("No surface manifest imported")
+                            .font(.headline)
+                        Text("The manifest stays source-free and binds each stable ID to its own Original and Patched viewer ROMs, input plan, named checkpoints, endpoint hashes, and allowed change regions.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .padding(14)
+                .swanSurface(.recessed, tint: .indigo, cornerRadius: 14)
+            }
+        }
+        .padding(16)
+        .background(
+            LinearGradient(
+                colors: [Color.indigo.opacity(0.08), Color.cyan.opacity(0.045)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ),
+            in: RoundedRectangle(cornerRadius: 18, style: .continuous)
+        )
+        .overlay {
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .stroke(Color.indigo.opacity(0.25))
+        }
+        .accessibilityIdentifier("translation-surface-suite")
+    }
+
+    private func surfaceSummaryMetric(value: String, label: String) -> some View {
+        VStack(alignment: .trailing, spacing: 1) {
+            Text(value)
+                .font(.headline.monospacedDigit())
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private func translationSurfaceReviewQueue(
+        _ report: TranslationSurfaceExecutionReport
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Divider()
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Native 1× review queue")
+                        .font(.headline)
+                    Text("Pixel changes are review targets, never automatic approvals. Semantic meaning, functional microcopy, and visual fit remain separate verdicts.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Text("\(model.translationSurfaceApprovedReviewCount) / \(report.cases.count) approved")
+                    .font(.subheadline.monospacedDigit().weight(.semibold))
+                    .foregroundStyle(.secondary)
+                Button("Create Final Certificate", systemImage: "checkmark.seal.fill") {
+                    model.certifyTranslationSurfaceSuite()
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(!model.canCertifyTranslationSurfaceSuite)
+                .help("Requires every review dimension and observed-audio status to be approved.")
+            }
+
+            HStack(alignment: .top, spacing: 14) {
+                ScrollView {
+                    LazyVStack(spacing: 5) {
+                        ForEach(report.cases, id: \.id) { result in
+                            let review = model.translationSurfaceReviews.first {
+                                $0.caseID == result.id
+                            }
+                            Button {
+                                model.selectTranslationSurfaceCase(result.id)
+                            } label: {
+                                HStack(spacing: 8) {
+                                    Image(
+                                        systemName: review?.isApprovedForCertification == true
+                                            ? "checkmark.circle.fill"
+                                            : "circle"
+                                    )
+                                    .foregroundStyle(
+                                        review?.isApprovedForCertification == true
+                                            ? Color.green
+                                            : Color.secondary
+                                    )
+                                    VStack(alignment: .leading, spacing: 1) {
+                                        Text(result.id)
+                                            .font(.caption.monospaced().weight(.semibold))
+                                        Text(result.family)
+                                            .font(.caption2)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    Spacer(minLength: 0)
+                                }
+                                .padding(.horizontal, 9)
+                                .padding(.vertical, 7)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(
+                                    model.selectedTranslationSurfaceCaseID == result.id
+                                        ? Color.indigo.opacity(0.14)
+                                        : Color.clear,
+                                    in: RoundedRectangle(cornerRadius: 9, style: .continuous)
+                                )
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }
+                .frame(width: 190, height: 610)
+
+                if let selected = model.selectedTranslationSurfaceCaseResult,
+                   let checkpoint = model.selectedTranslationSurfaceCheckpointResult {
+                    VStack(alignment: .leading, spacing: 13) {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(selected.id)
+                                    .font(.headline.monospaced())
+                                Text("\(selected.family) · clean boot · \(selected.checkpoints.count) checkpoint\(selected.checkpoints.count == 1 ? "" : "s")")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                            Picker(
+                                "Checkpoint",
+                                selection: Binding(
+                                    get: { model.selectedTranslationSurfaceCheckpointID ?? checkpoint.id },
+                                    set: { model.selectTranslationSurfaceCheckpoint($0) }
+                                )
+                            ) {
+                                ForEach(selected.checkpoints, id: \.id) { item in
+                                    Text(item.id).tag(item.id)
+                                }
+                            }
+                            .pickerStyle(.menu)
+                            .frame(width: 180)
+                        }
+
+                        LazyVGrid(
+                            columns: [
+                                GridItem(.flexible(), alignment: .leading),
+                                GridItem(.flexible(), alignment: .leading),
+                            ],
+                            alignment: .leading,
+                            spacing: 12
+                        ) {
+                            translationSurfaceFramePanel(
+                                title: "Original",
+                                binding: checkpoint.original.capture
+                            )
+                            translationSurfaceFramePanel(
+                                title: "Patched",
+                                binding: checkpoint.patched.capture
+                            )
+                            translationSurfaceBlinkPanel(checkpoint)
+                            translationSurfaceFramePanel(
+                                title: "Difference",
+                                binding: checkpoint.difference.visualization
+                            )
+                        }
+
+                        HStack(spacing: 12) {
+                            Label(
+                                "\(checkpoint.difference.differentPixelCount) changed pixels",
+                                systemImage: "square.on.square.dashed"
+                            )
+                            Label(
+                                checkpoint.difference.protectedRegionsUnchanged
+                                    ? "Protected regions unchanged"
+                                    : "Protected-region change",
+                                systemImage: checkpoint.difference.protectedRegionsUnchanged
+                                    ? "lock.shield.fill"
+                                    : "exclamationmark.shield.fill"
+                            )
+                            Label(
+                                checkpoint.original.matched && checkpoint.patched.matched
+                                    ? "Endpoints matched"
+                                    : "Endpoint mismatch",
+                                systemImage: checkpoint.original.matched && checkpoint.patched.matched
+                                    ? "scope"
+                                    : "scope"
+                            )
+                        }
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                        translationSurfaceReviewEditor
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+
+            if let certificateURL = model.translationSurfaceCertificationURL {
+                Label(
+                    "Certified · \(certificateURL.lastPathComponent)",
+                    systemImage: "checkmark.seal.fill"
+                )
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.green)
+            }
+        }
+    }
+
+    private func translationSurfaceFramePanel(
+        title: String,
+        binding: TranslationSurfaceArtifactBinding
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text(title)
+                .font(.caption.weight(.semibold))
+            if let url = model.translationSurfaceURL(for: binding) {
+                TranslationSurfaceNativeFrame(url: url)
+            }
+        }
+        .padding(9)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .swanSurface(.recessed, tint: .indigo, cornerRadius: 11)
+    }
+
+    private func translationSurfaceBlinkPanel(
+        _ checkpoint: TranslationSurfaceCheckpointResult
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text("Blink")
+                .font(.caption.weight(.semibold))
+            TimelineView(.periodic(from: .now, by: 0.45)) { context in
+                let showsPatched = Int(context.date.timeIntervalSinceReferenceDate / 0.45)
+                    .isMultiple(of: 2)
+                let binding = showsPatched
+                    ? checkpoint.patched.capture
+                    : checkpoint.original.capture
+                if let url = model.translationSurfaceURL(for: binding) {
+                    TranslationSurfaceNativeFrame(url: url)
+                }
+            }
+        }
+        .padding(9)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .swanSurface(.recessed, tint: .indigo, cornerRadius: 11)
+    }
+
+    private var translationSurfaceReviewEditor: some View {
+        VStack(alignment: .leading, spacing: 11) {
+            Text("Review verdicts")
+                .font(.subheadline.weight(.semibold))
+            HStack(spacing: 10) {
+                surfaceVerdictPicker(
+                    "Semantic",
+                    selection: $model.translationSurfaceSemanticVerdict,
+                    allowsNotApplicable: false
+                )
+                surfaceVerdictPicker(
+                    "Functional microcopy",
+                    selection: $model.translationSurfaceFunctionalMicrocopyVerdict,
+                    allowsNotApplicable: true
+                )
+                surfaceVerdictPicker(
+                    "Visual fit",
+                    selection: $model.translationSurfaceVisualFitVerdict,
+                    allowsNotApplicable: false
+                )
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Audio")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                    Picker("Audio", selection: $model.translationSurfaceAudioStatus) {
+                        ForEach(TranslationSurfaceAudioReviewStatus.allCases, id: \.self) {
+                            Text($0.title).tag($0)
+                        }
+                    }
+                    .labelsHidden()
+                    .pickerStyle(.menu)
+                }
+            }
+
+            HStack(alignment: .center, spacing: 12) {
+                Toggle(
+                    "Condensed rendering used",
+                    isOn: $model.translationSurfaceCondensedRendering
+                )
+                .toggleStyle(.checkbox)
+                if model.translationSurfaceCondensedRendering {
+                    surfaceVerdictPicker(
+                        "Condensed readability",
+                        selection: $model.translationSurfaceCondensedRenderingVerdict,
+                        allowsNotApplicable: false
+                    )
+                    .frame(width: 180)
+                }
+                TextField("Optional review note", text: $model.translationSurfaceReviewNotes)
+                    .textFieldStyle(.roundedBorder)
+                Button("Save Review", systemImage: "square.and.arrow.down") {
+                    model.saveTranslationSurfaceReview()
+                }
+                .buttonStyle(.borderedProminent)
+            }
+        }
+        .padding(12)
+        .swanSurface(.standard, tint: .indigo, cornerRadius: 13)
+    }
+
+    private func surfaceVerdictPicker(
+        _ title: String,
+        selection: Binding<TranslationSurfaceReviewVerdict>,
+        allowsNotApplicable: Bool
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+            Picker(title, selection: selection) {
+                ForEach(
+                    TranslationSurfaceReviewVerdict.allCases.filter {
+                        allowsNotApplicable || $0 != .notApplicable
+                    },
+                    id: \.self
+                ) {
+                    Text($0.title).tag($0)
+                }
+            }
+            .labelsHidden()
+            .pickerStyle(.menu)
         }
     }
 
