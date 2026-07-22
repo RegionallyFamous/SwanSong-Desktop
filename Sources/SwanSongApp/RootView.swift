@@ -1714,6 +1714,7 @@ private struct LibraryView: View {
             game: game,
             artwork: model.gameArtwork[game.id],
             confidence: model.gameConfidence(for: game),
+            developerToolsEnabled: model.debugToolsEnabled,
             isSelected: model.selectedGameID == game.id,
             canPlay: model.canPlayGame(game),
             managedHealth: model.managedGameHealth[game.id],
@@ -1737,6 +1738,7 @@ private struct LibraryView: View {
             game: game,
             artwork: model.gameArtwork[game.id],
             confidence: model.gameConfidence(for: game),
+            developerToolsEnabled: model.debugToolsEnabled,
             canPlay: model.canPlayGame(game),
             managedHealth: model.managedGameHealth[game.id],
             isCheckingManagedCopy: model.checkingManagedGameIDs.contains(game.id),
@@ -7262,6 +7264,12 @@ enum GameConfidenceAccessibility {
     }
 }
 
+enum GameConfidencePresentation {
+    static func isVisible(developerToolsEnabled: Bool) -> Bool {
+        developerToolsEnabled
+    }
+}
+
 enum GameInspectorAccessibility {
     static let systemIdentity = "game-inspector-system-identity"
     static let runtimeStatus = "game-inspector-runtime-status"
@@ -7383,6 +7391,7 @@ private struct GameCard: View {
     let game: GameRecord
     let artwork: GameArtworkRecord?
     let confidence: GameConfidence
+    let developerToolsEnabled: Bool
     let isSelected: Bool
     let canPlay: Bool
     let managedHealth: ManagedGameHealth?
@@ -7473,8 +7482,12 @@ private struct GameCard: View {
                             .foregroundStyle(readinessStatus.color)
                             .padding(.top, 3)
                     }
-                    GameCompatibilityBadge(status: confidence.compatibility)
-                        .padding(.top, readinessStatus == nil ? 3 : 1)
+                    if GameConfidencePresentation.isVisible(
+                        developerToolsEnabled: developerToolsEnabled
+                    ) {
+                        GameCompatibilityBadge(status: confidence.compatibility)
+                            .padding(.top, readinessStatus == nil ? 3 : 1)
+                    }
                 }
                 .padding(.horizontal, 4)
                 .padding(.top, 10)
@@ -7553,25 +7566,29 @@ private struct GameCard: View {
     private var accessibilityValue: String {
         let system = game.systemTitle
         let artworkDescription = artwork == nil ? "procedural artwork" : "captured gameplay artwork"
-        let compatibility = "play status: \(confidence.compatibility.confidenceTitle)"
+        let compatibility = GameConfidencePresentation.isVisible(
+            developerToolsEnabled: developerToolsEnabled
+        )
+            ? "; play status: \(confidence.compatibility.confidenceTitle)"
+            : ""
         if isRepairingManagedCopy {
-            return "\(system); \(artworkDescription); repairing private copy; \(compatibility)"
+            return "\(system); \(artworkDescription); repairing private copy\(compatibility)"
         }
         if isCheckingManagedCopy {
-            return "\(system); \(artworkDescription); checking private copy; \(compatibility)"
+            return "\(system); \(artworkDescription); checking private copy\(compatibility)"
         }
         if managedHealth == .missing {
-            return "\(system); \(artworkDescription); private copy missing; repair needed; \(compatibility)"
+            return "\(system); \(artworkDescription); private copy missing; repair needed\(compatibility)"
         }
         if managedHealth == .changed {
-            return "\(system); \(artworkDescription); private copy changed; repair needed; \(compatibility)"
+            return "\(system); \(artworkDescription); private copy changed; repair needed\(compatibility)"
         }
         if managedHealth == .invalidReference {
-            return "\(system); \(artworkDescription); library identity invalid; re-add needed; \(compatibility)"
+            return "\(system); \(artworkDescription); library identity invalid; re-add needed\(compatibility)"
         }
         return canPlay
-            ? "\(system); \(artworkDescription); ready to play; \(compatibility)"
-            : "\(system); \(artworkDescription); engine unavailable; \(compatibility)"
+            ? "\(system); \(artworkDescription); ready to play\(compatibility)"
+            : "\(system); \(artworkDescription); engine unavailable\(compatibility)"
     }
 
     private var sourceDetail: String {
@@ -8258,6 +8275,7 @@ struct GameInspector: View {
     let game: GameRecord
     let artwork: GameArtworkRecord?
     let confidence: GameConfidence
+    let developerToolsEnabled: Bool
     let canPlay: Bool
     let managedHealth: ManagedGameHealth?
     let isCheckingManagedCopy: Bool
@@ -8312,14 +8330,18 @@ struct GameInspector: View {
                         .controlSize(.large)
                 }
 
-                GameConfidencePanel(
-                    confidence: confidence,
-                    evidence: game.compatibilityEvidence,
-                    noteDraft: $compatibilityNoteDraft,
-                    onSetVerdict: onSetCompatibilityVerdict,
-                    onSaveNote: onSaveCompatibilityNote,
-                    geometryProbe: geometryProbe
-                )
+                if GameConfidencePresentation.isVisible(
+                    developerToolsEnabled: developerToolsEnabled
+                ) {
+                    GameConfidencePanel(
+                        confidence: confidence,
+                        evidence: game.compatibilityEvidence,
+                        noteDraft: $compatibilityNoteDraft,
+                        onSetVerdict: onSetCompatibilityVerdict,
+                        onSaveNote: onSaveCompatibilityNote,
+                        geometryProbe: geometryProbe
+                    )
+                }
 
                 DisclosureGroup("Game Details", isExpanded: $showsGameDetails) {
                     VStack(alignment: .leading, spacing: 8) {
