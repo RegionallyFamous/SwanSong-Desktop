@@ -1178,16 +1178,7 @@ private struct HomebrewCatalogCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 13) {
-            ZStack {
-                LinearGradient(
-                    colors: [SwanTheme.violet.opacity(0.72), SwanTheme.cyan.opacity(0.48)],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                Image(systemName: "gamecontroller.fill")
-                    .font(.system(size: 42, weight: .semibold))
-                    .foregroundStyle(.white.opacity(0.9))
-            }
+            catalogArtwork
             .frame(height: 112)
             .clipShape(RoundedRectangle(cornerRadius: 13, style: .continuous))
             .accessibilityHidden(true)
@@ -1227,6 +1218,64 @@ private struct HomebrewCatalogCard: View {
         .accessibilityAddTraits(isSelected ? .isSelected : [])
         .accessibilityAction(named: "Show Details", onSelect)
         .accessibilityIdentifier("homebrew-card-\(entry.id)")
+    }
+
+    @ViewBuilder
+    private var catalogArtwork: some View {
+        if let bundledArtwork {
+            Image(nsImage: bundledArtwork)
+                .resizable()
+                .interpolation(.none)
+                .scaledToFit()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(.black)
+        } else if let screenshotURL = entry.screenshotURL {
+            AsyncImage(url: screenshotURL) { phase in
+                if let image = phase.image {
+                    image
+                        .resizable()
+                        .interpolation(.none)
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(.black)
+                } else {
+                    artworkPlaceholder
+                }
+            }
+        } else {
+            artworkPlaceholder
+        }
+    }
+
+    private var artworkPlaceholder: some View {
+        ZStack {
+            LinearGradient(
+                colors: [SwanTheme.violet.opacity(0.72), SwanTheme.cyan.opacity(0.48)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            Image(systemName: "gamecontroller.fill")
+                .font(.system(size: 42, weight: .semibold))
+                .foregroundStyle(.white.opacity(0.9))
+        }
+    }
+
+    private var bundledArtwork: NSImage? {
+        let sourceURL = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Packaging/HomebrewTitleScreens")
+            .appendingPathComponent("\(entry.id).png")
+        let candidateURLs = [
+            Bundle.main.url(
+                forResource: entry.id,
+                withExtension: "png",
+                subdirectory: "HomebrewTitleScreens"
+            ),
+            sourceURL,
+        ].compactMap { $0 }
+        return candidateURLs.lazy.compactMap(NSImage.init(contentsOf:)).first
     }
 
     @ViewBuilder

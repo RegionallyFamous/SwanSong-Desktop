@@ -35,6 +35,7 @@ public struct HomebrewCatalogEntry: Codable, Equatable, Identifiable, Sendable {
     public let provenanceURL: URL
     public let licenseName: String
     public let licenseURL: URL
+    public let screenshotURL: URL?
     public let releases: [HomebrewCatalogRelease]
 
     public init(
@@ -47,6 +48,7 @@ public struct HomebrewCatalogEntry: Codable, Equatable, Identifiable, Sendable {
         provenanceURL: URL,
         licenseName: String,
         licenseURL: URL,
+        screenshotURL: URL? = nil,
         releases: [HomebrewCatalogRelease]
     ) {
         self.id = id
@@ -58,6 +60,7 @@ public struct HomebrewCatalogEntry: Codable, Equatable, Identifiable, Sendable {
         self.provenanceURL = provenanceURL
         self.licenseName = licenseName
         self.licenseURL = licenseURL
+        self.screenshotURL = screenshotURL
         self.releases = releases
     }
 }
@@ -154,6 +157,7 @@ public enum HomebrewCatalogError: LocalizedError, Equatable, Sendable {
     case invalidSourceURL(URL)
     case invalidProvenanceURL(URL)
     case invalidLicenseURL(URL)
+    case invalidScreenshotURL(URL)
     case missingReleases(String)
     case tooManyReleases(String)
     case duplicateReleaseVersion(String)
@@ -214,6 +218,8 @@ public enum HomebrewCatalogError: LocalizedError, Equatable, Sendable {
             "A homebrew provenance link is outside the first-party SwanSong Story Forge repository."
         case .invalidLicenseURL:
             "A homebrew license link is outside the first-party SwanSong Story Forge repository."
+        case .invalidScreenshotURL:
+            "A homebrew screenshot link is not an immutable first-party image."
         case let .missingReleases(id):
             "Homebrew entry \(id) has no releases."
         case let .tooManyReleases(id):
@@ -406,6 +412,10 @@ public enum HomebrewCatalogValidator {
         guard isRepositoryBlobURL(entry.licenseURL) else {
             throw HomebrewCatalogError.invalidLicenseURL(entry.licenseURL)
         }
+        if let screenshotURL = entry.screenshotURL,
+           !isScreenshotURL(screenshotURL, sourceURL: entry.sourceURL) {
+            throw HomebrewCatalogError.invalidScreenshotURL(screenshotURL)
+        }
         guard !entry.releases.isEmpty else {
             throw HomebrewCatalogError.missingReleases(entry.id)
         }
@@ -588,6 +598,20 @@ public enum HomebrewCatalogValidator {
             && isCommitSHA(path[3])
     }
 
+    private static func isScreenshotURL(_ url: URL, sourceURL: URL) -> Bool {
+        guard let components = safeHTTPSComponents(url),
+              components.host?.lowercased() == "raw.githubusercontent.com",
+              let path = pathSegments(components),
+              let sourceComponents = safeHTTPSComponents(sourceURL),
+              let sourcePath = pathSegments(sourceComponents) else { return false }
+        return path.count >= 4
+            && sourcePath.count >= 6
+            && path[0] == sourcePath[0]
+            && path[1] == sourcePath[1]
+            && path[2] == sourcePath[3]
+            && ["png", "jpg", "jpeg"].contains(url.pathExtension.lowercased())
+    }
+
     private static func releaseTag(from url: URL) -> String? {
         guard let components = safeHTTPSComponents(url),
               components.host?.lowercased() == "github.com",
@@ -666,7 +690,7 @@ public enum HomebrewCatalogValidator {
             try requireKeys(
                 entry,
                 required: ["id", "title", "developer", "summary", "description", "sourceURL", "provenanceURL", "licenseName", "licenseURL", "releases"],
-                optional: [],
+                optional: ["screenshotURL"],
                 location: location
             )
             guard let releases = entry["releases"] as? [Any] else {

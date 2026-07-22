@@ -26,6 +26,7 @@ unexpected_file=$(find "$APP/Contents" -type f \
   ! -path "$APP/Contents/Resources/AppIcon.png" \
   ! -path "$APP/Contents/Resources/AppIconCompact.png" \
   ! -path "$APP/Contents/Resources/MenuBarSwan.png" \
+  ! -path "$APP/Contents/Resources/HomebrewTitleScreens/*" \
   ! -path "$APP/Contents/Resources/LICENSE" \
   ! -path "$APP/Contents/Resources/PRIVACY.md" \
   ! -path "$APP/Contents/Resources/PrivacyInfo.xcprivacy" \
