@@ -1178,10 +1178,10 @@ private struct HomebrewCatalogCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 13) {
-            catalogArtwork
-            .frame(height: 112)
-            .clipShape(RoundedRectangle(cornerRadius: 13, style: .continuous))
-            .accessibilityHidden(true)
+            HomebrewCatalogArtwork(entry: entry)
+                .frame(height: 112)
+                .clipShape(RoundedRectangle(cornerRadius: 13, style: .continuous))
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(entry.title)
@@ -1218,64 +1218,6 @@ private struct HomebrewCatalogCard: View {
         .accessibilityAddTraits(isSelected ? .isSelected : [])
         .accessibilityAction(named: "Show Details", onSelect)
         .accessibilityIdentifier("homebrew-card-\(entry.id)")
-    }
-
-    @ViewBuilder
-    private var catalogArtwork: some View {
-        if let bundledArtwork {
-            Image(nsImage: bundledArtwork)
-                .resizable()
-                .interpolation(.none)
-                .scaledToFit()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(.black)
-        } else if let screenshotURL = entry.screenshotURL {
-            AsyncImage(url: screenshotURL) { phase in
-                if let image = phase.image {
-                    image
-                        .resizable()
-                        .interpolation(.none)
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(.black)
-                } else {
-                    artworkPlaceholder
-                }
-            }
-        } else {
-            artworkPlaceholder
-        }
-    }
-
-    private var artworkPlaceholder: some View {
-        ZStack {
-            LinearGradient(
-                colors: [SwanTheme.violet.opacity(0.72), SwanTheme.cyan.opacity(0.48)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            Image(systemName: "gamecontroller.fill")
-                .font(.system(size: 42, weight: .semibold))
-                .foregroundStyle(.white.opacity(0.9))
-        }
-    }
-
-    private var bundledArtwork: NSImage? {
-        let sourceURL = URL(fileURLWithPath: #filePath)
-            .deletingLastPathComponent()
-            .deletingLastPathComponent()
-            .deletingLastPathComponent()
-            .appendingPathComponent("Packaging/HomebrewTitleScreens")
-            .appendingPathComponent("\(entry.id).png")
-        let candidateURLs = [
-            Bundle.main.url(
-                forResource: entry.id,
-                withExtension: "png",
-                subdirectory: "HomebrewTitleScreens"
-            ),
-            sourceURL,
-        ].compactMap { $0 }
-        return candidateURLs.lazy.compactMap(NSImage.init(contentsOf:)).first
     }
 
     @ViewBuilder
@@ -1337,6 +1279,68 @@ private struct HomebrewCatalogCard: View {
     }
 }
 
+private struct HomebrewCatalogArtwork: View {
+    let entry: HomebrewCatalogEntry
+
+    @ViewBuilder
+    var body: some View {
+        if let bundledArtwork {
+            Image(nsImage: bundledArtwork)
+                .resizable()
+                .interpolation(.none)
+                .scaledToFit()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(.black)
+        } else if let screenshotURL = entry.screenshotURL {
+            AsyncImage(url: screenshotURL) { phase in
+                if let image = phase.image {
+                    image
+                        .resizable()
+                        .interpolation(.none)
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(.black)
+                } else {
+                    artworkPlaceholder
+                }
+            }
+        } else {
+            artworkPlaceholder
+        }
+    }
+
+    private var artworkPlaceholder: some View {
+        ZStack {
+            LinearGradient(
+                colors: [SwanTheme.violet.opacity(0.72), SwanTheme.cyan.opacity(0.48)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            Image(systemName: "gamecontroller.fill")
+                .font(.system(size: 42, weight: .semibold))
+                .foregroundStyle(.white.opacity(0.9))
+        }
+    }
+
+    private var bundledArtwork: NSImage? {
+        let sourceURL = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Packaging/HomebrewTitleScreens")
+            .appendingPathComponent("\(entry.id).png")
+        let candidateURLs = [
+            Bundle.main.url(
+                forResource: entry.id,
+                withExtension: "png",
+                subdirectory: "HomebrewTitleScreens"
+            ),
+            sourceURL,
+        ].compactMap { $0 }
+        return candidateURLs.lazy.compactMap(NSImage.init(contentsOf:)).first
+    }
+}
+
 private struct HomebrewCatalogInspector: View {
     @Bindable var model: AppModel
     let entry: HomebrewCatalogEntry
@@ -1344,27 +1348,15 @@ private struct HomebrewCatalogInspector: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                VStack(alignment: .leading, spacing: 5) {
-                    Text(entry.title)
-                        .font(.title2.weight(.semibold))
-                    Text(entry.developer)
-                        .foregroundStyle(.secondary)
-                    Text(entry.description)
-                        .font(.callout)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
+            VStack(alignment: .leading, spacing: 20) {
+                inspectorHeader
+
+                Text(entry.description)
+                    .font(.callout)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 if let release = model.latestHomebrewRelease(for: entry) {
-                    Grid(alignment: .leading, horizontalSpacing: 12, verticalSpacing: 7) {
-                        detailRow("System", release.asset.hardwareModel.catalogDisplayName)
-                        detailRow("Version", release.version)
-                        detailRow("Download", ByteCountFormatter.string(fromByteCount: Int64(release.asset.byteCount), countStyle: .file))
-                        if let releasedAt = release.releasedAt {
-                            detailRow("Released", releasedAt.formatted(date: .abbreviated, time: .omitted))
-                        }
-                        detailRow("License", entry.licenseName)
-                    }
+                    statusBadges(release)
 
                     if let issue = installIssue {
                         Label(issue, systemImage: "exclamationmark.triangle.fill")
@@ -1377,13 +1369,8 @@ private struct HomebrewCatalogInspector: View {
                     }
 
                     inspectorActions(release)
-
-                    Divider()
-
-                    inspectorLink("Release", destination: release.releaseURL)
-                    inspectorLink("Source Code", destination: entry.sourceURL)
-                    inspectorLink("License", destination: entry.licenseURL)
-                    inspectorLink("Asset Provenance", destination: entry.provenanceURL)
+                    detailsCard(release)
+                    resourcesCard(release)
                 }
             }
             .padding(20)
@@ -1405,6 +1392,78 @@ private struct HomebrewCatalogInspector: View {
         }
     }
 
+    private var inspectorHeader: some View {
+        HStack(alignment: .center, spacing: 14) {
+            HomebrewCatalogArtwork(entry: entry)
+                .frame(width: 84, height: 84)
+                .clipShape(RoundedRectangle(cornerRadius: 13, style: .continuous))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 13, style: .continuous)
+                        .stroke(Color(nsColor: .separatorColor).opacity(0.72), lineWidth: 1)
+                }
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text(entry.title)
+                    .font(.title2.weight(.semibold))
+                    .lineLimit(2)
+                Text(entry.developer)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+            }
+        }
+    }
+
+    private func statusBadges(_ release: HomebrewCatalogRelease) -> some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 8) {
+                installationBadge
+                statusBadge(
+                    release.asset.hardwareModel.catalogDisplayName,
+                    symbol: "rectangle.on.rectangle"
+                )
+            }
+            VStack(alignment: .leading, spacing: 8) {
+                installationBadge
+                statusBadge(
+                    release.asset.hardwareModel.catalogDisplayName,
+                    symbol: "rectangle.on.rectangle"
+                )
+            }
+        }
+    }
+
+    private var installationBadge: some View {
+        Group {
+            if model.homebrewUpdateIsAvailable(for: entry) {
+                statusBadge("Update Available", symbol: "arrow.down.circle", tint: .orange)
+            } else if model.installedHomebrewGame(for: entry) != nil {
+                statusBadge("In Library", symbol: "books.vertical", tint: .green)
+            } else {
+                statusBadge("Ready to Add", symbol: "plus.circle")
+            }
+        }
+    }
+
+    private func statusBadge(
+        _ title: String,
+        symbol: String,
+        tint: Color = SwanTheme.accent
+    ) -> some View {
+        Label(title, systemImage: symbol)
+            .font(.caption.weight(.medium))
+            .foregroundStyle(tint)
+            .lineLimit(1)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(tint.opacity(0.07), in: Capsule())
+            .overlay {
+                Capsule()
+                    .stroke(Color(nsColor: .separatorColor).opacity(0.72), lineWidth: 1)
+            }
+    }
+
     @ViewBuilder
     private func inspectorActions(_ release: HomebrewCatalogRelease) -> some View {
         if model.homebrewInstallingEntryID == entry.id {
@@ -1417,24 +1476,96 @@ private struct HomebrewCatalogInspector: View {
                     .contentShape(Rectangle())
             }
         } else if model.homebrewUpdateIsAvailable(for: entry) {
-            Button("Update to v\(release.version)") {
+            Button {
                 model.installHomebrew(entry)
+            } label: {
+                Label("Update to v\(release.version)", systemImage: "arrow.down.circle")
+                    .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
+            .controlSize(.large)
             .disabled(model.homebrewInstallingEntryID != nil || model.gameImportIsBusy)
         } else if model.installedHomebrewGame(for: entry) != nil {
-            HStack {
-                Button("Play") { model.playInstalledHomebrew(entry) }
+            VStack(spacing: 8) {
+                Button {
+                    model.playInstalledHomebrew(entry)
+                } label: {
+                    Label("Play", systemImage: "play.fill")
+                        .frame(maxWidth: .infinity)
+                }
                     .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
                     .disabled(model.homebrewInstallingEntryID != nil || model.gameImportIsBusy)
-                Button("Show in Library") { model.showInstalledHomebrewInLibrary(entry) }
+                Button {
+                    model.showInstalledHomebrewInLibrary(entry)
+                } label: {
+                    Label("Show in Library", systemImage: "books.vertical")
+                        .frame(maxWidth: .infinity)
+                }
                     .buttonStyle(.bordered)
+                    .controlSize(.large)
             }
         } else {
-            Button("Add to Library") { model.installHomebrew(entry) }
+            Button {
+                model.installHomebrew(entry)
+            } label: {
+                Label("Add to Library", systemImage: "plus")
+                    .frame(maxWidth: .infinity)
+            }
                 .buttonStyle(.borderedProminent)
+                .controlSize(.large)
                 .disabled(model.homebrewInstallingEntryID != nil || model.gameImportIsBusy)
         }
+    }
+
+    private func detailsCard(_ release: HomebrewCatalogRelease) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            inspectorSectionTitle("Details")
+            Divider()
+            Grid(alignment: .leading, horizontalSpacing: 18, verticalSpacing: 10) {
+                detailRow("Version", release.version)
+                detailRow(
+                    "Download",
+                    ByteCountFormatter.string(
+                        fromByteCount: Int64(release.asset.byteCount),
+                        countStyle: .file
+                    )
+                )
+                if let releasedAt = release.releasedAt {
+                    detailRow(
+                        "Released",
+                        releasedAt.formatted(date: .abbreviated, time: .omitted)
+                    )
+                }
+                detailRow("License", entry.licenseName)
+            }
+        }
+        .padding(14)
+        .swanSurface(.standard, tint: SwanTheme.accent, cornerRadius: 14)
+    }
+
+    private func resourcesCard(_ release: HomebrewCatalogRelease) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            inspectorSectionTitle("Resources")
+                .padding(.bottom, 12)
+            Divider()
+            inspectorLink("Release", symbol: "tag", destination: release.releaseURL)
+            Divider()
+            inspectorLink("Source Code", symbol: "chevron.left.forwardslash.chevron.right", destination: entry.sourceURL)
+            Divider()
+            inspectorLink("License", symbol: "doc", destination: entry.licenseURL)
+            Divider()
+            inspectorLink("Asset Provenance", symbol: "checkmark.shield", destination: entry.provenanceURL)
+        }
+        .padding(14)
+        .swanSurface(.standard, tint: SwanTheme.accent, cornerRadius: 14)
+    }
+
+    private func inspectorSectionTitle(_ title: String) -> some View {
+        Text(title.uppercased())
+            .font(.caption2.weight(.semibold))
+            .tracking(0.7)
+            .foregroundStyle(.secondary)
     }
 
     private func detailRow(_ label: String, _ value: String) -> some View {
@@ -1449,10 +1580,25 @@ private struct HomebrewCatalogInspector: View {
         return model.homebrewInstallIssue
     }
 
-    private func inspectorLink(_ title: String, destination: URL) -> some View {
-        Link(title, destination: destination)
-            .frame(minWidth: 28, maxWidth: .infinity, minHeight: 28, alignment: .leading)
+    private func inspectorLink(_ title: String, symbol: String, destination: URL) -> some View {
+        Link(destination: destination) {
+            HStack(spacing: 12) {
+                Image(systemName: symbol)
+                    .font(.body.weight(.medium))
+                    .foregroundStyle(.secondary)
+                    .frame(width: 20)
+                Text(title)
+                    .foregroundStyle(.primary)
+                Spacer(minLength: 8)
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+            }
+            .frame(minHeight: 28)
+            .padding(.vertical, 8)
             .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 }
 
