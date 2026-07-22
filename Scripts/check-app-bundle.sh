@@ -66,6 +66,13 @@ if [ "$icon_name" != "AppIcon" ] \
   echo "the app bundle is missing its SwanSong icon assets" >&2
   exit 1
 fi
+if [ ! -d "$APP/Contents/Resources/HomebrewTitleScreens" ] \
+  || ! diff -qr \
+    "$MACOS_DIR/Packaging/HomebrewTitleScreens" \
+    "$APP/Contents/Resources/HomebrewTitleScreens" >/dev/null; then
+  echo "the app bundle is missing its homebrew title screens" >&2
+  exit 1
+fi
 controller_interaction=$(plutil -extract \
   GCSupportsControllerUserInteraction raw "$APP/Contents/Info.plist" \
   2>/dev/null || true)

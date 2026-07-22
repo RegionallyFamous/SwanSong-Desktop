@@ -408,6 +408,8 @@ cp "$MACOS_DIR/Packaging/AppIconCompact.png" \
   "$APP_DIR/Contents/Resources/AppIconCompact.png"
 cp "$MACOS_DIR/Packaging/MenuBarSwan.png" \
   "$APP_DIR/Contents/Resources/MenuBarSwan.png"
+ditto "$MACOS_DIR/Packaging/HomebrewTitleScreens" \
+  "$APP_DIR/Contents/Resources/HomebrewTitleScreens"
 cp "$MACOS_DIR/LICENSE" "$APP_DIR/Contents/Resources/LICENSE"
 cp "$MACOS_DIR/PRIVACY.md" "$APP_DIR/Contents/Resources/PRIVACY.md"
 cp "$MACOS_DIR/Packaging/PrivacyInfo.xcprivacy" \

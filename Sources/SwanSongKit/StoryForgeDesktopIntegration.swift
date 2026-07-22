@@ -114,16 +114,36 @@ public enum StoryForgeReaderType: String, CaseIterable, Codable, Identifiable, S
     }
 }
 
+public enum StoryForgeReaderSignal: String, CaseIterable, Codable, Identifiable, Sendable {
+    case laughed
+    case moved
+    case confused
+    case paused
+    case bored
+    case wantedMore = "wanted-more"
+
+    public var id: String { rawValue }
+    public var title: String {
+        switch self {
+        case .wantedMore: "Wanted More"
+        default: rawValue.capitalized
+        }
+    }
+}
+
 public enum StoryForgeWorkbenchAction: Equatable, Sendable {
     case next
     case storyRoom
     case storyMap
+    case storyPulse
     case sceneContext(sceneID: String)
     case revisionSnapshot(name: String)
     case revisionCompare(left: String, right: String)
     case revisionDecision(snapshot: String, decision: String, reason: String, reviewer: String)
     case readerExport(packetID: String, readerType: StoryForgeReaderType)
     case readerImport(response: URL)
+    case readerLabInit(sessionID: String, readerName: String, readerType: StoryForgeReaderType)
+    case readerBookmark(sessionID: String, sceneID: String, signal: StoryForgeReaderSignal, note: String)
     case researchInit
     case researchReport
     case genreReport
@@ -134,12 +154,14 @@ public enum StoryForgeWorkbenchAction: Equatable, Sendable {
     case musicRender
     case adapt(output: URL?)
     case adaptationDrift(project: URL)
+    case storyProof(project: URL, contract: URL, playthrough: URL)
 
     public var arguments: [String] {
         switch self {
         case .next: ["next"]
         case .storyRoom: ["story-room"]
         case .storyMap: ["story-map"]
+        case .storyPulse: ["story-pulse"]
         case let .sceneContext(sceneID): ["scene-context", "--scene", sceneID]
         case let .revisionSnapshot(name): ["revision-snapshot", "--name", name]
         case let .revisionCompare(left, right): ["revision-compare", "--left", left, "--right", right]
@@ -148,6 +170,10 @@ public enum StoryForgeWorkbenchAction: Equatable, Sendable {
         case let .readerExport(packetID, readerType):
             ["reader-export", "--packet-id", packetID, "--reader-type", readerType.rawValue]
         case let .readerImport(response): ["reader-import", "--response", response.path]
+        case let .readerLabInit(sessionID, readerName, readerType):
+            ["reader-lab-init", "--session", sessionID, "--reader", readerName, "--reader-type", readerType.rawValue]
+        case let .readerBookmark(sessionID, sceneID, signal, note):
+            ["reader-bookmark", "--session", sessionID, "--scene", sceneID, "--signal", signal.rawValue, "--note", note]
         case .researchInit: ["research-init"]
         case .researchReport: ["research-report"]
         case .genreReport: ["genre-report"]
@@ -160,6 +186,8 @@ public enum StoryForgeWorkbenchAction: Equatable, Sendable {
         case .musicRender: ["music-render"]
         case let .adapt(output): ["adapt"] + (output.map { ["--out", $0.path] } ?? [])
         case let .adaptationDrift(project): ["adaptation-drift", "--project", project.path]
+        case let .storyProof(project, contract, playthrough):
+            ["story-proof", "--project", project.path, "--contract", contract.path, "--playthrough", playthrough.path]
         }
     }
 }

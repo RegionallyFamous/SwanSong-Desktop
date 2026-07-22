@@ -2,7 +2,7 @@
 
 Effective July 20, 2026
 
-This policy describes SwanSong 0.7.2. Versioned release notes document the
+This policy describes SwanSong 0.8.0. Versioned release notes document the
 exact behavior of earlier published builds.
 
 <!-- homebrew-catalog-status: published -->
@@ -134,6 +134,13 @@ fingerprints plus ordered query receipt privately; the public result does not
 contain the native pixels, private paths, arguments, addresses, or lineage.
 Toolkit execution identity is retained only as hashes, counts, and allowlisted
 environment-key names in the command result.
+Translation Surface Suites read source-free manifests, case-specific ROMs,
+input plans, and prior suite evidence only from the explicitly linked project.
+They write native Original/Patched/difference frames, final audio windows,
+source-free execution results, separate human review decisions, and immutable
+certificates back inside that project. SwanSong rejects temporary and staging
+paths during final certification and does not upload suite manifests, ROMs,
+captures, audio, reviews, or certificates.
 SwanSong makes no network request for MCP, but an AI client may transmit tool
 arguments and results to its own service under that client's privacy policy.
 

@@ -52,11 +52,12 @@ Lead with the feeling, then earn the trust:
 
 ## Release honesty
 
-The public download is currently **0.7.2**. The complete SDK 0.5 Studio,
+The public download is currently **0.8.0**. The complete SDK 0.5 Studio,
 Story Forge, Cartridge Tools, and capture-bound Translation Lab remain shipped
-features; 0.7 adds an isolated engine, signed local-automation boundary, Safe
-Mode, privacy-safe support, and inspectable release provenance. Excitement never
-gets to erase requirements or known limits:
+features; 0.8 adds whole-game Translation Surface Suites, exact native review,
+Story Proof, and a visual signed Homebrew shelf on top of 0.7's isolated engine,
+signed local-automation boundary, Safe Mode, privacy-safe support, and
+inspectable release provenance. Excitement never gets to erase requirements or known limits:
 Story Forge needs its local framework, Studio needs its stated toolchain,
 Cartridge Lab needs authorized hardware, and every physical write keeps its
 confirmation gates.

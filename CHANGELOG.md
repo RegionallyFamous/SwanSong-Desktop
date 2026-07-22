@@ -6,6 +6,46 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-07-22
+
+**Prove the Whole Game.** SwanSong 0.8 turns Translation Lab's excellent
+capture primitives into a first-class whole-game certification workflow, makes
+Story Forge's quality evidence easier to inspect, and gives the signed
+Homebrew Catalog a more visual native Mac presentation.
+
+### Added
+
+- Adds Translation Surface Suites: source-free manifests can bind stable case
+  IDs to case-specific Original and Patched diagnostic ROMs, exact input plans,
+  named checkpoints, endpoint fingerprints, expected-change rectangles, and a
+  selected qualified ABI.
+- Runs every surface case from clean boot, captures several checkpoints during
+  one replay, resumes only revalidated successful work, and writes immutable
+  execution and certification reports with stable paths and digests.
+- Adds an exact native-1× review queue for Original, Patched, blink, and
+  difference frames. Semantic, functional-microcopy, and visual-fit verdicts
+  remain separate, and condensed rendering requires an explicit decision.
+- Adds bounded observed-play sequence and clean-boot branch operations for
+  authoring long routes without losing their deterministic final plan.
+- Exposes Story Forge Narrative Pulse, manuscript-bound live-reader bookmarks,
+  and Story Proof/Story Ribbon delivery evidence in the native workspace.
+- Bundles approved title screens for the signed first-party Homebrew Catalog.
+
+### Changed
+
+- Rebuilds the Homebrew inspector around reusable artwork, dynamic library and
+  system status chips, full-width actions, compact metadata, and accessible
+  resource rows.
+- Aligns local playtest frame budgets with the SDK and keeps whole-game visual
+  review distinct from automatic pixel-difference detection.
+
+### Fixed
+
+- Surface-suite assertions reject zero-delta, wrong-screen, stale-route, and
+  protected-region changes before a case can enter human review.
+- Final evidence handoff rejects staging and temporary paths and revalidates
+  every source and generated artifact before reusing an immutable certificate.
+
 ## [0.7.2] - 2026-07-21
 
 **Keep the Trail Exact.** SwanSong 0.7.2 makes authenticated Translation Lab
@@ -656,7 +696,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.2...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.2...v0.8.0
 [0.7.2]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.6.1...v0.7.0

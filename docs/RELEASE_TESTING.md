@@ -1,11 +1,11 @@
-# SwanSong 0.7 release testing
+# SwanSong 0.8 release testing
 
-This guide covers the SwanSong Desktop 0.7 release. Test only games, manuscripts, homebrew,
+This guide covers the SwanSong Desktop 0.8 release. Test only games, manuscripts, homebrew,
 SDK projects, cartridges, and save data you own or are authorized to use. Never
 attach ROMs, saves, private screenshots or audio, manuscripts, cartridge-source
 evidence, or Translation Lab evidence to a public report.
 
-The signed public release is **SwanSong 0.7.2 (15)**.
+The signed public release is **SwanSong 0.8.0 (16)**.
 
 ## What this release is testing
 
@@ -19,10 +19,12 @@ The signed public release is **SwanSong 0.7.2 (15)**.
 - **Story-to-game handoff:** choose **Continue in Studio** after Revision and
   confirm the novel remains open while SwanSong Studio opens for adaptation.
 - **A complete native writing room:** prepare all eight proposal-only Story
-  Room packets, build the causal map, edit and explicitly save a chapter,
+  Room packets, build the causal and Narrative Pulse maps, edit and explicitly save a chapter,
   inspect live scene context, preserve and compare a revision, exchange an
-  unprimed reader packet, check research, intake an ImageGen result, render
-  music auditions, and compile then drift-check an adaptation scaffold.
+  unprimed reader packet, record a hash-bound live reader moment, check
+  research, intake an ImageGen result, render music auditions, compile and
+  drift-check an adaptation scaffold, then build a Story Ribbon from a passing
+  exhaustive SwanSong playthrough.
 - **Cartridge Lab reads:** with authorized hardware, inspect a cartridge and
   create exact, checksum-reported ROM and save backups. Interrupt a controlled
   transfer and confirm no partial destination is promoted.
@@ -53,6 +55,24 @@ The signed public release is **SwanSong 0.7.2 (15)**.
 - **Translation Lab automation:** retain deterministic routes, paired capture,
   display-owner and source probes, observed-play recovery, evidence browsing,
   and complete installed MCP-tool coverage.
+- **Translation Surface Suites:** import a source-free suite whose cases use
+  different Original/Patched diagnostic ROM pairs. Run every case from clean
+  boot on the selected qualified ABI, capture several ordered named
+  checkpoints in one replay, interrupt and resume, and confirm only completely
+  revalidated successful cases are reused.
+- **Surface assertions and review:** prove wrong endpoint, zero delta,
+  orientation/dimension drift, protected-region changes, stale routes, and
+  changed ROM/plan digests fail before review. Inspect Original, Patched, blink,
+  and difference frames at exact native 1×; keep semantic,
+  functional-microcopy, visual-fit, and condensed-rendering decisions separate.
+- **Immutable certification:** record audio observation and complete every
+  required review, then generate one stable certificate. Rehash every source
+  and evidence artifact and confirm staging, temporary, partial, and per-case
+  paths are rejected from final handoff.
+- **Faster route authoring:** append bounded observed-play input sequences with
+  selected checkpoints and branch from an exact saved prefix. The resulting
+  route must still replay from clean boot and stay within the 24,000-frame SDK
+  ceiling.
 - **Capture-bound provenance:** prove the authenticated native frame is checked
   before owner/source queries, checked again afterward, and represented by the
   exact ordered private receipt. Wrong frame or framed fingerprint must leave
@@ -105,6 +125,8 @@ The signed public release is **SwanSong 0.7.2 (15)**.
   commands or silently approve editorial, reader, rights, or art review.
 - ImageGen briefs and review packets do not turn procedural placeholders into
   production illustration.
+- Story Proof may establish route, input, presentation, fade, audio, and ending
+  delivery only. It must not present its result as literary or reader approval.
 - Catalog comparisons are review leads, not automatic originality verdicts.
 - Manuscripts, reports, art, music, rights records, approvals, and editions
   stay in the selected local project and must never appear through MCP.
@@ -145,7 +167,7 @@ The signed public release is **SwanSong 0.7.2 (15)**.
 
 ## Expected boundaries
 
-SwanSong 0.7.2 embeds SDK 0.5.0 but not Python or Wonderful. Install those
+SwanSong 0.8.0 embeds SDK 0.5.0 but not Python or Wonderful. Install those
 external dependencies before running Studio Doctor or a build. Studio should
 find Python 3.11+ in standard Homebrew, python.org, MacPorts, and system
 locations even when SwanSong opens from Finder. Story Forge also requires a
@@ -164,7 +186,7 @@ title-specific quirks still deserve hands-on attention.
 
 ## Before reporting a result
 
-1. Confirm **SwanSong 0.7.2 (15)** in **SwanSong > About SwanSong**.
+1. Confirm **SwanSong 0.8.0 (16)** in **SwanSong > About SwanSong**.
 2. Record the Mac model, macOS version, architecture, controller or cartridge
    hardware when relevant, SDK version, Python version, and Wonderful revision.
 3. For Story Forge, state the visible workspace and sanitized action/result;

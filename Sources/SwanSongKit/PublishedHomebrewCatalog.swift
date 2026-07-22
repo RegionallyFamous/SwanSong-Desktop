@@ -84,7 +84,8 @@ public enum PublishedHomebrewCatalogDecoder {
         guard entry.releases.contains(release) else {
             throw HomebrewCatalogError.releaseDoesNotBelongToEntry
         }
-        guard isIdentifier(entry.id),
+        guard let screenshotURL = entry.screenshotURL,
+              isIdentifier(entry.id),
               validText(entry.title, maximum: 160),
               validText(entry.developer, maximum: 160),
               validText(entry.summary, maximum: 512),
@@ -93,6 +94,7 @@ public enum PublishedHomebrewCatalogDecoder {
               isFirstPartySource(entry.sourceURL),
               isImmutableEvidence(entry.provenanceURL, sourceURL: entry.sourceURL),
               isImmutableLicense(entry.licenseURL, source: entry.sourceURL),
+              isImmutableScreenshot(screenshotURL, sourceURL: entry.sourceURL),
               validVersion(release.version),
               isIdentifier(release.saveCompatibilityID),
               release.releasedAt != nil,
@@ -175,6 +177,7 @@ public enum PublishedHomebrewCatalogDecoder {
             provenanceURL: entry.evidence,
             licenseName: entry.source.license,
             licenseURL: licenseURL,
+            screenshotURL: entry.screenshot,
             releases: [release]
         )
         try validateForInstallation(entry: mapped, release: release)
@@ -316,6 +319,20 @@ public enum PublishedHomebrewCatalogDecoder {
             && path[0] == sourcePath[0]
             && path[1] == sourcePath[1]
             && path[2] == source.revision
+            && ["png", "jpg", "jpeg"].contains(url.pathExtension.lowercased())
+    }
+
+    private static func isImmutableScreenshot(_ url: URL, sourceURL: URL) -> Bool {
+        guard safeHTTPS(url, host: "raw.githubusercontent.com"),
+              url.query == nil,
+              url.fragment == nil else { return false }
+        let sourcePath = sourceURL.path.split(separator: "/").map(String.init)
+        let path = url.path.split(separator: "/").map(String.init)
+        return sourcePath.count == 2
+            && path.count >= 4
+            && path[0] == sourcePath[0]
+            && path[1] == sourcePath[1]
+            && immutableReference(path[2])
             && ["png", "jpg", "jpeg"].contains(url.pathExtension.lowercased())
     }
 

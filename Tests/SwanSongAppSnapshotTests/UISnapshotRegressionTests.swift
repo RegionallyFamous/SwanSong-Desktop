@@ -289,7 +289,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             root: root.appendingPathComponent("catalog-wide"),
             consentGranted: true,
             catalog: catalog,
-            selectedEntryID: "signal-before-dawn"
+            selectedEntryID: "bug-witch"
         )
 
         let compactSize = CGSize(width: 760, height: 560)
@@ -2191,18 +2191,18 @@ final class UISnapshotRegressionTests: XCTestCase {
             repositoryURL: HomebrewCatalogValidator.firstPartyRepositoryURL,
             entries: [
                 entry(
-                    id: "signal-before-dawn",
-                    title: "Signal Before Dawn",
-                    summary: "A short color adventure built for SwanSong.",
-                    description: "Tune a pocket receiver, follow the lights across the harbor, and find the source of a signal that arrives just before sunrise.",
-                    version: "1.0.0",
+                    id: "bug-witch",
+                    title: "Bug Witch",
+                    summary: "Place familiars and solve five compact signal-routing puzzles.",
+                    description: "Build tiny circuits with three logic familiars, cast each signal, and seal the spellbook.",
+                    version: "1.1.0",
                     digestCharacter: "a"
                 ),
                 entry(
-                    id: "backlight-bazaar",
-                    title: "Backlight Bazaar",
-                    summary: "A bright arcade score chase for WonderSwan Color.",
-                    description: "Trade sparks, chain quick deliveries, and keep a tiny night market glowing until the last train leaves.",
+                    id: "harpoon-moon",
+                    title: "Harpoon Moon",
+                    summary: "Lure moonlit creatures and confront the leviathan.",
+                    description: "Tag three creatures, manage oxygen, and time six charged harpoon shots beneath a paper moon.",
                     version: "1.1.0",
                     digestCharacter: "b"
                 ),

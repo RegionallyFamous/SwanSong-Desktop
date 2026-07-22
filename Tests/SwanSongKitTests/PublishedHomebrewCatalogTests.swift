@@ -15,6 +15,10 @@ final class PublishedHomebrewCatalogTests: XCTestCase {
         let release = try XCTUnwrap(entry.releases.first)
         XCTAssertEqual(entry.developer, "Regionally Famous")
         XCTAssertEqual(entry.licenseName, "MIT")
+        XCTAssertEqual(
+            entry.screenshotURL?.absoluteString,
+            "https://raw.githubusercontent.com/RegionallyFamous/SwanSong-Originals/v3.0.0/docs/qa/native-frames/orbital_courier.png"
+        )
         XCTAssertEqual(release.asset.byteCount, 131_072)
         XCTAssertEqual(release.asset.hardwareModel, .wonderSwanColor)
         XCTAssertNoThrow(

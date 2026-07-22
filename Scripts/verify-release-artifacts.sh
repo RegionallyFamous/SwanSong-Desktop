@@ -514,6 +514,7 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents/Resources/AppIcon.png" \
     ! -path "$APP/Contents/Resources/AppIconCompact.png" \
     ! -path "$APP/Contents/Resources/MenuBarSwan.png" \
+    ! -path "$APP/Contents/Resources/HomebrewTitleScreens/*" \
     ! -path "$APP/Contents/Resources/LICENSE" \
     ! -path "$APP/Contents/Resources/PRIVACY.md" \
     ! -path "$APP/Contents/Resources/PrivacyInfo.xcprivacy" \
@@ -541,6 +542,7 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents/Frameworks/Sparkle.framework" \
     ! -path "$APP/Contents/Frameworks/Sparkle.framework/*" \
     ! -path "$APP/Contents/Resources" \
+    ! -path "$APP/Contents/Resources/HomebrewTitleScreens" \
     ! -path "$APP/Contents/Resources/SwanSongSDK" \
     ! -path "$APP/Contents/Resources/SwanSongSDK/*" \
     ! -path "$APP/Contents/Resources/YokoiHardware" \

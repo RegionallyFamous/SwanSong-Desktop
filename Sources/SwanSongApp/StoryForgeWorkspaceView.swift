@@ -384,6 +384,18 @@ struct StoryForgeWorkspaceView: View {
                     }
                 }
                 StoryForgeCard {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Label("Narrative Pulse", systemImage: "waveform.path.ecg") .font(.headline)
+                            Text("See load-bearing events, open questions, motif appearances, and long flat stretches without forcing every story into one curve.")
+                                .font(.callout).foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Button("Build Pulse") { workspace.buildStoryPulse() }
+                        artifactButton("Open Pulse", url: workspace.storyPulseURL)
+                    }
+                }
+                StoryForgeCard {
                     VStack(alignment: .leading, spacing: 12) {
                         HStack {
                             Label("Manuscript Editor", systemImage: "square.and.pencil") .font(.headline)
@@ -472,6 +484,29 @@ struct StoryForgeWorkspaceView: View {
                             Button("Export Packet") { workspace.exportReaderPacket() }.buttonStyle(.borderedProminent)
                             Button("Import Response…", action: chooseReaderResponse)
                             artifactButton("Show Packets", url: workspace.readerPacketsURL)
+                        }
+                    }
+                }
+                StoryForgeCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Live Reader Moments", systemImage: "bookmark.square") .font(.headline)
+                        Text("Capture the exact scene where a real reader laughed, felt moved, paused, became confused or bored, or wanted more. Notes stay separate; taste is never averaged.")
+                            .font(.callout).foregroundStyle(.secondary)
+                        HStack {
+                            TextField("live-reader-01", text: $workspace.readerSessionID).textFieldStyle(.roundedBorder).font(.body.monospaced())
+                            TextField("Reader name", text: $workspace.readerName).textFieldStyle(.roundedBorder)
+                            Button("Begin Session") { workspace.beginReaderLab() }
+                            artifactButton("Show Sessions", url: workspace.readerLabURL)
+                        }
+                        HStack {
+                            Picker("Scene", selection: $workspace.selectedSceneID) {
+                                ForEach(workspace.projectSummary?.sceneIDs ?? [], id: \.self) { Text($0).tag($0) }
+                            }.frame(width: 190)
+                            Picker("Moment", selection: $workspace.readerSignal) {
+                                ForEach(StoryForgeReaderSignal.allCases) { Text($0.title).tag($0) }
+                            }.frame(width: 150)
+                            TextField("Reader's own short note", text: $workspace.readerBookmarkNote).textFieldStyle(.roundedBorder)
+                            Button("Bookmark") { workspace.recordReaderBookmark() }.buttonStyle(.borderedProminent)
                         }
                     }
                 }
@@ -689,6 +724,24 @@ struct StoryForgeWorkspaceView: View {
                                 .buttonStyle(.borderedProminent)
                             Button("Check Drift") { workspace.checkAdaptationDrift() }
                             artifactButton("Open .wscvn", url: workspace.adaptationProjectURL)
+                        }
+                    }
+                }
+                StoryForgeCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Story Proof & Ribbon", systemImage: "point.3.filled.connected.trianglepath.dotted")
+                            .font(.headline)
+                        Text("Bind each intended turn and consequence to the route that reached it, accepted input, ImageGen presentation, motif music, smooth fade, native audio, reachable next state, and captured ending. This proves delivery—not literary quality.")
+                            .font(.callout).foregroundStyle(.secondary)
+                        HStack {
+                            Button("Choose SwanSong Playthrough…", action: chooseStoryProofPlaythrough)
+                            Text(workspace.storyProofPlaythroughURL?.lastPathComponent ?? "No playthrough selected")
+                                .font(.caption.monospaced()).foregroundStyle(.secondary).lineLimit(1)
+                            Spacer()
+                            Button("Prove Story Delivery") { workspace.runStoryProof() }
+                                .buttonStyle(.borderedProminent)
+                            artifactButton("Open Story Ribbon", url: workspace.storyRibbonURL)
+                            artifactButton("Open Proof", url: workspace.storyProofReportURL)
                         }
                     }
                 }
@@ -1058,6 +1111,18 @@ struct StoryForgeWorkspaceView: View {
         panel.allowedContentTypes = [.json]
         guard panel.runModal() == .OK, let url = panel.url else { return }
         workspace.importReaderResponse(url)
+    }
+
+    private func chooseStoryProofPlaythrough() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose Exhaustive SwanSong Playthrough Report"
+        panel.prompt = "Use Playthrough"
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        panel.allowedContentTypes = [.json]
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        workspace.storyProofPlaythroughURL = url
     }
 
     private func chooseImageGenResult() {
