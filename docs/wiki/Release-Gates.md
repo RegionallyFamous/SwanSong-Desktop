@@ -11,8 +11,8 @@ network boundaries.
 
 ## Source and version
 
-1. Update the changelog, versioned notes, beta guide, version, and build number.
-   Run `./Scripts/check-release-metadata.sh` and
+1. Update the changelog, versioned notes, release-testing guide, version, and
+   build number. Run `./Scripts/check-release-metadata.sh` and
    `./Scripts/prepare-wiki-sync.sh --check` before building.
 2. Confirm bundle identifier `com.regionallyfamous.swansong`, minimum macOS 14,
    universal `arm64` + `x86_64` policy, pinned Sparkle dependency, production

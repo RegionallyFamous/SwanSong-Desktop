@@ -23,6 +23,26 @@ Homebrew page.
 **Refresh** is another explicit request. **Add From Mac** remains completely
 local and available for authorized homebrew that is not in the catalog.
 
+## Visual shelf and inspector
+
+SwanSong 0.8.1 bundles the approved compact title screens referenced by the
+signed catalog. They render with nearest-neighbor pixels, and the procedural
+placeholder remains available when an entry has no approved artwork.
+
+Selecting a title opens a native inspector with:
+
+- its title screen, description, system, version, download size, release date,
+  and license;
+- separate library and system status;
+- full-width actions that follow the title's actual state: Add to Library,
+  Update, Cancel Download, Play, or Show in Library; and
+- named Release, Source Code, License, and Asset Provenance destinations from
+  the verified entry.
+
+Artwork and presentation never loosen the catalog checks. A title becomes
+installable only after the signed metadata, rights, release identity, size,
+digest, and WonderSwan content all validate.
+
 ## What SwanSong verifies
 
 Before an entry can appear as installable, SwanSong requires all of the

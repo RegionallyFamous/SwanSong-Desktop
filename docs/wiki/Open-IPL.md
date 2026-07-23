@@ -49,5 +49,5 @@ Do not rewrite history when describing this change:
   original firmware as an optional private compatibility override.
 - SwanSong 0.2 removes that import, storage, and override path completely.
 
-Historical details remain in each version's release notes. Current 0.4 policy
-must not be presented as behavior that already existed in 0.1.x.
+Historical details remain in each version's release notes. Current policy must
+not be presented as behavior that already existed in 0.1.x.
