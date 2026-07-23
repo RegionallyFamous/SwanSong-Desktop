@@ -52,7 +52,7 @@ Lead with the feeling, then earn the trust:
 
 ## Release honesty
 
-The public download is currently **0.8.0**. The complete SDK 0.5 Studio,
+The public download is currently **0.8.1**. The complete SDK 0.5 Studio,
 Story Forge, Cartridge Tools, and capture-bound Translation Lab remain shipped
 features; 0.8 adds whole-game Translation Surface Suites, exact native review,
 Story Proof, and a visual signed Homebrew shelf on top of 0.7's isolated engine,

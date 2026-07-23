@@ -19,7 +19,7 @@ tour. Everything else can wait until curiosity wins.
 - **Trust but verify:** inspect the privacy, source, build, signing,
   notarization, and release contracts behind the public app.
 
-The current public download is **SwanSong 0.8.0**. It includes the complete SDK
+The current public download is **SwanSong 0.8.1**. It includes the complete SDK
 0.5 Studio, Story Forge quality workbenches, whole-game Translation Surface
 Suites, the visual signed Homebrew Catalog, Cartridge Tools, an isolated game
 engine, Safe Mode, and privacy-safe support tools. Versioned release notes
@@ -54,7 +54,7 @@ Release payload and source-archive gates reject firmware binaries. Historical
 
 ## Homebrew publication status
 
-SwanSong 0.8.0 includes the first-party Homebrew Catalog public key, approved
+SwanSong 0.8.1 includes the first-party Homebrew Catalog public key, approved
 bundled title screens, and a compact native inspector, and can add an authorized
 original game directly to the private library. It does not load the catalog at
 launch or merely because the page is open. **Browse Games**, **Refresh**, and a
@@ -198,6 +198,7 @@ previous-version update tests. The complete operator procedure is in the
 - [Privacy](../PRIVACY.md)
 - [Support](../SUPPORT.md)
 - [Source and fixture provenance](../SOURCE_PROVENANCE.md)
+- [0.8.1 release notes](releases/0.8.1.md)
 - [0.8.0 release notes](releases/0.8.0.md)
 - [0.7.2 release notes](releases/0.7.2.md)
 - [0.6.1 release notes](releases/0.6.1.md)

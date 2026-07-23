@@ -3,7 +3,7 @@
 Most problems have a quick fix. Make sure you have the newest SwanSong release,
 then start with the answers below. SwanSong requires macOS 14 or newer.
 
-The public download is currently 0.8.0. It includes the private player and
+The public download is currently 0.8.1. It includes the private player and
 library, complete SDK 0.5 Studio, Story Forge quality workbenches, whole-game
 Translation Surface Suites, the visual signed Homebrew Catalog, Safe Mode, and
 a privacy-safe Support Bundle.
