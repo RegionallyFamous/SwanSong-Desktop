@@ -1218,17 +1218,10 @@ struct HomebrewFunTesterBanner: View {
     let copyRequest: () -> Void
 
     var body: some View {
-        ViewThatFits(in: .horizontal) {
-            HStack(alignment: .center, spacing: 16) {
-                bannerCopy
-                Spacer(minLength: 12)
-                copyButton
-            }
-            VStack(alignment: .leading, spacing: 14) {
-                bannerCopy
-                copyButton
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
+        VStack(alignment: .leading, spacing: 14) {
+            bannerCopy
+            copyButton
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(16)
         .swanSurface(.elevated, tint: SwanTheme.cyan, cornerRadius: 16)

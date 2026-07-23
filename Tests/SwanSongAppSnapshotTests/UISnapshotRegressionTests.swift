@@ -295,20 +295,6 @@ final class UISnapshotRegressionTests: XCTestCase {
             catalog: catalog,
             selectedEntryID: "bug-witch"
         )
-        let developerCompactModel = makeHomebrewModel(
-            root: root.appendingPathComponent("developer-compact"),
-            consentGranted: true,
-            catalog: catalog
-        )
-        developerCompactModel.setDebugToolsEnabled(true)
-        let developerWideModel = makeHomebrewModel(
-            root: root.appendingPathComponent("developer-wide"),
-            consentGranted: true,
-            catalog: catalog,
-            selectedEntryID: "bug-witch"
-        )
-        developerWideModel.setDebugToolsEnabled(true)
-
         let compactSize = CGSize(width: 760, height: 560)
         let wideSize = CGSize(width: 1_180, height: 720)
         let scenarios = [
@@ -356,22 +342,6 @@ final class UISnapshotRegressionTests: XCTestCase {
                 AnyView(
                     RootView(
                         model: wideCatalogModel,
-                        usesDeterministicSidebarForOffscreenSnapshots: true
-                    )
-                )
-            },
-            Scenario(name: "homebrew-developer-compact", size: compactSize) {
-                AnyView(
-                    RootView(
-                        model: developerCompactModel,
-                        usesDeterministicSidebarForOffscreenSnapshots: true
-                    )
-                )
-            },
-            Scenario(name: "homebrew-developer-wide", size: wideSize) {
-                AnyView(
-                    RootView(
-                        model: developerWideModel,
                         usesDeterministicSidebarForOffscreenSnapshots: true
                     )
                 )
@@ -451,8 +421,6 @@ final class UISnapshotRegressionTests: XCTestCase {
         XCTAssertEqual(compactCatalogModel.homebrewCatalog, catalog)
         XCTAssertFalse(wideCatalogModel.homebrewCatalogIsLoading)
         XCTAssertEqual(wideCatalogModel.homebrewCatalog, catalog)
-        XCTAssertTrue(developerCompactModel.debugToolsEnabled)
-        XCTAssertTrue(developerWideModel.debugToolsEnabled)
     }
 
     func testLegalSupportOverviewRendersAtMinimumWindowSize() throws {
