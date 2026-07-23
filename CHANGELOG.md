@@ -6,6 +6,20 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-07-23
+
+**Keep the Shelf Clear.** SwanSong 0.8.1 keeps internal compatibility
+confidence out of the everyday library unless Developer Tools is enabled.
+
+### Fixed
+
+- Hides the “Picture Appeared,” “Not Tested Yet,” and “Needs Attention”
+  compatibility badges on library cards unless Developer Tools is enabled.
+- Keeps the complete Game Confidence panel, its compatibility verdict controls,
+  notes, and related accessibility descriptions behind the same Developer
+  Tools setting while preserving ordinary Play, repair, game details, and save
+  controls.
+
 ## [0.8.0] - 2026-07-22
 
 **Prove the Whole Game.** SwanSong 0.8 turns Translation Lab's excellent
@@ -696,7 +710,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.8.1...HEAD
+[0.8.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.2...v0.8.0
 [0.7.2]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.0...v0.7.1

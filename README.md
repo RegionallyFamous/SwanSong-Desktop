@@ -16,7 +16,7 @@ a really nice place to play them.
 
 <p align="center">
   <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.8</strong></a>
-  · <a href="docs/releases/0.8.0.md">See what’s new</a>
+  · <a href="docs/releases/0.8.1.md">See what’s new</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -42,9 +42,9 @@ close without crowding the screen.
   two direction clusters, A, B, and Start.
 - **Move saves between setups.** Import and export SwanSong Pocket `.sav`
   files without turning your whole library inside out.
-- **Know what “works” means.** SwanSong keeps “picture appeared” separate from
-  your play verdict instead of pretending one frame
-  proves an entire game.
+- **Know what “works” means.** With Developer Tools enabled, SwanSong keeps
+  “picture appeared” separate from your play verdict instead of pretending one
+  frame proves an entire game.
 
 ## Open a game. That is the setup.
 
@@ -160,7 +160,8 @@ service, local automation authenticates its caller, Safe Mode can rescue a
 launch, Support Bundles exclude private material, and every release carries
 exact source, checksums, an SPDX SBOM, and attestations.
 
-Read the [0.8.0 release notes](docs/releases/0.8.0.md) for the guided tour or
+Read the [0.8.1 release notes](docs/releases/0.8.1.md) for the current patch or
+the [0.8.0 release notes](docs/releases/0.8.0.md) for the guided tour, and see
 the [changelog](CHANGELOG.md) for the complete history.
 
 ## Start exploring
@@ -179,7 +180,7 @@ keeps the deeper guides out of your way until you need them:
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.8.0 release notes](docs/releases/0.8.0.md).
+[0.8.1 release notes](docs/releases/0.8.1.md).
 
 ## Free, open, and independent
 
