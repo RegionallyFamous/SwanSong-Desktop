@@ -874,6 +874,24 @@ private extension GameLibrarySortOrder {
     }
 }
 
+enum HomebrewFunTesterPresentation {
+    static let skillName = "$playtest-swansong-fun"
+
+    static let allGamesPrompt = """
+    Use $playtest-swansong-fun to play all ten SwanSong Originals and compare their fun, friction, and replay pull. Run discovery, competence, and replay passes for every game; keep functional verdicts separate and cite frame, audio, and input-trace evidence.
+    """
+
+    static func isVisible(developerToolsEnabled: Bool) -> Bool {
+        developerToolsEnabled
+    }
+
+    static func gamePrompt(title: String) -> String {
+        """
+        Use $playtest-swansong-fun to play \(title) from SwanSong Originals. Run discovery, competence, and replay passes; keep the functional verdict separate from the fun outlook and cite frame, audio, and input-trace evidence.
+        """
+    }
+}
+
 private struct HomebrewCatalogView: View {
     @Environment(\.openURL) private var openURL
     @Bindable var model: AppModel
@@ -1104,6 +1122,19 @@ private struct HomebrewCatalogView: View {
                 .accessibilityIdentifier("homebrew-saved-catalog-notice")
             }
 
+            if HomebrewFunTesterPresentation.isVisible(
+                developerToolsEnabled: model.debugToolsEnabled
+            ) {
+                HomebrewFunTesterBanner {
+                    copyFunTesterRequest(
+                        HomebrewFunTesterPresentation.allGamesPrompt,
+                        notice: "Copied the all-games Fun Tester request. Paste it into a new Codex task."
+                    )
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 18)
+            }
+
             if displayedEntries.isEmpty {
                 ContentUnavailableView {
                     Label(
@@ -1167,6 +1198,71 @@ private struct HomebrewCatalogView: View {
         guard let selectedID = model.selectedHomebrewEntryID,
               !displayedEntries.contains(where: { $0.id == selectedID }) else { return }
         model.selectedHomebrewEntryID = nil
+    }
+
+    private func copyFunTesterRequest(_ prompt: String, notice: String) {
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(prompt, forType: .string)
+        model.presentedNotice = notice
+    }
+}
+
+struct HomebrewFunTesterBanner: View {
+    let copyRequest: () -> Void
+
+    var body: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(alignment: .center, spacing: 16) {
+                bannerCopy
+                Spacer(minLength: 12)
+                copyButton
+            }
+            VStack(alignment: .leading, spacing: 14) {
+                bannerCopy
+                copyButton
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+        .padding(16)
+        .swanSurface(.elevated, tint: SwanTheme.cyan, cornerRadius: 16)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("homebrew-fun-tester")
+    }
+
+    private var bannerCopy: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "sparkles.rectangle.stack.fill")
+                .font(.title2)
+                .foregroundStyle(SwanTheme.cyan)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 5) {
+                HStack(spacing: 8) {
+                    Text("SwanSong Fun Tester")
+                        .font(.headline)
+                    Text("DEVELOPER")
+                        .font(.caption2.weight(.bold))
+                        .foregroundStyle(SwanTheme.cyan)
+                        .padding(.horizontal, 7)
+                        .padding(.vertical, 3)
+                        .background(SwanTheme.cyan.opacity(0.1), in: Capsule())
+                }
+                Text(
+                    "Ask Codex to play every Original through SwanSong, then compare clarity, control feel, decisions, pacing, mastery, variety, and replay pull."
+                )
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private var copyButton: some View {
+        Button(action: copyRequest) {
+            Label("Copy All-Games Request", systemImage: "doc.on.doc")
+        }
+        .buttonStyle(.borderedProminent)
+        .accessibilityIdentifier("homebrew-fun-tester-copy-all")
     }
 }
 
@@ -1355,6 +1451,12 @@ private struct HomebrewCatalogInspector: View {
                     .font(.callout)
                     .fixedSize(horizontal: false, vertical: true)
 
+                if HomebrewFunTesterPresentation.isVisible(
+                    developerToolsEnabled: model.debugToolsEnabled
+                ) {
+                    funTesterCard
+                }
+
                 if let release = model.latestHomebrewRelease(for: entry) {
                     statusBadges(release)
 
@@ -1413,6 +1515,42 @@ private struct HomebrewCatalogInspector: View {
                     .lineLimit(2)
             }
         }
+    }
+
+    private var funTesterCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 8) {
+                Label("Agent Playtest", systemImage: "sparkles")
+                    .font(.callout.weight(.semibold))
+                Spacer()
+                Text("DEVELOPER")
+                    .font(.caption2.weight(.bold))
+                    .foregroundStyle(SwanTheme.cyan)
+            }
+            Text(
+                "Copy a three-pass Fun Tester request for this game, ready to paste into Codex."
+            )
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .fixedSize(horizontal: false, vertical: true)
+            Button {
+                NSPasteboard.general.clearContents()
+                NSPasteboard.general.setString(
+                    HomebrewFunTesterPresentation.gamePrompt(title: entry.title),
+                    forType: .string
+                )
+                model.presentedNotice = "Copied the \(entry.title) Fun Tester request. Paste it into a new Codex task."
+            } label: {
+                Label("Copy Playtest Request", systemImage: "doc.on.doc")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.bordered)
+            .accessibilityIdentifier("homebrew-fun-tester-copy-game")
+        }
+        .padding(14)
+        .swanSurface(.recessed, tint: SwanTheme.cyan, cornerRadius: 13)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("homebrew-fun-tester-game")
     }
 
     private func statusBadges(_ release: HomebrewCatalogRelease) -> some View {

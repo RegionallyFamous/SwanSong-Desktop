@@ -148,6 +148,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             (key, UserDefaults.standard.object(forKey: key))
         }
         UserDefaults.standard.set(true, forKey: "showsSidebar")
+        UserDefaults.standard.set(false, forKey: "SwanSong.debugToolsEnabled.v1")
         UserDefaults.standard.set(GameLibrarySortOrder.title.rawValue, forKey: "librarySortOption")
         defer {
             for (key, value) in preservedWindowPreferences {
@@ -254,6 +255,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             "showsSidebar",
             "libraryWindowWidth",
             "libraryWindowHeight",
+            "SwanSong.debugToolsEnabled.v1",
         ].map { key in
             (key, UserDefaults.standard.object(forKey: key))
         }
@@ -263,6 +265,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             }
         }
         UserDefaults.standard.set(true, forKey: "showsSidebar")
+        UserDefaults.standard.set(false, forKey: "SwanSong.debugToolsEnabled.v1")
 
         let catalog = homebrewCatalogFixture()
         try HomebrewCatalogValidator.validate(
@@ -292,6 +295,19 @@ final class UISnapshotRegressionTests: XCTestCase {
             catalog: catalog,
             selectedEntryID: "bug-witch"
         )
+        let developerCompactModel = makeHomebrewModel(
+            root: root.appendingPathComponent("developer-compact"),
+            consentGranted: true,
+            catalog: catalog
+        )
+        developerCompactModel.setDebugToolsEnabled(true)
+        let developerWideModel = makeHomebrewModel(
+            root: root.appendingPathComponent("developer-wide"),
+            consentGranted: true,
+            catalog: catalog,
+            selectedEntryID: "bug-witch"
+        )
+        developerWideModel.setDebugToolsEnabled(true)
 
         let compactSize = CGSize(width: 760, height: 560)
         let wideSize = CGSize(width: 1_180, height: 720)
@@ -342,6 +358,33 @@ final class UISnapshotRegressionTests: XCTestCase {
                         model: wideCatalogModel,
                         usesDeterministicSidebarForOffscreenSnapshots: true
                     )
+                )
+            },
+            Scenario(name: "homebrew-developer-compact", size: compactSize) {
+                AnyView(
+                    RootView(
+                        model: developerCompactModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+            Scenario(name: "homebrew-developer-wide", size: wideSize) {
+                AnyView(
+                    RootView(
+                        model: developerWideModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+            Scenario(
+                name: "homebrew-developer-banner",
+                size: CGSize(width: 680, height: 180)
+            ) {
+                AnyView(
+                    HomebrewFunTesterBanner(copyRequest: {})
+                        .padding(16)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(SwanTheme.libraryBackground)
                 )
             },
         ]
@@ -408,6 +451,8 @@ final class UISnapshotRegressionTests: XCTestCase {
         XCTAssertEqual(compactCatalogModel.homebrewCatalog, catalog)
         XCTAssertFalse(wideCatalogModel.homebrewCatalogIsLoading)
         XCTAssertEqual(wideCatalogModel.homebrewCatalog, catalog)
+        XCTAssertTrue(developerCompactModel.debugToolsEnabled)
+        XCTAssertTrue(developerWideModel.debugToolsEnabled)
     }
 
     func testLegalSupportOverviewRendersAtMinimumWindowSize() throws {
@@ -630,6 +675,25 @@ final class UISnapshotRegressionTests: XCTestCase {
         )
         XCTAssertTrue(
             GameConfidencePresentation.isVisible(developerToolsEnabled: true)
+        )
+        XCTAssertFalse(
+            HomebrewFunTesterPresentation.isVisible(developerToolsEnabled: false)
+        )
+        XCTAssertTrue(
+            HomebrewFunTesterPresentation.isVisible(developerToolsEnabled: true)
+        )
+        XCTAssertEqual(
+            HomebrewFunTesterPresentation.skillName,
+            "$playtest-swansong-fun"
+        )
+        XCTAssertTrue(
+            HomebrewFunTesterPresentation.allGamesPrompt.contains(
+                "all ten SwanSong Originals"
+            )
+        )
+        XCTAssertTrue(
+            HomebrewFunTesterPresentation.gamePrompt(title: "Bug Witch")
+                .contains("play Bug Witch")
         )
         XCTAssertEqual(
             GameConfidenceAccessibility.launchReadiness,

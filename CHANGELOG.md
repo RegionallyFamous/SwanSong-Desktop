@@ -6,6 +6,12 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+### Added
+
+- Adds a Developer-only SwanSong Fun Tester panel to Homebrew with ready-to-copy
+  Codex requests for an all-games comparison or a focused three-pass review of
+  the selected catalog game.
+
 ## [0.8.1] - 2026-07-23
 
 **Keep the Shelf Clear.** SwanSong 0.8.1 keeps internal compatibility
