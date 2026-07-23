@@ -168,6 +168,7 @@ struct SwanSongApp: App {
                 .disabled(
                     model.isPlaying
                         || model.section == .homebrew
+                        || model.section == .translationPatches
                         || model.section == .cartridgeTools
                         || model.section == .pocketCore
                         || model.section == .translationLab
@@ -378,6 +379,25 @@ struct SwanSongApp: App {
                 }
             }
             CommandMenu("Translation") {
+                Button("Open Translation Shelf") {
+                    model.stopPlaying()
+                    model.section = .translationPatches
+                }
+                .disabled(model.translationPatchIsInstalling)
+
+                Button("Choose Translation Release…") {
+                    model.section = .translationPatches
+                    model.chooseTranslationPatchPackage()
+                }
+                .disabled(
+                    model.isPlaying
+                        || model.translationPatchIsLoading
+                        || model.translationPatchIsInstalling
+                        || model.gameImportIsBusy
+                )
+
+                Divider()
+
                 Button("Add Translation Project…") {
                     model.chooseTranslationProject()
                 }

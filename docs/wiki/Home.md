@@ -33,6 +33,11 @@ and Patched frame pairs, First Visual Change, on-device text intake, observed
 play, private display provenance, whole-game Translation Surface Suites, and
 durable native-1× evidence review.
 
+If the translation is already finished,
+[[Playing and Library#translation-shelf|Translation Shelf]] can verify a
+trusted source-free release package against your exact original and add the
+English build as a separate private library game.
+
 If a trusted local agent will help with a long route or evidence task, read
 [[Local MCP and Automation]] before enabling anything.
 

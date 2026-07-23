@@ -272,7 +272,7 @@ private enum SwanSongMCPServer {
                 inputSchema: objectSchema(
                     properties: [
                         "section": enumSchema(
-                            ["library", "favorites", "recent", "homebrew", "pocket", "translation", "studio"],
+                            ["library", "favorites", "recent", "homebrew", "patches", "pocket", "translation", "studio"],
                             description: "The destination section."
                         ),
                     ],

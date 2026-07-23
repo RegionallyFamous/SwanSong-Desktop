@@ -65,6 +65,14 @@ SwanSong also gives translators, homebrew makers, and preservation-minded
 players a serious workspace without making the everyday player feel like a
 developer tool.
 
+### Translation Shelf
+
+Turn a trusted, source-free translation release into a ready-to-play library
+game without modifying your original. Choose its `release.json`, choose the
+exact original game it asks for, and SwanSong verifies the IPS, source
+revision, finished release fingerprint, and cartridge checksum. The English
+build receives its own private library entry, badge, and save history.
+
 ### Translation Lab
 
 Turn “this screen looks wrong” into evidence you can replay. Record a route,

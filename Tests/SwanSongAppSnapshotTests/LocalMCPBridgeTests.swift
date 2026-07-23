@@ -37,6 +37,11 @@ final class LocalMCPBridgeTests: XCTestCase {
         XCTAssertEqual(model.section, .translationLab)
         _ = try bridge.response(
             method: "navigate",
+            argumentsJSON: #"{"section":"patches"}"#
+        )
+        XCTAssertEqual(model.section, .translationPatches)
+        _ = try bridge.response(
+            method: "navigate",
             argumentsJSON: #"{"section":"story"}"#
         )
         XCTAssertEqual(model.section, .storyForge)

@@ -44,6 +44,42 @@ The managed store, persistence, states, artwork, compatibility notes, and
 play history remain local. They are not included in update requests or public
 diagnostics.
 
+## Translation Shelf
+
+Translation Shelf closes the gap between a finished fan-translation patch and
+a game you can safely play.
+
+1. Open **Translation Shelf** in the sidebar.
+2. Choose the translation release folder or its `release.json`.
+3. Review the title, version, required revision, and fingerprints SwanSong
+   found.
+4. Choose **Choose Original and Install…**, then select your authorized
+   original `.ws`, `.wsc`, or one-game ZIP.
+5. Play the new English entry from the shelf or Library.
+
+The package must be marked source-free, release-eligible, and
+release-certified. SwanSong currently accepts IPS packages. Before installing,
+it verifies the manifest and patch sizes and SHA-256 fingerprints, the exact
+original size and SHA-256, the finished size and SHA-256, the platform, the
+WonderSwan file structure, and the cartridge checksum.
+
+Patching happens in memory. SwanSong does not replace the selected original or
+write a patched copy beside it. The finished game enters the same private,
+content-addressed managed store as an ordinary library import and receives a
+separate library identity, so its saves and states do not collide with the
+original entry.
+
+If that private English copy later needs repair, Library sends you back through
+the same release-package and exact-original checks, then rebuilds the managed
+copy without changing its library identity or saves.
+
+Translation Shelf is local and does not browse for, download, or upload
+packages or games. A local release manifest is not a publisher signature:
+fingerprints prove that the source, patch, and finished bytes match that
+package, while the person or site providing the package remains the trust
+source. Use translation packages from people you trust. Package makers can use
+the exact source-free format in [[Translation Shelf]].
+
 ## Player behavior
 
 Play mode collapses the library into a focused one-game surface. The native
