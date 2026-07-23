@@ -24,7 +24,7 @@ jobs:
       tests: ${{ steps.classify.outputs.tests }}
     steps:
       - name: Check out exact source
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -115,13 +115,13 @@ jobs:
 
       - name: Check out exact source
         if: env.RUN_TESTS == 'true'
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Check out locked SwanSong SDK source
         if: env.RUN_TESTS == 'true'
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: RegionallyFamous/swansong-sdk
           ref: f9bab7451593d0d8640816c60e0836377c65027e
@@ -223,13 +223,13 @@ jobs:
 
       - name: Check out exact source
         if: env.RUN_PREFLIGHT == 'true'
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Check out locked SwanSong SDK source
         if: env.RUN_PREFLIGHT == 'true'
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: RegionallyFamous/swansong-sdk
           ref: f9bab7451593d0d8640816c60e0836377c65027e
