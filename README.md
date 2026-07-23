@@ -16,7 +16,8 @@ a really nice place to play them.
 
 <p align="center">
   <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.8</strong></a>
-  · <a href="docs/releases/0.8.1.md">See what’s new</a>
+  · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.9.0"><strong>Try the 0.9 beta</strong></a>
+  · <a href="docs/releases/0.9.0.md">See what’s new</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -65,7 +66,7 @@ SwanSong also gives translators, homebrew makers, and preservation-minded
 players a serious workspace without making the everyday player feel like a
 developer tool.
 
-### Translation Shelf
+### Translation Shelf — new in the 0.9 beta
 
 Turn a trusted, source-free translation release into a ready-to-play library
 game without modifying your original. Choose its `release.json`, choose the
@@ -147,30 +148,31 @@ Official downloads are universal, Developer ID signed, notarized by Apple,
 and published with matching checksums, a release manifest, and corresponding
 source.
 
-## The latest release: SwanSong 0.8
+## New in the SwanSong 0.9 beta
 
-The public **0.8 release** connects SwanSong's strongest capture tools into a
-whole-game workflow:
+The stable channel remains **0.8.1**. The **0.9.0 beta** adds Translation
+Shelf, a local path from a trusted source-free IPS release to a separately
+managed library game:
 
-- Translation Surface Suites run case-specific viewer ROMs from clean boot and
-  preserve several named checkpoints per deterministic route;
-- exact native-1× review keeps meaning, functional microcopy, visual fit, and
-  condensed rendering as separate human decisions;
-- immutable final certificates bind stable paths, digests, coverage, endpoint
-  results, reviews, and observed audio status;
-- Story Forge adds Narrative Pulse, live-reader moments, and Story Proof without
-  turning evidence into an automatic quality score; and
-- the signed Homebrew Catalog gains title screens and a clearer native
-  inspector.
+- verify the package, exact original revision, finished release hash,
+  WonderSwan structure, cartridge checksum, and save contract;
+- patch entirely in memory without changing the selected original;
+- keep translated saves, states, artwork, favorite, and play history separate;
+- adopt an existing exact finished build instead of duplicating it; and
+- rebuild a missing or changed managed copy without losing its library history.
+
+Homebrew also gains a Developer-only SwanSong Fun Tester for structured agent
+playtest requests. It remains hidden with the rest of the diagnostic confidence
+surfaces until **Show developer tools** is enabled.
 
 The 0.7 safety foundation remains: the engine runs in its own locked-down
 service, local automation authenticates its caller, Safe Mode can rescue a
 launch, Support Bundles exclude private material, and every release carries
 exact source, checksums, an SPDX SBOM, and attestations.
 
-Read the [0.8.1 release notes](docs/releases/0.8.1.md) for the current patch or
-the [0.8.0 release notes](docs/releases/0.8.0.md) for the guided tour, and see
-the [changelog](CHANGELOG.md) for the complete history.
+Read the [0.9.0 beta notes](docs/releases/0.9.0.md), use the
+[0.9 beta checklist](docs/BETA_TESTING.md), or see the
+[changelog](CHANGELOG.md) for the complete history.
 
 ## Start exploring
 
@@ -178,6 +180,7 @@ The [SwanSong Wiki](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki)
 keeps the deeper guides out of your way until you need them:
 
 - [Play, organize, rewind, and manage saves](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
+- [Install a trusted source-free translation release](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Shelf)
 - [Build deterministic translation evidence](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
 - [Make games in SwanSong Studio](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/SwanSong-Studio)
 - [Write and publish novels with Story Forge](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Story-Forge)
@@ -188,7 +191,7 @@ keeps the deeper guides out of your way until you need them:
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.8.1 release notes](docs/releases/0.8.1.md).
+[0.9.0 beta notes](docs/releases/0.9.0.md).
 
 ## Free, open, and independent
 

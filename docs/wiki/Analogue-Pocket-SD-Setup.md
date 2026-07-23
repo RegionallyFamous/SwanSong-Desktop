@@ -15,7 +15,8 @@ Sparkle never invokes the Pocket workflow.
 ## Current availability
 
 No authorized stable SwanSong Core package is currently published. SwanSong
-0.8.1 reports that state and performs no package download or card write.
+Current stable and beta releases report that state and perform no package
+download or card write.
 
 The workflow unlocks only after `swansong-core` publishes an immutable stable
 release that satisfies the embedded authorization policy, package manifest,

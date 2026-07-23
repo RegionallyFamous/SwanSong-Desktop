@@ -33,7 +33,7 @@ and Patched frame pairs, First Visual Change, on-device text intake, observed
 play, private display provenance, whole-game Translation Surface Suites, and
 durable native-1× evidence review.
 
-If the translation is already finished,
+In the SwanSong 0.9 beta, if the translation is already finished,
 [[Playing and Library#translation-shelf|Translation Shelf]] can verify a
 trusted source-free release package against your exact original and add the
 English build as a separate private library game.
@@ -49,12 +49,13 @@ history, unprimed readers, research, ImageGen art, music auditions, adaptation,
 and EPUB/PDF publication. It keeps automated checks separate from human
 editorial and release approval.
 
-Story Forge was introduced in SwanSong 0.5.0 and remains included in 0.8.1.
+Story Forge was introduced in SwanSong 0.5.0 and remains included in current
+stable and beta releases.
 
 ### I want to make a game
 
 [[SwanSong Studio]] puts New, Assets, Build, Test, Play, Profile, Evidence, and
-Release in one native workspace backed by SwanSong SDK. SwanSong 0.8.1 carries
+Release in one native workspace backed by SwanSong SDK. Current releases carry
 the complete content-verified SDK 0.5.0 toolset, including Utility App
 scaffolds, traced builds, scenario compilation, reviewed asset/audio workflows,
 semantic outcomes, budget history, project migration, and the expanded release
@@ -84,21 +85,20 @@ as the command reference. [[Signing and Notarization]] and [[Release Gates]]
 document the trusted-Mac path from a clean source tag to a signed, notarized,
 checksummed public build.
 
-## The 0.8 release
+## The 0.9 beta
 
-The current public **0.8.1 release** includes whole-game Translation Surface
-Suites, exact native review, resumable certification, Narrative Pulse,
-live-reader moments, Story Proof, bundled Homebrew title screens, and a compact
-catalog inspector. Compatibility confidence remains available with Developer
-Tools enabled while the everyday library stays focused on playing. The 0.7
-safety foundation remains: the engine stays isolated, local automation proves
-who is asking, Safe Mode can rescue a launch, and Support Bundles leave private
-games and projects behind.
+The stable channel remains **0.8.1**. The **0.9.0 beta** adds Translation
+Shelf, which verifies a trusted source-free IPS package and the exact
+player-supplied original, applies the patch in memory, and adds the verified
+result as a separate private library game. Homebrew also gains Developer-only
+agent playtest prompts. Translation Surface Suites, exact native review,
+resumable certification, Narrative Pulse, Story Proof, the visual signed
+Homebrew shelf, isolated engine, Safe Mode, and privacy-safe Support Bundles
+remain intact.
 
 Read the
-[0.8.1 release notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.8.1.md)
-for the current patch, use [[0.8 Release Testing]] for the tester checklist,
-and consult the repository
+[0.9.0 beta notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.9.0.md),
+use [[0.9 Beta Testing]] for the tester checklist, and consult the repository
 [changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md)
 for the exact source and release history.
 

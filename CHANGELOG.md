@@ -6,8 +6,17 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-07-23
+
+**Bring the Translation Home.** SwanSong 0.9 turns a trusted, source-free
+translation release into a separately managed, verified library game without
+changing the player's original.
+
 ### Added
 
+- Adds a Developer-only SwanSong Fun Tester panel to Homebrew with ready-to-copy
+  Codex requests for an all-games comparison or a focused three-pass review of
+  the selected catalog game.
 - Adds a local Translation Shelf for source-free, release-certified
   `release.json` packages and IPS patches.
 - Verifies the package, exact original revision, finished release hash, and
@@ -18,6 +27,19 @@ records those user-visible changes. Published releases use semantic versioning.
   revision, or a mismatched finished build.
 - Rebuilds a missing or changed private English copy from the same verified
   release and original while preserving its saves and library identity.
+
+### Changed
+
+- Refreshes seven approved bundled Homebrew title-screen captures and records
+  their shipped-artwork provenance.
+- Protects production appcast publication with a maintainer-reviewed GitHub
+  environment restricted to protected branches.
+
+### Fixed
+
+- Corrects Homebrew Catalog documentation to describe its owner-only
+  Application Support anti-rollback record instead of the retired beta
+  Keychain design.
 
 ## [0.8.1] - 2026-07-23
 
@@ -723,7 +745,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.8.1...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.8.1...v0.9.0
 [0.8.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.2...v0.8.0
 [0.7.2]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.1...v0.7.2

@@ -25,9 +25,10 @@ local and available for authorized homebrew that is not in the catalog.
 
 ## Visual shelf and inspector
 
-SwanSong 0.8.1 bundles the approved compact title screens referenced by the
-signed catalog. They render with nearest-neighbor pixels, and the procedural
-placeholder remains available when an entry has no approved artwork.
+SwanSong 0.8.1 and the 0.9 beta bundle approved compact title screens for the
+signed catalog. The 0.9 beta refreshes seven of those native captures. They
+render with nearest-neighbor pixels, and the procedural placeholder remains
+available when an entry has no approved artwork.
 
 Selecting a title opens a native inspector with:
 
@@ -75,13 +76,14 @@ migration can preserve player data safely.
 ## Cache and rollback protection
 
 An accepted catalog is stored in a private verified cache. SwanSong also keeps
-a small Keychain high-water record so stopping catalog use and starting again
-cannot make an older signed revision acceptable.
+a small owner-only Application Support high-water record so stopping catalog
+use and starting again cannot make an older signed revision acceptable.
 
-That automatic check never needs your login password. SwanSong binds new
-records to the signed app identity used by future updates and explicitly
-forbids Keychain authentication windows during launch. Legacy beta records are
-left untouched and ignored, so an old permission cannot interrupt startup.
+That automatic check never needs your login password. The record lives in
+SwanSong's private trust folder, is readable and writable only by the current
+macOS user, and is updated with locked, atomic, monotonic writes. Legacy beta
+Keychain records are left untouched and ignored, so an old permission cannot
+interrupt startup.
 
 Catalog publication and cache updates are crash-safe and interprocess locked.
 A delayed process must recheck the durable revision before it can publish

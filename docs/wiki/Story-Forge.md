@@ -12,7 +12,8 @@ art, author music auditions, measure WonderSwan adaptation drift, prove story
 delivery against exhaustive SwanSong evidence, manage a catalog, and build EPUB/PDF
 editions without turning an automated score into a claim that a book is good.
 
-Story Forge was introduced in SwanSong 0.5.0 and remains included in 0.8.1.
+Story Forge was introduced in SwanSong 0.5.0 and remains included in current
+stable and beta releases.
 
 Story Forge remains the source of narrative policy and tools. SwanSong Desktop
 provides the fixed, visible interface. This avoids a second story engine whose

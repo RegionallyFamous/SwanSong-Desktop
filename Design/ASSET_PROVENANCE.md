@@ -17,5 +17,8 @@ Launch screenshots must be captured from the running app with open-source or
 clean-room fixtures. Record the app version, fixture license, capture date, and
 any crop or color adjustment beside each future press asset.
 
+The versioned, rights-reviewed public set and its per-image capture record live
+in [`Design/PressKit/`](PressKit/README.md).
+
 Two design studies containing commercial-title imagery were deliberately
 removed before the repository's public launch and are not project assets.

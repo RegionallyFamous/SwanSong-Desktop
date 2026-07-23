@@ -43,10 +43,12 @@ The signed app contains `SUFeedURL`, the tracked `SUPublicEDKey`, and disabled
 system-profiling configuration. The matching EdDSA private seed is stored as
 the encrypted, masked GitHub Actions repository secret
 `SPARKLE_ED25519_PRIVATE_KEY`. It is exposed only to the manually dispatched
-appcast publisher, passed directly to pinned Sparkle `sign_update` through
-standard input, and never committed, embedded in the app, written to an
-artifact, or printed in a build log. The workflow is not triggered by pull
-requests or forks.
+appcast publisher. The job targets the protected `production-appcast`
+environment, requires a maintainer approval, and accepts deployments only from
+protected branches. The seed is passed directly to pinned Sparkle
+`sign_update` through standard input and never committed, embedded in the app,
+written to an artifact, or printed in a build log. The workflow is not
+triggered by pull requests or forks.
 
 Sparkle is pinned by version and exact source commit. Its license is tracked in
 `Dependencies/SPARKLE_LICENSE`, and every official corresponding-source archive

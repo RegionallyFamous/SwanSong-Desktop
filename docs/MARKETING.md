@@ -52,12 +52,15 @@ Lead with the feeling, then earn the trust:
 
 ## Release honesty
 
-The public download is currently **0.8.1**. The complete SDK 0.5 Studio,
-Story Forge, Cartridge Tools, and capture-bound Translation Lab remain shipped
-features; 0.8 adds whole-game Translation Surface Suites, exact native review,
-Story Proof, and a visual signed Homebrew shelf on top of 0.7's isolated engine,
-signed local-automation boundary, Safe Mode, privacy-safe support, and
-inspectable release provenance. Excitement never gets to erase requirements or known limits:
+The stable public download is **0.8.1** and **0.9.0** is the active beta.
+Translation Shelf is the 0.9 lead: it turns a trusted source-free IPS release
+and the exact player-supplied original into a separately managed, verified
+library game without changing that original. The complete SDK 0.5 Studio,
+Story Forge, Cartridge Tools, capture-bound Translation Lab, whole-game
+Translation Surface Suites, exact native review, Story Proof, the visual
+signed Homebrew shelf, isolated engine, signed local-automation boundary, Safe
+Mode, privacy-safe support, and inspectable release provenance remain shipped
+features. Excitement never gets to erase requirements or known limits:
 Story Forge needs its local framework, Studio needs its stated toolchain,
 Cartridge Lab needs authorized hardware, and every physical write keeps its
 confirmation gates.

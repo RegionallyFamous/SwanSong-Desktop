@@ -9,8 +9,9 @@ tour. Everything else can wait until curiosity wins.
 
 - **Play:** install SwanSong, add a game, map a controller, rewind with Time
   Ribbon, and manage visual save states.
-- **Translate:** record exact routes, compare Original and Patched frames, find
-  the first visual change, and keep private evidence with the project.
+- **Translate:** install a trusted source-free release through Translation
+  Shelf, or record exact routes, compare Original and Patched frames, find the
+  first visual change, and keep private evidence with the project.
 - **Make:** build and prove WonderSwan projects in SwanSong Studio.
 - **Write:** develop a light novel in Story Forge, then carry it into Studio
   for a WonderSwan adaptation.
@@ -19,11 +20,12 @@ tour. Everything else can wait until curiosity wins.
 - **Trust but verify:** inspect the privacy, source, build, signing,
   notarization, and release contracts behind the public app.
 
-The current public download is **SwanSong 0.8.1**. It includes the complete SDK
-0.5 Studio, Story Forge quality workbenches, whole-game Translation Surface
-Suites, the visual signed Homebrew Catalog, Cartridge Tools, an isolated game
-engine, Safe Mode, and privacy-safe support tools. Versioned release notes
-remain authoritative for each build.
+The stable public download is **SwanSong 0.8.1**. The **SwanSong 0.9.0 beta**
+adds the local Translation Shelf and a Developer-only Fun Tester while
+retaining the complete SDK 0.5 Studio, Story Forge quality workbenches,
+whole-game Translation Surface Suites, the visual signed Homebrew Catalog,
+Cartridge Tools, isolated game engine, Safe Mode, and privacy-safe support
+tools. Versioned release notes remain authoritative for each build.
 
 ## How the pieces fit
 
@@ -76,8 +78,10 @@ accepted enclosures must be immutable exact-tag SwanSong Desktop GitHub Release
 assets. The app contains the public verification key, while a manual,
 fork-inaccessible GitHub Actions workflow receives the matching private seed
 from the masked `SPARKLE_ED25519_PRIVATE_KEY` repository secret and passes it to
-the pinned signer through standard input. This trust path is independent of
-the signed Homebrew Catalog. See [App updates](APP_UPDATES.md).
+the pinned signer through standard input. The job also requires approval in
+the protected `production-appcast` environment and accepts only protected
+branches. This trust path is independent of the signed Homebrew Catalog. See
+[App updates](APP_UPDATES.md).
 
 ## Controller scope
 
@@ -178,12 +182,13 @@ channel so stable-only clients do not offer them. Appcast publication follows
 uploaded-asset verification and requires its own signed-feed and
 previous-version update tests. The complete operator procedure is in the
 [release process](RELEASE_PROCESS.md); tester-facing boundaries are in the
-[0.8 release guide](RELEASE_TESTING.md).
+[0.9 beta guide](BETA_TESTING.md).
 
 ## More documentation
 
 - [SwanSong Wiki](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki)
 - [Playing and library](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Playing-and-Library)
+- [Translation Shelf](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Shelf)
 - [Translation Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Translation-Lab)
 - [Story Forge](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Story-Forge)
 - [Cartridge Lab](https://github.com/RegionallyFamous/SwanSong-Desktop/wiki/Cartridge-Lab)
@@ -198,6 +203,7 @@ previous-version update tests. The complete operator procedure is in the
 - [Privacy](../PRIVACY.md)
 - [Support](../SUPPORT.md)
 - [Source and fixture provenance](../SOURCE_PROVENANCE.md)
+- [0.9.0 beta release notes](releases/0.9.0.md)
 - [0.8.1 release notes](releases/0.8.1.md)
 - [0.8.0 release notes](releases/0.8.0.md)
 - [0.7.2 release notes](releases/0.7.2.md)
