@@ -87,6 +87,9 @@ An ordinary stable release can roll out across seven daily groups so an
 unexpected problem has a smaller first audience. A critical security release
 can bypass that schedule and reach every eligible user immediately. The choice
 is signed into the appcast entry and reviewed with the rest of the update.
+SwanSong 0.8.1 uses the ordinary seven-day staged rollout: the signed release
+and feed are public immediately, while automatic offers are intentionally
+distributed instead of appearing on every eligible Mac at once.
 
 GitHub does not reveal an Actions secret after it is saved, so maintainers must
 keep a separately protected offline recovery copy. Losing the private seed

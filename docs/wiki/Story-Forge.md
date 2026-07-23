@@ -12,7 +12,7 @@ art, author music auditions, measure WonderSwan adaptation drift, prove story
 delivery against exhaustive SwanSong evidence, manage a catalog, and build EPUB/PDF
 editions without turning an automated score into a claim that a book is good.
 
-Story Forge is included in SwanSong 0.5.0.
+Story Forge was introduced in SwanSong 0.5.0 and remains included in 0.8.1.
 
 Story Forge remains the source of narrative policy and tools. SwanSong Desktop
 provides the fixed, visible interface. This avoids a second story engine whose
@@ -20,11 +20,9 @@ rules could drift from the repository that owns the framework.
 
 ## Why these tools exist
 
-The repository's dated
-[story-quality research note](https://github.com/RegionallyFamous/swansong-story-forge/blob/main/docs/story-quality-research.md)
-connects the product decisions to primary research on causal memory,
-narrative transportation, suspense, and soundtrack interpretation. The short
-version is:
+The repository's maintained
+[light-novel quality standard](https://github.com/RegionallyFamous/swansong-story-forge/blob/main/skills/forge-light-novels/references/quality-standard.md)
+records the product principles behind the workbench. The short version is:
 
 - connected causes help events remain available in memory, so Pulse shows
   causal load and missing setup/payoff links;

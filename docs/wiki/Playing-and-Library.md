@@ -13,8 +13,8 @@ emulator works.
 3. Use the display menu for Pure Pixels or an LCD-style profile.
 4. Press Option-Command-S for a visual quick state, or open Time Ribbon when
    you want to revisit the last 30 seconds.
-5. Favorite the game, choose artwork, or add your own compatibility note when
-   you are ready.
+5. Favorite the game or choose artwork. With Developer Tools enabled, you can
+   also add your own compatibility note.
 
 ## Supported software
 
@@ -100,18 +100,23 @@ not replace it with whatever transient frame happens to be visible.
 
 ## What SwanSong knows about a game
 
-The game inspector answers three different questions without mixing them up:
+The everyday game inspector answers two questions without mixing them up:
 
 - **Ready to play** tells you whether SwanSong can open the game now.
-- **Play status** distinguishes Not Tested Yet, Picture Appeared, Works, and
-  Needs Attention.
 - **Game file** tells you whether SwanSong's private copy still matches the
   game you added.
 
-**Picture Appeared** means SwanSong saw a meaningful game picture, not just the
-WonderSwan hardware-icon rail. It is not a full-game verdict or an accuracy
-claim. **Works**, **Needs Attention**, and the optional play note are your own
-editable local report. Translation Lab never changes these library results.
+With **Show developer tools** enabled, Game Confidence adds **Play status**,
+which distinguishes Not Tested Yet, Picture Appeared, Works, and Needs
+Attention. **Picture Appeared** means SwanSong saw a meaningful game picture,
+not just the WonderSwan hardware-icon rail. It is not a full-game verdict or an
+accuracy claim. **Works**, **Needs Attention**, and the optional play note are
+your own editable local report. Translation Lab never changes these library
+results.
+
+Those compatibility badges, verdict controls, notes, and related accessibility
+descriptions are hidden when Developer Tools is off. Hiding them preserves the
+saved evidence and never hides an actual managed-file repair problem.
 
 ## Pocket save exchange
 
