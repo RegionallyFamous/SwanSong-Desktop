@@ -34,6 +34,14 @@ are stored locally. SwanSong does not upload or share them. Apple Vision text
 recognition used by Capture & Draft Translation runs on-device, and recognized
 text is not sent to a translation service.
 
+Translation Shelf reads only the local `release.json`, IPS patch, and original
+game or one-game ZIP that you explicitly choose. It applies the patch in
+memory, verifies the finished game, and writes only the resulting private
+managed-library copy and its source-free release fingerprints. It does not
+modify the selected original, copy it into the release package, search for
+patches, or make a network request. The translated game has a separate library
+identity, saves, and states.
+
 When you choose an Analogue Pocket SD card, SwanSong reads the mounted volume's
 name, filesystem type, capacity, top-level folder names, installed SwanSong
 `core.json` version (if present), and only the Core-managed files that a

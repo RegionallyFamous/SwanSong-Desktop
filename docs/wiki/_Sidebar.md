@@ -9,6 +9,7 @@
 **Create and translate**
 
 - [[Story Forge]]
+- [[Translation Shelf]]
 - [[Translation Lab]]
 - [[SwanSong Studio]]
 - [[Local MCP and Automation]]

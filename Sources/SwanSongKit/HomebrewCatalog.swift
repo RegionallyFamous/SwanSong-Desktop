@@ -968,25 +968,6 @@ public struct HomebrewCatalogInstaller: Sendable {
     }
 
     private static func sizeDeclarationIsValid(_ metadata: ROMMetadata) -> Bool {
-        let declaredSizes: [UInt8: UInt64] = [
-            0x00: 128 * 1_024,
-            0x01: 256 * 1_024,
-            0x02: 512 * 1_024,
-            0x03: 1 * 1_024 * 1_024,
-            0x04: 2 * 1_024 * 1_024,
-            0x05: 3 * 1_024 * 1_024,
-            0x06: 4 * 1_024 * 1_024,
-            0x07: 6 * 1_024 * 1_024,
-            0x08: 8 * 1_024 * 1_024,
-            0x09: 16 * 1_024 * 1_024,
-        ]
-        guard let declared = declaredSizes[metadata.romSizeCode] else { return false }
-        if metadata.fileSize == 64 * 1_024 {
-            return declared == 128 * 1_024
-        }
-        if metadata.fileSize.nonzeroBitCount == 1 {
-            return declared == metadata.fileSize
-        }
-        return declared == metadata.fileSize || declared == metadata.mappedSize
+        GameROMValidationPolicy.sizeDeclarationIsValid(metadata)
     }
 }

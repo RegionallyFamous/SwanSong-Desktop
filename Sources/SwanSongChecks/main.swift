@@ -173,6 +173,7 @@ private struct SwanSongChecks {
         try await checkRunnerFreshBootDeterminism()
         try checkOpenIPLV3Contract()
         try checkLibraryRoundTrip()
+        try checkTranslationPatchShelf()
         try checkGameConfidence()
         try checkDataRootContainmentPolicy()
         try checkBatchGameImport()
@@ -1872,6 +1873,192 @@ private struct SwanSongChecks {
                 && migrated.games.first?.compatibilityEvidence == nil,
             "a schema-1 library did not decode the new optional fields backward-compatibly"
         )
+    }
+
+    private static func checkTranslationPatchShelf() throws {
+        let root = FileManager.default.temporaryDirectory
+            .appendingPathComponent(
+                "SwanSong-TranslationPatch-\(UUID().uuidString)",
+                isDirectory: true
+            )
+        defer { try? FileManager.default.removeItem(at: root) }
+        let releaseDirectory = root
+            .appendingPathComponent("fixture", isDirectory: true)
+            .appendingPathComponent("release", isDirectory: true)
+        try FileManager.default.createDirectory(
+            at: releaseDirectory,
+            withIntermediateDirectories: true
+        )
+
+        let original = makeROM(color: true)
+        var outputBytes = [UInt8](original)
+        outputBytes[100] = 0x42
+        outputBytes.replaceSubrange(200..<203, with: repeatElement(0x7f, count: 3))
+        let checksum = outputBytes[..<(outputBytes.count - 2)].reduce(UInt16(0)) {
+            $0 &+ UInt16($1)
+        }
+        outputBytes[outputBytes.count - 2] = UInt8(truncatingIfNeeded: checksum)
+        outputBytes[outputBytes.count - 1] = UInt8(truncatingIfNeeded: checksum >> 8)
+        let expectedOutput = Data(outputBytes)
+
+        func offsetBytes(_ value: Int) -> [UInt8] {
+            [
+                UInt8(truncatingIfNeeded: value >> 16),
+                UInt8(truncatingIfNeeded: value >> 8),
+                UInt8(truncatingIfNeeded: value),
+            ]
+        }
+        var patch = Data("PATCH".utf8)
+        patch.append(contentsOf: offsetBytes(100))
+        patch.append(contentsOf: [0x00, 0x01, 0x42])
+        patch.append(contentsOf: offsetBytes(200))
+        patch.append(contentsOf: [0x00, 0x00, 0x00, 0x03, 0x7f])
+        patch.append(contentsOf: offsetBytes(outputBytes.count - 2))
+        patch.append(contentsOf: [
+            0x00,
+            0x02,
+            outputBytes[outputBytes.count - 2],
+            outputBytes[outputBytes.count - 1],
+        ])
+        patch.append(Data("EOF".utf8))
+
+        let patchURL = releaseDirectory.appendingPathComponent("fixture.ips")
+        try patch.write(to: patchURL, options: [.atomic])
+        let manifest: [String: Any] = [
+            "schema": "fixture-distributable-release-v1",
+            "status": "release-certified",
+            "sourceFree": true,
+            "releaseEligible": true,
+            "title": "Translation Fixture",
+            "platform": "WonderSwan Color",
+            "revision": "FIXTURE-1",
+            "translationVersion": "1.0",
+            "input": [
+                "byteCount": original.count,
+                "sha256": ManagedGameStore.sha256(original),
+            ],
+            "patch": [
+                "format": "IPS",
+                "path": "release/fixture.ips",
+                "byteCount": patch.count,
+                "sha256": ManagedGameStore.sha256(patch),
+            ],
+            "output": [
+                "byteCount": expectedOutput.count,
+                "sha256": ManagedGameStore.sha256(expectedOutput),
+                "checksumValid": true,
+            ],
+        ]
+        let manifestURL = releaseDirectory.appendingPathComponent("release.json")
+        try JSONSerialization.data(
+            withJSONObject: manifest,
+            options: [.sortedKeys]
+        ).write(to: manifestURL, options: [.atomic])
+
+        let package = try TranslationPatchPackage(manifestURL: manifestURL)
+        try expect(
+            package.manifest.title == "Translation Fixture"
+                && package.manifest.translationVersion == "1.0",
+            "translation release manifest did not decode"
+        )
+        let directlyPatched = try IPSPatch.apply(
+            patch,
+            to: original,
+            expectedOutputByteCount: expectedOutput.count
+        )
+        try expect(
+            directlyPatched == expectedOutput,
+            "IPS literal/RLE application did not reproduce the certified output"
+        )
+
+        let metadata = try GameROMValidationPolicy.validateLibraryImage(original)
+        let originalImage = LibraryGameImportImage(
+            data: original,
+            suggestedTitle: "Original Fixture",
+            sourceFileName: "original.wsc",
+            metadata: metadata,
+            sha256: ManagedGameStore.sha256(original),
+            hardwareModel: .wonderSwanColor
+        )
+        let managedStore = ManagedGameStore(
+            rootURL: root.appendingPathComponent("Games", isDirectory: true)
+        )
+        let installed = try TranslationPatchInstaller(package: package).install(
+            originalImage: originalImage,
+            into: [],
+            managedStore: managedStore
+        )
+        try expect(
+            installed.action == .installed && installed.games.count == 1,
+            "translation patch did not create one managed library game"
+        )
+        let game = try XCTUnwrap(installed.games.first)
+        try expect(
+            game.translationPatchOrigin?.outputSHA256
+                == ManagedGameStore.sha256(expectedOutput),
+            "translated library game lost its release identity"
+        )
+        let managedReference = try XCTUnwrap(game.managedROM)
+        let managedOutput = try managedStore.load(managedReference)
+        try expect(
+            managedOutput == expectedOutput,
+            "managed translated game did not match the certified output"
+        )
+        try expect(
+            original == makeROM(color: true),
+            "translation installation changed the original bytes"
+        )
+        let duplicate = try TranslationPatchInstaller(package: package).install(
+            originalImage: originalImage,
+            into: installed.games,
+            managedStore: managedStore
+        )
+        try expect(
+            duplicate.action == .unchanged
+                && duplicate.gameID == game.id
+                && duplicate.games.count == 1,
+            "reinstalling an exact translation created a duplicate library identity"
+        )
+
+        var wrongOriginal = [UInt8](original)
+        wrongOriginal[50] = 1
+        let wrongChecksum = wrongOriginal[..<(wrongOriginal.count - 2)].reduce(UInt16(0)) {
+            $0 &+ UInt16($1)
+        }
+        wrongOriginal[wrongOriginal.count - 2] = UInt8(truncatingIfNeeded: wrongChecksum)
+        wrongOriginal[wrongOriginal.count - 1] = UInt8(
+            truncatingIfNeeded: wrongChecksum >> 8
+        )
+        let wrongData = Data(wrongOriginal)
+        let wrongImage = LibraryGameImportImage(
+            data: wrongData,
+            suggestedTitle: "Wrong Revision",
+            sourceFileName: "wrong.wsc",
+            metadata: try GameROMValidationPolicy.validateLibraryImage(wrongData),
+            sha256: ManagedGameStore.sha256(wrongData),
+            hardwareModel: .wonderSwanColor
+        )
+        do {
+            _ = try TranslationPatchInstaller(package: package).install(
+                originalImage: wrongImage,
+                into: [],
+                managedStore: managedStore
+            )
+            throw CheckFailure(message: "translation accepted the wrong original revision")
+        } catch TranslationPatchError.originalSHA256Mismatch {
+            // Expected.
+        }
+
+        do {
+            _ = try IPSPatch.apply(
+                Data("PATCH".utf8),
+                to: original,
+                expectedOutputByteCount: original.count
+            )
+            throw CheckFailure(message: "truncated IPS patch was accepted")
+        } catch TranslationPatchError.malformedIPS {
+            // Expected.
+        }
     }
 
     private static func checkGameConfidence() throws {

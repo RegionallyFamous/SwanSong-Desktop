@@ -20,6 +20,9 @@ public struct GameRecord: Codable, Hashable, Identifiable, Sendable {
     /// homebrew catalog. The stable entry identity lets catalog updates keep the
     /// existing library UUID, saves, states, artwork, and user metadata.
     public var homebrewCatalogOrigin: HomebrewCatalogOrigin?
+    /// Present when SwanSong built this managed copy from a source-free,
+    /// release-certified translation patch and the exact required original.
+    public var translationPatchOrigin: TranslationPatchOrigin?
     /// Stored only when the cartridge footer cannot identify the hardware.
     /// Pocket Challenge V2 software uses the monochrome WonderSwan footer
     /// shape but requires a distinct system, mapper, keypad, and flash path.
@@ -38,6 +41,7 @@ public struct GameRecord: Codable, Hashable, Identifiable, Sendable {
         artworkPreference: GameArtworkPreference? = nil,
         compatibilityEvidence: GameCompatibilityEvidence? = nil,
         homebrewCatalogOrigin: HomebrewCatalogOrigin? = nil,
+        translationPatchOrigin: TranslationPatchOrigin? = nil,
         preferredHardwareModel: EngineHardwareModel? = nil
     ) {
         self.id = id
@@ -52,6 +56,7 @@ public struct GameRecord: Codable, Hashable, Identifiable, Sendable {
         self.artworkPreference = artworkPreference
         self.compatibilityEvidence = compatibilityEvidence
         self.homebrewCatalogOrigin = homebrewCatalogOrigin
+        self.translationPatchOrigin = translationPatchOrigin
         self.preferredHardwareModel = preferredHardwareModel
     }
 
