@@ -1537,7 +1537,10 @@ final class UISnapshotRegressionTests: XCTestCase {
         try GameLibraryStore(
             fileURL: translatedLibraryRoot.appendingPathComponent("Library.json")
         ).save(GameLibraryDocument(games: [translatedGame]))
-        let translatedLibraryModel = makeModel(root: translatedLibraryRoot)
+        let translatedLibraryModel = makeModel(
+            root: translatedLibraryRoot,
+            engineCanExecuteOverride: true
+        )
         translatedLibraryModel.section = .library
         translatedLibraryModel.selectedGameID = translatedGame.id
         let cartridgeToolsModel = makeModel(
@@ -2213,7 +2216,8 @@ final class UISnapshotRegressionTests: XCTestCase {
 
     private func makeModel(
         root: URL,
-        stateStore: GameStateStore? = nil
+        stateStore: GameStateStore? = nil,
+        engineCanExecuteOverride: Bool? = nil
     ) -> AppModel {
         let suite = "UISnapshotRegressionTests-StoryForge-\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suite)!
@@ -2235,6 +2239,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             translationWorkspaceStore: TranslationWorkspaceStore(
                 fileURL: root.appendingPathComponent("TranslationWorkspace.json")
             ),
+            engineCanExecuteOverride: engineCanExecuteOverride,
             storyForgeWorkspaceOverride: storyForgeWorkspace
         )
     }

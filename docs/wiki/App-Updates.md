@@ -38,11 +38,14 @@ User-Agent, and normal HTTP/TLS connection information.
 The signed app contains the production feed URL and `SUPublicEDKey`. The
 matching EdDSA private seed is the encrypted, masked GitHub Actions repository
 secret `SPARKLE_ED25519_PRIVATE_KEY`. Only the manually dispatched **Publish
-Sparkle appcast** workflow receives it. The publisher passes it directly to the
-pinned Sparkle signer through standard input; it is never committed, embedded
-in the app, written to a workflow artifact, or printed in logs. Pull requests
-and forks cannot trigger this signing workflow. Sparkle verifies enclosure
-signatures with the public key and enforces Apple code-signing continuity.
+Sparkle appcast** workflow receives it. That job also targets the protected
+`production-appcast` environment, requires a maintainer approval, and accepts
+deployments only from protected branches. The publisher passes the secret
+directly to the pinned Sparkle signer through standard input; it is never
+committed, embedded in the app, written to a workflow artifact, or printed in
+logs. Pull requests and forks cannot trigger this signing workflow. Sparkle
+verifies enclosure signatures with the public key and enforces Apple
+code-signing continuity.
 
 Sparkle's version and exact commit are pinned in the repository. Its license is
 tracked, and every official corresponding-source archive materializes that
@@ -90,6 +93,10 @@ is signed into the appcast entry and reviewed with the rest of the update.
 SwanSong 0.8.1 uses the ordinary seven-day staged rollout: the signed release
 and feed are public immediately, while automatic offers are intentionally
 distributed instead of appearing on every eligible Mac at once.
+
+SwanSong 0.9.0 is published first on the beta channel. Stable-only clients stay
+on 0.8.1; users who enable **Try beta versions** can test the signed prerelease
+before any later stable promotion.
 
 GitHub does not reveal an Actions secret after it is saved, so maintainers must
 keep a separately protected offline recovery copy. Losing the private seed

@@ -47,7 +47,7 @@ diagnostics.
 ## Translation Shelf
 
 Translation Shelf closes the gap between a finished fan-translation patch and
-a game you can safely play.
+a game you can safely play. It is available in the SwanSong 0.9 beta.
 
 1. Open **Translation Shelf** in the sidebar.
 2. Choose the translation release folder or its `release.json`.

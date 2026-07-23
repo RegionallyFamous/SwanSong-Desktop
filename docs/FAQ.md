@@ -13,10 +13,12 @@ development desk, light-novel workspace, and guarded physical-cartridge lab.
 
 ## What is included in the public release?
 
-The signed public download is SwanSong 0.8.1. It includes the player, library,
-Time Ribbon, visual save states, whole-game Translation Surface Suites,
-SwanSong Studio with the verified SDK 0.5.0, the visual signed Homebrew Catalog,
-native updates, and the guarded Analogue Pocket setup workflow. Story Forge
+The signed stable download is SwanSong 0.8.1. SwanSong 0.9.0 is available as a
+beta and adds Translation Shelf plus a Developer-only Fun Tester. Both include
+the player, library, Time Ribbon, visual save states, whole-game Translation
+Surface Suites, SwanSong Studio with the verified SDK 0.5.0, the visual signed
+Homebrew Catalog, native updates, and the guarded Analogue Pocket setup
+workflow. Story Forge
 includes its Story Room, causal and Narrative Pulse maps, chapter editor,
 packet and live-bookmark Reader Labs, research, ImageGen art, music, revision,
 adaptation drift, and SwanSong-backed Story Proof/Story Ribbon workspaces.
@@ -38,6 +40,15 @@ approved bundled title screens, and add an authorized original game to your
 private library. It connects only after you choose **Browse Games**,
 **Refresh**, or a specific download. **Add From Mac** remains available for
 local homebrew.
+
+## Can SwanSong install a fan translation?
+
+The 0.9 beta can install a trusted source-free IPS release through Translation
+Shelf. You choose the package and the exact original game separately. SwanSong
+verifies the inputs and finished build, applies the patch in memory, leaves the
+original unchanged, and gives the translated build its own library identity,
+saves, and states. It does not search for or download games, patches, or
+translations.
 
 ## Does it collect anything?
 

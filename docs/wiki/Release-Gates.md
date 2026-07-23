@@ -175,10 +175,12 @@ The publisher rejects oversized cards, active content, images, styling,
 trackers, and links anywhere except that version's exact GitHub release page.
 
 Only after that verification, manually run **Publish Sparkle appcast** from
-GitHub Actions on `main`. The workflow obtains the private EdDSA seed only from
-the masked `SPARKLE_ED25519_PRIVATE_KEY` repository secret and passes it to the
-pinned signer through standard input; pull requests and forks cannot trigger
-it. The publisher re-downloads and byte-compares all five release artifacts,
+GitHub Actions on `main`. Its protected `production-appcast` environment
+requires maintainer approval and accepts only protected branches. The workflow
+obtains the private EdDSA seed only from the masked
+`SPARKLE_ED25519_PRIVATE_KEY` repository secret and passes it to the pinned
+signer through standard input; pull requests and forks cannot trigger it. The
+publisher re-downloads and byte-compares all five release artifacts,
 reruns the complete artifact verifier, signs the enclosure and feed, verifies
 both signatures with the committed public key, and atomically updates
 `updates/appcast.xml` on a dedicated review branch. Its enclosure must be the

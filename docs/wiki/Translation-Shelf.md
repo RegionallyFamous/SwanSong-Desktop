@@ -5,6 +5,9 @@ private, playable SwanSong library game. It is for players who have the exact
 original game and a finished release package; active translation work still
 belongs in [[Translation Lab]].
 
+Translation Shelf is available in the SwanSong 0.9 beta. Stable 0.8.1 users
+can enable **Try beta versions** in Settings before checking for updates.
+
 ## Install a translation
 
 1. Open **Translation Shelf**.

@@ -34,8 +34,10 @@ Provision the Sparkle EdDSA private seed once as the encrypted GitHub Actions
 repository secret `SPARKLE_ED25519_PRIVATE_KEY`. Commit only the matching
 base64 public key as `SUPublicEDKey` in `Packaging/Info.plist`, then verify that
 the signed app preserves that exact value. The manually dispatched publisher
-passes the masked secret to pinned Sparkle `sign_update` through standard
-input; pull requests and forks cannot trigger it. Never export the private
+targets the protected `production-appcast` environment, requires maintainer
+approval, accepts only protected branches, and passes the masked secret to
+pinned Sparkle `sign_update` through standard input; pull requests and forks
+cannot trigger it. Never export the private
 update key into the repository, app bundle, source archive, release asset,
 build log, shell history, or workflow artifact. Because GitHub cannot reveal a
 saved secret, keep a separately protected offline recovery copy. Rotate the key
@@ -322,8 +324,9 @@ override; an override artifact is not suitable for public distribution.
 
 Stopping use of an activated catalog removes consent and the private verified
 catalog cache without removing installed games. It deliberately retains the
-small Keychain high-water record; deleting that record as part of ordinary
-catalog cleanup would weaken signed-catalog rollback protection.
+small owner-only Application Support high-water record; deleting that record
+as part of ordinary catalog cleanup would weaken signed-catalog rollback
+protection.
 
 The Sparkle release key and appcast are independent of the Homebrew Catalog
 key, detached catalog signature, consent, cache, and anti-rollback state.

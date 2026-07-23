@@ -1,8 +1,8 @@
 # SwanSong privacy policy
 
-Effective July 20, 2026
+Effective July 23, 2026
 
-This policy describes SwanSong 0.8.1. Versioned release notes document the
+This policy describes SwanSong 0.9.0. Versioned release notes document the
 exact behavior of earlier published builds.
 
 <!-- homebrew-catalog-status: published -->
@@ -301,13 +301,12 @@ Apple settings.
 ## Deleting local data
 
 Removing a game from the library removes SwanSong's managed game copy and its
-library record. If a future release activates the Homebrew Catalog, choosing
-**Stop Using Homebrew Catalog** removes consent and the saved verified catalog
-but leaves installed games unchanged. Its small Keychain anti-rollback record
-is intentionally retained so stopping and restarting catalog use cannot make
-an older signed catalog acceptable. Other local data can be removed from
-SwanSong or from `~/Library/Application Support/SwanSong/`. Keychain data is
-managed separately by macOS. You can stop future automatic app-update traffic
+library record. Choosing **Stop Using Homebrew Catalog** removes consent and
+the saved verified catalog but leaves installed games unchanged. Its small
+owner-only Application Support anti-rollback record is intentionally retained
+so stopping and restarting catalog use cannot make an older signed catalog
+acceptable. Other local data can be removed from SwanSong or from
+`~/Library/Application Support/SwanSong/`. You can stop future automatic app-update traffic
 by turning off **Automatically check for updates**; automatic download/install
 has its own switch. Sparkle's local update preferences do not contain games or
 gameplay data. Back up saves before deleting local data.
