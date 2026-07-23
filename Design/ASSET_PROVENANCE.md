@@ -12,6 +12,7 @@ This directory is design history, not a press kit.
 | `Packaging/AppIcon.png` | Opaque full-bleed production resize derived from `Design/AppIcon-Zine-Source.png` | Shipped 1024px system master; macOS applies its own icon mask |
 | `Packaging/AppIconCompact.png` | Deterministic crop, palette simplification, and transparent rounded mask derived from `Packaging/AppIcon.png` by `Scripts/generate-app-icons.sh` | Shipped in-app compact mark; never used as a system app-icon layer |
 | `Packaging/AppIcon.icns` | Opaque full-bleed iconset derived from the production master, with a simplified opaque source at 16–64 pixels | Shipped Finder, Applications, and Dock artwork without the legacy gray backing plate |
+| `Packaging/HomebrewTitleScreens/*.png` | Native 237×144 captures from the original MIT-licensed SwanSong Originals games published by Regionally Famous; each title's signed catalog entry links its immutable source revision, release, screenshot, license, and rights attestation | Shipped catalog artwork; approved publisher-supplied material for these original games |
 
 Launch screenshots must be captured from the running app with open-source or
 clean-room fixtures. Record the app version, fixture license, capture date, and
