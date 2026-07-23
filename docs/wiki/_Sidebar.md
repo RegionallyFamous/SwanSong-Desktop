@@ -4,10 +4,12 @@
 - [[Playing and Library]]
 - [[Gamepads]]
 - [[App Updates]]
+- [SwanSong 0.8.1 release notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.8.1.md)
 
 **Create and translate**
 
 - [[Story Forge]]
+- [[Translation Shelf]]
 - [[Translation Lab]]
 - [[SwanSong Studio]]
 - [[Local MCP and Automation]]

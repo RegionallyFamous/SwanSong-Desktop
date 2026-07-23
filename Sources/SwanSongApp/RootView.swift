@@ -732,6 +732,8 @@ private struct LibraryShell: View {
                     usesDeterministicSidebarForOffscreenSnapshots:
                         usesDeterministicSidebarForOffscreenSnapshots
                 )
+            } else if model.section == .translationPatches {
+                TranslationPatchShelfView(model: model)
             } else if model.section == .cartridgeTools {
                 CartridgeLabView(appModel: model)
             } else if model.section == .pocketCore {
@@ -780,11 +782,13 @@ private struct AppSidebar: View {
                     }
                 }
                 Section("Discover") {
-                    Label(
-                        AppModel.Section.homebrew.rawValue,
-                        systemImage: AppModel.Section.homebrew.symbol
-                    )
-                    .tag(AppModel.Section.homebrew)
+                    ForEach([
+                        AppModel.Section.homebrew,
+                        .translationPatches,
+                    ]) { section in
+                        Label(section.rawValue, systemImage: section.symbol)
+                            .tag(section)
+                    }
                 }
                 Section("Tools") {
                     ForEach(
@@ -817,7 +821,10 @@ private struct TranslationOverviewSnapshotSidebar: View {
                     "BROWSE",
                     sections: [.library, .favorites, .recent]
                 )
-                snapshotGroup("DISCOVER", sections: [.homebrew])
+                snapshotGroup(
+                    "DISCOVER",
+                    sections: [.homebrew, .translationPatches]
+                )
                 snapshotGroup(
                     "TOOLS",
                     sections: AppModel.Section.toolSections(
@@ -1740,6 +1747,279 @@ private struct HomebrewCatalogInspector: View {
     }
 }
 
+private struct TranslationPatchShelfView: View {
+    @Bindable var model: AppModel
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 22) {
+                introduction
+
+                if let issue = model.translationPatchIssue {
+                    Label(issue, systemImage: "exclamationmark.triangle.fill")
+                        .font(.callout)
+                        .foregroundStyle(.orange)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(12)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(
+                            .orange.opacity(0.10),
+                            in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        )
+                        .accessibilityIdentifier("translation-patch-issue")
+                }
+
+                releasePackage
+                installedTranslations
+            }
+            .frame(maxWidth: 860, alignment: .leading)
+            .padding(28)
+            .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .navigationTitle("Translation Shelf")
+        .tint(SwanTheme.cyan)
+        .background(SwanTheme.libraryBackground.ignoresSafeArea())
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button(action: model.chooseTranslationPatchPackage) {
+                    Label("Choose Release…", systemImage: "doc.badge.plus")
+                }
+                .disabled(
+                    model.translationPatchIsLoading
+                        || model.translationPatchIsInstalling
+                        || model.gameImportIsBusy
+                )
+            }
+        }
+    }
+
+    private var introduction: some View {
+        VStack(alignment: .leading, spacing: 9) {
+            Label("Play a Certified Fan Translation", systemImage: "checkmark.seal.fill")
+                .font(.title2.weight(.bold))
+                .foregroundStyle(SwanTheme.cyan)
+            Text("Choose a source-free release package, then your own exact original game. SwanSong verifies every step, builds the English version privately, and keeps the original and its saves untouched.")
+                .font(.body)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            Label(
+                "Everything happens on this Mac. The original game is never uploaded or replaced.",
+                systemImage: "lock.fill"
+            )
+            .font(.callout.weight(.semibold))
+            .foregroundStyle(.secondary)
+            Text("Release fingerprints verify the files inside a package; they do not identify its publisher. Use packages from people you trust.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .swanSurface(.standard, tint: SwanTheme.cyan, cornerRadius: 18)
+    }
+
+    @ViewBuilder
+    private var releasePackage: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Release Package")
+                .font(.headline)
+                .accessibilityAddTraits(.isHeader)
+
+            if model.translationPatchIsLoading {
+                HStack(spacing: 12) {
+                    ProgressView()
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Checking release…")
+                            .font(.headline)
+                        Text("Reading its manifest and verifying the IPS patch.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .padding(18)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(
+                    .background.secondary,
+                    in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+                )
+            } else if let package = model.translationPatchPackage {
+                verifiedPackage(package)
+            } else {
+                VStack(alignment: .leading, spacing: 12) {
+                    Label("No release selected", systemImage: "doc.text")
+                        .font(.headline)
+                    Text("Open a certified translation release folder, or its release.json file. Keep the IPS patch inside that package.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Button("Choose Release Package…", action: model.chooseTranslationPatchPackage)
+                        .buttonStyle(.borderedProminent)
+                }
+                .padding(18)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(
+                    .background.secondary,
+                    in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+                )
+            }
+        }
+    }
+
+    private func verifiedPackage(_ package: TranslationPatchPackage) -> some View {
+        let manifest = package.manifest
+        return VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .top, spacing: 12) {
+                Image(systemName: "checkmark.shield.fill")
+                    .font(.title2)
+                    .foregroundStyle(.green)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(manifest.title)
+                        .font(.title3.weight(.semibold))
+                    Text("English translation v\(manifest.translationVersion)")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    if let revision = manifest.revision {
+                        Text("Required revision: \(revision)")
+                            .font(.caption.monospaced())
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Spacer()
+                Text("RELEASE-CERTIFIED")
+                    .font(.caption2.monospaced().weight(.black))
+                    .foregroundStyle(.green)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 5)
+                    .background(.green.opacity(0.12), in: Capsule())
+            }
+
+            Divider()
+
+            VStack(alignment: .leading, spacing: 6) {
+                LabeledContent("System", value: manifest.platform)
+                LabeledContent(
+                    "Original fingerprint",
+                    value: shortHash(manifest.inputSHA256)
+                )
+                LabeledContent(
+                    "Finished fingerprint",
+                    value: shortHash(manifest.outputSHA256)
+                )
+            }
+            .font(.callout)
+
+            HStack(spacing: 10) {
+                Button(action: model.chooseOriginalForTranslationPatch) {
+                    if model.translationPatchIsInstalling {
+                        Label("Verifying and Building…", systemImage: "hourglass")
+                    } else {
+                        Label("Choose Original and Install…", systemImage: "lock.open")
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .keyboardShortcut(.defaultAction)
+                .disabled(
+                    model.translationPatchIsInstalling
+                        || model.gameImportIsBusy
+                )
+
+                Button("Choose Different Release", action: model.chooseTranslationPatchPackage)
+                    .buttonStyle(.bordered)
+                    .disabled(
+                        model.translationPatchIsInstalling
+                            || model.gameImportIsBusy
+                    )
+
+                Button("Clear", action: model.clearTranslationPatchPackage)
+                    .buttonStyle(.link)
+                    .disabled(model.translationPatchIsInstalling)
+            }
+        }
+        .padding(18)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            .background.secondary,
+            in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+        )
+        .overlay {
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .stroke(.green.opacity(0.34), lineWidth: 1)
+        }
+        .accessibilityIdentifier("translation-patch-package")
+    }
+
+    private var installedTranslations: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Installed Translations")
+                .font(.headline)
+                .accessibilityAddTraits(.isHeader)
+
+            if model.installedTranslationGames.isEmpty {
+                Text("Your verified English builds will appear here and in Library.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .padding(18)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(
+                        .background.secondary,
+                        in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    )
+            } else {
+                VStack(spacing: 10) {
+                    ForEach(model.installedTranslationGames) { game in
+                        installedTranslationRow(game)
+                    }
+                }
+            }
+        }
+    }
+
+    private func installedTranslationRow(_ game: GameRecord) -> some View {
+        HStack(spacing: 14) {
+            Image(systemName: "character.book.closed.fill")
+                .font(.title2)
+                .foregroundStyle(SwanTheme.cyan)
+                .frame(width: 38, height: 38)
+                .background(SwanTheme.cyan.opacity(0.12), in: Circle())
+            VStack(alignment: .leading, spacing: 3) {
+                Text(game.title)
+                    .font(.headline)
+                if let origin = game.translationPatchOrigin {
+                    Text(
+                        [
+                            "English v\(origin.translationVersion)",
+                            origin.revision,
+                        ]
+                        .compactMap { $0 }
+                        .joined(separator: " · ")
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                }
+            }
+            Spacer()
+            Button("Show in Library") {
+                model.showTranslationInLibrary(game.id)
+            }
+            .buttonStyle(.bordered)
+            Button("Play") {
+                model.playInstalledTranslation(game.id)
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(!model.canPlayGame(game))
+        }
+        .padding(14)
+        .background(
+            .background.secondary,
+            in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+        )
+    }
+
+    private func shortHash(_ value: String) -> String {
+        "\(value.prefix(12))…"
+    }
+}
+
 private extension EngineHardwareModel {
     var catalogDisplayName: String {
         switch self {
@@ -1990,6 +2270,7 @@ private struct LibraryView: View {
         case .favorites: .favorites
         case .recent: .recentlyPlayed
         case .homebrew: .all
+        case .translationPatches: .all
         case .cartridgeTools: .all
         case .pocketCore: .all
         case .translationLab: .all
@@ -2009,6 +2290,7 @@ private struct LibraryView: View {
         case .favorites: "No favorites yet"
         case .recent: "Nothing played recently"
         case .homebrew: "No homebrew games yet"
+        case .translationPatches: "No translated games yet"
         case .cartridgeTools: "No cartridge connected"
         case .pocketCore: "No Pocket SD card selected"
         case .translationLab: "No translation project yet"
@@ -2023,6 +2305,7 @@ private struct LibraryView: View {
         case .favorites: "star"
         case .recent: "clock"
         case .homebrew: "shippingbox"
+        case .translationPatches: "character.book.closed.fill"
         case .cartridgeTools: "externaldrive.connected.to.line.below"
         case .pocketCore: "sdcard"
         case .translationLab: "character.book.closed"
@@ -2037,6 +2320,7 @@ private struct LibraryView: View {
         case .favorites: "Star a favorite and it’ll always be easy to find."
         case .recent: "Games show up here after you play them."
         case .homebrew: "Browse SwanSong’s signed catalog, or add a game you already have on your Mac."
+        case .translationPatches: "Choose a certified translation release and the exact original game it requires."
         case .cartridgeTools: "Connect a supported WonderSwan through its EXT adapter to read a cartridge or back up a save."
         case .pocketCore: "Choose Analogue Pocket to add or update the official SwanSong Core."
         case .translationLab: "Add a private translation project to keep its progress, tests, and captures together."
@@ -7578,7 +7862,13 @@ private struct GameCard: View {
             } else if managedHealth == .invalidReference {
                 Button("Re-add Game…", systemImage: "plus.rectangle.on.folder", action: onReAdd)
             } else if needsRepair {
-                Button("Repair Private Copy…", systemImage: "wrench.and.screwdriver.fill", action: onRepair)
+                Button(
+                    game.translationPatchOrigin == nil
+                        ? "Repair Private Copy…"
+                        : "Rebuild Translation…",
+                    systemImage: "wrench.and.screwdriver.fill",
+                    action: onRepair
+                )
             } else {
                 Button("Play", systemImage: "play.fill", action: onPlay)
                     .disabled(!canPlay)
@@ -7614,11 +7904,20 @@ private struct GameCard: View {
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                         .help(sourceHelp)
+                    if let origin = game.translationPatchOrigin {
+                        Label(
+                            "Verified English v\(origin.translationVersion)",
+                            systemImage: "checkmark.seal.fill"
+                        )
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(SwanTheme.cyan)
+                        .padding(.top, 3)
+                    }
                     if let readinessStatus {
                         Label(readinessStatus.title, systemImage: readinessStatus.symbol)
                             .font(.caption.weight(.semibold))
                             .foregroundStyle(readinessStatus.color)
-                            .padding(.top, 3)
+                            .padding(.top, game.translationPatchOrigin == nil ? 3 : 1)
                     }
                     if GameConfidencePresentation.isVisible(
                         developerToolsEnabled: developerToolsEnabled
@@ -7691,7 +7990,9 @@ private struct GameCard: View {
             return "The private copy is being verified."
         }
         if needsRepair {
-            return "Select this game, then use Repair to choose the exact original game file."
+            return game.translationPatchOrigin == nil
+                ? "Select this game, then use Repair to choose the exact original game file."
+                : "Select this game, then use Rebuild to choose its release package and exact original."
         }
         if managedHealth == .invalidReference {
             return "This entry cannot be verified. Re-add the original game as a new library entry."
@@ -7716,10 +8017,14 @@ private struct GameCard: View {
             return "\(system); \(artworkDescription); checking private copy\(compatibility)"
         }
         if managedHealth == .missing {
-            return "\(system); \(artworkDescription); private copy missing; repair needed\(compatibility)"
+            return game.translationPatchOrigin == nil
+                ? "\(system); \(artworkDescription); private copy missing; repair needed\(compatibility)"
+                : "\(system); \(artworkDescription); English copy missing; rebuild needed\(compatibility)"
         }
         if managedHealth == .changed {
-            return "\(system); \(artworkDescription); private copy changed; repair needed\(compatibility)"
+            return game.translationPatchOrigin == nil
+                ? "\(system); \(artworkDescription); private copy changed; repair needed\(compatibility)"
+                : "\(system); \(artworkDescription); English copy changed; rebuild needed\(compatibility)"
         }
         if managedHealth == .invalidReference {
             return "\(system); \(artworkDescription); library identity invalid; re-add needed\(compatibility)"
@@ -7747,7 +8052,9 @@ private struct GameCard: View {
 
     private var accessibilityActionTitle: String {
         if managedHealth == .invalidReference { return "Re-add Game" }
-        if needsRepair { return "Repair" }
+        if needsRepair {
+            return game.translationPatchOrigin == nil ? "Repair" : "Rebuild"
+        }
         return "Play"
     }
 
@@ -7767,7 +8074,9 @@ private struct GameCard: View {
         if isRepairingManagedCopy { return "Repairing" }
         if isCheckingManagedCopy { return "Checking" }
         if managedHealth == .invalidReference { return "Re-add" }
-        if needsRepair { return "Repair" }
+        if needsRepair {
+            return game.translationPatchOrigin == nil ? "Repair" : "Rebuild"
+        }
         return "Play"
     }
 
@@ -7791,7 +8100,11 @@ private struct GameCard: View {
         if isRepairingManagedCopy { return "Repairing the private game copy" }
         if isCheckingManagedCopy { return "Checking the private game copy" }
         if managedHealth == .invalidReference { return "Re-add this game" }
-        if needsRepair { return "Repair this game’s private copy" }
+        if needsRepair {
+            return game.translationPatchOrigin == nil
+                ? "Repair this game’s private copy"
+                : "Rebuild this translation from its release package and original"
+        }
         return "Play \(game.title)"
     }
 
@@ -7865,6 +8178,9 @@ private struct GameArtworkTile: View {
                 HStack {
                     artworkPill(systemBadge)
                     Spacer()
+                    if game.translationPatchOrigin != nil {
+                        artworkPill("ENGLISH", symbol: "checkmark.seal.fill")
+                    }
                 }
                 Spacer()
                 HStack {
@@ -8468,6 +8784,32 @@ struct GameInspector: View {
                         .controlSize(.large)
                 }
 
+                if let origin = game.translationPatchOrigin {
+                    VStack(alignment: .leading, spacing: 7) {
+                        Label("Verified Translation Build", systemImage: "checkmark.seal.fill")
+                            .font(.headline)
+                            .foregroundStyle(SwanTheme.cyan)
+                            .accessibilityAddTraits(.isHeader)
+                        LabeledContent(
+                            "Translation",
+                            value: "English v\(origin.translationVersion)"
+                        )
+                        if let revision = origin.revision {
+                            LabeledContent("Original revision", value: revision)
+                        }
+                        Text("SwanSong built this private copy from a release-certified IPS package and the exact required original. The original file and its saves were not changed.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .font(.callout)
+                    .padding(12)
+                    .background(
+                        SwanTheme.cyan.opacity(0.08),
+                        in: RoundedRectangle(cornerRadius: 13, style: .continuous)
+                    )
+                }
+
                 if GameConfidencePresentation.isVisible(
                     developerToolsEnabled: developerToolsEnabled
                 ) {
@@ -8597,12 +8939,25 @@ struct GameInspector: View {
                 .help("Add the original game again as a new, verified library entry")
         } else if needsRepair {
             Button(action: onRepair) {
-                Label("Repair…", systemImage: "wrench.and.screwdriver.fill")
+                Label(
+                    game.translationPatchOrigin == nil
+                        ? "Repair…"
+                        : "Rebuild Translation…",
+                    systemImage: "wrench.and.screwdriver.fill"
+                )
                     .frame(maxWidth: .infinity)
             }
                 .buttonStyle(.borderedProminent)
-                .help("Choose the exact original game file to repair this private copy")
-                .accessibilityLabel("Repair \(game.title)’s private copy")
+                .help(
+                    game.translationPatchOrigin == nil
+                        ? "Choose the exact original game file to repair this private copy"
+                        : "Choose the same release package and exact original to rebuild this translation"
+                )
+                .accessibilityLabel(
+                    game.translationPatchOrigin == nil
+                        ? "Repair \(game.title)’s private copy"
+                        : "Rebuild \(game.title) from its translation release"
+                )
         } else {
             Button(action: onPlay) {
                 Label("Play", systemImage: "play.fill")
@@ -8622,10 +8977,14 @@ struct GameInspector: View {
             return "Checking private copy…"
         }
         if managedHealth == .missing {
-            return "Private copy missing · choose the exact original file"
+            return game.translationPatchOrigin == nil
+                ? "Private copy missing · choose the exact original file"
+                : "English copy missing · rebuild from its release"
         }
         if managedHealth == .changed {
-            return "Private copy changed · verification repair needed"
+            return game.translationPatchOrigin == nil
+                ? "Private copy changed · verification repair needed"
+                : "English copy changed · verified rebuild needed"
         }
         if managedHealth == .invalidReference {
             return "Library identity invalid · re-add as a new entry"

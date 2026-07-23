@@ -106,10 +106,13 @@ not routine release metadata.
    local automation launcher to disable Keychain lookup.
 4. Run the engine, Swift, app runtime, UI, translation, architecture, payload,
    embedded-Sparkle-framework, and personally owned acceptance lanes
-   appropriate to the release. After building the app, verify the feed/key,
-   signed-feed and pre-extraction requirements, privacy defaults, build-number
-   policy, pinned framework, updater helper, XPC services, bundle identities,
-   symbolic-link structure, and absence of game/firmware-like payloads:
+   appropriate to the release. First, manually dispatch the **Quality**
+   workflow on `main` and require its complete Apple-silicon, Intel, and
+   universal release-preflight lanes to pass. After building the app, verify
+   the feed/key, signed-feed and pre-extraction requirements, privacy defaults,
+   build-number policy, pinned framework, updater helper, XPC services, bundle
+   identities, symbolic-link structure, and absence of game/firmware-like
+   payloads:
 
    ```sh
    ./Scripts/check-sparkle-configuration.sh .build/app/SwanSong.app

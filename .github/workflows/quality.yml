@@ -2,9 +2,6 @@ name: Quality
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:
@@ -27,7 +24,7 @@ jobs:
       tests: ${{ steps.classify.outputs.tests }}
     steps:
       - name: Check out exact source
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -70,9 +67,25 @@ jobs:
             runner: macos-15-intel
             developer_dir: /Applications/Xcode.app/Contents/Developer
             lane: compatibility
-    # Keep the required matrix check names for branch protection, but do not
-    # reserve two macOS machines just to acknowledge prose/appcast-only work.
-    runs-on: ${{ needs.changes.outputs.tests == 'true' && matrix.runner || 'ubuntu-latest' }}
+    # Keep the required matrix check names for branch protection. The complete
+    # suite runs on Apple silicon for code changes; reserve Intel only for
+    # engine/compatibility or release-chain changes that can affect that slice.
+    runs-on: >-
+      ${{
+        (
+          (
+            matrix.lane == 'full' &&
+            needs.changes.outputs.tests == 'true'
+          ) || (
+            matrix.lane == 'compatibility' &&
+            (
+              needs.changes.outputs.compatibility == 'true' ||
+              needs.changes.outputs.release_chain == 'true'
+            )
+          )
+        )
+        && matrix.runner || 'ubuntu-latest'
+      }}
     timeout-minutes: 35
     env:
       DEVELOPER_DIR: ${{ matrix.developer_dir }}
@@ -82,7 +95,19 @@ jobs:
       # every surface and enforce geometry/content invariants; reviewed pixel
       # hashes remain strict on the macOS family that produced the baseline.
       SWAN_SONG_ALLOW_UI_BASELINE_PLATFORM_MISMATCH: "1"
-      RUN_TESTS: ${{ needs.changes.outputs.tests }}
+      RUN_TESTS: >-
+        ${{
+          (
+            matrix.lane == 'full' &&
+            needs.changes.outputs.tests == 'true'
+          ) || (
+            matrix.lane == 'compatibility' &&
+            (
+              needs.changes.outputs.compatibility == 'true' ||
+              needs.changes.outputs.release_chain == 'true'
+            )
+          )
+        }}
     steps:
       - name: Confirm fast pull-request lane
         if: env.RUN_TESTS != 'true'
@@ -90,13 +115,13 @@ jobs:
 
       - name: Check out exact source
         if: env.RUN_TESTS == 'true'
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Check out locked SwanSong SDK source
         if: env.RUN_TESTS == 'true'
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: RegionallyFamous/swansong-sdk
           ref: f9bab7451593d0d8640816c60e0836377c65027e
@@ -198,13 +223,13 @@ jobs:
 
       - name: Check out exact source
         if: env.RUN_PREFLIGHT == 'true'
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Check out locked SwanSong SDK source
         if: env.RUN_PREFLIGHT == 'true'
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: RegionallyFamous/swansong-sdk
           ref: f9bab7451593d0d8640816c60e0836377c65027e

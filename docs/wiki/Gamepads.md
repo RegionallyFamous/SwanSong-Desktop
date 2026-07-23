@@ -50,7 +50,7 @@ GameController device, and can silently produce incorrect mappings.
 If a device does not appear in SwanSong Settings, use a macOS driver or mapping
 layer that presents a standard GameController profile, or use the keyboard.
 
-## Useful beta checks
+## Useful validation checks
 
 - connect after launch and disconnect during play;
 - replace one controller without restarting the app;
@@ -67,5 +67,5 @@ Automated tests cover standard-alias mapping, profile capability reduction,
 multiple-controller merge and disconnect behavior, inactivity neutralization,
 the packaged profile declarations, and Settings' source-level preview state.
 Enumeration, hotplug, and input delivery on actual Extended, Micro, and
-Directional hardware remain physical beta-test evidence; the automated suite
+Directional hardware remain physical validation evidence; the automated suite
 does not turn that hardware matrix into a broader compatibility promise.

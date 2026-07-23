@@ -189,5 +189,5 @@ Mac.
 
 The SDK remains independently usable from a terminal, CI, or an agent. See
 [[Build and Test]] for contributor gates, [[Local MCP and Automation]] for the
-deterministic agent boundary, and [[0.5 Release Testing]] for current
+deterministic agent boundary, and [[0.8 Release Testing]] for current
 acceptance.

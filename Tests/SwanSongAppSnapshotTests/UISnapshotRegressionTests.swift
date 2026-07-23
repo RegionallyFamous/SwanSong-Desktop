@@ -213,7 +213,7 @@ final class UISnapshotRegressionTests: XCTestCase {
             }
         }
 
-        XCTAssertEqual(signatures.count, 86)
+        XCTAssertEqual(signatures.count, 90)
         for scenario in scenarios {
             let pair = signatures.filter { $0.name == scenario.name }
             XCTAssertEqual(pair.count, 2, scenario.name)
@@ -1479,6 +1479,99 @@ final class UISnapshotRegressionTests: XCTestCase {
         )
         let emptyLibraryModel = makeModel(root: root.appendingPathComponent("empty-library"))
         emptyLibraryModel.section = .library
+        let translationShelfModel = makeModel(
+            root: root.appendingPathComponent("translation-shelf")
+        )
+        translationShelfModel.section = .translationPatches
+        let translationShelfReleaseDirectory = root
+            .appendingPathComponent("translation-shelf-package", isDirectory: true)
+            .appendingPathComponent("release", isDirectory: true)
+        try FileManager.default.createDirectory(
+            at: translationShelfReleaseDirectory,
+            withIntermediateDirectories: true
+        )
+        let translationShelfPatch = Data("PATCHEOF".utf8)
+        try translationShelfPatch.write(
+            to: translationShelfReleaseDirectory.appendingPathComponent(
+                "fixture.ips"
+            )
+        )
+        let translationShelfManifest: [String: Any] = [
+            "schema": "snapshot-distributable-release-v1",
+            "status": "release-certified",
+            "sourceFree": true,
+            "releaseEligible": true,
+            "title": "The Moonlit Knight",
+            "platform": "WonderSwan Color",
+            "revision": "SWJ-FIXTURE1",
+            "translationVersion": "1.0",
+            "input": [
+                "byteCount": 2 * 1_024 * 1_024,
+                "sha256": String(repeating: "1", count: 64),
+            ],
+            "patch": [
+                "format": "IPS",
+                "path": "release/fixture.ips",
+                "byteCount": translationShelfPatch.count,
+                "sha256": ManagedGameStore.sha256(translationShelfPatch),
+            ],
+            "output": [
+                "byteCount": 2 * 1_024 * 1_024,
+                "sha256": String(repeating: "2", count: 64),
+                "checksumValid": true,
+            ],
+        ]
+        let translationShelfManifestURL = translationShelfReleaseDirectory
+            .appendingPathComponent("release.json")
+        try JSONSerialization.data(
+            withJSONObject: translationShelfManifest,
+            options: [.sortedKeys]
+        ).write(to: translationShelfManifestURL)
+        translationShelfModel.translationPatchPackage = try TranslationPatchPackage(
+            manifestURL: translationShelfManifestURL
+        )
+        let translatedLibraryRoot = root.appendingPathComponent(
+            "translated-library",
+            isDirectory: true
+        )
+        let translatedManagedStore = ManagedGameStore(
+            rootURL: translatedLibraryRoot.appendingPathComponent(
+                "Games",
+                isDirectory: true
+            )
+        )
+        let translatedFixtureImage = try LibraryGameImageImporter.image(
+            from: packageRoot.appendingPathComponent(
+                "testroms/swan-song/sjis_glyph_provenance/sjis_glyph_provenance.wsc"
+            )
+        )
+        let translatedInstall = try translatedManagedStore.install(
+            translatedFixtureImage
+        )
+        let translatedGame = GameRecord(
+            id: UUID(uuidString: "30000000-0000-0000-0000-000000000001")!,
+            title: "The Moonlit Knight — English",
+            fileURL: translatedInstall.fileURL,
+            metadata: translatedFixtureImage.metadata,
+            managedROM: translatedInstall.reference,
+            sourceFileName: "The Moonlit Knight English v1.0.wsc",
+            translationPatchOrigin: TranslationPatchOrigin(
+                title: "The Moonlit Knight",
+                revision: "SWJ-FIXTURE1",
+                translationVersion: "1.0",
+                manifestSHA256: String(repeating: "3", count: 64),
+                inputSHA256: String(repeating: "1", count: 64),
+                patchSHA256: String(repeating: "4", count: 64),
+                outputSHA256: translatedFixtureImage.sha256
+            ),
+            preferredHardwareModel: .wonderSwanColor
+        )
+        try GameLibraryStore(
+            fileURL: translatedLibraryRoot.appendingPathComponent("Library.json")
+        ).save(GameLibraryDocument(games: [translatedGame]))
+        let translatedLibraryModel = makeModel(root: translatedLibraryRoot)
+        translatedLibraryModel.section = .library
+        translatedLibraryModel.selectedGameID = translatedGame.id
         let cartridgeToolsModel = makeModel(
             root: root.appendingPathComponent("cartridge-tools")
         )
@@ -1539,6 +1632,22 @@ final class UISnapshotRegressionTests: XCTestCase {
                 AnyView(
                     RootView(
                         model: emptyLibraryModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+            Scenario(name: "translation-shelf-wide", size: CGSize(width: 1_040, height: 720)) {
+                AnyView(
+                    RootView(
+                        model: translationShelfModel,
+                        usesDeterministicSidebarForOffscreenSnapshots: true
+                    )
+                )
+            },
+            Scenario(name: "translated-library-wide", size: CGSize(width: 1_180, height: 720)) {
+                AnyView(
+                    RootView(
+                        model: translatedLibraryModel,
                         usesDeterministicSidebarForOffscreenSnapshots: true
                     )
                 )

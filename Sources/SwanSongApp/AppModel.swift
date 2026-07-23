@@ -48,6 +48,20 @@ private enum HomebrewCatalogAppError: LocalizedError {
     }
 }
 
+private enum TranslationPatchAppError: LocalizedError {
+    case libraryChanged
+    case invalidPackageFolder
+
+    var errorDescription: String? {
+        switch self {
+        case .libraryChanged:
+            "The library changed while the translation was being prepared. No install changes were kept; try again."
+        case .invalidPackageFolder:
+            "That folder does not contain exactly one release.json at its top level or inside a release folder."
+        }
+    }
+}
+
 struct PlayerVideoActivityDiagnosticState: Sendable {
     static let defaultWarningRearmFrameThreshold = 600
 
@@ -219,6 +233,7 @@ final class AppModel {
         case favorites = "Favorites"
         case recent = "Recently Played"
         case homebrew = "Homebrew"
+        case translationPatches = "Translation Shelf"
         case cartridgeTools = "Cartridge Tools"
         case pocketCore = "Analogue Pocket"
         case translationLab = "Translation Lab"
@@ -233,6 +248,7 @@ final class AppModel {
             case .favorites: "star"
             case .recent: "clock"
             case .homebrew: "shippingbox"
+            case .translationPatches: "character.book.closed.fill"
             case .cartridgeTools: "externaldrive.connected.to.line.below"
             case .pocketCore: "sdcard"
             case .translationLab: "character.book.closed"
@@ -438,6 +454,10 @@ final class AppModel {
     var homebrewInstallPhase: String?
     var homebrewInstallIssue: String?
     var homebrewInstallIssueEntryID: String?
+    var translationPatchPackage: TranslationPatchPackage?
+    var translationPatchIsLoading = false
+    var translationPatchIsInstalling = false
+    var translationPatchIssue: String?
     var gameArtwork: [GameRecord.ID: GameArtworkRecord] = [:]
     var managedGameHealth: [GameRecord.ID: ManagedGameHealth] = [:]
     var checkingManagedGameIDs: Set<GameRecord.ID> = []
@@ -595,6 +615,7 @@ final class AppModel {
     private var homebrewCatalogRefreshTask: Task<Void, Never>?
     private var homebrewCatalogRefreshGeneration = UUID()
     private var homebrewInstallTask: Task<Void, Never>?
+    private var translationPatchTask: Task<Void, Never>?
     private var homebrewCatalogRefreshAttemptedThisSession = false
     private var playerReturnSection: Section = .library
     private let pacingPolicy = FramePacingPolicy()
@@ -913,6 +934,8 @@ final class AppModel {
                 .sorted { ($0.lastPlayedAt ?? .distantPast) > ($1.lastPlayedAt ?? .distantPast) }
         case .homebrew:
             []
+        case .translationPatches:
+            games.filter { $0.translationPatchOrigin != nil }
         case .cartridgeTools:
             []
         case .pocketCore:
@@ -930,6 +953,14 @@ final class AppModel {
         (homebrewCatalog?.entries ?? []).sorted {
             $0.title.localizedStandardCompare($1.title) == .orderedAscending
         }
+    }
+
+    var installedTranslationGames: [GameRecord] {
+        games
+            .filter { $0.translationPatchOrigin != nil }
+            .sorted {
+                $0.title.localizedStandardCompare($1.title) == .orderedAscending
+            }
     }
 
     func latestHomebrewRelease(
@@ -1951,6 +1982,186 @@ final class AppModel {
             && managedGameHealth[game.id] != .missing
             && managedGameHealth[game.id] != .changed
             && managedGameHealth[game.id] != .invalidReference
+    }
+
+    func chooseTranslationPatchPackage() {
+        guard translationPatchTask == nil,
+              !translationPatchIsInstalling else { return }
+        let panel = NSOpenPanel()
+        panel.title = "Choose a Translation Release"
+        panel.message = "Choose a release folder or its release.json file. SwanSong checks the package before asking for your original game."
+        panel.prompt = "Check Release"
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = true
+        panel.allowedContentTypes = [.json]
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+
+        translationPatchIsLoading = true
+        translationPatchIssue = nil
+        translationPatchTask = Task { [weak self] in
+            guard let model = self else { return }
+            defer {
+                model.translationPatchIsLoading = false
+                model.translationPatchTask = nil
+            }
+            do {
+                let package = try await Task.detached(priority: .userInitiated) {
+                    let manifestURL = try Self.translationPatchManifestURL(
+                        from: url
+                    )
+                    return try TranslationPatchPackage(manifestURL: manifestURL)
+                }.value
+                try Task.checkCancellation()
+                model.translationPatchPackage = package
+                model.translationPatchIssue = nil
+            } catch is CancellationError {
+                return
+            } catch {
+                model.translationPatchPackage = nil
+                model.translationPatchIssue = error.localizedDescription
+            }
+        }
+    }
+
+    private nonisolated static func translationPatchManifestURL(
+        from selectedURL: URL
+    ) throws -> URL {
+        let values = try selectedURL.resourceValues(forKeys: [.isDirectoryKey])
+        guard values.isDirectory == true else { return selectedURL }
+        let candidates = [
+            selectedURL.appendingPathComponent("release.json"),
+            selectedURL
+                .appendingPathComponent("release", isDirectory: true)
+                .appendingPathComponent("release.json"),
+        ].filter {
+            FileManager.default.fileExists(atPath: $0.path)
+        }
+        guard candidates.count == 1, let manifestURL = candidates.first else {
+            throw TranslationPatchAppError.invalidPackageFolder
+        }
+        return manifestURL
+    }
+
+    func clearTranslationPatchPackage() {
+        guard translationPatchTask == nil else { return }
+        translationPatchPackage = nil
+        translationPatchIssue = nil
+    }
+
+    func chooseOriginalForTranslationPatch() {
+        guard let package = translationPatchPackage else {
+            translationPatchIssue = "Choose a translation release package first."
+            return
+        }
+        guard translationPatchTask == nil,
+              !gameImportIsBusy,
+              repairingGameID == nil else {
+            translationPatchIssue = "Finish the current library operation before installing this translation."
+            return
+        }
+
+        let panel = NSOpenPanel()
+        panel.title = "Choose Your Original Game"
+        panel.message = "Choose the exact original \(package.manifest.title) revision. A direct game file or one-game ZIP is accepted. SwanSong will read it, verify it, and leave it unchanged."
+        panel.prompt = "Verify and Install"
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        panel.canChooseFiles = true
+        let contentTypes = ["ws", "wsc", "zip"].compactMap {
+            UTType(filenameExtension: $0, conformingTo: .data)
+        }
+        panel.allowedContentTypes = contentTypes.isEmpty ? [.data] : contentTypes
+        guard panel.runModal() == .OK, let originalURL = panel.url else { return }
+
+        let previousGames = games
+        let managedGameStore = managedGameStore
+        translationPatchIsInstalling = true
+        translationPatchIssue = nil
+        gameImportIsBusy = true
+        translationPatchTask = Task { [weak self] in
+            guard let model = self else { return }
+            var createdReference: ManagedGameReference?
+            defer {
+                model.translationPatchIsInstalling = false
+                model.translationPatchTask = nil
+                model.gameImportIsBusy = false
+            }
+            do {
+                let result = try await Task.detached(priority: .userInitiated) {
+                    let original = try LibraryGameImageImporter.image(from: originalURL)
+                    return try TranslationPatchInstaller(package: package).install(
+                        originalImage: original,
+                        into: previousGames,
+                        managedStore: managedGameStore
+                    )
+                }.value
+                createdReference = result.createdReference
+                try Task.checkCancellation()
+                guard model.games == previousGames else {
+                    throw TranslationPatchAppError.libraryChanged
+                }
+                model.games = result.games
+                model.selectedGameID = result.gameID
+                do {
+                    try model.persist()
+                } catch {
+                    model.games = previousGames
+                    throw error
+                }
+                model.invalidateManagedGameHealthScan()
+                model.managedGameHealth[result.gameID] = .healthy
+                model.checkingManagedGameIDs.remove(result.gameID)
+                try? model.managedGameStore.prune(
+                    retaining: model.games.compactMap(\.managedROM)
+                )
+                model.translationPatchIssue = nil
+                model.presentedNotice = switch result.action {
+                case .installed:
+                    "Built and added \(package.manifest.libraryTitle) to Library. Your original was not changed."
+                case .adopted:
+                    "Verified the existing \(package.manifest.libraryTitle) entry and linked its release record."
+                case .unchanged:
+                    "\(package.manifest.libraryTitle) is already installed and verified."
+                case .repaired:
+                    "Rebuilt and repaired \(package.manifest.libraryTitle) without changing its saves or library identity."
+                }
+            } catch is CancellationError {
+                if let createdReference {
+                    model.rollbackManagedImports(
+                        [createdReference],
+                        retaining: previousGames
+                    )
+                }
+            } catch {
+                if let createdReference {
+                    model.rollbackManagedImports(
+                        [createdReference],
+                        retaining: model.games
+                    )
+                }
+                model.translationPatchIssue = "\(package.manifest.libraryTitle) was not installed. \(error.localizedDescription)"
+            }
+        }
+    }
+
+    func showTranslationInLibrary(_ id: GameRecord.ID) {
+        guard games.contains(where: { $0.id == id }) else { return }
+        selectedGameID = id
+        section = .library
+    }
+
+    func playInstalledTranslation(_ id: GameRecord.ID) {
+        guard let game = games.first(where: {
+            $0.id == id && $0.translationPatchOrigin != nil
+        }) else { return }
+        guard translationPatchTask == nil, !gameImportIsBusy else {
+            translationPatchIssue = "Finish the current translation install before playing this game."
+            return
+        }
+        playerReturnSection = .translationPatches
+        selectedGameID = game.id
+        play(game.id)
     }
 
     func chooseGame() {
@@ -3762,6 +3973,14 @@ final class AppModel {
         guard let game = games.first(where: { $0.id == id }),
               game.managedROM != nil else {
             presentedError = "This legacy library entry is not a managed copy. Add the original game again to adopt it safely."
+            return
+        }
+        if game.translationPatchOrigin != nil {
+            if resumeAfterRepair { pendingRepairPlayGameID = nil }
+            selectedGameID = id
+            section = .translationPatches
+            translationPatchPackage = nil
+            translationPatchIssue = "To repair \(game.title), choose its same release package again, then choose the exact original. SwanSong will rebuild the verified English copy without changing its saves."
             return
         }
         let panel = NSOpenPanel()

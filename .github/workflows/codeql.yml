@@ -1,13 +1,8 @@
 name: CodeQL
 
 on:
-  push:
-    branches: [main]
+  pull_request:
     paths:
-      - "Sources/**"
-      - "Engine/**"
-      - "Package.swift"
-      - "Package.resolved"
       - ".github/workflows/codeql.yml"
   schedule:
     - cron: "23 8 * * 2"
@@ -17,15 +12,14 @@ permissions:
   contents: read
   security-events: write
 
-concurrency:
-  group: codeql-${{ github.ref }}-${{ matrix.language }}
-  cancel-in-progress: true
-
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
     runs-on: macos-14
     timeout-minutes: 55
+    concurrency:
+      group: codeql-${{ github.ref }}-${{ matrix.language }}
+      cancel-in-progress: true
     strategy:
       fail-fast: false
       matrix:
@@ -40,7 +34,7 @@ jobs:
           persist-credentials: false
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@7188fc363630916deb702c7fdcf4e481b751f97a # v4
+        uses: github/codeql-action/init@e4fba868fa4b1b91e1fdab776edc8cfbe6e9fb81 # v4
         with:
           languages: ${{ matrix.language }}
           build-mode: manual
@@ -55,6 +49,6 @@ jobs:
             --product SwanSongChecks
 
       - name: Analyze
-        uses: github/codeql-action/analyze@7188fc363630916deb702c7fdcf4e481b751f97a # v4
+        uses: github/codeql-action/analyze@e4fba868fa4b1b91e1fdab776edc8cfbe6e9fb81 # v4
         with:
           category: "/language:${{ matrix.language }}"

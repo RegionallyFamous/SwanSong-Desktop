@@ -19,8 +19,9 @@ No games or original system firmware are included.
 
 Start with [[Playing and Library]]. It covers adding games, artwork, favorites,
 the native player, display choices, Time Ribbon, visual save states, Game
-Confidence, and Pocket save exchange. [[Gamepads]] explains presets, custom
-mapping, hotplug, battery status, and the limits of macOS controller support.
+Confidence for developers, and Pocket save exchange. [[Gamepads]] explains
+presets, custom mapping, hotplug, battery status, and the limits of macOS
+controller support.
 
 There is no BIOS setup. [[Open IPL]] explains the independent startup system
 included with SwanSong 0.2 and later.
@@ -31,6 +32,11 @@ included with SwanSong 0.2 and later.
 and Patched frame pairs, First Visual Change, on-device text intake, observed
 play, private display provenance, whole-game Translation Surface Suites, and
 durable native-1× evidence review.
+
+If the translation is already finished,
+[[Playing and Library#translation-shelf|Translation Shelf]] can verify a
+trusted source-free release package against your exact original and add the
+English build as a separate private library game.
 
 If a trusted local agent will help with a long route or evidence task, read
 [[Local MCP and Automation]] before enabling anything.
@@ -43,7 +49,7 @@ history, unprimed readers, research, ImageGen art, music auditions, adaptation,
 and EPUB/PDF publication. It keeps automated checks separate from human
 editorial and release approval.
 
-Story Forge is included in SwanSong 0.5.0.
+Story Forge was introduced in SwanSong 0.5.0 and remains included in 0.8.1.
 
 ### I want to make a game
 
@@ -57,9 +63,10 @@ prerequisites checked by Doctor.
 
 ### I want homebrew or real hardware
 
-[[Homebrew Catalog]] explains the signed first-party catalog included in the
-public 0.5.0 release. It never loads at launch or merely because you opened
-Homebrew; Browse, Refresh, and Add to Library are choices you make.
+[[Homebrew Catalog]] explains the signed first-party catalog, its approved
+title screens, and the compact native inspector included in SwanSong 0.8.1. It
+never loads at launch or merely because you opened Homebrew; Browse, Refresh,
+and Add to Library are choices you make.
 
 [[Analogue Pocket SD Setup]] explains how SwanSong can merge an authorized Core
 release onto a selected card without formatting it or touching games, saves,
@@ -79,16 +86,19 @@ checksummed public build.
 
 ## The 0.8 release
 
-The current public **0.8.1 release** includes whole-game Translation Surface Suites,
-exact native review, resumable certification, Narrative Pulse, live-reader
-moments, Story Proof, bundled Homebrew title screens, and a compact catalog
-inspector. Compatibility confidence remains available with Developer Tools
-enabled while the everyday library stays focused on playing. The 0.7 safety
-foundation remains: the engine stays isolated, local
-automation proves who is asking, Safe Mode can rescue a launch, and Support
-Bundles leave private games and projects behind.
+The current public **0.8.1 release** includes whole-game Translation Surface
+Suites, exact native review, resumable certification, Narrative Pulse,
+live-reader moments, Story Proof, bundled Homebrew title screens, and a compact
+catalog inspector. Compatibility confidence remains available with Developer
+Tools enabled while the everyday library stays focused on playing. The 0.7
+safety foundation remains: the engine stays isolated, local automation proves
+who is asking, Safe Mode can rescue a launch, and Support Bundles leave private
+games and projects behind.
 
-Use [[0.8 Release Testing]] for the current tester checklist and the repository
+Read the
+[0.8.1 release notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.8.1.md)
+for the current patch, use [[0.8 Release Testing]] for the tester checklist,
+and consult the repository
 [changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md)
 for the exact source and release history.
 

@@ -171,7 +171,7 @@ final class SwanSongLocalMCPBridge {
         guard let requested = arguments["section"] as? String,
               let section = section(named: requested) else {
             throw BridgeError(
-                "section must be library, favorites, recent, homebrew, cartridges, pocket, translation, story, or studio"
+                "section must be library, favorites, recent, homebrew, patches, cartridges, pocket, translation, story, or studio"
             )
         }
         guard !model.isPlaying else {
@@ -212,6 +212,7 @@ final class SwanSongLocalMCPBridge {
         case "favorites": .favorites
         case "recent": .recent
         case "homebrew": .homebrew
+        case "patches": .translationPatches
         case "cartridges": .cartridgeTools
         case "pocket": .pocketCore
         case "translation": .translationLab
@@ -227,6 +228,7 @@ final class SwanSongLocalMCPBridge {
         case .favorites: "favorites"
         case .recent: "recent"
         case .homebrew: "homebrew"
+        case .translationPatches: "patches"
         case .cartridgeTools: "cartridges"
         case .pocketCore: "pocket"
         case .translationLab: "translation"

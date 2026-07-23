@@ -13,8 +13,8 @@ emulator works.
 3. Use the display menu for Pure Pixels or an LCD-style profile.
 4. Press Option-Command-S for a visual quick state, or open Time Ribbon when
    you want to revisit the last 30 seconds.
-5. Favorite the game, choose artwork, or add your own compatibility note when
-   you are ready.
+5. Favorite the game or choose artwork. With Developer Tools enabled, you can
+   also add your own compatibility note.
 
 ## Supported software
 
@@ -43,6 +43,42 @@ uncropped. The player can replace that image or return to procedural artwork.
 The managed store, persistence, states, artwork, compatibility notes, and
 play history remain local. They are not included in update requests or public
 diagnostics.
+
+## Translation Shelf
+
+Translation Shelf closes the gap between a finished fan-translation patch and
+a game you can safely play.
+
+1. Open **Translation Shelf** in the sidebar.
+2. Choose the translation release folder or its `release.json`.
+3. Review the title, version, required revision, and fingerprints SwanSong
+   found.
+4. Choose **Choose Original and Install…**, then select your authorized
+   original `.ws`, `.wsc`, or one-game ZIP.
+5. Play the new English entry from the shelf or Library.
+
+The package must be marked source-free, release-eligible, and
+release-certified. SwanSong currently accepts IPS packages. Before installing,
+it verifies the manifest and patch sizes and SHA-256 fingerprints, the exact
+original size and SHA-256, the finished size and SHA-256, the platform, the
+WonderSwan file structure, and the cartridge checksum.
+
+Patching happens in memory. SwanSong does not replace the selected original or
+write a patched copy beside it. The finished game enters the same private,
+content-addressed managed store as an ordinary library import and receives a
+separate library identity, so its saves and states do not collide with the
+original entry.
+
+If that private English copy later needs repair, Library sends you back through
+the same release-package and exact-original checks, then rebuilds the managed
+copy without changing its library identity or saves.
+
+Translation Shelf is local and does not browse for, download, or upload
+packages or games. A local release manifest is not a publisher signature:
+fingerprints prove that the source, patch, and finished bytes match that
+package, while the person or site providing the package remains the trust
+source. Use translation packages from people you trust. Package makers can use
+the exact source-free format in [[Translation Shelf]].
 
 ## Player behavior
 
@@ -100,18 +136,23 @@ not replace it with whatever transient frame happens to be visible.
 
 ## What SwanSong knows about a game
 
-The game inspector answers three different questions without mixing them up:
+The everyday game inspector answers two questions without mixing them up:
 
 - **Ready to play** tells you whether SwanSong can open the game now.
-- **Play status** distinguishes Not Tested Yet, Picture Appeared, Works, and
-  Needs Attention.
 - **Game file** tells you whether SwanSong's private copy still matches the
   game you added.
 
-**Picture Appeared** means SwanSong saw a meaningful game picture, not just the
-WonderSwan hardware-icon rail. It is not a full-game verdict or an accuracy
-claim. **Works**, **Needs Attention**, and the optional play note are your own
-editable local report. Translation Lab never changes these library results.
+With **Show developer tools** enabled, Game Confidence adds **Play status**,
+which distinguishes Not Tested Yet, Picture Appeared, Works, and Needs
+Attention. **Picture Appeared** means SwanSong saw a meaningful game picture,
+not just the WonderSwan hardware-icon rail. It is not a full-game verdict or an
+accuracy claim. **Works**, **Needs Attention**, and the optional play note are
+your own editable local report. Translation Lab never changes these library
+results.
+
+Those compatibility badges, verdict controls, notes, and related accessibility
+descriptions are hidden when Developer Tools is off. Hiding them preserves the
+saved evidence and never hides an actual managed-file repair problem.
 
 ## Pocket save exchange
 
