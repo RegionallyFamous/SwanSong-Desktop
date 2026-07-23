@@ -6,6 +6,25 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.8.1</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.8.1</link>
+      <description sparkle:format="html">&lt;h2&gt;Your library stays focused on playing.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.8.1 keeps internal compatibility confidence with Developer Tools and returns the everyday library to the essentials.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;A quieter game shelf.&lt;/strong&gt; Picture Appeared, Not Tested Yet, and Needs Attention stay hidden unless Developer Tools is enabled.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Testing tools stay together.&lt;/strong&gt; The Game Confidence panel, verdict controls, notes, and related accessibility descriptions follow the same setting.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Everyday controls remain ready.&lt;/strong&gt; Play, repair, game details, and save controls stay available.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Your evidence is preserved.&lt;/strong&gt; Hiding developer surfaces does not erase saved compatibility work.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;SwanSong includes no games or original system firmware.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.8.1"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Thu, 23 Jul 2026 07:05:20 -0500</pubDate>
+      <sparkle:version>17</sparkle:version>
+      <sparkle:shortVersionString>0.8.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:phasedRolloutInterval>86400</sparkle:phasedRolloutInterval>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.8.1/SwanSong-0.8.1-macOS-universal.zip" length="37235122" type="application/octet-stream" sparkle:edSignature="ssTkbr+E/p32sEQspzUvv1rdrrkNew5DW93FIEpzJn9HOBZX7yhLYXx0tzeX4QB3C2J8L/n/qXWtUrAXR/+aDA==" />
+    </item>
+    <item>
       <title>SwanSong 0.8.0</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.8.0</link>
       <description sparkle:format="html">&lt;h2&gt;Prove the whole game, one named surface at a time.&lt;/h2&gt;
@@ -263,6 +282,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: Dbdr41LrL1Y8igaNwzyNZxt+15YZ0wS1VhHH/vg7QRorzpJqv6Bvvy8Qk9gHyCfRfIw/CvZLxvcAN9YKW+IMDA==
-length: 27852
+edSignature: CADhwaFcBZqJgGKOYfD0URxcNlG9uPK/72eUXiK68AJnOT47A266Q52K5qByBmF9uMdHBdg/XBt6pMToNx30Dw==
+length: 29794
 -->
