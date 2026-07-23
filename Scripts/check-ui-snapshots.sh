@@ -53,8 +53,8 @@ if [ "$core_snapshot_count" -ne 72 ]; then
 fi
 homebrew_snapshot_count=$(find "$OUTPUT_DIR/homebrew" -maxdepth 1 \
   -type f -name '*.png' 2>/dev/null | wc -l | tr -d ' ')
-if [ "$homebrew_snapshot_count" -ne 12 ]; then
-  echo "expected 12 Homebrew UI snapshots, found $homebrew_snapshot_count in $OUTPUT_DIR/homebrew" >&2
+if [ "$homebrew_snapshot_count" -ne 14 ]; then
+  echo "expected 14 Homebrew UI snapshots, found $homebrew_snapshot_count in $OUTPUT_DIR/homebrew" >&2
   exit 1
 fi
 if [ ! -s "$OUTPUT_DIR/manifest.json" ]; then
@@ -75,4 +75,4 @@ fi
 if [ "$UPDATE_BASELINES" -eq 1 ]; then
   echo "UPDATED reviewed perceptual baselines for 90 baseline-tracked UI snapshots"
 fi
-echo "PASS 102 offscreen Light/Dark compact/wide UI snapshots: 72 core + 12 Homebrew + 18 focused polish"
+echo "PASS 104 offscreen Light/Dark compact/wide UI snapshots: 72 core + 14 Homebrew + 18 focused polish"

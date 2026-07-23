@@ -8,6 +8,9 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ### Added
 
+- Adds a Developer-only SwanSong Fun Tester panel to Homebrew with ready-to-copy
+  Codex requests for an all-games comparison or a focused three-pass review of
+  the selected catalog game.
 - Adds a local Translation Shelf for source-free, release-certified
   `release.json` packages and IPS patches.
 - Verifies the package, exact original revision, finished release hash, and

@@ -169,7 +169,11 @@ setup installs only a verified Core package and does not copy or alter saves.
 Game-testing surfaces are off by default. Turn on **Show developer tools** in
 Settings to show the live focus/input overlay, player diagnostics, and bounded
 input/frame recorder. The same toggle reveals SwanSong Studio, local MCP
-control, and low-level hardware diagnostics.
+control, low-level hardware diagnostics, and the Developer-tagged SwanSong Fun
+Tester panel in Homebrew. That panel copies a ready-to-run Codex request for
+all SwanSong Originals or for the selected catalog game; the local
+`$playtest-swansong-fun` agent performs discovery, competence, and replay passes
+through SwanSong.
 
 The recorder exports source-free `swan-song-input-frame-log-v2` JSON containing
 frame geometry and timing, separate keyboard and controller masks, effective
