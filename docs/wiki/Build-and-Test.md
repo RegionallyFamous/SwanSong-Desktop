@@ -153,18 +153,20 @@ the separate live-engine invocation is mandatory for release evidence.
 ## CI lanes
 
 Application pull requests run the complete Swift/XCTest and UI snapshot suite
-once on the macOS 14 Apple-silicon runner. A macOS 15 Intel runner simultaneously
-compiles the native engine/library compatibility target and verifies its x86_64
-Mach-O identity. The hosted Intel image does not reliably permit ad-hoc
-standalone Swift executables, so runtime proof stays on Apple silicon. The
-Apple-silicon suite enables published Homebrew production enforcement in that
-same test process instead of rebuilding the test target for a duplicate pass.
+once on the macOS 14 Apple-silicon runner. Engine, dependency, packaging, and
+release-chain changes also reserve a macOS 15 Intel runner to compile the native
+engine/library compatibility target and verify its x86_64 Mach-O identity.
+Ordinary app and documentation changes do not reserve an Intel Mac. The hosted
+Intel image does not reliably permit ad-hoc standalone Swift executables, so
+runtime proof stays on Apple silicon. The Apple-silicon suite enables published
+Homebrew production enforcement in that same test process instead of rebuilding
+the test target for a duplicate pass.
 
 Prose-only and signed-appcast-only pull requests keep the same branch-protected
 test names but finish after the deterministic change-classifier self-test. They
 do not download the SDK or rebuild the unchanged app on two Macs. Any source,
-test, script, package, workflow, or configuration change restores the full
-lanes automatically; pushes to `main` and manual runs are always full.
+test, script, package, workflow, or configuration change restores the affected
+lanes automatically.
 
 The required release-preflight check is impact-aware. It finishes immediately
 when a change cannot affect the packaged app or live engine. Packaging, updater,
@@ -179,14 +181,22 @@ release-sensitive path there whenever a new packaging or live-runtime boundary
 is introduced. The branch-protected `Release preflight` check must remain
 present even when its expensive work is unnecessary.
 
-Pushes to `main` and manual workflow runs retain the complete XCTest suite on
-the Intel runner, release-chain tamper and rollback tests, bundled SDK
+Protected merges do not repeat the same three macOS jobs after their exact
+content has passed the required pull-request checks. A manually dispatched
+Quality run remains the explicit complete lane: it retains the full XCTest
+suite on Intel, release-chain tamper and rollback tests, bundled SDK
 materialization, the 360-frame compatibility matrix, guarded Translation Lab
 automation, the 60-second CI soak, and complete universal app inspection
-including every Intel slice. The full release standard therefore stays intact;
-only the feedback loop used while developing a change becomes selective. UI
-snapshots remain part of the complete XCTest suite and are not repeated in the
-separate release-preflight job.
+including every Intel slice. Run that lane when preparing a release or when a
+maintainer needs fresh whole-tree evidence. UI snapshots remain part of the
+complete XCTest suite and are not repeated in the separate release-preflight
+job.
+
+CodeQL runs on its weekly schedule and on explicit dispatch. Editing the CodeQL
+workflow itself also exercises both language jobs in the pull request so an
+invalid workflow cannot land silently. Dependency review remains attached to
+pull requests, while sanitizers and fuzzing stay on their separate weekly
+schedule.
 
 The shared SwiftPM wrapper disables login-keychain credential lookup in CI and
 uses only `Package.resolved`. Set `SWAN_SWIFTPM_DISABLE_KEYCHAIN=1` for the same

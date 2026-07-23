@@ -1,13 +1,8 @@
 name: CodeQL
 
 on:
-  push:
-    branches: [main]
+  pull_request:
     paths:
-      - "Sources/**"
-      - "Engine/**"
-      - "Package.swift"
-      - "Package.resolved"
       - ".github/workflows/codeql.yml"
   schedule:
     - cron: "23 8 * * 2"
@@ -17,15 +12,14 @@ permissions:
   contents: read
   security-events: write
 
-concurrency:
-  group: codeql-${{ github.ref }}-${{ matrix.language }}
-  cancel-in-progress: true
-
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
     runs-on: macos-14
     timeout-minutes: 55
+    concurrency:
+      group: codeql-${{ github.ref }}-${{ matrix.language }}
+      cancel-in-progress: true
     strategy:
       fail-fast: false
       matrix:

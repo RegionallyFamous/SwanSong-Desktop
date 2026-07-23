@@ -17,8 +17,10 @@ network boundaries.
 2. Confirm bundle identifier `com.regionallyfamous.swansong`, minimum macOS 14,
    universal `arm64` + `x86_64` policy, pinned Sparkle dependency, production
    feed URL, tracked public update key, and disabled system profiling.
-3. Start from a clean tree and create the exact signed tag `vX.Y.Z`.
-4. Recreate the pinned, patched, firmware-free ares source from its lock file.
+3. Manually dispatch the **Quality** workflow on `main` and require the complete
+   Apple-silicon, Intel, and universal release-preflight lanes to pass.
+4. Start from a clean tree and create the exact signed tag `vX.Y.Z`.
+5. Recreate the pinned, patched, firmware-free ares source from its lock file.
    Materialize the exact Sparkle source from its separate lock and include its
    license, package manifest, and public header without Git metadata.
 
