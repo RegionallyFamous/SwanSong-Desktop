@@ -6,6 +6,28 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.9.0</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.9.0</link>
+      <description sparkle:format="html">&lt;h2&gt;Bring a trusted translation home to your library.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.9 adds a local Translation Shelf for source-free, release-certified IPS packages.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Verify the exact path.&lt;/strong&gt; SwanSong checks the package, IPS, required original revision, finished-game digest, cartridge checksum, and save contract.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep the original unchanged.&lt;/strong&gt; Patching happens in memory, and only the verified translated result enters the private managed library.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep histories separate.&lt;/strong&gt; The translated game receives its own identity, saves, states, artwork, favorite, and play history.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Repair without starting over.&lt;/strong&gt; Rebuild a missing or changed managed copy while preserving its library history.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Developer tools stay developer-only.&lt;/strong&gt; Agent playtest prompts and diagnostic confidence language remain hidden unless Developer Tools is enabled.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;This is a beta release.&lt;/strong&gt; Stable-only clients remain on SwanSong 0.8.1.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;SwanSong includes no games, translations, or original system firmware.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.9.0"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Thu, 23 Jul 2026 19:19:17 -0500</pubDate>
+      <sparkle:version>18</sparkle:version>
+      <sparkle:shortVersionString>0.9.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:channel>beta</sparkle:channel>
+      <sparkle:phasedRolloutInterval>86400</sparkle:phasedRolloutInterval>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.9.0/SwanSong-0.9.0-macOS-universal.zip" length="37817838" type="application/octet-stream" sparkle:edSignature="Imh0ZdH/jY9lpRAxr29k40Sax27tHNR9FNj5dz1H2YBensdr/GvMIgD2UdMFdZZd/2hy/Kxzhif1oh/wyw88Ag==" />
+    </item>
+    <item>
       <title>SwanSong 0.8.1</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.8.1</link>
       <description sparkle:format="html">&lt;h2&gt;Your library stays focused on playing.&lt;/h2&gt;
@@ -282,6 +304,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: CADhwaFcBZqJgGKOYfD0URxcNlG9uPK/72eUXiK68AJnOT47A266Q52K5qByBmF9uMdHBdg/XBt6pMToNx30Dw==
-length: 29794
+edSignature: hf/PlguhGnQ+kKk9vSgvutnfZIpO/Sz3H9SeLWJhtHs2jcMncKXsvZMqqKfiEf6azGxZcUqDKMr/RxB2eC4hCg==
+length: 32143
 -->
