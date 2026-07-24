@@ -17,13 +17,12 @@
   &lt;li&gt;&lt;strong&gt;Repair without starting over.&lt;/strong&gt; Rebuild a missing or changed managed copy while preserving its library history.&lt;/li&gt;
   &lt;li&gt;&lt;strong&gt;Developer tools stay developer-only.&lt;/strong&gt; Agent playtest prompts and diagnostic confidence language remain hidden unless Developer Tools is enabled.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;This is a beta release.&lt;/strong&gt; Stable-only clients remain on SwanSong 0.8.1.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SwanSong 0.9.0 is the current stable release.&lt;/strong&gt; It is offered on the default update channel.&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;SwanSong includes no games, translations, or original system firmware.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.9.0"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
       <pubDate>Thu, 23 Jul 2026 19:19:17 -0500</pubDate>
       <sparkle:version>18</sparkle:version>
       <sparkle:shortVersionString>0.9.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <sparkle:channel>beta</sparkle:channel>
       <sparkle:phasedRolloutInterval>86400</sparkle:phasedRolloutInterval>
       <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.9.0/SwanSong-0.9.0-macOS-universal.zip" length="37817838" type="application/octet-stream" sparkle:edSignature="Imh0ZdH/jY9lpRAxr29k40Sax27tHNR9FNj5dz1H2YBensdr/GvMIgD2UdMFdZZd/2hy/Kxzhif1oh/wyw88Ag==" />
     </item>
@@ -304,6 +303,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: hf/PlguhGnQ+kKk9vSgvutnfZIpO/Sz3H9SeLWJhtHs2jcMncKXsvZMqqKfiEf6azGxZcUqDKMr/RxB2eC4hCg==
-length: 32143
+edSignature: RtFWZFIDR/BAh8YE1azX6ddHy4jr37vOomzF89f5CxJKTQzziG/mKv60juoXA09OEHtiJ582/6wApI1nu7R/CA==
+length: 32118
 -->
