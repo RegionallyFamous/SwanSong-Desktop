@@ -94,9 +94,9 @@ SwanSong 0.8.1 uses the ordinary seven-day staged rollout: the signed release
 and feed are public immediately, while automatic offers are intentionally
 distributed instead of appearing on every eligible Mac at once.
 
-SwanSong 0.9.0 is published first on the beta channel. Stable-only clients stay
-on 0.8.1; users who enable **Try beta versions** can test the signed prerelease
-before any later stable promotion.
+SwanSong 0.9.0 is the current stable release and uses the ordinary seven-day
+staged rollout. The signed release and feed are public immediately, while
+automatic offers are distributed across the rollout groups.
 
 GitHub does not reveal an Actions secret after it is saved, so maintainers must
 keep a separately protected offline recovery copy. Losing the private seed

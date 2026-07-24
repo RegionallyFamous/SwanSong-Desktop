@@ -3,15 +3,15 @@
 Most problems have a quick fix. Make sure you have the newest SwanSong release,
 then start with the answers below. SwanSong requires macOS 14 or newer.
 
-The stable public download is 0.8.1. The 0.9.0 beta adds Translation Shelf and
+The stable public download is 0.9.0. It adds Translation Shelf and
 a Developer-only Fun Tester while retaining the private player and library,
 complete SDK 0.5 Studio, Story Forge quality workbenches, whole-game
 Translation Surface Suites, the visual signed Homebrew Catalog, Safe Mode, and
 a privacy-safe Support Bundle.
 
 If you are testing 0.9.0, use the
-[0.9 beta checklist](docs/BETA_TESTING.md) and include the beta channel plus
-installed build in your report.
+[0.9 release checklist](docs/RELEASE_TESTING.md) and include the update channel
+plus installed build in your report.
 
 <!-- homebrew-catalog-status: published -->
 

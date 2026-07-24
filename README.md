@@ -15,8 +15,7 @@ No account. No ads. No telemetry. No BIOS scavenger hunt. Just your games and
 a really nice place to play them.
 
 <p align="center">
-  <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.8</strong></a>
-  · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.9.0"><strong>Try the 0.9 beta</strong></a>
+  <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.9</strong></a>
   · <a href="docs/releases/0.9.0.md">See what’s new</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
@@ -66,7 +65,7 @@ SwanSong also gives translators, homebrew makers, and preservation-minded
 players a serious workspace without making the everyday player feel like a
 developer tool.
 
-### Translation Shelf — new in the 0.9 beta
+### Translation Shelf — new in 0.9
 
 Turn a trusted, source-free translation release into a ready-to-play library
 game without modifying your original. Choose its `release.json`, choose the
@@ -148,9 +147,9 @@ Official downloads are universal, Developer ID signed, notarized by Apple,
 and published with matching checksums, a release manifest, and corresponding
 source.
 
-## New in the SwanSong 0.9 beta
+## New in SwanSong 0.9
 
-The stable channel remains **0.8.1**. The **0.9.0 beta** adds Translation
+The current stable release is **0.9.0**. It adds Translation
 Shelf, a local path from a trusted source-free IPS release to a separately
 managed library game:
 
@@ -170,8 +169,8 @@ service, local automation authenticates its caller, Safe Mode can rescue a
 launch, Support Bundles exclude private material, and every release carries
 exact source, checksums, an SPDX SBOM, and attestations.
 
-Read the [0.9.0 beta notes](docs/releases/0.9.0.md), use the
-[0.9 beta checklist](docs/BETA_TESTING.md), or see the
+Read the [0.9.0 release notes](docs/releases/0.9.0.md), use the
+[0.9 release checklist](docs/RELEASE_TESTING.md), or see the
 [changelog](CHANGELOG.md) for the complete history.
 
 ## Start exploring
@@ -191,7 +190,7 @@ keeps the deeper guides out of your way until you need them:
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.9.0 beta notes](docs/releases/0.9.0.md).
+[0.9.0 release notes](docs/releases/0.9.0.md).
 
 ## Free, open, and independent
 

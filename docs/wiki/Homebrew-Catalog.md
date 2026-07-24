@@ -25,8 +25,8 @@ local and available for authorized homebrew that is not in the catalog.
 
 ## Visual shelf and inspector
 
-SwanSong 0.8.1 and the 0.9 beta bundle approved compact title screens for the
-signed catalog. The 0.9 beta refreshes seven of those native captures. They
+SwanSong 0.9 bundles approved compact title screens for the signed catalog and
+refreshes seven of those native captures. They
 render with nearest-neighbor pixels, and the procedural placeholder remains
 available when an entry has no approved artwork.
 

@@ -29,7 +29,7 @@ Select the new library card and press **Play**. That is the whole startup
 process: current SwanSong releases use the independently written Open IPL and
 do not accept, search for, or download original system firmware.
 
-## Install a translation in the 0.9 beta
+## Install a translation in SwanSong 0.9
 
 Open **Translation Shelf**, choose a trusted source-free release package, then
 choose the exact original game that package requests. SwanSong verifies both,

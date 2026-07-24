@@ -1,6 +1,8 @@
-# SwanSong 0.9 beta testing
+# Archived SwanSong 0.9 prerelease testing
 
-SwanSong 0.9 is a prerelease. Test only games, translation packages, homebrew,
+This checklist records the prerelease gate used before SwanSong 0.9.0 became
+stable. For current testing, use [SwanSong 0.9 release testing](RELEASE_TESTING.md).
+Test only games, translation packages, homebrew,
 projects, cartridges, and save data you own or are authorized to use. Never
 attach ROMs, patches whose distribution is not authorized, saves, private
 screenshots or audio, manuscripts, or Translation Lab evidence to a public

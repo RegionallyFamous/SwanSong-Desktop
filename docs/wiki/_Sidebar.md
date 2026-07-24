@@ -4,7 +4,7 @@
 - [[Playing and Library]]
 - [[Gamepads]]
 - [[App Updates]]
-- [SwanSong 0.9.0 beta notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.9.0.md)
+- [SwanSong 0.9.0 release notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.9.0.md)
 
 **Create and translate**
 
@@ -27,7 +27,7 @@
 - [[Build and Test]]
 - [[Signing and Notarization]]
 - [[Release Gates]]
-- [[0.9 Beta Testing]]
+- [[0.9 Release Testing]]
 - [[0.8 Release Testing]]
 - [[0.7 Release Testing]]
 - [[0.6 Release Testing]]

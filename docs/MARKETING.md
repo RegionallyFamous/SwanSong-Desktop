@@ -52,7 +52,7 @@ Lead with the feeling, then earn the trust:
 
 ## Release honesty
 
-The stable public download is **0.8.1** and **0.9.0** is the active beta.
+The stable public download is **0.9.0**.
 Translation Shelf is the 0.9 lead: it turns a trusted source-free IPS release
 and the exact player-supplied original into a separately managed, verified
 library game without changing that original. The complete SDK 0.5 Studio,
