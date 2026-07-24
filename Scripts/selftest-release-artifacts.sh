@@ -477,6 +477,8 @@ old_archive_hash=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
   "$TEMP_ROOT/archive-payload/SwanSong.app/Contents/large-entry-a"
 /usr/sbin/mkfile -n 67108864 \
   "$TEMP_ROOT/archive-payload/SwanSong.app/Contents/large-entry-b"
+/usr/sbin/mkfile -n 67108864 \
+  "$TEMP_ROOT/archive-payload/SwanSong.app/Contents/large-entry-c"
 rm -f "$ARCHIVE"
 ditto -c -k --keepParent \
   "$TEMP_ROOT/archive-payload/SwanSong.app" "$ARCHIVE"

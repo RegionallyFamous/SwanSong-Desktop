@@ -14,7 +14,10 @@ MAXIMUM_SOURCE_ARCHIVE_BYTE_COUNT=$((64 * 1024 * 1024))
 # that notarization metadata and modest pinned-Sparkle growth.
 MAXIMUM_ARCHIVE_ENTRY_COUNT=1024
 MAXIMUM_ENTRY_UNCOMPRESSED_BYTE_COUNT=$((64 * 1024 * 1024))
-MAXIMUM_TOTAL_UNCOMPRESSED_BYTE_COUNT=$((128 * 1024 * 1024))
+# The 0.9 universal app is roughly 128 MiB after ditto includes bounded
+# AppleDouble metadata. Leave measured room for ordinary binary growth while
+# retaining independent compressed, per-entry, entry-count, and total limits.
+MAXIMUM_TOTAL_UNCOMPRESSED_BYTE_COUNT=$((160 * 1024 * 1024))
 ARCHIVE=
 SOURCE_ARCHIVE=
 MANIFEST=
