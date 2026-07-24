@@ -33,7 +33,7 @@ and Patched frame pairs, First Visual Change, on-device text intake, observed
 play, private display provenance, whole-game Translation Surface Suites, and
 durable native-1× evidence review.
 
-In the SwanSong 0.9 beta, if the translation is already finished,
+In SwanSong 0.9, if the translation is already finished,
 [[Playing and Library#translation-shelf|Translation Shelf]] can verify a
 trusted source-free release package against your exact original and add the
 English build as a separate private library game.
@@ -85,9 +85,9 @@ as the command reference. [[Signing and Notarization]] and [[Release Gates]]
 document the trusted-Mac path from a clean source tag to a signed, notarized,
 checksummed public build.
 
-## The 0.9 beta
+## SwanSong 0.9
 
-The stable channel remains **0.8.1**. The **0.9.0 beta** adds Translation
+The current stable release is **0.9.0**. It adds Translation
 Shelf, which verifies a trusted source-free IPS package and the exact
 player-supplied original, applies the patch in memory, and adds the verified
 result as a separate private library game. Homebrew also gains Developer-only
@@ -97,8 +97,8 @@ Homebrew shelf, isolated engine, Safe Mode, and privacy-safe Support Bundles
 remain intact.
 
 Read the
-[0.9.0 beta notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.9.0.md),
-use [[0.9 Beta Testing]] for the tester checklist, and consult the repository
+[0.9.0 release notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.9.0.md),
+use [[0.9 Release Testing]] for the tester checklist, and consult the repository
 [changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md)
 for the exact source and release history.
 

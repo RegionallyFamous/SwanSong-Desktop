@@ -3,7 +3,7 @@
 This roadmap describes intended outcomes, not promises or compatibility claims.
 Release notes and the issue tracker are authoritative for shipped behavior.
 
-## 0.9 beta
+## 0.9 shipped
 
 - Validate Translation Shelf end to end with source-free release packages:
   exact-original selection, safe relative paths, in-memory IPS application,
@@ -14,12 +14,11 @@ Release notes and the issue tracker are authoritative for shipped behavior.
   the package, or publishes the selected original game.
 - Keep the SwanSong Fun Tester and all launch-confidence language behind
   **Show developer tools**, including at compact and wide window sizes.
-- Exercise the signed 0.9 beta updater from 0.8.1. Stable-only clients must not
-  see it; beta-enabled clients must preserve libraries, saves, settings, and
-  projects through installation and relaunch.
+- Exercise the signed stable 0.9 updater from 0.8.1 and preserve libraries,
+  saves, settings, and projects through installation and relaunch.
 - Run the complete Apple silicon, Intel, signing, notarization, Gatekeeper,
   privacy, source, SBOM, checksum, attestation, Wiki, and public-download gates.
-- Record hands-on results in the 0.9 beta checklist instead of treating an
+- Record hands-on results in the 0.9 release checklist instead of treating an
   automated pass as human approval.
 
 ## 1.0 readiness

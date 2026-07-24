@@ -1,11 +1,12 @@
-# SwanSong 0.8 release testing
+# SwanSong 0.9 release testing
 
-This guide covers the SwanSong Desktop 0.8 release. Test only games, manuscripts, homebrew,
+This guide covers the SwanSong Desktop 0.9 release. Test only games, translation
+packages, manuscripts, homebrew,
 SDK projects, cartridges, and save data you own or are authorized to use. Never
 attach ROMs, saves, private screenshots or audio, manuscripts, cartridge-source
 evidence, or Translation Lab evidence to a public report.
 
-The signed public release is **SwanSong 0.8.1 (17)**.
+The signed public release is **SwanSong 0.9.0 (18)**.
 
 ## What this release is testing
 
@@ -167,7 +168,7 @@ The signed public release is **SwanSong 0.8.1 (17)**.
 
 ## Expected boundaries
 
-SwanSong 0.8.1 embeds SDK 0.5.0 but not Python or Wonderful. Install those
+SwanSong 0.9.0 embeds SDK 0.5.0 but not Python or Wonderful. Install those
 external dependencies before running Studio Doctor or a build. Studio should
 find Python 3.11+ in standard Homebrew, python.org, MacPorts, and system
 locations even when SwanSong opens from Finder. Story Forge also requires a
@@ -189,7 +190,7 @@ hands-on attention.
 
 ## Before reporting a result
 
-1. Confirm **SwanSong 0.8.1 (17)** in **SwanSong > About SwanSong**.
+1. Confirm **SwanSong 0.9.0 (18)** in **SwanSong > About SwanSong**.
 2. Record the Mac model, macOS version, architecture, controller or cartridge
    hardware when relevant, SDK version, Python version, and Wonderful revision.
 3. For Story Forge, state the visible workspace and sanitized action/result;

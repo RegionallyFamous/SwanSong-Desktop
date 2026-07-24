@@ -13,9 +13,9 @@ development desk, light-novel workspace, and guarded physical-cartridge lab.
 
 ## What is included in the public release?
 
-The signed stable download is SwanSong 0.8.1. SwanSong 0.9.0 is available as a
-beta and adds Translation Shelf plus a Developer-only Fun Tester. Both include
-the player, library, Time Ribbon, visual save states, whole-game Translation
+The signed stable download is SwanSong 0.9.0. It adds Translation Shelf plus a
+Developer-only Fun Tester while retaining the player, library, Time Ribbon,
+visual save states, whole-game Translation
 Surface Suites, SwanSong Studio with the verified SDK 0.5.0, the visual signed
 Homebrew Catalog, native updates, and the guarded Analogue Pocket setup
 workflow. Story Forge
@@ -43,7 +43,7 @@ local homebrew.
 
 ## Can SwanSong install a fan translation?
 
-The 0.9 beta can install a trusted source-free IPS release through Translation
+SwanSong 0.9 can install a trusted source-free IPS release through Translation
 Shelf. You choose the package and the exact original game separately. SwanSong
 verifies the inputs and finished build, applies the patch in memory, leaves the
 original unchanged, and gives the translated build its own library identity,
