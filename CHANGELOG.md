@@ -6,6 +6,21 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+### Added
+
+- Adds a one-time, privacy-forward first-run guide with a three-step path into
+  the library, player controls, Time Ribbon, and visual save states.
+- Adds a native What’s New story for SwanSong 0.9 and keeps both the guide and
+  release story available from the Help menu. Returning players see the
+  reviewed release story once after updating; Safe Mode, direct-open, and
+  automated launches are never interrupted.
+
+### Changed
+
+- Expands About SwanSong with the product’s reason for being: preserve the
+  WonderSwan’s unusual character, keep everyday play calm, and prefer
+  inspectable evidence to confidence theater.
+
 ## [0.9.0] - 2026-07-23
 
 **Bring the Translation Home.** SwanSong 0.9 turns a trusted, source-free

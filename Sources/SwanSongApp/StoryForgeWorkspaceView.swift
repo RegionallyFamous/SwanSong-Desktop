@@ -38,7 +38,7 @@ struct StoryForgeWorkspaceView: View {
         .navigationTitle("Story Forge")
         .toolbar {
             ToolbarItemGroup {
-                Button("Choose Story Forge…", systemImage: "hammer.circle") {
+                Button("Choose Different Story Forge…", systemImage: "hammer.circle") {
                     chooseFramework()
                 }
                 .disabled(workspace.isRunning)
@@ -87,7 +87,7 @@ struct StoryForgeWorkspaceView: View {
                     .font(.title2.bold())
                 Text(
                     workspace.projectRoot?.path
-                        ?? "Plan, draft, illustrate, polish, and publish novels with evidence-backed gates."
+                        ?? "Plan, draft, illustrate, revise, and publish novels with clear review at every stage."
                 )
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -180,8 +180,8 @@ struct StoryForgeWorkspaceView: View {
     private var frameworkSetup: some View {
         VStack(spacing: 20) {
             SwanEmptyState(
-                title: "Connect Story Forge",
-                description: "Choose the Story Forge repository that contains the schema-v3 novel framework. SwanSong runs its reviewed tools through fixed, visible actions.",
+                title: "Story Forge Needs Its Framework",
+                description: "SwanSong couldn’t find the Story Forge tools included with the app. Choose a compatible Story Forge folder to reconnect them.",
                 symbol: "book.pages",
                 tint: SwanTheme.violet
             )
@@ -1062,7 +1062,7 @@ struct StoryForgeWorkspaceView: View {
     }
 
     private func chooseFramework() {
-        chooseDirectory(prompt: "Choose Story Forge") { url in
+        chooseDirectory(prompt: "Choose Story Forge Framework") { url in
             do { try workspace.configureFramework(at: url) }
             catch { workspace.issue = error.localizedDescription }
         }

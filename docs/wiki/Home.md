@@ -18,10 +18,9 @@ No games or original system firmware are included.
 ### I want to play
 
 Start with [[Playing and Library]]. It covers adding games, artwork, favorites,
-the native player, display choices, Time Ribbon, visual save states, Game
-Confidence for developers, and Pocket save exchange. [[Gamepads]] explains
-presets, custom mapping, hotplug, battery status, and the limits of macOS
-controller support.
+the native player, display choices, Time Ribbon, visual save states, and Pocket
+save exchange. [[Gamepads]] explains presets, custom mapping, hotplug, battery
+status, and the limits of macOS controller support.
 
 There is no BIOS setup. [[Open IPL]] explains the independent startup system
 included with SwanSong 0.2 and later.
@@ -90,11 +89,9 @@ checksummed public build.
 The current stable release is **0.9.0**. It adds Translation
 Shelf, which verifies a trusted source-free IPS package and the exact
 player-supplied original, applies the patch in memory, and adds the verified
-result as a separate private library game. Homebrew also gains Developer-only
-agent playtest prompts. Translation Surface Suites, exact native review,
-resumable certification, Narrative Pulse, Story Proof, the visual signed
-Homebrew shelf, isolated engine, Safe Mode, and privacy-safe Support Bundles
-remain intact.
+result as a separate private library game. Time Ribbon, visual save states, the
+signed Homebrew shelf, isolated engine, Safe Mode, and privacy-safe Support
+Bundles remain intact.
 
 Read the
 [0.9.0 release notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.9.0.md),

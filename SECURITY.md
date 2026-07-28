@@ -2,9 +2,9 @@
 
 ## Supported versions
 
-Until the first stable release, security fixes target the latest published
-pre-release and the default branch. After 1.0, the latest release line will be
-supported unless its release notes say otherwise.
+Before 1.0, security fixes target the current stable 0.x release and the
+default branch. After 1.0, the latest release line will be supported unless its
+release notes say otherwise.
 
 ## Report a vulnerability privately
 

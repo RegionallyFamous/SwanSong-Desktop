@@ -1017,7 +1017,7 @@ private struct HomebrewCatalogView: View {
             VStack(spacing: 20) {
                 SwanEmptyState(
                     title: "Loading the Homebrew Catalog",
-                    description: "Requesting SwanSong’s signed first-party catalog from GitHub.",
+                    description: "Downloading SwanSong’s catalog from GitHub and checking its signature.",
                     symbol: "shippingbox.fill",
                     tint: SwanTheme.cyan
                 )
@@ -1045,7 +1045,7 @@ private struct HomebrewCatalogView: View {
                 tint: SwanTheme.cyan
             )
             HStack(spacing: 10) {
-                Button("Add From Mac…", action: model.chooseGames)
+                Button("Add Games from Mac…", action: model.chooseGames)
                     .buttonStyle(.borderedProminent)
                 Button("Open SwanSong Releases") {
                     openURL(SwanSongLinks.releases)
@@ -1100,7 +1100,7 @@ private struct HomebrewCatalogView: View {
             HStack(spacing: 10) {
                 Button("Try Again", action: model.refreshHomebrewCatalog)
                     .buttonStyle(.borderedProminent)
-                Button("Add From Mac…", action: model.chooseGames)
+                Button("Add Games from Mac…", action: model.chooseGames)
                     .buttonStyle(.bordered)
             }
         }
@@ -1788,7 +1788,7 @@ private struct TranslationPatchShelfView: View {
 
     private var introduction: some View {
         VStack(alignment: .leading, spacing: 9) {
-            Label("Play a Certified Fan Translation", systemImage: "checkmark.seal.fill")
+            Label("Play a Verified Fan Translation", systemImage: "checkmark.seal.fill")
                 .font(.title2.weight(.bold))
                 .foregroundStyle(SwanTheme.cyan)
             Text("Choose a source-free release package, then your own exact original game. SwanSong verifies every step, builds the English version privately, and keeps the original and its saves untouched.")
@@ -1841,7 +1841,7 @@ private struct TranslationPatchShelfView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     Label("No release selected", systemImage: "doc.text")
                         .font(.headline)
-                    Text("Open a certified translation release folder, or its release.json file. Keep the IPS patch inside that package.")
+                    Text("Open a source-free translation release folder, or its release.json file. Keep the IPS patch inside that package.")
                         .font(.callout)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -1878,7 +1878,7 @@ private struct TranslationPatchShelfView: View {
                     }
                 }
                 Spacer()
-                Text("RELEASE-CERTIFIED")
+                Text("PACKAGE VERIFIED")
                     .font(.caption2.monospaced().weight(.black))
                     .foregroundStyle(.green)
                     .padding(.horizontal, 8)
@@ -2309,15 +2309,15 @@ private struct LibraryView: View {
 
     private var emptyDescription: String {
         switch model.section {
-        case .library: "Open a game from your Mac or drop it here. SwanSong saves a private copy so it’s ready whenever you are."
+        case .library: "Open a game from your Mac or drop it here. SwanSong keeps a private copy so it’s ready whenever you are."
         case .favorites: "Star a favorite and it’ll always be easy to find."
         case .recent: "Games show up here after you play them."
         case .homebrew: "Browse SwanSong’s signed catalog, or add a game you already have on your Mac."
-        case .translationPatches: "Choose a certified translation release and the exact original game it requires."
+        case .translationPatches: "Choose a trusted source-free translation package and the exact original game it requires."
         case .cartridgeTools: "Connect a supported WonderSwan through its EXT adapter to read a cartridge or back up a save."
         case .pocketCore: "Choose Analogue Pocket to add or update the official SwanSong Core."
         case .translationLab: "Add a private translation project to keep its progress, tests, and captures together."
-        case .storyForge: "Create a novel, run editorial gates, commission ImageGen art, and prepare polished editions."
+        case .storyForge: "Create a novel, revise with clear editorial checks, commission ImageGen art, and prepare polished editions."
         case .gameStudio: "Create a WonderSwan game or open one you’re already making."
         }
     }
@@ -8790,7 +8790,7 @@ struct GameInspector: View {
                         if let revision = origin.revision {
                             LabeledContent("Original revision", value: revision)
                         }
-                        Text("SwanSong built this private copy from a release-certified IPS package and the exact required original. The original file and its saves were not changed.")
+                        Text("SwanSong built this private copy from a verified IPS release package and the exact required original. The original file and its saves were not changed.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
@@ -11588,7 +11588,7 @@ struct StateTimelineCard: View {
         }
         return switch state.compatibility {
         case .ready:
-            "Compatible with this game, startup implementation, and emulation engine."
+            "Ready to load with this game and version of SwanSong."
         case .legacyNeedsConfirmation:
             "Created by an earlier SwanSong version and missing full compatibility information."
         case let .wrongROM(reason),
@@ -11609,7 +11609,7 @@ struct StateTimelineCard: View {
 
     private var loadButtonHelp: String {
         isLoadable
-            ? "Replaces the current game state after creating a rollback point. Undo will be available."
+            ? "Loads this moment and keeps an Undo point for where you are now."
             : compatibilityDetail
     }
 
@@ -11710,7 +11710,7 @@ struct SettingsView: View {
                     VStack(alignment: .leading, spacing: 3) {
                         Text("SwanSong")
                             .font(.title3.weight(.semibold))
-                        Text("Play, rewind, translate, and build WonderSwan games—all on your Mac.")
+                        Text(SwanSongProductCopy.playerSummary)
                             .font(.callout)
                             .foregroundStyle(.secondary)
                     }

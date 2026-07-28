@@ -3,6 +3,150 @@ import Foundation
 import XCTest
 
 final class LaunchRecoveryAndSupportTests: XCTestCase {
+    func testFirstRunGuideAppearsOnlyForAnUninterruptedEmptyFirstLaunch() {
+        XCTAssertTrue(
+            SwanSongGuideLaunchPolicy.shouldPresent(
+                guideHasPresented: false,
+                hasGames: false,
+                isSafeMode: false,
+                suppressesWelcome: false,
+                hasInitialOpenRequest: false
+            )
+        )
+
+        for blocked in [
+            (true, false, false, false, false),
+            (false, true, false, false, false),
+            (false, false, true, false, false),
+            (false, false, false, true, false),
+            (false, false, false, false, true),
+        ] {
+            XCTAssertFalse(
+                SwanSongGuideLaunchPolicy.shouldPresent(
+                    guideHasPresented: blocked.0,
+                    hasGames: blocked.1,
+                    isSafeMode: blocked.2,
+                    suppressesWelcome: blocked.3,
+                    hasInitialOpenRequest: blocked.4
+                )
+            )
+        }
+    }
+
+    func testFirstRunGuideRecognizesDirectGameOpenRequests() throws {
+        let suiteName = "GuideLaunchTests.\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(
+            UserDefaults(suiteName: suiteName)
+        )
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        XCTAssertFalse(
+            SwanSongGuideLaunchPolicy.shouldPresent(
+                userDefaults: defaults,
+                hasGames: false,
+                isSafeMode: false,
+                environment: [:],
+                arguments: ["SwanSong", "/Games/First Flight.wsc"]
+            )
+        )
+        XCTAssertTrue(
+            SwanSongGuideLaunchPolicy.shouldPresent(
+                userDefaults: defaults,
+                hasGames: false,
+                isSafeMode: false,
+                environment: [:],
+                arguments: ["SwanSong", "--ordinary-launch-flag"]
+            )
+        )
+
+        SwanSongGuideLaunchPolicy.markPresented(userDefaults: defaults)
+        XCTAssertFalse(
+            SwanSongGuideLaunchPolicy.shouldPresent(
+                userDefaults: defaults,
+                hasGames: false,
+                isSafeMode: false,
+                environment: [:],
+                arguments: ["SwanSong"]
+            )
+        )
+    }
+
+    func testReturningPlayersSeeEachReleaseStoryOnlyOnce() throws {
+        XCTAssertEqual(
+            SwanSongGuideLaunchPolicy.launchSection(
+                guideHasPresented: true,
+                lastPresentedReleaseStory: nil,
+                installedVersion: "0.9.0",
+                hasGames: true,
+                isSafeMode: false,
+                suppressesWelcome: false,
+                hasInitialOpenRequest: false
+            ),
+            .whatsNew
+        )
+        XCTAssertNil(
+            SwanSongGuideLaunchPolicy.launchSection(
+                guideHasPresented: true,
+                lastPresentedReleaseStory: "0.9",
+                installedVersion: "0.9.1",
+                hasGames: true,
+                isSafeMode: false,
+                suppressesWelcome: false,
+                hasInitialOpenRequest: false
+            )
+        )
+        XCTAssertNil(
+            SwanSongGuideLaunchPolicy.launchSection(
+                guideHasPresented: true,
+                lastPresentedReleaseStory: nil,
+                installedVersion: "1.0.0",
+                hasGames: true,
+                isSafeMode: false,
+                suppressesWelcome: false,
+                hasInitialOpenRequest: false
+            ),
+            "A future release must ship its own reviewed story before it can appear automatically."
+        )
+    }
+
+    func testNewPlayerGuideMarksTheCurrentReleaseStorySeen() throws {
+        let suiteName = "GuideLaunchMarkTests.\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        XCTAssertEqual(
+            SwanSongGuideLaunchPolicy.launchSection(
+                userDefaults: defaults,
+                installedVersion: "0.9.0",
+                hasGames: false,
+                isSafeMode: false,
+                environment: [:],
+                arguments: ["SwanSong"]
+            ),
+            .guide
+        )
+        SwanSongGuideLaunchPolicy.markPresented(.guide, userDefaults: defaults)
+        XCTAssertTrue(
+            defaults.bool(forKey: SwanSongGuideLaunchPolicy.presentedDefaultsKey)
+        )
+        XCTAssertEqual(
+            defaults.string(
+                forKey: SwanSongGuideLaunchPolicy.releaseStoryDefaultsKey
+            ),
+            "0.9"
+        )
+        XCTAssertNil(
+            SwanSongGuideLaunchPolicy.launchSection(
+                userDefaults: defaults,
+                installedVersion: "0.9.0",
+                hasGames: true,
+                isSafeMode: false,
+                environment: [:],
+                arguments: ["SwanSong"]
+            )
+        )
+    }
+
     func testRepeatedInterruptedLaunchesEnterSafeModeAndCleanExitResetsIt() throws {
         let root = temporaryRoot()
         defer { try? FileManager.default.removeItem(at: root) }

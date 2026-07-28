@@ -29,8 +29,7 @@ compatibility, accuracy, privacy, security, or release claims.
 
 - Product title: **SwanSong Desktop** or **SwanSong for WonderSwan**
 - Tagline: **WonderSwan, at home on your Mac.**
-- Descriptor: **A private, native WonderSwan player and translation workbench
-  for macOS.**
+- Descriptor: **A beautiful, private home for your WonderSwan library.**
 - Visual subtitle: **FOR WONDERSWAN**
 
 ## The story to tell

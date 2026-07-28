@@ -42,9 +42,6 @@ close without crowding the screen.
   two direction clusters, A, B, and Start.
 - **Move saves between setups.** Import and export SwanSong Pocket `.sav`
   files without turning your whole library inside out.
-- **Know what “works” means.** With Developer Tools enabled, SwanSong keeps
-  “picture appeared” separate from your play verdict instead of pretending one
-  frame proves an entire game.
 
 ## Open a game. That is the setup.
 
@@ -86,7 +83,7 @@ work, and produce one immutable final certificate.
 
 Take a WonderSwan project from New to Release in one native workspace. Build
 assets, run the game, inspect frames and audio, replay failures, and package
-only after the evidence is ready. SwanSong 0.8 carries the complete,
+only after the evidence is ready. SwanSong includes the complete,
 content-verified SwanSong SDK 0.5.0 toolset: Utility Apps, traced builds,
 scenarios, semantic outcomes, budget history, project migration, and a deeper
 release lane. Doctor clearly shows the few development tools that still need
@@ -159,10 +156,6 @@ managed library game:
 - keep translated saves, states, artwork, favorite, and play history separate;
 - adopt an existing exact finished build instead of duplicating it; and
 - rebuild a missing or changed managed copy without losing its library history.
-
-Homebrew also gains a Developer-only SwanSong Fun Tester for structured agent
-playtest requests. It remains hidden with the rest of the diagnostic confidence
-surfaces until **Show developer tools** is enabled.
 
 The 0.7 safety foundation remains: the engine runs in its own locked-down
 service, local automation authenticates its caller, Safe Mode can rescue a

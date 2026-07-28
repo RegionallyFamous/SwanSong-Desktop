@@ -3,15 +3,9 @@
 Most problems have a quick fix. Make sure you have the newest SwanSong release,
 then start with the answers below. SwanSong requires macOS 14 or newer.
 
-The stable public download is 0.9.0. It adds Translation Shelf and
-a Developer-only Fun Tester while retaining the private player and library,
-complete SDK 0.5 Studio, Story Forge quality workbenches, whole-game
-Translation Surface Suites, the visual signed Homebrew Catalog, Safe Mode, and
-a privacy-safe Support Bundle.
-
-If you are testing 0.9.0, use the
-[0.9 release checklist](docs/RELEASE_TESTING.md) and include the update channel
-plus installed build in your report.
+The stable public download is 0.9.0. It includes the private library and
+player, Time Ribbon rewind, visual save states, the signed Homebrew Catalog,
+Translation Shelf, Safe Mode, and a privacy-safe Support Bundle.
 
 <!-- homebrew-catalog-status: published -->
 
@@ -25,7 +19,7 @@ BIOS files.
 
 ### Where does SwanSong keep my stuff?
 
-Games saved in your library, saves, states, and preferences live in
+Your managed games, save files, save states, artwork, and preferences live in
 `~/Library/Application Support/SwanSong/`. Translation Lab keeps its evidence
 inside the private project you link. Back up important saves before deleting
 anything.
@@ -136,6 +130,10 @@ digest, controller name, inputs, focus state, and frame timing.
 
 For most reports, prefer the built-in Support Bundle. Share a developer input
 log only when the report specifically needs it and only after reviewing it.
+
+Release testers can use the
+[0.9 release checklist](docs/RELEASE_TESTING.md). Include the update channel
+and installed build in the report.
 
 Never upload games, original firmware, saves, save states, private screenshots,
 translation projects, or evidence bundles. For a possible security issue, use

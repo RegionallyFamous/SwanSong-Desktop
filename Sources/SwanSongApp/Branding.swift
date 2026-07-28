@@ -1,6 +1,11 @@
 import AppKit
 import SwiftUI
 
+enum SwanSongProductCopy {
+    static let tagline = "WonderSwan, at home on your Mac."
+    static let playerSummary = "A beautiful, private home for your WonderSwan library."
+}
+
 enum SwanTheme {
     // These colors are sampled from the app icon so the chrome, player, and
     // Translation Lab feel like one product without tinting the whole app.

@@ -8,21 +8,16 @@ people usually want before downloading it or plugging in hardware.
 
 Yes. SwanSong Desktop is a native macOS player for WonderSwan, WonderSwan
 Color, SwanCrystal, and Pocket Challenge V2 software, built on a pinned ares
-WonderSwan engine. It is also a visual library, translation workbench, homebrew
-development desk, light-novel workspace, and guarded physical-cartridge lab.
+WonderSwan engine. It also includes a visual library and optional tools for
+homebrew, translations, Analogue Pocket, and physical cartridges.
 
 ## What is included in the public release?
 
-The signed stable download is SwanSong 0.9.0. It adds Translation Shelf plus a
-Developer-only Fun Tester while retaining the player, library, Time Ribbon,
-visual save states, whole-game Translation
-Surface Suites, SwanSong Studio with the verified SDK 0.5.0, the visual signed
-Homebrew Catalog, native updates, and the guarded Analogue Pocket setup
-workflow. Story Forge
-includes its Story Room, causal and Narrative Pulse maps, chapter editor,
-packet and live-bookmark Reader Labs, research, ImageGen art, music, revision,
-adaptation drift, and SwanSong-backed Story Proof/Story Ribbon workspaces.
-Cartridge Tools remains available for authorized physical cartridge work.
+The signed stable download is SwanSong 0.9.0. It includes the player, private
+library, Time Ribbon, visual save states, the signed Homebrew Catalog,
+Translation Shelf, native updates, Safe Mode, and a privacy-safe Support
+Bundle. Optional Analogue Pocket and Cartridge Tools are available when you
+need them.
 
 ## Does it include games or require a BIOS?
 
@@ -35,11 +30,11 @@ versioned release notes.
 
 ## Can SwanSong install homebrew directly from GitHub?
 
-Yes. SwanSong 0.8.1 can browse its signed first-party Homebrew Catalog, show
+Yes. Current releases can browse SwanSong’s signed first-party Homebrew Catalog, show
 approved bundled title screens, and add an authorized original game to your
 private library. It connects only after you choose **Browse Games**,
-**Refresh**, or a specific download. **Add From Mac** remains available for
-local homebrew.
+**Refresh**, or a specific download. **Add Games from Mac** remains available
+for local homebrew.
 
 ## Can SwanSong install a fan translation?
 
