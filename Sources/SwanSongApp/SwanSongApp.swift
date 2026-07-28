@@ -89,7 +89,27 @@ private final class SwanSongAppDelegate: NSObject, NSApplicationDelegate {
             updater.start()
             model.handleInitialLaunchArguments()
         }
+        offerLaunchGuideIfNeeded()
         appLaunchDiagnostic("deferred application startup finished")
+    }
+
+    private func offerLaunchGuideIfNeeded() {
+        guard SwanSongGuideLaunchPolicy.launchSection(
+            installedVersion: SwanSongMetadata.current.version,
+            hasGames: !model.games.isEmpty,
+            isSafeMode: model.isSafeMode
+        ) != nil else { return }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [weak self] in
+            guard let self,
+                  let section = SwanSongGuideLaunchPolicy.launchSection(
+                    installedVersion: SwanSongMetadata.current.version,
+                    hasGames: !model.games.isEmpty,
+                    isSafeMode: model.isSafeMode
+                  ) else { return }
+            SwanSongGuideLaunchPolicy.markPresented(section)
+            presentLegalSupport(section, model: model)
+        }
     }
 
     func applicationWillTerminate(_ notification: Notification) {
@@ -159,7 +179,7 @@ struct SwanSongApp: App {
             SidebarCommands()
             CartridgeLabCommands(model: model)
 
-            LegalSupportCommands(updater: appDelegate.updater)
+            LegalSupportCommands(model: model, updater: appDelegate.updater)
             CommandGroup(after: .toolbar) {
                 Button(showsLibraryInspector ? "Hide Game Inspector" : "Show Game Inspector") {
                     showsLibraryInspector.toggle()

@@ -48,6 +48,16 @@ grep -Fq "This policy describes SwanSong $VERSION." "$ROOT/PRIVACY.md" \
   || fail "privacy policy version does not match $VERSION"
 grep -Fq "docs/releases/$VERSION.md" "$ROOT/README.md" \
   || fail "README does not link the current release notes"
+grep -Fq "stable public download is $VERSION" "$ROOT/SUPPORT.md" \
+  || fail "support guide does not identify the current stable version"
+grep -Fq "signed stable download is SwanSong $VERSION" "$ROOT/docs/FAQ.md" \
+  || fail "FAQ does not identify the current stable version"
+grep -Fq "static let series = \"$MINOR_VERSION\"" \
+  "$ROOT/Sources/SwanSongApp/LegalSupportView.swift" \
+  || fail "in-app release story series does not match $MINOR_VERSION"
+grep -Fq "static let fullVersion = \"$VERSION\"" \
+  "$ROOT/Sources/SwanSongApp/LegalSupportView.swift" \
+  || fail "in-app release story version does not match $VERSION"
 grep -Fq "$(basename "$WIKI_TESTING")" "$ROOT/Scripts/prepare-wiki-sync.sh" \
   || fail "Wiki publishing guard does not require the current testing page"
 

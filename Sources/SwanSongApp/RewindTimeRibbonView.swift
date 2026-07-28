@@ -268,7 +268,7 @@ struct RewindTimeRibbonContent: View {
                 Text(
                     isCompact
                         ? "Preview only. SwanSong restores this moment after you choose Resume Here."
-                        : "Moving through the ribbon only previews moments. SwanSong restores the emulator once, after you choose Resume Here."
+                        : "Moving through the ribbon only previews moments. Your game returns to the selected moment after you choose Resume Here."
                 )
                     .font(.callout)
                     .foregroundStyle(.secondary)
@@ -402,7 +402,7 @@ struct RewindTimeRibbonContent: View {
 
     private var footer: some View {
         Label(
-            "Memory-only: nothing in the ribbon is written to disk. Resuming from the past discards the newer in-memory branch; Undo restores the moment you left.",
+            "Memory-only: nothing in the ribbon is saved to disk. Resuming from the past removes newer rewind moments; Undo returns you to where you left.",
             systemImage: "lock.shield"
         )
         .font(.caption)

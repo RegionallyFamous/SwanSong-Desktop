@@ -3,6 +3,8 @@ import SwanSongKit
 import SwiftUI
 
 enum LegalSupportSection: String, CaseIterable, Identifiable {
+    case guide
+    case whatsNew
     case overview
     case updates
     case privacy
@@ -14,6 +16,8 @@ enum LegalSupportSection: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
+        case .guide: "Start Here"
+        case .whatsNew: "What’s New"
         case .overview: "About SwanSong"
         case .updates: "Updates"
         case .privacy: "Privacy & Trust"
@@ -25,6 +29,8 @@ enum LegalSupportSection: String, CaseIterable, Identifiable {
 
     var systemImage: String {
         switch self {
+        case .guide: "sparkles"
+        case .whatsNew: "gift"
         case .overview: "info.circle"
         case .updates: "arrow.down.circle"
         case .privacy: "hand.raised"
@@ -36,11 +42,124 @@ enum LegalSupportSection: String, CaseIterable, Identifiable {
 }
 
 @MainActor
-func presentLegalSupport(_ section: LegalSupportSection) {
-    LegalSupportWindowController.shared.present(section)
+func presentLegalSupport(
+    _ section: LegalSupportSection,
+    model: AppModel? = nil
+) {
+    LegalSupportWindowController.shared.present(section, model: model)
+}
+
+enum SwanSongGuideLaunchPolicy {
+    static let presentedDefaultsKey = "SwanSong.guide.hasPresented.v1"
+    static let releaseStoryDefaultsKey = "SwanSong.releaseStory.lastPresented.v1"
+    static let releaseStoryVersion = SwanSongReleaseStory.series
+
+    static func shouldPresent(
+        guideHasPresented: Bool,
+        hasGames: Bool,
+        isSafeMode: Bool,
+        suppressesWelcome: Bool,
+        hasInitialOpenRequest: Bool
+    ) -> Bool {
+        !guideHasPresented
+            && !hasGames
+            && !isSafeMode
+            && !suppressesWelcome
+            && !hasInitialOpenRequest
+    }
+
+    static func shouldPresent(
+        userDefaults: UserDefaults = .standard,
+        hasGames: Bool,
+        isSafeMode: Bool,
+        environment: [String: String] = ProcessInfo.processInfo.environment,
+        arguments: [String] = CommandLine.arguments
+    ) -> Bool {
+        shouldPresent(
+            guideHasPresented: userDefaults.bool(forKey: presentedDefaultsKey),
+            hasGames: hasGames,
+            isSafeMode: isSafeMode,
+            suppressesWelcome: environment["SWAN_SONG_HEADLESS"] == "1"
+                || environment["SWAN_SONG_SUPPRESS_WELCOME"] == "1",
+            hasInitialOpenRequest: environment["SWAN_SONG_INITIAL_ROM"]?.isEmpty == false
+                || arguments.dropFirst().contains(where: isSupportedOpenRequest)
+        )
+    }
+
+    static func markPresented(userDefaults: UserDefaults = .standard) {
+        markPresented(.guide, userDefaults: userDefaults)
+    }
+
+    static func launchSection(
+        guideHasPresented: Bool,
+        lastPresentedReleaseStory: String?,
+        installedVersion: String,
+        hasGames: Bool,
+        isSafeMode: Bool,
+        suppressesWelcome: Bool,
+        hasInitialOpenRequest: Bool
+    ) -> LegalSupportSection? {
+        guard !isSafeMode,
+              !suppressesWelcome,
+              !hasInitialOpenRequest else { return nil }
+
+        if !guideHasPresented, !hasGames {
+            return .guide
+        }
+        if hasGames,
+           (installedVersion == releaseStoryVersion
+                || installedVersion.hasPrefix("\(releaseStoryVersion).")),
+           lastPresentedReleaseStory != releaseStoryVersion {
+            return .whatsNew
+        }
+        return nil
+    }
+
+    static func launchSection(
+        userDefaults: UserDefaults = .standard,
+        installedVersion: String,
+        hasGames: Bool,
+        isSafeMode: Bool,
+        environment: [String: String] = ProcessInfo.processInfo.environment,
+        arguments: [String] = CommandLine.arguments
+    ) -> LegalSupportSection? {
+        launchSection(
+            guideHasPresented: userDefaults.bool(forKey: presentedDefaultsKey),
+            lastPresentedReleaseStory: userDefaults.string(
+                forKey: releaseStoryDefaultsKey
+            ),
+            installedVersion: installedVersion,
+            hasGames: hasGames,
+            isSafeMode: isSafeMode,
+            suppressesWelcome: environment["SWAN_SONG_HEADLESS"] == "1"
+                || environment["SWAN_SONG_SUPPRESS_WELCOME"] == "1",
+            hasInitialOpenRequest: environment["SWAN_SONG_INITIAL_ROM"]?.isEmpty == false
+                || arguments.dropFirst().contains(where: isSupportedOpenRequest)
+        )
+    }
+
+    static func markPresented(
+        _ section: LegalSupportSection,
+        userDefaults: UserDefaults = .standard
+    ) {
+        if section == .guide {
+            userDefaults.set(true, forKey: presentedDefaultsKey)
+        }
+        if section == .guide || section == .whatsNew {
+            userDefaults.set(releaseStoryVersion, forKey: releaseStoryDefaultsKey)
+        }
+    }
+
+    private static func isSupportedOpenRequest(_ argument: String) -> Bool {
+        let supportedExtensions = Set(["ws", "wsc", "pc2", "pcv2", "zip"])
+        return supportedExtensions.contains(
+            URL(fileURLWithPath: argument).pathExtension.lowercased()
+        )
+    }
 }
 
 struct LegalSupportCommands: Commands {
+    let model: AppModel
     @ObservedObject var updater: SwanSongUpdater
 
     var body: some Commands {
@@ -53,8 +172,15 @@ struct LegalSupportCommands: Commands {
         }
 
         CommandGroup(replacing: .help) {
-            Button("SwanSong Help…") { present(.support) }
+            Button("SwanSong Guide…") { present(.guide) }
                 .keyboardShortcut("?", modifiers: .command)
+            Button("What’s New in SwanSong \(SwanSongReleaseStory.series)…") {
+                present(.whatsNew)
+            }
+
+            Divider()
+
+            Button("SwanSong Support…") { present(.support) }
             Button("Check for Updates…") { updater.checkForUpdates() }
                 .disabled(updater.isConfigured && !updater.canCheckForUpdates)
             Button("Report a Problem…") { present(.support) }
@@ -63,7 +189,7 @@ struct LegalSupportCommands: Commands {
 
     private func present(_ section: LegalSupportSection) {
         Task { @MainActor in
-            presentLegalSupport(section)
+            presentLegalSupport(section, model: model)
         }
     }
 }
@@ -73,8 +199,12 @@ private final class LegalSupportWindowController {
     static let shared = LegalSupportWindowController()
 
     private var window: NSWindow?
+    private weak var model: AppModel?
 
-    func present(_ section: LegalSupportSection) {
+    func present(_ section: LegalSupportSection, model: AppModel? = nil) {
+        if let model {
+            self.model = model
+        }
         UserDefaults.standard.set(
             section.rawValue,
             forKey: "legalSupportSelectedSection"
@@ -92,16 +222,37 @@ private final class LegalSupportWindowController {
             backing: .buffered,
             defer: false
         )
-        window.title = "Legal & Support"
+        window.title = "SwanSong Guide & Support"
         window.contentMinSize = CGSize(width: 720, height: 520)
         window.contentViewController = NSHostingController(
-            rootView: LegalSupportView(updater: .shared)
+            rootView: LegalSupportView(
+                updater: .shared,
+                onOpenGame: { [weak self] in
+                    self?.openGame()
+                },
+                onNavigate: { [weak self] section in
+                    self?.navigate(to: section)
+                }
+            )
         )
         window.isReleasedWhenClosed = false
         window.setFrameAutosaveName("SwanSongLegalSupportWindow")
         window.center()
         self.window = window
         return window
+    }
+
+    private func openGame() {
+        window?.orderOut(nil)
+        model?.chooseGame()
+    }
+
+    private func navigate(to section: AppModel.Section) {
+        window?.orderOut(nil)
+        model?.section = section
+        NSApp.windows.first(where: { $0.title == "SwanSong" })?
+            .makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
 }
 
@@ -113,6 +264,8 @@ struct LegalSupportView: View {
     private let bundledDocumentOverrides: [String: String]
     private let usesDeterministicSidebarForOffscreenSnapshots: Bool
     private let metadata: SwanSongMetadata
+    private let onOpenGame: (() -> Void)?
+    private let onNavigate: ((AppModel.Section) -> Void)?
     @State private var localControlEnabled = UserDefaults.standard.bool(
         forKey: SwanSongLocalMCPAccess.enabledDefaultsKey
     )
@@ -124,7 +277,9 @@ struct LegalSupportView: View {
         fixedSection: LegalSupportSection? = nil,
         bundledDocumentOverrides: [String: String] = [:],
         usesDeterministicSidebarForOffscreenSnapshots: Bool = false,
-        metadata: SwanSongMetadata = .current
+        metadata: SwanSongMetadata = .current,
+        onOpenGame: (() -> Void)? = nil,
+        onNavigate: ((AppModel.Section) -> Void)? = nil
     ) {
         self.updater = updater
         self.fixedSection = fixedSection
@@ -132,6 +287,8 @@ struct LegalSupportView: View {
         self.usesDeterministicSidebarForOffscreenSnapshots =
             usesDeterministicSidebarForOffscreenSnapshots
         self.metadata = metadata
+        self.onOpenGame = onOpenGame
+        self.onNavigate = onNavigate
     }
 
     private var selection: Binding<LegalSupportSection?> {
@@ -225,6 +382,10 @@ struct LegalSupportView: View {
     @ViewBuilder
     private var sectionContent: some View {
         switch activeSection {
+        case .guide:
+            guide
+        case .whatsNew:
+            whatsNew
         case .overview:
             overview
         case .updates:
@@ -240,6 +401,191 @@ struct LegalSupportView: View {
         }
     }
 
+    private var guide: some View {
+        VStack(alignment: .leading, spacing: 22) {
+            HStack(alignment: .center, spacing: 18) {
+                SwanSongIcon(size: 82)
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(SwanSongProductCopy.tagline)
+                        .font(.largeTitle.bold())
+                    Text(SwanSongProductCopy.playerSummary)
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            HStack(spacing: 8) {
+                trustPill("No account", symbol: "person.crop.circle.badge.xmark")
+                trustPill("No ads", symbol: "rectangle.slash")
+                trustPill("No telemetry", symbol: "hand.raised")
+            }
+
+            GroupBox("Your First Three Steps") {
+                VStack(alignment: .leading, spacing: 0) {
+                    guideStep(
+                        1,
+                        title: "Add a game you own",
+                        detail: "Open a .ws, .wsc, .pc2, .pcv2, or one-game ZIP. SwanSong validates it and keeps a private library copy."
+                    )
+                    Divider().padding(.leading, 46)
+                    guideStep(
+                        2,
+                        title: "Press Play",
+                        detail: "SwanSong fits horizontal and vertical games automatically. Arrows and WASD control the two direction pads; Z is B, X is A, and Return is Start."
+                    )
+                    Divider().padding(.leading, 46)
+                    guideStep(
+                        3,
+                        title: "Save or rewind whenever you like",
+                        detail: "Time Ribbon rewinds the last 30 seconds. The visual Save-State Timeline keeps the moments you choose without turning them into file-management chores."
+                    )
+                }
+                .padding(6)
+            }
+
+            if let onOpenGame {
+                Button {
+                    onOpenGame()
+                } label: {
+                    Label("Open Your First Game…", systemImage: "play.fill")
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+            }
+
+            Label(
+                "Open this guide anytime from the Help menu.",
+                systemImage: "questionmark.circle"
+            )
+            .font(.callout)
+            .foregroundStyle(.secondary)
+        }
+        .accessibilityIdentifier("swan-song-start-here")
+    }
+
+    private func guideStep(
+        _ number: Int,
+        title: String,
+        detail: String
+    ) -> some View {
+        HStack(alignment: .top, spacing: 14) {
+            Text("\(number)")
+                .font(.headline.monospacedDigit())
+                .foregroundStyle(.white)
+                .frame(width: 30, height: 30)
+                .background(SwanTheme.accent, in: Circle())
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.headline)
+                Text(detail)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(.vertical, 12)
+    }
+
+    private func trustPill(_ title: String, symbol: String) -> some View {
+        Label(title, systemImage: symbol)
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(.secondary)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(Color.primary.opacity(0.06), in: Capsule())
+    }
+
+    private var whatsNew: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("SwanSong \(SwanSongReleaseStory.series)")
+                    .font(.callout.weight(.semibold))
+                    .foregroundStyle(SwanTheme.accent)
+                Text("Bring the Translation Home")
+                    .font(.largeTitle.bold())
+                Text("A trusted translation release can now have its own place in your library—without changing the original.")
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+            }
+
+            releaseSpotlight(
+                title: "Verified from end to end",
+                detail: "Choose a release package and the exact original it asks for. SwanSong verifies the release, patch, source revision, finished game, cartridge checksum, and save contract before it adds anything.",
+                symbol: "character.book.closed.fill",
+                tint: SwanTheme.violet
+            )
+            releaseSpotlight(
+                title: "The original stays original",
+                detail: "Patching happens in memory, so the original game never changes. The translated version has separate saves and states of its own.",
+                symbol: "checkmark.shield.fill",
+                tint: .green
+            )
+            releaseSpotlight(
+                title: "A real home in your library",
+                detail: "The translated game gets its own artwork, favorite, and play history. If its library copy is damaged, SwanSong can rebuild it without losing your place.",
+                symbol: "books.vertical.fill",
+                tint: SwanTheme.cyan
+            )
+
+            GroupBox("Also polished in 0.9") {
+                VStack(alignment: .leading, spacing: 9) {
+                    Label(
+                        "Seven approved Homebrew title screens have fresh native captures.",
+                        systemImage: "photo.on.rectangle.angled"
+                    )
+                    Label(
+                        "Translation Shelf is source-free, network-silent, and fails closed on mismatches.",
+                        systemImage: "network.slash"
+                    )
+                    Label(
+                        "The everyday library stays focused on choosing a game and playing it.",
+                        systemImage: "play.rectangle"
+                    )
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(6)
+            }
+
+            HStack(spacing: 12) {
+                if let onNavigate {
+                    Button {
+                        onNavigate(.translationPatches)
+                    } label: {
+                        Label("Open Translation Shelf", systemImage: "character.book.closed.fill")
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                Link(destination: SwanSongLinks.currentReleaseNotes) {
+                    Label("Read Complete Release Notes", systemImage: "safari")
+                }
+                .buttonStyle(.bordered)
+            }
+        }
+        .accessibilityIdentifier("swan-song-whats-new")
+    }
+
+    private func releaseSpotlight(
+        title: String,
+        detail: String,
+        symbol: String,
+        tint: Color
+    ) -> some View {
+        HStack(alignment: .top, spacing: 15) {
+            Image(systemName: symbol)
+                .font(.title2)
+                .foregroundStyle(tint)
+                .frame(width: 34, height: 34)
+                .background(tint.opacity(0.1), in: Circle())
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.headline)
+                Text(detail)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
     private var overview: some View {
         VStack(alignment: .leading, spacing: 22) {
             HStack(spacing: 18) {
@@ -247,7 +593,7 @@ struct LegalSupportView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("SwanSong")
                         .font(.system(size: 30, weight: .bold, design: .rounded))
-                    Text("Play, rewind, translate, and build WonderSwan games—all on your Mac.")
+                    Text(SwanSongProductCopy.playerSummary)
                         .font(.title3)
                         .foregroundStyle(.secondary)
                 }
@@ -264,6 +610,20 @@ struct LegalSupportView: View {
                 catalogOverviewText
             )
             .foregroundStyle(.secondary)
+
+            GroupBox("Why SwanSong Exists") {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(
+                        "The WonderSwan was opinionated: two direction clusters, games that turn sideways, wonderful homebrew, and a small but determined translation scene. SwanSong is built to preserve that character instead of sanding it into a generic emulator."
+                    )
+                    Text(
+                        "Its promise is simple: everyday play should feel effortless, deeper tools should be there when invited, and confidence should come from inspectable evidence rather than a cheerful badge."
+                    )
+                    .foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(6)
+            }
 
             HStack(spacing: 12) {
                 Link(destination: SwanSongLinks.project) {
@@ -882,6 +1242,13 @@ enum SwanSongLinks {
     static let project = URL(string: "https://github.com/RegionallyFamous/SwanSong-Desktop")!
     static let releases = URL(
         string: "https://github.com/RegionallyFamous/SwanSong-Desktop/releases")!
+    static let currentReleaseNotes = URL(
+        string: "https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/\(SwanSongReleaseStory.fullVersion).md")!
     static let newIssue = URL(
         string: "https://github.com/RegionallyFamous/SwanSong-Desktop/issues/new/choose")!
+}
+
+enum SwanSongReleaseStory {
+    static let series = "0.9"
+    static let fullVersion = "0.9.1"
 }

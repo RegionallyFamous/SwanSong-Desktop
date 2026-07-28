@@ -20,11 +20,9 @@ tour. Everything else can wait until curiosity wins.
 - **Trust but verify:** inspect the privacy, source, build, signing,
   notarization, and release contracts behind the public app.
 
-The stable public download is **SwanSong 0.9.0**. It adds the local Translation
-Shelf and a Developer-only Fun Tester while
-retaining the complete SDK 0.5 Studio, Story Forge quality workbenches,
-whole-game Translation Surface Suites, the visual signed Homebrew Catalog,
-Cartridge Tools, isolated game engine, Safe Mode, and privacy-safe support
+The stable public download is **SwanSong 0.9.1**. It includes the private
+library and player, Time Ribbon rewind, visual save states, the signed Homebrew
+Catalog, Translation Shelf, native updates, Safe Mode, and privacy-safe support
 tools. Versioned release notes remain authoritative for each build.
 
 ## How the pieces fit
@@ -203,7 +201,7 @@ previous-version update tests. The complete operator procedure is in the
 - [Privacy](../PRIVACY.md)
 - [Support](../SUPPORT.md)
 - [Source and fixture provenance](../SOURCE_PROVENANCE.md)
-- [0.9.0 release notes](releases/0.9.0.md)
+- [0.9.1 release notes](releases/0.9.1.md)
 - [0.8.1 release notes](releases/0.8.1.md)
 - [0.8.0 release notes](releases/0.8.0.md)
 - [0.7.2 release notes](releases/0.7.2.md)

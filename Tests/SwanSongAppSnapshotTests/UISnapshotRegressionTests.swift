@@ -451,6 +451,56 @@ final class UISnapshotRegressionTests: XCTestCase {
         XCTAssertLessThan(signature.yellowPlaceholderFraction, 0.08)
     }
 
+    func testGuideAndReleaseStoryRenderAtMinimumWindowSize() throws {
+        let metadata = SwanSongMetadata(
+            version: "0.9.0",
+            build: "18",
+            bundleIdentifier: "com.regionallyfamous.swansong",
+            aresRevision: String(repeating: "a", count: 40)
+        )
+        let size = CGSize(width: 820, height: 640)
+        let output = try snapshotOutputDirectory()
+            .appendingPathComponent("onboarding", isDirectory: true)
+        try resetTemporaryDirectory(output)
+
+        for (section, name) in [
+            (LegalSupportSection.guide, "start-here"),
+            (.whatsNew, "whats-new"),
+        ] {
+            let rendered = try render(
+                AnyView(
+                    LegalSupportView(
+                        fixedSection: section,
+                        usesDeterministicSidebarForOffscreenSnapshots: true,
+                        metadata: metadata,
+                        onOpenGame: {},
+                        onNavigate: { _ in }
+                    )
+                ),
+                size: size,
+                scheme: .dark
+            )
+            try rendered.png.write(
+                to: output.appendingPathComponent("\(name)-dark.png"),
+                options: [.atomic]
+            )
+            let signature = imageSignature(
+                name: name,
+                scheme: .dark,
+                bitmap: rendered.bitmap,
+                png: rendered.png
+            )
+
+            XCTAssertEqual(signature.width, Int(size.width), name)
+            XCTAssertEqual(signature.height, Int(size.height), name)
+            XCTAssertGreaterThan(signature.pngByteCount, 8_000, name)
+            XCTAssertGreaterThan(signature.sampledColorCount, 8, name)
+            XCTAssertGreaterThan(signature.opaqueSampleFraction, 0.98, name)
+            XCTAssertLessThan(signature.centralDominantColorFraction, 0.96, name)
+            XCTAssertLessThan(signature.yellowPlaceholderFraction, 0.08, name)
+        }
+    }
+
     func testBundledSupportMarkdownRendersAsStructuredDocument() throws {
         let repositoryRoot = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()

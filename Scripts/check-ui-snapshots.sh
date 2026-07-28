@@ -34,6 +34,7 @@ fi
 mkdir -p "$OUTPUT_DIR" "$POLISH_OUTPUT_DIR" "$SWIFT_SCRATCH_DIR/clang-cache" "$SWIFT_SCRATCH_DIR/module-cache"
 rm -f "$OUTPUT_DIR"/*.png "$OUTPUT_DIR/manifest.json"
 rm -rf "$OUTPUT_DIR/homebrew"
+rm -rf "$OUTPUT_DIR/onboarding"
 rm -f "$POLISH_OUTPUT_DIR"/*.png "$POLISH_OUTPUT_DIR/manifest.json"
 export SWAN_SONG_UI_SNAPSHOT_DIR="$OUTPUT_DIR"
 CLANG_MODULE_CACHE_PATH=${CLANG_MODULE_CACHE_PATH:-"$SWIFT_SCRATCH_DIR/clang-cache"}
@@ -57,6 +58,12 @@ if [ "$homebrew_snapshot_count" -ne 14 ]; then
   echo "expected 14 Homebrew UI snapshots, found $homebrew_snapshot_count in $OUTPUT_DIR/homebrew" >&2
   exit 1
 fi
+onboarding_snapshot_count=$(find "$OUTPUT_DIR/onboarding" -maxdepth 1 \
+  -type f -name '*.png' 2>/dev/null | wc -l | tr -d ' ')
+if [ "$onboarding_snapshot_count" -ne 2 ]; then
+  echo "expected 2 onboarding snapshots, found $onboarding_snapshot_count in $OUTPUT_DIR/onboarding" >&2
+  exit 1
+fi
 if [ ! -s "$OUTPUT_DIR/manifest.json" ]; then
   echo "UI snapshot manifest is missing from $OUTPUT_DIR" >&2
   exit 1
@@ -75,4 +82,4 @@ fi
 if [ "$UPDATE_BASELINES" -eq 1 ]; then
   echo "UPDATED reviewed perceptual baselines for 90 baseline-tracked UI snapshots"
 fi
-echo "PASS 104 offscreen Light/Dark compact/wide UI snapshots: 72 core + 14 Homebrew + 18 focused polish"
+echo "PASS 106 offscreen UI snapshots: 72 core + 14 Homebrew + 2 onboarding + 18 focused polish"

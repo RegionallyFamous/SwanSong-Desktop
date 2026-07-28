@@ -6,6 +6,29 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-07-28
+
+**A Better Welcome.** SwanSong 0.9.1 makes the first launch clearer, the
+everyday language friendlier, and help easier to find.
+
+### Added
+
+- Adds a one-time, privacy-forward first-run guide with a three-step path into
+  the library, player controls, Time Ribbon, and visual save states.
+- Adds a native What’s New story for SwanSong 0.9 and keeps both the guide and
+  release story available from the Help menu. Returning players see the
+  reviewed release story once after updating; Safe Mode, direct-open, and
+  automated launches are never interrupted.
+
+### Changed
+
+- Expands About SwanSong with the product’s reason for being: preserve the
+  WonderSwan’s unusual character, keep everyday play calm, and prefer
+  inspectable evidence to confidence theater.
+- Rewrites player-facing guidance across the library, Translation Shelf,
+  Time Ribbon, save-state timeline, Homebrew, Story Forge, and Settings with
+  clearer actions and more precise trust language.
+
 ## [0.9.0] - 2026-07-23
 
 **Bring the Translation Home.** SwanSong 0.9 turns a trusted, source-free
@@ -745,7 +768,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.1...HEAD
+[0.9.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.8.1...v0.9.0
 [0.8.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.7.2...v0.8.0

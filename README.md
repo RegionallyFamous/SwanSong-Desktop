@@ -16,7 +16,7 @@ a really nice place to play them.
 
 <p align="center">
   <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.9</strong></a>
-  · <a href="docs/releases/0.9.0.md">See what’s new</a>
+  · <a href="docs/releases/0.9.1.md">See what’s new</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -42,9 +42,6 @@ close without crowding the screen.
   two direction clusters, A, B, and Start.
 - **Move saves between setups.** Import and export SwanSong Pocket `.sav`
   files without turning your whole library inside out.
-- **Know what “works” means.** With Developer Tools enabled, SwanSong keeps
-  “picture appeared” separate from your play verdict instead of pretending one
-  frame proves an entire game.
 
 ## Open a game. That is the setup.
 
@@ -86,7 +83,7 @@ work, and produce one immutable final certificate.
 
 Take a WonderSwan project from New to Release in one native workspace. Build
 assets, run the game, inspect frames and audio, replay failures, and package
-only after the evidence is ready. SwanSong 0.8 carries the complete,
+only after the evidence is ready. SwanSong includes the complete,
 content-verified SwanSong SDK 0.5.0 toolset: Utility Apps, traced builds,
 scenarios, semantic outcomes, budget history, project migration, and a deeper
 release lane. Doctor clearly shows the few development tools that still need
@@ -149,9 +146,10 @@ source.
 
 ## New in SwanSong 0.9
 
-The current stable release is **0.9.0**. It adds Translation
-Shelf, a local path from a trusted source-free IPS release to a separately
-managed library game:
+The current stable release is **0.9.1**. It adds a calm first-run guide,
+friendlier player-facing language, and easier paths to Help and What’s New.
+It retains Translation Shelf, a local path from a trusted source-free IPS
+release to a separately managed library game:
 
 - verify the package, exact original revision, finished release hash,
   WonderSwan structure, cartridge checksum, and save contract;
@@ -160,16 +158,12 @@ managed library game:
 - adopt an existing exact finished build instead of duplicating it; and
 - rebuild a missing or changed managed copy without losing its library history.
 
-Homebrew also gains a Developer-only SwanSong Fun Tester for structured agent
-playtest requests. It remains hidden with the rest of the diagnostic confidence
-surfaces until **Show developer tools** is enabled.
-
 The 0.7 safety foundation remains: the engine runs in its own locked-down
 service, local automation authenticates its caller, Safe Mode can rescue a
 launch, Support Bundles exclude private material, and every release carries
 exact source, checksums, an SPDX SBOM, and attestations.
 
-Read the [0.9.0 release notes](docs/releases/0.9.0.md), use the
+Read the [0.9.1 release notes](docs/releases/0.9.1.md), use the
 [0.9 release checklist](docs/RELEASE_TESTING.md), or see the
 [changelog](CHANGELOG.md) for the complete history.
 
@@ -190,7 +184,7 @@ keeps the deeper guides out of your way until you need them:
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.9.0 release notes](docs/releases/0.9.0.md).
+[0.9.1 release notes](docs/releases/0.9.1.md).
 
 ## Free, open, and independent
 
