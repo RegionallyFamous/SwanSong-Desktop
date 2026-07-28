@@ -3,7 +3,7 @@
 Most problems have a quick fix. Make sure you have the newest SwanSong release,
 then start with the answers below. SwanSong requires macOS 14 or newer.
 
-The stable public download is 0.9.0. It includes the private library and
+The stable public download is 0.9.1. It includes the private library and
 player, Time Ribbon rewind, visual save states, the signed Homebrew Catalog,
 Translation Shelf, Safe Mode, and a privacy-safe Support Bundle.
 

@@ -1250,5 +1250,5 @@ enum SwanSongLinks {
 
 enum SwanSongReleaseStory {
     static let series = "0.9"
-    static let fullVersion = "0.9.0"
+    static let fullVersion = "0.9.1"
 }

@@ -13,7 +13,7 @@ homebrew, translations, Analogue Pocket, and physical cartridges.
 
 ## What is included in the public release?
 
-The signed stable download is SwanSong 0.9.0. It includes the player, private
+The signed stable download is SwanSong 0.9.1. It includes the player, private
 library, Time Ribbon, visual save states, the signed Homebrew Catalog,
 Translation Shelf, native updates, Safe Mode, and a privacy-safe Support
 Bundle. Optional Analogue Pocket and Cartridge Tools are available when you

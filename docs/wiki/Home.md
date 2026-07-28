@@ -86,15 +86,13 @@ checksummed public build.
 
 ## SwanSong 0.9
 
-The current stable release is **0.9.0**. It adds Translation
-Shelf, which verifies a trusted source-free IPS package and the exact
-player-supplied original, applies the patch in memory, and adds the verified
-result as a separate private library game. Time Ribbon, visual save states, the
-signed Homebrew shelf, isolated engine, Safe Mode, and privacy-safe Support
-Bundles remain intact.
+The current stable release is **0.9.1**. It adds a calm first-run guide,
+friendlier player-facing language, and easier paths to Help and What’s New.
+Translation Shelf, Time Ribbon, visual save states, the signed Homebrew shelf,
+isolated engine, Safe Mode, and privacy-safe Support Bundles remain intact.
 
 Read the
-[0.9.0 release notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.9.0.md),
+[0.9.1 release notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.9.1.md),
 use [[0.9 Release Testing]] for the tester checklist, and consult the repository
 [changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md)
 for the exact source and release history.

@@ -16,7 +16,7 @@ a really nice place to play them.
 
 <p align="center">
   <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.9</strong></a>
-  · <a href="docs/releases/0.9.0.md">See what’s new</a>
+  · <a href="docs/releases/0.9.1.md">See what’s new</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -146,9 +146,10 @@ source.
 
 ## New in SwanSong 0.9
 
-The current stable release is **0.9.0**. It adds Translation
-Shelf, a local path from a trusted source-free IPS release to a separately
-managed library game:
+The current stable release is **0.9.1**. It adds a calm first-run guide,
+friendlier player-facing language, and easier paths to Help and What’s New.
+It retains Translation Shelf, a local path from a trusted source-free IPS
+release to a separately managed library game:
 
 - verify the package, exact original revision, finished release hash,
   WonderSwan structure, cartridge checksum, and save contract;
@@ -162,7 +163,7 @@ service, local automation authenticates its caller, Safe Mode can rescue a
 launch, Support Bundles exclude private material, and every release carries
 exact source, checksums, an SPDX SBOM, and attestations.
 
-Read the [0.9.0 release notes](docs/releases/0.9.0.md), use the
+Read the [0.9.1 release notes](docs/releases/0.9.1.md), use the
 [0.9 release checklist](docs/RELEASE_TESTING.md), or see the
 [changelog](CHANGELOG.md) for the complete history.
 
@@ -183,7 +184,7 @@ keeps the deeper guides out of your way until you need them:
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.9.0 release notes](docs/releases/0.9.0.md).
+[0.9.1 release notes](docs/releases/0.9.1.md).
 
 ## Free, open, and independent
 
