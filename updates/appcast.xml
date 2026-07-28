@@ -6,6 +6,26 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.9.1</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.9.1</link>
+      <description sparkle:format="html">&lt;h2&gt;A clearer welcome to your WonderSwan library.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.9.1 adds a calm first-run guide and clearer language throughout the app.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Start in three steps.&lt;/strong&gt; Add a game, press Play, then save or rewind whenever you like.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Find help again.&lt;/strong&gt; Reopen Start Here and What’s New from the Help menu.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Know what will happen.&lt;/strong&gt; Rewind, save-state, translation, and recovery actions now explain their results more clearly.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep trust precise.&lt;/strong&gt; Translation Shelf distinguishes package verification from trust in its source.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;SwanSong 0.9.1 is the current stable release.&lt;/strong&gt; It is offered on the default update channel.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;SwanSong includes no games, translations, or original system firmware.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.9.1"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Tue, 28 Jul 2026 16:17:41 -0500</pubDate>
+      <sparkle:version>19</sparkle:version>
+      <sparkle:shortVersionString>0.9.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:phasedRolloutInterval>86400</sparkle:phasedRolloutInterval>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.9.1/SwanSong-0.9.1-macOS-universal.zip" length="37894804" type="application/octet-stream" sparkle:edSignature="2KbDvXVcSTPIers+mXz35rfhl/4DXr/n6xmW1zt1pm/dE3R0s1QaJxfE8YFPzH/tQOurm02hvBDiLJ/K7/ydAA==" />
+    </item>
+    <item>
       <title>SwanSong 0.9.0</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.9.0</link>
       <description sparkle:format="html">&lt;h2&gt;Bring a trusted translation home to your library.&lt;/h2&gt;
@@ -303,6 +323,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: RtFWZFIDR/BAh8YE1azX6ddHy4jr37vOomzF89f5CxJKTQzziG/mKv60juoXA09OEHtiJ582/6wApI1nu7R/CA==
-length: 32118
+edSignature: RwYoO4aumUhpeL3IcT8mK5XyLztTKTzcKyZohDjzrqVuMrMOdckNoXo4hHO2FqrbWu58hVeM7noP6pX9sLrGCA==
+length: 34093
 -->
