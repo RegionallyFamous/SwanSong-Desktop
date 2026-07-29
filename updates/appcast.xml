@@ -6,6 +6,26 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.9.2</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.9.2</link>
+      <description sparkle:format="html">&lt;h2&gt;A safer way to prepare your Analogue Pocket.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.9.2 makes Pocket card setup clearer, more private, and harder to get wrong.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Check the card first.&lt;/strong&gt; See its layout, installed Core version, game count, and anything that needs attention.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Take the right action.&lt;/strong&gt; SwanSong offers install, update, verify, or repair based on what it finds.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep support private.&lt;/strong&gt; Copy a useful card summary without names, paths, device identifiers, games, or save data.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Avoid the wrong release.&lt;/strong&gt; Unrelated downloads and automatic Core downgrades are blocked.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;SwanSong 0.9.2 is the current stable release.&lt;/strong&gt; It is offered on the default update channel.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;The separate SwanSong Core still requires its own authorized, hardware-qualified public release.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.9.2"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Wed, 29 Jul 2026 09:31:15 -0500</pubDate>
+      <sparkle:version>20</sparkle:version>
+      <sparkle:shortVersionString>0.9.2</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:phasedRolloutInterval>86400</sparkle:phasedRolloutInterval>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.9.2/SwanSong-0.9.2-macOS-universal.zip" length="37985392" type="application/octet-stream" sparkle:edSignature="zYYhfN5fyJB0Ju5yKM8QiZPAb1m0wDx3guxo7jGMEOLc3Z0LUiQ1+k2RKruZ33bWLtU9uJqVguM/uQJ0wXe3DQ==" />
+    </item>
+    <item>
       <title>SwanSong 0.9.1</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.9.1</link>
       <description sparkle:format="html">&lt;h2&gt;A clearer welcome to your WonderSwan library.&lt;/h2&gt;
@@ -323,6 +343,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: RwYoO4aumUhpeL3IcT8mK5XyLztTKTzcKyZohDjzrqVuMrMOdckNoXo4hHO2FqrbWu58hVeM7noP6pX9sLrGCA==
-length: 34093
+edSignature: bRkDFSk65NVGjfXNOnmYOAxqe4hLRn52tIO23J0kczv7R3FcDfHBMStvq3gcnZ2+gUQR25S06lMpVdW2ELpSDg==
+length: 36130
 -->
