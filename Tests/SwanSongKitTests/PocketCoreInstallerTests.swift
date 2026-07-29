@@ -11,7 +11,7 @@ struct PocketCoreInstallerTests {
         let release = try PocketCoreReleaseVerifier.verify(
             manifestData: fixture.manifest,
             checksumsData: fixture.checksums,
-            githubTag: "v1.2.3"
+            githubTag: "core-v1.2.3"
         )
 
         #expect(release.version == "1.2.3")
@@ -31,7 +31,20 @@ struct PocketCoreInstallerTests {
             try PocketCoreReleaseVerifier.verify(
                 manifestData: fixture.manifest,
                 checksumsData: fixture.checksums,
-                githubTag: "1.2.3"
+                githubTag: "core-v1.2.3"
+            )
+        }
+    }
+
+    @Test
+    func rejectsLegacyUnnamespacedCoreTag() throws {
+        let fixture = try releaseFixture(package: Data("official-pocket-package".utf8))
+
+        #expect(throws: PocketCoreInstallerError.self) {
+            try PocketCoreReleaseVerifier.verify(
+                manifestData: fixture.manifest,
+                checksumsData: fixture.checksums,
+                githubTag: "v1.2.3"
             )
         }
     }

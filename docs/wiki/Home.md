@@ -72,6 +72,8 @@ and Add to Library are choices you make.
 release onto a selected card without formatting it or touching games, saves,
 Memories, settings, Presets, or unrelated cores. The workflow remains locked
 until the separate SwanSong Core project publishes a verified stable release.
+It distinguishes install, update, verification, and repair, blocks automatic
+downgrades, and offers a privacy-safe card check for support.
 
 [[Cartridge Lab]] shows how SwanSong can use a WonderSwan Color or SwanCrystal,
 Yokoi Boot, and a 3.3 V ExtFriend-compatible adapter to make verified cartridge

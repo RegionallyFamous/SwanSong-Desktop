@@ -85,13 +85,19 @@ Pocket SD Card…**. Then:
 
 1. Find the official SwanSong Core.
 2. Choose the mounted SD card itself.
-3. Review the exact card and version, then install.
+3. Review the exact card, installed version, available version, and proposed
+   action.
+4. Optionally choose **Check Card**. If you need help, copy its privacy-safe
+   summary.
+5. Install, update, verify or repair, or repair as offered.
 
 Use an exFAT or FAT32 card and back it up first. SwanSong works with blank and
 existing Pocket cards. It does not format the card or remove games, saves,
 settings, Memories, Presets, or other cores. It checks the available space,
-verifies the files after writing them, and rolls back if the install cannot be
-confirmed. Eject the card in Finder before removing it.
+blocks automatic downgrades, verifies the files after writing them, and rolls
+back if the install cannot be confirmed. The card-check summary omits card
+names, paths, device identifiers, game names, and save data. Eject the card in
+Finder before removing it.
 
 ### How do I read my own cartridge?
 

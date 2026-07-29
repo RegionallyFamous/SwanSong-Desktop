@@ -19,6 +19,46 @@ struct AvailablePocketCoreRelease: Equatable, Sendable {
     let releasePageURL: URL
 }
 
+struct PocketCoreVersion: Comparable, Equatable, Hashable, Sendable {
+    let major: Int
+    let minor: Int
+    let patch: Int
+
+    init?(_ value: String) {
+        let components = value.split(separator: ".", omittingEmptySubsequences: false)
+        guard components.count == 3 else { return nil }
+        let numbers = components.compactMap { component -> Int? in
+            guard !component.isEmpty,
+                  component.allSatisfy(\.isNumber),
+                  component == "0" || component.first != "0" else {
+                return nil
+            }
+            return Int(component)
+        }
+        guard numbers.count == 3 else { return nil }
+        major = numbers[0]
+        minor = numbers[1]
+        patch = numbers[2]
+    }
+
+    init?(releaseTag: String) {
+        let prefix = "core-v"
+        guard releaseTag.hasPrefix(prefix) else { return nil }
+        self.init(String(releaseTag.dropFirst(prefix.count)))
+        guard releaseTag == "core-v\(description)" else { return nil }
+    }
+
+    var description: String {
+        "\(major).\(minor).\(patch)"
+    }
+
+    static func < (lhs: PocketCoreVersion, rhs: PocketCoreVersion) -> Bool {
+        if lhs.major != rhs.major { return lhs.major < rhs.major }
+        if lhs.minor != rhs.minor { return lhs.minor < rhs.minor }
+        return lhs.patch < rhs.patch
+    }
+}
+
 enum PocketCoreReleaseServiceError: LocalizedError {
     case invalidResponse(String)
     case missingAsset(String)
@@ -301,8 +341,8 @@ private final class PocketCoreDownloadDelegate: NSObject, URLSessionDataDelegate
 }
 
 struct PocketCoreReleaseService: Sendable {
-    static let latestReleaseURL = URL(
-        string: "https://api.github.com/repos/RegionallyFamous/swansong-core/releases/latest"
+    static let releaseListURL = URL(
+        string: "https://api.github.com/repos/RegionallyFamous/swansong-core/releases?per_page=30"
     )!
     private static let maximumReleaseMetadataBytes = 2 * 1_024 * 1_024
     private static let maximumPackageBytes = 32 * 1_024 * 1_024
@@ -368,7 +408,7 @@ struct PocketCoreReleaseService: Sendable {
     }
 
     func latestRelease() async throws -> AvailablePocketCoreRelease? {
-        var request = URLRequest(url: Self.latestReleaseURL)
+        var request = URLRequest(url: Self.releaseListURL)
         request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
         request.setValue("identity", forHTTPHeaderField: "Accept-Encoding")
         request.setValue("SwanSong-Desktop", forHTTPHeaderField: "User-Agent")
@@ -384,20 +424,43 @@ struct PocketCoreReleaseService: Sendable {
         }
         let data = response.data
 
-        let release: GitHubRelease
+        let releases: [GitHubRelease]
         do {
-            release = try JSONDecoder().decode(GitHubRelease.self, from: data)
+            releases = try JSONDecoder().decode([GitHubRelease].self, from: data)
         } catch {
             throw PocketCoreReleaseServiceError.invalidResponse(
                 "The release metadata is malformed."
             )
         }
-        guard !release.draft, !release.prerelease else {
+
+        var candidates: [(release: GitHubRelease, version: PocketCoreVersion)] = []
+        for release in releases where !release.draft && !release.prerelease {
+            if release.tagName.hasPrefix("core-v"),
+               PocketCoreVersion(releaseTag: release.tagName) == nil {
+                throw PocketCoreReleaseServiceError.invalidResponse(
+                    "An official Core release has a malformed version tag."
+                )
+            }
+            guard let version = PocketCoreVersion(releaseTag: release.tagName) else {
+                continue
+            }
+            candidates.append((release, version))
+        }
+        guard !candidates.isEmpty else {
             return nil
         }
+        guard Set(candidates.map(\.version)).count == candidates.count else {
+            throw PocketCoreReleaseServiceError.invalidResponse(
+                "The repository contains duplicate official Core release versions."
+            )
+        }
+        guard let selected = candidates.max(by: { $0.version < $1.version }) else {
+            return nil
+        }
+        let release = selected.release
         guard release.immutable else {
             throw PocketCoreReleaseServiceError.invalidResponse(
-                "The stable release is not protected as an immutable GitHub Release."
+                "The latest official Core release is not protected as an immutable GitHub Release."
             )
         }
         try validateReleasePageURL(release.htmlURL, releaseTag: release.tagName)
@@ -821,6 +884,94 @@ struct PocketCardSelection: Equatable, Sendable {
     let availableByteCount: Int64?
     let hasPocketLayout: Bool
     let installedCoreVersion: String?
+    let coreInstallationNeedsRepair: Bool
+}
+
+enum PocketCoreInstallAction: Equatable, Sendable {
+    case unavailable
+    case install(version: String)
+    case update(installed: String, available: String)
+    case verifyOrRepair(version: String)
+    case repair(version: String)
+    case blockedNewer(installed: String, available: String)
+    case blockedUnrecognized(installed: String)
+
+    var canProceed: Bool {
+        switch self {
+        case .install, .update, .verifyOrRepair, .repair:
+            true
+        case .unavailable, .blockedNewer, .blockedUnrecognized:
+            false
+        }
+    }
+}
+
+struct PocketCoreInstallationInspection: Equatable, Sendable {
+    let version: String?
+    let needsRepair: Bool
+}
+
+enum PocketCardHealthSeverity: Int, Comparable, Sendable {
+    case ready
+    case attention
+    case problem
+
+    static func < (
+        lhs: PocketCardHealthSeverity,
+        rhs: PocketCardHealthSeverity
+    ) -> Bool {
+        lhs.rawValue < rhs.rawValue
+    }
+}
+
+struct PocketCardHealthFinding: Equatable, Sendable {
+    let severity: PocketCardHealthSeverity
+    let message: String
+}
+
+struct PocketCardHealthReport: Equatable, Sendable {
+    let checkedAt: Date
+    let hasPocketLayout: Bool
+    let formatDescription: String
+    let availableByteCount: Int64?
+    let coreVersion: String?
+    let gameCount: Int
+    let findings: [PocketCardHealthFinding]
+
+    var severity: PocketCardHealthSeverity {
+        findings.map(\.severity).max() ?? .ready
+    }
+
+    var supportSummary: String {
+        let status: String
+        switch severity {
+        case .ready: status = "Ready"
+        case .attention: status = "Needs attention"
+        case .problem: status = "Problem found"
+        }
+        var lines = [
+            "SwanSong Pocket Card Check",
+            "Status: \(status)",
+            "Pocket layout: \(hasPocketLayout ? "detected" : "blank card")",
+            "File system: \(formatDescription)",
+            "SwanSong Core: \(coreVersion ?? "not detected")",
+            "WonderSwan games found: \(gameCount)",
+        ]
+        if let availableByteCount {
+            lines.append(
+                "Free space: "
+                    + ByteCountFormatter.string(
+                        fromByteCount: availableByteCount,
+                        countStyle: .file
+                    )
+            )
+        }
+        lines.append(contentsOf: findings.map { "- \($0.message)" })
+        lines.append(
+            "Privacy: no card name, path, device identifier, game names, or save data included."
+        )
+        return lines.joined(separator: "\n")
+    }
 }
 
 enum PocketCardInspector {
@@ -897,6 +1048,7 @@ enum PocketCardInspector {
         } else {
             mountIdentity = try PocketVolumeInspection.mountIdentity(at: root)
         }
+        let installation = coreInstallation(on: root)
         return PocketCardSelection(
             rootURL: root,
             volumeName: values.volumeName ?? root.lastPathComponent,
@@ -904,11 +1056,31 @@ enum PocketCardInspector {
             formatDescription: formatDescription,
             availableByteCount: try PocketVolumeInspection.availableByteCount(at: root),
             hasPocketLayout: hasPocketLayout,
-            installedCoreVersion: installedVersion(on: root)
+            installedCoreVersion: installation.version,
+            coreInstallationNeedsRepair: installation.needsRepair
         )
     }
 
-    private static func installedVersion(on root: URL) -> String? {
+    static func coreInstallation(on root: URL) -> PocketCoreInstallationInspection {
+        let coreRoot = root.appendingPathComponent(
+            "Cores/RegionallyFamous.SwanSong",
+            isDirectory: true
+        )
+        var isDirectory: ObjCBool = false
+        guard FileManager.default.fileExists(
+            atPath: coreRoot.path,
+            isDirectory: &isDirectory
+        ) else {
+            return PocketCoreInstallationInspection(version: nil, needsRepair: false)
+        }
+        guard isDirectory.boolValue,
+              let rootValues = try? coreRoot.resourceValues(
+                forKeys: [.isDirectoryKey, .isSymbolicLinkKey]
+              ),
+              rootValues.isDirectory == true,
+              rootValues.isSymbolicLink != true else {
+            return PocketCoreInstallationInspection(version: nil, needsRepair: true)
+        }
         let coreJSON = root.appendingPathComponent(
             "Cores/RegionallyFamous.SwanSong/core.json"
         )
@@ -922,8 +1094,246 @@ enum PocketCardInspector {
               let data = try? Data(contentsOf: coreJSON),
               let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let core = object["core"] as? [String: Any],
-              let metadata = core["metadata"] as? [String: Any] else { return nil }
-        return metadata["version"] as? String
+              let metadata = core["metadata"] as? [String: Any],
+              let version = metadata["version"] as? String,
+              !version.isEmpty else {
+            return PocketCoreInstallationInspection(version: nil, needsRepair: true)
+        }
+        return PocketCoreInstallationInspection(version: version, needsRepair: false)
+    }
+}
+
+enum PocketCardHealthChecker {
+    private static let requiredCoreFiles = [
+        "audio.json", "core.json", "data.json", "icon.bin", "info.txt",
+        "input.json", "interact.json", "variants.json", "video.json",
+    ]
+
+    static func check(_ card: PocketCardSelection) -> PocketCardHealthReport {
+        let root = card.rootURL
+        var findings: [PocketCardHealthFinding] = []
+
+        if !card.hasPocketLayout {
+            findings.append(
+                PocketCardHealthFinding(
+                    severity: .attention,
+                    message: "This is a blank card; Pocket folders will be created during installation."
+                )
+            )
+        }
+        if card.coreInstallationNeedsRepair {
+            findings.append(
+                PocketCardHealthFinding(
+                    severity: .problem,
+                    message: "The existing SwanSong Core installation is incomplete or unreadable."
+                )
+            )
+        } else if card.installedCoreVersion == nil {
+            findings.append(
+                PocketCardHealthFinding(
+                    severity: .attention,
+                    message: "SwanSong Core is not installed yet."
+                )
+            )
+        } else {
+            inspectInstalledCore(on: root, findings: &findings)
+        }
+
+        let oldCore = root.appendingPathComponent(
+            "Cores/agg23.WonderSwan",
+            isDirectory: true
+        )
+        if ordinaryDirectoryExists(at: oldCore) {
+            findings.append(
+                PocketCardHealthFinding(
+                    severity: .attention,
+                    message: "An older WonderSwan core is also installed; keep it only if you still use it."
+                )
+            )
+        }
+
+        let oldSaves = root.appendingPathComponent(
+            "Saves/wonderswan/common",
+            isDirectory: true
+        )
+        if ordinaryDirectoryExists(at: oldSaves) {
+            findings.append(
+                PocketCardHealthFinding(
+                    severity: .attention,
+                    message: "A legacy WonderSwan save folder is present. Back up saves before reorganizing them."
+                )
+            )
+        }
+
+        let gameInventory = countGames(
+            in: root.appendingPathComponent(
+                "Assets/wonderswan/common",
+                isDirectory: true
+            )
+        )
+        if gameInventory.reachedSafetyLimit {
+            findings.append(
+                PocketCardHealthFinding(
+                    severity: .attention,
+                    message: "The game count stopped at its safety limit; the card may contain additional games."
+                )
+            )
+        }
+        if gameInventory.count == 0 {
+            findings.append(
+                PocketCardHealthFinding(
+                    severity: .attention,
+                    message: "No .ws or .wsc game files were found in the standard WonderSwan folder."
+                )
+            )
+        }
+        if findings.isEmpty {
+            findings.append(
+                PocketCardHealthFinding(
+                    severity: .ready,
+                    message: "The card layout and SwanSong Core files look ready."
+                )
+            )
+        }
+        return PocketCardHealthReport(
+            checkedAt: Date(),
+            hasPocketLayout: card.hasPocketLayout,
+            formatDescription: card.formatDescription,
+            availableByteCount: card.availableByteCount,
+            coreVersion: card.installedCoreVersion,
+            gameCount: gameInventory.count,
+            findings: findings
+        )
+    }
+
+    private static func inspectInstalledCore(
+        on root: URL,
+        findings: inout [PocketCardHealthFinding]
+    ) {
+        let coreRoot = root.appendingPathComponent(
+            "Cores/RegionallyFamous.SwanSong",
+            isDirectory: true
+        )
+        let missing = requiredCoreFiles.filter {
+            !ordinaryFileExists(at: coreRoot.appendingPathComponent($0))
+        }
+        if !missing.isEmpty {
+            findings.append(
+                PocketCardHealthFinding(
+                    severity: .problem,
+                    message: "The SwanSong Core folder is missing \(missing.count) required file\(missing.count == 1 ? "" : "s")."
+                )
+            )
+        }
+        let sharedFiles = [
+            root.appendingPathComponent("Platforms/wonderswan.json"),
+            root.appendingPathComponent("Platforms/_images/wonderswan.bin"),
+        ]
+        if sharedFiles.contains(where: { !ordinaryFileExists(at: $0) }) {
+            findings.append(
+                PocketCardHealthFinding(
+                    severity: .problem,
+                    message: "The shared WonderSwan platform definition or artwork is missing."
+                )
+            )
+        }
+        let coreJSON = coreRoot.appendingPathComponent("core.json")
+        guard let values = try? coreJSON.resourceValues(
+            forKeys: [.isRegularFileKey, .isSymbolicLinkKey, .fileSizeKey]
+        ),
+        values.isRegularFile == true,
+        values.isSymbolicLink != true,
+        let size = values.fileSize,
+        size <= 256 * 1_024,
+        let data = try? Data(contentsOf: coreJSON),
+        let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+        let core = object["core"] as? [String: Any],
+        let framework = core["framework"] as? [String: Any],
+        let bitstreams = core["cores"] as? [[String: Any]],
+        let bitstream = bitstreams.first?["filename"] as? String,
+        let chip32 = framework["chip32_vm"] as? String else {
+            return
+        }
+        let runtimeFiles = [bitstream, chip32]
+        let missingRuntimeFiles = runtimeFiles.filter {
+            !ordinaryFileExists(at: coreRoot.appendingPathComponent($0))
+        }
+        if !missingRuntimeFiles.isEmpty {
+            findings.append(
+                PocketCardHealthFinding(
+                    severity: .problem,
+                    message: "The SwanSong Core runtime is incomplete and should be repaired."
+                )
+            )
+        }
+    }
+
+    private static func countGames(
+        in directory: URL
+    ) -> (count: Int, reachedSafetyLimit: Bool) {
+        guard ordinaryDirectoryExists(at: directory) else {
+            return (0, false)
+        }
+        let maximumEntries = 20_000
+        let maximumDepth = 16
+        var pending: [(url: URL, depth: Int)] = [(directory, 0)]
+        var inspectedEntryCount = 0
+        var gameCount = 0
+
+        while let next = pending.popLast() {
+            guard let entries = try? FileManager.default.contentsOfDirectory(
+                at: next.url,
+                includingPropertiesForKeys: [
+                    .isDirectoryKey, .isRegularFileKey, .isSymbolicLinkKey,
+                ],
+                options: [.skipsHiddenFiles]
+            ) else {
+                continue
+            }
+            for entry in entries {
+                inspectedEntryCount += 1
+                guard inspectedEntryCount <= maximumEntries else {
+                    return (gameCount, true)
+                }
+                guard let values = try? entry.resourceValues(
+                    forKeys: [
+                        .isDirectoryKey, .isRegularFileKey, .isSymbolicLinkKey,
+                    ]
+                ),
+                values.isSymbolicLink != true else {
+                    continue
+                }
+                if values.isDirectory == true {
+                    if next.depth < maximumDepth {
+                        pending.append((entry, next.depth + 1))
+                    }
+                    continue
+                }
+                let ext = entry.pathExtension.lowercased()
+                if values.isRegularFile == true && (ext == "ws" || ext == "wsc") {
+                    gameCount += 1
+                }
+            }
+        }
+        return (gameCount, false)
+    }
+
+    private static func ordinaryDirectoryExists(at url: URL) -> Bool {
+        guard let values = try? url.resourceValues(
+            forKeys: [.isDirectoryKey, .isSymbolicLinkKey]
+        ) else {
+            return false
+        }
+        return values.isDirectory == true && values.isSymbolicLink != true
+    }
+
+    private static func ordinaryFileExists(at url: URL) -> Bool {
+        guard let values = try? url.resourceValues(
+            forKeys: [.isRegularFileKey, .isSymbolicLinkKey]
+        ) else {
+            return false
+        }
+        return values.isRegularFile == true && values.isSymbolicLink != true
     }
 }
 
@@ -933,10 +1343,13 @@ final class PocketCoreSetupModel {
     var release: AvailablePocketCoreRelease?
     var card: PocketCardSelection?
     var isChecking = false
+    var isCheckingCard = false
     var isPreparing = false
     var noReleaseIsPublished = false
     var errorMessage: String?
     var result: PocketCoreInstallResult?
+    var healthReport: PocketCardHealthReport?
+    var supportSummaryWasCopied = false
 
     private let service: PocketCoreReleaseService
 
@@ -945,7 +1358,38 @@ final class PocketCoreSetupModel {
     }
 
     var canPrepare: Bool {
-        release != nil && card != nil && !isChecking && !isPreparing
+        installAction.canProceed && !isChecking && !isCheckingCard && !isPreparing
+    }
+
+    var installAction: PocketCoreInstallAction {
+        guard let release, let card else { return .unavailable }
+        return Self.installAction(release: release, card: card)
+    }
+
+    private static func installAction(
+        release: AvailablePocketCoreRelease,
+        card: PocketCardSelection
+    ) -> PocketCoreInstallAction {
+        let available = release.metadata.version
+        if card.coreInstallationNeedsRepair {
+            return .repair(version: available)
+        }
+        guard let installed = card.installedCoreVersion else {
+            return .install(version: available)
+        }
+        guard let installedVersion = PocketCoreVersion(installed) else {
+            return .blockedUnrecognized(installed: installed)
+        }
+        guard let availableVersion = PocketCoreVersion(available) else {
+            return .unavailable
+        }
+        if installedVersion < availableVersion {
+            return .update(installed: installed, available: available)
+        }
+        if installedVersion == availableVersion {
+            return .verifyOrRepair(version: available)
+        }
+        return .blockedNewer(installed: installed, available: available)
     }
 
     func checkForRelease() {
@@ -967,7 +1411,7 @@ final class PocketCoreSetupModel {
     }
 
     func chooseCard() {
-        guard !isPreparing else { return }
+        guard !isPreparing, !isCheckingCard else { return }
         let panel = NSOpenPanel()
         panel.title = "Choose the Analogue Pocket SD Card"
         panel.message = "Choose the mounted card itself. SwanSong merges only verified core files and does not erase games, saves, settings, or other cores."
@@ -983,6 +1427,8 @@ final class PocketCoreSetupModel {
             card = try PocketCardInspector.inspect(url)
             errorMessage = nil
             result = nil
+            healthReport = nil
+            supportSummaryWasCopied = false
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -998,9 +1444,11 @@ final class PocketCoreSetupModel {
             do {
                 let currentCard = try PocketCardInspector.inspect(card.rootURL)
                 try requireSameCard(card, currentCard)
+                try requireInstallAllowed(release: release, card: currentCard)
                 let package = try await service.downloadPackage(release)
                 let readyCard = try PocketCardInspector.inspect(card.rootURL)
                 try requireSameCard(currentCard, readyCard)
+                try requireInstallAllowed(release: release, card: readyCard)
                 let destination = readyCard.rootURL
                 result = try await Task.detached(priority: .userInitiated) {
                     try PocketCoreCardPreparer().apply(
@@ -1009,10 +1457,37 @@ final class PocketCoreSetupModel {
                     )
                 }.value
                 self.card = try? PocketCardInspector.inspect(destination)
+                if let updatedCard = self.card {
+                    healthReport = await Task.detached(priority: .utility) {
+                        PocketCardHealthChecker.check(updatedCard)
+                    }.value
+                }
             } catch {
                 errorMessage = error.localizedDescription
             }
         }
+    }
+
+    func checkCardHealth() {
+        guard let card, !isPreparing, !isCheckingCard else { return }
+        isCheckingCard = true
+        supportSummaryWasCopied = false
+        Task {
+            defer { isCheckingCard = false }
+            healthReport = await Task.detached(priority: .utility) {
+                PocketCardHealthChecker.check(card)
+            }.value
+        }
+    }
+
+    func copySupportSummary() {
+        guard let healthReport else { return }
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(
+            healthReport.supportSummary,
+            forType: .string
+        )
+        supportSummaryWasCopied = true
     }
 
     private func requireSameCard(
@@ -1024,6 +1499,28 @@ final class PocketCoreSetupModel {
               observed.rootURL == expected.rootURL else {
             throw PocketCoreInstallerError.invalidDestination(
                 "The mounted volume changed after it was selected. Choose the card again."
+            )
+        }
+    }
+
+    private func requireInstallAllowed(
+        release: AvailablePocketCoreRelease,
+        card: PocketCardSelection
+    ) throws {
+        switch Self.installAction(release: release, card: card) {
+        case .install, .update, .verifyOrRepair, .repair:
+            return
+        case let .blockedNewer(installed, available):
+            throw PocketCoreInstallerError.invalidDestination(
+                "This card changed and now has SwanSong Core \(installed), which is newer than official version \(available). Automatic downgrades are blocked."
+            )
+        case let .blockedUnrecognized(installed):
+            throw PocketCoreInstallerError.invalidDestination(
+                "This card changed and now has development or unrecognized SwanSong Core \(installed). Choose the card again after reviewing it."
+            )
+        case .unavailable:
+            throw PocketCoreInstallerError.invalidDestination(
+                "The Core version on this card cannot be safely compared with the official release."
             )
         }
     }
@@ -1055,15 +1552,15 @@ struct PocketCoreSetupView: View {
         .navigationTitle("Analogue Pocket")
         .accessibilityIdentifier(PocketCoreSetupAccessibility.page)
         .alert(
-            "Install on \(setup.card?.volumeName ?? "SD Card")?",
+            confirmationTitle,
             isPresented: $showsPrepareConfirmation
         ) {
             Button("Cancel", role: .cancel) {}
-            Button("Install SwanSong Core") {
+            Button(confirmationButtonTitle) {
                 setup.prepareCard()
             }
         } message: {
-            Text("SwanSong will install verified Core \(setup.release?.metadata.version ?? "") on \(setup.card?.rootURL.path ?? "the selected card"). Your games, saves, settings, and other cores stay in place. Back up the card first.")
+            Text(confirmationMessage)
         }
     }
 
@@ -1092,7 +1589,7 @@ struct PocketCoreSetupView: View {
                     symbol: "checkmark.seal.fill",
                     tint: .green,
                     title: "SwanSong Core \(release.metadata.version)",
-                    detail: "Released \(release.metadata.releaseDate) · package signature and checksum verified"
+                    detail: "Released \(release.metadata.releaseDate) · authorization and checksum verified"
                 )
                 HStack {
                     Button("Check Again", action: setup.checkForRelease)
@@ -1136,6 +1633,30 @@ struct PocketCoreSetupView: View {
                     .font(.caption.monospaced())
                     .foregroundStyle(.secondary)
                     .textSelection(.enabled)
+                HStack {
+                    if setup.isCheckingCard {
+                        ProgressView()
+                            .controlSize(.small)
+                        Text("Checking card…")
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Button("Check Card") {
+                            setup.checkCardHealth()
+                        }
+                    }
+                    if setup.healthReport != nil {
+                        Button(
+                            setup.supportSummaryWasCopied
+                                ? "Copy Support Summary Again"
+                                : "Copy Support Summary"
+                        ) {
+                            setup.copySupportSummary()
+                        }
+                    }
+                }
+                if let report = setup.healthReport {
+                    healthReport(report)
+                }
             } else {
                 Text("Use a blank or existing Pocket card formatted as exFAT or FAT32.")
                     .foregroundStyle(.secondary)
@@ -1143,13 +1664,13 @@ struct PocketCoreSetupView: View {
             Button(setup.card == nil ? "Choose SD Card…" : "Choose Another Card…") {
                 setup.chooseCard()
             }
-            .disabled(setup.isPreparing)
+            .disabled(setup.isPreparing || setup.isCheckingCard)
             .accessibilityIdentifier(PocketCoreSetupAccessibility.chooseCard)
         }
     }
 
     private var prepareCard: some View {
-        stepCard(number: 3, title: "Review and install") {
+        stepCard(number: 3, title: "Review and prepare") {
             if setup.isPreparing {
                 HStack(spacing: 10) {
                     ProgressView()
@@ -1162,19 +1683,26 @@ struct PocketCoreSetupView: View {
                 statusRow(
                     symbol: "checkmark.circle.fill",
                     tint: .green,
-                    title: "SD card is ready",
-                    detail: "SwanSong Core \(result.version) verified · \(result.installedFileCount) file\(result.installedFileCount == 1 ? "" : "s") installed"
+                    title: result.installedFileCount == 0
+                        ? "SwanSong Core is verified"
+                        : "SD card is ready",
+                    detail: completionDetail(result)
                 )
                 Button("Show Card in Finder") {
                     NSWorkspace.shared.open(result.destinationURL)
                 }
-                Text("Eject the card in Finder before removing it from the Mac.")
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("Next on your Pocket")
+                        .font(.subheadline.bold())
+                    Text("1. Eject the card in Finder, then return it to your Pocket.")
+                    Text("2. Open openFPGA, choose WonderSwan, then choose SwanSong.")
+                    Text("3. Pick a .ws or .wsc game from Assets/wonderswan/common.")
+                }
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else {
-                Text("SwanSong shows the exact card and Core version before it changes anything.")
-                    .foregroundStyle(.secondary)
-                Button("Install SwanSong Core…") {
+                installActionMessage
+                Button(installButtonTitle) {
                     showsPrepareConfirmation = true
                 }
                 .buttonStyle(.borderedProminent)
@@ -1249,12 +1777,148 @@ struct PocketCoreSetupView: View {
     private func cardDetail(_ card: PocketCardSelection) -> String {
         var details = [card.formatDescription]
         details.append(card.hasPocketLayout ? "existing Pocket layout" : "blank card")
-        if let installed = card.installedCoreVersion {
+        if card.coreInstallationNeedsRepair {
+            details.append("SwanSong Core needs repair")
+        } else if let installed = card.installedCoreVersion {
             details.append("SwanSong Core \(installed) installed")
         }
         if let bytes = card.availableByteCount {
             details.append(ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file) + " free")
         }
         return details.joined(separator: " · ")
+    }
+
+    @ViewBuilder
+    private var installActionMessage: some View {
+        switch setup.installAction {
+        case .unavailable:
+            Text("Choose a card and find an official Core release to continue.")
+                .foregroundStyle(.secondary)
+        case let .install(version):
+            Text("SwanSong Core \(version) will be added to this card.")
+                .foregroundStyle(.secondary)
+        case let .update(installed, available):
+            Text("Update SwanSong Core \(installed) to \(available). Your games, saves, settings, and other cores stay in place.")
+                .foregroundStyle(.secondary)
+        case let .verifyOrRepair(version):
+            Text("SwanSong Core \(version) is already installed. Verify every official file and replace only anything missing or changed.")
+                .foregroundStyle(.secondary)
+        case let .repair(version):
+            Text("The existing SwanSong Core installation is incomplete or unreadable. Repair it with verified version \(version).")
+                .foregroundStyle(.orange)
+        case let .blockedNewer(installed, available):
+            Label(
+                "This card has SwanSong Core \(installed), which is newer than official version \(available). Automatic downgrades are blocked.",
+                systemImage: "exclamationmark.shield.fill"
+            )
+            .foregroundStyle(.orange)
+        case let .blockedUnrecognized(installed):
+            Label(
+                "SwanSong Core \(installed) is a development or unrecognized version. Back up the card and review that installation before replacing it with a stable release.",
+                systemImage: "exclamationmark.shield.fill"
+            )
+            .foregroundStyle(.orange)
+        }
+    }
+
+    private var installButtonTitle: String {
+        switch setup.installAction {
+        case .install:
+            "Install SwanSong Core…"
+        case .update:
+            "Update SwanSong Core…"
+        case .verifyOrRepair:
+            "Verify or Repair…"
+        case .repair:
+            "Repair SwanSong Core…"
+        case .unavailable, .blockedNewer, .blockedUnrecognized:
+            "Install Unavailable"
+        }
+    }
+
+    private var confirmationTitle: String {
+        let card = setup.card?.volumeName ?? "SD Card"
+        return switch setup.installAction {
+        case .update:
+            "Update \(card)?"
+        case .verifyOrRepair:
+            "Verify \(card)?"
+        case .repair:
+            "Repair \(card)?"
+        case .install, .unavailable, .blockedNewer, .blockedUnrecognized:
+            "Install on \(card)?"
+        }
+    }
+
+    private var confirmationButtonTitle: String {
+        switch setup.installAction {
+        case .update:
+            "Update Core"
+        case .verifyOrRepair:
+            "Verify or Repair"
+        case .repair:
+            "Repair Core"
+        case .install, .unavailable, .blockedNewer, .blockedUnrecognized:
+            "Install Core"
+        }
+    }
+
+    private var confirmationMessage: String {
+        let version = setup.release?.metadata.version ?? ""
+        let path = setup.card?.rootURL.path ?? "the selected card"
+        return "SwanSong will use verified Core \(version) files on \(path). Your games, saves, settings, and other cores stay in place. Back up the card first."
+    }
+
+    private func completionDetail(_ result: PocketCoreInstallResult) -> String {
+        if result.installedFileCount == 0 {
+            return "Every official file for SwanSong Core \(result.version) already matched."
+        }
+        return "SwanSong Core \(result.version) verified · \(result.installedFileCount) file\(result.installedFileCount == 1 ? "" : "s") installed"
+    }
+
+    private func healthReport(_ report: PocketCardHealthReport) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label(
+                healthTitle(report.severity),
+                systemImage: healthSymbol(report.severity)
+            )
+            .font(.subheadline.bold())
+            .foregroundStyle(healthTint(report.severity))
+            ForEach(Array(report.findings.enumerated()), id: \.offset) { _, finding in
+                Text("• \(finding.message)")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Text("The support summary contains counts and status only—never your card name, path, device ID, game names, or save data.")
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
+        }
+        .padding(12)
+        .swanSurface(.recessed, tint: healthTint(report.severity), cornerRadius: 10)
+    }
+
+    private func healthTitle(_ severity: PocketCardHealthSeverity) -> String {
+        switch severity {
+        case .ready: "Card check passed"
+        case .attention: "Card check found a few notes"
+        case .problem: "Card check found a problem"
+        }
+    }
+
+    private func healthSymbol(_ severity: PocketCardHealthSeverity) -> String {
+        switch severity {
+        case .ready: "checkmark.circle.fill"
+        case .attention: "info.circle.fill"
+        case .problem: "exclamationmark.triangle.fill"
+        }
+    }
+
+    private func healthTint(_ severity: PocketCardHealthSeverity) -> Color {
+        switch severity {
+        case .ready: .green
+        case .attention: .orange
+        case .problem: .red
+        }
     }
 }

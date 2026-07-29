@@ -45,8 +45,13 @@ identity, saves, and states.
 When you choose an Analogue Pocket SD card, SwanSong reads the mounted volume's
 name, filesystem type, capacity, top-level folder names, installed SwanSong
 `core.json` version (if present), and only the Core-managed files that a
-verified package may replace. It does not read or upload game, save, Memory,
-Settings, or Preset contents from the card.
+verified package may replace. If you choose **Check Card**, it also reads the
+names, file types, and extensions of bounded entries below the standard
+WonderSwan game folder to count regular `.ws` and `.wsc` files; it does not
+open or hash them and does not follow symbolic links. The copyable summary
+omits the card name, path, device identifier, game filenames, and save data.
+SwanSong does not read or upload game contents, save contents, Memories,
+Settings, or Presets from the card.
 
 In Cartridge Lab, when you choose a flash-cartridge SD-card folder, SwanSong
 reads that folder only to select a non-conflicting installer filename, writes
@@ -245,11 +250,12 @@ install games, or invoke the separate Analogue Pocket installer.
 
 The **Analogue Pocket** tool makes no request at launch, in the background, or
 merely because you open its page. Choosing **Check for Core Release** requests
-the official `RegionallyFamous/swansong-core` latest-release record through the
-GitHub HTTPS API. If an immutable authorized stable release exists, SwanSong
-then fetches that release's small `release-manifest.json` and `SHA256SUMS`
-assets. Choosing and confirming **Prepare SD Card** downloads the named Core ZIP
-from the same official GitHub Release.
+the official `RegionallyFamous/swansong-core` release list through the GitHub
+HTTPS API. SwanSong ignores releases outside the stable `core-vX.Y.Z`
+namespace. If an immutable authorized Core release exists, SwanSong then
+fetches that release's small `release-manifest.json` and `SHA256SUMS` assets.
+Confirming an install, update, verification, or repair downloads the named Core
+ZIP from the same official GitHub Release.
 
 The manifest's publisher, release authorization, completed release gates,
 package identity, byte count, and SHA-256 must agree with the GitHub release

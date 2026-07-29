@@ -141,6 +141,13 @@ public enum PocketCoreReleaseVerifier {
         }
 
         let version = try requiredText(manifest["version"], name: "version", maximum: 64)
+        guard version.wholeMatch(
+            of: /(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)/
+        ) != nil else {
+            throw PocketCoreInstallerError.invalidRelease(
+                "the version is not a stable semantic version."
+            )
+        }
         let releaseDate = try requiredText(
             manifest["date_release"],
             name: "release date",
@@ -151,10 +158,7 @@ public enum PocketCoreReleaseVerifier {
                 "the release date is malformed."
             )
         }
-        let normalizedTag = githubTag.hasPrefix("v")
-            ? String(githubTag.dropFirst())
-            : githubTag
-        guard normalizedTag == version else {
+        guard githubTag == "core-v\(version)" else {
             throw PocketCoreInstallerError.invalidRelease(
                 "the GitHub tag does not match manifest version \(version)."
             )

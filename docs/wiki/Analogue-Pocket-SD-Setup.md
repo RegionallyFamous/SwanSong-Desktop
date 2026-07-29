@@ -14,13 +14,14 @@ Sparkle never invokes the Pocket workflow.
 
 ## Current availability
 
-No authorized stable SwanSong Core package is currently published. SwanSong
-Current stable and beta releases report that state and perform no package
+No authorized stable SwanSong Core package is currently published. Current
+stable and beta versions of SwanSong report that state and perform no package
 download or card write.
 
 The workflow unlocks only after `swansong-core` publishes an immutable stable
-release that satisfies the embedded authorization policy, package manifest,
-asset-size, and SHA-256 requirements.
+release tagged exactly `core-vX.Y.Z` that satisfies the embedded authorization
+policy, package manifest, asset-size, and SHA-256 requirements. Other releases
+from that repository, including `swanframe-vX.Y.Z` homebrew, are ignored.
 
 ## User workflow
 
@@ -29,10 +30,15 @@ asset-size, and SHA-256 requirements.
 3. Open **Analogue Pocket** in SwanSong's sidebar or choose **File > Prepare
    Analogue Pocket SD Card…**.
 4. Explicitly check for the official stable Core release.
-5. Select the mounted card itself and review the exact volume and Core version.
-6. Confirm the install.
-7. After SwanSong completes its read-back verification, eject the card in
-   Finder before removing it.
+5. Select the mounted card itself and review the exact volume, installed
+   version, available version, and proposed action.
+6. Optionally choose **Check Card** to review the Pocket layout, Core status,
+   legacy folders, and game count. Copy the privacy-safe support summary if you
+   need help.
+7. Confirm **Install**, **Update**, **Verify or Repair**, or **Repair**.
+8. After SwanSong completes its read-back verification, eject the card in
+   Finder, return it to the Pocket, then open **openFPGA > WonderSwan >
+   SwanSong**.
 
 SwanSong accepts only an ordinary writable volume mounted directly under
 `/Volumes` whose kernel filesystem is exFAT or FAT32/MS-DOS. The card must be
@@ -44,7 +50,8 @@ filesystems are rejected.
 
 The release check is manual and has no launch-time or background request. The
 client accepts only the official `RegionallyFamous/swansong-core` repository's
-stable GitHub Releases and binds all of the following before extraction:
+stable `core-vX.Y.Z` GitHub Releases and binds all of the following before
+extraction:
 
 - repository, release, tag, and asset identity;
 - embedded release authorization policy;
@@ -56,6 +63,13 @@ stable GitHub Releases and binds all of the following before extraction:
 The package download is streamed with a fixed upper bound. A tag, asset,
 manifest, size, checksum, repository, or policy mismatch fails before the card
 is modified.
+
+SwanSong compares stable semantic versions before downloading. It offers an
+update only when the official version is newer, verifies or repairs an
+already-current installation, recognizes an incomplete installation as a
+repair, and blocks automatic downgrades or replacement of a development or
+unrecognized version. It repeats that comparison immediately before and after
+the download in case the card changed.
 
 ## Archive safety
 
@@ -103,13 +117,25 @@ Pocket firmware, games, homebrew ROMs, or BIOS files. It does not change:
 Installing the Core is separate from the Pocket `.sav` exchange described in
 [[Playing and Library]].
 
+## Privacy-safe card check
+
+**Check Card** reads only the layout needed to diagnose setup: expected Core
+and platform files, the installed Core version, the number of regular `.ws` and
+`.wsc` files in the standard folder, free space, and known legacy WonderSwan
+folders. It does not open or hash game contents or read saves.
+
+The copyable support summary deliberately omits the card name, mount path,
+device identifier, game filenames, and save data.
+
 ## Test coverage
 
-Automated coverage includes release-policy and manifest mismatch, checksum and
-size drift, trusted redirects, bounded downloads, malformed JSON, unsafe ZIP
-paths, symlinks, resource limits, card eligibility, insufficient space,
-identity change before write, successful merge/read-back, post-write mismatch,
-rollback, cleanup, and preservation of unrelated card content.
+Automated coverage includes Core/homebrew release separation, strict semantic
+version tags, release-policy and manifest mismatch, checksum and size drift,
+trusted redirects, bounded downloads, malformed JSON, unsafe ZIP paths,
+symlinks, resource limits, card eligibility, install/update/verify/repair
+selection, downgrade blocking, insufficient space, identity change before
+write, successful merge/read-back, post-write mismatch, rollback, cleanup, and
+preservation of unrelated card content.
 
 Physical release coverage still requires real SD cards, readers, exFAT/FAT32
 volumes, Finder eject behavior, and a published Core package exercised on

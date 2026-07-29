@@ -30,7 +30,7 @@ final class PocketCoreReleaseServiceTests: XCTestCase {
         XCTAssertEqual(PocketReleaseURLProtocol.requestCount, 1)
         XCTAssertEqual(
             PocketReleaseURLProtocol.lastRequest?.url,
-            PocketCoreReleaseService.latestReleaseURL
+            PocketCoreReleaseService.releaseListURL
         )
         XCTAssertEqual(
             PocketReleaseURLProtocol.lastRequest?.value(forHTTPHeaderField: "User-Agent"),
@@ -40,7 +40,7 @@ final class PocketCoreReleaseServiceTests: XCTestCase {
 
     func testMutableStableReleaseFailsBeforeAnyAssetRequest() async {
         let body = Data(
-            #"{"tag_name":"1.0.0","html_url":"https://github.com/RegionallyFamous/swansong-core/releases/tag/1.0.0","draft":false,"prerelease":false,"immutable":false,"assets":[]}"#
+            #"[{"tag_name":"core-v1.0.0","html_url":"https://github.com/RegionallyFamous/swansong-core/releases/tag/core-v1.0.0","draft":false,"prerelease":false,"immutable":false,"assets":[]}]"#
                 .utf8
         )
         PocketReleaseURLProtocol.respond(statusCode: 200, body: body)
@@ -50,6 +50,35 @@ final class PocketCoreReleaseServiceTests: XCTestCase {
             XCTFail("A mutable GitHub release must not be offered")
         } catch {
             XCTAssertTrue(error.localizedDescription.contains("immutable"))
+        }
+        XCTAssertEqual(PocketReleaseURLProtocol.requestCount, 1)
+    }
+
+    func testUnrelatedStableHomebrewReleaseIsIgnored() async throws {
+        let body = Data(
+            #"[{"tag_name":"swanframe-v0.1.0","html_url":"https://github.com/RegionallyFamous/swansong-core/releases/tag/swanframe-v0.1.0","draft":false,"prerelease":false,"immutable":false,"assets":[]}]"#
+                .utf8
+        )
+        PocketReleaseURLProtocol.respond(statusCode: 200, body: body)
+
+        let release = try await makeService().latestRelease()
+
+        XCTAssertNil(release)
+        XCTAssertEqual(PocketReleaseURLProtocol.requestCount, 1)
+    }
+
+    func testMalformedOfficialCoreTagIsRejected() async {
+        let body = Data(
+            #"[{"tag_name":"core-v01.2.3","html_url":"https://github.com/RegionallyFamous/swansong-core/releases/tag/core-v01.2.3","draft":false,"prerelease":false,"immutable":true,"assets":[]}]"#
+                .utf8
+        )
+        PocketReleaseURLProtocol.respond(statusCode: 200, body: body)
+
+        do {
+            _ = try await makeService().latestRelease()
+            XCTFail("Malformed official Core tags must not be accepted")
+        } catch {
+            XCTAssertTrue(error.localizedDescription.contains("malformed version tag"))
         }
         XCTAssertEqual(PocketReleaseURLProtocol.requestCount, 1)
     }
@@ -79,7 +108,7 @@ final class PocketCoreReleaseServiceTests: XCTestCase {
         )
         XCTAssertTrue(
             PocketCoreReleaseService.productionTrustsRedirectForTesting(
-                URL(string: "https://github.com/RegionallyFamous/swansong-core/releases/download/v1/core.zip")!
+                URL(string: "https://github.com/RegionallyFamous/swansong-core/releases/download/core-v1.0.0/core.zip")!
             )
         )
         XCTAssertFalse(
@@ -101,10 +130,34 @@ final class PocketCoreReleaseServiceTests: XCTestCase {
 
     func testVerifiedImmutableReleaseIsAssembledFromBoundedAssets() async throws {
         let fixture = makeValidReleaseFixture()
+        var releases = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: fixture.release) as? [[String: Any]]
+        )
+        releases.insert(
+            [
+                "tag_name": "core-v1.0.0",
+                "html_url": "https://github.com/RegionallyFamous/swansong-core/releases/tag/core-v1.0.0",
+                "draft": false,
+                "prerelease": false,
+                "immutable": true,
+                "assets": [],
+            ],
+            at: 0
+        )
+        releases.append(
+            [
+                "tag_name": "swanframe-v99.0.0",
+                "html_url": "https://github.com/RegionallyFamous/swansong-core/releases/tag/swanframe-v99.0.0",
+                "draft": false,
+                "prerelease": false,
+                "immutable": true,
+                "assets": [],
+            ]
+        )
         PocketReleaseURLProtocol.respond(
-            to: PocketCoreReleaseService.latestReleaseURL,
+            to: PocketCoreReleaseService.releaseListURL,
             statusCode: 200,
-            body: fixture.release
+            body: try JSONSerialization.data(withJSONObject: releases)
         )
         PocketReleaseURLProtocol.respond(
             to: fixture.manifestURL,
@@ -128,7 +181,7 @@ final class PocketCoreReleaseServiceTests: XCTestCase {
 
     func testPackageDownloadRejectsAnIncompleteTransferBeforeExtraction() async {
         let packageURL = URL(
-            string: "https://github.com/RegionallyFamous/swansong-core/releases/download/v1.2.3/core.zip"
+            string: "https://github.com/RegionallyFamous/swansong-core/releases/download/core-v1.2.3/core.zip"
         )!
         PocketReleaseURLProtocol.respond(
             to: packageURL,
@@ -144,10 +197,10 @@ final class PocketCoreReleaseServiceTests: XCTestCase {
                 packageByteCount: 3,
                 packageSHA256: String(repeating: "b", count: 64)
             ),
-            releaseTag: "v1.2.3",
+            releaseTag: "core-v1.2.3",
             packageDownloadURL: packageURL,
             releasePageURL: URL(
-                string: "https://github.com/RegionallyFamous/swansong-core/releases/tag/v1.2.3"
+                string: "https://github.com/RegionallyFamous/swansong-core/releases/tag/core-v1.2.3"
             )!
         )
 
@@ -160,11 +213,163 @@ final class PocketCoreReleaseServiceTests: XCTestCase {
         XCTAssertEqual(PocketReleaseURLProtocol.requestCount, 1)
     }
 
+    func testOfficialCoreVersionsAreStrictAndComparable() {
+        XCTAssertEqual(PocketCoreVersion(releaseTag: "core-v1.2.3")?.description, "1.2.3")
+        XCTAssertNil(PocketCoreVersion(releaseTag: "v1.2.3"))
+        XCTAssertNil(PocketCoreVersion(releaseTag: "core-v01.2.3"))
+        XCTAssertNil(PocketCoreVersion("1.2"))
+        XCTAssertTrue(PocketCoreVersion("1.9.9")! < PocketCoreVersion("2.0.0")!)
+    }
+
+    func testInstallActionDistinguishesInstallUpdateVerifyRepairAndDowngrade() {
+        let model = PocketCoreSetupModel(service: makeService())
+        model.release = makeAvailableRelease(version: "1.2.3")
+
+        model.card = makeCard(version: nil)
+        XCTAssertEqual(model.installAction, .install(version: "1.2.3"))
+
+        model.card = makeCard(version: "1.0.0")
+        XCTAssertEqual(
+            model.installAction,
+            .update(installed: "1.0.0", available: "1.2.3")
+        )
+
+        model.card = makeCard(version: "1.2.3")
+        XCTAssertEqual(model.installAction, .verifyOrRepair(version: "1.2.3"))
+
+        model.card = makeCard(version: nil, needsRepair: true)
+        XCTAssertEqual(model.installAction, .repair(version: "1.2.3"))
+
+        model.card = makeCard(version: "2.0.0")
+        XCTAssertEqual(
+            model.installAction,
+            .blockedNewer(installed: "2.0.0", available: "1.2.3")
+        )
+        XCTAssertFalse(model.canPrepare)
+
+        model.card = makeCard(version: "1.3.0-dev.1")
+        XCTAssertEqual(
+            model.installAction,
+            .blockedUnrecognized(installed: "1.3.0-dev.1")
+        )
+        XCTAssertFalse(model.canPrepare)
+    }
+
+    func testBrokenExistingCoreIsReportedAsNeedingRepair() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "SwanSong-Core-Inspection-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        defer { try? FileManager.default.removeItem(at: root) }
+        let coreRoot = root.appendingPathComponent(
+            "Cores/RegionallyFamous.SwanSong",
+            isDirectory: true
+        )
+        try FileManager.default.createDirectory(
+            at: coreRoot,
+            withIntermediateDirectories: true
+        )
+        try Data("not-json".utf8).write(
+            to: coreRoot.appendingPathComponent("core.json")
+        )
+
+        XCTAssertEqual(
+            PocketCardInspector.coreInstallation(on: root),
+            PocketCoreInstallationInspection(version: nil, needsRepair: true)
+        )
+    }
+
+    func testCardHealthSupportSummaryOmitsPrivateIdentifiers() {
+        let card = makeCard(version: nil)
+        let report = PocketCardHealthChecker.check(card)
+
+        XCTAssertFalse(report.supportSummary.contains(card.volumeName))
+        XCTAssertFalse(report.supportSummary.contains(card.rootURL.path))
+        XCTAssertFalse(report.supportSummary.contains(card.mountIdentity))
+        XCTAssertTrue(report.supportSummary.contains("Privacy:"))
+    }
+
+    func testCardHealthCountsGamesInSubfoldersWithoutFollowingSymlinks() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "SwanSong-Card-Health-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        defer { try? FileManager.default.removeItem(at: root) }
+        let nested = root.appendingPathComponent(
+            "Assets/wonderswan/common/Favorites",
+            isDirectory: true
+        )
+        try FileManager.default.createDirectory(
+            at: nested,
+            withIntermediateDirectories: true
+        )
+        try Data("game".utf8).write(
+            to: nested.appendingPathComponent("example.wsc")
+        )
+        try FileManager.default.createSymbolicLink(
+            at: nested.appendingPathComponent("loop"),
+            withDestinationURL: root
+        )
+        let card = PocketCardSelection(
+            rootURL: root,
+            volumeName: "PRIVATE-CARD-NAME",
+            mountIdentity: "uuid:PRIVATE-DEVICE-ID",
+            formatDescription: "ExFAT",
+            availableByteCount: 1_000_000,
+            hasPocketLayout: true,
+            installedCoreVersion: nil,
+            coreInstallationNeedsRepair: false
+        )
+
+        let report = PocketCardHealthChecker.check(card)
+
+        XCTAssertEqual(report.gameCount, 1)
+    }
+
     private func makeService() -> PocketCoreReleaseService {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [PocketReleaseURLProtocol.self]
         return PocketCoreReleaseService(
             session: URLSession(configuration: configuration)
+        )
+    }
+
+    private func makeAvailableRelease(version: String) -> AvailablePocketCoreRelease {
+        AvailablePocketCoreRelease(
+            metadata: PocketCoreReleaseMetadata(
+                version: version,
+                releaseDate: "2026-07-29",
+                sourceCommit: String(repeating: "a", count: 40),
+                packageFilename: "core.zip",
+                packageByteCount: 3,
+                packageSHA256: String(repeating: "b", count: 64)
+            ),
+            releaseTag: "core-v\(version)",
+            packageDownloadURL: URL(
+                string: "https://github.com/RegionallyFamous/swansong-core/releases/download/core-v\(version)/core.zip"
+            )!,
+            releasePageURL: URL(
+                string: "https://github.com/RegionallyFamous/swansong-core/releases/tag/core-v\(version)"
+            )!
+        )
+    }
+
+    private func makeCard(
+        version: String?,
+        needsRepair: Bool = false
+    ) -> PocketCardSelection {
+        PocketCardSelection(
+            rootURL: URL(
+                fileURLWithPath: "/Volumes/PRIVATE-CARD-NAME",
+                isDirectory: true
+            ),
+            volumeName: "PRIVATE-CARD-NAME",
+            mountIdentity: "uuid:PRIVATE-DEVICE-ID",
+            formatDescription: "ExFAT",
+            availableByteCount: 1_000_000,
+            hasPocketLayout: true,
+            installedCoreVersion: version,
+            coreInstallationNeedsRepair: needsRepair
         )
     }
 
@@ -225,13 +430,13 @@ final class PocketCoreReleaseServiceTests: XCTestCase {
 
             """.utf8
         )
-        let base = "https://github.com/RegionallyFamous/swansong-core/releases/download/v1.2.3"
+        let base = "https://github.com/RegionallyFamous/swansong-core/releases/download/core-v1.2.3"
         let manifestURL = URL(string: "\(base)/release-manifest.json")!
         let checksumsURL = URL(string: "\(base)/SHA256SUMS")!
         let packageURL = URL(string: "\(base)/\(packageFilename)")!
         let releaseObject: [String: Any] = [
-            "tag_name": "v1.2.3",
-            "html_url": "https://github.com/RegionallyFamous/swansong-core/releases/tag/v1.2.3",
+            "tag_name": "core-v1.2.3",
+            "html_url": "https://github.com/RegionallyFamous/swansong-core/releases/tag/core-v1.2.3",
             "draft": false,
             "prerelease": false,
             "immutable": true,
@@ -254,7 +459,7 @@ final class PocketCoreReleaseServiceTests: XCTestCase {
             ],
         ]
         return (
-            try! JSONSerialization.data(withJSONObject: releaseObject),
+            try! JSONSerialization.data(withJSONObject: [releaseObject]),
             manifest,
             checksums,
             manifestURL,
@@ -319,7 +524,7 @@ private final class PocketReleaseURLProtocol: URLProtocol, @unchecked Sendable {
 
     static func respond(statusCode: Int, body: Data) {
         respond(
-            to: PocketCoreReleaseService.latestReleaseURL,
+            to: PocketCoreReleaseService.releaseListURL,
             statusCode: statusCode,
             body: body
         )
