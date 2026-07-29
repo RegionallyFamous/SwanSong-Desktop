@@ -3,7 +3,7 @@
 Most problems have a quick fix. Make sure you have the newest SwanSong release,
 then start with the answers below. SwanSong requires macOS 14 or newer.
 
-The stable public download is 0.9.1. It includes the private library and
+The stable public download is 0.9.2. It includes the private library and
 player, Time Ribbon rewind, visual save states, the signed Homebrew Catalog,
 Translation Shelf, Safe Mode, and a privacy-safe Support Bundle.
 
@@ -89,7 +89,7 @@ Pocket SD Card…**. Then:
    action.
 4. Optionally choose **Check Card**. If you need help, copy its privacy-safe
    summary.
-5. Install, update, verify or repair, or repair as offered.
+5. Install, update, verify, or repair as offered.
 
 Use an exFAT or FAT32 card and back it up first. SwanSong works with blank and
 existing Pocket cards. It does not format the card or remove games, saves,

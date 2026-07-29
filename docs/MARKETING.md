@@ -51,10 +51,12 @@ Lead with the feeling, then earn the trust:
 
 ## Release honesty
 
-The stable public download is **0.9.0**.
-Translation Shelf is the 0.9 lead: it turns a trusted source-free IPS release
-and the exact player-supplied original into a separately managed, verified
-library game without changing that original. The complete SDK 0.5 Studio,
+The stable public download is **0.9.2**. Its release story is a safer Analogue
+Pocket setup: inspect a card without exposing private details, choose the right
+install or repair action, and accept only a real, authorized Core release.
+Translation Shelf remains the 0.9 series lead: it turns a trusted source-free
+IPS release and the exact player-supplied original into a separately managed,
+verified library game without changing that original. The complete SDK 0.5 Studio,
 Story Forge, Cartridge Tools, capture-bound Translation Lab, whole-game
 Translation Surface Suites, exact native review, Story Proof, the visual
 signed Homebrew shelf, isolated engine, signed local-automation boundary, Safe
