@@ -6,6 +6,11 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+## [0.9.2] - 2026-07-29
+
+**A Safer Pocket Setup.** SwanSong 0.9.2 makes Analogue Pocket Core setup
+clearer, more private, and harder to get wrong.
+
 ### Added
 
 - Adds a privacy-safe Analogue Pocket card check with clear layout, Core,
@@ -791,7 +796,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.1...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.2...HEAD
+[0.9.2]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.1...v0.9.2
 [0.9.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.8.1...v0.9.0
 [0.8.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.8.0...v0.8.1
