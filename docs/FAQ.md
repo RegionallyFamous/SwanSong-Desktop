@@ -116,12 +116,18 @@ Yes, through an explicit **Analogue Pocket** SD-card workflow. The FPGA build
 and its release authorization remain owned by the separate repository at
 [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core).
 Desktop checks only when asked and will accept only an immutable, authorized
-stable release whose manifest, asset size, and SHA-256 all agree. It then
+stable `core-vX.Y.Z` release whose manifest, asset size, and SHA-256 all agree;
+unrelated homebrew releases from the same repository are ignored. It then
 merges the verified Core files onto a selected mounted exFAT/FAT32 card, keeps
 replaced files recoverable until every managed file reads back exactly, and
 rolls back a failed write. It does not format the card or change games, saves,
 settings, Memories, Presets, or other cores. The tool performs no write while
 the Core repository has no verified public release.
+
+The screen distinguishes install, update, verify or repair, and repair. It
+blocks automatic downgrades and development-version replacement. **Check
+Card** can also create a privacy-safe support summary without card names,
+paths, device IDs, game names, or save data.
 
 Installing the Core does not update the macOS app, and Sparkle app updates do
 not run the Core installer.

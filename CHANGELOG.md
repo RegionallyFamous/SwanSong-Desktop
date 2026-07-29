@@ -6,6 +6,29 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+### Added
+
+- Adds a privacy-safe Analogue Pocket card check with clear layout, Core,
+  game-count, legacy-folder, and repair findings plus a copyable support
+  summary that omits card names, paths, device identifiers, game names, and
+  save data.
+- Adds state-aware Pocket actions for first install, update, already-current
+  verification, and repair, followed by exact next steps on the Pocket.
+
+### Changed
+
+- Gives SwanSong Core releases their own strict `core-vX.Y.Z` namespace so
+  unrelated homebrew published from the same repository is never presented as
+  a Core update.
+
+### Fixed
+
+- Blocks automatic Core downgrades and development-version replacement, and
+  rechecks the selected card before and after downloading so a changed card
+  cannot bypass those protections.
+- Correctly treats the repository’s current SWANFRAME release as unrelated
+  homebrew instead of a broken or mutable SwanSong Core release.
+
 ## [0.9.1] - 2026-07-28
 
 **A Better Welcome.** SwanSong 0.9.1 makes the first launch clearer, the

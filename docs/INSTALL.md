@@ -87,7 +87,9 @@ corresponding-source archive, manifest, and checksums all agree.
 Open **Analogue Pocket** in SwanSong's sidebar or choose **File → Prepare
 Analogue Pocket SD Card…**. The workflow is designed to merge an authorized
 SwanSong Core without formatting the card or changing games, saves, Memories,
-settings, Presets, or unrelated cores.
+settings, Presets, or unrelated cores. It distinguishes install, update,
+verify or repair, and repair; automatic downgrades are blocked. **Check Card**
+can produce a privacy-safe support summary before or after installation.
 
 Back up the complete card first. Until the separate SwanSong Core project
 publishes a verified stable release, SwanSong reports that none is available
