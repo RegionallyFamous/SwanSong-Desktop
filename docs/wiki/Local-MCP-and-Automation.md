@@ -175,16 +175,18 @@ recover the endpoint or construct the final route.
 
 ## Translation Lab tools
 
-The same MCP server exposes six project-writing tools:
+The same MCP server exposes eight project-writing tools:
 
 - `swansong_translation_capture_plan`;
+- `swansong_translation_seal_persistence_handoff`;
+- `swansong_translation_capture_persistence_consumer`;
 - `swansong_translation_probe_rectangle`;
 - `swansong_translation_probe_rectangle_source`;
 - `swansong_translation_export_static_analysis_seed`;
 - `swansong_translation_record_route`; and
 - `swansong_translation_verify_pair`.
 
-All six require absolute project-contained input paths and
+All eight require absolute project-contained input paths and
 `confirmProjectWrites: true`. Codex is configured to treat non-read-only tools
 as write operations requiring approval. The server rejects symlinks,
 out-of-project inputs, oversized JSON, unsupported schemas, missing live ares
@@ -194,7 +196,17 @@ capabilities, and changed proof identities.
 runs, and then publishes one private pair under
 `analysis/swan-song-lab/pairs/`. It contains the canonical exact plan, both
 native PNGs, ROM/engine/RTC/persistence hashes, evidence bindings, and an exact
-native-raster pixel-diff report.
+native-raster pixel-diff report. It also retains each role's final 30-frame WAV
+from the same replay; audio collection never adds another replay.
+
+`seal-persistence-handoff` authenticates one exact existing Patched capture
+chain and ABI-10 runtime state, captures the complete cartridge persistence,
+and atomically publishes two byte-identical private clones with distinct opaque
+LOAD and CONTINUE identities. Its MCP result contains only identities, hashes,
+counts, and completeness flags. `capture-persistence-consumer` resolves exactly
+one of those clones, stages it before Patched ROM load, then runs that
+consumer's dedicated plan independently from clean power. The plan, final
+native frame, and final audio window remain private and closure-bound.
 
 `probe-rectangle` uses the ABI 6 final-writer capability, retained in ABI 9,
 to replay one project role from clean boot
@@ -316,6 +328,18 @@ SwanSongRouteRunner capture-plan \
   --project "/path/to/project" \
   --plan "/path/to/project/automation/opening-plan.json"
 
+SwanSongRouteRunner seal-persistence-handoff \
+  --enable-debug-tools \
+  --allow-project-writes \
+  --project "/path/to/project" \
+  --request "/path/to/project/automation/persistence-handoff-request.json"
+
+SwanSongRouteRunner capture-persistence-consumer \
+  --enable-debug-tools \
+  --allow-project-writes \
+  --project "/path/to/project" \
+  --request "/path/to/project/automation/load-consumer-request.json"
+
 SwanSongRouteRunner probe-rectangle \
   --enable-debug-tools \
   --allow-project-writes \
@@ -354,7 +378,9 @@ re-index the pair. It returns failure rather than claiming verification if
 either intake or either manifest integrity check fails.
 
 `capture-plan` combines both commands and publishes the durable private pair
-only after both evidence lanes and Capture Intake outputs re-index intact.
+only after both evidence lanes, WAV windows, and Capture Intake outputs re-index
+intact. Persistence handoff sealing and consumer capture are separate so LOAD
+and CONTINUE each prove an independent clean-power start from their own clone.
 `probe-rectangle` saves detailed owner evidence privately and prints only the
 source-free summary. `probe-rectangle-source` applies the same exact clean
 replay gate to current upstream lineage; component selection is explicit and its

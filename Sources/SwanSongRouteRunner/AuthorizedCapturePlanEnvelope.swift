@@ -89,18 +89,19 @@ private struct AuthorizedCapturePlanContext {
         "wstrans-swansong-capture-plan-bootstrap-capability-v2"
     static let qualifiedMethodCapabilitySchema =
         "wstrans-swansong-capture-plan-method-capability-v3"
-    static let outputGraphSchema = "wstrans-swansong-capture-plan-output-graph-v1"
+    static let outputGraphSchema = "wstrans-swansong-capture-plan-output-graph-v2"
     static let closureSchema = "swan-song-authorized-method-closure-v2"
     static let completeReportSchema =
-        "swan-song-authorized-persisted-translation-capture-report-v2"
+        "swan-song-authorized-persisted-translation-capture-report-v3"
     static let blockedReportSchema = completeReportSchema
     static let evidenceManifestSchema = "swan-song-authorized-translation-evidence-v2"
-    static let pairManifestSchema = "swan-song-authorized-persisted-translation-capture-v2"
+    static let pairManifestSchema = "swan-song-authorized-persisted-translation-capture-v3"
     static let intakeReceiptSchema = "wstrans-authorized-capture-intake-receipt-v2"
     static let authorizedRouteSchema = "swan-song-route-v3"
     static let authorizedPlanSchema = planSchema
     static let authorizedPixelDiffSchema = "swan-song-translation-pixel-diff-v1"
     static let frameSchema = "image/png"
+    static let audioSchema = "audio/wav"
     static let stateSchema = "application/x-swan-song-runtime-state"
     static let ramSchema = "application/x-wonderswan-internal-ram"
     static let intakeRAMSchema = "application/x-wonderswan-internal-ram"
@@ -122,7 +123,8 @@ private struct AuthorizedCapturePlanContext {
         "patched.frame", "patched.state", "patched.ram", "patched.route",
         "patched.intakeRam", "patched.intakeReceipt", "patched.manifest",
         "pair.plan", "pair.originalFrame", "pair.patchedFrame",
-        "pair.pixelDiff", "pair.manifest",
+        "pair.originalAudio", "pair.patchedAudio", "pair.pixelDiff",
+        "pair.manifest",
     ]
     static let allRoleNames = payloadRoleNames + ["report"]
     static let roleSuffixes = [
@@ -134,7 +136,8 @@ private struct AuthorizedCapturePlanContext {
         "patched/route.json", "patched/capture-intake/capture.ram.bin",
         "patched/capture-intake/receipt.json", "patched/manifest.json",
         "pair/plan.json", "pair/original.png", "pair/patched.png",
-        "pair/pixel-diff.json", "pair/manifest.json", "report.json",
+        "pair/original.wav", "pair/patched.wav", "pair/pixel-diff.json",
+        "pair/manifest.json", "report.json",
     ]
     static let blockedPrefixLength = 8
 
@@ -186,13 +189,13 @@ private struct AuthorizedCapturePlanContext {
 
     var currentPairManifestSchema: String {
         isCommercial
-            ? "swan-song-commercial-persisted-translation-capture-v1"
+            ? "swan-song-commercial-persisted-translation-capture-v2"
             : Self.pairManifestSchema
     }
 
     var currentReportSchema: String {
         isCommercial
-            ? "swan-song-commercial-persisted-translation-capture-report-v1"
+            ? "swan-song-commercial-persisted-translation-capture-report-v2"
             : Self.completeReportSchema
     }
 
@@ -608,9 +611,11 @@ private struct AuthorizedCapturePlanContext {
         let contract = try object(value["outputContract"], label: "M contract")
         guard try string(contract["schema"], label: "M graph schema")
                 == outputGraphSchema,
-              try integer(contract["roleCount"], label: "M role count") == 21,
+              try integer(contract["roleCount"], label: "M role count")
+                == allRoleNames.count,
               try integerArray(contract["possibleInterruptedPrefixLengths"],
-                               label: "M interrupted prefixes") == Array(0...20),
+                               label: "M interrupted prefixes")
+                == Array(0...payloadRoleNames.count),
               try integerArray(contract["closableBlockedPrefixLengths"],
                                label: "M closable prefixes") == [8],
               try string(contract["closureSchema"], label: "M closure schema")
@@ -1452,7 +1457,7 @@ private struct AuthorizedCapturePlanContext {
         commercial: Bool
     ) throws -> [CaptureOutputRole] {
         let expectedGraphSchema = commercial
-            ? "wstrans-swansong-commercial-capture-plan-output-graph-v1"
+            ? "wstrans-swansong-commercial-capture-plan-output-graph-v2"
             : outputGraphSchema
         guard try string(graph["schema"], label: "graph schema") == expectedGraphSchema,
               try string(graph["unexpectedArtifacts"], label: "graph extra policy")
@@ -1510,7 +1515,9 @@ private struct AuthorizedCapturePlanContext {
         }
         guard let rawRoles = graph["roles"] as? [Any],
               rawRoles.count == allRoleNames.count else {
-            throw stop("A output graph does not contain exactly 21 pre-K roles")
+            throw stop(
+                "A output graph does not contain exactly \(allRoleNames.count) pre-K roles"
+            )
         }
         var roles: [CaptureOutputRole] = []
         for raw in rawRoles {
@@ -1591,6 +1598,7 @@ private struct AuthorizedCapturePlanContext {
         switch role {
         case "route", "original.route", "patched.route": authorizedRouteSchema
         case "original.frame", "patched.frame", "pair.originalFrame", "pair.patchedFrame": frameSchema
+        case "pair.originalAudio", "pair.patchedAudio": audioSchema
         case "original.state", "patched.state": stateSchema
         case "original.ram", "patched.ram": ramSchema
         case "original.intakeRam", "patched.intakeRam": intakeRAMSchema
@@ -1601,10 +1609,10 @@ private struct AuthorizedCapturePlanContext {
         case "pair.plan": authorizedPlanSchema
         case "pair.pixelDiff": authorizedPixelDiffSchema
         case "pair.manifest": commercial
-            ? "swan-song-commercial-persisted-translation-capture-v1"
+            ? "swan-song-commercial-persisted-translation-capture-v2"
             : pairManifestSchema
         case "report": commercial
-            ? "swan-song-commercial-persisted-translation-capture-report-v1"
+            ? "swan-song-commercial-persisted-translation-capture-report-v2"
             : completeReportSchema
         default: ""
         }
@@ -1618,6 +1626,8 @@ private struct AuthorizedCapturePlanContext {
             ("json", 64, 8 * 1_024 * 1_024)
         case "original.frame", "patched.frame", "pair.originalFrame", "pair.patchedFrame":
             ("png", 64, 8 * 1_024 * 1_024)
+        case "pair.originalAudio", "pair.patchedAudio":
+            ("wav", 44, 8 * 1_024 * 1_024)
         case "original.state", "patched.state":
             ("state", 1, 64 * 1_024 * 1_024)
         case "original.ram", "patched.ram", "original.intakeRam", "patched.intakeRam":
@@ -2091,6 +2101,12 @@ private struct AuthorizedCapturePlanPublisher {
         )
         let originalFrame = try writeRawRole("pair.originalFrame", execution.original.framePNG)
         let patchedFrame = try writeRawRole("pair.patchedFrame", execution.patched.framePNG)
+        let originalAudio = try writeRawRole(
+            "pair.originalAudio", execution.original.audio.wav
+        )
+        let patchedAudio = try writeRawRole(
+            "pair.patchedAudio", execution.patched.audio.wav
+        )
         let diff = try writeRole(
             "pair.pixelDiff", data: execution.pixelDiffData,
             schema: AuthorizedCapturePlanContext.authorizedPixelDiffSchema
@@ -2106,6 +2122,34 @@ private struct AuthorizedCapturePlanPublisher {
             "patchedEvidenceManifest": patchedManifest.json,
             "originalFrame": originalFrame.json,
             "patchedFrame": patchedFrame.json,
+            "audioWindow": [
+                "startFrameIndex": Int(execution.original.audio.range.startFrameIndex),
+                "endFrameIndexExclusive": Int(
+                    execution.original.audio.range.endFrameIndexExclusive
+                ),
+                "emulatedFrameCount": execution.original.audio.range.emulatedFrameCount,
+                "container": execution.original.audio.format.container,
+                "encoding": execution.original.audio.format.encoding,
+                "bitsPerSample": execution.original.audio.format.bitsPerSample,
+                "original": [
+                    "artifact": originalAudio.json,
+                    "channels": execution.original.audio.format.channels,
+                    "sampleRate": execution.original.audio.format.sampleRate,
+                    "sampleFrames": execution.original.audio.format.sampleFrames,
+                    "nonzeroSamples": execution.original.audio.nonzeroSamples,
+                    "peakAbsoluteSample": execution.original.audio.peakAbsoluteSample,
+                    "pcmFloatSHA256": execution.original.audio.pcmFloatSHA256,
+                ],
+                "patched": [
+                    "artifact": patchedAudio.json,
+                    "channels": execution.patched.audio.format.channels,
+                    "sampleRate": execution.patched.audio.format.sampleRate,
+                    "sampleFrames": execution.patched.audio.format.sampleFrames,
+                    "nonzeroSamples": execution.patched.audio.nonzeroSamples,
+                    "peakAbsoluteSample": execution.patched.audio.peakAbsoluteSample,
+                    "pcmFloatSHA256": execution.patched.audio.pcmFloatSHA256,
+                ],
+            ],
             "pixelDiff": diff.json,
             "engine": execution.route.start.map {
                 ["backend": $0.engine.backend, "buildID": $0.engine.buildID]
@@ -2156,6 +2200,23 @@ private struct AuthorizedCapturePlanPublisher {
             "pixelCount": execution.pixelDiff.difference.pixelCount,
             "differentPixelCount": execution.pixelDiff.difference.differentPixelCount,
             "differentPixelFraction": execution.pixelDiff.difference.differentPixelFraction,
+            "audioWindowEmulatedFrames": execution.original.audio.range.emulatedFrameCount,
+            "audioWindowStartFrameIndex": Int(
+                execution.original.audio.range.startFrameIndex
+            ),
+            "audioWindowEndFrameIndexExclusive": Int(
+                execution.original.audio.range.endFrameIndexExclusive
+            ),
+            "originalAudioWAVSHA256": AuthorizedCapturePlanContext.digest(
+                execution.original.audio.wav
+            ),
+            "patchedAudioWAVSHA256": AuthorizedCapturePlanContext.digest(
+                execution.patched.audio.wav
+            ),
+            "originalAudioSampleFrames": execution.original.audio.format.sampleFrames,
+            "patchedAudioSampleFrames": execution.patched.audio.format.sampleFrames,
+            "originalAudioNonzeroSamples": execution.original.audio.nonzeroSamples,
+            "patchedAudioNonzeroSamples": execution.patched.audio.nonzeroSamples,
             "commercialEvidenceAuthorized": context.commercialEvidenceAuthorized,
             "promotionEligible": false,
         ]

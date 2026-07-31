@@ -408,8 +408,26 @@ private enum SwanSongMCPServer {
             tool(
                 name: "swansong_translation_capture_plan",
                 title: "Persist Translation Capture",
-                description: "Run one project-contained frame/input plan from Original, replay it against Patched, run Capture Intake for both roles, then privately persist both native frames, the exact plan, deterministic ROM/engine/RTC/persistence bindings, and the pixel-diff report as one immutable project pair.",
+                description: "Run one project-contained frame/input plan from Original, replay it against Patched, run Capture Intake for both roles, then privately persist both native frames, each role's final 30-frame audio window from those same replays, the exact plan, deterministic ROM/engine/RTC/persistence bindings, and the pixel-diff report as one immutable project pair.",
                 inputSchema: projectWriteSchema(fileKey: "planPath"),
+                readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
+                name: "swansong_translation_seal_persistence_handoff",
+                title: "Seal Persistence Handoff",
+                description: "Validate one exact project-contained Patched capture chain and its digest-bound request, restore the existing ABI-10 state without another replay, then atomically publish two private byte-identical complete-cartridge-persistence clones. Returns only source-safe hashes, counts, booleans, and opaque clone identities.",
+                inputSchema: projectWriteSchema(fileKey: "requestPath"),
+                readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
+                name: "swansong_translation_capture_persistence_consumer",
+                title: "Capture Persistence Consumer",
+                description: "Validate one sealed LOAD or CONTINUE clone and a digest-bound project plan, stage the clone before Patched ROM load, then run that consumer independently from clean power. Privately retains the exact plan, final native frame, and final 30-frame audio window while returning only source-safe identities, counts, and digests.",
+                inputSchema: projectWriteSchema(fileKey: "requestPath"),
                 readOnly: false,
                 destructive: false,
                 idempotent: false
@@ -542,6 +560,10 @@ private enum SwanSongMCPServer {
                 return try observedPlayCancel(arguments: arguments)
             case "swansong_translation_capture_plan":
                 return try capturePlan(arguments: arguments)
+            case "swansong_translation_seal_persistence_handoff":
+                return try sealPersistenceHandoff(arguments: arguments)
+            case "swansong_translation_capture_persistence_consumer":
+                return try capturePersistenceConsumer(arguments: arguments)
             case "swansong_translation_probe_rectangle":
                 return try probeRectangle(arguments: arguments)
             case "swansong_translation_probe_rectangle_source":
@@ -597,6 +619,50 @@ private enum SwanSongMCPServer {
         return try reportResult(
             TranslationLabAutomation.capturePlan(project: project, plan: plan)
         )
+    }
+
+    private static func sealPersistenceHandoff(
+        arguments: JSONDictionary
+    ) throws -> JSONDictionary {
+        let (project, requestURL) = try projectWriteArguments(
+            arguments,
+            fileKey: "requestPath"
+        )
+        let requestData = try readProjectFile(
+            requestURL,
+            project: project,
+            maximumBytes: 1_048_576
+        )
+        let request = try JSONDecoder().decode(
+            TranslationPersistenceHandoffRequest.self,
+            from: requestData
+        )
+        return try reportResult(TranslationPersistenceHandoffStore.seal(
+            project: project,
+            request: request
+        ))
+    }
+
+    private static func capturePersistenceConsumer(
+        arguments: JSONDictionary
+    ) throws -> JSONDictionary {
+        let (project, requestURL) = try projectWriteArguments(
+            arguments,
+            fileKey: "requestPath"
+        )
+        let requestData = try readProjectFile(
+            requestURL,
+            project: project,
+            maximumBytes: 1_048_576
+        )
+        let request = try JSONDecoder().decode(
+            TranslationPersistenceHandoffConsumerRequest.self,
+            from: requestData
+        )
+        return try reportResult(TranslationPersistenceHandoffStore.captureConsumer(
+            project: project,
+            request: request
+        ))
     }
 
     private static func probeRectangle(arguments: JSONDictionary) throws -> JSONDictionary {

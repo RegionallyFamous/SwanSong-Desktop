@@ -6,7 +6,7 @@ SDK projects, cartridges, and save data you own or are authorized to use. Never
 attach ROMs, saves, private screenshots or audio, manuscripts, cartridge-source
 evidence, or Translation Lab evidence to a public report.
 
-The signed public release is **SwanSong 0.9.2 (20)**.
+The signed public release is **SwanSong 0.9.3 (21)**.
 
 ## What this release is testing
 
@@ -56,6 +56,16 @@ The signed public release is **SwanSong 0.9.2 (20)**.
 - **Translation Lab automation:** retain deterministic routes, paired capture,
   display-owner and source probes, observed-play recovery, evidence browsing,
   and complete installed MCP-tool coverage.
+- **Same-replay route audio:** run a capture plan longer than 30 frames and
+  confirm Original and Patched each retain exactly their final 30 emulated
+  frames of private WAV audio from the same replay. Missing, malformed,
+  changing, or incorrectly bound audio must block publication.
+- **Persistence handoff:** seal one authenticated Patched capture without
+  replay into two byte-identical private complete-cartridge-persistence clones.
+  Run LOAD and CONTINUE independently from clean power; each must stage only
+  its exact clone before ROM load, restore no save state, and retain a private
+  final native frame and 30-frame audio window. Public reports must remain
+  path-, payload-, screenshot-, audio-, and game-text-free.
 - **Translation Surface Suites:** import a source-free suite whose cases use
   different Original/Patched diagnostic ROM pairs. Run every case from clean
   boot on the selected qualified ABI, capture several ordered named
@@ -168,7 +178,7 @@ The signed public release is **SwanSong 0.9.2 (20)**.
 
 ## Expected boundaries
 
-SwanSong 0.9.2 embeds SDK 0.5.0 but not Python or Wonderful. Install those
+SwanSong 0.9.3 embeds SDK 0.5.0 but not Python or Wonderful. Install those
 external dependencies before running Studio Doctor or a build. Studio should
 find Python 3.11+ in standard Homebrew, python.org, MacPorts, and system
 locations even when SwanSong opens from Finder. Story Forge also requires a
@@ -190,7 +200,7 @@ hands-on attention.
 
 ## Before reporting a result
 
-1. Confirm **SwanSong 0.9.2 (20)** in **SwanSong > About SwanSong**.
+1. Confirm **SwanSong 0.9.3 (21)** in **SwanSong > About SwanSong**.
 2. Record the Mac model, macOS version, architecture, controller or cartridge
    hardware when relevant, SDK version, Python version, and Wonderful revision.
 3. For Story Forge, state the visible workspace and sanitized action/result;

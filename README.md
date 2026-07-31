@@ -16,7 +16,7 @@ a really nice place to play them.
 
 <p align="center">
   <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/latest"><strong>Download SwanSong 0.9</strong></a>
-  · <a href="docs/releases/0.9.2.md">See what’s new</a>
+  · <a href="docs/releases/0.9.3.md">See what’s new</a>
   · <a href="https://github.com/RegionallyFamous/SwanSong-Desktop/wiki">Explore the wiki</a>
   · <a href="SUPPORT.md">Get help</a>
 </p>
@@ -146,9 +146,10 @@ source.
 
 ## New in SwanSong 0.9
 
-The current stable release is **0.9.2**. It gives the Analogue Pocket workflow
-a privacy-safe card check, clearer install and repair choices, strict Core
-release discovery, and protection against accidental downgrades. It retains
+The current stable release is **0.9.3**. It keeps long translation proof moving:
+deterministic Original and Patched captures retain their final 30 emulated
+frames of audio during the same replay, and an authenticated Patched capture
+can become separate private LOAD and CONTINUE persistence clones. It retains
 the calm Start Here guide and Translation Shelf:
 
 - verify the package, exact original revision, finished release hash,
@@ -163,7 +164,7 @@ service, local automation authenticates its caller, Safe Mode can rescue a
 launch, Support Bundles exclude private material, and every release carries
 exact source, checksums, an SPDX SBOM, and attestations.
 
-Read the [0.9.2 release notes](docs/releases/0.9.2.md), use the
+Read the [0.9.3 release notes](docs/releases/0.9.3.md), use the
 [0.9 release checklist](docs/RELEASE_TESTING.md), or see the
 [changelog](CHANGELOG.md) for the complete history.
 
@@ -184,7 +185,7 @@ keeps the deeper guides out of your way until you need them:
 
 You can also read the [installation guide](docs/INSTALL.md),
 [frequently asked questions](docs/FAQ.md), [privacy policy](PRIVACY.md), and
-[0.9.2 release notes](docs/releases/0.9.2.md).
+[0.9.3 release notes](docs/releases/0.9.3.md).
 
 ## Free, open, and independent
 

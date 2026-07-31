@@ -6,6 +6,31 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+## [0.9.3] - 2026-07-31
+
+**Keep the Proof Moving.** SwanSong 0.9.3 removes two runtime dead ends from
+long-form translation verification while keeping every game-derived artifact
+private.
+
+### Added
+
+- Retains each role's final 30 emulated frames of audio during the same
+  deterministic capture-plan replay, so long Original/Patched routes no longer
+  need a second replay just to close audio evidence.
+- Seals an authenticated Patched capture into two byte-identical private
+  complete-cartridge-persistence clones for separate LOAD and CONTINUE checks.
+- Runs each persistence consumer independently from clean power, stages its
+  exact clone before ROM load, and retains a private final frame and audio
+  window with a source-safe public receipt.
+
+### Changed
+
+- Expands authorized capture graphs and receipts to bind the retained WAV
+  artifacts exactly, with new public and commercial schema versions so older
+  evidence cannot be mistaken for the expanded contract.
+- Accepts the existing legacy private capture pair when sealing a persistence
+  handoff, avoiding an unnecessary replay of already authenticated evidence.
+
 ## [0.9.2] - 2026-07-29
 
 **A Safer Pocket Setup.** SwanSong 0.9.2 makes Analogue Pocket Core setup
@@ -796,7 +821,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.2...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.3...HEAD
+[0.9.3]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.2...v0.9.3
 [0.9.2]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.1...v0.9.2
 [0.9.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.8.1...v0.9.0
