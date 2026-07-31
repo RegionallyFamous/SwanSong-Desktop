@@ -113,6 +113,87 @@ final class EngineCapabilityProfileTests: XCTestCase {
         )
     }
 
+    func testLiveRunnerAdvertisesLongCaptureAudioAndPersistenceHandoff() throws {
+        guard ProcessInfo.processInfo.environment["SWAN_ARES_ENGINE_DIR"] != nil else {
+            throw XCTSkip(
+                "The live ABI-10 translation runtime contract runs only when a live engine is linked."
+            )
+        }
+        let result = try runRouteRunner([
+            "translation-runtime-capability", "--enable-debug-tools",
+        ])
+        XCTAssertEqual(result.status, 0, result.output)
+        let report = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: Data(result.output.utf8))
+                as? [String: Any]
+        )
+        XCTAssertEqual(
+            report["schema"] as? String,
+            "swan-song-translation-runtime-capability-v1"
+        )
+        XCTAssertEqual((report["engineABI"] as? NSNumber)?.uint32Value, 10)
+
+        let audio = try XCTUnwrap(
+            report["capturePlanAudio"] as? [String: Any]
+        )
+        XCTAssertEqual(audio["command"] as? String, "capture-plan")
+        XCTAssertEqual(
+            (audio["maximumPlanFrames"] as? NSNumber)?.uint64Value,
+            1_000_000
+        )
+        XCTAssertEqual(
+            (audio["finalWindowEmulatedFrames"] as? NSNumber)?.intValue,
+            30
+        )
+        XCTAssertEqual(audio["privateArtifactRoles"] as? [String], [
+            "original", "patched",
+        ])
+        XCTAssertEqual(audio["artifactSchema"] as? String, "audio/wav")
+        XCTAssertEqual(audio["capturedFromSameRoleReplay"] as? Bool, true)
+        XCTAssertEqual(audio["additionalReplayRequired"] as? Bool, false)
+
+        let persistence = try XCTUnwrap(
+            report["sealPersistenceHandoff"] as? [String: Any]
+        )
+        XCTAssertEqual(
+            persistence["command"] as? String,
+            "seal-persistence-handoff"
+        )
+        XCTAssertEqual(
+            persistence["requestSchema"] as? String,
+            "swan-song-translation-persistence-handoff-request-v1"
+        )
+        XCTAssertEqual(
+            (persistence["requiredEngineABI"] as? NSNumber)?.uint32Value,
+            10
+        )
+        XCTAssertEqual((persistence["cloneCount"] as? NSNumber)?.intValue, 2)
+        XCTAssertEqual(persistence["clonesByteIdentical"] as? Bool, true)
+        XCTAssertEqual(persistence["atomicPublication"] as? Bool, true)
+        XCTAssertEqual(persistence["sourceSafeReport"] as? Bool, true)
+        XCTAssertEqual(persistence["replayRequired"] as? Bool, false)
+        XCTAssertEqual(
+            persistence["consumerCommand"] as? String,
+            "capture-persistence-consumer"
+        )
+        XCTAssertEqual(
+            persistence["consumerRoles"] as? [String],
+            ["load", "continue"]
+        )
+        XCTAssertEqual(
+            persistence["persistenceStagedBeforeROMLoad"] as? Bool,
+            true
+        )
+        XCTAssertEqual(
+            persistence["independentCleanPowerConsumerRuns"] as? Bool,
+            true
+        )
+        XCTAssertEqual(
+            (persistence["consumerFinalAudioWindowEmulatedFrames"] as? NSNumber)?.intValue,
+            30
+        )
+    }
+
     private func runRouteRunner(
         _ arguments: [String]
     ) throws -> (status: Int32, output: String) {

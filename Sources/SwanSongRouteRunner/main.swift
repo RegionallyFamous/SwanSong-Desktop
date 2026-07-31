@@ -13,10 +13,12 @@ private struct RouteRunnerOptions {
 
 private enum AutomationCommand: String {
     case capturePlan = "capture-plan"
+    case capturePersistenceConsumer = "capture-persistence-consumer"
     case exportStaticAnalysisSeed = "export-static-analysis-seed"
     case probeRectangle = "probe-rectangle"
     case probeRectangleSource = "probe-rectangle-source"
     case recordRoute = "record-route"
+    case sealPersistenceHandoff = "seal-persistence-handoff"
     case verifyPair = "verify-pair"
 }
 
@@ -28,6 +30,7 @@ private enum PlaytestCommand: String {
 private enum CapabilityCommand: String {
     case engineCapability = "engine-capability"
     case playtestPlanLocalCapability = "playtest-plan-local-capability"
+    case translationRuntimeCapability = "translation-runtime-capability"
 }
 
 private struct CapabilityOptions {
@@ -118,6 +121,63 @@ private struct RouteRunnerLocalPlaytestCapabilityReport: Codable {
     let playtestPlanLocal: LocalPlaytestMethodCapability
 }
 
+private struct CapturePlanAudioMethodCapability: Codable {
+    let command: String
+    let reportSchema: String
+    let planSchema: String
+    let maximumPlanFrames: UInt64
+    let finalWindowEmulatedFrames: Int
+    let privateArtifactRoles: [String]
+    let artifactSchema: String
+    let capturedFromSameRoleReplay: Bool
+    let additionalReplayRequired: Bool
+    let requiresDebugGuard: Bool
+    let requiresProjectWriteGuard: Bool
+}
+
+private struct PersistenceHandoffMethodCapability: Codable {
+    let command: String
+    let requestSchema: String
+    let reportSchema: String
+    let privateObjectSchema: String
+    let privateManifestSchema: String
+    let consumerCommand: String
+    let consumerRequestSchema: String
+    let consumerReportSchema: String
+    let consumerPrivateManifestSchema: String
+    let consumerRoles: [String]
+    let requiredEngineABI: UInt32
+    let requiredEngineCapabilities: [String]
+    let exactExistingCaptureChainRequired: Bool
+    let saveStateRestoreAllowed: Bool
+    let replayRequired: Bool
+    let completeCartridgePersistenceRequired: Bool
+    let cloneCount: Int
+    let clonesByteIdentical: Bool
+    let atomicPublication: Bool
+    let sourceSafeReport: Bool
+    let persistenceStagedBeforeROMLoad: Bool
+    let independentCleanPowerConsumerRuns: Bool
+    let consumerFinalAudioWindowEmulatedFrames: Int
+    let requiresDebugGuard: Bool
+    let requiresProjectWriteGuard: Bool
+}
+
+private struct TranslationRuntimeCapabilityReport: Codable {
+    static let currentSchema = "swan-song-translation-runtime-capability-v1"
+
+    let schema: String
+    let engineABI: UInt32
+    let engineBackend: String
+    let engineBuildID: String
+    let engineCapabilitiesRaw: UInt64
+    let loadedDylibPath: String
+    let loadedDylibByteCount: Int
+    let loadedDylibSHA256: String
+    let capturePlanAudio: CapturePlanAudioMethodCapability
+    let sealPersistenceHandoff: PersistenceHandoffMethodCapability
+}
+
 private struct PlaytestOptions {
     var debugToolsEnabled = false
     var romURL: URL?
@@ -138,6 +198,7 @@ private struct AutomationOptions {
     var projectURL: URL?
     var planURL: URL?
     var routeURL: URL?
+    var requestURL: URL?
     var sourceProbeURL: URL?
     var outputURL: URL?
     var role: TranslationROMRole?
@@ -232,12 +293,14 @@ private struct SwanSongRouteRunner {
       SwanSongRouteRunner --enable-debug-tools --rom GAME.wsc --route ROUTE.json [--output REPORT.json] [--capture FINAL.png]
       SwanSongRouteRunner engine-capability --enable-debug-tools [--output REPORT.json]
       SwanSongRouteRunner playtest-plan-local-capability --enable-debug-tools [--output REPORT.json]
+      SwanSongRouteRunner translation-runtime-capability --enable-debug-tools [--output REPORT.json]
       SwanSongRouteRunner playtest-plan --enable-debug-tools --rom GAME.wsc --plan PLAN.json [--output REPORT.json] [--capture FINAL.png]
       SwanSongRouteRunner playtest-plan-local --enable-debug-tools --rom GAME.wsc --plan PLAN.json [--output REPORT.json] [--capture FINAL.png]
       SwanSongRouteRunner capture-plan --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json [--output REPORT.json]
         [--public-diagnostic-kat --authorization RUN/authorization.json --capability-receipt C.json --capture-intake-capability-receipt CAPTURE_INTAKE_C.json --method-capability-receipt M.json --run-directory RUN]
         [--public-source-probe-capture-kat success|blocked --authorization RUN/authorization.json --capability-receipt C.json --capture-intake-capability-receipt CAPTURE_INTAKE_C.json --method-capability-receipt M.json --run-directory RUN]
         [--public-capture-blocked-prefix none|original-complete]
+      SwanSongRouteRunner capture-persistence-consumer --enable-debug-tools --allow-project-writes --project PROJECT --request REQUEST.json [--output REPORT.json]
       SwanSongRouteRunner export-static-analysis-seed --enable-debug-tools --allow-project-writes --project PROJECT --source-probe SOURCE_PROBE_DETAILS.json [--output REPORT.json]
       SwanSongRouteRunner probe-rectangle --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original|patched --frame INDEX --rect X,Y,WIDTH,HEIGHT [--output REPORT.json]
       SwanSongRouteRunner probe-rectangle-source --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original|patched --frame INDEX --rect X,Y,WIDTH,HEIGHT [--components mapCell,palette,raster,spriteAttribute] [--output REPORT.json]
@@ -250,6 +313,7 @@ private struct SwanSongRouteRunner {
       SwanSongRouteRunner probe-rectangle-source --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original --frame SEALED_FRAME --rect SEALED_X,SEALED_Y,SEALED_WIDTH,SEALED_HEIGHT --components SEALED_COMPONENTS [--output RUN/report.json]
         --commercial-authorized-source-probe --capture-frame-seal SEAL.json --authorization RUN/authorization.json --capability-receipt C.json --method-capability-receipt M.json --qualified-method-capability-receipt M2.json --method-native-marker MARKER.json --run-directory RUN
       SwanSongRouteRunner record-route --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json [--output REPORT.json]
+      SwanSongRouteRunner seal-persistence-handoff --enable-debug-tools --allow-project-writes --project PROJECT --request REQUEST.json [--output REPORT.json]
       SwanSongRouteRunner verify-pair --enable-debug-tools --allow-project-writes --project PROJECT --route ROUTE.json [--output REPORT.json]
 
     The legacy form replays an existing deterministic route. playtest-plan
@@ -258,14 +322,20 @@ private struct SwanSongRouteRunner {
     larger local frame/input-plan limit without changing the MCP surface.
     capture-plan privately persists the exact plan, both native frames, all
     deterministic context bindings, and a pixel-diff report after Capture
-    Intake succeeds. probe-rectangle replays one project role from clean boot,
+    Intake succeeds. capture-persistence-consumer validates one sealed LOAD or
+    CONTINUE clone, stages it before ROM load, and runs that consumer's exact
+    plan once from clean power while retaining its private native frame and
+    final audio window. probe-rectangle replays one project role from clean boot,
     saves detailed display-owner provenance privately, and emits only hashes
     and counts. probe-rectangle-source traces selected ABI 9 display components
     to bounded upstream cartridge lineage, while export-static-analysis-seed
     revalidates one complete private probe for exact-context disassembly.
     record-route turns a declarative frame/input plan into a route-v3 proof
-    from Original. verify-pair replays that route against Original and Patched,
-    runs Capture Intake, and emits both immutable evidence manifests.
+    from Original. seal-persistence-handoff validates an exact existing Patched
+    capture chain, restores its ABI-10 state without replay, and atomically
+    publishes two private, byte-identical complete-cartridge-persistence clones plus a
+    source-safe aggregate receipt. verify-pair replays a route against Original
+    and Patched, runs Capture Intake, and emits both immutable evidence manifests.
     Project-writing commands require both explicit guard flags and only accept
     project-scoped input and output paths.
     engine-capability reports the exact dladdr-resolved engine image and the
@@ -432,6 +502,88 @@ private struct SwanSongRouteRunner {
                     sdkTraceCaptureAllowed: false,
                     qualifiedOutputRoles: ["capturePNG", "reportJSON"],
                     writeOrder: ["capturePNG", "reportJSON"]
+                )
+            )
+            try emit(report, to: options.outputURL)
+        case .translationRuntimeCapability:
+            let engine = try EngineSession(
+                rtcMode: .deterministic(
+                    seedUnixSeconds: TranslationRouteRTCContext.proofSeedUnixSeconds
+                ),
+                hardwareModel: .wonderSwanColor
+            )
+            let image = try loadedEngineImage()
+            let capabilities = engine.capabilities
+            let required: [(EngineCapabilities, String)] = [
+                (.execution, "execution"),
+                (.audio, "audio"),
+                (.saveStates, "saveStates"),
+                (.persistence, "persistence"),
+                (.debugger, "debugger"),
+            ]
+            guard engine.abiVersion == 10,
+                  engine.backendName == "ares",
+                  required.allSatisfy({ capabilities.contains($0.0) }) else {
+                throw RouteRunnerError(
+                    message: "The loaded engine does not satisfy the ABI-10 translation runtime contract."
+                )
+            }
+            let report = TranslationRuntimeCapabilityReport(
+                schema: TranslationRuntimeCapabilityReport.currentSchema,
+                engineABI: engine.abiVersion,
+                engineBackend: engine.backendName,
+                engineBuildID: engine.buildID,
+                engineCapabilitiesRaw: capabilities.rawValue,
+                loadedDylibPath: image.url.path,
+                loadedDylibByteCount: image.data.count,
+                loadedDylibSHA256: sha256(image.data),
+                capturePlanAudio: CapturePlanAudioMethodCapability(
+                    command: AutomationCommand.capturePlan.rawValue,
+                    reportSchema: TranslationPersistedCaptureReport.currentSchema,
+                    planSchema: TranslationFrameInputPlan.currentSchema,
+                    maximumPlanFrames: TranslationFrameInputPlan.maximumFrames,
+                    finalWindowEmulatedFrames:
+                        TranslationCapturePlanAudioCollector.finalWindowEmulatedFrames,
+                    privateArtifactRoles: ["original", "patched"],
+                    artifactSchema: "audio/wav",
+                    capturedFromSameRoleReplay: true,
+                    additionalReplayRequired: false,
+                    requiresDebugGuard: true,
+                    requiresProjectWriteGuard: true
+                ),
+                sealPersistenceHandoff: PersistenceHandoffMethodCapability(
+                    command: AutomationCommand.sealPersistenceHandoff.rawValue,
+                    requestSchema: "swan-song-translation-persistence-handoff-request-v1",
+                    reportSchema: "swan-song-translation-persistence-handoff-report-v1",
+                    privateObjectSchema: "swan-song-translation-persistence-handoff-object-v1",
+                    privateManifestSchema: "swan-song-translation-persistence-handoff-manifest-v1",
+                    consumerCommand:
+                        AutomationCommand.capturePersistenceConsumer.rawValue,
+                    consumerRequestSchema:
+                        TranslationPersistenceHandoffConsumerRequest.currentSchema,
+                    consumerReportSchema:
+                        TranslationPersistenceHandoffConsumerReport.currentSchema,
+                    consumerPrivateManifestSchema:
+                        TranslationPersistenceHandoffStore.consumerPrivateManifestSchema,
+                    consumerRoles: ["load", "continue"],
+                    requiredEngineABI: 10,
+                    requiredEngineCapabilities: [
+                        "execution", "audio", "saveStates", "persistence",
+                    ],
+                    exactExistingCaptureChainRequired: true,
+                    saveStateRestoreAllowed: true,
+                    replayRequired: false,
+                    completeCartridgePersistenceRequired: true,
+                    cloneCount: 2,
+                    clonesByteIdentical: true,
+                    atomicPublication: true,
+                    sourceSafeReport: true,
+                    persistenceStagedBeforeROMLoad: true,
+                    independentCleanPowerConsumerRuns: true,
+                    consumerFinalAudioWindowEmulatedFrames:
+                        TranslationCapturePlanAudioCollector.finalWindowEmulatedFrames,
+                    requiresDebugGuard: true,
+                    requiresProjectWriteGuard: true
                 )
             )
             try emit(report, to: options.outputURL)
@@ -862,6 +1014,25 @@ private struct SwanSongRouteRunner {
         }
 
         switch command {
+        case .capturePersistenceConsumer:
+            guard let requestURL = options.requestURL else {
+                throw RouteRunnerError(message: "Missing --request.\n\n\(usage)")
+            }
+            let requestData = try readProjectFile(
+                requestURL,
+                project: project,
+                maximumBytes: 1_048_576,
+                label: "persistence-consumer request"
+            )
+            let request = try JSONDecoder().decode(
+                TranslationPersistenceHandoffConsumerRequest.self,
+                from: requestData
+            )
+            let report = try TranslationPersistenceHandoffStore.captureConsumer(
+                project: project,
+                request: request
+            )
+            try emit(report, to: options.outputURL)
         case .capturePlan:
             guard let planURL = options.planURL else {
                 throw RouteRunnerError(message: "Missing --plan.\n\n\(usage)")
@@ -975,6 +1146,25 @@ private struct SwanSongRouteRunner {
             let report = try TranslationLabAutomation.recordRoute(
                 project: project,
                 plan: plan
+            )
+            try emit(report, to: options.outputURL)
+        case .sealPersistenceHandoff:
+            guard let requestURL = options.requestURL else {
+                throw RouteRunnerError(message: "Missing --request.\n\n\(usage)")
+            }
+            let requestData = try readProjectFile(
+                requestURL,
+                project: project,
+                maximumBytes: 1_048_576,
+                label: "persistence-handoff request"
+            )
+            let request = try JSONDecoder().decode(
+                TranslationPersistenceHandoffRequest.self,
+                from: requestData
+            )
+            let report = try TranslationPersistenceHandoffStore.seal(
+                project: project,
+                request: request
             )
             try emit(report, to: options.outputURL)
         case .verifyPair:
@@ -1149,7 +1339,7 @@ private struct SwanSongRouteRunner {
                 options.publicCaptureBlockedPrefix = CommandLine.arguments[index + 1]
                 options.publicCaptureBlockedPrefixWasProvided = true
                 index += 2
-            case "--project", "--plan", "--route", "--source-probe", "--output",
+            case "--project", "--plan", "--route", "--request", "--source-probe", "--output",
                  "--authorization", "--capability-receipt",
                  "--capture-intake-capability-receipt",
                  "--method-capability-receipt",
@@ -1164,6 +1354,7 @@ private struct SwanSongRouteRunner {
                 case "--project": options.projectURL = url
                 case "--plan": options.planURL = url
                 case "--route": options.routeURL = url
+                case "--request": options.requestURL = url
                 case "--source-probe": options.sourceProbeURL = url
                 case "--output": options.outputURL = url
                 case "--authorization": options.authorizationURL = url

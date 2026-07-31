@@ -184,6 +184,164 @@ public struct TranslationVerifiedPairReport: Codable, Equatable, Sendable {
     public let patched: TranslationVerifiedEvidenceReport
 }
 
+public struct TranslationCapturePlanAudioCapture: Sendable {
+    public let wav: Data
+    public let format: TranslationPersistedCaptureAudioFormat
+    public let range: TranslationPersistedCaptureAudioRange
+    public let nonzeroSamples: Int
+    public let peakAbsoluteSample: Float
+    public let pcmFloatSHA256: String
+}
+
+/// Drains every emulated frame while retaining only the final bounded audio
+/// window. The collector is shared by the real replay and synthetic tests so a
+/// long plan never needs a second execution merely to obtain listenable audio.
+public struct TranslationCapturePlanAudioCollector: Sendable {
+    public static let finalWindowEmulatedFrames = 30
+    public static let maximumChannels = 8
+    public static let minimumSampleRate = 8_000
+    public static let maximumSampleRate = 192_000
+    public static let maximumSampleFramesPerEmulatedFrame = 16_384
+
+    private let expectedFrames: UInt64
+    private var receivedFrames: UInt64 = 0
+    private var channels: Int?
+    private var sampleRate: Int?
+    private var finalWindow: [EngineAudioBatch] = []
+
+    public init(expectedFrames: UInt64) throws {
+        guard expectedFrames >= 3,
+              expectedFrames <= TranslationFrameInputPlan.maximumFrames else {
+            throw TranslationLabError.invalidRoute(
+                "capture-plan audio requires the same bounded frame range as the route"
+            )
+        }
+        self.expectedFrames = expectedFrames
+        finalWindow.reserveCapacity(Self.finalWindowEmulatedFrames)
+    }
+
+    public mutating func append(
+        _ batch: EngineAudioBatch,
+        frameIndex: UInt64
+    ) throws {
+        guard frameIndex == receivedFrames, frameIndex < expectedFrames else {
+            throw TranslationLabError.invalidRoute(
+                "capture-plan audio did not follow the exact route frame sequence"
+            )
+        }
+        guard batch.channels > 0,
+              batch.channels <= Self.maximumChannels,
+              batch.sampleRate >= Self.minimumSampleRate,
+              batch.sampleRate <= Self.maximumSampleRate,
+              !batch.interleavedSamples.isEmpty,
+              batch.interleavedSamples.count.isMultiple(of: batch.channels),
+              batch.frameCount > 0,
+              batch.frameCount <= Self.maximumSampleFramesPerEmulatedFrame,
+              batch.interleavedSamples.allSatisfy(\.isFinite) else {
+            throw TranslationLabError.invalidRoute(
+                "capture-plan replay returned absent or malformed audio"
+            )
+        }
+        if let channels, let sampleRate {
+            guard channels == batch.channels, sampleRate == batch.sampleRate else {
+                throw TranslationLabError.invalidRoute(
+                    "capture-plan replay changed audio format during the route"
+                )
+            }
+        } else {
+            channels = batch.channels
+            sampleRate = batch.sampleRate
+        }
+        finalWindow.append(batch)
+        if finalWindow.count > Self.finalWindowEmulatedFrames {
+            finalWindow.removeFirst()
+        }
+        receivedFrames += 1
+    }
+
+    public func finish() throws -> TranslationCapturePlanAudioCapture {
+        guard receivedFrames == expectedFrames,
+              let channels,
+              let sampleRate,
+              finalWindow.count == min(
+                  Self.finalWindowEmulatedFrames,
+                  Int(expectedFrames)
+              ) else {
+            throw TranslationLabError.invalidRoute(
+                "capture-plan replay did not retain a complete final audio window"
+            )
+        }
+        let samples = finalWindow.flatMap(\.interleavedSamples)
+        guard !samples.isEmpty, samples.count.isMultiple(of: channels) else {
+            throw TranslationLabError.invalidRoute(
+                "capture-plan replay returned an empty final audio window"
+            )
+        }
+        var pcmFloat = Data()
+        pcmFloat.reserveCapacity(samples.count * MemoryLayout<Float>.size)
+        samples.withUnsafeBytes { pcmFloat.append(contentsOf: $0) }
+        let nonzeroSamples = samples.lazy.filter { $0 != 0 }.count
+        let peak = samples.lazy.map { abs($0) }.max() ?? 0
+        let format = TranslationPersistedCaptureAudioFormat(
+            channels: channels,
+            sampleRate: sampleRate,
+            sampleFrames: samples.count / channels
+        )
+        let range = TranslationPersistedCaptureAudioRange(
+            startFrameIndex: expectedFrames - UInt64(finalWindow.count),
+            endFrameIndexExclusive: expectedFrames,
+            emulatedFrameCount: finalWindow.count
+        )
+        let wav = Self.encodeWAV(samples: samples, format: format)
+        return TranslationCapturePlanAudioCapture(
+            wav: wav,
+            format: format,
+            range: range,
+            nonzeroSamples: nonzeroSamples,
+            peakAbsoluteSample: peak,
+            pcmFloatSHA256: TranslationEvidenceStore.sha256(pcmFloat)
+        )
+    }
+
+    private static func encodeWAV(
+        samples: [Float],
+        format: TranslationPersistedCaptureAudioFormat
+    ) -> Data {
+        let dataByteCount = samples.count * MemoryLayout<Int16>.size
+        var wav = Data()
+        wav.append(contentsOf: "RIFF".utf8)
+        append(UInt32(36 + dataByteCount), to: &wav)
+        wav.append(contentsOf: "WAVEfmt ".utf8)
+        append(UInt32(16), to: &wav)
+        append(UInt16(1), to: &wav)
+        append(UInt16(format.channels), to: &wav)
+        append(UInt32(format.sampleRate), to: &wav)
+        append(
+            UInt32(format.sampleRate * format.channels * MemoryLayout<Int16>.size),
+            to: &wav
+        )
+        append(UInt16(format.channels * MemoryLayout<Int16>.size), to: &wav)
+        append(UInt16(format.bitsPerSample), to: &wav)
+        wav.append(contentsOf: "data".utf8)
+        append(UInt32(dataByteCount), to: &wav)
+        for sample in samples {
+            let scaled = max(-1, min(1, sample)) * Float(Int16.max)
+            append(UInt16(bitPattern: Int16(scaled.rounded())), to: &wav)
+        }
+        return wav
+    }
+
+    private static func append(_ value: UInt16, to data: inout Data) {
+        var littleEndian = value.littleEndian
+        withUnsafeBytes(of: &littleEndian) { data.append(contentsOf: $0) }
+    }
+
+    private static func append(_ value: UInt32, to data: inout Data) {
+        var littleEndian = value.littleEndian
+        withUnsafeBytes(of: &littleEndian) { data.append(contentsOf: $0) }
+    }
+}
+
 public enum TranslationLabAutomation {
     /// Runs one exact frame plan from a clean Original boot, replays the
     /// resulting route against both project roles, and publishes a single
@@ -201,15 +359,33 @@ public enum TranslationLabAutomation {
         let verified = try verifyPair(
             project: project,
             route: route,
-            routeURL: routeURL
+            routeURL: routeURL,
+            retainingFinalAudio: true
         )
+        guard let originalAudio = verified.originalAudio,
+              let patchedAudio = verified.patchedAudio else {
+            throw TranslationLabError.invalidRoute(
+                "capture-plan verification did not retain both final audio windows"
+            )
+        }
+        guard originalAudio.range == patchedAudio.range,
+              originalAudio.format.container == patchedAudio.format.container,
+              originalAudio.format.encoding == patchedAudio.format.encoding,
+              originalAudio.format.channels == patchedAudio.format.channels,
+              originalAudio.format.sampleRate == patchedAudio.format.sampleRate,
+              originalAudio.format.bitsPerSample
+                == patchedAudio.format.bitsPerSample else {
+            throw TranslationLabError.invalidRoute(
+                "Original and Patched final audio windows do not share one replay range and format"
+            )
+        }
         let evidence = try TranslationEvidenceStore().listEvidence(project: project)
         guard
             let original = evidence.first(where: {
-                $0.artifact.name == verified.original.evidenceName
+                $0.artifact.name == verified.report.original.evidenceName
             }),
             let patched = evidence.first(where: {
-                $0.artifact.name == verified.patched.evidenceName
+                $0.artifact.name == verified.report.patched.evidenceName
             })
         else {
             throw TranslationLabError.invalidProject(
@@ -222,7 +398,9 @@ public enum TranslationLabAutomation {
             route: route,
             routeData: routeData,
             original: original,
-            patched: patched
+            patched: patched,
+            originalAudio: originalAudio,
+            patchedAudio: patchedAudio
         )
     }
 
@@ -299,6 +477,26 @@ public enum TranslationLabAutomation {
         route: TranslationRoute,
         routeURL: URL
     ) throws -> TranslationVerifiedPairReport {
+        try verifyPair(
+            project: project,
+            route: route,
+            routeURL: routeURL,
+            retainingFinalAudio: false
+        ).report
+    }
+
+    private struct VerifiedPairResult {
+        let report: TranslationVerifiedPairReport
+        let originalAudio: TranslationCapturePlanAudioCapture?
+        let patchedAudio: TranslationCapturePlanAudioCapture?
+    }
+
+    private static func verifyPair(
+        project: TranslationProject,
+        route: TranslationRoute,
+        routeURL: URL,
+        retainingFinalAudio: Bool
+    ) throws -> VerifiedPairResult {
         try route.validateForProof()
         try validateStoredRoute(routeURL, project: project)
         let routeData = try Data(contentsOf: routeURL, options: [.mappedIfSafe])
@@ -317,13 +515,15 @@ public enum TranslationLabAutomation {
             role: .original,
             project: project,
             route: route,
-            requiresCheckpointMatch: true
+            requiresCheckpointMatch: true,
+            retainingFinalAudio: retainingFinalAudio
         )
         let patchedEndpoint = try replay(
             role: .patched,
             project: project,
             route: route,
-            requiresCheckpointMatch: false
+            requiresCheckpointMatch: false,
+            retainingFinalAudio: retainingFinalAudio
         )
         guard originalEndpoint.frame.number == patchedEndpoint.frame.number else {
             throw TranslationLabError.invalidRoute(
@@ -387,19 +587,23 @@ public enum TranslationLabAutomation {
             project: project
         )
 
-        return TranslationVerifiedPairReport(
-            schema: TranslationVerifiedPairReport.currentSchema,
-            projectTitle: project.title,
-            routePath: routeURL.path,
-            routeSHA256: routeSHA256,
-            original: try evidenceReport(
-                artifact: originalArtifact,
-                endpoint: originalEndpoint
+        return VerifiedPairResult(
+            report: TranslationVerifiedPairReport(
+                schema: TranslationVerifiedPairReport.currentSchema,
+                projectTitle: project.title,
+                routePath: routeURL.path,
+                routeSHA256: routeSHA256,
+                original: try evidenceReport(
+                    artifact: originalArtifact,
+                    endpoint: originalEndpoint
+                ),
+                patched: try evidenceReport(
+                    artifact: patchedArtifact,
+                    endpoint: patchedEndpoint
+                )
             ),
-            patched: try evidenceReport(
-                artifact: patchedArtifact,
-                endpoint: patchedEndpoint
-            )
+            originalAudio: originalEndpoint.audio,
+            patchedAudio: patchedEndpoint.audio
         )
     }
 
@@ -413,6 +617,7 @@ public enum TranslationLabAutomation {
         let nativeFrameSHA256: String
         let state: Data
         let internalRAM: Data
+        let audio: TranslationCapturePlanAudioCapture?
 
         func evidenceInput(
             project: TranslationProject,
@@ -438,7 +643,8 @@ public enum TranslationLabAutomation {
         role: TranslationROMRole,
         project: TranslationProject,
         route: TranslationRoute,
-        requiresCheckpointMatch: Bool
+        requiresCheckpointMatch: Bool,
+        retainingFinalAudio: Bool
     ) throws -> ReplayEndpoint {
         guard let start = route.start, let rtc = start.rtc else {
             throw TranslationLabError.invalidRoute("the proof start context is incomplete")
@@ -464,6 +670,11 @@ public enum TranslationLabAutomation {
         _ = try engine.load(rom: rom)
         defer { try? engine.unload() }
         try validate(engine: engine, hardware: start.hardwareModel)
+        if retainingFinalAudio, !engine.capabilities.contains(.audio) {
+            throw TranslationLabError.invalidRoute(
+                "the bundled live engine cannot retain capture-plan audio evidence"
+            )
+        }
         guard engine.backendName == start.engine.backend,
               engine.buildID == start.engine.buildID else {
             throw TranslationLabError.invalidRoute(
@@ -472,10 +683,16 @@ public enum TranslationLabAutomation {
         }
 
         var finalFrame: EngineVideoFrame?
+        var audio = retainingFinalAudio
+            ? try TranslationCapturePlanAudioCollector(expectedFrames: route.totalFrames)
+            : nil
         for frameIndex in 0..<route.totalFrames {
             try engine.setInput(route.input(at: frameIndex))
             try engine.runFrame()
             finalFrame = try engine.videoFrame()
+            if retainingFinalAudio {
+                try audio?.append(try engine.audioBatch(), frameIndex: frameIndex)
+            }
         }
         guard let frame = finalFrame else { throw TranslationLabError.noRecordedFrames }
         let nativeFrameSHA256 = try TranslationRouteCheckpoint.fingerprint(frame)
@@ -493,7 +710,8 @@ public enum TranslationLabAutomation {
             framePNG: try EngineFramePNGCodec.encode(frame),
             nativeFrameSHA256: nativeFrameSHA256,
             state: try engine.captureState(),
-            internalRAM: try engine.captureMemory(.internalRAM)
+            internalRAM: try engine.captureMemory(.internalRAM),
+            audio: try audio?.finish()
         )
     }
 

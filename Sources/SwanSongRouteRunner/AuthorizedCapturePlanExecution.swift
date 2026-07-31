@@ -16,6 +16,7 @@ struct AuthorizedCapturePlanExecution {
         let framePNG: Data
         let state: Data
         let internalRAM: Data
+        let audio: TranslationCapturePlanAudioCapture
     }
 
     let plan: TranslationFrameInputPlan
@@ -118,6 +119,16 @@ enum AuthorizedCapturePlanExecutor {
                 "Original and Patched did not reach the same native frame number"
             )
         }
+        guard original.audio.range == patched.audio.range,
+              original.audio.format.container == patched.audio.format.container,
+              original.audio.format.encoding == patched.audio.format.encoding,
+              original.audio.format.channels == patched.audio.format.channels,
+              original.audio.format.sampleRate == patched.audio.format.sampleRate,
+              original.audio.format.bitsPerSample == patched.audio.format.bitsPerSample else {
+            throw TranslationLabError.invalidRoute(
+                "Original and Patched final audio windows do not share one exact replay range and format"
+            )
+        }
         let originalFrame = try EngineFramePNGCodec.decode(
             original.framePNG,
             frameNumber: original.frameNumber
@@ -206,10 +217,14 @@ enum AuthorizedCapturePlanExecutor {
             )
         }
         var finalFrame: EngineVideoFrame?
+        var audio = try TranslationCapturePlanAudioCollector(
+            expectedFrames: route.totalFrames
+        )
         for frameIndex in 0..<route.totalFrames {
             try engine.setInput(route.input(at: frameIndex))
             try engine.runFrame()
             finalFrame = try engine.videoFrame()
+            try audio.append(try engine.audioBatch(), frameIndex: frameIndex)
         }
         guard let frame = finalFrame else {
             throw TranslationLabError.noRecordedFrames
@@ -229,7 +244,8 @@ enum AuthorizedCapturePlanExecutor {
             nativeFrameSHA256: try TranslationRouteCheckpoint.fingerprint(frame),
             framePNG: try EngineFramePNGCodec.encode(frame),
             state: try engine.captureState(),
-            internalRAM: try engine.captureMemory(.internalRAM)
+            internalRAM: try engine.captureMemory(.internalRAM),
+            audio: try audio.finish()
         )
     }
 
@@ -250,6 +266,7 @@ enum AuthorizedCapturePlanExecutor {
         expectedEngineABI: UInt32
     ) throws {
         guard engine.capabilities.contains(.execution),
+              engine.capabilities.contains(.audio),
               engine.capabilities.contains(.saveStates),
               engine.capabilities.contains(.debugger),
               engine.backendName == "ares",

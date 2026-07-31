@@ -88,14 +88,14 @@ checksummed public build.
 
 ## SwanSong 0.9
 
-The current stable release is **0.9.2**. It makes Analogue Pocket setup easier
-to understand, adds a privacy-safe card check, and protects Core installs from
-unrelated releases and accidental downgrades. The calm Start Here guide,
+The current stable release is **0.9.3**. It retains the final audio window from
+long Original and Patched capture replays and adds private, clean-power LOAD
+and CONTINUE checks from one authenticated persistence handoff. The calm Start Here guide,
 Translation Shelf, Time Ribbon, visual save states, the signed Homebrew shelf,
 isolated engine, Safe Mode, and privacy-safe Support Bundles remain intact.
 
 Read the
-[0.9.2 release notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.9.2.md),
+[0.9.3 release notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.9.3.md),
 use [[0.9 Release Testing]] for the tester checklist, and consult the repository
 [changelog](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/CHANGELOG.md)
 for the exact source and release history.

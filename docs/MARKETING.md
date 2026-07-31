@@ -51,9 +51,10 @@ Lead with the feeling, then earn the trust:
 
 ## Release honesty
 
-The stable public download is **0.9.2**. Its release story is a safer Analogue
-Pocket setup: inspect a card without exposing private details, choose the right
-install or repair action, and accept only a real, authorized Core release.
+The stable public download is **0.9.3**. Its release story is translation proof
+that can keep moving: long Original and Patched captures retain their final
+audio during the same replay, and one authenticated Patched capture can feed
+separate private clean-power LOAD and CONTINUE checks.
 Translation Shelf remains the 0.9 series lead: it turns a trusted source-free
 IPS release and the exact player-supplied original into a separately managed,
 verified library game without changing that original. The complete SDK 0.5 Studio,

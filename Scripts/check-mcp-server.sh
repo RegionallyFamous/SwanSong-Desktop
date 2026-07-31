@@ -118,6 +118,8 @@ expected = {
     "swansong_observed_play_finish",
     "swansong_observed_play_cancel",
     "swansong_translation_capture_plan",
+    "swansong_translation_seal_persistence_handoff",
+    "swansong_translation_capture_persistence_consumer",
     "swansong_translation_probe_rectangle",
     "swansong_translation_probe_rectangle_source",
     "swansong_translation_export_static_analysis_seed",
@@ -149,6 +151,8 @@ for name in (
     "swansong_observed_play_finish",
     "swansong_observed_play_cancel",
     "swansong_translation_capture_plan",
+    "swansong_translation_seal_persistence_handoff",
+    "swansong_translation_capture_persistence_consumer",
     "swansong_translation_probe_rectangle",
     "swansong_translation_probe_rectangle_source",
     "swansong_translation_export_static_analysis_seed",
@@ -158,6 +162,14 @@ for name in (
     required = set(by_name[name]["inputSchema"].get("required", []))
     if "confirmProjectWrites" not in required:
         raise SystemExit(f"Translation MCP tool lost its explicit write confirmation: {name}")
+
+for name in (
+    "swansong_translation_seal_persistence_handoff",
+    "swansong_translation_capture_persistence_consumer",
+):
+    required = set(by_name[name]["inputSchema"].get("required", []))
+    if required != {"projectPath", "requestPath", "confirmProjectWrites"}:
+        raise SystemExit(f"Persistence MCP tool lost its exact request-file contract: {name}")
 
 observed_step_required = set(
     by_name["swansong_observed_play_step"]["inputSchema"].get("required", [])
@@ -319,6 +331,8 @@ for request_id, name in enumerate(
         "swansong_observed_play_finish",
         "swansong_observed_play_cancel",
         "swansong_translation_capture_plan",
+        "swansong_translation_seal_persistence_handoff",
+        "swansong_translation_capture_persistence_consumer",
         "swansong_translation_probe_rectangle",
         "swansong_translation_probe_rectangle_source",
         "swansong_translation_export_static_analysis_seed",

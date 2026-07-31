@@ -225,12 +225,23 @@ remain private project analysis. Do not attach them to public issues.
 ## Automation and tests
 
 The signed app includes a deterministic `SwanSongRouteRunner`. Its legacy form
-replays an existing route and rejects route-bound identity drift. Four guarded
+replays an existing route and rejects route-bound identity drift. Six guarded
 project-writing commands close the autonomous evidence and diagnosis gaps:
 
 - `capture-plan` records and verifies a plan, then privately persists the exact
-  plan, both native endpoints, deterministic context bindings, and pixel diff
-  as one immutable pair;
+  plan, both native endpoints, each role's final 30-frame audio window from the
+  same replay, deterministic context bindings, and pixel diff as one immutable
+  pair;
+- `seal-persistence-handoff` authenticates an existing Patched capture chain,
+  restores its exact ABI-10 runtime state without replaying it, captures the
+  complete cartridge persistence object, and atomically seals byte-identical
+  private LOAD and CONTINUE clones. It accepts the prior v1 pair manifest when
+  its exact legacy bindings validate, so an existing anchor does not need to be
+  regenerated;
+- `capture-persistence-consumer` validates one sealed clone and its dedicated
+  digest-bound plan, stages the persistence before Patched ROM load, and runs
+  LOAD or CONTINUE independently from clean power while privately retaining
+  the final native frame and audio window;
 - `probe-rectangle` replays one role to an exact plan frame and privately saves
   per-pixel layer, map-cell, tile/raster, palette, sprite/OAM, and CPU-writer
   provenance, while its report exposes only hashes and counts;
@@ -241,11 +252,11 @@ project-writing commands close the autonomous evidence and diagnosis gaps:
   native endpoints, runs Capture Intake twice, re-indexes both immutable
   manifests, and returns their bound identities.
 
-All four route/capture commands require `--enable-debug-tools` and
+All six route/capture commands require `--enable-debug-tools` and
 `--allow-project-writes`. Inputs and optional report outputs must remain inside
 the project. Two additional guarded commands, `probe-rectangle-source` and
 `export-static-analysis-seed`, keep bounded cartridge lineage and analyzer
-anchors private while returning only source-free receipts. All six are exposed
+anchors private while returning only source-free receipts. All eight are exposed
 by the opt-in local MCP server with an explicit `confirmProjectWrites`
 argument. Full schemas, commands, privacy
 boundaries, and failure behavior are in [[Local MCP and Automation]].

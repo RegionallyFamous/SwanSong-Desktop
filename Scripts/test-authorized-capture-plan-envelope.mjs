@@ -15,8 +15,8 @@ const PAYLOAD_ROLES = [
   "original.intakeRam", "original.intakeReceipt", "original.manifest",
   "patched.frame", "patched.state", "patched.ram", "patched.route",
   "patched.intakeRam", "patched.intakeReceipt", "patched.manifest",
-  "pair.plan", "pair.originalFrame", "pair.patchedFrame", "pair.pixelDiff",
-  "pair.manifest",
+  "pair.plan", "pair.originalFrame", "pair.patchedFrame",
+  "pair.originalAudio", "pair.patchedAudio", "pair.pixelDiff", "pair.manifest",
 ];
 const ROLE_SUFFIXES = [
   "route.json",
@@ -27,7 +27,8 @@ const ROLE_SUFFIXES = [
   "patched/route.json", "patched/capture-intake/capture.ram.bin",
   "patched/capture-intake/receipt.json", "patched/manifest.json",
   "pair/plan.json", "pair/original.png", "pair/patched.png",
-  "pair/pixel-diff.json", "pair/manifest.json", "report.json",
+  "pair/original.wav", "pair/patched.wav", "pair/pixel-diff.json",
+  "pair/manifest.json", "report.json",
 ];
 const LEGACY_OFFICIAL_FULL_C_SHA256 =
   "5d55f817a0fbb321c35d5034e234d4ffe34603a7d9d587f4ccf2160d08b61c37";
@@ -405,7 +406,7 @@ function validateClosure({ authorization, expectedStatus, expectedPayloadRoles }
   assert.equal(closure.report.role, "report");
   assert.equal(closure.report.relativePath, reportRole.relativePath);
   const report = JSON.parse(fs.readFileSync(reportRole.canonicalDestination, "utf8"));
-  assert.equal(report.schema, "swan-song-authorized-persisted-translation-capture-report-v2");
+  assert.equal(report.schema, "swan-song-authorized-persisted-translation-capture-report-v3");
   assert.equal(report.status, expectedStatus);
   assert.deepEqual(report.authorization, {
     nonce: authorization.nonce,
@@ -856,7 +857,7 @@ if (phase === "success") {
     expectedStatus: "complete",
     expectedPayloadRoles: PAYLOAD_ROLES,
   });
-  assert.equal(successProof.report.payloadArtifactCount, 20);
+  assert.equal(successProof.report.payloadArtifactCount, 22);
   assert.equal(successProof.report.differentPixelCount, 0);
   assert.equal(successProof.report.differentPixelFraction, 0);
   const successRoles = new Map(success.authorization.allowedOutputGraph.roles
@@ -867,6 +868,29 @@ if (phase === "success") {
   assert.deepEqual(nativeGeometry, pngGeometry(patchedFramePath));
   assert.equal(nativeGeometry.width > 0 && nativeGeometry.height > 0, true);
   assert.deepEqual(identityOnly(originalFramePath), identityOnly(patchedFramePath));
+  const originalAudioPath = successRoles.get("pair.originalAudio").canonicalDestination;
+  const patchedAudioPath = successRoles.get("pair.patchedAudio").canonicalDestination;
+  for (const [label, audioPath, reportKey] of [
+    ["Original", originalAudioPath, "originalAudioWAVSHA256"],
+    ["Patched", patchedAudioPath, "patchedAudioWAVSHA256"],
+  ]) {
+    const audio = fs.readFileSync(audioPath);
+    assert.equal(audio.subarray(0, 4).toString("ascii"), "RIFF",
+      `${label} audio lost its RIFF header`);
+    assert.equal(audio.subarray(8, 12).toString("ascii"), "WAVE",
+      `${label} audio lost its WAVE header`);
+    assert.equal(sha256(audio), successProof.report[reportKey],
+      `${label} audio report digest drifted`);
+  }
+  const plan = JSON.parse(fs.readFileSync(
+    successRoles.get("pair.plan").canonicalDestination, "utf8"));
+  const pairManifest = JSON.parse(fs.readFileSync(
+    successRoles.get("pair.manifest").canonicalDestination, "utf8"));
+  assert.equal(pairManifest.audioWindow.endFrameIndexExclusive, plan.totalFrames);
+  assert.equal(pairManifest.audioWindow.emulatedFrameCount,
+    Math.min(30, plan.totalFrames));
+  assert.equal(successProof.report.audioWindowEmulatedFrames,
+    pairManifest.audioWindow.emulatedFrameCount);
   const originalManifest = JSON.parse(fs.readFileSync(
     successRoles.get("original.manifest").canonicalDestination, "utf8"));
   const patchedManifest = JSON.parse(fs.readFileSync(

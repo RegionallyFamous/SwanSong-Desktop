@@ -508,7 +508,7 @@ import sys
 project = pathlib.Path(sys.argv[1])
 source_plan = json.loads(pathlib.Path(sys.argv[2]).read_text())
 report = json.loads(pathlib.Path(sys.argv[3]).read_text())
-if report.get("schema") != "swan-song-persisted-translation-capture-report-v1":
+if report.get("schema") != "swan-song-persisted-translation-capture-report-v2":
     raise SystemExit("capture-plan report schema mismatch")
 manifest_path = pathlib.Path(report.get("manifestPath", ""))
 if not manifest_path.is_file() or project not in manifest_path.parents:
@@ -522,7 +522,7 @@ manifest_data = manifest_path.read_bytes()
 if hashlib.sha256(manifest_data).hexdigest() != report.get("manifestSHA256"):
     raise SystemExit("capture-plan manifest digest mismatch")
 manifest = json.loads(manifest_data)
-if manifest.get("schema") != "swan-song-persisted-translation-capture-v1":
+if manifest.get("schema") != "swan-song-persisted-translation-capture-v2":
     raise SystemExit("persisted capture manifest schema mismatch")
 plan_data = (pair / "plan.json").read_bytes()
 if json.loads(plan_data) != source_plan:
@@ -542,6 +542,7 @@ if manifest.get("rtc", {}).get("seedUnixSeconds") != 946684800:
     raise SystemExit("persisted capture lost the fixed proof RTC")
 for role in ("original", "patched"):
     frame_data = (pair / f"{role}.png").read_bytes()
+    audio_data = (pair / f"{role}.wav").read_bytes()
     lane = manifest.get(role, {})
     if not frame_data.startswith(b"\x89PNG\r\n\x1a\n"):
         raise SystemExit(f"persisted {role} native frame is not PNG")
@@ -551,6 +552,20 @@ for role in ("original", "patched"):
         raise SystemExit(f"persisted {role} lane lost ROM binding")
     if len(lane.get("nativeFrameSHA256", "")) != 64:
         raise SystemExit(f"persisted {role} lane lost native raster binding")
+    audio = lane.get("audio", {})
+    report_audio = report.get(f"{role}Audio", {})
+    audio_sha = hashlib.sha256(audio_data).hexdigest()
+    if audio_data[:4] != b"RIFF" or audio_data[8:12] != b"WAVE":
+        raise SystemExit(f"persisted {role} final audio is not WAV")
+    if audio_sha != audio.get("wav", {}).get("sha256") \
+            or audio_sha != report_audio.get("wav", {}).get("sha256"):
+        raise SystemExit(f"persisted {role} audio digest mismatch")
+    if audio.get("range", {}).get("emulatedFrameCount") != 30 \
+            or audio.get("range", {}).get("endFrameIndexExclusive") \
+                != source_plan.get("totalFrames"):
+        raise SystemExit(f"persisted {role} audio lost its exact final route window")
+    if audio.get("format", {}).get("sampleFrames", 0) <= 0:
+        raise SystemExit(f"persisted {role} audio has no samples")
 diff_data = (pair / "pixel-diff.json").read_bytes()
 if hashlib.sha256(diff_data).hexdigest() != report.get("pixelDiffSHA256"):
     raise SystemExit("persisted pixel-diff digest mismatch")
@@ -948,7 +963,7 @@ if finish_report.get("cumulativeFrames") != 35:
 if finish_report.get("planSHA256") != hashlib.sha256(plan_final_data).hexdigest():
     raise SystemExit("observed-play final proof changed the cumulative plan")
 capture = finish_report.get("capture", {})
-if capture.get("schema") != "swan-song-persisted-translation-capture-report-v1":
+if capture.get("schema") != "swan-song-persisted-translation-capture-report-v2":
     raise SystemExit("observed-play finish did not emit a persisted paired capture")
 capture_manifest = pathlib.Path(capture.get("manifestPath", ""))
 if not capture_manifest.is_file() or project not in capture_manifest.parents:

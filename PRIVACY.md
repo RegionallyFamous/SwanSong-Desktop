@@ -2,7 +2,7 @@
 
 Effective July 29, 2026
 
-This policy describes SwanSong 0.9.2. Versioned release notes document the
+This policy describes SwanSong 0.9.3. Versioned release notes document the
 exact behavior of earlier published builds.
 
 <!-- homebrew-catalog-status: published -->

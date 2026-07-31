@@ -225,21 +225,107 @@ public struct TranslationPrivateArtifactStore: Sendable {
         _ directory: URL,
         project: TranslationProject
     ) throws -> TranslationPrivateArtifactSummary {
+        let manifestData = try read("manifest.json", in: directory, maximumBytes: 1_048_576, project: project)
+        let manifest = try decoder.decode(TranslationPersistedCaptureManifest.self, from: manifestData)
+        let hasAudio = manifest.schema == TranslationPersistedCaptureManifest.currentSchema
+        guard hasAudio || manifest.schema == TranslationPersistedCaptureManifest.legacySchema else {
+            throw TranslationLabError.invalidProject("the paired capture manifest schema is unsupported")
+        }
+        let required: Set<String> = hasAudio
+            ? [
+                "manifest.json", "plan.json", "original.png", "patched.png",
+                "original.wav", "patched.wav", "pixel-diff.json",
+            ]
+            : [
+                "manifest.json", "plan.json", "original.png", "patched.png",
+                "pixel-diff.json",
+            ]
         try requireFiles(
-            ["manifest.json", "plan.json", "original.png", "patched.png", "pixel-diff.json"],
+            required,
             allowing: [],
             in: directory,
             project: project
         )
-        let manifestData = try read("manifest.json", in: directory, maximumBytes: 1_048_576, project: project)
-        let manifest = try decoder.decode(TranslationPersistedCaptureManifest.self, from: manifestData)
-        guard manifest.schema == TranslationPersistedCaptureManifest.currentSchema else {
-            throw TranslationLabError.invalidProject("the paired capture manifest schema is unsupported")
-        }
         try requireDigest(manifest.plan, file: "plan.json", in: directory, project: project)
         try requireDigest(manifest.original.framePNG, file: "original.png", in: directory, project: project)
         try requireDigest(manifest.patched.framePNG, file: "patched.png", in: directory, project: project)
         try requireDigest(manifest.pixelDiff, file: "pixel-diff.json", in: directory, project: project)
+        let planData = try read(
+            "plan.json",
+            in: directory,
+            maximumBytes: 1_048_576,
+            project: project
+        )
+        let plan = try decoder.decode(TranslationFrameInputPlan.self, from: planData)
+        try plan.validate(for: project.routeHardwareModel)
+        var audioMetrics: [String: Int] = [:]
+        if hasAudio {
+            guard manifest.original.role == .original,
+                  manifest.patched.role == .patched,
+                  let originalAudio = manifest.original.audio,
+                  let patchedAudio = manifest.patched.audio,
+                  manifest.engineSHA256
+                    == TranslationEvidenceStore.sha256(try encoded(manifest.engine)),
+                  manifest.rtcSHA256
+                    == TranslationEvidenceStore.sha256(try encoded(manifest.rtc)),
+                  manifest.persistenceSHA256
+                    == TranslationEvidenceStore.sha256(
+                        Data(manifest.persistencePolicy.utf8)
+                    ) else {
+                throw TranslationLabError.invalidProject(
+                    "the paired capture audio is missing its deterministic proof identity"
+                )
+            }
+            let originalWAV = try read(
+                "original.wav",
+                in: directory,
+                maximumBytes: TranslationPersistedCaptureStore.maximumAudioBytes,
+                project: project
+            )
+            let patchedWAV = try read(
+                "patched.wav",
+                in: directory,
+                maximumBytes: TranslationPersistedCaptureStore.maximumAudioBytes,
+                project: project
+            )
+            try TranslationPersistedCaptureStore.validateAudio(
+                originalAudio,
+                wav: originalWAV,
+                role: .original,
+                rom: manifest.original.rom,
+                plan: manifest.plan,
+                route: manifest.route,
+                engineSHA256: manifest.engineSHA256,
+                rtcSHA256: manifest.rtcSHA256,
+                persistenceSHA256: manifest.persistenceSHA256,
+                totalFrames: plan.totalFrames
+            )
+            try TranslationPersistedCaptureStore.validateAudio(
+                patchedAudio,
+                wav: patchedWAV,
+                role: .patched,
+                rom: manifest.patched.rom,
+                plan: manifest.plan,
+                route: manifest.route,
+                engineSHA256: manifest.engineSHA256,
+                rtcSHA256: manifest.rtcSHA256,
+                persistenceSHA256: manifest.persistenceSHA256,
+                totalFrames: plan.totalFrames
+            )
+            audioMetrics = [
+                "audioWindows": 2,
+                "audioEmulatedFrames": originalAudio.range.emulatedFrameCount
+                    + patchedAudio.range.emulatedFrameCount,
+                "audioSampleFrames": originalAudio.format.sampleFrames
+                    + patchedAudio.format.sampleFrames,
+                "audioNonzeroSamples": originalAudio.nonzeroSamples
+                    + patchedAudio.nonzeroSamples,
+            ]
+        } else if manifest.original.audio != nil || manifest.patched.audio != nil {
+            throw TranslationLabError.invalidProject(
+                "a legacy paired capture contains a partial audio contract"
+            )
+        }
         let diffData = try read("pixel-diff.json", in: directory, maximumBytes: 1_048_576, project: project)
         let diff = try decoder.decode(TranslationPersistedCapturePixelDiff.self, from: diffData)
         guard diff.schema == TranslationPersistedCapturePixelDiff.currentSchema else {
@@ -256,7 +342,7 @@ public struct TranslationPrivateArtifactStore: Sendable {
                 "pixels": diff.difference.pixelCount,
                 "changedPixels": diff.difference.differentPixelCount,
                 "frames": 2,
-            ],
+            ].merging(audioMetrics) { _, audio in audio },
             project: project
         )
     }
