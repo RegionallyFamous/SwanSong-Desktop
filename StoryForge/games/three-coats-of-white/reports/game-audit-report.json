@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:33:18.781615+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "three-coats-of-white",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local/three-coats-of-white.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/three-coats-of-white-qa-report.json",
+    "project_counts": {
+      "name": "Three Coats of White",
+      "nodes": 44,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "header_counts": {
+      "NUM_NODES": 44,
+      "NUM_FLAGS": 0,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 4,
+      "NUM_SFX": 0,
+      "NUM_BG_ASSETS": 4,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 3
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+      "bytes": 163302,
+      "sha256": "f48f51cfb115d271167aa23629b4a801ccd16c638c4ac4a59e8b4ea4dcc550d5"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local/three-coats-of-white.wsc",
+      "bytes": 8388608,
+      "sha256": "3208c3cc513ba9453483ee99d9db36f1198c2660d9bbc0b57c3fcac2e9a94109"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/emulator-smoke-report.json",
+      "bytes": 1203,
+      "sha256": "c31f96a336149a1b0eb3425d40d365e2b6de4ef96fc171633b4f4675c4ab99ba"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/game-readiness-report.json",
+      "bytes": 20245,
+      "sha256": "74964e44699d1a9391a5a388aef6a7d72fc0a2cbd22c06dfa985a02cf96c6e81"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/three-coats-of-white-qa-report.json",
+      "bytes": 1614,
+      "sha256": "f20a8a73a7f329ab3b60511051485329367d2c8007c871165b1b69e2ca0abdac"
+    }
+  }
+}

@@ -1,0 +1,813 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:20:19.118958+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "soft-click-sunday",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/projects/soft-click-sunday.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/projects/soft-click-sunday.wscvn.json",
+      "bytes": 239808,
+      "sha256": "8d47b8fb33d15cce1d0031d6397c5030127cd0e0677b7b27477b9882a9b112ce"
+    },
+    "project_counts": {
+      "name": "Soft Click Sunday",
+      "nodes": 74,
+      "flags": 10,
+      "tracks": 1,
+      "backgrounds": 3,
+      "characters": 6,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 74,
+      "scene_nodes": 68,
+      "staged_scenes": 68,
+      "animated_staged_scenes": 68,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Mina",
+        "Niko"
+      ],
+      "backgrounds_used": [
+        "bg_game_room",
+        "bg_shop_counter",
+        "bg_swap_platform"
+      ],
+      "ending_scenes": [
+        "end_archive__beat4",
+        "end_shelf_song__beat4",
+        "end_caretaker__beat4",
+        "end_next_rain__beat4"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 74,
+      "start_node": "title"
+    },
+    "routes": {
+      "initial_flags": {
+        "chose_patience": 0,
+        "cleaned_cart": 0,
+        "has_moonmilk": 0,
+        "has_petal": 0,
+        "has_starpantry": 0,
+        "made_note": 0,
+        "played_cart": 0,
+        "saw_moonmilk": 0,
+        "saw_petal": 0,
+        "saw_starpantry": 0
+      },
+      "states_explored": 327,
+      "truncated": false,
+      "route_reachable_nodes": 74,
+      "route_reachable_ending_scenes": [
+        "end_archive__beat4",
+        "end_caretaker__beat4",
+        "end_next_rain__beat4",
+        "end_shelf_song__beat4"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "buy_moonmilk",
+        "buy_petal",
+        "clean_cart",
+        "glass_case",
+        "loose_bin",
+        "note_story",
+        "paper_list",
+        "play_cart",
+        "take_breath",
+        "test_starpantry"
+      ],
+      "selectable_choice_targets": [
+        "buy_moonmilk",
+        "buy_petal",
+        "clean_cart",
+        "glass_case",
+        "loose_bin",
+        "note_story",
+        "paper_list",
+        "play_cart",
+        "take_breath",
+        "test_starpantry"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": [
+        "end_archive",
+        "end_caretaker",
+        "end_next_rain",
+        "end_shelf_song"
+      ]
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Dig in loose carts / Buy Moonmilk / Play it first",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2019,
+          "estimated_minutes_at_140_wpm": 14.42
+        },
+        {
+          "route_id": "route-2",
+          "label": "Dig in loose carts / Buy Moonmilk / Clean the shell",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2016,
+          "estimated_minutes_at_140_wpm": 14.4
+        },
+        {
+          "route_id": "route-3",
+          "label": "Dig in loose carts / Buy Moonmilk / Write its story",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2019,
+          "estimated_minutes_at_140_wpm": 14.42
+        },
+        {
+          "route_id": "route-4",
+          "label": "Dig in loose carts / Step outside / Play it first",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2018,
+          "estimated_minutes_at_140_wpm": 14.41
+        },
+        {
+          "route_id": "route-5",
+          "label": "Dig in loose carts / Step outside / Clean the shell",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2012,
+          "estimated_minutes_at_140_wpm": 14.37
+        },
+        {
+          "route_id": "route-6",
+          "label": "Dig in loose carts / Step outside / Write its story",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2009,
+          "estimated_minutes_at_140_wpm": 14.35
+        },
+        {
+          "route_id": "route-7",
+          "label": "Read the list / Reserve Petal / Play it first",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2019,
+          "estimated_minutes_at_140_wpm": 14.42
+        },
+        {
+          "route_id": "route-8",
+          "label": "Read the list / Reserve Petal / Clean the shell",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2016,
+          "estimated_minutes_at_140_wpm": 14.4
+        },
+        {
+          "route_id": "route-9",
+          "label": "Read the list / Reserve Petal / Write its story",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2019,
+          "estimated_minutes_at_140_wpm": 14.42
+        },
+        {
+          "route_id": "route-10",
+          "label": "Read the list / Step outside / Play it first",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2017,
+          "estimated_minutes_at_140_wpm": 14.41
+        },
+        {
+          "route_id": "route-11",
+          "label": "Read the list / Step outside / Clean the shell",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2011,
+          "estimated_minutes_at_140_wpm": 14.36
+        },
+        {
+          "route_id": "route-12",
+          "label": "Read the list / Step outside / Write its story",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2008,
+          "estimated_minutes_at_140_wpm": 14.34
+        },
+        {
+          "route_id": "route-13",
+          "label": "Check the case / Test Star Pantry / Play it first",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2027,
+          "estimated_minutes_at_140_wpm": 14.48
+        },
+        {
+          "route_id": "route-14",
+          "label": "Check the case / Test Star Pantry / Clean the shell",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2024,
+          "estimated_minutes_at_140_wpm": 14.46
+        },
+        {
+          "route_id": "route-15",
+          "label": "Check the case / Test Star Pantry / Write its story",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2027,
+          "estimated_minutes_at_140_wpm": 14.48
+        },
+        {
+          "route_id": "route-16",
+          "label": "Check the case / Step outside / Play it first",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2024,
+          "estimated_minutes_at_140_wpm": 14.46
+        },
+        {
+          "route_id": "route-17",
+          "label": "Check the case / Step outside / Clean the shell",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2018,
+          "estimated_minutes_at_140_wpm": 14.41
+        },
+        {
+          "route_id": "route-18",
+          "label": "Check the case / Step outside / Write its story",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 2015,
+          "estimated_minutes_at_140_wpm": 14.39
+        }
+      ]
+    },
+    "text": {
+      "blocks": 420,
+      "max_pause_block_chars": 99,
+      "choice_labels": 10,
+      "max_choice_label_chars": 18,
+      "max_choice_prompt_chars": 24,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 12,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 20,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_game_room",
+        "orig_name": "game_room.png",
+        "embedded_sha256": "7479212a4c19643aa268305c07a856d93de5353e8b7a86ef21a1d3d8354072b5",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/backgrounds/game_room.png",
+        "local_sha256": "7479212a4c19643aa268305c07a856d93de5353e8b7a86ef21a1d3d8354072b5"
+      },
+      {
+        "id": "bg_shop_counter",
+        "orig_name": "shop_counter.png",
+        "embedded_sha256": "92199e0eebb51880ace798c7445fb509eaa04bacbab860f3fcdde4bfedc07d86",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/backgrounds/shop_counter.png",
+        "local_sha256": "92199e0eebb51880ace798c7445fb509eaa04bacbab860f3fcdde4bfedc07d86"
+      },
+      {
+        "id": "bg_swap_platform",
+        "orig_name": "swap_platform.png",
+        "embedded_sha256": "1b54328ef2b0a6979656fd9f2e35f1fb0b33de3f0b92e1302d447bf76f724ca4",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/backgrounds/swap_platform.png",
+        "local_sha256": "1b54328ef2b0a6979656fd9f2e35f1fb0b33de3f0b92e1302d447bf76f724ca4"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_mina_blink",
+        "orig_name": "mina_blink.png",
+        "embedded_sha256": "40456b66271251f5ccba43f5c47bff1560ff55547494da67651521c9b072d72e",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5096,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/characters/mina_blink.png",
+        "local_sha256": "40456b66271251f5ccba43f5c47bff1560ff55547494da67651521c9b072d72e"
+      },
+      {
+        "id": "char_mina_neutral",
+        "orig_name": "mina_neutral.png",
+        "embedded_sha256": "c6fdb10122134fd02db17c5ff22a6b951276c77ed9d300c3ff2e1f9ab7aadd6f",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5096,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/characters/mina_neutral.png",
+        "local_sha256": "c6fdb10122134fd02db17c5ff22a6b951276c77ed9d300c3ff2e1f9ab7aadd6f"
+      },
+      {
+        "id": "char_mina_talk",
+        "orig_name": "mina_talk.png",
+        "embedded_sha256": "a1e792c3ea6cf69dd3c017d551a0241cbd3adb1c5fc748066ba9848024f1a15d",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5096,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/characters/mina_talk.png",
+        "local_sha256": "a1e792c3ea6cf69dd3c017d551a0241cbd3adb1c5fc748066ba9848024f1a15d"
+      },
+      {
+        "id": "char_niko_blink",
+        "orig_name": "niko_blink.png",
+        "embedded_sha256": "78d9f9f3a32a7cc05654df4b954429ec252974b764181848b02b7d590b3e5a16",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5495,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/characters/niko_blink.png",
+        "local_sha256": "78d9f9f3a32a7cc05654df4b954429ec252974b764181848b02b7d590b3e5a16"
+      },
+      {
+        "id": "char_niko_neutral",
+        "orig_name": "niko_neutral.png",
+        "embedded_sha256": "82ef0562ea8edfecb32f48f15c5e04ef3d9f72a2d5ff5681c9a3223ce62c5015",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5495,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/characters/niko_neutral.png",
+        "local_sha256": "82ef0562ea8edfecb32f48f15c5e04ef3d9f72a2d5ff5681c9a3223ce62c5015"
+      },
+      {
+        "id": "char_niko_talk",
+        "orig_name": "niko_talk.png",
+        "embedded_sha256": "5d338ddebaafad5d1aab96482d125dab3672c0f776977af1c8ddc37fc17d89b1",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5495,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/characters/niko_talk.png",
+        "local_sha256": "5d338ddebaafad5d1aab96482d125dab3672c0f776977af1c8ddc37fc17d89b1"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_game_room",
+          "textbox_mean_luma": 42.82,
+          "textbox_luma_stddev": 29.075,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_shop_counter",
+          "textbox_mean_luma": 30.892,
+          "textbox_luma_stddev": 17.581,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_swap_platform",
+          "textbox_mean_luma": 41.366,
+          "textbox_luma_stddev": 15.916,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 68,
+      "families": [
+        {
+          "neutral": "char_mina_neutral",
+          "talk": "char_mina_talk",
+          "blink": "char_mina_blink",
+          "talk_face_delta": 11.421,
+          "blink_face_delta": 9.715,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 292,
+            "changed_bbox": [
+              38,
+              56,
+              59,
+              72
+            ],
+            "changed_bbox_area": 336,
+            "changed_region_share": 0.027344,
+            "global_changed_share": 0.023763,
+            "face_changed_pixels": 292,
+            "face_changed_share": 0.138258,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 165,
+            "changed_bbox": [
+              29,
+              32,
+              62,
+              44
+            ],
+            "changed_bbox_area": 396,
+            "changed_region_share": 0.032227,
+            "global_changed_share": 0.013428,
+            "face_changed_pixels": 165,
+            "face_changed_share": 0.078125,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        },
+        {
+          "neutral": "char_niko_neutral",
+          "talk": "char_niko_talk",
+          "blink": "char_niko_blink",
+          "talk_face_delta": 9.215,
+          "blink_face_delta": 10.084,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 281,
+            "changed_bbox": [
+              38,
+              56,
+              59,
+              72
+            ],
+            "changed_bbox_area": 336,
+            "changed_region_share": 0.027344,
+            "global_changed_share": 0.022868,
+            "face_changed_pixels": 281,
+            "face_changed_share": 0.133049,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 158,
+            "changed_bbox": [
+              32,
+              35,
+              65,
+              46
+            ],
+            "changed_bbox_area": 363,
+            "changed_region_share": 0.029541,
+            "global_changed_share": 0.012858,
+            "face_changed_pixels": 158,
+            "face_changed_share": 0.074811,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/sources",
+      "count": 2,
+      "packaged_file_count": 2,
+      "background_source_count": 1,
+      "character_source_count": 1,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/sources/backgrounds_imagegen_source.png",
+          "bytes": 2067443,
+          "sha256": "9861681d9f81c74edcde6d3caace0e166ba6338ec4925c60b13a2cddb8828d8e",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1881,
+            836
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/sources/characters_imagegen_source.png",
+          "bytes": 1852719,
+          "sha256": "b6423ede1c88a4085adb53e3b14540cfd2a44c6c080b7c9b3d73de2c0ff19a6b",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1536,
+            1024
+          ],
+          "mode": "RGB"
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 71126,
+      "sha256": "a9112973e8dd772ca414c6f785a31d79c52722c26facde78d7dd056704bf0b91",
+      "size": [
+        712,
+        486
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 577921,
+        "sha256": "841c536697aa90c6bdc302cd4a2b6fcbc68821b5b8a145ab01818cc254ab3353",
+        "size": [
+          712,
+          4090
+        ],
+        "mode": "RGB",
+        "unique_colors": 287,
+        "luma_stddev": 56.22
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 174350,
+        "sha256": "33e8e47cec7ffcec4aee2ddd65f3209789bc11da3c13a6aa662c239ddd1d3fd1",
+        "size": [
+          488,
+          1736
+        ],
+        "mode": "RGB",
+        "unique_colors": 284,
+        "luma_stddev": 52.806
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 40456,
+        "sha256": "3db127b0a9d81e6d3ee45a6836137b277b97c015da925c5a899f4ee11456ed97",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/projects/soft-click-sunday.wscvn.json",
+          "exists": true,
+          "bytes": 239808,
+          "sha256": "8d47b8fb33d15cce1d0031d6397c5030127cd0e0677b7b27477b9882a9b112ce"
+        },
+        "nodes_rendered": 72,
+        "preview_node_ids": [
+          "title",
+          "shop_open",
+          "shop_open__beat2",
+          "shop_open__beat3",
+          "shop_open__beat4",
+          "first_choice",
+          "loose_bin",
+          "loose_bin__beat2",
+          "loose_bin__beat3",
+          "loose_bin__beat4",
+          "paper_list",
+          "paper_list__beat2",
+          "paper_list__beat3",
+          "paper_list__beat4",
+          "glass_case",
+          "glass_case__beat2",
+          "glass_case__beat3",
+          "glass_case__beat4",
+          "pick_or_test",
+          "buy_moonmilk",
+          "buy_moonmilk__beat2",
+          "buy_moonmilk__beat3",
+          "buy_moonmilk__beat4",
+          "buy_petal",
+          "buy_petal__beat2",
+          "buy_petal__beat3",
+          "buy_petal__beat4",
+          "test_starpantry",
+          "test_starpantry__beat2",
+          "test_starpantry__beat3",
+          "test_starpantry__beat4",
+          "rain_walk",
+          "rain_walk__beat2",
+          "rain_walk__beat3",
+          "rain_walk__beat4",
+          "after_counter_choice",
+          "play_cart",
+          "play_cart__beat2",
+          "play_cart__beat3",
+          "play_cart__beat4",
+          "clean_cart",
+          "clean_cart__beat2",
+          "clean_cart__beat3",
+          "clean_cart__beat4",
+          "note_story",
+          "note_story__beat2",
+          "note_story__beat3",
+          "note_story__beat4",
+          "shelf_home",
+          "shelf_home__beat2",
+          "shelf_home__beat3",
+          "shelf_home__beat4",
+          "end_archive",
+          "end_archive__beat2",
+          "end_archive__beat3",
+          "end_archive__beat4",
+          "end_shelf_song",
+          "end_shelf_song__beat2",
+          "end_shelf_song__beat3",
+          "end_shelf_song__beat4",
+          "end_caretaker",
+          "end_caretaker__beat2",
+          "end_caretaker__beat3",
+          "end_caretaker__beat4",
+          "end_next_rain",
+          "end_next_rain__beat2",
+          "end_next_rain__beat3",
+          "end_next_rain__beat4",
+          "take_breath",
+          "take_breath__beat2",
+          "take_breath__beat3",
+          "take_breath__beat4"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 72,
+            "expected": 72
+          },
+          "storyboard_cells": {
+            "reported": 72,
+            "expected": 72
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/soft-click-sunday-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

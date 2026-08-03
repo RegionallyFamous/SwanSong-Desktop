@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "title": "Signal Before Dawn: Vertical Slice physical hardware test",
+  "status": "pending",
+  "tested": false,
+  "tester": null,
+  "tested_at_utc": null,
+  "rom_sha256": "a5210df80536d70c1fc5c51af161eb697beccd9fa32623d17b32a223aea3d524",
+  "device": {
+    "model": null,
+    "identifier": null
+  },
+  "cartridge_or_flashcart": {
+    "name": null,
+    "firmware": null
+  },
+  "result": null,
+  "checklist": [
+    {
+      "id": "boot",
+      "label": "Cold boot and reach the title screen",
+      "status": "pending",
+      "passed": null,
+      "notes": null
+    },
+    {
+      "id": "controls",
+      "label": "Verify A, B, START, X1, X2, X3, and X4 controls",
+      "status": "pending",
+      "passed": null,
+      "notes": null
+    },
+    {
+      "id": "save-load",
+      "label": "Save, power cycle, and load from cartridge SRAM",
+      "status": "pending",
+      "passed": null,
+      "notes": null
+    },
+    {
+      "id": "lcd-contrast-ghosting",
+      "label": "Inspect LCD contrast, readability, flicker, tearing, and ghosting",
+      "status": "pending",
+      "passed": null,
+      "notes": null
+    },
+    {
+      "id": "all-five-endings",
+      "label": "Reach signal, together, hatch, reply, and sunrise endings",
+      "required_endings": [
+        "signal",
+        "together",
+        "hatch",
+        "reply",
+        "sunrise"
+      ],
+      "status": "pending",
+      "passed": null,
+      "notes": null
+    },
+    {
+      "id": "audio-balance",
+      "label": "Check music, dialogue blips, and sound-effect balance on the console speaker",
+      "status": "pending",
+      "passed": null,
+      "notes": null
+    },
+    {
+      "id": "cartridge-flashcart-used",
+      "label": "Record the cartridge or flashcart and firmware used",
+      "status": "pending",
+      "passed": null,
+      "notes": null
+    },
+    {
+      "id": "cartridge-label-recess-trim-bleed",
+      "label": "Measure the actual label recess and confirm trim and bleed before treating the cartridge-label art master as print-ready",
+      "status": "pending",
+      "passed": null,
+      "notes": null
+    }
+  ]
+}

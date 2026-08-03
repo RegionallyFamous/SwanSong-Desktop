@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "errors": [],
+  "generated_at_utc": "2026-07-16T00:12:35.160177+00:00",
+  "project": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+    "bytes": 122295,
+    "sha256": "d34a478b3d763f1dda0bb76a7ae76015952290d090ec95451f3a5b05c39119b3"
+  },
+  "renderer": {
+    "backend": "legacy-tracker-wavetable-audition",
+    "sample_rate": 22050,
+    "loops": 2,
+    "channels": 1,
+    "sample_width_bits": 16,
+    "note": "Offline audition mirrors the runtime's 32-sample wave shapes; hardware output and emulator mixing may differ."
+  },
+  "tracks": [
+    {
+      "id": "gm_title",
+      "name": "One Name Four Badges",
+      "bpm": 124,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/audio/01-gm_title.wav",
+      "bytes": 341464,
+      "sha256": "ced967c41c83b0b27e6ea0d637de9292aa528bfba84e77b6214181b72ddee096",
+      "duration_seconds": 7.742,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.196,
+        "near_silent_sample_share": 0.011845,
+        "max_loop_jump_linear": 0.037049
+      }
+    },
+    {
+      "id": "gm_main",
+      "name": "Identical Volunteers",
+      "bpm": 152,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/audio/02-gm_main.wav",
+      "bytes": 278570,
+      "sha256": "b059f595593df4f675b674125ea22f7f0e79574eb1f4ee33c5bca02fb0ee5750",
+      "duration_seconds": 6.316,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.202,
+        "near_silent_sample_share": 0.010254,
+        "max_loop_jump_linear": 0.048158
+      }
+    },
+    {
+      "id": "gm_end_a",
+      "name": "Accessory Exchange",
+      "bpm": 116,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/audio/03-gm_end_a.wav",
+      "bytes": 365010,
+      "sha256": "71a1d7120323256ded3e01ff9d0c8e70577556ee66399ccfeac0c519b6de82c2",
+      "duration_seconds": 8.276,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.196,
+        "near_silent_sample_share": 0.010741,
+        "max_loop_jump_linear": 0.104678
+      }
+    },
+    {
+      "id": "gm_end_b",
+      "name": "Everyone Answers",
+      "bpm": 128,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/audio/04-gm_end_b.wav",
+      "bytes": 330794,
+      "sha256": "6b29e6df27788229f0aee2ba519673323ef621c3e58c97dcffbb72298a185fc8",
+      "duration_seconds": 7.5,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.206,
+        "near_silent_sample_share": 0.010745,
+        "max_loop_jump_linear": 0.017548
+      }
+    }
+  ],
+  "cues": [
+    {
+      "node": "gm_title",
+      "node_name": "Gm Title",
+      "track": "gm_title"
+    },
+    {
+      "node": "gm_01",
+      "node_name": "Gm 01",
+      "track": "gm_main"
+    },
+    {
+      "node": "gm_a1",
+      "node_name": "Gm A1",
+      "track": "gm_end_a"
+    },
+    {
+      "node": "gm_b1",
+      "node_name": "Gm B1",
+      "track": "gm_end_b"
+    }
+  ]
+}

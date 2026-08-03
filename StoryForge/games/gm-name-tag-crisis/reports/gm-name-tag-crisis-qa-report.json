@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/contact_sheet.png",
+    "nodes": 37,
+    "flags": 0,
+    "tracks": [
+      {
+        "id": "gm_title",
+        "name": "One Name Four Badges",
+        "bpm": 124
+      },
+      {
+        "id": "gm_main",
+        "name": "Identical Volunteers",
+        "bpm": 152
+      },
+      {
+        "id": "gm_end_a",
+        "name": "Accessory Exchange",
+        "bpm": 116
+      },
+      {
+        "id": "gm_end_b",
+        "name": "Everyone Answers",
+        "bpm": 128
+      }
+    ],
+    "imagegen_source_sha256": {
+      "background_title_imagegen_v1.png": "b79d75ddfd15eafab1023f76faffd22f487686428bf5a68a6fafb0bc71199ef3",
+      "background_main_imagegen_v1.png": "70b4dd2b3b895b8949a9f3014b03f075d3abf4f4214ad17b5cc5689d9f182f77",
+      "background_ending_a_imagegen_v1.png": "b0647fe419bd741976f117702fc010a1156e551a62896a2f319488d1ca1955f7",
+      "background_ending_b_imagegen_v1.png": "d4556a83336659d90feaf290eb321faa7b54d749fabe4e25f8b28e4fbc65b3d9",
+      "character_master_cutout_imagegen_v1.png": "3f005fb58ce0e32c286a16737040ade063574c9ad66683d976803b533731acd1"
+    },
+    "source_master_count": 5,
+    "background_count": 4,
+    "character_frame_count": 3,
+    "art_policy": "ImageGen-first; no procedural pictorial fallback"
+  }
+}

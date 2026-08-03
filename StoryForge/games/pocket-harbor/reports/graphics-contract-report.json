@@ -1,0 +1,1736 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:10:42.041537+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets",
+    "thresholds": {
+      "screen": [
+        224,
+        144
+      ],
+      "character_max": [
+        96,
+        128
+      ],
+      "background_visible_colors_max": 16,
+      "character_visible_colors_max": 15,
+      "character_visible_colors_min": 6,
+      "character_tiles_max": 192,
+      "background_tiles_max": 511,
+      "alpha_coverage": [
+        0.2,
+        0.75
+      ],
+      "visible_above_textbox": [
+        0.52,
+        0.92
+      ],
+      "character_luma_stddev_min": 24.0,
+      "face_detail_box": [
+        28,
+        36,
+        68,
+        72
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "face_visible_colors_min": 4,
+      "face_luma_stddev_min": 18.0,
+      "animation_frames": [
+        "neutral",
+        "talk",
+        "blink"
+      ],
+      "hardware_char_anims": [
+        "blink",
+        "talking",
+        "talk-blink"
+      ],
+      "min_talk_frame_pixel_delta": 18,
+      "min_blink_frame_pixel_delta": 8,
+      "min_talk_face_pixel_delta": 18,
+      "min_blink_face_pixel_delta": 8,
+      "max_animation_alpha_changed": 0,
+      "max_animation_bbox_area": 1200,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_frame_center_drift": 0.04,
+      "max_frame_scale_drift": 0.08,
+      "min_scene_sprite_bg_luma_delta": 50.0,
+      "max_scene_bg_detail_under_sprite": 62.0
+    },
+    "backgrounds": {
+      "backgrounds/rain_counter.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 39.14,
+        "sha256": "c6365aeabe325126f517d2b68ed60ada2fb0e85c5222c067bec021ab1fdd753e"
+      },
+      "backgrounds/shelf_room.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 26.43,
+        "sha256": "aa137feea6b056d8652e149cd70bb947290d4fa245459de6aadead8035d259d4"
+      },
+      "backgrounds/swap_table.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 47.11,
+        "sha256": "c8024a42763d81d9fabf003b4397b0c3a836ecbd50bdc233f3d7bbcb9dbcf54b"
+      }
+    },
+    "characters": {
+      "characters/mina_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          6,
+          86,
+          125
+        ],
+        "alpha_coverage": 0.5506,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6166,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 59.8,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 76.27
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6766,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "652f27ad5a91b742275a59606bab75b5dd236c4930dc3178021091cfc0fe8cc5"
+      },
+      "characters/mina_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          6,
+          86,
+          125
+        ],
+        "alpha_coverage": 0.5506,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6166,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 58.31,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 75.48
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6766,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "dfca0f7a742e9e718bc435e263167d731d7964634aad733659ae360e4209f5e1"
+      },
+      "characters/mina_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          6,
+          86,
+          125
+        ],
+        "alpha_coverage": 0.5506,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6166,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 57.78,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 77.77
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6766,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "2a067219297652288d2a0efba00d96bddaa0bb285bc3f5ac48034134e9591638"
+      },
+      "characters/ren_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          7,
+          86,
+          125
+        ],
+        "alpha_coverage": 0.5413,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6061,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 59.17,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 74.05
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6652,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "bec91f13a2d81b1a6b3e2ce05eb9fb49e3f3423a810850f256edab4d32012e86"
+      },
+      "characters/ren_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          7,
+          86,
+          125
+        ],
+        "alpha_coverage": 0.5413,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6061,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 58.06,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 75.17
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6652,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "4bdb5053c0a0aa6bf137c3b26fce0337bf1caa22b0af40c644413c26ac06b783"
+      },
+      "characters/ren_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          7,
+          86,
+          125
+        ],
+        "alpha_coverage": 0.5413,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6061,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 56.85,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 75.85
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6652,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "d6015da912bce9606139d4789c3386ecacb058ba2682dd9637cf5289886346f7"
+      }
+    },
+    "sprite_families": {
+      "mina": {
+        "body": "mina",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/characters/mina_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                10,
+                6,
+                86,
+                125
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5117
+              ],
+              "bbox_size_norm": [
+                0.7917,
+                0.9297
+              ],
+              "bbox_area_ratio": 0.736
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/characters/mina_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                10,
+                6,
+                86,
+                125
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5117
+              ],
+              "bbox_size_norm": [
+                0.7917,
+                0.9297
+              ],
+              "bbox_area_ratio": 0.736
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 272,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                38,
+                56,
+                59,
+                72
+              ],
+              "changed_bbox_area": 336
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 272,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                10,
+                20,
+                31,
+                36
+              ],
+              "changed_bbox_area": 336
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/characters/mina_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                10,
+                6,
+                86,
+                125
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5117
+              ],
+              "bbox_size_norm": [
+                0.7917,
+                0.9297
+              ],
+              "bbox_area_ratio": 0.736
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 169,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                27,
+                31,
+                62,
+                42
+              ],
+              "changed_bbox_area": 385
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 169,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                3,
+                11,
+                38,
+                22
+              ],
+              "changed_bbox_area": 385
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      },
+      "ren": {
+        "body": "ren",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/characters/ren_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                10,
+                7,
+                86,
+                125
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5156
+              ],
+              "bbox_size_norm": [
+                0.7917,
+                0.9219
+              ],
+              "bbox_area_ratio": 0.7298
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/characters/ren_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                10,
+                7,
+                86,
+                125
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5156
+              ],
+              "bbox_size_norm": [
+                0.7917,
+                0.9219
+              ],
+              "bbox_area_ratio": 0.7298
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 306,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                38,
+                56,
+                59,
+                72
+              ],
+              "changed_bbox_area": 336
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 306,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                10,
+                20,
+                31,
+                36
+              ],
+              "changed_bbox_area": 336
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/characters/ren_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                10,
+                7,
+                86,
+                125
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5156
+              ],
+              "bbox_size_norm": [
+                0.7917,
+                0.9219
+              ],
+              "bbox_area_ratio": 0.7298
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 132,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                36,
+                33,
+                67,
+                44
+              ],
+              "changed_bbox_area": 341
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 132,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                12,
+                13,
+                43,
+                24
+              ],
+              "changed_bbox_area": 341
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      }
+    },
+    "sprite_approvals": {
+      "audition_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/auditions",
+      "approval_count": 1,
+      "covered_output_count": 6,
+      "covered_outputs": {
+        "characters/mina_blink.png": {
+          "approval": "games/pocket-harbor/assets/auditions/pocket-harbor-runtime_approval.json",
+          "sha256": "652f27ad5a91b742275a59606bab75b5dd236c4930dc3178021091cfc0fe8cc5"
+        },
+        "characters/mina_neutral.png": {
+          "approval": "games/pocket-harbor/assets/auditions/pocket-harbor-runtime_approval.json",
+          "sha256": "dfca0f7a742e9e718bc435e263167d731d7964634aad733659ae360e4209f5e1"
+        },
+        "characters/mina_talk.png": {
+          "approval": "games/pocket-harbor/assets/auditions/pocket-harbor-runtime_approval.json",
+          "sha256": "2a067219297652288d2a0efba00d96bddaa0bb285bc3f5ac48034134e9591638"
+        },
+        "characters/ren_blink.png": {
+          "approval": "games/pocket-harbor/assets/auditions/pocket-harbor-runtime_approval.json",
+          "sha256": "bec91f13a2d81b1a6b3e2ce05eb9fb49e3f3423a810850f256edab4d32012e86"
+        },
+        "characters/ren_neutral.png": {
+          "approval": "games/pocket-harbor/assets/auditions/pocket-harbor-runtime_approval.json",
+          "sha256": "4bdb5053c0a0aa6bf137c3b26fce0337bf1caa22b0af40c644413c26ac06b783"
+        },
+        "characters/ren_talk.png": {
+          "approval": "games/pocket-harbor/assets/auditions/pocket-harbor-runtime_approval.json",
+          "sha256": "d6015da912bce9606139d4789c3386ecacb058ba2682dd9637cf5289886346f7"
+        }
+      },
+      "missing_outputs": [],
+      "skipped": false
+    },
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json",
+      "ok": true,
+      "assets": {
+        "background_asset_count": 3,
+        "character_asset_count": 6,
+        "backgrounds": {
+          "bg_rain_counter": {
+            "origName": "rain_counter.png",
+            "rel_path": "backgrounds/rain_counter.png",
+            "exists": true
+          },
+          "bg_shelf_room": {
+            "origName": "shelf_room.png",
+            "rel_path": "backgrounds/shelf_room.png",
+            "exists": true
+          },
+          "bg_swap_table": {
+            "origName": "swap_table.png",
+            "rel_path": "backgrounds/swap_table.png",
+            "exists": true
+          }
+        },
+        "characters": {
+          "char_mina_blink": {
+            "origName": "mina_blink.png",
+            "rel_path": "characters/mina_blink.png",
+            "exists": true
+          },
+          "char_mina_neutral": {
+            "origName": "mina_neutral.png",
+            "rel_path": "characters/mina_neutral.png",
+            "exists": true
+          },
+          "char_mina_talk": {
+            "origName": "mina_talk.png",
+            "rel_path": "characters/mina_talk.png",
+            "exists": true
+          },
+          "char_ren_blink": {
+            "origName": "ren_blink.png",
+            "rel_path": "characters/ren_blink.png",
+            "exists": true
+          },
+          "char_ren_neutral": {
+            "origName": "ren_neutral.png",
+            "rel_path": "characters/ren_neutral.png",
+            "exists": true
+          },
+          "char_ren_talk": {
+            "origName": "ren_talk.png",
+            "rel_path": "characters/ren_talk.png",
+            "exists": true
+          }
+        }
+      },
+      "scene_wiring": {
+        "scene_count": 57,
+        "animated_scene_count": 57,
+        "character_reference_count": 171,
+        "background_reference_count": 57,
+        "scene_visual_count": 57,
+        "scenes": [
+          {
+            "id": "market_open",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 64.79,
+            "background_detail_under_sprite": 35.5
+          },
+          {
+            "id": "market_open__beat2",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 64.79,
+            "background_detail_under_sprite": 35.5
+          },
+          {
+            "id": "market_open__beat3",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 64.79,
+            "background_detail_under_sprite": 35.5
+          },
+          {
+            "id": "mina_rule",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 59.61,
+            "background_detail_under_sprite": 34.46
+          },
+          {
+            "id": "mina_rule__beat2",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 59.61,
+            "background_detail_under_sprite": 34.46
+          },
+          {
+            "id": "mina_rule__beat3",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 59.61,
+            "background_detail_under_sprite": 34.46
+          },
+          {
+            "id": "booth_glass",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 64.79,
+            "background_detail_under_sprite": 35.5
+          },
+          {
+            "id": "booth_glass__beat2",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 64.79,
+            "background_detail_under_sprite": 35.5
+          },
+          {
+            "id": "booth_glass__beat3",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 64.79,
+            "background_detail_under_sprite": 35.5
+          },
+          {
+            "id": "inspect_pins",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 59.61,
+            "background_detail_under_sprite": 34.46
+          },
+          {
+            "id": "inspect_pins__beat2",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 59.61,
+            "background_detail_under_sprite": 34.46
+          },
+          {
+            "id": "inspect_pins__beat3",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 59.61,
+            "background_detail_under_sprite": 34.46
+          },
+          {
+            "id": "ask_price",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 64.79,
+            "background_detail_under_sprite": 35.5
+          },
+          {
+            "id": "ask_price__beat2",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 64.79,
+            "background_detail_under_sprite": 35.5
+          },
+          {
+            "id": "ask_price__beat3",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 64.79,
+            "background_detail_under_sprite": 35.5
+          },
+          {
+            "id": "read_manual",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 59.61,
+            "background_detail_under_sprite": 34.46
+          },
+          {
+            "id": "read_manual__beat2",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 59.61,
+            "background_detail_under_sprite": 34.46
+          },
+          {
+            "id": "read_manual__beat3",
+            "bgImageId": "bg_rain_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 59.61,
+            "background_detail_under_sprite": 34.46
+          },
+          {
+            "id": "seller_trade",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 67.81,
+            "background_detail_under_sprite": 41.02
+          },
+          {
+            "id": "seller_trade__beat2",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 67.81,
+            "background_detail_under_sprite": 41.02
+          },
+          {
+            "id": "seller_trade__beat3",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 67.81,
+            "background_detail_under_sprite": 41.02
+          },
+          {
+            "id": "duplicate_cart",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 78.64,
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "duplicate_cart__beat2",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 78.64,
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "duplicate_cart__beat3",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 78.64,
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "trade_cart",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 78.64,
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "trade_cart__beat2",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 78.64,
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "trade_cart__beat3",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 78.64,
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "keep_cart",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 78.64,
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "keep_cart__beat2",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 78.64,
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "keep_cart__beat3",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 78.64,
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "help_buyer",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 67.81,
+            "background_detail_under_sprite": 41.02
+          },
+          {
+            "id": "help_buyer__beat2",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 67.81,
+            "background_detail_under_sprite": 41.02
+          },
+          {
+            "id": "help_buyer__beat3",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 67.81,
+            "background_detail_under_sprite": 41.02
+          },
+          {
+            "id": "last_call",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 67.81,
+            "background_detail_under_sprite": 41.02
+          },
+          {
+            "id": "last_call__beat2",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 67.81,
+            "background_detail_under_sprite": 41.02
+          },
+          {
+            "id": "last_call__beat3",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 67.81,
+            "background_detail_under_sprite": 41.02
+          },
+          {
+            "id": "boot_now",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 78.64,
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "boot_now__beat2",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 78.64,
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "boot_now__beat3",
+            "bgImageId": "bg_swap_table",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 78.64,
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "note_card",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 70.12,
+            "background_detail_under_sprite": 22.34
+          },
+          {
+            "id": "note_card__beat2",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 70.12,
+            "background_detail_under_sprite": 22.34
+          },
+          {
+            "id": "note_card__beat3",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 70.12,
+            "background_detail_under_sprite": 22.34
+          },
+          {
+            "id": "sleeve_home",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 65.06,
+            "background_detail_under_sprite": 39.26
+          },
+          {
+            "id": "sleeve_home__beat2",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 65.06,
+            "background_detail_under_sprite": 39.26
+          },
+          {
+            "id": "sleeve_home__beat3",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 65.06,
+            "background_detail_under_sprite": 39.26
+          },
+          {
+            "id": "shelf_home",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 70.12,
+            "background_detail_under_sprite": 22.34
+          },
+          {
+            "id": "shelf_home__beat2",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 70.12,
+            "background_detail_under_sprite": 22.34
+          },
+          {
+            "id": "shelf_home__beat3",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 70.12,
+            "background_detail_under_sprite": 22.34
+          },
+          {
+            "id": "end_first_cart",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 70.12,
+            "background_detail_under_sprite": 22.34
+          },
+          {
+            "id": "end_first_cart__beat2",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 70.12,
+            "background_detail_under_sprite": 22.34
+          },
+          {
+            "id": "end_first_cart__beat3",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 70.12,
+            "background_detail_under_sprite": 22.34
+          },
+          {
+            "id": "end_archive",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 70.12,
+            "background_detail_under_sprite": 22.34
+          },
+          {
+            "id": "end_archive__beat2",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 70.12,
+            "background_detail_under_sprite": 22.34
+          },
+          {
+            "id": "end_archive__beat3",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4032,
+            "sprite_bg_luma_delta": 70.12,
+            "background_detail_under_sprite": 22.34
+          },
+          {
+            "id": "end_market_runner",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 65.06,
+            "background_detail_under_sprite": 39.26
+          },
+          {
+            "id": "end_market_runner__beat2",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 65.06,
+            "background_detail_under_sprite": 39.26
+          },
+          {
+            "id": "end_market_runner__beat3",
+            "bgImageId": "bg_shelf_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 65.06,
+            "background_detail_under_sprite": 39.26
+          }
+        ],
+        "lowest_sprite_bg_contrast": [
+          {
+            "id": "inspect_pins",
+            "background": "bg_rain_counter",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 59.61
+          },
+          {
+            "id": "inspect_pins__beat2",
+            "background": "bg_rain_counter",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 59.61
+          },
+          {
+            "id": "inspect_pins__beat3",
+            "background": "bg_rain_counter",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 59.61
+          },
+          {
+            "id": "mina_rule",
+            "background": "bg_rain_counter",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 59.61
+          },
+          {
+            "id": "mina_rule__beat2",
+            "background": "bg_rain_counter",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 59.61
+          }
+        ],
+        "busiest_sprite_lanes": [
+          {
+            "id": "boot_now",
+            "background": "bg_swap_table",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "boot_now__beat2",
+            "background": "bg_swap_table",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "boot_now__beat3",
+            "background": "bg_swap_table",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "duplicate_cart",
+            "background": "bg_swap_table",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 42.3
+          },
+          {
+            "id": "duplicate_cart__beat2",
+            "background": "bg_swap_table",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 42.3
+          }
+        ]
+      }
+    },
+    "counts": {
+      "backgrounds": 3,
+      "characters": 6,
+      "sprite_families": 2,
+      "sprite_approval_outputs": 6,
+      "provenance_outputs": 9
+    }
+  }
+}

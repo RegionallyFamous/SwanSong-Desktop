@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:40:31.446152+00:00",
+  "errors": [],
+  "release_id": "20260727T024031Z-991341d1481d",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/releases/20260727T024031Z-991341d1481d",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/releases/20260727T024031Z-991341d1481d.zip",
+    "bytes": 14030563,
+    "sha256": "64ab27e7fd4d190c6565eb4cb48ec8284a696c27739de46d25886571a3c1d74c"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/releases/20260727T024031Z-991341d1481d/manifest.json",
+    "sha256": "07e92ec80e275fa284082c00d5ea9531056d4a461746b07cd567381005b31c12",
+    "files": 44
+  },
+  "rom_sha256": "991341d1481d69d4322d671848507da5f197f4c2b5c71ecfb3db8eadcace0805",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "eleven-bento-emergency",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/game-audit-report.json\nGame audit passed"
+  }
+}

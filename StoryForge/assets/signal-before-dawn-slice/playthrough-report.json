@@ -1,0 +1,1360 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-27T03:45:03.785125+00:00",
+  "errors": [],
+  "manifest": {
+    "absolute_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/playthrough-manifest.json",
+    "bytes": 20499,
+    "sha256": "5eb371007a93a92fa1085d53550ca5d6cba55eeaad84b22c701d7534a9052e28",
+    "path": "assets/signal-before-dawn-slice/playthrough-manifest.json"
+  },
+  "runtime": {
+    "final_rom": {
+      "absolute_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/signal-before-dawn-slice.wsc",
+      "bytes": 8388608,
+      "sha256": "a5210df80536d70c1fc5c51af161eb697beccd9fa32623d17b32a223aea3d524",
+      "path": "runtime-local/signal-before-dawn-slice.wsc"
+    },
+    "temporary_execution_rom": {
+      "absolute_path": "/private/tmp/signal-before-dawn-playtest-ixi6nak3/signal-before-dawn-slice.wsc",
+      "bytes": 8388608,
+      "sha256": "a5210df80536d70c1fc5c51af161eb697beccd9fa32623d17b32a223aea3d524",
+      "path": "/private/tmp/signal-before-dawn-playtest-ixi6nak3/signal-before-dawn-slice.wsc"
+    },
+    "capture_lua": {
+      "absolute_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/mesen_capture_wscvn.lua",
+      "bytes": 2277,
+      "sha256": "677f1205ea07f77cedb6868692f7ec508ed3254ba3c4aa3ae7a41341ea158460",
+      "path": "scripts/mesen_capture_wscvn.lua"
+    },
+    "mesen": {
+      "absolute_path": "/Applications/Mesen.app/Contents/MacOS/Mesen",
+      "bytes": 89751616,
+      "sha256": "ce4446a92096a024145e6ed2793cce8b489460bb3ac034cd9d1d77d96109fced",
+      "path": "/Applications/Mesen.app/Contents/MacOS/Mesen",
+      "version_query": "not used; this macOS build launches instead of returning for --version"
+    }
+  },
+  "routes": [
+    {
+      "route_id": "signal",
+      "ok": true,
+      "errors": [],
+      "story_path": [
+        "title",
+        "opening_watch",
+        "deck_open",
+        "lune_enters",
+        "first_choice",
+        "radio_tune",
+        "second_choice",
+        "route_check",
+        "signal_combo_check",
+        "lighthouse_signal",
+        "final_choice",
+        "beacon_answer",
+        "ending_signal",
+        "signal_coda"
+      ],
+      "decisions": [
+        "Tune the receiver",
+        "Go with this",
+        "Follow the light"
+      ],
+      "expected_coda": {
+        "node_id": "signal_coda",
+        "speaker": "Mira",
+        "dialogue": "Mira pockets the last flash. Somewhere below, a door unlocks."
+      },
+      "input_schedule": {
+        "press_duration_frames": 2,
+        "by_button": {
+          "a": [
+            60,
+            320,
+            620,
+            920,
+            1000,
+            1320,
+            1420,
+            1760,
+            1840,
+            2140,
+            2420
+          ],
+          "down": [
+            1360,
+            1380
+          ]
+        },
+        "events": [
+          {
+            "frame": 60,
+            "button": "A"
+          },
+          {
+            "frame": 320,
+            "button": "A"
+          },
+          {
+            "frame": 620,
+            "button": "A"
+          },
+          {
+            "frame": 920,
+            "button": "A"
+          },
+          {
+            "frame": 1000,
+            "button": "A"
+          },
+          {
+            "frame": 1320,
+            "button": "A"
+          },
+          {
+            "frame": 1360,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1380,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1420,
+            "button": "A"
+          },
+          {
+            "frame": 1760,
+            "button": "A"
+          },
+          {
+            "frame": 1840,
+            "button": "A"
+          },
+          {
+            "frame": 2140,
+            "button": "A"
+          },
+          {
+            "frame": 2420,
+            "button": "A"
+          }
+        ]
+      },
+      "capture_frame": 2800,
+      "process": {
+        "command": [
+          "/Applications/Mesen.app/Contents/MacOS/Mesen",
+          "--testRunner",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/mesen_capture_wscvn.lua",
+          "/private/tmp/signal-before-dawn-playtest-ixi6nak3/signal-before-dawn-slice.wsc",
+          "--debug.scriptWindow.allowIoOsAccess=true",
+          "--timeout=10"
+        ],
+        "environment": {
+          "WSCVN_SCREENSHOT": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-ending-signal.png",
+          "WSCVN_CAPTURE_FRAME": "2800",
+          "WSCVN_PRESS_DURATION": "2",
+          "WSCVN_PRESS_A_FRAMES": "60,320,620,920,1000,1320,1420,1760,1840,2140,2420",
+          "WSCVN_PRESS_DOWN_FRAMES": "1360,1380"
+        },
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 3.364105,
+        "stdout": "",
+        "stderr": ""
+      },
+      "screenshot_freshly_written": true,
+      "screenshot": {
+        "absolute_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-ending-signal.png",
+        "bytes": 9460,
+        "sha256": "214b1aa1147a894da0bec479bd6d7d9e55985e185d7771306b824dd60bad4547",
+        "path": "assets/signal-before-dawn-slice/emulator-ending-signal.png",
+        "media_type": "image/png",
+        "mode": "RGB",
+        "dimensions": [
+          237,
+          144
+        ],
+        "raw_rgb_sha256": "eeaaca9e0d1bfc4e34a6b59990a22019a0a5c093fc725926b112ffed474ca8a2",
+        "nonblank": {
+          "passed": true,
+          "method": "RGB color count plus grayscale range, variation, and dominant-color checks.",
+          "thresholds": {
+            "minimum_unique_rgb_colors": 16,
+            "minimum_luma_span": 64,
+            "minimum_luma_standard_deviation": 5.0,
+            "maximum_dominant_color_share": 0.98
+          },
+          "metrics": {
+            "unique_rgb_colors": 31,
+            "luma_min": 0,
+            "luma_max": 240,
+            "luma_span": 240,
+            "luma_mean": 46.440987,
+            "luma_standard_deviation": 57.025757,
+            "dominant_color_share": 0.228551
+          }
+        }
+      },
+      "manual_visual_review_binding": {
+        "status": "pass",
+        "method": "Exact PNG SHA-256 match to the manually inspected capture in the manifest.",
+        "approved_sha256": "214b1aa1147a894da0bec479bd6d7d9e55985e185d7771306b824dd60bad4547",
+        "observation": "Mira appears beside the lit lighthouse mechanism and the full Signal coda is visible.",
+        "visible_speaker": "Mira",
+        "visible_dialogue": "Mira pockets the last flash. Somewhere below, a door unlocks."
+      }
+    },
+    {
+      "route_id": "together",
+      "ok": true,
+      "errors": [],
+      "story_path": [
+        "title",
+        "opening_watch",
+        "deck_open",
+        "lune_enters",
+        "first_choice",
+        "radio_tune",
+        "second_choice",
+        "locker_second",
+        "third_choice",
+        "lune_third",
+        "route_check",
+        "signal_combo_check",
+        "signal_key_trust_check",
+        "all_clues",
+        "true_final_choice",
+        "together_answer",
+        "ending_together",
+        "together_coda"
+      ],
+      "decisions": [
+        "Tune the receiver",
+        "Try the brass key",
+        "Trust Lune",
+        "Answer together"
+      ],
+      "expected_coda": {
+        "node_id": "together_coda",
+        "speaker": "Lune",
+        "dialogue": "By sunrise, the ship has a new course and the sea remembers them."
+      },
+      "input_schedule": {
+        "press_duration_frames": 2,
+        "by_button": {
+          "a": [
+            60,
+            320,
+            620,
+            920,
+            1000,
+            1320,
+            1420,
+            1760,
+            1860,
+            2100,
+            2340,
+            2420,
+            2700,
+            2940
+          ]
+        },
+        "events": [
+          {
+            "frame": 60,
+            "button": "A"
+          },
+          {
+            "frame": 320,
+            "button": "A"
+          },
+          {
+            "frame": 620,
+            "button": "A"
+          },
+          {
+            "frame": 920,
+            "button": "A"
+          },
+          {
+            "frame": 1000,
+            "button": "A"
+          },
+          {
+            "frame": 1320,
+            "button": "A"
+          },
+          {
+            "frame": 1420,
+            "button": "A"
+          },
+          {
+            "frame": 1760,
+            "button": "A"
+          },
+          {
+            "frame": 1860,
+            "button": "A"
+          },
+          {
+            "frame": 2100,
+            "button": "A"
+          },
+          {
+            "frame": 2340,
+            "button": "A"
+          },
+          {
+            "frame": 2420,
+            "button": "A"
+          },
+          {
+            "frame": 2700,
+            "button": "A"
+          },
+          {
+            "frame": 2940,
+            "button": "A"
+          }
+        ]
+      },
+      "capture_frame": 3300,
+      "process": {
+        "command": [
+          "/Applications/Mesen.app/Contents/MacOS/Mesen",
+          "--testRunner",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/mesen_capture_wscvn.lua",
+          "/private/tmp/signal-before-dawn-playtest-ixi6nak3/signal-before-dawn-slice.wsc",
+          "--debug.scriptWindow.allowIoOsAccess=true",
+          "--timeout=10"
+        ],
+        "environment": {
+          "WSCVN_SCREENSHOT": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-ending-together.png",
+          "WSCVN_CAPTURE_FRAME": "3300",
+          "WSCVN_PRESS_DURATION": "2",
+          "WSCVN_PRESS_A_FRAMES": "60,320,620,920,1000,1320,1420,1760,1860,2100,2340,2420,2700,2940"
+        },
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 3.162769,
+        "stdout": "",
+        "stderr": ""
+      },
+      "screenshot_freshly_written": true,
+      "screenshot": {
+        "absolute_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-ending-together.png",
+        "bytes": 8331,
+        "sha256": "c49a5705871de630d456660bb9f67b3d2e6ea9021f74b92d1a516cdbeb82eb62",
+        "path": "assets/signal-before-dawn-slice/emulator-ending-together.png",
+        "media_type": "image/png",
+        "mode": "RGB",
+        "dimensions": [
+          237,
+          144
+        ],
+        "raw_rgb_sha256": "627579a840c38750f383439ec131fb62a5911e51414fc03c4c240e7f2d2c7809",
+        "nonblank": {
+          "passed": true,
+          "method": "RGB color count plus grayscale range, variation, and dominant-color checks.",
+          "thresholds": {
+            "minimum_unique_rgb_colors": 16,
+            "minimum_luma_span": 64,
+            "minimum_luma_standard_deviation": 5.0,
+            "maximum_dominant_color_share": 0.98
+          },
+          "metrics": {
+            "unique_rgb_colors": 33,
+            "luma_min": 0,
+            "luma_max": 240,
+            "luma_span": 240,
+            "luma_mean": 97.203733,
+            "luma_standard_deviation": 74.084699,
+            "dominant_color_share": 0.227086
+          }
+        }
+      },
+      "manual_visual_review_binding": {
+        "status": "pass",
+        "method": "Exact PNG SHA-256 match to the manually inspected capture in the manifest.",
+        "approved_sha256": "c49a5705871de630d456660bb9f67b3d2e6ea9021f74b92d1a516cdbeb82eb62",
+        "observation": "Lune appears on the sunrise deck and the full Together coda is visible.",
+        "visible_speaker": "Lune",
+        "visible_dialogue": "By sunrise, the ship has a new course and the sea remembers them."
+      }
+    },
+    {
+      "route_id": "hatch",
+      "ok": true,
+      "errors": [],
+      "story_path": [
+        "title",
+        "opening_watch",
+        "deck_open",
+        "lune_enters",
+        "first_choice",
+        "locker",
+        "second_choice",
+        "route_check",
+        "key_combo_check",
+        "under_hatch",
+        "final_choice",
+        "hatch_room_wakes",
+        "ending_hatch",
+        "hatch_coda"
+      ],
+      "decisions": [
+        "Open the brass locker",
+        "Go with this",
+        "Unlock the hatch"
+      ],
+      "expected_coda": {
+        "node_id": "hatch_coda",
+        "speaker": "Lune",
+        "dialogue": "Lune steps in first. The machine writes tomorrow across the wall."
+      },
+      "input_schedule": {
+        "press_duration_frames": 2,
+        "by_button": {
+          "a": [
+            60,
+            320,
+            620,
+            920,
+            1000,
+            1320,
+            1420,
+            1760,
+            1840,
+            2140,
+            2420
+          ],
+          "down": [
+            960,
+            1360,
+            1380
+          ]
+        },
+        "events": [
+          {
+            "frame": 60,
+            "button": "A"
+          },
+          {
+            "frame": 320,
+            "button": "A"
+          },
+          {
+            "frame": 620,
+            "button": "A"
+          },
+          {
+            "frame": 920,
+            "button": "A"
+          },
+          {
+            "frame": 960,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1000,
+            "button": "A"
+          },
+          {
+            "frame": 1320,
+            "button": "A"
+          },
+          {
+            "frame": 1360,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1380,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1420,
+            "button": "A"
+          },
+          {
+            "frame": 1760,
+            "button": "A"
+          },
+          {
+            "frame": 1840,
+            "button": "A"
+          },
+          {
+            "frame": 2140,
+            "button": "A"
+          },
+          {
+            "frame": 2420,
+            "button": "A"
+          }
+        ]
+      },
+      "capture_frame": 2800,
+      "process": {
+        "command": [
+          "/Applications/Mesen.app/Contents/MacOS/Mesen",
+          "--testRunner",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/mesen_capture_wscvn.lua",
+          "/private/tmp/signal-before-dawn-playtest-ixi6nak3/signal-before-dawn-slice.wsc",
+          "--debug.scriptWindow.allowIoOsAccess=true",
+          "--timeout=10"
+        ],
+        "environment": {
+          "WSCVN_SCREENSHOT": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-ending-hatch.png",
+          "WSCVN_CAPTURE_FRAME": "2800",
+          "WSCVN_PRESS_DURATION": "2",
+          "WSCVN_PRESS_A_FRAMES": "60,320,620,920,1000,1320,1420,1760,1840,2140,2420",
+          "WSCVN_PRESS_DOWN_FRAMES": "960,1360,1380"
+        },
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 2.655244,
+        "stdout": "",
+        "stderr": ""
+      },
+      "screenshot_freshly_written": true,
+      "screenshot": {
+        "absolute_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-ending-hatch.png",
+        "bytes": 13089,
+        "sha256": "87647196448ae811807e4d2c25e1987b5681df94b004abbdf4a0ee8e2edf39f9",
+        "path": "assets/signal-before-dawn-slice/emulator-ending-hatch.png",
+        "media_type": "image/png",
+        "mode": "RGB",
+        "dimensions": [
+          237,
+          144
+        ],
+        "raw_rgb_sha256": "fda2e338d47b65168edbdd10fb4321eac94946dae13739b8ed4dd82c90eb0f96",
+        "nonblank": {
+          "passed": true,
+          "method": "RGB color count plus grayscale range, variation, and dominant-color checks.",
+          "thresholds": {
+            "minimum_unique_rgb_colors": 16,
+            "minimum_luma_span": 64,
+            "minimum_luma_standard_deviation": 5.0,
+            "maximum_dominant_color_share": 0.98
+          },
+          "metrics": {
+            "unique_rgb_colors": 32,
+            "luma_min": 0,
+            "luma_max": 240,
+            "luma_span": 240,
+            "luma_mean": 54.308281,
+            "luma_standard_deviation": 57.519066,
+            "dominant_color_share": 0.227526
+          }
+        }
+      },
+      "manual_visual_review_binding": {
+        "status": "pass",
+        "method": "Exact PNG SHA-256 match to the manually inspected capture in the manifest.",
+        "approved_sha256": "87647196448ae811807e4d2c25e1987b5681df94b004abbdf4a0ee8e2edf39f9",
+        "observation": "Lune, the brass key, and the open hatch appear with the full Hatch coda.",
+        "visible_speaker": "Lune",
+        "visible_dialogue": "Lune steps in first. The machine writes tomorrow across the wall."
+      }
+    },
+    {
+      "route_id": "reply",
+      "ok": true,
+      "errors": [],
+      "story_path": [
+        "title",
+        "opening_watch",
+        "deck_open",
+        "lune_enters",
+        "first_choice",
+        "wake_lune",
+        "second_choice",
+        "route_check",
+        "shared_clue",
+        "final_choice",
+        "lune_reply",
+        "ending_lune",
+        "lune_coda"
+      ],
+      "decisions": [
+        "Wake Lune properly",
+        "Go with this",
+        "Let Lune answer"
+      ],
+      "expected_coda": {
+        "node_id": "lune_coda",
+        "speaker": "Lune",
+        "dialogue": "The answer repeats their names, softer each time, until dawn keeps it."
+      },
+      "input_schedule": {
+        "press_duration_frames": 2,
+        "by_button": {
+          "a": [
+            60,
+            320,
+            620,
+            920,
+            1000,
+            1320,
+            1420,
+            1760,
+            1840,
+            2140,
+            2420
+          ],
+          "down": [
+            960,
+            980,
+            1360,
+            1380
+          ]
+        },
+        "events": [
+          {
+            "frame": 60,
+            "button": "A"
+          },
+          {
+            "frame": 320,
+            "button": "A"
+          },
+          {
+            "frame": 620,
+            "button": "A"
+          },
+          {
+            "frame": 920,
+            "button": "A"
+          },
+          {
+            "frame": 960,
+            "button": "DOWN"
+          },
+          {
+            "frame": 980,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1000,
+            "button": "A"
+          },
+          {
+            "frame": 1320,
+            "button": "A"
+          },
+          {
+            "frame": 1360,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1380,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1420,
+            "button": "A"
+          },
+          {
+            "frame": 1760,
+            "button": "A"
+          },
+          {
+            "frame": 1840,
+            "button": "A"
+          },
+          {
+            "frame": 2140,
+            "button": "A"
+          },
+          {
+            "frame": 2420,
+            "button": "A"
+          }
+        ]
+      },
+      "capture_frame": 2800,
+      "process": {
+        "command": [
+          "/Applications/Mesen.app/Contents/MacOS/Mesen",
+          "--testRunner",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/mesen_capture_wscvn.lua",
+          "/private/tmp/signal-before-dawn-playtest-ixi6nak3/signal-before-dawn-slice.wsc",
+          "--debug.scriptWindow.allowIoOsAccess=true",
+          "--timeout=10"
+        ],
+        "environment": {
+          "WSCVN_SCREENSHOT": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-ending-reply.png",
+          "WSCVN_CAPTURE_FRAME": "2800",
+          "WSCVN_PRESS_DURATION": "2",
+          "WSCVN_PRESS_A_FRAMES": "60,320,620,920,1000,1320,1420,1760,1840,2140,2420",
+          "WSCVN_PRESS_DOWN_FRAMES": "960,980,1360,1380"
+        },
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 2.64795,
+        "stdout": "",
+        "stderr": ""
+      },
+      "screenshot_freshly_written": true,
+      "screenshot": {
+        "absolute_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-ending-reply.png",
+        "bytes": 9475,
+        "sha256": "e710cccc76f2910a50177d34d36595e903f6e2b51f2602e696afcd11e86422e4",
+        "path": "assets/signal-before-dawn-slice/emulator-ending-reply.png",
+        "media_type": "image/png",
+        "mode": "RGB",
+        "dimensions": [
+          237,
+          144
+        ],
+        "raw_rgb_sha256": "533fc3ed744f56e88254599ed2601d89363724e7b41d15798d743d59ea43507c",
+        "nonblank": {
+          "passed": true,
+          "method": "RGB color count plus grayscale range, variation, and dominant-color checks.",
+          "thresholds": {
+            "minimum_unique_rgb_colors": 16,
+            "minimum_luma_span": 64,
+            "minimum_luma_standard_deviation": 5.0,
+            "maximum_dominant_color_share": 0.98
+          },
+          "metrics": {
+            "unique_rgb_colors": 33,
+            "luma_min": 0,
+            "luma_max": 240,
+            "luma_span": 240,
+            "luma_mean": 88.8641,
+            "luma_standard_deviation": 74.306004,
+            "dominant_color_share": 0.224918
+          }
+        }
+      },
+      "manual_visual_review_binding": {
+        "status": "pass",
+        "method": "Exact PNG SHA-256 match to the manually inspected capture in the manifest.",
+        "approved_sha256": "e710cccc76f2910a50177d34d36595e903f6e2b51f2602e696afcd11e86422e4",
+        "observation": "Lune appears at the sunrise rail and the full Reply coda is visible.",
+        "visible_speaker": "Lune",
+        "visible_dialogue": "The answer repeats their names, softer each time, until dawn keeps it."
+      }
+    },
+    {
+      "route_id": "sunrise",
+      "ok": true,
+      "errors": [],
+      "story_path": [
+        "title",
+        "opening_watch",
+        "deck_open",
+        "lune_enters",
+        "first_choice",
+        "quiet_deck",
+        "second_choice",
+        "route_check",
+        "sunrise_wait",
+        "ending_sunrise",
+        "sunrise_coda"
+      ],
+      "decisions": [
+        "Stay quiet and listen",
+        "Go with this"
+      ],
+      "expected_coda": {
+        "node_id": "sunrise_coda",
+        "speaker": "Mira",
+        "dialogue": "They leave the radio on. By noon, it will be quiet enough to miss."
+      },
+      "input_schedule": {
+        "press_duration_frames": 2,
+        "by_button": {
+          "a": [
+            60,
+            320,
+            620,
+            920,
+            1020,
+            1320,
+            1420,
+            1760,
+            2140
+          ],
+          "down": [
+            960,
+            980,
+            1000,
+            1360,
+            1380,
+            1400
+          ]
+        },
+        "events": [
+          {
+            "frame": 60,
+            "button": "A"
+          },
+          {
+            "frame": 320,
+            "button": "A"
+          },
+          {
+            "frame": 620,
+            "button": "A"
+          },
+          {
+            "frame": 920,
+            "button": "A"
+          },
+          {
+            "frame": 960,
+            "button": "DOWN"
+          },
+          {
+            "frame": 980,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1000,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1020,
+            "button": "A"
+          },
+          {
+            "frame": 1320,
+            "button": "A"
+          },
+          {
+            "frame": 1360,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1380,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1400,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1420,
+            "button": "A"
+          },
+          {
+            "frame": 1760,
+            "button": "A"
+          },
+          {
+            "frame": 2140,
+            "button": "A"
+          }
+        ]
+      },
+      "capture_frame": 2600,
+      "process": {
+        "command": [
+          "/Applications/Mesen.app/Contents/MacOS/Mesen",
+          "--testRunner",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/mesen_capture_wscvn.lua",
+          "/private/tmp/signal-before-dawn-playtest-ixi6nak3/signal-before-dawn-slice.wsc",
+          "--debug.scriptWindow.allowIoOsAccess=true",
+          "--timeout=10"
+        ],
+        "environment": {
+          "WSCVN_SCREENSHOT": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-ending-sunrise.png",
+          "WSCVN_CAPTURE_FRAME": "2600",
+          "WSCVN_PRESS_DURATION": "2",
+          "WSCVN_PRESS_A_FRAMES": "60,320,620,920,1020,1320,1420,1760,2140",
+          "WSCVN_PRESS_DOWN_FRAMES": "960,980,1000,1360,1380,1400"
+        },
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 2.515951,
+        "stdout": "",
+        "stderr": ""
+      },
+      "screenshot_freshly_written": true,
+      "screenshot": {
+        "absolute_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-ending-sunrise.png",
+        "bytes": 7873,
+        "sha256": "e0b2d12c7400afcd0d91439b708c598d4b7c360195bac00ffddb3653125e9df3",
+        "path": "assets/signal-before-dawn-slice/emulator-ending-sunrise.png",
+        "media_type": "image/png",
+        "mode": "RGB",
+        "dimensions": [
+          237,
+          144
+        ],
+        "raw_rgb_sha256": "c648041094fb705ee8d12e65820accf7bb0b6badff0702985289626f93b6596a",
+        "nonblank": {
+          "passed": true,
+          "method": "RGB color count plus grayscale range, variation, and dominant-color checks.",
+          "thresholds": {
+            "minimum_unique_rgb_colors": 16,
+            "minimum_luma_span": 64,
+            "minimum_luma_standard_deviation": 5.0,
+            "maximum_dominant_color_share": 0.98
+          },
+          "metrics": {
+            "unique_rgb_colors": 34,
+            "luma_min": 0,
+            "luma_max": 240,
+            "luma_span": 240,
+            "luma_mean": 95.24663,
+            "luma_standard_deviation": 72.772549,
+            "dominant_color_share": 0.228581
+          }
+        }
+      },
+      "manual_visual_review_binding": {
+        "status": "pass",
+        "method": "Exact PNG SHA-256 match to the manually inspected capture in the manifest.",
+        "approved_sha256": "e0b2d12c7400afcd0d91439b708c598d4b7c360195bac00ffddb3653125e9df3",
+        "observation": "Mira appears on the sunrise deck and the full Sunrise coda is visible.",
+        "visible_speaker": "Mira",
+        "visible_dialogue": "They leave the radio on. By noon, it will be quiet enough to miss."
+      }
+    }
+  ],
+  "save_load_smoke": {
+    "case_id": "save-load-slot-1",
+    "status": "pass",
+    "ok": true,
+    "pending_reasons": [],
+    "single_mesen_process": true,
+    "steps": [
+      {
+        "frame": 60,
+        "button": "A",
+        "action": "Begin a new game."
+      },
+      {
+        "frame": 320,
+        "button": "START",
+        "action": "Open the in-game menu on Final Watch."
+      },
+      {
+        "frame": 350,
+        "button": "A",
+        "action": "Choose Save Game, the default menu item."
+      },
+      {
+        "frame": 390,
+        "button": "A",
+        "action": "Write slot 1, the default save slot."
+      },
+      {
+        "frame": 550,
+        "button": "START",
+        "action": "Reopen the in-game menu after save confirmation."
+      },
+      {
+        "frame": 600,
+        "button": "DOWN",
+        "action": "Select Load Game."
+      },
+      {
+        "frame": 650,
+        "button": "A",
+        "action": "Open the load-slot overlay."
+      },
+      {
+        "frame": 720,
+        "button": "A",
+        "action": "Load slot 1 in the same Mesen process."
+      },
+      {
+        "frame": 1000,
+        "action": "Capture the restored Final Watch scene."
+      }
+    ],
+    "expected_saved_slot": {
+      "slot": 1,
+      "node_id": 1,
+      "node": "opening_watch",
+      "node_name": "Final Watch",
+      "save_magic": "0x5756",
+      "save_version": 5
+    },
+    "input_schedule": {
+      "press_duration_frames": 2,
+      "by_button": {
+        "a": [
+          60,
+          350,
+          390,
+          650,
+          720
+        ],
+        "down": [
+          600
+        ],
+        "start": [
+          320,
+          550
+        ]
+      },
+      "events": [
+        {
+          "frame": 60,
+          "button": "A"
+        },
+        {
+          "frame": 320,
+          "button": "START"
+        },
+        {
+          "frame": 350,
+          "button": "A"
+        },
+        {
+          "frame": 390,
+          "button": "A"
+        },
+        {
+          "frame": 550,
+          "button": "START"
+        },
+        {
+          "frame": 600,
+          "button": "DOWN"
+        },
+        {
+          "frame": 650,
+          "button": "A"
+        },
+        {
+          "frame": 720,
+          "button": "A"
+        }
+      ]
+    },
+    "capture_frame": 1000,
+    "process": {
+      "attempted": true,
+      "count": 1,
+      "command": [
+        "/Applications/Mesen.app/Contents/MacOS/Mesen",
+        "--testRunner",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/mesen_capture_wscvn.lua",
+        "/private/tmp/signal-before-dawn-playtest-ixi6nak3/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.wsc",
+        "--debug.scriptWindow.allowIoOsAccess=true",
+        "--timeout=10"
+      ],
+      "environment": {
+        "WSCVN_SCREENSHOT": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-save-load.png",
+        "WSCVN_CAPTURE_FRAME": "1000",
+        "WSCVN_PRESS_DURATION": "2",
+        "WSCVN_PRESS_A_FRAMES": "60,350,390,650,720",
+        "WSCVN_PRESS_DOWN_FRAMES": "600",
+        "WSCVN_PRESS_START_FRAMES": "320,550"
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 1.128253,
+      "stdout": "",
+      "stderr": ""
+    },
+    "execution_rom": {
+      "absolute_path": "/private/tmp/signal-before-dawn-playtest-ixi6nak3/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.wsc",
+      "bytes": 8388608,
+      "sha256": "a5210df80536d70c1fc5c51af161eb697beccd9fa32623d17b32a223aea3d524",
+      "path": "/private/tmp/signal-before-dawn-playtest-ixi6nak3/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.wsc"
+    },
+    "sram_session": {
+      "isolation_method": "fresh randomized execution-ROM basename",
+      "rom_basename": "signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.wsc",
+      "preexisting_scratch_paths": [],
+      "scratch_artifacts_recorded_before_cleanup": {
+        "save_ram": {
+          "absolute_path": "/Users/nick/Library/Application Support/MesenCE/Saves/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.sav",
+          "bytes": 262144,
+          "sha256": "474cbf2cd4968767a0d06ae0d69b41512061f9cb72d7dcdf44fbd9720debaadb",
+          "path": "/Users/nick/Library/Application Support/MesenCE/Saves/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.sav"
+        },
+        "internal_eeprom": {
+          "absolute_path": "/Users/nick/Library/Application Support/MesenCE/Saves/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.ieeprom",
+          "bytes": 2048,
+          "sha256": "2bda73dcf0c49b411e1bca22bac56eaa0d3114120b9d1d26240e46885d253fbf",
+          "path": "/Users/nick/Library/Application Support/MesenCE/Saves/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.ieeprom"
+        },
+        "debugger_code_data_log": {
+          "absolute_path": "/Users/nick/Library/Application Support/MesenCE/Debugger/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.cdl",
+          "bytes": 8388617,
+          "sha256": "9ca96416d4c299080de4bfc1d5bd1b156a1ace8a267303834afabf89e4f9f0dd",
+          "path": "/Users/nick/Library/Application Support/MesenCE/Debugger/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.cdl"
+        }
+      },
+      "slot_1_evidence": {
+        "slot": 1,
+        "store_offset_bytes": 196608,
+        "slot_offset_bytes": 196630,
+        "magic": "0x5756",
+        "version": 5,
+        "node_id": 1,
+        "node": "opening_watch",
+        "node_name": "Final Watch",
+        "flag_count": 3,
+        "flags": [
+          0,
+          0,
+          0
+        ],
+        "stored_checksum": "0xf20b",
+        "calculated_checksum": "0xf20b",
+        "checksum_valid": true
+      },
+      "cleanup": {
+        "method": "move-to-temporary-run-directory",
+        "moved_paths": [
+          {
+            "source": "/Users/nick/Library/Application Support/MesenCE/Saves/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.sav",
+            "destination": "/private/tmp/signal-before-dawn-playtest-ixi6nak3/mesen-scratch-quarantine/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.sav"
+          },
+          {
+            "source": "/Users/nick/Library/Application Support/MesenCE/Saves/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.ieeprom",
+            "destination": "/private/tmp/signal-before-dawn-playtest-ixi6nak3/mesen-scratch-quarantine/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.ieeprom"
+          },
+          {
+            "source": "/Users/nick/Library/Application Support/MesenCE/Debugger/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.cdl",
+            "destination": "/private/tmp/signal-before-dawn-playtest-ixi6nak3/mesen-scratch-quarantine/signal-before-dawn-save-load-signal-before-dawn-playtest-ixi6nak3.cdl"
+          }
+        ],
+        "errors": [],
+        "remaining_paths": [],
+        "passed": true
+      }
+    },
+    "screenshot_freshly_written": true,
+    "screenshot": {
+      "absolute_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-save-load.png",
+      "bytes": 11601,
+      "sha256": "44e123b652ac58d00b5a18723457997ece84738e415119c4c3c59f78deb8a335",
+      "path": "assets/signal-before-dawn-slice/emulator-save-load.png",
+      "media_type": "image/png",
+      "mode": "RGB",
+      "dimensions": [
+        237,
+        144
+      ],
+      "raw_rgb_sha256": "aed0f2538f3b4784445954b92ae57bab2556613bde23c212fd51ec966bce318c",
+      "nonblank": {
+        "passed": true,
+        "method": "RGB color count plus grayscale range, variation, and dominant-color checks.",
+        "thresholds": {
+          "minimum_unique_rgb_colors": 16,
+          "minimum_luma_span": 64,
+          "minimum_luma_standard_deviation": 5.0,
+          "maximum_dominant_color_share": 0.98
+        },
+        "metrics": {
+          "unique_rgb_colors": 31,
+          "luma_min": 0,
+          "luma_max": 240,
+          "luma_span": 240,
+          "luma_mean": 49.860203,
+          "luma_standard_deviation": 58.362728,
+          "dominant_color_share": 0.235965
+        }
+      }
+    },
+    "manual_visual_review_binding": {
+      "status": "pass",
+      "method": "Exact PNG SHA-256 match to the manually inspected restored scene in the manifest.",
+      "approved_sha256": "44e123b652ac58d00b5a18723457997ece84738e415119c4c3c59f78deb8a335",
+      "observation": "The restored Final Watch scene shows Mira on the moonlit deck with its full opening dialogue.",
+      "visible_speaker": "Mira",
+      "visible_dialogue": "Dawn ends Mira's final watch. If the signal is real, she has one hour."
+    },
+    "checks": {
+      "one_mesen_process": true,
+      "process_exited_zero": true,
+      "no_preexisting_matching_sram": true,
+      "slot_1_checksum_and_node_valid": true,
+      "screenshot_freshly_written": true,
+      "screenshot_nonblank": true,
+      "screenshot_matches_reviewed_hash": true,
+      "scratch_cleanup_passed": true
+    }
+  },
+  "distinctness": {
+    "file_sha256_by_route": {
+      "signal": "214b1aa1147a894da0bec479bd6d7d9e55985e185d7771306b824dd60bad4547",
+      "together": "c49a5705871de630d456660bb9f67b3d2e6ea9021f74b92d1a516cdbeb82eb62",
+      "hatch": "87647196448ae811807e4d2c25e1987b5681df94b004abbdf4a0ee8e2edf39f9",
+      "reply": "e710cccc76f2910a50177d34d36595e903f6e2b51f2602e696afcd11e86422e4",
+      "sunrise": "e0b2d12c7400afcd0d91439b708c598d4b7c360195bac00ffddb3653125e9df3"
+    },
+    "raw_rgb_sha256_by_route": {
+      "signal": "eeaaca9e0d1bfc4e34a6b59990a22019a0a5c093fc725926b112ffed474ca8a2",
+      "together": "627579a840c38750f383439ec131fb62a5911e51414fc03c4c240e7f2d2c7809",
+      "hatch": "fda2e338d47b65168edbdd10fb4321eac94946dae13739b8ed4dd82c90eb0f96",
+      "reply": "533fc3ed744f56e88254599ed2601d89363724e7b41d15798d743d59ea43507c",
+      "sunrise": "c648041094fb705ee8d12e65820accf7bb0b6badff0702985289626f93b6596a"
+    },
+    "pairwise_pixel_comparisons": [
+      {
+        "routes": [
+          "signal",
+          "together"
+        ],
+        "comparable": true,
+        "dimensions": [
+          237,
+          144
+        ],
+        "differing_pixels": 31764,
+        "differing_pixel_share": 0.930731
+      },
+      {
+        "routes": [
+          "signal",
+          "hatch"
+        ],
+        "comparable": true,
+        "dimensions": [
+          237,
+          144
+        ],
+        "differing_pixels": 31773,
+        "differing_pixel_share": 0.930995
+      },
+      {
+        "routes": [
+          "signal",
+          "reply"
+        ],
+        "comparable": true,
+        "dimensions": [
+          237,
+          144
+        ],
+        "differing_pixels": 31754,
+        "differing_pixel_share": 0.930438
+      },
+      {
+        "routes": [
+          "signal",
+          "sunrise"
+        ],
+        "comparable": true,
+        "dimensions": [
+          237,
+          144
+        ],
+        "differing_pixels": 24161,
+        "differing_pixel_share": 0.707952
+      },
+      {
+        "routes": [
+          "together",
+          "hatch"
+        ],
+        "comparable": true,
+        "dimensions": [
+          237,
+          144
+        ],
+        "differing_pixels": 21310,
+        "differing_pixel_share": 0.624414
+      },
+      {
+        "routes": [
+          "together",
+          "reply"
+        ],
+        "comparable": true,
+        "dimensions": [
+          237,
+          144
+        ],
+        "differing_pixels": 9358,
+        "differing_pixel_share": 0.274203
+      },
+      {
+        "routes": [
+          "together",
+          "sunrise"
+        ],
+        "comparable": true,
+        "dimensions": [
+          237,
+          144
+        ],
+        "differing_pixels": 13502,
+        "differing_pixel_share": 0.395628
+      },
+      {
+        "routes": [
+          "hatch",
+          "reply"
+        ],
+        "comparable": true,
+        "dimensions": [
+          237,
+          144
+        ],
+        "differing_pixels": 24227,
+        "differing_pixel_share": 0.709886
+      },
+      {
+        "routes": [
+          "hatch",
+          "sunrise"
+        ],
+        "comparable": true,
+        "dimensions": [
+          237,
+          144
+        ],
+        "differing_pixels": 31809,
+        "differing_pixel_share": 0.93205
+      },
+      {
+        "routes": [
+          "reply",
+          "sunrise"
+        ],
+        "comparable": true,
+        "dimensions": [
+          237,
+          144
+        ],
+        "differing_pixels": 17660,
+        "differing_pixel_share": 0.517464
+      }
+    ]
+  },
+  "checks": {
+    "preflight_inputs_match_manifest": true,
+    "all_five_routes_executed": true,
+    "all_five_route_processes_exited_zero": true,
+    "all_five_route_screenshots_freshly_written": true,
+    "all_five_route_screenshots_nonblank": true,
+    "all_screenshot_file_hashes_distinct": true,
+    "all_screenshot_pixel_hashes_distinct": true,
+    "all_ten_screenshot_pairs_have_differing_pixels": true,
+    "all_five_route_visual_reviews_bound_by_exact_hash": true,
+    "save_load_status_pass": true,
+    "save_load_one_mesen_process": true,
+    "save_load_process_exited_zero": true,
+    "save_load_started_without_matching_sram": true,
+    "save_load_slot_1_checksum_and_node_valid": true,
+    "save_load_screenshot_freshly_written": true,
+    "save_load_screenshot_nonblank": true,
+    "save_load_visual_review_bound_by_exact_hash": true,
+    "save_load_scratch_cleanup_passed": true
+  },
+  "limitations": [
+    "The existing Lua capture API does not expose the current VN node ID. Route identity is established by the audited input schedule and an exact hash match to each manually reviewed visible coda.",
+    "The runner does not OCR screenshots. The visible speaker and dialogue records are human review notes bound to immutable screenshot SHA-256 values.",
+    "The restored save/load screenshot is visually identical to an ordinary Final Watch frame at the same global capture frame. Save/load proof therefore also requires a fresh random ROM basename, the one-process overlay schedule, and a checksum-valid slot-1 record for opening_watch parsed from Mesen's emitted save RAM.",
+    "This Mesen build writes save RAM under its global application-support folder even when given a temporary ROM. The runner records and then moves only scratch files carrying its unique random ROM basename into the temporary run directory.",
+    "Mesen emits an uninitialized-memory-read warning at $01FC8 for this ROM while still exiting successfully and producing deterministic captures.",
+    "Mesen's PNGs are 237x144 on this build; the report records the actual emulator output dimensions without cropping or resampling."
+  ]
+}

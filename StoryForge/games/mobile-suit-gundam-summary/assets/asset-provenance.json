@@ -1,0 +1,711 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-22T20:00:00-05:00",
+  "art_policy": "Every production master was generated with built-in ImageGen; local code only removes chroma, crops, resizes, quantizes, snaps RGB444, derives sensor animation, and assembles review evidence.",
+  "prompt_record": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/imagegen-prompts-v2.md",
+  "source_masters": {
+    "background_title_imagegen_v1.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_title_imagegen_v1.png",
+      "sha256": "12cf618490a5cb324be188004d86a90d4faa6c6efe4917a70843b7ec54aa29dd"
+    },
+    "background_main_imagegen_v1.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_main_imagegen_v1.png",
+      "sha256": "d7af7de7ed5a8e090a7e79bd0f451617329df92d212accaf10e2f7974176b241"
+    },
+    "background_ending_a_imagegen_v1.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_ending_a_imagegen_v1.png",
+      "sha256": "e6052c7fbac3053645b40fe8bd6756d91d10dd7e98e15319e15fc419a53aff7a"
+    },
+    "background_ending_b_imagegen_v1.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_ending_b_imagegen_v1.png",
+      "sha256": "7b47a1162288c29d5f30e94287633f2134b05dc82e7f0b01892f0707f64e7b9a"
+    },
+    "docent-rx78-cutout-imagegen-v1.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-rx78-cutout-imagegen-v1.png",
+      "sha256": "68620bbdd0947dd45471bd91b810cae4764a88c4affa37a43b92fd2f2f178f31"
+    },
+    "docent-zaku-cutout-imagegen-v1.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-zaku-cutout-imagegen-v1.png",
+      "sha256": "69e14eaba286ea68f7b2df41b2caf415ac7de226f22d3b3da3bbf327c1d5d2bd"
+    },
+    "background_ticket_imagegen_v2.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_ticket_imagegen_v2.png",
+      "sha256": "c0c5acf46b437e296a6d76e8e55eaa4ea50382db2e4d445579042ffa60db4226"
+    },
+    "background_side7_imagegen_v2.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_side7_imagegen_v2.png",
+      "sha256": "c475947cbe3ba9053bebc071e315c036541db47a8529e52ae9ba1928b5092835"
+    },
+    "background_whitebase_imagegen_v2.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_whitebase_imagegen_v2.png",
+      "sha256": "b5054232d5e23837c049c6c0cb593b309fa48c62778dae06310b012ca24ec903"
+    },
+    "background_odessa_imagegen_v2.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_odessa_imagegen_v2.png",
+      "sha256": "40c453899b42a05179163adb4d724f833b33ea505bcbbe0206aea1c56b11e2d8"
+    },
+    "background_miharu_imagegen_v2.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_miharu_imagegen_v2.png",
+      "sha256": "87c3ada84edad9e6ea37346d9a51a38e57efc405a6c47731054f3ed686fc62cc"
+    },
+    "background_side6_imagegen_v2.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_side6_imagegen_v2.png",
+      "sha256": "3db5b730dc4632d736a82823963172cc5243c0a76d4a98c2d3d75bfc2b0bd568"
+    },
+    "background_solomon_imagegen_v2.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_solomon_imagegen_v2.png",
+      "sha256": "7ab9397160ae1ec72d1da0da15fdcd39889a3844a7fd1f37a0b77bcd5e098af9"
+    },
+    "background_solar_ray_imagegen_v2.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_solar_ray_imagegen_v2.png",
+      "sha256": "8b72225fb5c82f37ccb2571b89809793ecb77226d9a1286fb8586a63caf1f919"
+    },
+    "background_home_people_imagegen_v2.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_home_people_imagegen_v2.png",
+      "sha256": "4391ef8d83dcc56263139e010501c44668afd9cebb483fe1bc8752d64f4161d5"
+    },
+    "background_home_power_imagegen_v2.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_home_power_imagegen_v2.png",
+      "sha256": "95f3493aebc80e0dadec59501b4e491762e88428de47780fe53fdbdd3e7de63a"
+    },
+    "docent-rx78-ticket-cutout-imagegen-v2.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-rx78-ticket-cutout-imagegen-v2.png",
+      "sha256": "5877c47a7ab3e324cee13003362735189e76c302f06adb3062f8253686d9a44c"
+    },
+    "docent-zaku-pointer-cutout-imagegen-v2.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-zaku-pointer-cutout-imagegen-v2.png",
+      "sha256": "b1d52b19f9abf18b9cfe8eee78b481e8fac424cdf628d05bce760fe890e40324"
+    },
+    "docent-rx78-ticket-imagegen-v2.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-rx78-ticket-imagegen-v2.png",
+      "sha256": "ce7496024881ec603fff2353301fc469818a6f281c12824a31b72fc9d5c065bd"
+    },
+    "docent-zaku-pointer-imagegen-v2.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-zaku-pointer-imagegen-v2.png",
+      "sha256": "7a7ba5ca37d4990f08f5de9a0192a467c59d2a94e98ce9d312821ab6beef0946"
+    },
+    "docent-rx78-imagegen-v1.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-rx78-imagegen-v1.png",
+      "sha256": "c6760ec309fce4971f75143a0a23ac28ae97eee1b2b3af3bf8d461ed163feb19"
+    },
+    "docent-zaku-imagegen-v1.png": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-zaku-imagegen-v1.png",
+      "sha256": "a7b578c65db15bf4c1984f93f95073ea69ea795e0b6660e401755d52f49b20bd"
+    }
+  },
+  "outputs": {
+    "backgrounds/bg_title.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_title_imagegen_v1.png",
+      "source_sha256": "12cf618490a5cb324be188004d86a90d4faa6c6efe4917a70843b7ec54aa29dd",
+      "output_sha256": "44869fdda1094cec21e78a13ca28feabe1fc2121f8f32cac9201288a6e351c1c",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 38.02
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_main.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_main_imagegen_v1.png",
+      "source_sha256": "d7af7de7ed5a8e090a7e79bd0f451617329df92d212accaf10e2f7974176b241",
+      "output_sha256": "b251ce8d39721883ae0d8f52127e05b583ae4109c0b781411011ef27774a3862",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 25.37
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_a.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_ending_a_imagegen_v1.png",
+      "source_sha256": "e6052c7fbac3053645b40fe8bd6756d91d10dd7e98e15319e15fc419a53aff7a",
+      "output_sha256": "1771dd6860c3a2261303253b0554813b6e107d8b43b06090f9df632deb908a45",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 30.38
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_b.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_ending_b_imagegen_v1.png",
+      "source_sha256": "7b47a1162288c29d5f30e94287633f2134b05dc82e7f0b01892f0707f64e7b9a",
+      "output_sha256": "86dd18e6de4e0652b04b9c87602e5ad489b20abb3bf93394b368b1a59fbc1355",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 90.42
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_ticket.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_ticket_imagegen_v2.png",
+      "source_sha256": "c0c5acf46b437e296a6d76e8e55eaa4ea50382db2e4d445579042ffa60db4226",
+      "output_sha256": "4f431e632230964bd76d21cca5e2eb81d9e2822c39f7fcc4d0d398e0c3d6a039",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 11,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 24.95
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_side7.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_side7_imagegen_v2.png",
+      "source_sha256": "c475947cbe3ba9053bebc071e315c036541db47a8529e52ae9ba1928b5092835",
+      "output_sha256": "6cd5ea9fb07b6912a7d824670c18793a5ff9aeab474983f94f8b5ce9ef522d7a",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 8,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 21.23
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_whitebase.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_whitebase_imagegen_v2.png",
+      "source_sha256": "b5054232d5e23837c049c6c0cb593b309fa48c62778dae06310b012ca24ec903",
+      "output_sha256": "bd6e7444c8357da25a56063d9cce15646276ae9f4a764ea6b04d17f095da9181",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 27.57
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_odessa.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_odessa_imagegen_v2.png",
+      "source_sha256": "40c453899b42a05179163adb4d724f833b33ea505bcbbe0206aea1c56b11e2d8",
+      "output_sha256": "4a70d92ecdd6c51dfc07218365668d492a500d4367a168d02724eaa694a14753",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 24.66
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_miharu.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_miharu_imagegen_v2.png",
+      "source_sha256": "87c3ada84edad9e6ea37346d9a51a38e57efc405a6c47731054f3ed686fc62cc",
+      "output_sha256": "b8a5f4b1e865bbb4b9000ff2bed348c0837c5bb7f1b07a612ae06f3ab3373616",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 9,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 23.74
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_side6.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_side6_imagegen_v2.png",
+      "source_sha256": "3db5b730dc4632d736a82823963172cc5243c0a76d4a98c2d3d75bfc2b0bd568",
+      "output_sha256": "a13ce0720db0434dc4e31d27656d9ce4c8fbaf72554f5e870c59fd2d5cf2b321",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 8,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 22.32
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_solomon.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_solomon_imagegen_v2.png",
+      "source_sha256": "7ab9397160ae1ec72d1da0da15fdcd39889a3844a7fd1f37a0b77bcd5e098af9",
+      "output_sha256": "642133f496aaecaad6d7d99a019886be4fe00d460f29e31ec9c556db4a4d63f0",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 24.23
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_solar_ray.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_solar_ray_imagegen_v2.png",
+      "source_sha256": "8b72225fb5c82f37ccb2571b89809793ecb77226d9a1286fb8586a63caf1f919",
+      "output_sha256": "eeae7a730f1747006603592e82a67a8445c63a957aef18a65417e3f33f2a3327",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 9,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 25.87
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_home_people.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_home_people_imagegen_v2.png",
+      "source_sha256": "4391ef8d83dcc56263139e010501c44668afd9cebb483fe1bc8752d64f4161d5",
+      "output_sha256": "1fb3a5c9cccba6b44f3bc47ea4f2cf63722672ac2cec5e3e6fd05bd37550024f",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 43.22
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_home_power.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/background_home_power_imagegen_v2.png",
+      "source_sha256": "95f3493aebc80e0dadec59501b4e491762e88428de47780fe53fdbdd3e7de63a",
+      "output_sha256": "2017ee0b922f32e7f9981f542480a19f261770e2e25b7211011e6e16c053af90",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 9,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 25.09
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "characters/rx78_neutral.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-rx78-cutout-imagegen-v1.png",
+      "source_sha256": "68620bbdd0947dd45471bd91b810cae4764a88c4affa37a43b92fd2f2f178f31",
+      "output_sha256": "9be8df30379d94635b52a8db39bf4ff62d1e23c01cf0e6d6fe6acd71f4f2ab01",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          3,
+          3,
+          93,
+          127
+        ],
+        "alpha_coverage": 0.4967,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7524,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 70.74,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 70.9
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6103,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/rx78_blink.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-rx78-cutout-imagegen-v1.png",
+      "source_sha256": "68620bbdd0947dd45471bd91b810cae4764a88c4affa37a43b92fd2f2f178f31",
+      "output_sha256": "1ea6d24a598325c3f18fefbb07fab8bc9ade586b94564a2c7b69977c9469c4d6",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          3,
+          3,
+          93,
+          127
+        ],
+        "alpha_coverage": 0.4967,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7524,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 71.81,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 72.59
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6103,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/zaku_neutral.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-zaku-cutout-imagegen-v1.png",
+      "source_sha256": "69e14eaba286ea68f7b2df41b2caf415ac7de226f22d3b3da3bbf327c1d5d2bd",
+      "output_sha256": "8484ea882c90e55ed09f8db11b0d96193805b462f5e3faaf561d5dd28356dc68",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          3,
+          25,
+          93,
+          127
+        ],
+        "alpha_coverage": 0.4189,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7072,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 53.79,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 56.17
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5147,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/zaku_blink.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-zaku-cutout-imagegen-v1.png",
+      "source_sha256": "69e14eaba286ea68f7b2df41b2caf415ac7de226f22d3b3da3bbf327c1d5d2bd",
+      "output_sha256": "db356b85e688502cfcf587c28c3363d7f23f40e715b26070b40ae4c655f77938",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          3,
+          25,
+          93,
+          127
+        ],
+        "alpha_coverage": 0.4189,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7072,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 53.82,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 56.26
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5147,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/rx78_ticket_neutral.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-rx78-ticket-cutout-imagegen-v2.png",
+      "source_sha256": "5877c47a7ab3e324cee13003362735189e76c302f06adb3062f8253686d9a44c",
+      "output_sha256": "38328c1ebfe00224deefe98a3a68436a01847603ceced3deaa261e78e329b10f",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          4,
+          3,
+          92,
+          127
+        ],
+        "alpha_coverage": 0.508,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7634,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 73.53,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 73.92
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6242,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/rx78_ticket_blink.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-rx78-ticket-cutout-imagegen-v2.png",
+      "source_sha256": "5877c47a7ab3e324cee13003362735189e76c302f06adb3062f8253686d9a44c",
+      "output_sha256": "4d171df6229eacb6c7ffda335e3d6de991527a31c5d9eab98bd55c33ecd5e6fa",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          4,
+          3,
+          92,
+          127
+        ],
+        "alpha_coverage": 0.508,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7634,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 74.63,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 75.7
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6242,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/zaku_pointer_neutral.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-zaku-pointer-cutout-imagegen-v2.png",
+      "source_sha256": "b1d52b19f9abf18b9cfe8eee78b481e8fac424cdf628d05bce760fe890e40324",
+      "output_sha256": "e4afecea404a2f2cdecd54d2c5a89d866cf2a3ecc282a2035c8b0d1ddd92ffa2",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          3,
+          15,
+          93,
+          127
+        ],
+        "alpha_coverage": 0.4884,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7347,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 52.82,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 53.65
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6001,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/zaku_pointer_blink.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/docent-zaku-pointer-cutout-imagegen-v2.png",
+      "source_sha256": "b1d52b19f9abf18b9cfe8eee78b481e8fac424cdf628d05bce760fe890e40324",
+      "output_sha256": "51f5184aaebb93516f8a4790843e9387c4a0183f91f94830198bea1f2582c052",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          3,
+          15,
+          93,
+          127
+        ],
+        "alpha_coverage": 0.4884,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7347,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 52.84,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 53.67
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6001,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    }
+  }
+}

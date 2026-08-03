@@ -1,0 +1,625 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:37:07.255801+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "doms-soup-route",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/projects/doms-soup-route.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/projects/doms-soup-route.wscvn.json",
+      "bytes": 174041,
+      "sha256": "22aae2b3e7a965c0b81a0e16e45ade72de7cba34c4d10235967c472f55914265"
+    },
+    "project_counts": {
+      "name": "Dom's Soup Route",
+      "nodes": 37,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 37,
+      "scene_nodes": 33,
+      "staged_scenes": 29,
+      "animated_staged_scenes": 29,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Coordinator",
+        "Custodian",
+        "Lead Dom",
+        "Narrator",
+        "Second Dom",
+        "Third Dom",
+        "Volunteer"
+      ],
+      "backgrounds_used": [
+        "bg_end_a",
+        "bg_end_b",
+        "bg_main",
+        "bg_title"
+      ],
+      "ending_scenes": [
+        "dom_c4",
+        "dom_d4"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 37,
+      "start_node": "dom_title"
+    },
+    "routes": {
+      "initial_flags": {},
+      "states_explored": 37,
+      "truncated": false,
+      "route_reachable_nodes": 37,
+      "route_reachable_ending_scenes": [
+        "dom_c4",
+        "dom_d4"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "dom_a1",
+        "dom_b1",
+        "dom_c1",
+        "dom_d1"
+      ],
+      "selectable_choice_targets": [
+        "dom_a1",
+        "dom_b1",
+        "dom_c1",
+        "dom_d1"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": []
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Single-file handoff / Verify quiet Room 3B",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1907,
+          "estimated_minutes_at_140_wpm": 13.62
+        },
+        {
+          "route_id": "route-2",
+          "label": "Single-file handoff / Serve Laundry Club",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1897,
+          "estimated_minutes_at_140_wpm": 13.55
+        },
+        {
+          "route_id": "route-3",
+          "label": "Jet Stream Delivery / Verify quiet Room 3B",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1907,
+          "estimated_minutes_at_140_wpm": 13.62
+        },
+        {
+          "route_id": "route-4",
+          "label": "Jet Stream Delivery / Serve Laundry Club",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1897,
+          "estimated_minutes_at_140_wpm": 13.55
+        }
+      ]
+    },
+    "text": {
+      "blocks": 227,
+      "max_pause_block_chars": 99,
+      "choice_labels": 4,
+      "max_choice_label_chars": 20,
+      "max_choice_prompt_chars": 25,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 14,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 20,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_title",
+        "orig_name": "bg_title.png",
+        "embedded_sha256": "976d27c3b3f1a392113626b82b1b3bec114d845380bb6c8eedfa82d64fd186ee",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/backgrounds/bg_title.png",
+        "local_sha256": "976d27c3b3f1a392113626b82b1b3bec114d845380bb6c8eedfa82d64fd186ee"
+      },
+      {
+        "id": "bg_main",
+        "orig_name": "bg_main.png",
+        "embedded_sha256": "f6940ca70cc4c987f2d587edce3e8a24749290935a018ea52c3b171434e556bf",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/backgrounds/bg_main.png",
+        "local_sha256": "f6940ca70cc4c987f2d587edce3e8a24749290935a018ea52c3b171434e556bf"
+      },
+      {
+        "id": "bg_end_a",
+        "orig_name": "bg_end_a.png",
+        "embedded_sha256": "7edc37520874a0954729b166f91d795648f870df0610c23e2f50699b7116c322",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/backgrounds/bg_end_a.png",
+        "local_sha256": "7edc37520874a0954729b166f91d795648f870df0610c23e2f50699b7116c322"
+      },
+      {
+        "id": "bg_end_b",
+        "orig_name": "bg_end_b.png",
+        "embedded_sha256": "11da623deca8d8a10ff93d8f15060f0cd1d86fd8c61ee8d9f2ffd8966ce40e98",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/backgrounds/bg_end_b.png",
+        "local_sha256": "11da623deca8d8a10ff93d8f15060f0cd1d86fd8c61ee8d9f2ffd8966ce40e98"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_dom_neutral",
+        "orig_name": "dom_neutral.png",
+        "embedded_sha256": "dbad2a79f50719df2412bd1260431c4f61817800fe653cecf187515b0e984adc",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5439,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/characters/dom_neutral.png",
+        "local_sha256": "dbad2a79f50719df2412bd1260431c4f61817800fe653cecf187515b0e984adc"
+      },
+      {
+        "id": "char_dom_talk",
+        "orig_name": "dom_talk.png",
+        "embedded_sha256": "74f94fc6e9354f23483d2a65c553ab977793adfb0d2e911c3148ed02fe0fe674",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5439,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/characters/dom_talk.png",
+        "local_sha256": "74f94fc6e9354f23483d2a65c553ab977793adfb0d2e911c3148ed02fe0fe674"
+      },
+      {
+        "id": "char_dom_blink",
+        "orig_name": "dom_blink.png",
+        "embedded_sha256": "720acfa6a4c743fd93381130f49611c02ff73128caa7470d521734962a70046f",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5439,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/characters/dom_blink.png",
+        "local_sha256": "720acfa6a4c743fd93381130f49611c02ff73128caa7470d521734962a70046f"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_title",
+          "textbox_mean_luma": 91.962,
+          "textbox_luma_stddev": 35.836,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_main",
+          "textbox_mean_luma": 114.348,
+          "textbox_luma_stddev": 44.495,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_a",
+          "textbox_mean_luma": 127.317,
+          "textbox_luma_stddev": 52.642,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_b",
+          "textbox_mean_luma": 116.67,
+          "textbox_luma_stddev": 37.591,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 29,
+      "families": [
+        {
+          "neutral": "char_dom_neutral",
+          "talk": "char_dom_talk",
+          "blink": "char_dom_blink",
+          "talk_face_delta": 2.005,
+          "blink_face_delta": 0.0,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 118,
+            "changed_bbox": [
+              35,
+              22,
+              54,
+              45
+            ],
+            "changed_bbox_area": 437,
+            "changed_region_share": 0.035563,
+            "global_changed_share": 0.009603,
+            "face_changed_pixels": 75,
+            "face_changed_share": 0.035511,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 43,
+            "outside_face_changed_share": 0.004226
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 38,
+            "changed_bbox": [
+              46,
+              22,
+              53,
+              30
+            ],
+            "changed_bbox_area": 56,
+            "changed_region_share": 0.004557,
+            "global_changed_share": 0.003092,
+            "face_changed_pixels": 0,
+            "face_changed_share": 0.0,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 38,
+            "outside_face_changed_share": 0.003734
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources",
+      "count": 6,
+      "packaged_file_count": 8,
+      "background_source_count": 4,
+      "character_source_count": 2,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/background_ending_a_imagegen_v1.png",
+          "bytes": 2336711,
+          "sha256": "5222dca3d43e19bf10b2ede495222fdfbf822c56d21f0aba2c88e0390436049d",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/background_ending_b_imagegen_v1.png",
+          "bytes": 2096029,
+          "sha256": "57b0add8577d17a789d8d62d38c65b2469025d59ef8c17e939416af41072bafa",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/background_main_imagegen_v1.png",
+          "bytes": 1869633,
+          "sha256": "0082f372112c2ae33ff235629b332ebadb65ea18071bd69cf3f16956b76f5613",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/background_title_imagegen_v1.png",
+          "bytes": 2056448,
+          "sha256": "c8e828f22e3c9ab46db893a4d01dc69cbbda67925c1356d6877ccba6e19fc3e6",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/character_master_cutout_imagegen_v1.png",
+          "bytes": 1246629,
+          "sha256": "7a614532f45ca1435c71a39336e89e769b9bfa869c369bafe56bb2748d5d67b6",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1024,
+            1536
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/character_master_imagegen_v1.png",
+          "bytes": 1761192,
+          "sha256": "dc04625cd5b283db3b6ec0613b9d7e7b6f7e3e12e3215d0462da01e4f9cad436",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1024,
+            1536
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/game_spec.json",
+          "bytes": 20818,
+          "sha256": "5a6a81420afcd438e2981d6b9759e73834d28ca01898f9e374ea4a993b4c9282",
+          "categories": []
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/imagegen-prompts-v1.md",
+          "bytes": 8732,
+          "sha256": "dd579879bffab63248f8099731d099666bd5d82b10e8a6087589845730bedc1d",
+          "categories": []
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 69982,
+      "sha256": "ffece9ddff12801b305754bb1f3ddfd524b2c742d8b3c75f20607a76f9dcf8bc",
+      "size": [
+        478,
+        510
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 204922,
+        "sha256": "b63d37567f396cb1e82ded0516ef3b2a5a6b4c1f125fb60521abef159c0e7a14",
+        "size": [
+          712,
+          2050
+        ],
+        "mode": "RGB",
+        "unique_colors": 265,
+        "luma_stddev": 72.375
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 71882,
+        "sha256": "d740d4772904a6ebc00ee1dd096d45d07d3853e983cd6bf6fd46812a6ef29730",
+        "size": [
+          488,
+          872
+        ],
+        "mode": "RGB",
+        "unique_colors": 265,
+        "luma_stddev": 69.481
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 20067,
+        "sha256": "14706b3f87d346b2aa90e7b6b6648ba637a3ad71d56f47b250fc8bda256fd62b",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/projects/doms-soup-route.wscvn.json",
+          "exists": true,
+          "bytes": 174041,
+          "sha256": "22aae2b3e7a965c0b81a0e16e45ade72de7cba34c4d10235967c472f55914265"
+        },
+        "nodes_rendered": 36,
+        "preview_node_ids": [
+          "dom_title",
+          "dom_01",
+          "dom_02",
+          "dom_03",
+          "dom_04",
+          "dom_05",
+          "dom_06",
+          "dom_07",
+          "dom_08",
+          "dom_09",
+          "dom_10",
+          "dom_choice_1",
+          "dom_a1",
+          "dom_a2",
+          "dom_a3",
+          "dom_a4",
+          "dom_b1",
+          "dom_b2",
+          "dom_b3",
+          "dom_b4",
+          "dom_11",
+          "dom_12",
+          "dom_13",
+          "dom_14",
+          "dom_15",
+          "dom_16",
+          "dom_17",
+          "dom_choice_2",
+          "dom_c1",
+          "dom_c2",
+          "dom_c3",
+          "dom_c4",
+          "dom_d1",
+          "dom_d2",
+          "dom_d3",
+          "dom_d4"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 36,
+            "expected": 36
+          },
+          "storyboard_cells": {
+            "reported": 36,
+            "expected": 36
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/reports/doms-soup-route-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

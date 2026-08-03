@@ -1,0 +1,624 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:38:45.354290+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "eleven-bento-emergency",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+      "bytes": 201064,
+      "sha256": "c788d1ee469021dc33367ff5f10c65a26e083b9892957be0ba22c72653570592"
+    },
+    "project_counts": {
+      "name": "Eleven Bento Emergency",
+      "nodes": 37,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 37,
+      "scene_nodes": 33,
+      "staged_scenes": 29,
+      "animated_staged_scenes": 29,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Aerial",
+        "Darilbalde",
+        "Lunch Monitor",
+        "Mechanic",
+        "Narrator",
+        "SYSTEM"
+      ],
+      "backgrounds_used": [
+        "bg_end_a",
+        "bg_end_b",
+        "bg_main",
+        "bg_title"
+      ],
+      "ending_scenes": [
+        "bento_c4",
+        "bento_d4"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 37,
+      "start_node": "bento_title"
+    },
+    "routes": {
+      "initial_flags": {},
+      "states_explored": 37,
+      "truncated": false,
+      "route_reachable_nodes": 37,
+      "route_reachable_ending_scenes": [
+        "bento_c4",
+        "bento_d4"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "bento_a1",
+        "bento_b1",
+        "bento_c1",
+        "bento_d1"
+      ],
+      "selectable_choice_targets": [
+        "bento_a1",
+        "bento_b1",
+        "bento_c1",
+        "bento_d1"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": []
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Rebuild lunch shield / Open pudding shield",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1902,
+          "estimated_minutes_at_140_wpm": 13.59
+        },
+        {
+          "route_id": "route-2",
+          "label": "Rebuild lunch shield / Let every Bit choose",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1920,
+          "estimated_minutes_at_140_wpm": 13.71
+        },
+        {
+          "route_id": "route-3",
+          "label": "Release roaming buffet / Open pudding shield",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1909,
+          "estimated_minutes_at_140_wpm": 13.64
+        },
+        {
+          "route_id": "route-4",
+          "label": "Release roaming buffet / Let every Bit choose",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1927,
+          "estimated_minutes_at_140_wpm": 13.76
+        }
+      ]
+    },
+    "text": {
+      "blocks": 233,
+      "max_pause_block_chars": 98,
+      "choice_labels": 4,
+      "max_choice_label_chars": 22,
+      "max_choice_prompt_chars": 24,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 13,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 24,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_title",
+        "orig_name": "bg_title.png",
+        "embedded_sha256": "93e366ecd3373d6042a700476e0ba7ba43273347693819531c47e122ae30e405",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/backgrounds/bg_title.png",
+        "local_sha256": "93e366ecd3373d6042a700476e0ba7ba43273347693819531c47e122ae30e405"
+      },
+      {
+        "id": "bg_main",
+        "orig_name": "bg_main.png",
+        "embedded_sha256": "e31338e1216f8686e26d1f6dd9489b20c99966c371a152289c96b6d132645b7d",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/backgrounds/bg_main.png",
+        "local_sha256": "e31338e1216f8686e26d1f6dd9489b20c99966c371a152289c96b6d132645b7d"
+      },
+      {
+        "id": "bg_end_a",
+        "orig_name": "bg_end_a.png",
+        "embedded_sha256": "18d2e3131233fb3bcb773573fce4d69a4010a3f10b995b576ad3ce53d668c474",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/backgrounds/bg_end_a.png",
+        "local_sha256": "18d2e3131233fb3bcb773573fce4d69a4010a3f10b995b576ad3ce53d668c474"
+      },
+      {
+        "id": "bg_end_b",
+        "orig_name": "bg_end_b.png",
+        "embedded_sha256": "b635f4d569eaa512ece1537541cb6070c0122b05e207150f9dd6c565cd2e8502",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/backgrounds/bg_end_b.png",
+        "local_sha256": "b635f4d569eaa512ece1537541cb6070c0122b05e207150f9dd6c565cd2e8502"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_aerial_neutral",
+        "orig_name": "aerial_neutral.png",
+        "embedded_sha256": "4cf017b85b86c6ce59d95fec3b884a882da7394978bd7aac35d4f390f81db832",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4441,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/characters/aerial_neutral.png",
+        "local_sha256": "4cf017b85b86c6ce59d95fec3b884a882da7394978bd7aac35d4f390f81db832"
+      },
+      {
+        "id": "char_aerial_talk",
+        "orig_name": "aerial_talk.png",
+        "embedded_sha256": "73654df0e874565409003f692b79d8174780f4b0f31b2f648fc8cd6a07e44f27",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4441,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/characters/aerial_talk.png",
+        "local_sha256": "73654df0e874565409003f692b79d8174780f4b0f31b2f648fc8cd6a07e44f27"
+      },
+      {
+        "id": "char_aerial_blink",
+        "orig_name": "aerial_blink.png",
+        "embedded_sha256": "df1d28cfa92da556de93154db4d16725f75eda1a5275a69fa60e48561be673e5",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4441,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/characters/aerial_blink.png",
+        "local_sha256": "df1d28cfa92da556de93154db4d16725f75eda1a5275a69fa60e48561be673e5"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_title",
+          "textbox_mean_luma": 168.8,
+          "textbox_luma_stddev": 52.898,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_main",
+          "textbox_mean_luma": 194.757,
+          "textbox_luma_stddev": 36.071,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_a",
+          "textbox_mean_luma": 117.168,
+          "textbox_luma_stddev": 68.917,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_b",
+          "textbox_mean_luma": 182.761,
+          "textbox_luma_stddev": 72.054,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 29,
+      "families": [
+        {
+          "neutral": "char_aerial_neutral",
+          "talk": "char_aerial_talk",
+          "blink": "char_aerial_blink",
+          "talk_face_delta": 1.568,
+          "blink_face_delta": 3.531,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 66,
+            "changed_bbox": [
+              37,
+              37,
+              59,
+              46
+            ],
+            "changed_bbox_area": 198,
+            "changed_region_share": 0.016113,
+            "global_changed_share": 0.005371,
+            "face_changed_pixels": 66,
+            "face_changed_share": 0.03125,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 92,
+            "changed_bbox": [
+              37,
+              37,
+              60,
+              46
+            ],
+            "changed_bbox_area": 207,
+            "changed_region_share": 0.016846,
+            "global_changed_share": 0.007487,
+            "face_changed_pixels": 92,
+            "face_changed_share": 0.043561,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/sources",
+      "count": 6,
+      "packaged_file_count": 8,
+      "background_source_count": 4,
+      "character_source_count": 2,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/sources/background_ending_a_imagegen_v1.png",
+          "bytes": 2297690,
+          "sha256": "37c8e617f8357a3141c07f99c3a34c27ad0e9a79340cb5ea21ffea9dbb32e204",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1567,
+            1004
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/sources/background_ending_b_imagegen_v1.png",
+          "bytes": 2395748,
+          "sha256": "10eeeead0f6e757ccebca93ac269f332649aad20fcfd5b8badb0fcd6781882a0",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/sources/background_main_imagegen_v1.png",
+          "bytes": 2418199,
+          "sha256": "7bad9fe04512463e68f957bf2da6b7e3007276dffe84e79d25745ad65f25cae5",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1561,
+            1008
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/sources/background_title_imagegen_v1.png",
+          "bytes": 2352858,
+          "sha256": "9b40c009f84055c2aca55a87535766e9f064922d721b99285eaa540c0784dace",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1565,
+            1005
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/sources/character_master_cutout_imagegen_v1.png",
+          "bytes": 1094328,
+          "sha256": "2d5d1eba94a629a3a75e969d0571926210b6c5fe7f0fc79f06a50788b72b96f1",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1086,
+            1448
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/sources/character_master_imagegen_v1.png",
+          "bytes": 1686528,
+          "sha256": "2a24e3ee45294a7ede911b586e26946978a2b1bd07e1ddb1905a56260fa00cbb",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1086,
+            1448
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/sources/game_spec.json",
+          "bytes": 21800,
+          "sha256": "e7dfc7c22682e45f21cb965003bfb58f3879933b0e15cc048f58a4c590e78bbe",
+          "categories": []
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/sources/imagegen-prompts-v1.md",
+          "bytes": 10562,
+          "sha256": "b726a03a99b6d436847490cf5444d684997eb3fa7fe9568082489902285bffe9",
+          "categories": []
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 86827,
+      "sha256": "133858633ea875cbc5cff60cbc5cfdd81248ccd8efedc738047d9bc065ad758a",
+      "size": [
+        478,
+        510
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 316095,
+        "sha256": "f3fb4ad6447d126f28979910b49c7b1853f30bbe0dd799da50f04336f917100e",
+        "size": [
+          712,
+          2050
+        ],
+        "mode": "RGB",
+        "unique_colors": 269,
+        "luma_stddev": 72.191
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 98734,
+        "sha256": "c4087b68368c3d8cbf169f03eadb459e4547c29fe4b5dbfce9791816e43a19b2",
+        "size": [
+          488,
+          872
+        ],
+        "mode": "RGB",
+        "unique_colors": 269,
+        "luma_stddev": 69.582
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 20339,
+        "sha256": "a395414c6eaebdb460078596eb05c40b5789fdcbbd66de29d5f4247494e2fc25",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+          "exists": true,
+          "bytes": 201064,
+          "sha256": "c788d1ee469021dc33367ff5f10c65a26e083b9892957be0ba22c72653570592"
+        },
+        "nodes_rendered": 36,
+        "preview_node_ids": [
+          "bento_title",
+          "bento_01",
+          "bento_02",
+          "bento_03",
+          "bento_04",
+          "bento_05",
+          "bento_06",
+          "bento_07",
+          "bento_08",
+          "bento_09",
+          "bento_10",
+          "bento_choice_1",
+          "bento_a1",
+          "bento_a2",
+          "bento_a3",
+          "bento_a4",
+          "bento_b1",
+          "bento_b2",
+          "bento_b3",
+          "bento_b4",
+          "bento_11",
+          "bento_12",
+          "bento_13",
+          "bento_14",
+          "bento_15",
+          "bento_16",
+          "bento_17",
+          "bento_choice_2",
+          "bento_c1",
+          "bento_c2",
+          "bento_c3",
+          "bento_c4",
+          "bento_d1",
+          "bento_d2",
+          "bento_d3",
+          "bento_d4"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 36,
+            "expected": 36
+          },
+          "storyboard_cells": {
+            "reported": 36,
+            "expected": 36
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/eleven-bento-emergency-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

@@ -105,6 +105,7 @@ enum {
   SWAN_CAPABILITY_EXECUTED_SOURCE_READ_CONTEXT = 1ull << 11,
   SWAN_CAPABILITY_DISPLAY_SPRITE_ATTRIBUTE_PROVENANCE = 1ull << 12,
   SWAN_CAPABILITY_CONSUMED_PREFETCH_PROVENANCE = 1ull << 13,
+  SWAN_CAPABILITY_DATA_PRODUCER_PROVENANCE = 1ull << 14,
 };
 
 typedef enum swan_display_layer {
@@ -345,6 +346,55 @@ typedef struct swan_instruction_fetch_byte {
   uint32_t data;
 } swan_instruction_fetch_byte_t;
 
+/**
+ * One bounded cartridge-RAM producer watch. The address is the exact 20-bit
+ * CPU-visible cartridge-RAM address (0x10000-0x1ffff). No memory bytes are
+ * returned by this API.
+ */
+typedef struct swan_data_producer_probe_options {
+  uint32_t struct_size;
+  uint32_t address;
+  uint32_t byte_count;
+} swan_data_producer_probe_options_t;
+
+enum {
+  SWAN_DATA_PRODUCER_FLAG_WRITER_PRESENT = 1u << 16,
+  SWAN_DATA_PRODUCER_FLAG_NO_CARTRIDGE_SOURCE = 1u << 17,
+};
+
+/**
+ * Private producer lineage for one byte in the bounded watched range. The
+ * target byte itself is never exposed. Cartridge offsets and executed read
+ * context are retained only in project-private evidence.
+ */
+typedef struct swan_data_producer_trace {
+  uint32_t struct_size;
+  uint32_t target_address;
+  uint16_t target_byte_count;
+  uint16_t reserved;
+  uint32_t writer_pc;
+  uint16_t minimum_instruction_hops;
+  uint16_t maximum_instruction_hops;
+  uint32_t cartridge_offset;
+  uint32_t cartridge_length;
+  uint32_t flags;
+  swan_display_source_read_initiator_t read_context_initiator;
+  uint16_t reserved_context;
+  uint32_t read_context_flags;
+  uint32_t immediate_caller_or_general_dma_source_operand;
+  uint16_t caller_segment;
+  uint16_t caller_offset;
+  uint16_t operand_segment;
+  uint16_t operand_offset;
+  uint16_t mapper_window;
+  uint16_t mapper_bank;
+  uint32_t resolved_cartridge_operand;
+  swan_display_source_conservative_reason_t conservative_reason;
+  uint32_t conservative_origin;
+  uint16_t conservative_origin_segment;
+  uint16_t conservative_origin_offset;
+} swan_data_producer_trace_t;
+
 typedef struct swan_engine_config {
   uint32_t struct_size;
   uint32_t abi_version;
@@ -490,6 +540,15 @@ SWAN_ENGINE_API swan_result_t swan_engine_display_source_probe_v2(
     swan_instruction_fetch_byte_t* out_bytes,
     size_t byte_capacity,
     size_t* out_byte_count);
+SWAN_ENGINE_API swan_result_t swan_engine_begin_data_producer_probe(
+    swan_engine_t* engine,
+    const swan_data_producer_probe_options_t* options);
+SWAN_ENGINE_API swan_result_t swan_engine_data_producer_probe(
+    swan_engine_t* engine,
+    const swan_data_producer_probe_options_t* options,
+    swan_data_producer_trace_t* out_traces,
+    size_t capacity,
+    size_t* out_count);
 
 #ifdef __cplusplus
 }

@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/projects/four-part-errand-run.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/assets/contact_sheet.png",
+    "nodes": 37,
+    "flags": 0,
+    "tracks": [
+      {
+        "id": "errand_title",
+        "name": "Four Stops Before Noon",
+        "bpm": 126
+      },
+      {
+        "id": "errand_main",
+        "name": "Component Commuter",
+        "bpm": 156
+      },
+      {
+        "id": "errand_end_a",
+        "name": "Muffin Reassembly",
+        "bpm": 118
+      },
+      {
+        "id": "errand_end_b",
+        "name": "Saturday Separation",
+        "bpm": 144
+      }
+    ],
+    "imagegen_source_sha256": {
+      "background_title_imagegen_v1.png": "ef9afcb5b8534cde06a91ab9a6c377e72702cf59165bf926f1bf19a33d101968",
+      "background_main_imagegen_v1.png": "9d50167b728d5b8435f0c8bc187ddf5db3f4beb06f3254da96663e9467b42d52",
+      "background_ending_a_imagegen_v1.png": "09ae69a99efa099feba87b0720122d0edf1dc65f7fb07ef29180ba1e4337f56c",
+      "background_ending_b_imagegen_v1.png": "2de68d84c793fa785d5c218515ae884d1a12f4c62d32664eef91b9c023f2d9c1",
+      "character_master_cutout_imagegen_v1.png": "0771b4be11967c39f2d03f00f9fbf8740ec9945960f48942cdf6a34610bf5a19"
+    },
+    "source_master_count": 5,
+    "background_count": 4,
+    "character_frame_count": 3,
+    "art_policy": "ImageGen-first; no procedural pictorial fallback"
+  }
+}

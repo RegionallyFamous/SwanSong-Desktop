@@ -1,0 +1,319 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:28.807352+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "doctor-build-mode-packages-every-game",
+      "passed": true,
+      "cases": {
+        "normal-no-release-package": true,
+        "normal-with-release-package": true,
+        "build-no-release-package": true,
+        "build-with-release-package": true,
+        "normal-no-release-verify": true,
+        "normal-with-release-verify": true,
+        "build-package-failed-verify": true,
+        "build-package-succeeded-verify": true,
+        "normal-runs-release-inventory": true,
+        "skip-games-skips-release-inventory": true,
+        "normal-runs-forge-status": true,
+        "skip-games-skips-forge-status": true
+      }
+    },
+    {
+      "name": "doctor-ship-report-freshness",
+      "passed": true,
+      "errors": [
+        "sample-game: ship report release zip sha256 does not match release report",
+        "sample-game: ship report is missing actual release zip evidence",
+        "sample-game: ship report actual zip byte size does not match release report"
+      ]
+    },
+    {
+      "name": "doctor-status-index-fingerprint",
+      "passed": true,
+      "errors": [
+        "Story Forge status index fingerprint does not match status report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-release-0fnapzfi/doctor-index/CURRENT_RELEASES.md"
+      ]
+    },
+    {
+      "name": "doctor-canonical-game-discovery",
+      "passed": true,
+      "errors": [
+        "sample-game: extra game project files found beside sample-game.wscvn.json: wrong-name.wscvn.json",
+        "sample-game: game project filename mismatch; expected sample-game.wscvn.json, found wrong-name.wscvn.json"
+      ]
+    },
+    {
+      "name": "valid-archive-only-game-release",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "packager-binds-canonical-runtime-and-optional-screenshot",
+      "passed": true,
+      "plain_runtime_inputs": [
+        {
+          "path": "runtime/src/main.c",
+          "bytes": 15,
+          "sha256": "fb022028d5ea287bda6285153732a84f09a31e9c94d0b3a39ebbd7a95c52a40a"
+        },
+        {
+          "path": "runtime/src/game_types.h",
+          "bytes": 19,
+          "sha256": "27f6001c5484d537f9e3978d6cb3b0bf7058679a9c818d7a4da7df06d01aced9"
+        },
+        {
+          "path": "runtime/src/font.h",
+          "bytes": 17,
+          "sha256": "d5134912a3d446751d077f306f7ca19ac2c53bdc4ee223d67977190f043c379e"
+        },
+        {
+          "path": "runtime/tools/convert_json.py",
+          "bytes": 18,
+          "sha256": "6d6b6d39739201290365a5b28760b7bef910b94311d53f1e16bc81a55519d351"
+        },
+        {
+          "path": "runtime/Makefile",
+          "bytes": 17,
+          "sha256": "5812895cdb24f51fc0907a8224befe02ff2df59814a97d6576a5c6fc995d5b35"
+        },
+        {
+          "path": "runtime/wfconfig.toml",
+          "bytes": 17,
+          "sha256": "052b50983ea6408d83ef335b462bdead61d63f0c1028b5529d070506b92b1d02"
+        }
+      ],
+      "screenshot": {
+        "path": "evidence/emulator-screenshot.png",
+        "bytes": 28,
+        "sha256": "8530bb8639bc36ddde38d94985679a146d72be5bd7d66fbffb5ce30d51aaa745"
+      },
+      "errors": []
+    },
+    {
+      "name": "current-workspace-freshness",
+      "passed": true,
+      "errors": [
+        "Current workspace file does not match packaged member: project/sample-game.wscvn.json"
+      ]
+    },
+    {
+      "name": "normal-mode-runtime-input-mismatch-fails",
+      "passed": true,
+      "errors": [
+        "Current workspace file does not match packaged member: runtime/src/main.c"
+      ]
+    },
+    {
+      "name": "archive-only-runtime-contract-is-required-and-hash-bound",
+      "passed": true,
+      "errors": [
+        "Missing required zip members: runtime/src/main.c",
+        "Manifest is missing canonical runtime inputs: runtime/src/main.c",
+        "Runtime input sha256 does not match packaged member: runtime/src/main.c"
+      ]
+    },
+    {
+      "name": "packaged-runtime-font-is-bound-to-render-review",
+      "passed": true,
+      "errors": [
+        "Review sheets report font byte count does not match packaged runtime font",
+        "Review sheets report font sha256 does not match packaged runtime font"
+      ]
+    },
+    {
+      "name": "smoke-report-must-distinguish-boot-checksum-from-visual",
+      "passed": true,
+      "errors": [
+        "Packaged smoke report is missing explicit boot, checksum, and visual verification scope"
+      ]
+    },
+    {
+      "name": "optional-real-emulator-screenshot-is-bound-in-both-modes",
+      "passed": true,
+      "errors": [
+        "Bound emulator screenshot byte count does not match smoke report: evidence/emulator-screenshot.png",
+        "Bound emulator screenshot sha256 does not match smoke report: evidence/emulator-screenshot.png",
+        "Manifest emulator screenshot bytes does not match packaged proof",
+        "Manifest emulator screenshot sha256 does not match packaged proof"
+      ]
+    },
+    {
+      "name": "extra-current-workspace-assets-fail",
+      "passed": true,
+      "errors": [
+        "Current workspace has packageable files not present in release manifest: assets/backgrounds/new_bg.png, assets/sources/new_source.png"
+      ]
+    },
+    {
+      "name": "unsafe-path-fails",
+      "passed": true,
+      "errors": [
+        "Zip contains unsafe member paths: ../escape.txt",
+        "Zip contains unmanifested members: ../escape.txt"
+      ]
+    },
+    {
+      "name": "manifest-missing-member-fails",
+      "passed": true,
+      "errors": [
+        "Missing required zip members: preview/contact_sheet.png",
+        "Manifest references missing zip member: preview/contact_sheet.png",
+        "Contact sheet packaged member is missing: preview/contact_sheet.png"
+      ]
+    },
+    {
+      "name": "missing-package-source-members-fails",
+      "passed": true,
+      "errors": [
+        "Missing required zip members: docs/README.md, reports/sample-game-qa-report.json, source/build_sample_game.py"
+      ]
+    },
+    {
+      "name": "hash-mismatch-fails",
+      "passed": true,
+      "errors": [
+        "Zip contains duplicate members: rom/sample-game.wsc",
+        "Manifest sha256 mismatch: rom/sample-game.wsc",
+        "Packaged ROM sha256 does not match build report",
+        "Packaged ROM MD5 does not match smoke report",
+        "Audit ROM sha256 does not match packaged ROM",
+        "Manifest ROM sha256 does not match packaged ROM",
+        "Manifest ROM MD5 does not match packaged ROM",
+        "Release summary is missing expected line: - ROM SHA-256: `d121be3103007b41edf96f8262925f8c7d61894afe9a041843b631f69445bc57`"
+      ]
+    },
+    {
+      "name": "release-summary-mismatch-fails",
+      "passed": true,
+      "errors": [
+        "Release summary is missing expected line: - ROM SHA-256: `0f583703247ac5ba7226e6864f921aff4bae11be0d4c10aa5bcd5072ab3c3a1a`"
+      ]
+    },
+    {
+      "name": "contact-readiness-mismatch-fails",
+      "passed": true,
+      "errors": [
+        "Contact sheet sha256 does not match readiness report: preview/contact_sheet.png"
+      ]
+    },
+    {
+      "name": "source-readiness-mismatch-fails",
+      "passed": true,
+      "errors": [
+        "Source file 2 sha256 does not match readiness report: assets/sources/characters_imagegen_source.png"
+      ]
+    },
+    {
+      "name": "runtime-asset-readiness-mismatch-fails",
+      "passed": true,
+      "errors": [
+        "Background file 1 sha256 does not match readiness report: assets/backgrounds/room.png"
+      ]
+    },
+    {
+      "name": "sfx-readiness-mismatch-fails",
+      "passed": true,
+      "errors": [
+        "Sfx file 1 sha256 does not match readiness report: assets/sfx/click.wav"
+      ]
+    },
+    {
+      "name": "extra-runtime-asset-fails",
+      "passed": true,
+      "errors": [
+        "Zip contains packaged character assets not represented by readiness report: assets/characters/unused.png"
+      ]
+    },
+    {
+      "name": "extra-source-asset-fails",
+      "passed": true,
+      "errors": [
+        "Zip contains packaged source assets not represented by readiness report: assets/sources/unused_old_source.png"
+      ]
+    },
+    {
+      "name": "extra-sfx-asset-fails",
+      "passed": true,
+      "errors": [
+        "Zip contains packaged sfx assets not represented by readiness report: assets/sfx/unused.wav"
+      ]
+    },
+    {
+      "name": "smoke-module-mismatch-fails",
+      "passed": true,
+      "errors": [
+        "Packaged smoke boot result is not supported by its Mednafen facts",
+        "Packaged smoke report module is 'gba(Game Boy Advance)'",
+        "Release summary is missing expected line: - Mednafen module: `gba(Game Boy Advance)`"
+      ]
+    },
+    {
+      "name": "readiness-project-binding-fails",
+      "passed": true,
+      "errors": [
+        "Readiness project sha256 does not match packaged project"
+      ]
+    },
+    {
+      "name": "audit-project-binding-fails",
+      "passed": true,
+      "errors": [
+        "Audit project byte count does not match packaged project"
+      ]
+    },
+    {
+      "name": "audit-rom-binding-fails",
+      "passed": true,
+      "errors": [
+        "Audit report is missing rom_file evidence",
+        "Audit ROM sha256 does not match packaged ROM"
+      ]
+    },
+    {
+      "name": "review-sheets-report-binding-fails",
+      "passed": true,
+      "errors": [
+        "Review sheets report scene preview sheet sha256 does not match packaged member"
+      ]
+    },
+    {
+      "name": "manifest-artifact-binding-fails",
+      "passed": true,
+      "errors": [
+        "Manifest project byte count does not match packaged project",
+        "Manifest project sha256 does not match packaged project",
+        "Manifest ROM MD5 does not match packaged ROM",
+        "Manifest ROM checksum does not match smoke report"
+      ]
+    },
+    {
+      "name": "packaged-project-report-binding-fails",
+      "passed": true,
+      "errors": [
+        "Packaged project byte count does not match build report",
+        "Packaged project sha256 does not match build report",
+        "Review sheets report project byte count does not match packaged project",
+        "Review sheets report project sha256 does not match packaged project",
+        "Readiness project byte count does not match packaged project",
+        "Readiness project sha256 does not match packaged project",
+        "Audit project byte count does not match packaged project",
+        "Audit project sha256 does not match packaged project"
+      ]
+    },
+    {
+      "name": "packaged-rom-report-binding-fails",
+      "passed": true,
+      "errors": [
+        "Packaged ROM byte count does not match build report",
+        "Packaged ROM sha256 does not match build report",
+        "Packaged ROM MD5 does not match smoke report",
+        "Audit ROM byte count does not match packaged ROM",
+        "Audit ROM sha256 does not match packaged ROM",
+        "Release summary is missing expected line: - ROM SHA-256: `62742d797d15a4ccc1d652675d6f532b7229009709f6cdb55710a9454118bf55`"
+      ]
+    }
+  ]
+}

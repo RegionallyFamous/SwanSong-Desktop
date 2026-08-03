@@ -1,0 +1,111 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:56:34.970309+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/projects/mono-cart-morning.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/contact_sheet.png",
+    "nodes": 63,
+    "flags": 9,
+    "backgrounds": {
+      "bg_glass_case": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 14,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_market_aisle": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_platform_trade": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 11,
+        "has_alpha": false,
+        "binary_alpha": true
+      }
+    },
+    "characters": {
+      "char_jun_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 10,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_jun_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 10,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_jun_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 10,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_sora_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_sora_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_sora_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true
+      }
+    },
+    "text": {
+      "blocks": 376,
+      "max_pause_block_chars": 99
+    },
+    "source_art": [
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/sources/backgrounds_source.png",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/sources/characters_source.png"
+    ],
+    "art_direction": [
+      "Original homebrew story about collecting WonderSwan games at a morning flea market.",
+      "Final backgrounds are 224x144, 16-color, RGB444-snapped, with quiet dark textbox lanes.",
+      "Final character frames are 96x128 transparent neutral/talk/blink families.",
+      "Readable carts, handhelds, cases, and shelf details are prioritized over noisy realism."
+    ]
+  }
+}

@@ -73,6 +73,8 @@ if [ ! -d "$APP/Contents/Resources/HomebrewTitleScreens" ] \
   echo "the app bundle is missing its homebrew title screens" >&2
   exit 1
 fi
+python3 "$SCRIPT_DIR/check-story-forge-framework.py" \
+  "$APP/Contents/Resources/StoryForge" >/dev/null
 controller_interaction=$(plutil -extract \
   GCSupportsControllerUserInteraction raw "$APP/Contents/Info.plist" \
   2>/dev/null || true)

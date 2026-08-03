@@ -1,0 +1,2633 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:56:08.444924+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "generated_at_utc": "2026-07-27T03:53:51.765944+00:00",
+    "deep": false,
+    "build_games": false,
+    "skip_signal": false,
+    "skip_games": false,
+    "tools": {
+      "wonderful_toolchain": "/opt/wonderful",
+      "python": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "wf_pacman": "/opt/wonderful/bin/wf-pacman",
+      "wf_wswantool": "/opt/wonderful/bin/wf-wswantool",
+      "mednafen": "/opt/homebrew/bin/mednafen",
+      "runtime_local": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local",
+      "pillow_version": "12.3.0",
+      "target_wswan": {
+        "returncode": 0,
+        "output": "target-wswan 0.1.0-3"
+      }
+    },
+    "signal_doctor_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/doctor-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "generated_at_utc": null
+    },
+    "games": {
+      "count": 20,
+      "items": {
+        "backlight-bazaar": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/projects/backlight-bazaar.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:backlight-bazaar",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "backlight-bazaar",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:31:13.202873+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:31:07.042203+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:31:13.198298+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/backlight-bazaar-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:31:06.626257+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:34:05.753166+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "2841bf41eaf404521ddc2f75dca131110c98cfbd8cc6d6eda007d376a8d0466e",
+            "smoke_checksum": "0x780a"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/releases/20260727T023405Z-2841bf41eaf4.zip",
+            "release_zip_sha256": "51881fe6bf7b6957b881d68e06d296fd17560044ad602f789f500ed12c5f06dc",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/releases/20260727T023405Z-2841bf41eaf4.zip",
+              "exists": true,
+              "bytes": 1815555,
+              "sha256": "51881fe6bf7b6957b881d68e06d296fd17560044ad602f789f500ed12c5f06dc"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/releases/20260727T023405Z-2841bf41eaf4.zip",
+            "verified_zip_sha256": "51881fe6bf7b6957b881d68e06d296fd17560044ad602f789f500ed12c5f06dc"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:backlight-bazaar",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "backlight-bazaar"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "catalog-after-midnight": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:catalog-after-midnight",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "catalog-after-midnight",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:34:12.830789+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:34:06.737948+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:34:12.826315+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/catalog-after-midnight-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:34:06.279641+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:37:05.848152+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "6d151cb382b3e542ef51b0f8e859bdb36636e57329f325677382674913901958",
+            "smoke_checksum": "0x917f"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/releases/20260727T023705Z-6d151cb382b3.zip",
+            "release_zip_sha256": "f99e6773696bd608d6a2ac7036179096e406ffeea3b1bf87194e33426f3e09a2",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/releases/20260727T023705Z-6d151cb382b3.zip",
+              "exists": true,
+              "bytes": 1117896,
+              "sha256": "f99e6773696bd608d6a2ac7036179096e406ffeea3b1bf87194e33426f3e09a2"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/releases/20260727T023705Z-6d151cb382b3.zip",
+            "verified_zip_sha256": "f99e6773696bd608d6a2ac7036179096e406ffeea3b1bf87194e33426f3e09a2"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:catalog-after-midnight",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "catalog-after-midnight"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "doms-soup-route": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/projects/doms-soup-route.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:doms-soup-route",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "doms-soup-route",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:37:13.285953+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:37:07.255801+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:37:13.281068+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/reports/doms-soup-route-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-15T00:00:00+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:38:43.937499+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "7fcf79ae30c59be0bd454a96e9aecf1eef367eedad273aeefe62a6eeb4c1827a",
+            "smoke_checksum": "0x8aeb"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/releases/20260727T023843Z-7fcf79ae30c5.zip",
+            "release_zip_sha256": "8a89c6c93eb7248bc37aa7ee38c3754cae2ffa77b8b14f2e031b96d12818dd15",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/releases/20260727T023843Z-7fcf79ae30c5.zip",
+              "exists": true,
+              "bytes": 12520652,
+              "sha256": "8a89c6c93eb7248bc37aa7ee38c3754cae2ffa77b8b14f2e031b96d12818dd15"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/releases/20260727T023843Z-7fcf79ae30c5.zip",
+            "verified_zip_sha256": "8a89c6c93eb7248bc37aa7ee38c3754cae2ffa77b8b14f2e031b96d12818dd15"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:doms-soup-route",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "doms-soup-route"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "eleven-bento-emergency": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:eleven-bento-emergency",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "eleven-bento-emergency",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:38:51.330931+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:38:45.354290+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:38:51.326401+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/eleven-bento-emergency-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-15T00:00:00+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:40:31.446152+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "991341d1481d69d4322d671848507da5f197f4c2b5c71ecfb3db8eadcace0805",
+            "smoke_checksum": "0x1aac"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/releases/20260727T024031Z-991341d1481d.zip",
+            "release_zip_sha256": "64ab27e7fd4d190c6565eb4cb48ec8284a696c27739de46d25886571a3c1d74c",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/releases/20260727T024031Z-991341d1481d.zip",
+              "exists": true,
+              "bytes": 14030563,
+              "sha256": "64ab27e7fd4d190c6565eb4cb48ec8284a696c27739de46d25886571a3c1d74c"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/releases/20260727T024031Z-991341d1481d.zip",
+            "verified_zip_sha256": "64ab27e7fd4d190c6565eb4cb48ec8284a696c27739de46d25886571a3c1d74c"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:eleven-bento-emergency",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "eleven-bento-emergency"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "four-part-errand-run": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/projects/four-part-errand-run.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:four-part-errand-run",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "four-part-errand-run",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:40:39.297210+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:40:33.102716+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:40:39.292166+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/four-part-errand-run-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-15T00:00:00+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:42:17.121674+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "cdee2249ef9db6e071cd051d29e1495edb268d4d1d126a8b4af14a7df333acbc",
+            "smoke_checksum": "0x79ff"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/releases/20260727T024216Z-cdee2249ef9d.zip",
+            "release_zip_sha256": "d1d582778f790f030151a87664fee2dfe0d6b2ab4cc1b8b79e134ef1cdb7f73c",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/releases/20260727T024216Z-cdee2249ef9d.zip",
+              "exists": true,
+              "bytes": 13036961,
+              "sha256": "d1d582778f790f030151a87664fee2dfe0d6b2ab4cc1b8b79e134ef1cdb7f73c"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/releases/20260727T024216Z-cdee2249ef9d.zip",
+            "verified_zip_sha256": "d1d582778f790f030151a87664fee2dfe0d6b2ab4cc1b8b79e134ef1cdb7f73c"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:four-part-errand-run",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "four-part-errand-run"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "gm-name-tag-crisis": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:gm-name-tag-crisis",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "gm-name-tag-crisis",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:42:24.476959+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:42:18.515264+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:42:24.472241+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/gm-name-tag-crisis-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-15T00:00:00+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:43:54.608950+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "9c4a427a6d6a77f9a5b3de6e185155dd26dfb47fd1f7ccf695323664b5407358",
+            "smoke_checksum": "0xba0b"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/releases/20260727T024354Z-9c4a427a6d6a.zip",
+            "release_zip_sha256": "c0fc6990c2340f9fb9ce346f3c4a0d2f9e42234af883c64c26d2ac0e366ad98e",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/releases/20260727T024354Z-9c4a427a6d6a.zip",
+              "exists": true,
+              "bytes": 12355740,
+              "sha256": "c0fc6990c2340f9fb9ce346f3c4a0d2f9e42234af883c64c26d2ac0e366ad98e"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/releases/20260727T024354Z-9c4a427a6d6a.zip",
+            "verified_zip_sha256": "c0fc6990c2340f9fb9ce346f3c4a0d2f9e42234af883c64c26d2ac0e366ad98e"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:gm-name-tag-crisis",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "gm-name-tag-crisis"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "gouf-strings-attached": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/projects/gouf-strings-attached.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:gouf-strings-attached",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "gouf-strings-attached",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:44:02.002719+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:43:56.033648+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:44:01.996781+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/reports/gouf-strings-attached-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-15T00:00:00+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:45:29.928345+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "83a4903a9fbe177354ed3b2b01106eacb992e641f6af2e3316e38886fff36493",
+            "smoke_checksum": "0x771f"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/releases/20260727T024529Z-83a4903a9fbe.zip",
+            "release_zip_sha256": "35b2d42ce57792981fe97ca57f7c342384bb36758306f25612914fc9d6155238",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/releases/20260727T024529Z-83a4903a9fbe.zip",
+              "exists": true,
+              "bytes": 14165646,
+              "sha256": "35b2d42ce57792981fe97ca57f7c342384bb36758306f25612914fc9d6155238"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/releases/20260727T024529Z-83a4903a9fbe.zip",
+            "verified_zip_sha256": "35b2d42ce57792981fe97ca57f7c342384bb36758306f25612914fc9d6155238"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:gouf-strings-attached",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "gouf-strings-attached"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "guntank-takes-the-stairs": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:guntank-takes-the-stairs",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "guntank-takes-the-stairs",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:45:37.182181+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:45:31.224244+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:45:37.177212+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/guntank-takes-the-stairs-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-15T00:00:00+00:00"
+            },
+            "story_proof": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/story-proof-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:47:04.292120+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "9fdb793814fa3e8e73d69df4faeed2e4a7db7649222f913d2f556f021729a68b",
+            "smoke_checksum": "0x75b7"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/releases/20260727T024703Z-9fdb793814fa.zip",
+            "release_zip_sha256": "ca8b615387e25db1d7212bbe73d807defb14450a6963f9c07366368827eb5724",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/releases/20260727T024703Z-9fdb793814fa.zip",
+              "exists": true,
+              "bytes": 12705738,
+              "sha256": "ca8b615387e25db1d7212bbe73d807defb14450a6963f9c07366368827eb5724"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/releases/20260727T024703Z-9fdb793814fa.zip",
+            "verified_zip_sha256": "ca8b615387e25db1d7212bbe73d807defb14450a6963f9c07366368827eb5724"
+          },
+          "story_ribbon": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/story-ribbon.html",
+            "exists": true,
+            "sha256": "080c3c796fbb57a4d9b57d969d4ad8bb78f3d50bb695c153ef269743015bddc1"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:guntank-takes-the-stairs",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "guntank-takes-the-stairs"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "last-blue-spine": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/projects/last-blue-spine.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:last-blue-spine",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "last-blue-spine",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:47:11.443400+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:47:05.382841+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:47:11.438290+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/last-blue-spine-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:47:04.886435+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:50:03.108070+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "c0e909da86e295f6180b34e5d12edc720a7cda646bb76e54c040b2557a39c14d",
+            "smoke_checksum": "0x5e6c"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/releases/20260727T025002Z-c0e909da86e2.zip",
+            "release_zip_sha256": "d11db3ece73890e0187f65f700e03b427f11a3812b80fdf13895d9e1379ec50f",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/releases/20260727T025002Z-c0e909da86e2.zip",
+              "exists": true,
+              "bytes": 5788481,
+              "sha256": "d11db3ece73890e0187f65f700e03b427f11a3812b80fdf13895d9e1379ec50f"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/releases/20260727T025002Z-c0e909da86e2.zip",
+            "verified_zip_sha256": "d11db3ece73890e0187f65f700e03b427f11a3812b80fdf13895d9e1379ec50f"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:last-blue-spine",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "last-blue-spine"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "mobile-suit-gundam-summary": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:mobile-suit-gundam-summary",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "mobile-suit-gundam-summary",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:50:12.376633+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:50:06.057875+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:50:12.372640+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/mobile-suit-gundam-summary-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-22T20:00:00-05:00"
+            },
+            "story_proof": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/story-proof-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "ebfdd1a57e1fa35e476b87ddf8ce97e9bed332f8efdf1ca629bb05397ae007ac",
+            "smoke_checksum": "0x25c4"
+          },
+          "ship": {
+            "status": "candidate-pending-required-approvals",
+            "pending_required_approvals": [
+              "human-reader-playtest",
+              "human-music-listening",
+              "physical-wonderswan-hardware"
+            ]
+          },
+          "story_ribbon": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/story-ribbon.html",
+            "exists": true,
+            "sha256": "0b40fbcd4f31e8821113ec7e864714baeacc2f62c9d5615c0b6937581e12c7d8"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": false,
+            "candidate_mode": true,
+            "pending_required_approvals": [
+              "human-reader-playtest",
+              "human-music-listening",
+              "physical-wonderswan-hardware"
+            ]
+          }
+        },
+        "mono-cart-morning": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/projects/mono-cart-morning.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:mono-cart-morning",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "mono-cart-morning",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:56:41.546952+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:56:35.476094+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:56:41.542568+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/mono-cart-morning-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T02:56:34.970309+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:07:46.922123+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "a0144833608f68b670c7b328b3932e7da4fdd4998077ba98b67129b2274697ba",
+            "smoke_checksum": "0xc36e"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/releases/20260727T030746Z-a0144833608f.zip",
+            "release_zip_sha256": "eefd4e4ed7f1947e18a0022dc6a7270e6362e2d594c58cc939779afebe5c7641",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/releases/20260727T030746Z-a0144833608f.zip",
+              "exists": true,
+              "bytes": 3303372,
+              "sha256": "eefd4e4ed7f1947e18a0022dc6a7270e6362e2d594c58cc939779afebe5c7641"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/releases/20260727T030746Z-a0144833608f.zip",
+            "verified_zip_sha256": "eefd4e4ed7f1947e18a0022dc6a7270e6362e2d594c58cc939779afebe5c7641"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:mono-cart-morning",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "mono-cart-morning"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "one-sock-offensive": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/projects/one-sock-offensive.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:one-sock-offensive",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "one-sock-offensive",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:07:54.505171+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:07:48.494915+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:07:54.500146+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/reports/one-sock-offensive-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-15T00:00:00+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:09:17.165932+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "dfdd0a8bcdeb858f3668146a0e00ca8eac2fcfb17299d1ed822d9883d69d6103",
+            "smoke_checksum": "0x2f48"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/releases/20260727T030916Z-dfdd0a8bcdeb.zip",
+            "release_zip_sha256": "fda81cd6aca254372220cc03ff7305c3efe889b9995c1872d7845a9ef68b61a6",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/releases/20260727T030916Z-dfdd0a8bcdeb.zip",
+              "exists": true,
+              "bytes": 12763467,
+              "sha256": "fda81cd6aca254372220cc03ff7305c3efe889b9995c1872d7845a9ef68b61a6"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/releases/20260727T030916Z-dfdd0a8bcdeb.zip",
+            "verified_zip_sha256": "fda81cd6aca254372220cc03ff7305c3efe889b9995c1872d7845a9ef68b61a6"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:one-sock-offensive",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "one-sock-offensive"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "operation-potluck": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:operation-potluck",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "operation-potluck",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:09:24.240984+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:09:18.290339+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:09:24.236461+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/operation-potluck-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:09:17.696225+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:10:40.471127+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "a14776ca911c24bf5f427a01d376203a3b5354069447a351a9cde7ea050d4fd2",
+            "smoke_checksum": "0xfd72"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/releases/20260727T031040Z-a14776ca911c.zip",
+            "release_zip_sha256": "3e17d682fb27e15c5411e3dd9e97021b6fbb2a2951806ee6fc73d63b57de1727",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/releases/20260727T031040Z-a14776ca911c.zip",
+              "exists": true,
+              "bytes": 11811158,
+              "sha256": "3e17d682fb27e15c5411e3dd9e97021b6fbb2a2951806ee6fc73d63b57de1727"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/releases/20260727T031040Z-a14776ca911c.zip",
+            "verified_zip_sha256": "3e17d682fb27e15c5411e3dd9e97021b6fbb2a2951806ee6fc73d63b57de1727"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:operation-potluck",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "operation-potluck"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "pocket-harbor": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:pocket-harbor",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "pocket-harbor",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:10:47.786094+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:10:41.667333+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:10:47.781750+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/pocket-harbor-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:10:41.037822+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:20:17.654147+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "518e84ed00b535ab249acbe39a49a217bc7280cbac6e245e49abbab271c2441e",
+            "smoke_checksum": "0x0048"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/releases/20260727T032017Z-518e84ed00b5.zip",
+            "release_zip_sha256": "8d56c3d898bf7f4cbdc9bfd3427fadfff565d59aa40a2a977f0173d556aa64f1",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/releases/20260727T032017Z-518e84ed00b5.zip",
+              "exists": true,
+              "bytes": 7070187,
+              "sha256": "8d56c3d898bf7f4cbdc9bfd3427fadfff565d59aa40a2a977f0173d556aa64f1"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/releases/20260727T032017Z-518e84ed00b5.zip",
+            "verified_zip_sha256": "8d56c3d898bf7f4cbdc9bfd3427fadfff565d59aa40a2a977f0173d556aa64f1"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:pocket-harbor",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "pocket-harbor"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "soft-click-sunday": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/projects/soft-click-sunday.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:soft-click-sunday",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "soft-click-sunday",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:20:25.297389+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:20:19.118958+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:20:25.292868+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/soft-click-sunday-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:20:18.381374+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:26:49.852826+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "4548d98341c78b101212c06d4915a71460bf4ec24f1f008cb8914c7c2309a002",
+            "smoke_checksum": "0x32db"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/releases/20260727T032649Z-4548d98341c7.zip",
+            "release_zip_sha256": "136cc685cef875de9b832660d2788689daa4d8889edc0e5853e11e1294776be3",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/releases/20260727T032649Z-4548d98341c7.zip",
+              "exists": true,
+              "bytes": 8443594,
+              "sha256": "136cc685cef875de9b832660d2788689daa4d8889edc0e5853e11e1294776be3"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/releases/20260727T032649Z-4548d98341c7.zip",
+            "verified_zip_sha256": "136cc685cef875de9b832660d2788689daa4d8889edc0e5853e11e1294776be3"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:soft-click-sunday",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "soft-click-sunday"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "swan-case-club": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/projects/swan-case-club.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:swan-case-club",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "swan-case-club",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:26:57.251930+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:26:50.979590+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:26:57.247452+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/swan-case-club-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:26:50.506298+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:30:07.924046+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "9f8ffec821fb3960f1b15fc9ab21b08de9403c5c545ed1891348ed568c3f3ef5",
+            "smoke_checksum": "0xd5b0"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/releases/20260727T033007Z-9f8ffec821fb.zip",
+            "release_zip_sha256": "93ec784aed2586b243b31477af2055e3a8b9e6080159d434596f11a36be638cd",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/releases/20260727T033007Z-9f8ffec821fb.zip",
+              "exists": true,
+              "bytes": 1710507,
+              "sha256": "93ec784aed2586b243b31477af2055e3a8b9e6080159d434596f11a36be638cd"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/releases/20260727T033007Z-9f8ffec821fb.zip",
+            "verified_zip_sha256": "93ec784aed2586b243b31477af2055e3a8b9e6080159d434596f11a36be638cd"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:swan-case-club",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "swan-case-club"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "swanlight-ledger": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:swanlight-ledger",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "swanlight-ledger",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:30:17.072464+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:30:10.639571+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:30:17.067781+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/swanlight-ledger-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:30:09.728946+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:33:11.250665+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "17441edfdcc5339543be3ed4ac7d78932a4b5fcc7a49c2b86aa0315043eeeec7",
+            "smoke_checksum": "0x34df"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/releases/20260727T033310Z-17441edfdcc5.zip",
+            "release_zip_sha256": "337c0464b0f5669c70f1838bbe6ca286bca0ec38a4ce30fc925eb1ce95807fb8",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/releases/20260727T033310Z-17441edfdcc5.zip",
+              "exists": true,
+              "bytes": 44099622,
+              "sha256": "337c0464b0f5669c70f1838bbe6ca286bca0ec38a4ce30fc925eb1ce95807fb8"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/releases/20260727T033310Z-17441edfdcc5.zip",
+            "verified_zip_sha256": "337c0464b0f5669c70f1838bbe6ca286bca0ec38a4ce30fc925eb1ce95807fb8"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:swanlight-ledger",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "swanlight-ledger"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "three-coats-of-white": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:three-coats-of-white",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "three-coats-of-white",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:33:18.786093+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:33:12.817765+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:33:18.781615+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/three-coats-of-white-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-15T00:00:00+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:34:39.057663+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "3208c3cc513ba9453483ee99d9db36f1198c2660d9bbc0b57c3fcac2e9a94109",
+            "smoke_checksum": "0x6d37"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/releases/20260727T033438Z-3208c3cc513b.zip",
+            "release_zip_sha256": "9fe5bacf5e7f21bedfbf6c51919089ec98aa704767447e70a56fb6b36cef43fe",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/releases/20260727T033438Z-3208c3cc513b.zip",
+              "exists": true,
+              "bytes": 12574583,
+              "sha256": "9fe5bacf5e7f21bedfbf6c51919089ec98aa704767447e70a56fb6b36cef43fe"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/releases/20260727T033438Z-3208c3cc513b.zip",
+            "verified_zip_sha256": "9fe5bacf5e7f21bedfbf6c51919089ec98aa704767447e70a56fb6b36cef43fe"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:three-coats-of-white",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "three-coats-of-white"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "virtue-at-the-coat-check": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:virtue-at-the-coat-check",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "virtue-at-the-coat-check",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:34:46.487582+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:34:40.514056+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:34:46.483107+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/virtue-at-the-coat-check-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-15T00:00:00+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:36:08.863909+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "6502e0433fc2673ccf68fcb670207e0f754713abe147d64215a6a52370d74438",
+            "smoke_checksum": "0x224d"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/releases/20260727T033608Z-6502e0433fc2.zip",
+            "release_zip_sha256": "7a1eae6b4b4fc2601e008434a75b2e764f64b0277279823f6c4fa9f79df8c03a",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/releases/20260727T033608Z-6502e0433fc2.zip",
+              "exists": true,
+              "bytes": 12872166,
+              "sha256": "7a1eae6b4b4fc2601e008434a75b2e764f64b0277279823f6c4fa9f79df8c03a"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/releases/20260727T033608Z-6502e0433fc2.zip",
+            "verified_zip_sha256": "7a1eae6b4b4fc2601e008434a75b2e764f64b0277279823f6c4fa9f79df8c03a"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:virtue-at-the-coat-check",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "virtue-at-the-coat-check"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/release-verify-report.json\nGame release verification passed"
+          }
+        },
+        "zgok-wraps-a-present": {
+          "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present",
+          "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json",
+          "project_count": 1,
+          "command": {
+            "name": "game-audit:zgok-wraps-a-present",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+              "zgok-wraps-a-present",
+              "--no-write"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/game-audit-report.json\nGame audit passed"
+          },
+          "reports": {
+            "build": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/build-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:36:16.334403+00:00"
+            },
+            "smoke": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/emulator-smoke-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            },
+            "readiness": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/game-readiness-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:36:10.256506+00:00"
+            },
+            "audit": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/game-audit-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:36:16.329713+00:00"
+            },
+            "qa": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/zgok-wraps-a-present-qa-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-15T00:00:00+00:00"
+            },
+            "release": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/release-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": "2026-07-27T03:37:41.236896+00:00"
+            },
+            "release_verify": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/release-verify-report.json",
+              "exists": true,
+              "ok": true,
+              "errors": 0,
+              "warnings": 0,
+              "generated_at_utc": null
+            }
+          },
+          "freshness": {
+            "rom_sha256": "4c7c92b8b0e73d6a78351b240cc15d88f7e9bb68c2ac2b7b04b91d6ecfac4fd8",
+            "smoke_checksum": "0xcf8f"
+          },
+          "ship": {
+            "exists": true,
+            "ok": true,
+            "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/releases/20260727T033740Z-4c7c92b8b0e7.zip",
+            "release_zip_sha256": "bedc08fbae5b4e58ea0cbfecda17ef64fb24211ce98b759df8c0206e7b514d9a",
+            "actual_zip": {
+              "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/releases/20260727T033740Z-4c7c92b8b0e7.zip",
+              "exists": true,
+              "bytes": 12302756,
+              "sha256": "bedc08fbae5b4e58ea0cbfecda17ef64fb24211ce98b759df8c0206e7b514d9a"
+            },
+            "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/releases/20260727T033740Z-4c7c92b8b0e7.zip",
+            "verified_zip_sha256": "bedc08fbae5b4e58ea0cbfecda17ef64fb24211ce98b759df8c0206e7b514d9a"
+          },
+          "release_policy": {
+            "build_games": false,
+            "had_release_report_before_packaging": true,
+            "package_attempted": false,
+            "package_succeeded": false,
+            "verify_expected": true,
+            "candidate_mode": false,
+            "pending_required_approvals": []
+          },
+          "release_verify_command": {
+            "name": "game-release-verify:zgok-wraps-a-present",
+            "cmd": [
+              "/opt/homebrew/opt/python@3.14/bin/python3.14",
+              "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+              "zgok-wraps-a-present"
+            ],
+            "returncode": 0,
+            "timed_out": false,
+            "timeout_seconds": 120,
+            "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/release-verify-report.json\nGame release verification passed"
+          }
+        }
+      }
+    },
+    "release_inventory_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/release-inventory-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "generated_at_utc": "2026-07-27T03:56:05.999229+00:00"
+    },
+    "forge_status_report": {
+      "path": "/private/tmp/story-forge-doctor-status-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "generated_at_utc": "2026-07-27T03:56:08.423329+00:00"
+    },
+    "forge_status_index": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/CURRENT_RELEASES.md",
+      "exists": true,
+      "bytes": 20737,
+      "sha256": "313cbe9d87f7bc4a5af33ee5f95362051990365d86e10dbe41c23416f2b5975b",
+      "expected_status_fingerprint": "4100c7b84ce65b716e695a876fde7d9be7ce64790b157fc3969e6a230ee0ceeb",
+      "index_status_fingerprint": "4100c7b84ce65b716e695a876fde7d9be7ce64790b157fc3969e6a230ee0ceeb",
+      "fingerprint_matches": true
+    }
+  },
+  "commands": {
+    "source_tree": {
+      "name": "source_tree",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_signal_before_dawn_tree.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "Source tree report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/source-tree-report.json\nSource tree check passed"
+    },
+    "light_novel_framework_guard": {
+      "name": "light_novel_framework_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_light_novel_framework.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "Light novel framework self-test passed"
+    },
+    "forge_workbench_guard": {
+      "name": "forge_workbench_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_forge_workbench.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "Story Forge workbench self-test passed"
+    },
+    "experience_polish_guard": {
+      "name": "experience_polish_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_wscvn_experience_polish.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "WSC VN experience-polish self-test passed"
+    },
+    "audio_proof_timing_guard": {
+      "name": "audio_proof_timing_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_wscvn_audio_proof_timing.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "WSC VN audio-proof timing selftest: ok"
+    },
+    "doctor_timeout_guard": {
+      "name": "doctor_timeout_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_story_forge_doctor_timeout.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "=== timeout-process-group-selftest ===\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 -c import subprocess,sys,time; from pathlib import Path; child=subprocess.Popen([sys.executable,'-c','import time; time.sleep(60)']); Path('/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/story-forge-timeout-ogtqlu8z/child.pid').write_text(str(child.pid)); time.sleep(60)\n[x] Command timed out after 0.5s; terminated its process group\nStory Forge doctor timeout self-test passed"
+    },
+    "sprite_family_guard": {
+      "name": "sprite_family_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_wscvn_sprite_family.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "Sprite family guard report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/sprite-family-guard-report.json\nSprite family guard self-tests passed"
+    },
+    "transition_continuity_guard": {
+      "name": "transition_continuity_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_wscvn_transition_continuity.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "transition continuity selftest: ok"
+    },
+    "swansong_stale_evidence_guard": {
+      "name": "swansong_stale_evidence_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_wscvn_swansong_stale_evidence.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "SwanSong stale-evidence quarantine self-test passed"
+    },
+    "rom_smoke_guard": {
+      "name": "rom_smoke_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_wscvn_rom_smoke.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "[x] Mednafen not found: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-rom-smoke-tv3kpb4a/fake-mednafen\n[x] ROM not found: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-rom-smoke-tv3kpb4a/missing.wsc\nEmulator smoke report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-rom-smoke-tv3kpb4a/missing-rom-report.json\nEmulator smoke report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-rom-smoke-tv3kpb4a/explicit-scope.json\nBoot/checksum smoke passed (no pixels observed): wswan(WonderSwan) 8192KiB checksum 0x1234\nVisual verification not performed; no emulator screenshot proof was bound\nEmulator smoke report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-rom-smoke-tv3kpb4a/screenshot-proof.json\nBoot/checksum smoke passed (no pixels observed): wswan(WonderSwan) 8192KiB checksum 0x1234\nEmulator screenshot proof bound; visual content was not reviewed by this smoke helper\nROM smoke guard report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/rom-smoke-guard-report.json\nROM smoke guard self-tests passed"
+    },
+    "game_builder_guard": {
+      "name": "game_builder_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_wscvn_game_builder.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "Game build report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/lab/games/fresh-game/reports/build-report.json\nGame build passed: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/lab/games/fresh-game/runtime-local/fresh-game.wsc\n[i] No asset builder found for font-game; using existing project JSON.\nGame build report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/font-lab/games/font-game/reports/build-report.json\nGame build passed: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/font-lab/games/font-game/runtime-local/font-game.wsc\nGame build report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/graphics-lab/games/graphics-game/reports/build-report.json\n[x] strict graphics contract failed\nGame builder guard report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/game-builder-guard-report.json\nGame builder guard self-tests passed"
+    },
+    "game_readiness_guard": {
+      "name": "game_readiness_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_wscvn_game_readiness.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "Game readiness guard report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/game-readiness-guard-report.json\nGame readiness guard self-tests passed"
+    },
+    "game_release_guard": {
+      "name": "game_release_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_wscvn_game_release.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/zipfile/__init__.py:1730: UserWarning: Duplicate name: 'rom/sample-game.wsc'\n  return self._open_to_write(zinfo, force_zip64=force_zip64)\nGame release guard report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/game-release-guard-report.json\nGame release guard self-tests passed"
+    },
+    "game_ship_guard": {
+      "name": "game_ship_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_wscvn_game_ship.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "Game ship report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-ship-el_7ykk1/happy/games/sample-game/reports/ship-report.json\nGame ship passed: sample-game\nRelease zip: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-ship-el_7ykk1/happy/games/sample-game/releases/20260710T000000Z-abc123.zip\nGame ship report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-ship-el_7ykk1/story-proof/games/sample-game/reports/ship-report.json\nGame ship passed: sample-game\nRelease zip: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-ship-el_7ykk1/story-proof/games/sample-game/releases/20260710T000000Z-abc123.zip\nGame ship report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-ship-el_7ykk1/fail-fast/games/sample-game/reports/ship-fail-report.json\n[x] Game ship command failed: swansong-playthrough\nGame ship report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-ship-el_7ykk1/zip-mismatch/games/sample-game/reports/ship-mismatch-report.json\n[x] release verify zip sha256 does not match actual zip\n[x] release verify zip sha256 does not match release report\nGame ship report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-ship-el_7ykk1/missing-zip/games/sample-game/reports/ship-missing-zip-report.json\n[x] release zip is missing: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-ship-el_7ykk1/missing-zip/games/sample-game/releases/20260710T000000Z-abc123.zip\nGame ship report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-ship-el_7ykk1/stale-zip/games/sample-game/reports/ship-stale-zip-report.json\n[x] release report zip sha256 does not match actual zip\n[x] release verify zip sha256 does not match actual zip\nGame ship guard report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/game-ship-guard-report.json\nGame ship guard self-tests passed"
+    },
+    "game_audit_guard": {
+      "name": "game_audit_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_wscvn_game_audit.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "Game audit guard report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/game-audit-guard-report.json\nGame audit guard self-tests passed"
+    },
+    "release_inventory_guard": {
+      "name": "release_inventory_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_wscvn_release_inventory.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "Release inventory guard report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/release-inventory-guard-report.json\nRelease inventory guard self-tests passed"
+    },
+    "forge_status_guard": {
+      "name": "forge_status_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_story_forge_status.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "Story Forge status guard report: /private/tmp/story-forge-status-guard-report.json\nStory Forge status guard self-tests passed"
+    },
+    "signal_ship_gate_guard": {
+      "name": "signal_ship_gate_guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/selftest_signal_ship_gate.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "Signal ship gate guard report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/signal-ship-gate-guard-report.json\nSignal ship gate guard self-tests passed"
+    },
+    "audition_path_portability_guard": {
+      "name": "audition-path-portability-guard",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/migrate_wscvn_audition_report_paths.py",
+        "--check"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "Sprite audition path bindings are portable: 26"
+    },
+    "skill_mirror_live": {
+      "name": "skill-mirror-live",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_build_wonderswan_vn_skill.py",
+        "--require-installed-match"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "Skill mirror report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/skill-mirror-report.json\nSkill mirror check passed"
+    },
+    "light_novel_skill_mirror_live": {
+      "name": "light-novel-skill-mirror-live",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_forge_light_novels_skill.py",
+        "--require-installed-match"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 90,
+      "output_tail": "Forge light novels skill check passed"
+    },
+    "signal_doctor": {
+      "name": "signal-doctor",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/doctor_signal_before_dawn_slice.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 160,
+      "output_tail": "Doctor report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/doctor-report.json\nDoctor passed"
+    },
+    "release_inventory": {
+      "name": "release-inventory",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/audit_wscvn_releases.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 120,
+      "output_tail": "Release inventory report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/release-inventory-report.json\nRelease inventory passed"
+    },
+    "forge_status": {
+      "name": "forge-status",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/status_story_forge.py",
+        "--report",
+        "/private/tmp/story-forge-doctor-status-report.json",
+        "--index",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/CURRENT_RELEASES.md"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 120,
+      "output_tail": "b/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/scene_preview_sheet.png\n  storyboard: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/storyboard_sheet.png\n  zip: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/releases/20260727T030916Z-dfdd0a8bcdeb.zip\n  release: shipped\n  smoke: wswan(WonderSwan) checksum 0x2f48\noperation-potluck: 44 nodes, 5 bg, 3 char frames, 2 endings\n  visuals: 7 source sheets, 1 sprite families, talk/blink min 2.623/3.806\n  contact: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/contact_sheet.png\n  scene preview: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/scene_preview_sheet.png\n  storyboard: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/storyboard_sheet.png\n  zip: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/releases/20260727T031040Z-a14776ca911c.zip\n  release: shipped\n  smoke: wswan(WonderSwan) checksum 0xfd72\npocket-harbor: 63 nodes, 3 bg, 6 char frames, 3 endings\n  visuals: 2 source sheets, 2 sprite families, talk/blink min 13.138/8.584\n  contact: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/contact_sheet.png\n  scene preview: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/scene_preview_sheet.png\n  storyboard: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/storyboard_sheet.png\n  zip: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/releases/20260727T032017Z-518e84ed00b5.zip\n  release: shipped\n  smoke: wswan(WonderSwan) checksum 0x0048\nsoft-click-sunday: 74 nodes, 3 bg, 6 char frames, 4 endings\n  visuals: 2 source sheets, 2 sprite families, talk/blink min 9.215/9.715\n  contact: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/contact_sheet.png\n  scene preview: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/scene_preview_sheet.png\n  storyboard: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/storyboard_sheet.png\n  zip: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/releases/20260727T032649Z-4548d98341c7.zip\n  release: shipped\n  smoke: wswan(WonderSwan) checksum 0x32db\nswan-case-club: 52 nodes, 3 bg, 6 char frames, 3 endings\n  visuals: 2 source sheets, 2 sprite families, talk/blink min 9.244/8.616\n  contact: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets/contact_sheet.png\n  scene preview: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets/scene_preview_sheet.png\n  storyboard: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets/storyboard_sheet.png\n  zip: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/releases/20260727T033007Z-9f8ffec821fb.zip\n  release: shipped\n  smoke: wswan(WonderSwan) checksum 0xd5b0\nswanlight-ledger: 46 nodes, 13 bg, 12 char frames, 3 endings\n  visuals: 27 source sheets, 4 sprite families, talk/blink min 1.978/5.945\n  contact: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/contact_sheet.png\n  scene preview: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/scene_preview_sheet.png\n  storyboard: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/storyboard_sheet.png\n  zip: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/releases/20260727T033310Z-17441edfdcc5.zip\n  release: shipped\n  smoke: wswan(WonderSwan) checksum 0x34df\nthree-coats-of-white: 44 nodes, 4 bg, 3 char frames, 2 endings\n  visuals: 6 source sheets, 1 sprite families, talk/blink min 2.003/0.993\n  contact: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/contact_sheet.png\n  scene preview: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/scene_preview_sheet.png\n  storyboard: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/storyboard_sheet.png\n  zip: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/releases/20260727T033438Z-3208c3cc513b.zip\n  release: shipped\n  smoke: wswan(WonderSwan) checksum 0x6d37\nvirtue-at-the-coat-check: 44 nodes, 4 bg, 3 char frames, 2 endings\n  visuals: 6 source sheets, 1 sprite families, talk/blink min 1.757/0.551\n  contact: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/contact_sheet.png\n  scene preview: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/scene_preview_sheet.png\n  storyboard: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/storyboard_sheet.png\n  zip: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/releases/20260727T033608Z-6502e0433fc2.zip\n  release: shipped\n  smoke: wswan(WonderSwan) checksum 0x224d\nzgok-wraps-a-present: 44 nodes, 4 bg, 3 char frames, 2 endings\n  visuals: 6 source sheets, 1 sprite families, talk/blink min 1.824/2.613\n  contact: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/contact_sheet.png\n  scene preview: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/scene_preview_sheet.png\n  storyboard: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/storyboard_sheet.png\n  zip: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/releases/20260727T033740Z-4c7c92b8b0e7.zip\n  release: shipped\n  smoke: wswan(WonderSwan) checksum 0xcf8f"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:38:51.326401+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "eleven-bento-emergency",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/runtime-local/eleven-bento-emergency.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/eleven-bento-emergency-qa-report.json",
+    "project_counts": {
+      "name": "Eleven Bento Emergency",
+      "nodes": 37,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "header_counts": {
+      "NUM_NODES": 37,
+      "NUM_FLAGS": 0,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 4,
+      "NUM_SFX": 0,
+      "NUM_BG_ASSETS": 4,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 3
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+      "bytes": 201064,
+      "sha256": "c788d1ee469021dc33367ff5f10c65a26e083b9892957be0ba22c72653570592"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/runtime-local/eleven-bento-emergency.wsc",
+      "bytes": 8388608,
+      "sha256": "991341d1481d69d4322d671848507da5f197f4c2b5c71ecfb3db8eadcace0805"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/emulator-smoke-report.json",
+      "bytes": 1207,
+      "sha256": "4dd1db076d24d6e4e35cb7c2b3dc17d56dbe0e678151c16657aabd587c62c15a"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/game-readiness-report.json",
+      "bytes": 20268,
+      "sha256": "704e4674313c92bac4bbd401258d2a06da0410d847c81198374a60ca41b66e77"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/eleven-bento-emergency-qa-report.json",
+      "bytes": 1617,
+      "sha256": "4c2eb03d2afb4b5ad2ad074afdbfc007fa5c53f67ccef8976b372fcadf2145a1"
+    }
+  }
+}

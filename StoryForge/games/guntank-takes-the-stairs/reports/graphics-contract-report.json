@@ -1,0 +1,1052 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:45:31.454006+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets",
+    "thresholds": {
+      "screen": [
+        224,
+        144
+      ],
+      "character_max": [
+        96,
+        128
+      ],
+      "background_visible_colors_max": 16,
+      "character_visible_colors_max": 15,
+      "character_visible_colors_min": 6,
+      "character_tiles_max": 192,
+      "background_tiles_max": 511,
+      "alpha_coverage": [
+        0.2,
+        0.75
+      ],
+      "visible_above_textbox": [
+        0.52,
+        0.92
+      ],
+      "character_luma_stddev_min": 24.0,
+      "face_detail_box": [
+        28,
+        36,
+        68,
+        72
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "face_visible_colors_min": 4,
+      "face_luma_stddev_min": 18.0,
+      "animation_frames": [
+        "neutral",
+        "talk",
+        "blink"
+      ],
+      "hardware_char_anims": [
+        "blink",
+        "talking",
+        "talk-blink"
+      ],
+      "min_talk_frame_pixel_delta": 18,
+      "min_blink_frame_pixel_delta": 8,
+      "min_talk_face_pixel_delta": 18,
+      "min_blink_face_pixel_delta": 8,
+      "max_animation_alpha_changed": 0,
+      "max_animation_bbox_area": 1200,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_frame_center_drift": 0.04,
+      "max_frame_scale_drift": 0.08,
+      "min_scene_sprite_bg_luma_delta": 50.0,
+      "max_scene_bg_detail_under_sprite": 62.0
+    },
+    "backgrounds": {
+      "backgrounds/bg_end_a.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 11,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 14.61,
+        "sha256": "84ebc339a05e722a2c279f960561de174e649b912f2f855afd960f0a4821b07c"
+      },
+      "backgrounds/bg_end_b.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 77.63,
+        "sha256": "0d13dcffae682b96182af8c6b10671ef6ac8f1573ce752b1f6ffd649fd9336ec"
+      },
+      "backgrounds/bg_main.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 52.05,
+        "sha256": "90c282eb76e17ed2387d8ecbca3ad181354f9e68da427e5c986695562eabfe02"
+      },
+      "backgrounds/bg_title.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 78.43,
+        "sha256": "ae21e2581b550e5d07fe30bfbb55d32fb4de4bf96099c62970911612cdae2d54"
+      }
+    },
+    "characters": {
+      "characters/guntank_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          6,
+          3,
+          90,
+          127
+        ],
+        "alpha_coverage": 0.5242,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6347,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 59.75,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 74.12
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6441,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "abb4c6d5ae8a106724f04490d21db4953a117edd35c604f9b59cdfcdb566aebe"
+      },
+      "characters/guntank_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          6,
+          3,
+          90,
+          127
+        ],
+        "alpha_coverage": 0.5242,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6347,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 59.29,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 70.37
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6441,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "f539327e7ff686e17af41f7b3cf872c03d1eb95b104bdcc51bdacc8b34e220e6"
+      },
+      "characters/guntank_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          6,
+          3,
+          90,
+          127
+        ],
+        "alpha_coverage": 0.5242,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6347,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 60.07,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 71.14
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6441,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "5d1dbfac2e93ab4cfc19feeb059f36a256122a3453981bde6bc80fc856b711b2"
+      }
+    },
+    "sprite_families": {
+      "guntank": {
+        "body": "guntank",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/characters/guntank_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                6,
+                3,
+                90,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5078
+              ],
+              "bbox_size_norm": [
+                0.875,
+                0.9688
+              ],
+              "bbox_area_ratio": 0.8477
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/characters/guntank_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                6,
+                3,
+                90,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5078
+              ],
+              "bbox_size_norm": [
+                0.875,
+                0.9688
+              ],
+              "bbox_area_ratio": 0.8477
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 44,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                35,
+                47,
+                57,
+                56
+              ],
+              "changed_bbox_area": 198
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 44,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                7,
+                11,
+                29,
+                20
+              ],
+              "changed_bbox_area": 198
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/characters/guntank_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                6,
+                3,
+                90,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5078
+              ],
+              "bbox_size_norm": [
+                0.875,
+                0.9688
+              ],
+              "bbox_area_ratio": 0.8477
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 148,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                33,
+                46,
+                58,
+                56
+              ],
+              "changed_bbox_area": 250
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 148,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                9,
+                26,
+                34,
+                36
+              ],
+              "changed_bbox_area": 250
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      }
+    },
+    "sprite_approvals": {
+      "audition_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/auditions",
+      "approval_count": 1,
+      "covered_output_count": 3,
+      "covered_outputs": {
+        "characters/guntank_blink.png": {
+          "approval": "games/guntank-takes-the-stairs/assets/auditions/guntank-takes-the-stairs-runtime_approval.json",
+          "sha256": "abb4c6d5ae8a106724f04490d21db4953a117edd35c604f9b59cdfcdb566aebe"
+        },
+        "characters/guntank_neutral.png": {
+          "approval": "games/guntank-takes-the-stairs/assets/auditions/guntank-takes-the-stairs-runtime_approval.json",
+          "sha256": "f539327e7ff686e17af41f7b3cf872c03d1eb95b104bdcc51bdacc8b34e220e6"
+        },
+        "characters/guntank_talk.png": {
+          "approval": "games/guntank-takes-the-stairs/assets/auditions/guntank-takes-the-stairs-runtime_approval.json",
+          "sha256": "5d1dbfac2e93ab4cfc19feeb059f36a256122a3453981bde6bc80fc856b711b2"
+        }
+      },
+      "missing_outputs": [],
+      "skipped": false
+    },
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+      "ok": true,
+      "assets": {
+        "background_asset_count": 4,
+        "character_asset_count": 3,
+        "backgrounds": {
+          "bg_title": {
+            "origName": "bg_title.png",
+            "rel_path": "backgrounds/bg_title.png",
+            "exists": true
+          },
+          "bg_main": {
+            "origName": "bg_main.png",
+            "rel_path": "backgrounds/bg_main.png",
+            "exists": true
+          },
+          "bg_end_a": {
+            "origName": "bg_end_a.png",
+            "rel_path": "backgrounds/bg_end_a.png",
+            "exists": true
+          },
+          "bg_end_b": {
+            "origName": "bg_end_b.png",
+            "rel_path": "backgrounds/bg_end_b.png",
+            "exists": true
+          }
+        },
+        "characters": {
+          "char_guntank_neutral": {
+            "origName": "guntank_neutral.png",
+            "rel_path": "characters/guntank_neutral.png",
+            "exists": true
+          },
+          "char_guntank_talk": {
+            "origName": "guntank_talk.png",
+            "rel_path": "characters/guntank_talk.png",
+            "exists": true
+          },
+          "char_guntank_blink": {
+            "origName": "guntank_blink.png",
+            "rel_path": "characters/guntank_blink.png",
+            "exists": true
+          }
+        }
+      },
+      "scene_wiring": {
+        "scene_count": 33,
+        "animated_scene_count": 29,
+        "character_reference_count": 87,
+        "background_reference_count": 33,
+        "scene_visual_count": 29,
+        "scenes": [
+          {
+            "id": "tank_01",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_02",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_03",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_04",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_05",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_06",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_07",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_08",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_09",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_10",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_a1",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_a2",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_a3",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_a4",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_b1",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_b2",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_b3",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_b4",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_11",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_12",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_13",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_14",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_15",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_16",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_17",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_c1",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_c2",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_c3",
+            "bgImageId": "bg_end_a",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "tank_c4",
+            "bgImageId": "bg_end_a",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "tank_d1",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_d2",
+            "bgImageId": "bg_main",
+            "charId": "char_guntank_neutral",
+            "char2Id": "char_guntank_talk",
+            "char3Id": "char_guntank_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "guntank",
+            "expected_char2Id": "char_guntank_talk",
+            "expected_char3Id": "char_guntank_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4088,
+            "sprite_bg_luma_delta": 105.6,
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_d3",
+            "bgImageId": "bg_end_b",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "tank_d4",
+            "bgImageId": "bg_end_b",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          }
+        ],
+        "lowest_sprite_bg_contrast": [
+          {
+            "id": "tank_01",
+            "background": "bg_main",
+            "character": "char_guntank_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 105.6
+          },
+          {
+            "id": "tank_02",
+            "background": "bg_main",
+            "character": "char_guntank_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 105.6
+          },
+          {
+            "id": "tank_03",
+            "background": "bg_main",
+            "character": "char_guntank_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 105.6
+          },
+          {
+            "id": "tank_04",
+            "background": "bg_main",
+            "character": "char_guntank_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 105.6
+          },
+          {
+            "id": "tank_05",
+            "background": "bg_main",
+            "character": "char_guntank_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 105.6
+          }
+        ],
+        "busiest_sprite_lanes": [
+          {
+            "id": "tank_01",
+            "background": "bg_main",
+            "character": "char_guntank_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_02",
+            "background": "bg_main",
+            "character": "char_guntank_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_03",
+            "background": "bg_main",
+            "character": "char_guntank_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_04",
+            "background": "bg_main",
+            "character": "char_guntank_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 1.27
+          },
+          {
+            "id": "tank_05",
+            "background": "bg_main",
+            "character": "char_guntank_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 1.27
+          }
+        ]
+      }
+    },
+    "counts": {
+      "backgrounds": 4,
+      "characters": 3,
+      "sprite_families": 1,
+      "sprite_approval_outputs": 3,
+      "provenance_outputs": 7
+    }
+  }
+}

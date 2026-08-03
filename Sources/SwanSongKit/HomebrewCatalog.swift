@@ -281,7 +281,7 @@ public enum HomebrewCatalogError: LocalizedError, Equatable, Sendable {
 public enum HomebrewCatalogValidator {
     public static let firstPartyCatalogID = "regionally-famous.swansong-story-forge"
     public static let firstPartyRepositoryURL = URL(
-        string: "https://github.com/RegionallyFamous/swansong-story-forge"
+        string: "https://github.com/RegionallyFamous/SwanSong-Desktop"
     )!
     public static let maximumCatalogByteCount = 1 * 1_024 * 1_024
     public static let maximumEntryCount = 256
@@ -563,8 +563,9 @@ public enum HomebrewCatalogValidator {
               let path = pathSegments(components) else { return false }
         return path == [
             "RegionallyFamous",
-            "swansong-story-forge",
+            "SwanSong-Desktop",
             "main",
+            "StoryForge",
             "distribution",
             "catalog-v1.json",
         ]
@@ -578,13 +579,14 @@ public enum HomebrewCatalogValidator {
         guard let components = safeHTTPSComponents(url),
               components.host?.lowercased() == "github.com",
               let path = pathSegments(components) else { return false }
-        return path.count >= 6
+        return path.count >= 7
             && path[0] == "RegionallyFamous"
-            && path[1] == "swansong-story-forge"
+            && path[1] == "SwanSong-Desktop"
             && path[2] == kind
             && isCommitSHA(path[3])
-            && path[4] == "games"
-            && path[5] == entryID
+            && path[4] == "StoryForge"
+            && path[5] == "games"
+            && path[6] == entryID
     }
 
     private static func isRepositoryBlobURL(_ url: URL) -> Bool {
@@ -593,7 +595,7 @@ public enum HomebrewCatalogValidator {
               let path = pathSegments(components) else { return false }
         return path.count >= 5
             && path[0] == "RegionallyFamous"
-            && path[1] == "swansong-story-forge"
+            && path[1] == "SwanSong-Desktop"
             && path[2] == "blob"
             && isCommitSHA(path[3])
     }
@@ -618,7 +620,7 @@ public enum HomebrewCatalogValidator {
               let path = pathSegments(components),
               path.count == 5,
               path[0] == "RegionallyFamous",
-              path[1] == "swansong-story-forge",
+              path[1] == "SwanSong-Desktop",
               path[2] == "releases",
               path[3] == "tag" else { return nil }
         return path[4]
@@ -634,7 +636,7 @@ public enum HomebrewCatalogValidator {
               let path = pathSegments(components),
               path.count == 6,
               path[0] == "RegionallyFamous",
-              path[1] == "swansong-story-forge",
+              path[1] == "SwanSong-Desktop",
               path[2] == "releases",
               path[3] == "download" else { return nil }
         return path[4]

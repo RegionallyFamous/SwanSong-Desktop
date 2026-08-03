@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "catalogID": "regionally-famous.swansong-story-forge",
+  "revision": 2,
+  "generatedAt": "2026-07-15T12:00:00Z",
+  "repositoryURL": "https://github.com/RegionallyFamous/SwanSong-Desktop",
+  "entries": [
+    {
+      "id": "example-homebrew",
+      "title": "Example Homebrew",
+      "developer": "Example Developer",
+      "summary": "A short, original WonderSwan Color homebrew example.",
+      "description": "Example metadata only. Replace every placeholder path, commit, license, report, and release coordinate before generation.",
+      "licenseName": "Example license — replace before use",
+      "licenseURL": "https://github.com/RegionallyFamous/SwanSong-Desktop/blob/1111111111111111111111111111111111111111/LICENSE",
+      "sourceURL": "https://github.com/RegionallyFamous/SwanSong-Desktop/tree/1111111111111111111111111111111111111111/StoryForge/games/example-homebrew",
+      "provenanceURL": "https://github.com/RegionallyFamous/SwanSong-Desktop/blob/1111111111111111111111111111111111111111/StoryForge/games/example-homebrew/reports/ship-report.json",
+      "redistributionConfirmed": true,
+      "provenanceStatement": "Original homebrew whose authors explicitly approved redistribution of this exact ROM release.",
+      "releases": [
+        {
+          "version": "1.0.0",
+          "saveCompatibilityID": "example-homebrew-save-v1",
+          "releasedAt": "2026-07-15T12:00:00Z",
+          "releaseTag": "example-homebrew-v1.0.0",
+          "assetName": "example-homebrew-v1.0.0.wsc",
+          "romPath": "staging/example-homebrew-v1.0.0.wsc",
+          "shipReportPath": "games/example-homebrew/reports/ship-report.json",
+          "hardwareModel": "wonderSwanColor"
+        }
+      ]
+    }
+  ]
+}

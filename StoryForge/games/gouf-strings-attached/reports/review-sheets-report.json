@@ -1,0 +1,881 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:43:55.756838+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "gouf-strings-attached",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/projects/gouf-strings-attached.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/projects/gouf-strings-attached.wscvn.json",
+      "exists": true,
+      "bytes": 187420,
+      "sha256": "83dc2a9e0978f6c9cbf34bb1eb427f309245334e97095c56987d83379f3cbf93"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 36,
+    "preview_node_ids": [
+      "gouf_title",
+      "gouf_01",
+      "gouf_02",
+      "gouf_03",
+      "gouf_04",
+      "gouf_05",
+      "gouf_06",
+      "gouf_07",
+      "gouf_08",
+      "gouf_09",
+      "gouf_10",
+      "gouf_choice_1",
+      "gouf_a1",
+      "gouf_a2",
+      "gouf_a3",
+      "gouf_a4",
+      "gouf_b1",
+      "gouf_b2",
+      "gouf_b3",
+      "gouf_b4",
+      "gouf_11",
+      "gouf_12",
+      "gouf_13",
+      "gouf_14",
+      "gouf_15",
+      "gouf_16",
+      "gouf_17",
+      "gouf_choice_2",
+      "gouf_c1",
+      "gouf_c2",
+      "gouf_c3",
+      "gouf_c4",
+      "gouf_d1",
+      "gouf_d2",
+      "gouf_d3",
+      "gouf_d4"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 234084,
+      "sha256": "a7dbc534207a9a340fc05b7b79b02159a0eb849e575c53353b0485c9932daad5",
+      "size": [
+        712,
+        2050
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 79897,
+      "sha256": "df5b3b13f013f1d68216a39a16fdcfe91350eefd1022bd4d6f29f1a820ff9a60",
+      "size": [
+        488,
+        872
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "gouf_title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "9a0e869e3484784e5264d636297c0cf5262b5ea042b5a59bea89cf05953f7896"
+      },
+      {
+        "index": 1,
+        "node_id": "gouf_01",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "3fe3a7023ce2a2e0884216759c39b352a23961a18f0e00d0815f21a098edfbd8"
+      },
+      {
+        "index": 2,
+        "node_id": "gouf_02",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "477a9e028e4ae56c0f31d5601ede609ebbe76cf8c277510a17170dc0f9b45065"
+      },
+      {
+        "index": 3,
+        "node_id": "gouf_03",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "d85c538d4804e89f00f2c2745fc13463cfbbd6f97bc42cf3db5cb324a42f9e83"
+      },
+      {
+        "index": 4,
+        "node_id": "gouf_04",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "822b693597f5c5131da45c4ceee7ccb00ae630413ee5c4ce176d739d3e7431d3"
+      },
+      {
+        "index": 5,
+        "node_id": "gouf_05",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "7d4d0381f4b0c0d9c74894a3bd8e55cf76590f69a76429506d1dae5190bc8add"
+      },
+      {
+        "index": 6,
+        "node_id": "gouf_06",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "8f356217526bd6485cdc063c993cf00df50d69a385824679a9a960d56052c96b"
+      },
+      {
+        "index": 7,
+        "node_id": "gouf_07",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "7291277982bdf2704b9789f841286bcd48cb9eeac2ea9185edfe25f753224fef"
+      },
+      {
+        "index": 8,
+        "node_id": "gouf_08",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "0e68b1cd2d3c2841c8962692b4bee7fa7d237e47814c5d28b0cc29dc9c26f5c6"
+      },
+      {
+        "index": 9,
+        "node_id": "gouf_09",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "894e9ff02fc2cb25cf2edd254a683cb9f21a4c41af2a2e3ac8a94eb4f19f9895"
+      },
+      {
+        "index": 10,
+        "node_id": "gouf_10",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "c5db13fa7b620ffdd65321992a571047540ce5f3ac342237cc7870f9e009e3a7"
+      },
+      {
+        "index": 11,
+        "node_id": "gouf_choice_1",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "c643874b99e86b6e4f606557e2d5749fd49db488c9773c2c9fd367c9fea72052"
+      },
+      {
+        "index": 12,
+        "node_id": "gouf_a1",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "7d9b72d846c9df9f76bcb3c0da5131aef2a12dfcf6d1d4a76a5b8b6acf9cb417"
+      },
+      {
+        "index": 13,
+        "node_id": "gouf_a2",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "2df5a38de8cbf8d476d3ab41662a3d75cf37c0358e01de42f7a88866577f1115"
+      },
+      {
+        "index": 14,
+        "node_id": "gouf_a3",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "4639ff39fddbe7c9288a5fd87c5fa5bde067f9cfd409196c2d89ffc15d7aa418"
+      },
+      {
+        "index": 15,
+        "node_id": "gouf_a4",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "7ef2a56fdd5f51f06e6225c552216175cb530c31ae21699ba53c26025e98dbc9"
+      },
+      {
+        "index": 16,
+        "node_id": "gouf_b1",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "687717b46db7844a327c111e5bd7215f73ed24a5cb5bc448474a3c92cdc76aab"
+      },
+      {
+        "index": 17,
+        "node_id": "gouf_b2",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "a3b724d7e078775a48a5afe3c7207a576c869def4a2ecd2166b779e43292ce72"
+      },
+      {
+        "index": 18,
+        "node_id": "gouf_b3",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "daadfcd84c8c549a4eaf404336d8d1e48a45bda453f8c7e753cd5212b7bc7cdd"
+      },
+      {
+        "index": 19,
+        "node_id": "gouf_b4",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "21e2890edc33097ffd53982d8e609111158ddc84a8d5b9fbe25e93e9b264f5aa"
+      },
+      {
+        "index": 20,
+        "node_id": "gouf_11",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "a709b28e66a296aca08702912a3e0872a07cc4659abdd8b01700476eede37314"
+      },
+      {
+        "index": 21,
+        "node_id": "gouf_12",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "36f9d9e1ab82f7a1edafc57dd4e0350f7d6f5783afe6447382d5f7fa919a3c41"
+      },
+      {
+        "index": 22,
+        "node_id": "gouf_13",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "babbf5f77374934020812612da2d402116d4c898d2693953f6bf4a03a7346de0"
+      },
+      {
+        "index": 23,
+        "node_id": "gouf_14",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "000733f8f05b5d75d2bd7442745164731c0df912581ff6068a485e89d11c09da"
+      },
+      {
+        "index": 24,
+        "node_id": "gouf_15",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "f01d3b1cd0354c0b31d7b3a7945e5ac02f28ee0db8ce6bcedf9b1e57d982417e"
+      },
+      {
+        "index": 25,
+        "node_id": "gouf_16",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "0e777052a0cb7f46a67c1d0b78307eeaab0f6aa842bbfb58b6bc25412c4dd29c"
+      },
+      {
+        "index": 26,
+        "node_id": "gouf_17",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "b64a9a95a5d63148e351adb2954d58667919ead942cf8a1ba49ddd01c913c178"
+      },
+      {
+        "index": 27,
+        "node_id": "gouf_choice_2",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "981391257a52f1071473b639b04bd2d7d30b7110f7ad6a0e4a685c5ed001308a"
+      },
+      {
+        "index": 28,
+        "node_id": "gouf_c1",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "e6ccf6edaa062320f3b7e9c0e09151cae4758510a728b0110239cdff2f1c9da2"
+      },
+      {
+        "index": 29,
+        "node_id": "gouf_c2",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "fd863c7c81912ccc5de36bc22630e44c78ad68c675478b4b45eecdda231550f7"
+      },
+      {
+        "index": 30,
+        "node_id": "gouf_c3",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "e60c64d08bfd63630480fe66835f05a21932e43824cd5e3d3a3b1235295872b3"
+      },
+      {
+        "index": 31,
+        "node_id": "gouf_c4",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "e1e3099b94a2a28cbd21101134f000c1b0a86441948e52b835c4587c1164eefe"
+      },
+      {
+        "index": 32,
+        "node_id": "gouf_d1",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "b0e82a06b779cb00561a73e99bb8ffa8cf8d30001c8d3ad0e87d6d99acbe7042"
+      },
+      {
+        "index": 33,
+        "node_id": "gouf_d2",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "2ecb27c613517be499f084694474d9f941ee2c3a0e56ba4881e010ad4d04f9f2"
+      },
+      {
+        "index": 34,
+        "node_id": "gouf_d3",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "9553f0d20d695be945d9b31a3b20edcb86993b9603ca6a25d68698ec82c51d29"
+      },
+      {
+        "index": 35,
+        "node_id": "gouf_d4",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "8d4eb94331750cb3f24cf5e754929c39201b62ce5581307718ec8a929dfe54ba"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "gouf_title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "ea0a97e6a8c7e905e977dca9f0ca1dbd65557b38b9c672f31fa056cfe71330c7"
+      },
+      {
+        "index": 1,
+        "node_id": "gouf_01",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "45e08eb6ac9d266b65c1749e276a6fa336a6959e74b6b69a5e53184efe95dc24"
+      },
+      {
+        "index": 2,
+        "node_id": "gouf_02",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "9690fc85192a3f99c759915098f676ece10b535c84e1af0adb4e56534e24a904"
+      },
+      {
+        "index": 3,
+        "node_id": "gouf_03",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "8de92895e58e26670690f5ae8db1294e888b53ffb3bd2855c8b264cc337e73c6"
+      },
+      {
+        "index": 4,
+        "node_id": "gouf_04",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "67cf6d5ccceb225ddcf5551a27754141e3bbaff0f3b9aea65ce8c2023b257bd9"
+      },
+      {
+        "index": 5,
+        "node_id": "gouf_05",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "dcd0ca9ce8c02ef9bf148b71e01f5f15bd6ae2fd34ab156f93736a8e67d44490"
+      },
+      {
+        "index": 6,
+        "node_id": "gouf_06",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "760aaa8577df3d7b6e498637d0c3baf176a07e58e7bdfa78c79b94bf461c86b8"
+      },
+      {
+        "index": 7,
+        "node_id": "gouf_07",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "3b967c238eb6942904a0d2061a4349803ea48edb42d2474ec6c58b9ca3a4380c"
+      },
+      {
+        "index": 8,
+        "node_id": "gouf_08",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "754fb9ee918a609e80374cec31a37006336215325d1d5b6edc1ed8de2646253f"
+      },
+      {
+        "index": 9,
+        "node_id": "gouf_09",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "fe32dcbfce44dbd11228e90254d8ad9194c6462793fd3c6d0934ca0874bb8379"
+      },
+      {
+        "index": 10,
+        "node_id": "gouf_10",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "ae3d436622eb2d1a966a23c4b057011905eef3df35468dde618649fa5f8475e0"
+      },
+      {
+        "index": 11,
+        "node_id": "gouf_choice_1",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "939a3a79276b6602152788b52b3ecf1f62ffce99ee7b3420e39ea4ae3dc31c81"
+      },
+      {
+        "index": 12,
+        "node_id": "gouf_a1",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "3836d7ed2b20c77086b44cdea68e46b54a38d641cd40935c54b485f42ba15c69"
+      },
+      {
+        "index": 13,
+        "node_id": "gouf_a2",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "5aac3efdf6fccaf508c0ec9d35a219c7f33e138648936e040ce45b8e8ba8d967"
+      },
+      {
+        "index": 14,
+        "node_id": "gouf_a3",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "8032dbec4319a69e7eda7b61068c09bacd95d8d888844c0ababedc7fe7aca3bd"
+      },
+      {
+        "index": 15,
+        "node_id": "gouf_a4",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "b1f5a4a64a700dfd6e1b17acf72ab216f988e3e51cd240d118449d1be9d4f92f"
+      },
+      {
+        "index": 16,
+        "node_id": "gouf_b1",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "1b7dcd519d04ddc8be0ac33e81574de4177b0b8329cc57777d5934db40ecff2f"
+      },
+      {
+        "index": 17,
+        "node_id": "gouf_b2",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "ba0e8f09f2e733e708d6d0a7768e8b4a5cc98f3ddddf468b2a2f6c339314b401"
+      },
+      {
+        "index": 18,
+        "node_id": "gouf_b3",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "7cce499466b520eea09d17e7d07fb21205379247adedf992c2670025966e13c5"
+      },
+      {
+        "index": 19,
+        "node_id": "gouf_b4",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "79560f3cda77aefd462ea79f2ec4069a389a0d691f9fdf00404494428b92c467"
+      },
+      {
+        "index": 20,
+        "node_id": "gouf_11",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "57244957f5bf25884a9c2fbc261570b7b4d7c2267f50cc1a4a1e82fc1ba01339"
+      },
+      {
+        "index": 21,
+        "node_id": "gouf_12",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "06e03d34701ff8a45f63b157acb1a76210adf8852caf9bab95d8b5dd02e3c266"
+      },
+      {
+        "index": 22,
+        "node_id": "gouf_13",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "bece3266e23772e6e5ecb5c774fe003e975489d48ea89e9bcaf0e5ac5eff72d0"
+      },
+      {
+        "index": 23,
+        "node_id": "gouf_14",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "e879641e03f518b33fb27c122bd6b1b23a5d10996bded6c4713054bd0d26f08d"
+      },
+      {
+        "index": 24,
+        "node_id": "gouf_15",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "0d469778c71af90bde72d187f6f8a2cfce9d4b71ebc368f58dbb88a6be35058a"
+      },
+      {
+        "index": 25,
+        "node_id": "gouf_16",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "42b41640a24532b5e1be31da45ae8b60ed10b872051f2d9380830c20b0d739a2"
+      },
+      {
+        "index": 26,
+        "node_id": "gouf_17",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "be0e3c4dc418d3b88db4f10f7e4b2397c348b277a17f619dbf1a5c89796d63ee"
+      },
+      {
+        "index": 27,
+        "node_id": "gouf_choice_2",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "ed8402e787d0fe6f4370f422eb197994f8329af28bff94a0124bb95ec0e1a009"
+      },
+      {
+        "index": 28,
+        "node_id": "gouf_c1",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "f6ce5dbb292ab77e762b3ff1332a65babb522d970c52ea300aba831e11039102"
+      },
+      {
+        "index": 29,
+        "node_id": "gouf_c2",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "3ce47cada1eb0b95e576e8ba9e1283a03350c659b3ac77e900570499abda4f22"
+      },
+      {
+        "index": 30,
+        "node_id": "gouf_c3",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "9267c1a466b15a8af336fcb28bfa74724033b53e458b8112aed3f50c62b6a497"
+      },
+      {
+        "index": 31,
+        "node_id": "gouf_c4",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "4cda2924c9714446e75da43e3c5dbc331c41c914ef4f856a1d484f0d085b725f"
+      },
+      {
+        "index": 32,
+        "node_id": "gouf_d1",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "a8166eabfd6b631844bc5899f10a3893420fb3c4668f1452f43bdb6740b2a7d2"
+      },
+      {
+        "index": 33,
+        "node_id": "gouf_d2",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "7993be1565006a54d4342ee7d3305cebd1d6cf69e8688a214ebab3444390c448"
+      },
+      {
+        "index": 34,
+        "node_id": "gouf_d3",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "539e392b1cc9ed3056f79ce0467675ceacae08fe83c8993323d29ab34744706f"
+      },
+      {
+        "index": 35,
+        "node_id": "gouf_d4",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "8931098535217dd65de8f8c6f653c212327f0e1ffef0c60e712a447aee0224ab"
+      }
+    ]
+  }
+}

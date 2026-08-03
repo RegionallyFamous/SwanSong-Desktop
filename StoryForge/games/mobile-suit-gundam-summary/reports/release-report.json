@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-23T14:45:25.873675+00:00",
+  "errors": [],
+  "release_id": "20260723T144525Z-beb02fecfff5",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/releases/20260723T144525Z-beb02fecfff5",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/releases/20260723T144525Z-beb02fecfff5.zip",
+    "bytes": 13733524,
+    "sha256": "4db96649c53e7c27a1d21588ad802634b595cc99e9f0e4cd620ddc2ebafbe3a8"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/releases/20260723T144525Z-beb02fecfff5/manifest.json",
+    "sha256": "da2ac9432a0b11961508cb82add7431656448c937ca7b911cb96decac8414252",
+    "files": 62
+  },
+  "rom_sha256": "beb02fecfff5f1c4e6e45fd06c688e17a9f3d97fe10fa67332f1cb8f3fcc30d7",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "mobile-suit-gundam-summary",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/game-audit-report.json\nGame audit passed"
+  }
+}

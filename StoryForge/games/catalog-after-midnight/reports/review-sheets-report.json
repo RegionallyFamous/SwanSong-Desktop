@@ -1,0 +1,1042 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:34:06.531782+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "catalog-after-midnight",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json",
+      "exists": true,
+      "bytes": 105266,
+      "sha256": "7f5ebccfbfcc413e61bf2b5d82c55b9e1195256c7be9b56f6dadbdc3f00bf342"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 43,
+    "preview_node_ids": [
+      "title",
+      "cam01",
+      "cam02",
+      "cam03",
+      "cam04",
+      "cam05",
+      "cam06",
+      "cam07",
+      "cam08",
+      "cam_choice_method",
+      "cam_method_labels",
+      "cam_method_boots",
+      "cam_method_names",
+      "cam09",
+      "cam10",
+      "cam11",
+      "cam12",
+      "cam13",
+      "cam14",
+      "cam15",
+      "cam16",
+      "cam17",
+      "cam18",
+      "cam19",
+      "cam20",
+      "cam21",
+      "cam22",
+      "cam23",
+      "cam24",
+      "cam25",
+      "cam_choice_case",
+      "cam_case_sealed",
+      "cam_case_open",
+      "cam_case_photo",
+      "cam_end_sealed_labels",
+      "cam_end_sealed_boots",
+      "cam_end_sealed_names",
+      "cam_end_open_labels",
+      "cam_end_open_boots",
+      "cam_end_open_names",
+      "cam_end_photo_labels",
+      "cam_end_photo_boots",
+      "cam_end_photo_names"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 134134,
+      "sha256": "de7e44f495bb8d54ed4028c18d6e5a5fcc2daefd427a20fe5d6b4e1a3fea8a4d",
+      "size": [
+        712,
+        2560
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 63912,
+      "sha256": "0e698eda0c6a6dbefe3224c95b8d485e6797d5cb9af7399248fdcdbfaad6aa49",
+      "size": [
+        488,
+        1064
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "8a526bb73aaa347a07f9a789dcdec4f78164f57b0f0efbbd37b0be1fc4663c4b"
+      },
+      {
+        "index": 1,
+        "node_id": "cam01",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "1cd77fa606209e5b2c6d32bc06677e935d7c6b852e60777378176f3c7601c853"
+      },
+      {
+        "index": 2,
+        "node_id": "cam02",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "aa9bfae44581503afc16d87767e0cbca58939ed4b7f7314f77cfcf3914e6e607"
+      },
+      {
+        "index": 3,
+        "node_id": "cam03",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "13af60026533fcde1e157453d6c6181d3574c3958904c44103f3bcaca25e24bf"
+      },
+      {
+        "index": 4,
+        "node_id": "cam04",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "52c9752655f53c4e040a2bdd47d876c56f0043856089248adc33fd6abe6314cf"
+      },
+      {
+        "index": 5,
+        "node_id": "cam05",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "e82cf65529af71faa1f3ce5492b008b01e80ea8ac446a454f2477ec2535bee53"
+      },
+      {
+        "index": 6,
+        "node_id": "cam06",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "8ab141f2269c56b9ec763fc3bb4ed812f3cc2166f281d3b6be4319e70d40eb69"
+      },
+      {
+        "index": 7,
+        "node_id": "cam07",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "52dbdf81165ac47460319a550a6c9379edfb72c7e0cec50ebf71e31f9383db3b"
+      },
+      {
+        "index": 8,
+        "node_id": "cam08",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "90d8424ece92e3a27f7f5772ed7aae5cd1ecf60137c7e2e938673c14901d970a"
+      },
+      {
+        "index": 9,
+        "node_id": "cam_choice_method",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "32807b7b595c895135f6b67bff7966c048b8dcf4aa4b448b740cf8ab1d24971f"
+      },
+      {
+        "index": 10,
+        "node_id": "cam_method_labels",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "85be4dec51f3245c3f74a3c9cc01ff76f0256b10db8488e28abc5ac69769bc43"
+      },
+      {
+        "index": 11,
+        "node_id": "cam_method_boots",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "f57b6bf5ddd07bdb23d227a575b38e93bfdddb500dc29e9304f74c86801d0253"
+      },
+      {
+        "index": 12,
+        "node_id": "cam_method_names",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "21f8fa3d23adcce58966444b223943f5f2ce50a1d7c24181456631fb1aae031e"
+      },
+      {
+        "index": 13,
+        "node_id": "cam09",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "00873553da4f7f97e66564788f2926fea7b28e1a2c356a360a221ae45b8f28cd"
+      },
+      {
+        "index": 14,
+        "node_id": "cam10",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "282d9f25705616109ae9a9de4dc298499552d5222d766b7d07d8a358d9321d63"
+      },
+      {
+        "index": 15,
+        "node_id": "cam11",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "16cabd4dec208ffd0ac95fe452a92bf735a41bf53621d8910e57d205329c8539"
+      },
+      {
+        "index": 16,
+        "node_id": "cam12",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "15322c10ad9f5e668155e5362abed29f797abc17792aa02ab00bb31de4a38c58"
+      },
+      {
+        "index": 17,
+        "node_id": "cam13",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "41161966b9304d2905f4f6ec36f82fcd003aa226edf3b8bde080ddd94e6064f0"
+      },
+      {
+        "index": 18,
+        "node_id": "cam14",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "46e00603a4947a2a16407ac2e5c963c34eb3d68cb09bbedafb1bf09e279cd6a9"
+      },
+      {
+        "index": 19,
+        "node_id": "cam15",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "9bb719b30b3c9bad5335fecea717c8b30d877408528c1b8d244e06b9c777e779"
+      },
+      {
+        "index": 20,
+        "node_id": "cam16",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "4723e1fe23bfcb1b24e5a5188e93c6adb8ed2125f23192440eb81c786387170e"
+      },
+      {
+        "index": 21,
+        "node_id": "cam17",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "04282584aab0a9812bdd637180dcc83e8b20ad510c124845ea4152045d3e8320"
+      },
+      {
+        "index": 22,
+        "node_id": "cam18",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "dcc7fea69d9f085a58f990fae63d67edd864064bf7a8557302d3d758202f48fc"
+      },
+      {
+        "index": 23,
+        "node_id": "cam19",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "847e49383119a33244e5d1e1ffde5f45b2ab6568e6be49d8e17ce3cbe9459118"
+      },
+      {
+        "index": 24,
+        "node_id": "cam20",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "4694be45c6182c553d28460379dfda1e0bada066f57e238bbb8000473bd9f84e"
+      },
+      {
+        "index": 25,
+        "node_id": "cam21",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "2b797840a8f772a5b9096a8cb0de8335d55904ba3bd30a003fd31db1ef0b23f7"
+      },
+      {
+        "index": 26,
+        "node_id": "cam22",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "bcc87813854b14f1e24d446a4a4081b632bb8471265cdf96348e2503e5f623e6"
+      },
+      {
+        "index": 27,
+        "node_id": "cam23",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "09c5ba446363242795315ab667bf841b566f9f746726ed6cca2c2150ad159ea7"
+      },
+      {
+        "index": 28,
+        "node_id": "cam24",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "b2d0a2828c2c62bd85bc589d64ff7b9be5d7f5c325cec18d09bdf28c9dceb818"
+      },
+      {
+        "index": 29,
+        "node_id": "cam25",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "6d981ebedc7008511ff53a470cf7e58f47bb6e775b43a2a39998b0f299c09c5f"
+      },
+      {
+        "index": 30,
+        "node_id": "cam_choice_case",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "3e0283056532266cccc072b99c032144d3063469ddb8dc8bd2e6fc49d3fa6e26"
+      },
+      {
+        "index": 31,
+        "node_id": "cam_case_sealed",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "5cf054debd1f4fa2b1c70f896344d8cbc9d3aecc7022491e68ee0f36a6c07864"
+      },
+      {
+        "index": 32,
+        "node_id": "cam_case_open",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "4f828d9e5a5747221be101e462ad53572c097310ff2faa78aa0f24c067869761"
+      },
+      {
+        "index": 33,
+        "node_id": "cam_case_photo",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "72627144e665a62a500350e8cd8ef27bcf0ffd78bd8bd0f37e6d15c790224c7d"
+      },
+      {
+        "index": 34,
+        "node_id": "cam_end_sealed_labels",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "1d6d770b1643d326cddbbd1118602e08f73cb1911db0880ea1e6bec6e38798fc"
+      },
+      {
+        "index": 35,
+        "node_id": "cam_end_sealed_boots",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "067a8e632fae8a6c788de640d517f20f1f007b79e0065374db772fa843e5ffca"
+      },
+      {
+        "index": 36,
+        "node_id": "cam_end_sealed_names",
+        "rect": [
+          10,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "1d6d770b1643d326cddbbd1118602e08f73cb1911db0880ea1e6bec6e38798fc"
+      },
+      {
+        "index": 37,
+        "node_id": "cam_end_open_labels",
+        "rect": [
+          244,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "067a8e632fae8a6c788de640d517f20f1f007b79e0065374db772fa843e5ffca"
+      },
+      {
+        "index": 38,
+        "node_id": "cam_end_open_boots",
+        "rect": [
+          478,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "067a8e632fae8a6c788de640d517f20f1f007b79e0065374db772fa843e5ffca"
+      },
+      {
+        "index": 39,
+        "node_id": "cam_end_open_names",
+        "rect": [
+          10,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "1d6d770b1643d326cddbbd1118602e08f73cb1911db0880ea1e6bec6e38798fc"
+      },
+      {
+        "index": 40,
+        "node_id": "cam_end_photo_labels",
+        "rect": [
+          244,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "1d6d770b1643d326cddbbd1118602e08f73cb1911db0880ea1e6bec6e38798fc"
+      },
+      {
+        "index": 41,
+        "node_id": "cam_end_photo_boots",
+        "rect": [
+          478,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "067a8e632fae8a6c788de640d517f20f1f007b79e0065374db772fa843e5ffca"
+      },
+      {
+        "index": 42,
+        "node_id": "cam_end_photo_names",
+        "rect": [
+          10,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "1d6d770b1643d326cddbbd1118602e08f73cb1911db0880ea1e6bec6e38798fc"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "8f019dac3820074043b4bc50a11f046e0a183a2e360e95f44ec2d4c2bb5f7201"
+      },
+      {
+        "index": 1,
+        "node_id": "cam01",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "135333b23654e25e54c9b55cb569ff4c289806449f97af372b5dd3c31f4c820a"
+      },
+      {
+        "index": 2,
+        "node_id": "cam02",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "1a0f291ae6ca47f74b53017d0e7bec47b30396bda1256bf1b061d319001de77e"
+      },
+      {
+        "index": 3,
+        "node_id": "cam03",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "c45d0a69bd120296593edaab30d35e556d2de7c6ece03c3d33c155f61c9bffb5"
+      },
+      {
+        "index": 4,
+        "node_id": "cam04",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "836a07f8cf1de40f918b46ad05d25414659a6e5082609f9db9d956d141343ba5"
+      },
+      {
+        "index": 5,
+        "node_id": "cam05",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "68a66114d5d206e84245052cbf904b95d7c9ab1c64ad6770fb18b7d7c640147c"
+      },
+      {
+        "index": 6,
+        "node_id": "cam06",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "7e284b6037ef822ff313b4accc03f22978a75702fa092c9623574cadb68585b0"
+      },
+      {
+        "index": 7,
+        "node_id": "cam07",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "eaa78a40d464809fc5ac9c5c176e2b3600a9b397e6b15b7f593e9bca06172e2b"
+      },
+      {
+        "index": 8,
+        "node_id": "cam08",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "c8b4b1b79cf926fda31ce9c8dcb7c438dee86e2f77d8f77d8d7a1b8a8117dc08"
+      },
+      {
+        "index": 9,
+        "node_id": "cam_choice_method",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "7298f2b19d63c176e4002c5ea3c3a6ead39593f9485720a698d74b134a7be463"
+      },
+      {
+        "index": 10,
+        "node_id": "cam_method_labels",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "5545b64e5dd0dd6416794c2e3bd983d98416ed02d1b7df81d4ef022480b13ef5"
+      },
+      {
+        "index": 11,
+        "node_id": "cam_method_boots",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "6659b28c0f1f7dcad1ecb2f14d6ea5143ec47c3ab6a18160062af4ecb3293a7a"
+      },
+      {
+        "index": 12,
+        "node_id": "cam_method_names",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "7804174bec1d1c66f4bb7117f88c6e656c1f94022429e9ae747d25842aaa63bb"
+      },
+      {
+        "index": 13,
+        "node_id": "cam09",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "bdecacc42bea174e4bf7a5a2d772ef629a713d2acc509ab82460f07b5a5a0582"
+      },
+      {
+        "index": 14,
+        "node_id": "cam10",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "77a9829ab55426219cdd81c184e82ba2c3447ffbe644b3fa9026c9f09941631b"
+      },
+      {
+        "index": 15,
+        "node_id": "cam11",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "efa88d5840c5abaab1cf7ab429dc4c41fc9ece7229eccd3c863674dd5f90c65c"
+      },
+      {
+        "index": 16,
+        "node_id": "cam12",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "4eb90b8e46ecbd14012e251354c34d17c5e530869bf082f0d4c1bb0a3224306c"
+      },
+      {
+        "index": 17,
+        "node_id": "cam13",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "c646f183a6d21e646322649a29db2293e08951eaf0a477acee96e60e0d5ca81d"
+      },
+      {
+        "index": 18,
+        "node_id": "cam14",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "eee417956e2104c302c845dd1e6f90e5bfcae9e6c74f750f3871c7bc840b46c0"
+      },
+      {
+        "index": 19,
+        "node_id": "cam15",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "46438874ee4c8893076707ac6f184e6be2c8d2cef728cb56a04e6f1b450e5bf8"
+      },
+      {
+        "index": 20,
+        "node_id": "cam16",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "5882c11dd9577ca18213d6a654a7d999d7a31b53835de182c875eb67cd2ab7da"
+      },
+      {
+        "index": 21,
+        "node_id": "cam17",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "462192e255e9d9f10f91e13ee5e8d428ef51b5f5c70ab3c22bfaffe556402e2c"
+      },
+      {
+        "index": 22,
+        "node_id": "cam18",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "f3b2a0b4856aa40cd845f56a40050a39319c7ceebb297fa814da6837d40f7a8f"
+      },
+      {
+        "index": 23,
+        "node_id": "cam19",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "73f5e8fc83ede653215bc078dff70181ca0b6fcae88cabfcb2850627b7d636eb"
+      },
+      {
+        "index": 24,
+        "node_id": "cam20",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "ebface38ad7847b2cf6f2659c7ccf1e07412f962e62cb8944a459189e5e57a61"
+      },
+      {
+        "index": 25,
+        "node_id": "cam21",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "9bb6a2d35a523ccfd5201590ebb58b61262e4c5e1c62f3a860915859e68d8f22"
+      },
+      {
+        "index": 26,
+        "node_id": "cam22",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "c265cd51c4c2eb8e741c110f73729f38b7721e58d8eafb15402840cac6e61c5f"
+      },
+      {
+        "index": 27,
+        "node_id": "cam23",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "7f423e5bb31d322caa31a12110de389e8f275f3f902ec53c40096a44b9a1a296"
+      },
+      {
+        "index": 28,
+        "node_id": "cam24",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "7990b9e86aaca8a0fbe12cc994d9978a1cd6bfecf5dfa99efb019aa7f79f4863"
+      },
+      {
+        "index": 29,
+        "node_id": "cam25",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "29d75aed8b4b01eb65f8f71811e26d73de34a6b9d288441430c803d22d1b7f50"
+      },
+      {
+        "index": 30,
+        "node_id": "cam_choice_case",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "ae24345b9b1a474a724814c038cfc760ee327f8cdb1d61ef7b4e28a38a364b31"
+      },
+      {
+        "index": 31,
+        "node_id": "cam_case_sealed",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "0f66ea07d4e684dfc246a3bacffd982e6983443997fbb5ac9900f23818179e6d"
+      },
+      {
+        "index": 32,
+        "node_id": "cam_case_open",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "79714c48c71b6f1359d1312122553fc2c72608a3b11bd0b7802c86b973bd39e9"
+      },
+      {
+        "index": 33,
+        "node_id": "cam_case_photo",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "d7b1a156a7029ab237ff415592973bca0f5bd95911e86057d7bb6c5d73dda9b1"
+      },
+      {
+        "index": 34,
+        "node_id": "cam_end_sealed_labels",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "b65830b14a154e433ecd899a575f9ba753a3e4ec6f33e8c7862c3859c279ec2c"
+      },
+      {
+        "index": 35,
+        "node_id": "cam_end_sealed_boots",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "c696c781675ee08a16cf313ca6e9dfadad6b2146510bf42ad876b0916ab4d9cc"
+      },
+      {
+        "index": 36,
+        "node_id": "cam_end_sealed_names",
+        "rect": [
+          8,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "b65830b14a154e433ecd899a575f9ba753a3e4ec6f33e8c7862c3859c279ec2c"
+      },
+      {
+        "index": 37,
+        "node_id": "cam_end_open_labels",
+        "rect": [
+          128,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "c696c781675ee08a16cf313ca6e9dfadad6b2146510bf42ad876b0916ab4d9cc"
+      },
+      {
+        "index": 38,
+        "node_id": "cam_end_open_boots",
+        "rect": [
+          248,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "c696c781675ee08a16cf313ca6e9dfadad6b2146510bf42ad876b0916ab4d9cc"
+      },
+      {
+        "index": 39,
+        "node_id": "cam_end_open_names",
+        "rect": [
+          368,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "b65830b14a154e433ecd899a575f9ba753a3e4ec6f33e8c7862c3859c279ec2c"
+      },
+      {
+        "index": 40,
+        "node_id": "cam_end_photo_labels",
+        "rect": [
+          8,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "b65830b14a154e433ecd899a575f9ba753a3e4ec6f33e8c7862c3859c279ec2c"
+      },
+      {
+        "index": 41,
+        "node_id": "cam_end_photo_boots",
+        "rect": [
+          128,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "c696c781675ee08a16cf313ca6e9dfadad6b2146510bf42ad876b0916ab4d9cc"
+      },
+      {
+        "index": 42,
+        "node_id": "cam_end_photo_names",
+        "rect": [
+          248,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "b65830b14a154e433ecd899a575f9ba753a3e4ec6f33e8c7862c3859c279ec2c"
+      }
+    ]
+  }
+}

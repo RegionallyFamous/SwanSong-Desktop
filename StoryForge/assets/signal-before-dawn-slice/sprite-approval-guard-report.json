@@ -1,0 +1,220 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:55:10.598954+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "current-validator",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "returncode": 0,
+      "output_tail": "QA report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/qa-report.json\nQA passed"
+    },
+    {
+      "name": "valid-base-coverage",
+      "approval": "mira_base",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": [],
+      "covered_paths": [
+        "assets/signal-before-dawn-slice/characters/mira_neutral.png",
+        "assets/signal-before-dawn-slice/characters/mira_talk.png",
+        "assets/signal-before-dawn-slice/characters/mira_blink.png"
+      ]
+    },
+    {
+      "name": "valid-expression-coverage",
+      "approval": "mira_expression",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": [],
+      "covered_paths": [
+        "assets/signal-before-dawn-slice/characters/mira_worried_neutral.png",
+        "assets/signal-before-dawn-slice/characters/mira_worried_talk.png",
+        "assets/signal-before-dawn-slice/characters/mira_worried_blink.png",
+        "assets/signal-before-dawn-slice/characters/mira_resolved_neutral.png",
+        "assets/signal-before-dawn-slice/characters/mira_resolved_talk.png",
+        "assets/signal-before-dawn-slice/characters/mira_resolved_blink.png",
+        "assets/signal-before-dawn-slice/characters/mira_smile_neutral.png",
+        "assets/signal-before-dawn-slice/characters/mira_smile_talk.png",
+        "assets/signal-before-dawn-slice/characters/mira_smile_blink.png"
+      ]
+    },
+    {
+      "name": "missing-covered-outputs",
+      "approval": "mira_base",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "covered_outputs is missing",
+      "errors": [
+        "mira_base: approval covered_outputs is missing or not a list",
+        "mira_base: covered output hash is stale for assets/signal-before-dawn-slice/characters/mira_neutral.png",
+        "mira_base: covered output hash is stale for assets/signal-before-dawn-slice/characters/mira_talk.png",
+        "mira_base: covered output hash is stale for assets/signal-before-dawn-slice/characters/mira_blink.png"
+      ],
+      "covered_paths": [
+        "assets/signal-before-dawn-slice/characters/mira_neutral.png",
+        "assets/signal-before-dawn-slice/characters/mira_talk.png",
+        "assets/signal-before-dawn-slice/characters/mira_blink.png"
+      ]
+    },
+    {
+      "name": "wrong-character-output",
+      "approval": "mira_base",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "unexpected covered outputs",
+      "errors": [
+        "mira_base: approval is missing covered outputs: assets/signal-before-dawn-slice/characters/mira_neutral.png",
+        "mira_base: approval has unexpected covered outputs: assets/signal-before-dawn-slice/characters/lune_neutral.png",
+        "mira_base: covered output hash is stale for assets/signal-before-dawn-slice/characters/mira_neutral.png"
+      ],
+      "covered_paths": [
+        "assets/signal-before-dawn-slice/characters/mira_neutral.png",
+        "assets/signal-before-dawn-slice/characters/mira_talk.png",
+        "assets/signal-before-dawn-slice/characters/mira_blink.png"
+      ]
+    },
+    {
+      "name": "stale-covered-output-sha",
+      "approval": "mira_base",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "covered output hash is stale",
+      "errors": [
+        "mira_base: covered output hash is stale for assets/signal-before-dawn-slice/characters/mira_neutral.png"
+      ],
+      "covered_paths": [
+        "assets/signal-before-dawn-slice/characters/mira_neutral.png",
+        "assets/signal-before-dawn-slice/characters/mira_talk.png",
+        "assets/signal-before-dawn-slice/characters/mira_blink.png"
+      ]
+    },
+    {
+      "name": "duplicate-covered-output",
+      "approval": "mira_base",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "lists covered output more than once",
+      "errors": [
+        "mira_base: approval lists covered output more than once: assets/signal-before-dawn-slice/characters/mira_neutral.png"
+      ],
+      "covered_paths": [
+        "assets/signal-before-dawn-slice/characters/mira_neutral.png",
+        "assets/signal-before-dawn-slice/characters/mira_talk.png",
+        "assets/signal-before-dawn-slice/characters/mira_blink.png"
+      ]
+    },
+    {
+      "name": "wrong-provenance-source",
+      "approval": "mira_base",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "provenance source",
+      "errors": [
+        "mira_base: characters/mira_neutral.png provenance source is 'sources/not_the_approved_sheet.png', expected 'sources/mira_sheet_source_v4.png'"
+      ],
+      "covered_paths": [
+        "assets/signal-before-dawn-slice/characters/mira_neutral.png",
+        "assets/signal-before-dawn-slice/characters/mira_talk.png",
+        "assets/signal-before-dawn-slice/characters/mira_blink.png"
+      ]
+    },
+    {
+      "name": "stale-provenance-output-sha",
+      "approval": "mira_base",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "provenance output hash is stale",
+      "errors": [
+        "mira_base: characters/mira_neutral.png provenance output hash is stale"
+      ],
+      "covered_paths": [
+        "assets/signal-before-dawn-slice/characters/mira_neutral.png",
+        "assets/signal-before-dawn-slice/characters/mira_talk.png",
+        "assets/signal-before-dawn-slice/characters/mira_blink.png"
+      ]
+    },
+    {
+      "name": "missing-expression-strategy",
+      "approval": "mira_expression",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "expression strategy is missing or wrong",
+      "errors": [
+        "mira_expression: characters/mira_worried_neutral.png expression strategy is missing or wrong"
+      ],
+      "covered_paths": [
+        "assets/signal-before-dawn-slice/characters/mira_worried_neutral.png",
+        "assets/signal-before-dawn-slice/characters/mira_worried_talk.png",
+        "assets/signal-before-dawn-slice/characters/mira_worried_blink.png",
+        "assets/signal-before-dawn-slice/characters/mira_resolved_neutral.png",
+        "assets/signal-before-dawn-slice/characters/mira_resolved_talk.png",
+        "assets/signal-before-dawn-slice/characters/mira_resolved_blink.png",
+        "assets/signal-before-dawn-slice/characters/mira_smile_neutral.png",
+        "assets/signal-before-dawn-slice/characters/mira_smile_talk.png",
+        "assets/signal-before-dawn-slice/characters/mira_smile_blink.png"
+      ]
+    },
+    {
+      "name": "valid-asset-provenance-metrics",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": []
+    },
+    {
+      "name": "missing-output-metrics",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "output metrics are stale or missing",
+      "errors": [
+        "characters/mira_neutral.png: provenance output metrics are stale or missing"
+      ]
+    },
+    {
+      "name": "stale-output-metrics",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "output metrics are stale or missing",
+      "errors": [
+        "characters/mira_neutral.png: provenance output metrics are stale or missing"
+      ]
+    },
+    {
+      "name": "stale-source-metrics",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "source metrics are stale or missing",
+      "errors": [
+        "characters/mira_neutral.png: provenance source metrics are stale or missing"
+      ]
+    },
+    {
+      "name": "stale-base-source-metrics",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "base character source metrics are stale or missing",
+      "errors": [
+        "characters/mira_worried_neutral.png: base character source metrics are stale or missing"
+      ]
+    }
+  ]
+}

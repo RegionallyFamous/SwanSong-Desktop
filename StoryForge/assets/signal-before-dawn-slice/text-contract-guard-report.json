@@ -1,0 +1,121 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:49.634249+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "current-project",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "returncode": 0,
+      "output_tail": "Text contract report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/text-contract-report.json\nText contract passed"
+    },
+    {
+      "name": "valid-fixture",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "returncode": 0,
+      "output_tail": "Text contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-text-contract-zmt1n_47/valid-fixture-assets/text-contract-report.json\nText contract passed",
+      "errors": []
+    },
+    {
+      "name": "long-dialogue-wrap",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "wraps to",
+      "returncode": 1,
+      "output_tail": "Text contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-text-contract-zmt1n_47/long-dialogue-wrap-assets/text-contract-report.json\n[x] scene_ok block 1: wraps to 5 lines, quality max 3",
+      "errors": [
+        "scene_ok block 1: wraps to 5 lines, quality max 3"
+      ]
+    },
+    {
+      "name": "long-word",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "word length",
+      "returncode": 1,
+      "output_tail": "Text contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-text-contract-zmt1n_47/long-word-assets/text-contract-report.json\n[x] scene_ok block 1: word length 34 exceeds text width 26",
+      "errors": [
+        "scene_ok block 1: word length 34 exceeds text width 26"
+      ]
+    },
+    {
+      "name": "long-choice-prompt",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "choice prompt",
+      "returncode": 1,
+      "output_tail": "Text contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-text-contract-zmt1n_47/long-choice-prompt-assets/text-contract-report.json\n[x] choice_ok: choice prompt is 36 chars, max 26",
+      "errors": [
+        "choice_ok: choice prompt is 36 chars, max 26"
+      ]
+    },
+    {
+      "name": "long-choice-label",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "choice label",
+      "returncode": 1,
+      "output_tail": "Text contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-text-contract-zmt1n_47/long-choice-label-assets/text-contract-report.json\n[x] choice_ok: choice label 'Open the very old brass locker' is 30 chars, max 22",
+      "errors": [
+        "choice_ok: choice label 'Open the very old brass locker' is 30 chars, max 22"
+      ]
+    },
+    {
+      "name": "unknown-tag",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "unsupported control tag",
+      "returncode": 1,
+      "output_tail": "Text contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-text-contract-zmt1n_47/unknown-tag-assets/text-contract-report.json\n[x] scene_ok: unsupported control tag '{shake}'",
+      "errors": [
+        "scene_ok: unsupported control tag '{shake}'"
+      ]
+    },
+    {
+      "name": "non-ascii",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "unsupported character",
+      "returncode": 1,
+      "output_tail": "Text contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-text-contract-zmt1n_47/non-ascii-assets/text-contract-report.json\n[x] scene_ok: unsupported character '\u2014' U+2014",
+      "errors": [
+        "scene_ok: unsupported character '\u2014' U+2014"
+      ]
+    },
+    {
+      "name": "del-char",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "U+007F",
+      "returncode": 1,
+      "output_tail": "Text contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-text-contract-zmt1n_47/del-char-assets/text-contract-report.json\n[x] scene_ok: unsupported character '\\x7f' U+007F",
+      "errors": [
+        "scene_ok: unsupported character '\\x7f' U+007F"
+      ]
+    },
+    {
+      "name": "tab-char",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "U+0009",
+      "returncode": 1,
+      "output_tail": "Text contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-text-contract-zmt1n_47/tab-char-assets/text-contract-report.json\n[x] choice_ok: unsupported character '\\t' U+0009",
+      "errors": [
+        "choice_ok: unsupported character '\\t' U+0009"
+      ]
+    }
+  ]
+}

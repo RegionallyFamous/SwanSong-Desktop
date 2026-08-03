@@ -1,0 +1,1042 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:09:18.000512+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "operation-potluck",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+      "exists": true,
+      "bytes": 165835,
+      "sha256": "183bd3832346d19820c2c3e51dd4ada09af3d036015015578f0662ab66806fe8"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 43,
+    "preview_node_ids": [
+      "title",
+      "op01",
+      "op02",
+      "op03",
+      "op04",
+      "op05",
+      "op06",
+      "op07",
+      "op08",
+      "op09",
+      "op10",
+      "op_method",
+      "op_plan_1",
+      "op_plan_2",
+      "op_call_1",
+      "op_call_2",
+      "op11",
+      "op12",
+      "op13",
+      "op14",
+      "op15",
+      "op16",
+      "op17",
+      "op18",
+      "op19",
+      "op20",
+      "op21",
+      "op22",
+      "op23",
+      "op24",
+      "op25",
+      "op26",
+      "op27",
+      "op28",
+      "op_final",
+      "op_e1_1",
+      "op_e1_2",
+      "op_e1_3",
+      "op_e1_4",
+      "op_e2_1",
+      "op_e2_2",
+      "op_e2_3",
+      "op_e2_4"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 360487,
+      "sha256": "33484e5520fbae89f80009caaec031f58577da48e0860cbaff50770b11fd682c",
+      "size": [
+        712,
+        2560
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 134736,
+      "sha256": "27fda97e14b0779790cb12c7daa597f663eda476aa8145cc6548c3e70fd0edb5",
+      "size": [
+        488,
+        1064
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "e156146e3f1bed3ebaec247a486cf78005a0f9f4d26a1c9d77fbfb955dac86d0"
+      },
+      {
+        "index": 1,
+        "node_id": "op01",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "306ab3b1fb2280f886711929718685e79c8c3c43bca42602a03fb66d7bc5ea8b"
+      },
+      {
+        "index": 2,
+        "node_id": "op02",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "3d39682b040aafc3c98cce6000673710065f93e6ef5f5a4bcd12700c611f0f60"
+      },
+      {
+        "index": 3,
+        "node_id": "op03",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "3f82137a593952b8d579f0faf5a1756182720afa456e370c67760fbf0b80593d"
+      },
+      {
+        "index": 4,
+        "node_id": "op04",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "d584c42e8623617503c93193806746d98015df263871267b29b48482ec0c54e2"
+      },
+      {
+        "index": 5,
+        "node_id": "op05",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "ce6c6b9cf28d86bae34987e0e28dde270db760c8ce25fa885df7c516db15e14f"
+      },
+      {
+        "index": 6,
+        "node_id": "op06",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "6b8e2894b22826ccffa5feca455abe1a4533e19ce28126bb36d748e7af5645c4"
+      },
+      {
+        "index": 7,
+        "node_id": "op07",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "0e0c5831f36b8f35dc112b775b460fb4fc56978f55b7ea5b6cada40f8651ea74"
+      },
+      {
+        "index": 8,
+        "node_id": "op08",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "ec2eee7810a0bd69dd6d941523dc14d96abb49987ccfc32f49939016845149bd"
+      },
+      {
+        "index": 9,
+        "node_id": "op09",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "8d951da2d430d3d07a54b255dbbbd2ebf2ddc59559bfc18365899ee64af0572c"
+      },
+      {
+        "index": 10,
+        "node_id": "op10",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "25a0804625721468f8a0ebb129b679bca15419e361bb359e597f45ad65645e8a"
+      },
+      {
+        "index": 11,
+        "node_id": "op_method",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "e2615633c0bc306e08fbe1b389d8d2221d39ec2e8c076195e44fe1716e9310a9"
+      },
+      {
+        "index": 12,
+        "node_id": "op_plan_1",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "6d76d0406be6a20e1a6f01208719a9e219bcc6461b9d1b4135ac09196f73c1dc"
+      },
+      {
+        "index": 13,
+        "node_id": "op_plan_2",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "50fb3312b89147bca2e20c190803edc47692c1ed802a35b2cf75e7bcf0f842a5"
+      },
+      {
+        "index": 14,
+        "node_id": "op_call_1",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "0832ef1b6f292a6b919e1acf36a4e145a7e2f398d89b6bb7311c0570373b42e4"
+      },
+      {
+        "index": 15,
+        "node_id": "op_call_2",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "2fd3a5f69bea3d510c17553fcccc0609def9e94e258f13d413b4e09a741b6d52"
+      },
+      {
+        "index": 16,
+        "node_id": "op11",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "a68c3f155f675fc2280f95cd03394cc5c709f4ae4a79b80deb879e67c83040fa"
+      },
+      {
+        "index": 17,
+        "node_id": "op12",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "44496642757b6c23a47ff267372471cfa2815f39c141e1a4d8cbb85ae0ae705c"
+      },
+      {
+        "index": 18,
+        "node_id": "op13",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "e4dfb4b356441fb89effa3e80497057c9971b7af1c82de50b08e46b5ad110a0e"
+      },
+      {
+        "index": 19,
+        "node_id": "op14",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "a7a76452228878dde03c2079af9563801b479d26ccf763d487a2ae19b58f7133"
+      },
+      {
+        "index": 20,
+        "node_id": "op15",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "54714acabb7e84dbd808eebd345440e1b94bb1fbe6b33750c77cc891d8e9659c"
+      },
+      {
+        "index": 21,
+        "node_id": "op16",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "0e25857c1e147ec341c82de19578ba5409898ebf2692b73f61adeecfde3c7345"
+      },
+      {
+        "index": 22,
+        "node_id": "op17",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "bd9cf42371a7555ce513cdc401dcdcb774d502d440924987aa60b45fe93f0080"
+      },
+      {
+        "index": 23,
+        "node_id": "op18",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "f7caa9605570b9a7ebbdaead1044c22b521449521e4e11e369b2b4b0e6d95b65"
+      },
+      {
+        "index": 24,
+        "node_id": "op19",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "380f433f839d2d253771a49b579ac599084e9b6a30643549aa1efa9f4b9508d1"
+      },
+      {
+        "index": 25,
+        "node_id": "op20",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "cd7fcb257d7a4c749d40d02895191b1c0a35fcd69119a3f6222df4d0c1477993"
+      },
+      {
+        "index": 26,
+        "node_id": "op21",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "da238ab8e05d2aa07e469067714158c36dd135707150950f90905c25590eb2d2"
+      },
+      {
+        "index": 27,
+        "node_id": "op22",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "1ed740888bbd0246f7e77501799c5409a68f2cbd8a624e611d9af5eb28871927"
+      },
+      {
+        "index": 28,
+        "node_id": "op23",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "79ca8f77735aebe6dabc55856c2162d66598c09a163f488659d797659c278969"
+      },
+      {
+        "index": 29,
+        "node_id": "op24",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "814e3e46130a72decac3060811709e3a9a4baeb1f963bfe4573158d0b3a5f11f"
+      },
+      {
+        "index": 30,
+        "node_id": "op25",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "b27be004ca954903b18e3fea836df399ec5548a3afe9e89cdffe7487a711aa34"
+      },
+      {
+        "index": 31,
+        "node_id": "op26",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "cf088af73738aab94e8267dd888ee64cc19be3f4cd58e202ff02279f6707d4f8"
+      },
+      {
+        "index": 32,
+        "node_id": "op27",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "646a765b709996c70d6d1e8f22488adb83d248f88bf4489dd47a9204f14b35d8"
+      },
+      {
+        "index": 33,
+        "node_id": "op28",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "cfd0855b98260a5d69e2510251e71c9640d8e02ef8b2cbb804a48c23d6ef0910"
+      },
+      {
+        "index": 34,
+        "node_id": "op_final",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "d0c2f08497ec99259eba3a232e66b6ca48bc1f93607fcc9a6199bfa58a76088b"
+      },
+      {
+        "index": 35,
+        "node_id": "op_e1_1",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "2556278258fe8a76546c9f0a02df2630f8c3bdb1d44a955a6b4198c61265111d"
+      },
+      {
+        "index": 36,
+        "node_id": "op_e1_2",
+        "rect": [
+          10,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "a8d16a682a3b5fa68e81c9b826b2757990c43737ca505dedd85a581293997e5a"
+      },
+      {
+        "index": 37,
+        "node_id": "op_e1_3",
+        "rect": [
+          244,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "72632dbd25e0ee811f3780b9f026fae834ce806ecb6e59ac054cf32dcf492a98"
+      },
+      {
+        "index": 38,
+        "node_id": "op_e1_4",
+        "rect": [
+          478,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "a4ef634eab07f3acce54399a693b335708f61ba3ff20f92d7648720b214d67db"
+      },
+      {
+        "index": 39,
+        "node_id": "op_e2_1",
+        "rect": [
+          10,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "4c7f00070735fed7ddb33b06ec1b84a8e6a11ee2f283955814ce07711b683914"
+      },
+      {
+        "index": 40,
+        "node_id": "op_e2_2",
+        "rect": [
+          244,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "5246e2fc04502bb36ea39ed8624a47592fabd06b21ecc298f3d813c84297455a"
+      },
+      {
+        "index": 41,
+        "node_id": "op_e2_3",
+        "rect": [
+          478,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "12bc0898d940f90e464124d594d11ee489a4bd1724657c25bf69d2a96ef4aea3"
+      },
+      {
+        "index": 42,
+        "node_id": "op_e2_4",
+        "rect": [
+          10,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "f6028bea0f7ef692c4f120681f1697f9b3dccaabb3f4cb6ecbfb4a51f1b37345"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "8cdc2280bc851ee66ac12151cb0e33060603ec5b0eb5d1215c0ac6a8be8cf431"
+      },
+      {
+        "index": 1,
+        "node_id": "op01",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "6085e3f3f4f43a1d4320f64c83e6c96afa2004a24e876a373877ddd18265ada1"
+      },
+      {
+        "index": 2,
+        "node_id": "op02",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "fc2510b83bd0df5602ab78d77fc70700479d15c5cc26db571b3ce437ab7e324e"
+      },
+      {
+        "index": 3,
+        "node_id": "op03",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "b002cb653e5eea75915a1704f1342f9b7aa244fa372653e1f9dfe92cdbcf9efc"
+      },
+      {
+        "index": 4,
+        "node_id": "op04",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "ae7e825afb3483cd47234bcddf70091953d8761636c495be4ef1cb3004038332"
+      },
+      {
+        "index": 5,
+        "node_id": "op05",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "4bb4aeff59a622f022fff8b4b34d6dfff29520c907b344989beb51cbfbaef5a4"
+      },
+      {
+        "index": 6,
+        "node_id": "op06",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "1b4d2e0114f9f23493d160272ca968dff82d6f6d460ec37236dc889be351b00b"
+      },
+      {
+        "index": 7,
+        "node_id": "op07",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "9baa4128ad45fd2bd1fc7d68f6cdb4028f2f832035b9d8a0bf0a65e836708357"
+      },
+      {
+        "index": 8,
+        "node_id": "op08",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "98018b158a96725043d4435ceff92d4bbc89c37b3b9a51b76dcaa0f0f3c74fab"
+      },
+      {
+        "index": 9,
+        "node_id": "op09",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "da1b0174d09ec9c10efa8835c0bc895e9b761b4f1035ffac196ca974fd275d84"
+      },
+      {
+        "index": 10,
+        "node_id": "op10",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "039f696cad0870e44c7535f83912ad861251da18f13a34e78fd2b306c4f18efc"
+      },
+      {
+        "index": 11,
+        "node_id": "op_method",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "a84574c4620d0a96c6b5e001cf785dcc4085ae398c2517095f3b4165ce60d4c4"
+      },
+      {
+        "index": 12,
+        "node_id": "op_plan_1",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "7e144dcebb65b0d2574a7b338c2c803da6661efb9649920f250e4ee8ff4ffb42"
+      },
+      {
+        "index": 13,
+        "node_id": "op_plan_2",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "943b80d875ba23414cf1a5937e6a1f9f655ce63ff0fc940f6f898b8792e56e0d"
+      },
+      {
+        "index": 14,
+        "node_id": "op_call_1",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "4095906c760d3ee6a70a1b6c9c4ef074b18272ea32b0263856caf9fcb6bf8545"
+      },
+      {
+        "index": 15,
+        "node_id": "op_call_2",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "7e48e3a3237f9ddaaea256c0d1b222c9459926c7cf38ed42a8d06ac7835e20bb"
+      },
+      {
+        "index": 16,
+        "node_id": "op11",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "b07b137f68f992571cbd83ce36120fd81374713ee8349328341f7254a985ca25"
+      },
+      {
+        "index": 17,
+        "node_id": "op12",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "ac93dca0c468e705702024e3cab6e49f7bda57a675aad5ec20f8a415ed424f69"
+      },
+      {
+        "index": 18,
+        "node_id": "op13",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "4cdca5bc4c2adc02b0c4cdfa85840702266ac0d7f9a5b931c7143987e3edb19e"
+      },
+      {
+        "index": 19,
+        "node_id": "op14",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "eb269e2abf7ab5c0373e20a22a17c79859eb3ef02ffd4e51d756ac0fd1ea4264"
+      },
+      {
+        "index": 20,
+        "node_id": "op15",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "13228e10d9c4a469df35e18e955ae4e51517dbaf1595d18b80a2caea1944bbd4"
+      },
+      {
+        "index": 21,
+        "node_id": "op16",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "687eb1cc4d673178a1ee92482484b5f2b54fe7c622b608fffbb68ef8c4477fe1"
+      },
+      {
+        "index": 22,
+        "node_id": "op17",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "df180c8c098956be5dd156e424fd4e00e1f063a42345b1dc1890ce47389766a1"
+      },
+      {
+        "index": 23,
+        "node_id": "op18",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "d4d7041ad1513634f32ba9b8e781bb642792f0b8945cf8961a0a41485125f497"
+      },
+      {
+        "index": 24,
+        "node_id": "op19",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "77eade619cb99dd25a99547d6e743b4bedb92ce651303df6e0f2cf797e319fb1"
+      },
+      {
+        "index": 25,
+        "node_id": "op20",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "edb7c49f864a1974bfa2e43a6b9009743b31242bb12829711325cf83b7a5d857"
+      },
+      {
+        "index": 26,
+        "node_id": "op21",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "59535b54c634f9d5456d654c56cd01255eb7a9b4c3dcf86d7d94d5aa0e26293e"
+      },
+      {
+        "index": 27,
+        "node_id": "op22",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "a3ea8a891ebd80429f2c621ac70578160486b15222574ee48e470c97fe69466b"
+      },
+      {
+        "index": 28,
+        "node_id": "op23",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "dd297b069df00699b7d4920e8809896c302e8659241ef9de362bc86fbbbc2524"
+      },
+      {
+        "index": 29,
+        "node_id": "op24",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "238941a711e563a4ad9fef02b7941606ef1b4a8fbcdad7d43f6aa2c6a1714449"
+      },
+      {
+        "index": 30,
+        "node_id": "op25",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "f060cd1283fbf86c5d8d1656bfa931d3ab0fdc162f8c5a86c2a08da6202620bf"
+      },
+      {
+        "index": 31,
+        "node_id": "op26",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "dc98e615e586584ca79baea2dc950008a4ad296b604fffc590f4c26e920a3f65"
+      },
+      {
+        "index": 32,
+        "node_id": "op27",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "818e9e0207b2bb4bd5c4538c4f0e103602da34901d39b46642e7e6b604ddfe3a"
+      },
+      {
+        "index": 33,
+        "node_id": "op28",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "7eb687e3fcbf039d9e6aac6bc410ee7025da30c454b7563e03e8063e3fb9b5f2"
+      },
+      {
+        "index": 34,
+        "node_id": "op_final",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "df4c1d69fdbb8a0c5cdfbde2d70d6bd1bf36db1cfe954b596abf21f13a2d6eb0"
+      },
+      {
+        "index": 35,
+        "node_id": "op_e1_1",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "1aae0419f194becc0621f90f8b6064ea9de9505d4736aed18c0c7ce09c96aa8f"
+      },
+      {
+        "index": 36,
+        "node_id": "op_e1_2",
+        "rect": [
+          8,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "2d26da97f5b094c9336e502fc8f42720bfdc671097c916df042afa6d7c7121d4"
+      },
+      {
+        "index": 37,
+        "node_id": "op_e1_3",
+        "rect": [
+          128,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "12117ce9ee3a02c06de5a6e5504dbace68238b4b6fef3537b5a26614e309ab7f"
+      },
+      {
+        "index": 38,
+        "node_id": "op_e1_4",
+        "rect": [
+          248,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "ae9da2a48c6f821c0e43d6f485bf64b99eaa921cc8350c386c0469356fd63f9c"
+      },
+      {
+        "index": 39,
+        "node_id": "op_e2_1",
+        "rect": [
+          368,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "31bbdceef1427940e72fca2758c4a37b8832dc33e35bc2a3088db6a77fc63085"
+      },
+      {
+        "index": 40,
+        "node_id": "op_e2_2",
+        "rect": [
+          8,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "275bc54dc91a30859c5e3b8fa2f49b23ecc7f78921f411bd56499e66c2daf6e8"
+      },
+      {
+        "index": 41,
+        "node_id": "op_e2_3",
+        "rect": [
+          128,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "60d5c8e29a4fb0b92b2c76e02f04e603d2c66a53cfc173f9d741adf21208d4eb"
+      },
+      {
+        "index": 42,
+        "node_id": "op_e2_4",
+        "rect": [
+          248,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "b49e3234714ce16286f52f8b2ce7219dc1f31e797bbc8cab357109426b186adc"
+      }
+    ]
+  }
+}

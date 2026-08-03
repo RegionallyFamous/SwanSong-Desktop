@@ -1,0 +1,629 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:33:12.817765+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "three-coats-of-white",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+      "bytes": 163302,
+      "sha256": "f48f51cfb115d271167aa23629b4a801ccd16c638c4ac4a59e8b4ea4dcc550d5"
+    },
+    "project_counts": {
+      "name": "Three Coats of White",
+      "nodes": 44,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 44,
+      "scene_nodes": 40,
+      "staged_scenes": 36,
+      "animated_staged_scenes": 36,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "GM",
+        "Mk-II",
+        "Narrator",
+        "SYSTEM"
+      ],
+      "backgrounds_used": [
+        "bg_end_a",
+        "bg_end_b",
+        "bg_main",
+        "bg_title"
+      ],
+      "ending_scenes": [
+        "coat_a4",
+        "coat_b4"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 44,
+      "start_node": "coat_title"
+    },
+    "routes": {
+      "initial_flags": {},
+      "states_explored": 44,
+      "truncated": false,
+      "route_reachable_nodes": 44,
+      "route_reachable_ending_scenes": [
+        "coat_a4",
+        "coat_b4"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "coat_a1",
+        "coat_b1",
+        "coat_grid_1",
+        "coat_pair_1"
+      ],
+      "selectable_choice_targets": [
+        "coat_a1",
+        "coat_b1",
+        "coat_grid_1",
+        "coat_pair_1"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": []
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Divide into sectors / Apply the third coat",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1958,
+          "estimated_minutes_at_140_wpm": 13.99
+        },
+        {
+          "route_id": "route-2",
+          "label": "Divide into sectors / Make it a mural",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1953,
+          "estimated_minutes_at_140_wpm": 13.95
+        },
+        {
+          "route_id": "route-3",
+          "label": "Work as one brush team / Apply the third coat",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1960,
+          "estimated_minutes_at_140_wpm": 14.0
+        },
+        {
+          "route_id": "route-4",
+          "label": "Work as one brush team / Make it a mural",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1955,
+          "estimated_minutes_at_140_wpm": 13.96
+        }
+      ]
+    },
+    "text": {
+      "blocks": 166,
+      "max_pause_block_chars": 98,
+      "choice_labels": 4,
+      "max_choice_label_chars": 22,
+      "max_choice_prompt_chars": 24,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 16,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 20,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_title",
+        "orig_name": "bg_title.png",
+        "embedded_sha256": "fa8721b270c275ea55cdc0195808db3ff0fa9f503dd0f2db0c942dc68d80a01f",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 11,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/backgrounds/bg_title.png",
+        "local_sha256": "fa8721b270c275ea55cdc0195808db3ff0fa9f503dd0f2db0c942dc68d80a01f"
+      },
+      {
+        "id": "bg_main",
+        "orig_name": "bg_main.png",
+        "embedded_sha256": "51388ccb86a98c2223d6e48e6ed2f6173dc7e8de5b8bb0c9f1a5b07c1fed1f60",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 14,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/backgrounds/bg_main.png",
+        "local_sha256": "51388ccb86a98c2223d6e48e6ed2f6173dc7e8de5b8bb0c9f1a5b07c1fed1f60"
+      },
+      {
+        "id": "bg_end_a",
+        "orig_name": "bg_end_a.png",
+        "embedded_sha256": "72a18e2cb4e5aec2c534aead0a034c5af51658c92e60c0b9ea45ec291c4f5b84",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/backgrounds/bg_end_a.png",
+        "local_sha256": "72a18e2cb4e5aec2c534aead0a034c5af51658c92e60c0b9ea45ec291c4f5b84"
+      },
+      {
+        "id": "bg_end_b",
+        "orig_name": "bg_end_b.png",
+        "embedded_sha256": "5386e1624ff2b41fe44b97e07ebcf860f1787417caf71ed897b58f90aac6b9a8",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/backgrounds/bg_end_b.png",
+        "local_sha256": "5386e1624ff2b41fe44b97e07ebcf860f1787417caf71ed897b58f90aac6b9a8"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_mkii_neutral",
+        "orig_name": "mkii_neutral.png",
+        "embedded_sha256": "09de3423ab9b7487b0193c3a08201c0d39e2dda54878bff3514008b1ac8518ba",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4823,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/characters/mkii_neutral.png",
+        "local_sha256": "09de3423ab9b7487b0193c3a08201c0d39e2dda54878bff3514008b1ac8518ba"
+      },
+      {
+        "id": "char_mkii_talk",
+        "orig_name": "mkii_talk.png",
+        "embedded_sha256": "cff08f9f0b7da15f7a6bf57d55772a1415fa2c6ec110bb46034db942b6c30bac",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4823,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/characters/mkii_talk.png",
+        "local_sha256": "cff08f9f0b7da15f7a6bf57d55772a1415fa2c6ec110bb46034db942b6c30bac"
+      },
+      {
+        "id": "char_mkii_blink",
+        "orig_name": "mkii_blink.png",
+        "embedded_sha256": "fec781460e847af89e27266f8f871b1bc793a02ae3a79ec01ed93e9a10d5ea62",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4823,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/characters/mkii_blink.png",
+        "local_sha256": "fec781460e847af89e27266f8f871b1bc793a02ae3a79ec01ed93e9a10d5ea62"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_title",
+          "textbox_mean_luma": 114.695,
+          "textbox_luma_stddev": 55.991,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_main",
+          "textbox_mean_luma": 58.073,
+          "textbox_luma_stddev": 11.368,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_a",
+          "textbox_mean_luma": 196.391,
+          "textbox_luma_stddev": 25.627,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_b",
+          "textbox_mean_luma": 117.819,
+          "textbox_luma_stddev": 38.011,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 36,
+      "families": [
+        {
+          "neutral": "char_mkii_neutral",
+          "talk": "char_mkii_talk",
+          "blink": "char_mkii_blink",
+          "talk_face_delta": 2.003,
+          "blink_face_delta": 0.993,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 42,
+            "changed_bbox": [
+              41,
+              45,
+              61,
+              51
+            ],
+            "changed_bbox_area": 120,
+            "changed_region_share": 0.009766,
+            "global_changed_share": 0.003418,
+            "face_changed_pixels": 42,
+            "face_changed_share": 0.019886,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 34,
+            "changed_bbox": [
+              41,
+              45,
+              61,
+              51
+            ],
+            "changed_bbox_area": 120,
+            "changed_region_share": 0.009766,
+            "global_changed_share": 0.002767,
+            "face_changed_pixels": 34,
+            "face_changed_share": 0.016098,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources",
+      "count": 6,
+      "packaged_file_count": 8,
+      "background_source_count": 4,
+      "character_source_count": 2,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/background_ending_a_imagegen_v1.png",
+          "bytes": 1956355,
+          "sha256": "8aa0c6930c0937586312530800a329e5099e3e502594d29b4be601cbfdef4cc7",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/background_ending_b_imagegen_v1.png",
+          "bytes": 2260618,
+          "sha256": "b062d91395a0fd65945d11090d0e422e6719d3c2c7b028d0f11c5b4961575d57",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/background_main_imagegen_v1.png",
+          "bytes": 1745895,
+          "sha256": "4b6d941ac7617250f1ab17808e5c377e310816045fd278ead60a2e95797fbc9a",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/background_title_imagegen_v1.png",
+          "bytes": 2176373,
+          "sha256": "9c5f85e931787407bb1843622774770b192d2b03640b7e89911360884825b884",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/character_master_cutout_imagegen_v1.png",
+          "bytes": 1236240,
+          "sha256": "41a8e0083f788e771bf1a44036d97bc83b2938f0309da32595574c35997aa7bb",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1122,
+            1402
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/character_master_imagegen_v1.png",
+          "bytes": 1715258,
+          "sha256": "8d068dfe24dae137c19e837a91500c67c49845dabd40039793b454863d614353",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1122,
+            1402
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/game_spec.json",
+          "bytes": 20853,
+          "sha256": "f984f7a6295f79b780dbcc0cdc31db4769bb0a2b90a9b437af6138bd55fe08fc",
+          "categories": []
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/imagegen-prompts-v1.md",
+          "bytes": 11416,
+          "sha256": "447eb072ebb9a8bee8264b24986bda8d700818d8334b8dbc5ab833ab30b10430",
+          "categories": []
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 51191,
+      "sha256": "19da16ee08b5375ccbd81dca1536a933b6465c1714fc25311a06c90dc795515f",
+      "size": [
+        478,
+        510
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 272071,
+        "sha256": "84827ed4935382b14b4bfc8a277948d778d514b218073d91851b20d720f356ee",
+        "size": [
+          712,
+          2560
+        ],
+        "mode": "RGB",
+        "unique_colors": 274,
+        "luma_stddev": 86.497
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 90180,
+        "sha256": "73e721ae13ea6b3f525f4ccba5542e4c3971ec0c92d4e5673e5089d3f8787fd8",
+        "size": [
+          488,
+          1064
+        ],
+        "mode": "RGB",
+        "unique_colors": 274,
+        "luma_stddev": 84.846
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 23822,
+        "sha256": "16c013e7fc68114adc44d0b58fec0e3fc2d9fe2fc783ebbed216bcf5f6a293c2",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+          "exists": true,
+          "bytes": 163302,
+          "sha256": "f48f51cfb115d271167aa23629b4a801ccd16c638c4ac4a59e8b4ea4dcc550d5"
+        },
+        "nodes_rendered": 43,
+        "preview_node_ids": [
+          "coat_title",
+          "coat_01",
+          "coat_02",
+          "coat_03",
+          "coat_04",
+          "coat_05",
+          "coat_06",
+          "coat_07",
+          "coat_08",
+          "coat_09",
+          "coat_10",
+          "coat_method",
+          "coat_grid_1",
+          "coat_grid_2",
+          "coat_pair_1",
+          "coat_pair_2",
+          "coat_11",
+          "coat_12",
+          "coat_13",
+          "coat_14",
+          "coat_15",
+          "coat_16",
+          "coat_17",
+          "coat_18",
+          "coat_19",
+          "coat_20",
+          "coat_21",
+          "coat_22",
+          "coat_23",
+          "coat_24",
+          "coat_25",
+          "coat_26",
+          "coat_27",
+          "coat_28",
+          "coat_choice",
+          "coat_a1",
+          "coat_a2",
+          "coat_a3",
+          "coat_a4",
+          "coat_b1",
+          "coat_b2",
+          "coat_b3",
+          "coat_b4"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 43,
+            "expected": 43
+          },
+          "storyboard_cells": {
+            "reported": 43,
+            "expected": 43
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/three-coats-of-white-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

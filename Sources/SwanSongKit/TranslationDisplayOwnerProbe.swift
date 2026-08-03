@@ -60,7 +60,37 @@ public struct TranslationDisplayOwnerProbeReport: Codable, Equatable, Sendable {
 }
 
 public enum TranslationDisplayOwnerProbe {
+    public static let maximumRectanglePixels = 16_384
+    public static let maximumPrivateDetailsBytes = 16 * 1_024 * 1_024
+
     private static let unknownWriter = UInt32.max
+
+    static func validatedSampleCount(
+        for rectangle: EngineDisplayRectangle
+    ) throws -> Int {
+        let product = Int(rectangle.width).multipliedReportingOverflow(
+            by: Int(rectangle.height)
+        )
+        guard rectangle.width > 0,
+              rectangle.height > 0,
+              !product.overflow,
+              product.partialValue > 0,
+              product.partialValue <= maximumRectanglePixels else {
+            throw TranslationLabError.invalidRoute(
+                "the display-owner rectangle must contain 1 through \(maximumRectanglePixels) native pixels"
+            )
+        }
+        return product.partialValue
+    }
+
+    static func validatePrivateDetailsByteCount(_ byteCount: Int) throws {
+        guard byteCount > 0,
+              byteCount <= maximumPrivateDetailsBytes else {
+            throw TranslationLabError.invalidRoute(
+                "the private display-owner details must contain 1 through \(maximumPrivateDetailsBytes) bytes"
+            )
+        }
+    }
 
     public static func run(
         project: TranslationProject,
@@ -76,15 +106,7 @@ public enum TranslationDisplayOwnerProbe {
                 "the display-owner probe frame is outside the exact frame/input plan"
             )
         }
-        let sampleCount = Int(rectangle.width) * Int(rectangle.height)
-        guard rectangle.width > 0,
-              rectangle.height > 0,
-              sampleCount > 0,
-              sampleCount <= 4_096 else {
-            throw TranslationLabError.invalidRoute(
-                "the display-owner rectangle must contain 1 through 4096 native pixels"
-            )
-        }
+        let sampleCount = try validatedSampleCount(for: rectangle)
 
         let planData = try encoded(plan)
         let romURL = try project.romURL(for: role)
@@ -171,6 +193,7 @@ public enum TranslationDisplayOwnerProbe {
             samples: samples
         )
         let detailsData = try encoded(details)
+        try validatePrivateDetailsByteCount(detailsData.count)
         try TranslationPrivateStorage.preflightWrite(
             project: project,
             estimatedAdditionalBytes: Int64(planData.count + detailsData.count)

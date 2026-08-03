@@ -1,0 +1,1314 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mode": "normal",
+    "zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/releases/20260727T033310Z-17441edfdcc5.zip",
+      "bytes": 44099622,
+      "sha256": "337c0464b0f5669c70f1838bbe6ca286bca0ec38a4ce30fc925eb1ce95807fb8"
+    },
+    "entries": 92,
+    "members": 92,
+    "duplicate_members": [],
+    "unsafe_members": [],
+    "manifest": {
+      "schema_version": 1,
+      "slug": "swanlight-ledger",
+      "title": "Swanlight Ledger",
+      "files": 91,
+      "runtime_inputs": 6,
+      "emulator_screenshot": false
+    },
+    "package_sources": {
+      "readme": {
+        "member": "docs/README.md",
+        "exists": true,
+        "bytes": 2457,
+        "sha256": "0a9c1597256074d5abb754dde3613b4d9e451981e414d345deb44cd8abfa4aa5"
+      },
+      "asset_builder": {
+        "member": "source/build_swanlight_ledger.py",
+        "exists": true,
+        "bytes": 63561,
+        "sha256": "f84e7a57cb02e4c8f5f36ef22e94d22a70fda65317650e82f9bafbda14ea74e8"
+      },
+      "qa_report": {
+        "member": "reports/swanlight-ledger-qa-report.json",
+        "exists": true,
+        "bytes": 7466,
+        "sha256": "25b53440bd64f20205086576c2b9ec4f777bc5a17fda584490ce2758c9c19825"
+      }
+    },
+    "runtime_inputs": {
+      "present": true,
+      "expected_count": 6,
+      "files": [
+        {
+          "member": "runtime/src/main.c",
+          "exists": true,
+          "bytes": 105606,
+          "sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a",
+          "manifest_bytes": 105606,
+          "manifest_sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a"
+        },
+        {
+          "member": "runtime/src/game_types.h",
+          "exists": true,
+          "bytes": 6650,
+          "sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec",
+          "manifest_bytes": 6650,
+          "manifest_sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec"
+        },
+        {
+          "member": "runtime/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+          "manifest_bytes": 5470,
+          "manifest_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        {
+          "member": "runtime/tools/convert_json.py",
+          "exists": true,
+          "bytes": 88977,
+          "sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387",
+          "manifest_bytes": 88977,
+          "manifest_sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387"
+        },
+        {
+          "member": "runtime/Makefile",
+          "exists": true,
+          "bytes": 3590,
+          "sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd",
+          "manifest_bytes": 3590,
+          "manifest_sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd"
+        },
+        {
+          "member": "runtime/wfconfig.toml",
+          "exists": true,
+          "bytes": 169,
+          "sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78",
+          "manifest_bytes": 169,
+          "manifest_sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78"
+        }
+      ],
+      "count": 6,
+      "missing": [],
+      "extra": [],
+      "duplicates": []
+    },
+    "current_workspace": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger",
+      "checked": 91,
+      "missing": [],
+      "mismatches": [],
+      "stable_report_diffs": [],
+      "unmapped": [],
+      "extra_current": []
+    },
+    "reports": {
+      "build": true,
+      "smoke": true,
+      "readiness": true,
+      "audit": true,
+      "swansong_playthrough": true,
+      "review_sheets": true
+    },
+    "smoke_verification": {
+      "result_scope": "boot-and-checksum",
+      "boot": {
+        "performed": true,
+        "passed": true,
+        "method": "headless-mednafen-startup-metadata",
+        "pixels_observed": false
+      },
+      "checksum": {
+        "performed": true,
+        "passed": true,
+        "method": "mednafen-recorded-vs-real-checksum"
+      },
+      "visual": {
+        "performed": false,
+        "passed": null,
+        "status": "not-performed",
+        "pixels_observed": false,
+        "proof_bound": false,
+        "screenshot": null
+      },
+      "proof_bound": false
+    },
+    "swansong_playthrough": {
+      "schema": "wscvn-swansong-playthrough-v2",
+      "app": {
+        "path": "/Applications/SwanSong.app",
+        "version": "0.9.0",
+        "build": "18",
+        "bundle_identifier": "com.regionallyfamous.swansong"
+      },
+      "route_count": 9,
+      "routes": [
+        {
+          "route_index": 0,
+          "member": "evidence/swansong-playthrough/route-1-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_book_cart",
+            "search_book_cart__afterbeat",
+            "found_page_books",
+            "found_page_books__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "preserve_page",
+            "preserve_page__afterbeat",
+            "end_archive",
+            "end_archive__afterbeat",
+            "end"
+          ],
+          "observed_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_book_cart",
+            "search_book_cart__afterbeat",
+            "found_page_books",
+            "found_page_books__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "preserve_page",
+            "preserve_page__afterbeat",
+            "end_archive",
+            "end_archive__afterbeat",
+            "end"
+          ],
+          "bytes": 9858,
+          "sha256": "48ee5a8fca18b0f06f318d442b2d038d97a84ebd414128cb34888f18466e44f3",
+          "node_id": "end_archive__afterbeat",
+          "audio_member": "evidence/swansong-playthrough/route-1-audio.wav"
+        },
+        {
+          "route_index": 1,
+          "member": "evidence/swansong-playthrough/route-2-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_book_cart",
+            "search_book_cart__afterbeat",
+            "found_page_books",
+            "found_page_books__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "play_first",
+            "play_first__afterbeat",
+            "end_play",
+            "end_play__afterbeat",
+            "end"
+          ],
+          "observed_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_book_cart",
+            "search_book_cart__afterbeat",
+            "found_page_books",
+            "found_page_books__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "play_first",
+            "play_first__afterbeat",
+            "end_play",
+            "end_play__afterbeat",
+            "end"
+          ],
+          "bytes": 10423,
+          "sha256": "7648cde9a6ab0644651bdaa0418db29431096fcb7349878231c2c7dd13f829b0",
+          "node_id": "end_play__afterbeat",
+          "audio_member": "evidence/swansong-playthrough/route-2-audio.wav"
+        },
+        {
+          "route_index": 2,
+          "member": "evidence/swansong-playthrough/route-3-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_book_cart",
+            "search_book_cart__afterbeat",
+            "found_page_books",
+            "found_page_books__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "share_note",
+            "share_note__afterbeat",
+            "end_share",
+            "end_share__afterbeat",
+            "end"
+          ],
+          "observed_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_book_cart",
+            "search_book_cart__afterbeat",
+            "found_page_books",
+            "found_page_books__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "share_note",
+            "share_note__afterbeat",
+            "end_share",
+            "end_share__afterbeat",
+            "end"
+          ],
+          "bytes": 10456,
+          "sha256": "b0480909213bd4b91a4f511851f0987e81e54a200b694482977725095331efbb",
+          "node_id": "end_share__afterbeat",
+          "audio_member": "evidence/swansong-playthrough/route-3-audio.wav"
+        },
+        {
+          "route_index": 3,
+          "member": "evidence/swansong-playthrough/route-4-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_lost_box",
+            "search_lost_box__afterbeat",
+            "found_page_lost",
+            "found_page_lost__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "preserve_page",
+            "preserve_page__afterbeat",
+            "end_archive",
+            "end_archive__afterbeat",
+            "end"
+          ],
+          "observed_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_lost_box",
+            "search_lost_box__afterbeat",
+            "found_page_lost",
+            "found_page_lost__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "preserve_page",
+            "preserve_page__afterbeat",
+            "end_archive",
+            "end_archive__afterbeat",
+            "end"
+          ],
+          "bytes": 9858,
+          "sha256": "48ee5a8fca18b0f06f318d442b2d038d97a84ebd414128cb34888f18466e44f3",
+          "node_id": "end_archive__afterbeat",
+          "audio_member": "evidence/swansong-playthrough/route-4-audio.wav"
+        },
+        {
+          "route_index": 4,
+          "member": "evidence/swansong-playthrough/route-5-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_lost_box",
+            "search_lost_box__afterbeat",
+            "found_page_lost",
+            "found_page_lost__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "play_first",
+            "play_first__afterbeat",
+            "end_play",
+            "end_play__afterbeat",
+            "end"
+          ],
+          "observed_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_lost_box",
+            "search_lost_box__afterbeat",
+            "found_page_lost",
+            "found_page_lost__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "play_first",
+            "play_first__afterbeat",
+            "end_play",
+            "end_play__afterbeat",
+            "end"
+          ],
+          "bytes": 10423,
+          "sha256": "7648cde9a6ab0644651bdaa0418db29431096fcb7349878231c2c7dd13f829b0",
+          "node_id": "end_play__afterbeat",
+          "audio_member": "evidence/swansong-playthrough/route-5-audio.wav"
+        },
+        {
+          "route_index": 5,
+          "member": "evidence/swansong-playthrough/route-6-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_lost_box",
+            "search_lost_box__afterbeat",
+            "found_page_lost",
+            "found_page_lost__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "share_note",
+            "share_note__afterbeat",
+            "end_share",
+            "end_share__afterbeat",
+            "end"
+          ],
+          "observed_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_lost_box",
+            "search_lost_box__afterbeat",
+            "found_page_lost",
+            "found_page_lost__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "share_note",
+            "share_note__afterbeat",
+            "end_share",
+            "end_share__afterbeat",
+            "end"
+          ],
+          "bytes": 10456,
+          "sha256": "b0480909213bd4b91a4f511851f0987e81e54a200b694482977725095331efbb",
+          "node_id": "end_share__afterbeat",
+          "audio_member": "evidence/swansong-playthrough/route-6-audio.wav"
+        },
+        {
+          "route_index": 6,
+          "member": "evidence/swansong-playthrough/route-7-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_staff_desk",
+            "search_staff_desk__afterbeat",
+            "found_page_clerk",
+            "found_page_clerk__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "preserve_page",
+            "preserve_page__afterbeat",
+            "end_archive",
+            "end_archive__afterbeat",
+            "end"
+          ],
+          "observed_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_staff_desk",
+            "search_staff_desk__afterbeat",
+            "found_page_clerk",
+            "found_page_clerk__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "preserve_page",
+            "preserve_page__afterbeat",
+            "end_archive",
+            "end_archive__afterbeat",
+            "end"
+          ],
+          "bytes": 9858,
+          "sha256": "48ee5a8fca18b0f06f318d442b2d038d97a84ebd414128cb34888f18466e44f3",
+          "node_id": "end_archive__afterbeat",
+          "audio_member": "evidence/swansong-playthrough/route-7-audio.wav"
+        },
+        {
+          "route_index": 7,
+          "member": "evidence/swansong-playthrough/route-8-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_staff_desk",
+            "search_staff_desk__afterbeat",
+            "found_page_clerk",
+            "found_page_clerk__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "play_first",
+            "play_first__afterbeat",
+            "end_play",
+            "end_play__afterbeat",
+            "end"
+          ],
+          "observed_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_staff_desk",
+            "search_staff_desk__afterbeat",
+            "found_page_clerk",
+            "found_page_clerk__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "play_first",
+            "play_first__afterbeat",
+            "end_play",
+            "end_play__afterbeat",
+            "end"
+          ],
+          "bytes": 10423,
+          "sha256": "7648cde9a6ab0644651bdaa0418db29431096fcb7349878231c2c7dd13f829b0",
+          "node_id": "end_play__afterbeat",
+          "audio_member": "evidence/swansong-playthrough/route-8-audio.wav"
+        },
+        {
+          "route_index": 8,
+          "member": "evidence/swansong-playthrough/route-9-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_staff_desk",
+            "search_staff_desk__afterbeat",
+            "found_page_clerk",
+            "found_page_clerk__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "share_note",
+            "share_note__afterbeat",
+            "end_share",
+            "end_share__afterbeat",
+            "end"
+          ],
+          "observed_nodes": [
+            "title",
+            "sale_opens",
+            "sale_opens__afterbeat",
+            "book_bin",
+            "book_bin__afterbeat",
+            "first_sort",
+            "first_sort__afterbeat",
+            "manual_shadow",
+            "manual_shadow__afterbeat",
+            "handwritten_list",
+            "handwritten_list__afterbeat",
+            "test_table",
+            "test_table__afterbeat",
+            "blue_boot",
+            "blue_boot__afterbeat",
+            "choice_search",
+            "search_staff_desk",
+            "search_staff_desk__afterbeat",
+            "found_page_clerk",
+            "found_page_clerk__afterbeat",
+            "paper_save",
+            "paper_save__afterbeat",
+            "home_arrival",
+            "home_arrival__afterbeat",
+            "choice_care",
+            "share_note",
+            "share_note__afterbeat",
+            "end_share",
+            "end_share__afterbeat",
+            "end"
+          ],
+          "bytes": 10456,
+          "sha256": "b0480909213bd4b91a4f511851f0987e81e54a200b694482977725095331efbb",
+          "node_id": "end_share__afterbeat",
+          "audio_member": "evidence/swansong-playthrough/route-9-audio.wav"
+        }
+      ]
+    },
+    "readiness_assets": {
+      "contact_sheet": {
+        "member": "preview/contact_sheet.png",
+        "expected_sha256": "83e34412e4d7976e13764a363cd1b298018578ab0bf77ba0952ad2e02a0af8bd",
+        "exists": true,
+        "sha256": "83e34412e4d7976e13764a363cd1b298018578ab0bf77ba0952ad2e02a0af8bd"
+      },
+      "review_sheets": {
+        "scene_preview_sheet": {
+          "member": "preview/scene_preview_sheet.png",
+          "expected_sha256": "f7f6c593021f2956657fb66496d0cdc528e9a21fe512b7b54a5446bff7e113f6",
+          "exists": true,
+          "sha256": "f7f6c593021f2956657fb66496d0cdc528e9a21fe512b7b54a5446bff7e113f6"
+        },
+        "storyboard_sheet": {
+          "member": "preview/storyboard_sheet.png",
+          "expected_sha256": "467a540d5ef34f05566335808345933085db11052bca7e50324ca70212e844ad",
+          "exists": true,
+          "sha256": "467a540d5ef34f05566335808345933085db11052bca7e50324ca70212e844ad"
+        }
+      },
+      "sources": [
+        {
+          "member": "assets/sources/backgrounds_concept_v1.png",
+          "expected_sha256": "6e984d9328ae24d829909d08727c8e75f181009bcfbf7de9db0b18ce3b2d84df",
+          "exists": true,
+          "sha256": "6e984d9328ae24d829909d08727c8e75f181009bcfbf7de9db0b18ce3b2d84df"
+        },
+        {
+          "member": "assets/sources/backgrounds_source.png",
+          "expected_sha256": "073549064ebfd0642cb0379310f7cc84f8ad99bb2baf49bfbbd0e1ef81678937",
+          "exists": true,
+          "sha256": "073549064ebfd0642cb0379310f7cc84f8ad99bb2baf49bfbbd0e1ef81678937"
+        },
+        {
+          "member": "assets/sources/bg_book_cart_source_v3.png",
+          "expected_sha256": "3edf55523bf06a845cfd4ab3143316b24c3dda45c6733ceb1ee62a4150ef137a",
+          "exists": true,
+          "sha256": "3edf55523bf06a845cfd4ab3143316b24c3dda45c6733ceb1ee62a4150ef137a"
+        },
+        {
+          "member": "assets/sources/bg_end_archive_source_v2.png",
+          "expected_sha256": "7534be2a4797061964bd8425342216ad36fc0fa31ee0f3a673c6b29479fe9a34",
+          "exists": true,
+          "sha256": "7534be2a4797061964bd8425342216ad36fc0fa31ee0f3a673c6b29479fe9a34"
+        },
+        {
+          "member": "assets/sources/bg_end_archive_source_v3.png",
+          "expected_sha256": "d92fa5919a06bc01aa25229a810523f6a96a8a21d1d914fef63afb69a52cb760",
+          "exists": true,
+          "sha256": "d92fa5919a06bc01aa25229a810523f6a96a8a21d1d914fef63afb69a52cb760"
+        },
+        {
+          "member": "assets/sources/bg_end_play_source_v2.png",
+          "expected_sha256": "0870b69191666dd0841fa579ceff790b6183ec2f2157b661d2c6ff9f00b6435f",
+          "exists": true,
+          "sha256": "0870b69191666dd0841fa579ceff790b6183ec2f2157b661d2c6ff9f00b6435f"
+        },
+        {
+          "member": "assets/sources/bg_end_play_source_v3.png",
+          "expected_sha256": "d57571ea1ac16375a1cab806296ed455db6bf26bb8369715549dcd4cdb81930d",
+          "exists": true,
+          "sha256": "d57571ea1ac16375a1cab806296ed455db6bf26bb8369715549dcd4cdb81930d"
+        },
+        {
+          "member": "assets/sources/bg_end_share_source_v2.png",
+          "expected_sha256": "4979ff4409ef2110206d82c0e85f5445e1c44c1f411389431fc892a5aea99252",
+          "exists": true,
+          "sha256": "4979ff4409ef2110206d82c0e85f5445e1c44c1f411389431fc892a5aea99252"
+        },
+        {
+          "member": "assets/sources/bg_end_share_source_v3.png",
+          "expected_sha256": "e54a689d763d9b4f416a4dd513354a20d9eede3ed6cb86860775fd990258a039",
+          "exists": true,
+          "sha256": "e54a689d763d9b4f416a4dd513354a20d9eede3ed6cb86860775fd990258a039"
+        },
+        {
+          "member": "assets/sources/bg_found_map_source_v2.png",
+          "expected_sha256": "08df9136d2d0152a81edfaaca522a35b2f84891129b817e2b326d21814126f17",
+          "exists": true,
+          "sha256": "08df9136d2d0152a81edfaaca522a35b2f84891129b817e2b326d21814126f17"
+        },
+        {
+          "member": "assets/sources/bg_home_shelf_source_v2.png",
+          "expected_sha256": "1418cbd8c27f6b063c28617aed609940acee73ccbf310e33ed76bc93b6340447",
+          "exists": true,
+          "sha256": "1418cbd8c27f6b063c28617aed609940acee73ccbf310e33ed76bc93b6340447"
+        },
+        {
+          "member": "assets/sources/bg_library_sale_source_v2.png",
+          "expected_sha256": "82c1a171ef002299c7022f10e878fb6e6c0f87da71f17611594af2e6f29c4209",
+          "exists": true,
+          "sha256": "82c1a171ef002299c7022f10e878fb6e6c0f87da71f17611594af2e6f29c4209"
+        },
+        {
+          "member": "assets/sources/bg_library_sort_source_v3.png",
+          "expected_sha256": "530349855e9b0127b5fb9ffbdb38bf5cb3a452f9748f51d7f790892a1bf3cb6b",
+          "exists": true,
+          "sha256": "530349855e9b0127b5fb9ffbdb38bf5cb3a452f9748f51d7f790892a1bf3cb6b"
+        },
+        {
+          "member": "assets/sources/bg_lost_box_source_v3.png",
+          "expected_sha256": "e81b57b05ab6f9feb99ec9c337a6280b8093e63cd512cebaefc70a31e6432ec5",
+          "exists": true,
+          "sha256": "e81b57b05ab6f9feb99ec9c337a6280b8093e63cd512cebaefc70a31e6432ec5"
+        },
+        {
+          "member": "assets/sources/bg_staff_desk_source_v3.png",
+          "expected_sha256": "0d22eed9c4a8efb1e6b10e46071bf6b6fa4785f25baff2e3b39b4b61913eb3c0",
+          "exists": true,
+          "sha256": "0d22eed9c4a8efb1e6b10e46071bf6b6fa4785f25baff2e3b39b4b61913eb3c0"
+        },
+        {
+          "member": "assets/sources/bg_test_blue_source_v2.png",
+          "expected_sha256": "2dbe583473621ca6dac80c29734c23fce22d953d0ddc9490d25fc384691c24a3",
+          "exists": true,
+          "sha256": "2dbe583473621ca6dac80c29734c23fce22d953d0ddc9490d25fc384691c24a3"
+        },
+        {
+          "member": "assets/sources/bg_test_table_source_v2.png",
+          "expected_sha256": "a74c8ae001d8d9874afa9cd7224965535584395b3c0ae9553dbc7ca496a29a28",
+          "exists": true,
+          "sha256": "a74c8ae001d8d9874afa9cd7224965535584395b3c0ae9553dbc7ca496a29a28"
+        },
+        {
+          "member": "assets/sources/bg_title_source_v2.png",
+          "expected_sha256": "03065108d448fadfde1bf4ef2c786a47408f712c9fc31230f19d595b69825934",
+          "exists": true,
+          "sha256": "03065108d448fadfde1bf4ef2c786a47408f712c9fc31230f19d595b69825934"
+        },
+        {
+          "member": "assets/sources/characters_concept_v1.png",
+          "expected_sha256": "1e77b54f8943607d3aea20f31eb43fc1be0f2068fcc9aba76886cab65047dcc4",
+          "exists": true,
+          "sha256": "1e77b54f8943607d3aea20f31eb43fc1be0f2068fcc9aba76886cab65047dcc4"
+        },
+        {
+          "member": "assets/sources/characters_source.png",
+          "expected_sha256": "e42456a3de6d8e369fb31fe0cf9168366879c94364fa4f5e23a247cb18a76606",
+          "exists": true,
+          "sha256": "e42456a3de6d8e369fb31fe0cf9168366879c94364fa4f5e23a247cb18a76606"
+        },
+        {
+          "member": "assets/sources/emi_base_master_source_v2.png",
+          "expected_sha256": "2ed1e3d3007d1ccdcb44461a15395a0c55bebb6259a53703dd713fde9d641217",
+          "exists": true,
+          "sha256": "2ed1e3d3007d1ccdcb44461a15395a0c55bebb6259a53703dd713fde9d641217"
+        },
+        {
+          "member": "assets/sources/emi_hope_master_keyed_source_v2.png",
+          "expected_sha256": "13e0a10e7841a0f268cd5bd4e41dc278c7da46792953ee7b8d7070c180f0b4d4",
+          "exists": true,
+          "sha256": "13e0a10e7841a0f268cd5bd4e41dc278c7da46792953ee7b8d7070c180f0b4d4"
+        },
+        {
+          "member": "assets/sources/emi_hope_master_source_v2.png",
+          "expected_sha256": "fb3d136fca347338369e1a5c0b5289663a197696b217937930ea4e39116a658a",
+          "exists": true,
+          "sha256": "fb3d136fca347338369e1a5c0b5289663a197696b217937930ea4e39116a658a"
+        },
+        {
+          "member": "assets/sources/kai_base_master_source_v2.png",
+          "expected_sha256": "fc88ce288eee2e71a744c03c7ca774d5db3af8a451a171f6e3360150f7a42446",
+          "exists": true,
+          "sha256": "fc88ce288eee2e71a744c03c7ca774d5db3af8a451a171f6e3360150f7a42446"
+        },
+        {
+          "member": "assets/sources/kai_warm_master_keyed_source_v2.png",
+          "expected_sha256": "df5b563afd8d40c01e276c2039fd4ad04cedb43a3ad51c2c0cea7812d0625bd7",
+          "exists": true,
+          "sha256": "df5b563afd8d40c01e276c2039fd4ad04cedb43a3ad51c2c0cea7812d0625bd7"
+        },
+        {
+          "member": "assets/sources/kai_warm_master_source_v2.png",
+          "expected_sha256": "ee2094852113f6dd26955117c4329e0bd37a7546d5a5e641e9cf598ec8f1e3db",
+          "exists": true,
+          "sha256": "ee2094852113f6dd26955117c4329e0bd37a7546d5a5e641e9cf598ec8f1e3db"
+        },
+        {
+          "member": "assets/sources/references/wonderswan-color-blue-reference-public-domain.jpg",
+          "expected_sha256": "67897be58c4b16c7317c277eaebf348d4bdbab0b1c3a015caee8d6bb15d741bc",
+          "exists": true,
+          "sha256": "67897be58c4b16c7317c277eaebf348d4bdbab0b1c3a015caee8d6bb15d741bc"
+        }
+      ],
+      "extra_sources": [],
+      "review_sheets_report": {
+        "member": "reports/review-sheets-report.json",
+        "expected_sha256": "5609f7c2cd49fea9f4ad662368e64e883c3c2f7ef23f9528bf4f97d1030aba4f",
+        "exists": true,
+        "sha256": "5609f7c2cd49fea9f4ad662368e64e883c3c2f7ef23f9528bf4f97d1030aba4f"
+      },
+      "packaged_source_count": 27,
+      "backgrounds": {
+        "count": 13,
+        "files": [
+          {
+            "member": "assets/backgrounds/book_cart.png",
+            "expected_sha256": "8b2f8c224cfb96f5e86932b9acd288d6ad964149b4221abc9d5851997c51c7ce",
+            "exists": true,
+            "sha256": "8b2f8c224cfb96f5e86932b9acd288d6ad964149b4221abc9d5851997c51c7ce"
+          },
+          {
+            "member": "assets/backgrounds/end_archive.png",
+            "expected_sha256": "2012b856f7a2b1d73827ed473494c14a2074b8f016a89ea01b01b7b7dce8c9c3",
+            "exists": true,
+            "sha256": "2012b856f7a2b1d73827ed473494c14a2074b8f016a89ea01b01b7b7dce8c9c3"
+          },
+          {
+            "member": "assets/backgrounds/end_play.png",
+            "expected_sha256": "a2c49713613787ee1738e05e427e7336b8f4f301f2ee851a2f4b425fb1c6d668",
+            "exists": true,
+            "sha256": "a2c49713613787ee1738e05e427e7336b8f4f301f2ee851a2f4b425fb1c6d668"
+          },
+          {
+            "member": "assets/backgrounds/end_share.png",
+            "expected_sha256": "00900bb0cd052f8a11b712add1c914cecc99a37fe6276922019c429c65580149",
+            "exists": true,
+            "sha256": "00900bb0cd052f8a11b712add1c914cecc99a37fe6276922019c429c65580149"
+          },
+          {
+            "member": "assets/backgrounds/found_map.png",
+            "expected_sha256": "83eaba95ac6f6ac13b08c8ffe1ac119a547899e09fde5f9e028cf6523f3bda19",
+            "exists": true,
+            "sha256": "83eaba95ac6f6ac13b08c8ffe1ac119a547899e09fde5f9e028cf6523f3bda19"
+          },
+          {
+            "member": "assets/backgrounds/home_shelf.png",
+            "expected_sha256": "7bf129dad9086738530f621c8063561693bcd8df00137ce6357a9012f8fb9e4f",
+            "exists": true,
+            "sha256": "7bf129dad9086738530f621c8063561693bcd8df00137ce6357a9012f8fb9e4f"
+          },
+          {
+            "member": "assets/backgrounds/library_sale.png",
+            "expected_sha256": "84162c0fe9c08850fc08f6d077448c00fea7bdcb7da2dd60b4fd7a6f4192ef99",
+            "exists": true,
+            "sha256": "84162c0fe9c08850fc08f6d077448c00fea7bdcb7da2dd60b4fd7a6f4192ef99"
+          },
+          {
+            "member": "assets/backgrounds/library_sort.png",
+            "expected_sha256": "ff4567b6e2f1d21945c3314154a0771b8012b286849306b447d6361eb606ccc4",
+            "exists": true,
+            "sha256": "ff4567b6e2f1d21945c3314154a0771b8012b286849306b447d6361eb606ccc4"
+          },
+          {
+            "member": "assets/backgrounds/lost_box.png",
+            "expected_sha256": "5e48a16b305114344bca75e0ff058deace601a5c1fe5fae6263d07505efc0019",
+            "exists": true,
+            "sha256": "5e48a16b305114344bca75e0ff058deace601a5c1fe5fae6263d07505efc0019"
+          },
+          {
+            "member": "assets/backgrounds/staff_desk.png",
+            "expected_sha256": "85e36b86d0e3aa79d1322650ef073385f8f40eaa579f30a5e07f9691491ff3f5",
+            "exists": true,
+            "sha256": "85e36b86d0e3aa79d1322650ef073385f8f40eaa579f30a5e07f9691491ff3f5"
+          },
+          {
+            "member": "assets/backgrounds/test_blue.png",
+            "expected_sha256": "af773ebf24f682840b3255d1d4ec62aeb509dfb003f2d5e01e19884ed9486787",
+            "exists": true,
+            "sha256": "af773ebf24f682840b3255d1d4ec62aeb509dfb003f2d5e01e19884ed9486787"
+          },
+          {
+            "member": "assets/backgrounds/test_table.png",
+            "expected_sha256": "274d31fb48f2c60f8bcb8af3dea528b0f2e1092f593185a33160cd8855a3f489",
+            "exists": true,
+            "sha256": "274d31fb48f2c60f8bcb8af3dea528b0f2e1092f593185a33160cd8855a3f489"
+          },
+          {
+            "member": "assets/backgrounds/title.png",
+            "expected_sha256": "4ed714b9dfbb0ded38eb1b30ca6e1abe1dd032ad185e7214c05c2f0ec50bb284",
+            "exists": true,
+            "sha256": "4ed714b9dfbb0ded38eb1b30ca6e1abe1dd032ad185e7214c05c2f0ec50bb284"
+          }
+        ],
+        "packaged_count": 13,
+        "extra_members": []
+      },
+      "characters": {
+        "count": 12,
+        "files": [
+          {
+            "member": "assets/characters/emi_blink.png",
+            "expected_sha256": "c8fb533b72914ac257d71f465de380763ad84bcd643e8b90ad97a83147c13045",
+            "exists": true,
+            "sha256": "c8fb533b72914ac257d71f465de380763ad84bcd643e8b90ad97a83147c13045"
+          },
+          {
+            "member": "assets/characters/emi_hope_blink.png",
+            "expected_sha256": "6cb680fc6d1e2e421d561c257b7fde2a8963aedebc31e01d84be8470d6cac1ab",
+            "exists": true,
+            "sha256": "6cb680fc6d1e2e421d561c257b7fde2a8963aedebc31e01d84be8470d6cac1ab"
+          },
+          {
+            "member": "assets/characters/emi_hope_neutral.png",
+            "expected_sha256": "c56a945bc9c6472f41b74cbfbaa57d96b9807c5f0beb9c8ff5ec09ba06604798",
+            "exists": true,
+            "sha256": "c56a945bc9c6472f41b74cbfbaa57d96b9807c5f0beb9c8ff5ec09ba06604798"
+          },
+          {
+            "member": "assets/characters/emi_hope_talk.png",
+            "expected_sha256": "76129975973acf4e60a92101028657c5dd6eb49705560e2953af981df9ae46b4",
+            "exists": true,
+            "sha256": "76129975973acf4e60a92101028657c5dd6eb49705560e2953af981df9ae46b4"
+          },
+          {
+            "member": "assets/characters/emi_neutral.png",
+            "expected_sha256": "3b7a0e2f50dac7c0d1fbfc7ea1eb5aff990e278b59f73f67f66b8a8cea487750",
+            "exists": true,
+            "sha256": "3b7a0e2f50dac7c0d1fbfc7ea1eb5aff990e278b59f73f67f66b8a8cea487750"
+          },
+          {
+            "member": "assets/characters/emi_talk.png",
+            "expected_sha256": "f741c4f28fdea2899552b86824bce7ea47bba79f3392034df76c6f5288037f79",
+            "exists": true,
+            "sha256": "f741c4f28fdea2899552b86824bce7ea47bba79f3392034df76c6f5288037f79"
+          },
+          {
+            "member": "assets/characters/kai_blink.png",
+            "expected_sha256": "5477a96b50a04eb418d35322cf7c7eb484dac6fbf4d39b11f8930c6a0ef227af",
+            "exists": true,
+            "sha256": "5477a96b50a04eb418d35322cf7c7eb484dac6fbf4d39b11f8930c6a0ef227af"
+          },
+          {
+            "member": "assets/characters/kai_neutral.png",
+            "expected_sha256": "1219a11df059c41492c4a681586207af32526e947637e2c13bf85aa89cd4e252",
+            "exists": true,
+            "sha256": "1219a11df059c41492c4a681586207af32526e947637e2c13bf85aa89cd4e252"
+          },
+          {
+            "member": "assets/characters/kai_talk.png",
+            "expected_sha256": "542fe04bba8bcc98ebf087ec7b0983b806608bf5553135f859331a89db91fbf4",
+            "exists": true,
+            "sha256": "542fe04bba8bcc98ebf087ec7b0983b806608bf5553135f859331a89db91fbf4"
+          },
+          {
+            "member": "assets/characters/kai_warm_blink.png",
+            "expected_sha256": "647184f486b872f1829473718760e9bc87fc7c31cdc77058957840b3d9578536",
+            "exists": true,
+            "sha256": "647184f486b872f1829473718760e9bc87fc7c31cdc77058957840b3d9578536"
+          },
+          {
+            "member": "assets/characters/kai_warm_neutral.png",
+            "expected_sha256": "10f8336f437590279c8921e9ee5f760ef771a2d88e248482f893bbf11534037f",
+            "exists": true,
+            "sha256": "10f8336f437590279c8921e9ee5f760ef771a2d88e248482f893bbf11534037f"
+          },
+          {
+            "member": "assets/characters/kai_warm_talk.png",
+            "expected_sha256": "c07a9cd5dafdd30177a7ee6187c63a76a96e2ac373ad64f7b5dbbab2b3cff371",
+            "exists": true,
+            "sha256": "c07a9cd5dafdd30177a7ee6187c63a76a96e2ac373ad64f7b5dbbab2b3cff371"
+          }
+        ],
+        "packaged_count": 12,
+        "extra_members": []
+      },
+      "sfx": {
+        "count": 0,
+        "files": [],
+        "packaged_count": 0,
+        "extra_members": []
+      }
+    },
+    "project": {
+      "member": "project/swanlight-ledger.wscvn.json",
+      "bytes": 399756,
+      "sha256": "cad2417a61471855a397098cfdb700864a6d4dc75d39155d4bd33c2b08342875"
+    },
+    "rom": {
+      "member": "rom/swanlight-ledger.wsc",
+      "bytes": 8388608,
+      "sha256": "17441edfdcc5339543be3ed4ac7d78932a4b5fcc7a49c2b86aa0315043eeeec7",
+      "md5": "0x468dd1e8b5a05c97e683a16bf4d8d692"
+    },
+    "review_sheets_report": {
+      "present": true,
+      "member": "reports/review-sheets-report.json",
+      "project_file": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+        "bytes": 399756,
+        "sha256": "cad2417a61471855a397098cfdb700864a6d4dc75d39155d4bd33c2b08342875"
+      },
+      "nodes_rendered": 45,
+      "preview_node_ids": [
+        "title",
+        "sale_opens",
+        "sale_opens__afterbeat",
+        "book_bin",
+        "book_bin__afterbeat",
+        "first_sort",
+        "first_sort__afterbeat",
+        "manual_shadow",
+        "manual_shadow__afterbeat",
+        "handwritten_list",
+        "handwritten_list__afterbeat",
+        "test_table",
+        "test_table__afterbeat",
+        "blue_boot",
+        "blue_boot__afterbeat",
+        "choice_search",
+        "search_book_cart",
+        "search_book_cart__afterbeat",
+        "found_page_books",
+        "found_page_books__afterbeat",
+        "search_lost_box",
+        "search_lost_box__afterbeat",
+        "found_page_lost",
+        "found_page_lost__afterbeat",
+        "search_staff_desk",
+        "search_staff_desk__afterbeat",
+        "found_page_clerk",
+        "found_page_clerk__afterbeat",
+        "paper_save",
+        "paper_save__afterbeat",
+        "home_arrival",
+        "home_arrival__afterbeat",
+        "choice_care",
+        "preserve_page",
+        "preserve_page__afterbeat",
+        "play_first",
+        "play_first__afterbeat",
+        "share_note",
+        "share_note__afterbeat",
+        "end_archive",
+        "end_archive__afterbeat",
+        "end_play",
+        "end_play__afterbeat",
+        "end_share",
+        "end_share__afterbeat"
+      ],
+      "font": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+        "bytes": 5470,
+        "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+        "member": "runtime/src/font.h",
+        "packaged_bytes": 5470,
+        "packaged_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+      },
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/scene_preview_sheet.png",
+        "bytes": 391022,
+        "sha256": "f7f6c593021f2956657fb66496d0cdc528e9a21fe512b7b54a5446bff7e113f6",
+        "member": "preview/scene_preview_sheet.png",
+        "packaged_bytes": 391022,
+        "packaged_sha256": "f7f6c593021f2956657fb66496d0cdc528e9a21fe512b7b54a5446bff7e113f6"
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/storyboard_sheet.png",
+        "bytes": 146670,
+        "sha256": "467a540d5ef34f05566335808345933085db11052bca7e50324ca70212e844ad",
+        "member": "preview/storyboard_sheet.png",
+        "packaged_bytes": 146670,
+        "packaged_sha256": "467a540d5ef34f05566335808345933085db11052bca7e50324ca70212e844ad"
+      }
+    },
+    "project_report_bindings": {
+      "readiness": {
+        "present": true,
+        "member": "project/swanlight-ledger.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+        "bytes": 399756,
+        "sha256": "cad2417a61471855a397098cfdb700864a6d4dc75d39155d4bd33c2b08342875"
+      },
+      "audit": {
+        "present": true,
+        "member": "project/swanlight-ledger.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+        "bytes": 399756,
+        "sha256": "cad2417a61471855a397098cfdb700864a6d4dc75d39155d4bd33c2b08342875"
+      }
+    },
+    "audit_rom_binding": {
+      "present": true,
+      "member": "rom/swanlight-ledger.wsc",
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/runtime-local/swanlight-ledger.wsc",
+      "bytes": 8388608,
+      "sha256": "17441edfdcc5339543be3ed4ac7d78932a4b5fcc7a49c2b86aa0315043eeeec7"
+    },
+    "manifest_artifacts": {
+      "project": {
+        "present": true,
+        "member": "project/swanlight-ledger.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+        "bytes": 399756,
+        "sha256": "cad2417a61471855a397098cfdb700864a6d4dc75d39155d4bd33c2b08342875"
+      },
+      "rom": {
+        "present": true,
+        "member": "rom/swanlight-ledger.wsc",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/runtime-local/swanlight-ledger.wsc",
+        "sha256": "17441edfdcc5339543be3ed4ac7d78932a4b5fcc7a49c2b86aa0315043eeeec7",
+        "md5": "0x468dd1e8b5a05c97e683a16bf4d8d692",
+        "checksum": "0x34df"
+      }
+    },
+    "release_summary": {
+      "lines": 46,
+      "expected_lines": 34,
+      "visual_evidence_lines": 8,
+      "has_visual_evidence": true,
+      "missing_expected_lines": []
+    }
+  }
+}

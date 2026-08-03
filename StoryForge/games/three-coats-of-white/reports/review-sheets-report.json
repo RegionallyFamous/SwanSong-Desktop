@@ -1,0 +1,1042 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:33:12.526436+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "three-coats-of-white",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+      "exists": true,
+      "bytes": 163302,
+      "sha256": "f48f51cfb115d271167aa23629b4a801ccd16c638c4ac4a59e8b4ea4dcc550d5"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 43,
+    "preview_node_ids": [
+      "coat_title",
+      "coat_01",
+      "coat_02",
+      "coat_03",
+      "coat_04",
+      "coat_05",
+      "coat_06",
+      "coat_07",
+      "coat_08",
+      "coat_09",
+      "coat_10",
+      "coat_method",
+      "coat_grid_1",
+      "coat_grid_2",
+      "coat_pair_1",
+      "coat_pair_2",
+      "coat_11",
+      "coat_12",
+      "coat_13",
+      "coat_14",
+      "coat_15",
+      "coat_16",
+      "coat_17",
+      "coat_18",
+      "coat_19",
+      "coat_20",
+      "coat_21",
+      "coat_22",
+      "coat_23",
+      "coat_24",
+      "coat_25",
+      "coat_26",
+      "coat_27",
+      "coat_28",
+      "coat_choice",
+      "coat_a1",
+      "coat_a2",
+      "coat_a3",
+      "coat_a4",
+      "coat_b1",
+      "coat_b2",
+      "coat_b3",
+      "coat_b4"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 272071,
+      "sha256": "84827ed4935382b14b4bfc8a277948d778d514b218073d91851b20d720f356ee",
+      "size": [
+        712,
+        2560
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 90180,
+      "sha256": "73e721ae13ea6b3f525f4ccba5542e4c3971ec0c92d4e5673e5089d3f8787fd8",
+      "size": [
+        488,
+        1064
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "coat_title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "45335177e3b75915d34477a8c5c3ab88f22b38ad221600f37dd61f7cb722ab97"
+      },
+      {
+        "index": 1,
+        "node_id": "coat_01",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "cd3f6ea4374fcda7bed0857160e88267b3247a45db599493e9310205c190d006"
+      },
+      {
+        "index": 2,
+        "node_id": "coat_02",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "f0f40d93a4f88aa1070a0ed0e88ae0f920056e61c1f69dc291513a18197c6eae"
+      },
+      {
+        "index": 3,
+        "node_id": "coat_03",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "b2647a2cb16fec2e4f3df1fee6d6260db5c083d601139d50071c50f7d1716b27"
+      },
+      {
+        "index": 4,
+        "node_id": "coat_04",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "20523d6f0fe6c99626ca879f091ea1b5a4523e1f987ce4b1cc816eb838a0044c"
+      },
+      {
+        "index": 5,
+        "node_id": "coat_05",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "35035c58cf30696919ecfc23870af0d388957f624a540aa398d6cc24b2720e36"
+      },
+      {
+        "index": 6,
+        "node_id": "coat_06",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "8c5e1df82811124267fb59d9ce45bc5fb0bd283123f3c84dbc29343599f3b730"
+      },
+      {
+        "index": 7,
+        "node_id": "coat_07",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "530970a321fa263416d71ce7e1ecf00ded6a785633d6dfbeba25914ac3b28e06"
+      },
+      {
+        "index": 8,
+        "node_id": "coat_08",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "b3693930927d85dcc35c6a8b9cf0c859170dd3de12f016fdbedc670cd1bc16c1"
+      },
+      {
+        "index": 9,
+        "node_id": "coat_09",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "d5f87ea92b20e82538c70b2972683bcfab57869755435b162e3e81d4028eb8a9"
+      },
+      {
+        "index": 10,
+        "node_id": "coat_10",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "27a7f32e3dfe83d8e92ffbdd5e2b954fa696053939d5ab0340a059a21fdc7868"
+      },
+      {
+        "index": 11,
+        "node_id": "coat_method",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "556e0d900ab2e053f8eb9b7af2fc02d69fb21c37201afb86f5ec861ce1a91494"
+      },
+      {
+        "index": 12,
+        "node_id": "coat_grid_1",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "c2b71b0e5daeebec97cc16be67104b8cfffad43db2c9ec3b46b952a8ec7497b0"
+      },
+      {
+        "index": 13,
+        "node_id": "coat_grid_2",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "70b300985581345dcb52de7aa8121e35b0870498e08eb24984ff90649325ea54"
+      },
+      {
+        "index": 14,
+        "node_id": "coat_pair_1",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "337411282e278771c2a4946acdc561a411cb2ed84194c3c5c6961cbfce00721b"
+      },
+      {
+        "index": 15,
+        "node_id": "coat_pair_2",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "8d732f1c719a3c4dbbd1fdba21d5532d8945a9907cd466a83c9fbc98cc1731f9"
+      },
+      {
+        "index": 16,
+        "node_id": "coat_11",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "012f64269c6f8e5564e42e2b1362feb2fe004882e993b6530c141907e8c3c64a"
+      },
+      {
+        "index": 17,
+        "node_id": "coat_12",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "bacb2620ad2dcb6826707bb1d685e4b2f8d77d9a5097725ea5f089700e656e2f"
+      },
+      {
+        "index": 18,
+        "node_id": "coat_13",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "24397f359ffefcde2b49c2770dfa4333448347638116ba67a69e9d04d0b8046b"
+      },
+      {
+        "index": 19,
+        "node_id": "coat_14",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "15db3ae8c959a54adb215c71e907efbbe45e502cc0eabb8c260b85f1edbcdb31"
+      },
+      {
+        "index": 20,
+        "node_id": "coat_15",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "2fd0117b90123189542ff49459a1270e4834ba2fe29cec66d221a49ff11bf1be"
+      },
+      {
+        "index": 21,
+        "node_id": "coat_16",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "48dbd3d523d18a6d31fc066b8d92ff8b99b0646ab64c8a8d081e143d9537c17b"
+      },
+      {
+        "index": 22,
+        "node_id": "coat_17",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "ff3cf77a384cf5e307f34c21b4fa6f1b0f15a41e7669ee3de031f4f6d7c994d6"
+      },
+      {
+        "index": 23,
+        "node_id": "coat_18",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "1c720eddca73ffd4cb1db00489f96623ddb8a521f66f9d6d216ea015c91968ce"
+      },
+      {
+        "index": 24,
+        "node_id": "coat_19",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "b9c42e1e0c0d99aa8342f92bd6269bb7c5d7c4abf4be75d17dbb53912796cea1"
+      },
+      {
+        "index": 25,
+        "node_id": "coat_20",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "280a336433066ff2f81d15e0e873c10d09c31a80f80803e5f140f1691a88c073"
+      },
+      {
+        "index": 26,
+        "node_id": "coat_21",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "a5cd98ed98291725f42a0edaf5c843e87040c19db4366e3b7860433f908d9729"
+      },
+      {
+        "index": 27,
+        "node_id": "coat_22",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "031ce09f2dd62808375f35161694e09656c3992ac7d491fbca9816840da8ba3d"
+      },
+      {
+        "index": 28,
+        "node_id": "coat_23",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "18ae6791da8dd16781aed22cc4b05d612de61aa8881a39050d136469a361c1c6"
+      },
+      {
+        "index": 29,
+        "node_id": "coat_24",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "c0ad675490e2fbe6a0ffaf104013035168b3ccc114c005291814c735309ef12a"
+      },
+      {
+        "index": 30,
+        "node_id": "coat_25",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "32af2261f2b14291c0f8f4179115b30440141950c58afbac72caf4a47731669e"
+      },
+      {
+        "index": 31,
+        "node_id": "coat_26",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "3fd6efe7637b6a3cb2e9d2668ddfd7b429788c2b1533525befdeae3758e62e91"
+      },
+      {
+        "index": 32,
+        "node_id": "coat_27",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "d555ad3a59fa5671036350c5e7cff53365c718ca62fa7d7c92b5aa3864e808f7"
+      },
+      {
+        "index": 33,
+        "node_id": "coat_28",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "8386863b2e8b1df5e39d07de94a97312f04ba7b0efaa7e866f3d1598af9b360a"
+      },
+      {
+        "index": 34,
+        "node_id": "coat_choice",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "60df533834cbabc29e08554c2e854a9d713bcd328af8b596522a1dc08d2ddce9"
+      },
+      {
+        "index": 35,
+        "node_id": "coat_a1",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "777df94aa711a89b19042617b9720959f307d426679439c30d2535a7d971068f"
+      },
+      {
+        "index": 36,
+        "node_id": "coat_a2",
+        "rect": [
+          10,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "778e5d5177029b585907ec132f9bdad9ecd2c4caffe803f8dfa17147c307c82f"
+      },
+      {
+        "index": 37,
+        "node_id": "coat_a3",
+        "rect": [
+          244,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "63a58724eda3c5fa529a167f23a8539c73804f355faf640737358e5ea03c44b2"
+      },
+      {
+        "index": 38,
+        "node_id": "coat_a4",
+        "rect": [
+          478,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "837eb0ea4ff5c820e6a1b895e9af35ed391209fc621ee2977a58487468cffd6a"
+      },
+      {
+        "index": 39,
+        "node_id": "coat_b1",
+        "rect": [
+          10,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "7e61a75f1943ccfbe44ed23f5ea1c76cd4b60b91297c392bee917d896c042c2d"
+      },
+      {
+        "index": 40,
+        "node_id": "coat_b2",
+        "rect": [
+          244,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "f8e8c0a773c73389d303b86b62b701345b94ad8fde71af03aec152ec8efa4278"
+      },
+      {
+        "index": 41,
+        "node_id": "coat_b3",
+        "rect": [
+          478,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "99d1b626614f20cc78ade1b0e48549fcd3af0c8153106ad089d14c265455423e"
+      },
+      {
+        "index": 42,
+        "node_id": "coat_b4",
+        "rect": [
+          10,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "007e569b6ff9de418208f80cd371dff9feee1e25aa1ad8ae2b3e236b3fd5ef56"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "coat_title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "e1defef2f0435e0f713b89fc6c9cff51587921c652833b8a841017ce46217c41"
+      },
+      {
+        "index": 1,
+        "node_id": "coat_01",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "da50f4ddeb4b8363555c9a95a0e6e5b6d79961f42b7f1000177da9270c27dc4f"
+      },
+      {
+        "index": 2,
+        "node_id": "coat_02",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "1cda62c6b94522ad61ff8839db1f83fe1f595b90db54747a73e375b8e7656d55"
+      },
+      {
+        "index": 3,
+        "node_id": "coat_03",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "39bc466daf8f85c26d1fab2b7200d3ff54eb571671ced52b43cf3fa0880bfc0e"
+      },
+      {
+        "index": 4,
+        "node_id": "coat_04",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "48bc31d65c57c9402796e73e9f021b0102a00c3d81c08b7befdac792495dd41b"
+      },
+      {
+        "index": 5,
+        "node_id": "coat_05",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "390466fd761348ad453c6eaba007b8c53b25f7dec579f344423a935e741e1d15"
+      },
+      {
+        "index": 6,
+        "node_id": "coat_06",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "f9b635ecac2be03b9796567a276a76c8da59cca7f48565868dbe21828f9f7947"
+      },
+      {
+        "index": 7,
+        "node_id": "coat_07",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "308ac98af35ac596bd101e7b220436ea8bf9fbccdb343e8c22954cd0ba31b6df"
+      },
+      {
+        "index": 8,
+        "node_id": "coat_08",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "4adee4efd59951b6a511bbe2280bf5938b5e3d75feb6d82133772416a3538335"
+      },
+      {
+        "index": 9,
+        "node_id": "coat_09",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "1d8c2cc0525a8bbac39fb7909b1089c11627854deab78495dd34664889b09507"
+      },
+      {
+        "index": 10,
+        "node_id": "coat_10",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "be2cb4a7f75fd8eb26989c544094bbce4d3211a5964c91f3fcde4a93541db2a9"
+      },
+      {
+        "index": 11,
+        "node_id": "coat_method",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "c8084dc9c6350b384cb0fac38e1931adc81d6438ad6388242384f74c945eda48"
+      },
+      {
+        "index": 12,
+        "node_id": "coat_grid_1",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "f79ad7178a5e3df4cf38dc6b318548e43be0c72b4840cfb6575c19a43a4015c4"
+      },
+      {
+        "index": 13,
+        "node_id": "coat_grid_2",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "9aa87a4b0d333a7e125e232e6139e2dfe517dcf77f5677ab0f70f6861950c1fd"
+      },
+      {
+        "index": 14,
+        "node_id": "coat_pair_1",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "1b12ee38eaa13fbd2b248ee185f8d07704375373355808dad1e6cd05c69bb79f"
+      },
+      {
+        "index": 15,
+        "node_id": "coat_pair_2",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "732177ca58beb7418fc249fdd22e2f297869fb26ad501e11f6da5885d5a0dc9c"
+      },
+      {
+        "index": 16,
+        "node_id": "coat_11",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "34a9eaaac42070de62489555643ac0a0a57ce3a4397959613f9afb6d1f496872"
+      },
+      {
+        "index": 17,
+        "node_id": "coat_12",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "234b63fa207c83dbc450a83dc480f37dedb13a6807ede54f9910e906217e5223"
+      },
+      {
+        "index": 18,
+        "node_id": "coat_13",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "683c814495b9514e3a9f1ec697c9552a55ff66ca4d4daea1d81c3759fb7d57fe"
+      },
+      {
+        "index": 19,
+        "node_id": "coat_14",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "a4af69a41b13d2193afe5a9dcebe4f6d19a9fd4af7a9419e98052d52a0b1e2bb"
+      },
+      {
+        "index": 20,
+        "node_id": "coat_15",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "26beef056186fb1572c9acab9f1dee9a44509f483e5336d95fa8bdd7db63e67e"
+      },
+      {
+        "index": 21,
+        "node_id": "coat_16",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "f31d1330b11abe12870b0a4827d6ed1d1e3b09714e3eb0eb0738d1065a61e344"
+      },
+      {
+        "index": 22,
+        "node_id": "coat_17",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "8ce19e146374f06c5538cf11390a69d29021dc3a7a8d757a4e63f03a95a23379"
+      },
+      {
+        "index": 23,
+        "node_id": "coat_18",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "02d88550b0d54378e9582a1ae5dd97e8f55063a587c138e937ce854ffddc7536"
+      },
+      {
+        "index": 24,
+        "node_id": "coat_19",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "e00e1f3f242aeee2ad2969140943b19bbce097965fde67887f77a40d522128ad"
+      },
+      {
+        "index": 25,
+        "node_id": "coat_20",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "5d767c5534af5cd2e5736cba11573b02bc4a5d02a5e05ad56b78e597b169be2f"
+      },
+      {
+        "index": 26,
+        "node_id": "coat_21",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "35c37fa761aa5e506ca664df3bde41a5186fdb6bbb0514935708021f2f449ad7"
+      },
+      {
+        "index": 27,
+        "node_id": "coat_22",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "31b78bfcf3f45998f5d89f766a4230d5b9bb4c96af14f20de5e6d89d6e9631f2"
+      },
+      {
+        "index": 28,
+        "node_id": "coat_23",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "f5b9420dd24d09970b4b0cce81a4e3a5441aa8898f6c02d1471610cbe8e12342"
+      },
+      {
+        "index": 29,
+        "node_id": "coat_24",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "9445f0d60994c090c0494063982e1186f9473ee4fb3e2572bf67c8f03f6ce5ee"
+      },
+      {
+        "index": 30,
+        "node_id": "coat_25",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "52b81d4d7fc8113eff6f477dd75f20986960f28f2e27f156ec559c656590b810"
+      },
+      {
+        "index": 31,
+        "node_id": "coat_26",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "5ce0320e606d71c639701c1fd3b605f5411752a007b96ffac776cb5473297bbf"
+      },
+      {
+        "index": 32,
+        "node_id": "coat_27",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "fb3032a20635f8d76444bf7879ea76a891b7e7038bb35f67841504006a4da008"
+      },
+      {
+        "index": 33,
+        "node_id": "coat_28",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "c9a8840ca29c32715651d85f34f64e6308ed53aff0f6b8935e3b495b8db5faba"
+      },
+      {
+        "index": 34,
+        "node_id": "coat_choice",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "7b7616de5c503576b1e301051fa77b53baaca8e9e80aa7f1c8fa5046569f4724"
+      },
+      {
+        "index": 35,
+        "node_id": "coat_a1",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "7387ad7a28bb910e856590615d752a8802ab1ed05a3ddd0307b65d15eebaa8e9"
+      },
+      {
+        "index": 36,
+        "node_id": "coat_a2",
+        "rect": [
+          8,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "d35a0f56d3726eb015b62a32a23e7825881c7a2f3242254f3639401c4ee58b34"
+      },
+      {
+        "index": 37,
+        "node_id": "coat_a3",
+        "rect": [
+          128,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "62cb9a6bd438aa4c3cf0ef72d249062c0d9757d629ffb7836be22c0a8bd17ba1"
+      },
+      {
+        "index": 38,
+        "node_id": "coat_a4",
+        "rect": [
+          248,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "3dace2d3c9989ec752276e240c5b8e5cd6fae793dd5257aea5b8a93bb1468924"
+      },
+      {
+        "index": 39,
+        "node_id": "coat_b1",
+        "rect": [
+          368,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "560598551741c4e82e5c8e968d33417f7a7fac0f0121fbebc54a9dcf4df3be9b"
+      },
+      {
+        "index": 40,
+        "node_id": "coat_b2",
+        "rect": [
+          8,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "f74bec633c3af02ba4e66dc1f81fba5cb4f7f4a9ca15cb845d0b26c5c258c80a"
+      },
+      {
+        "index": 41,
+        "node_id": "coat_b3",
+        "rect": [
+          128,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "e9c8c972ba8a91a2ddfbee001907f72327191c226f4a1bd7feea099369d297a3"
+      },
+      {
+        "index": 42,
+        "node_id": "coat_b4",
+        "rect": [
+          248,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "47ecd4d984c471e3e5249ea3cdd3d804afdc9f0e58d35ec772b855ae37886c7d"
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:34:05.753166+00:00",
+  "errors": [],
+  "release_id": "20260727T023405Z-2841bf41eaf4",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/releases/20260727T023405Z-2841bf41eaf4",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/releases/20260727T023405Z-2841bf41eaf4.zip",
+    "bytes": 1815555,
+    "sha256": "51881fe6bf7b6957b881d68e06d296fd17560044ad602f789f500ed12c5f06dc"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/releases/20260727T023405Z-2841bf41eaf4/manifest.json",
+    "sha256": "9faad22d6a191264951e1b343f638a81c4d6ae508fece43e4983f8d89cf9b763",
+    "files": 50
+  },
+  "rom_sha256": "2841bf41eaf404521ddc2f75dca131110c98cfbd8cc6d6eda007d376a8d0466e",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "backlight-bazaar",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/game-audit-report.json\nGame audit passed"
+  }
+}

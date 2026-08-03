@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:57.329154+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "valid-starter",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_text": "",
+      "errors": []
+    },
+    {
+      "name": "too-few-scenes",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "Scene count",
+      "errors": [
+        "Scene count 4 is below starter threshold 12",
+        "Staged scene count 4 is below starter threshold 8"
+      ]
+    },
+    {
+      "name": "single-expression-body",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "has 1 expression bodies",
+      "errors": [
+        "Expression body count 1 is below starter threshold 2",
+        "Character 'hero' has 1 expression bodies in staged scenes, min 2"
+      ]
+    },
+    {
+      "name": "stale-visual-project-binding",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "Visual contract project sha256",
+      "errors": [
+        "QA report project sha256 does not match current project",
+        "Visual contract project sha256 does not match current project"
+      ]
+    },
+    {
+      "name": "qa-unreachable-node",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "reachable node count",
+      "errors": [
+        "QA report reachable node count 13 does not match project node count 14"
+      ]
+    },
+    {
+      "name": "missing-scene-preview",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "Missing preview evidence image scene_preview_sheet",
+      "errors": [
+        "Missing preview evidence image scene_preview_sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-readiness-selftest-hmu_72n1/missing-preview/assets/fixture/scene_preview_sheet.png"
+      ]
+    },
+    {
+      "name": "stale-text-preview-binding",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "text_preview_sheet sha256",
+      "errors": [
+        "text_preview_sheet sha256 does not match text contract evidence"
+      ]
+    }
+  ]
+}

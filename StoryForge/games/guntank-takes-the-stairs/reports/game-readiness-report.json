@@ -1,0 +1,630 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:45:31.224244+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "guntank-takes-the-stairs",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+      "bytes": 158712,
+      "sha256": "cf98d9b50fc27ea4ec33e8827acf9df26a0a95acd29c4439d86311a3893178f2"
+    },
+    "project_counts": {
+      "name": "Guntank Takes the Stairs",
+      "nodes": 37,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 37,
+      "scene_nodes": 33,
+      "staged_scenes": 29,
+      "animated_staged_scenes": 29,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Guest",
+        "Guncannon",
+        "Guntank",
+        "Host",
+        "Narrator",
+        "SYSTEM"
+      ],
+      "backgrounds_used": [
+        "bg_end_a",
+        "bg_end_b",
+        "bg_main",
+        "bg_title"
+      ],
+      "ending_scenes": [
+        "tank_c4",
+        "tank_d4"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 37,
+      "start_node": "tank_title"
+    },
+    "routes": {
+      "initial_flags": {},
+      "states_explored": 37,
+      "truncated": false,
+      "route_reachable_nodes": 37,
+      "route_reachable_ending_scenes": [
+        "tank_c4",
+        "tank_d4"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "tank_a1",
+        "tank_b1",
+        "tank_c1",
+        "tank_d1"
+      ],
+      "selectable_choice_targets": [
+        "tank_a1",
+        "tank_b1",
+        "tank_c1",
+        "tank_d1"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": []
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Build a table ramp / Finish the table ascent",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1934,
+          "estimated_minutes_at_140_wpm": 13.81
+        },
+        {
+          "route_id": "route-2",
+          "label": "Build a table ramp / Move party downstairs",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1921,
+          "estimated_minutes_at_140_wpm": 13.72
+        },
+        {
+          "route_id": "route-3",
+          "label": "Use mats and relays / Finish the table ascent",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1935,
+          "estimated_minutes_at_140_wpm": 13.82
+        },
+        {
+          "route_id": "route-4",
+          "label": "Use mats and relays / Move party downstairs",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1922,
+          "estimated_minutes_at_140_wpm": 13.73
+        }
+      ]
+    },
+    "text": {
+      "blocks": 228,
+      "max_pause_block_chars": 99,
+      "choice_labels": 4,
+      "max_choice_label_chars": 23,
+      "max_choice_prompt_chars": 24,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 16,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 24,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_title",
+        "orig_name": "bg_title.png",
+        "embedded_sha256": "ae21e2581b550e5d07fe30bfbb55d32fb4de4bf96099c62970911612cdae2d54",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/backgrounds/bg_title.png",
+        "local_sha256": "ae21e2581b550e5d07fe30bfbb55d32fb4de4bf96099c62970911612cdae2d54"
+      },
+      {
+        "id": "bg_main",
+        "orig_name": "bg_main.png",
+        "embedded_sha256": "90c282eb76e17ed2387d8ecbca3ad181354f9e68da427e5c986695562eabfe02",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 14,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/backgrounds/bg_main.png",
+        "local_sha256": "90c282eb76e17ed2387d8ecbca3ad181354f9e68da427e5c986695562eabfe02"
+      },
+      {
+        "id": "bg_end_a",
+        "orig_name": "bg_end_a.png",
+        "embedded_sha256": "84ebc339a05e722a2c279f960561de174e649b912f2f855afd960f0a4821b07c",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 11,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/backgrounds/bg_end_a.png",
+        "local_sha256": "84ebc339a05e722a2c279f960561de174e649b912f2f855afd960f0a4821b07c"
+      },
+      {
+        "id": "bg_end_b",
+        "orig_name": "bg_end_b.png",
+        "embedded_sha256": "0d13dcffae682b96182af8c6b10671ef6ac8f1573ce752b1f6ffd649fd9336ec",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/backgrounds/bg_end_b.png",
+        "local_sha256": "0d13dcffae682b96182af8c6b10671ef6ac8f1573ce752b1f6ffd649fd9336ec"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_guntank_neutral",
+        "orig_name": "guntank_neutral.png",
+        "embedded_sha256": "f539327e7ff686e17af41f7b3cf872c03d1eb95b104bdcc51bdacc8b34e220e6",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5242,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/characters/guntank_neutral.png",
+        "local_sha256": "f539327e7ff686e17af41f7b3cf872c03d1eb95b104bdcc51bdacc8b34e220e6"
+      },
+      {
+        "id": "char_guntank_talk",
+        "orig_name": "guntank_talk.png",
+        "embedded_sha256": "5d1dbfac2e93ab4cfc19feeb059f36a256122a3453981bde6bc80fc856b711b2",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5242,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/characters/guntank_talk.png",
+        "local_sha256": "5d1dbfac2e93ab4cfc19feeb059f36a256122a3453981bde6bc80fc856b711b2"
+      },
+      {
+        "id": "char_guntank_blink",
+        "orig_name": "guntank_blink.png",
+        "embedded_sha256": "abb4c6d5ae8a106724f04490d21db4953a117edd35c604f9b59cdfcdb566aebe",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5242,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/characters/guntank_blink.png",
+        "local_sha256": "abb4c6d5ae8a106724f04490d21db4953a117edd35c604f9b59cdfcdb566aebe"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_title",
+          "textbox_mean_luma": 83.501,
+          "textbox_luma_stddev": 35.874,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_main",
+          "textbox_mean_luma": 54.16,
+          "textbox_luma_stddev": 17.957,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_a",
+          "textbox_mean_luma": 14.124,
+          "textbox_luma_stddev": 1.631,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_b",
+          "textbox_mean_luma": 76.062,
+          "textbox_luma_stddev": 15.716,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 29,
+      "families": [
+        {
+          "neutral": "char_guntank_neutral",
+          "talk": "char_guntank_talk",
+          "blink": "char_guntank_blink",
+          "talk_face_delta": 1.938,
+          "blink_face_delta": 1.909,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 44,
+            "changed_bbox": [
+              35,
+              47,
+              57,
+              56
+            ],
+            "changed_bbox_area": 198,
+            "changed_region_share": 0.016113,
+            "global_changed_share": 0.003581,
+            "face_changed_pixels": 44,
+            "face_changed_share": 0.020833,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 148,
+            "changed_bbox": [
+              33,
+              46,
+              58,
+              56
+            ],
+            "changed_bbox_area": 250,
+            "changed_region_share": 0.020345,
+            "global_changed_share": 0.012044,
+            "face_changed_pixels": 148,
+            "face_changed_share": 0.070076,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/sources",
+      "count": 6,
+      "packaged_file_count": 9,
+      "background_source_count": 4,
+      "character_source_count": 2,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/sources/background_ending_a_imagegen_v1.png",
+          "bytes": 1732243,
+          "sha256": "3a0c300be7f7d365ef50fdcfcc6a32ba283d905c49a992961c0c724f5fdd050c",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/sources/background_ending_b_imagegen_v1.png",
+          "bytes": 2628772,
+          "sha256": "4c4702825ce8173d5aac4e9ab6b4c3620292eabc8969b0cf4f8b61f8eb93c17c",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/sources/background_main_imagegen_v1.png",
+          "bytes": 2122389,
+          "sha256": "2aab00db0566d18e2cd94a355515020c0b3f97b727f3c58bb497a8ce9594134b",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/sources/background_title_imagegen_v1.png",
+          "bytes": 2111257,
+          "sha256": "f6f2da1e73e8a743236e4024a2647d8a6dc589166ed1e4b18c8073c9a5df48f2",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/sources/character_master_cutout_imagegen_v1.png",
+          "bytes": 1153194,
+          "sha256": "12724cb42471a173e52bb7eb50fab3ef8fdce4339334b5f7e66a09d2b1eb06f8",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1086,
+            1448
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/sources/character_master_imagegen_v1.png",
+          "bytes": 1693039,
+          "sha256": "a5ce1f62923fc527b9241e13668988d664ac13ed768048c0ebb5b9c53f13039e",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1086,
+            1448
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/sources/game_spec.json",
+          "bytes": 28344,
+          "sha256": "b4385c7ba62e0f96dff13bf41927822fdb9318eec8c0e595f6a7c6c8a1139d97",
+          "categories": []
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/sources/imagegen-prompts-v1.md",
+          "bytes": 11464,
+          "sha256": "6aca9ee21ea644a910c24e91d204bf025e32b95e183bc857761fa43ea03a9cce",
+          "categories": []
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/sources/story-proof.json",
+          "bytes": 9649,
+          "sha256": "b9dfe4d351893331c00434ad9ae9bcc1f0f7d4ae2123bbdae60be75262223a6e",
+          "categories": []
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 54241,
+      "sha256": "0c30eb514f6ffa533dec274c6b8c3daf7ad890d9de2ffebc31a8bacb2f1c87cb",
+      "size": [
+        478,
+        510
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 216842,
+        "sha256": "7e135f73161a7872e888abeabc32eb00d3e493c8233487c78a7b6e7e90266a5c",
+        "size": [
+          712,
+          2050
+        ],
+        "mode": "RGB",
+        "unique_colors": 260,
+        "luma_stddev": 54.523
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 75140,
+        "sha256": "a63fd5b6bffead187bdfaff4738d8b79cda49af0710953e98c5c2881cdd7753c",
+        "size": [
+          488,
+          872
+        ],
+        "mode": "RGB",
+        "unique_colors": 260,
+        "luma_stddev": 50.338
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 20247,
+        "sha256": "41440ca7324e80d262bfda06de64480ec0294f9a0a30ef27fd8f75dee609e91a",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+          "exists": true,
+          "bytes": 158712,
+          "sha256": "cf98d9b50fc27ea4ec33e8827acf9df26a0a95acd29c4439d86311a3893178f2"
+        },
+        "nodes_rendered": 36,
+        "preview_node_ids": [
+          "tank_title",
+          "tank_01",
+          "tank_02",
+          "tank_03",
+          "tank_04",
+          "tank_05",
+          "tank_06",
+          "tank_07",
+          "tank_08",
+          "tank_09",
+          "tank_10",
+          "tank_choice_1",
+          "tank_a1",
+          "tank_a2",
+          "tank_a3",
+          "tank_a4",
+          "tank_b1",
+          "tank_b2",
+          "tank_b3",
+          "tank_b4",
+          "tank_11",
+          "tank_12",
+          "tank_13",
+          "tank_14",
+          "tank_15",
+          "tank_16",
+          "tank_17",
+          "tank_choice_2",
+          "tank_c1",
+          "tank_c2",
+          "tank_c3",
+          "tank_c4",
+          "tank_d1",
+          "tank_d2",
+          "tank_d3",
+          "tank_d4"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 36,
+            "expected": 36
+          },
+          "storyboard_cells": {
+            "reported": 36,
+            "expected": 36
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/guntank-takes-the-stairs-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

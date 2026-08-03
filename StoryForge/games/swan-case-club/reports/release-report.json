@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:30:07.924046+00:00",
+  "errors": [],
+  "release_id": "20260727T033007Z-9f8ffec821fb",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/releases/20260727T033007Z-9f8ffec821fb",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/releases/20260727T033007Z-9f8ffec821fb.zip",
+    "bytes": 1710507,
+    "sha256": "93ec784aed2586b243b31477af2055e3a8b9e6080159d434596f11a36be638cd"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/releases/20260727T033007Z-9f8ffec821fb/manifest.json",
+    "sha256": "71259d895cacac492b6b3098a40a48816ceb7336281d8f7876b3426db886d097",
+    "files": 50
+  },
+  "rom_sha256": "9f8ffec821fb3960f1b15fc9ab21b08de9403c5c545ed1891348ed568c3f3ef5",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "swan-case-club",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/game-audit-report.json\nGame audit passed"
+  }
+}

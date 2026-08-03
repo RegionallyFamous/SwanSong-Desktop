@@ -1,0 +1,710 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mode": "normal",
+    "zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/releases/20260727T023843Z-7fcf79ae30c5.zip",
+      "bytes": 12520652,
+      "sha256": "8a89c6c93eb7248bc37aa7ee38c3754cae2ffa77b8b14f2e031b96d12818dd15"
+    },
+    "entries": 45,
+    "members": 45,
+    "duplicate_members": [],
+    "unsafe_members": [],
+    "manifest": {
+      "schema_version": 1,
+      "slug": "doms-soup-route",
+      "title": "Dom's Soup Route",
+      "files": 44,
+      "runtime_inputs": 6,
+      "emulator_screenshot": false
+    },
+    "package_sources": {
+      "readme": {
+        "member": "docs/README.md",
+        "exists": true,
+        "bytes": 1197,
+        "sha256": "b2ec954ad279e2edddbcb77c322317635f74a551d9adf503cd9e16f8b55837d2"
+      },
+      "asset_builder": {
+        "member": "source/build_doms_soup_route.py",
+        "exists": true,
+        "bytes": 23181,
+        "sha256": "8ac9a961f7a8bf3090f9d184bf59e7de6b203b654e0dc2962b1fb8e84c328d67"
+      },
+      "qa_report": {
+        "member": "reports/doms-soup-route-qa-report.json",
+        "exists": true,
+        "bytes": 1583,
+        "sha256": "5b89c3fc5e2f6c1254cb93e1891414aee26cfb35f963091e631a340caf35e831"
+      }
+    },
+    "runtime_inputs": {
+      "present": true,
+      "expected_count": 6,
+      "files": [
+        {
+          "member": "runtime/src/main.c",
+          "exists": true,
+          "bytes": 105606,
+          "sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a",
+          "manifest_bytes": 105606,
+          "manifest_sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a"
+        },
+        {
+          "member": "runtime/src/game_types.h",
+          "exists": true,
+          "bytes": 6650,
+          "sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec",
+          "manifest_bytes": 6650,
+          "manifest_sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec"
+        },
+        {
+          "member": "runtime/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+          "manifest_bytes": 5470,
+          "manifest_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        {
+          "member": "runtime/tools/convert_json.py",
+          "exists": true,
+          "bytes": 88977,
+          "sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387",
+          "manifest_bytes": 88977,
+          "manifest_sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387"
+        },
+        {
+          "member": "runtime/Makefile",
+          "exists": true,
+          "bytes": 3590,
+          "sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd",
+          "manifest_bytes": 3590,
+          "manifest_sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd"
+        },
+        {
+          "member": "runtime/wfconfig.toml",
+          "exists": true,
+          "bytes": 169,
+          "sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78",
+          "manifest_bytes": 169,
+          "manifest_sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78"
+        }
+      ],
+      "count": 6,
+      "missing": [],
+      "extra": [],
+      "duplicates": []
+    },
+    "current_workspace": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route",
+      "checked": 44,
+      "missing": [],
+      "mismatches": [],
+      "stable_report_diffs": [],
+      "unmapped": [],
+      "extra_current": []
+    },
+    "reports": {
+      "build": true,
+      "smoke": true,
+      "readiness": true,
+      "audit": true,
+      "swansong_playthrough": true,
+      "review_sheets": true
+    },
+    "smoke_verification": {
+      "result_scope": "boot-and-checksum",
+      "boot": {
+        "performed": true,
+        "passed": true,
+        "method": "headless-mednafen-startup-metadata",
+        "pixels_observed": false
+      },
+      "checksum": {
+        "performed": true,
+        "passed": true,
+        "method": "mednafen-recorded-vs-real-checksum"
+      },
+      "visual": {
+        "performed": false,
+        "passed": null,
+        "status": "not-performed",
+        "pixels_observed": false,
+        "proof_bound": false,
+        "screenshot": null
+      },
+      "proof_bound": false
+    },
+    "swansong_playthrough": {
+      "schema": "wscvn-swansong-playthrough-v2",
+      "app": {
+        "path": "/Applications/SwanSong.app",
+        "version": "0.9.0",
+        "build": "18",
+        "bundle_identifier": "com.regionallyfamous.swansong"
+      },
+      "route_count": 4,
+      "routes": [
+        {
+          "route_index": 0,
+          "member": "evidence/swansong-playthrough/route-1-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "dom_title",
+            "dom_01",
+            "dom_02",
+            "dom_03",
+            "dom_04",
+            "dom_05",
+            "dom_06",
+            "dom_07",
+            "dom_08",
+            "dom_09",
+            "dom_10",
+            "dom_choice_1",
+            "dom_a1",
+            "dom_a2",
+            "dom_a3",
+            "dom_a4",
+            "dom_11",
+            "dom_12",
+            "dom_13",
+            "dom_14",
+            "dom_15",
+            "dom_16",
+            "dom_17",
+            "dom_choice_2",
+            "dom_c1",
+            "dom_c2",
+            "dom_c3",
+            "dom_c4",
+            "end"
+          ],
+          "observed_nodes": [
+            "dom_title",
+            "dom_01",
+            "dom_02",
+            "dom_03",
+            "dom_04",
+            "dom_05",
+            "dom_06",
+            "dom_07",
+            "dom_08",
+            "dom_09",
+            "dom_10",
+            "dom_choice_1",
+            "dom_a1",
+            "dom_a2",
+            "dom_a3",
+            "dom_a4",
+            "dom_11",
+            "dom_12",
+            "dom_13",
+            "dom_14",
+            "dom_15",
+            "dom_16",
+            "dom_17",
+            "dom_choice_2",
+            "dom_c1",
+            "dom_c2",
+            "dom_c3",
+            "dom_c4",
+            "end"
+          ],
+          "bytes": 17650,
+          "sha256": "6cc8e193122b13dc27923a32d6e070315e798d8fded5d9fc20366a714ca94712",
+          "node_id": "dom_c4",
+          "audio_member": "evidence/swansong-playthrough/route-1-audio.wav"
+        },
+        {
+          "route_index": 1,
+          "member": "evidence/swansong-playthrough/route-2-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "dom_title",
+            "dom_01",
+            "dom_02",
+            "dom_03",
+            "dom_04",
+            "dom_05",
+            "dom_06",
+            "dom_07",
+            "dom_08",
+            "dom_09",
+            "dom_10",
+            "dom_choice_1",
+            "dom_a1",
+            "dom_a2",
+            "dom_a3",
+            "dom_a4",
+            "dom_11",
+            "dom_12",
+            "dom_13",
+            "dom_14",
+            "dom_15",
+            "dom_16",
+            "dom_17",
+            "dom_choice_2",
+            "dom_d1",
+            "dom_d2",
+            "dom_d3",
+            "dom_d4",
+            "end"
+          ],
+          "observed_nodes": [
+            "dom_title",
+            "dom_01",
+            "dom_02",
+            "dom_03",
+            "dom_04",
+            "dom_05",
+            "dom_06",
+            "dom_07",
+            "dom_08",
+            "dom_09",
+            "dom_10",
+            "dom_choice_1",
+            "dom_a1",
+            "dom_a2",
+            "dom_a3",
+            "dom_a4",
+            "dom_11",
+            "dom_12",
+            "dom_13",
+            "dom_14",
+            "dom_15",
+            "dom_16",
+            "dom_17",
+            "dom_choice_2",
+            "dom_d1",
+            "dom_d2",
+            "dom_d3",
+            "dom_d4",
+            "end"
+          ],
+          "bytes": 19991,
+          "sha256": "d712b8b16556677baed875d4d49891c4b2e76ec3dfefefd39af009563777b31d",
+          "node_id": "dom_d4",
+          "audio_member": "evidence/swansong-playthrough/route-2-audio.wav"
+        },
+        {
+          "route_index": 2,
+          "member": "evidence/swansong-playthrough/route-3-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "dom_title",
+            "dom_01",
+            "dom_02",
+            "dom_03",
+            "dom_04",
+            "dom_05",
+            "dom_06",
+            "dom_07",
+            "dom_08",
+            "dom_09",
+            "dom_10",
+            "dom_choice_1",
+            "dom_b1",
+            "dom_b2",
+            "dom_b3",
+            "dom_b4",
+            "dom_11",
+            "dom_12",
+            "dom_13",
+            "dom_14",
+            "dom_15",
+            "dom_16",
+            "dom_17",
+            "dom_choice_2",
+            "dom_c1",
+            "dom_c2",
+            "dom_c3",
+            "dom_c4",
+            "end"
+          ],
+          "observed_nodes": [
+            "dom_title",
+            "dom_01",
+            "dom_02",
+            "dom_03",
+            "dom_04",
+            "dom_05",
+            "dom_06",
+            "dom_07",
+            "dom_08",
+            "dom_09",
+            "dom_10",
+            "dom_choice_1",
+            "dom_b1",
+            "dom_b2",
+            "dom_b3",
+            "dom_b4",
+            "dom_11",
+            "dom_12",
+            "dom_13",
+            "dom_14",
+            "dom_15",
+            "dom_16",
+            "dom_17",
+            "dom_choice_2",
+            "dom_c1",
+            "dom_c2",
+            "dom_c3",
+            "dom_c4",
+            "end"
+          ],
+          "bytes": 17650,
+          "sha256": "6cc8e193122b13dc27923a32d6e070315e798d8fded5d9fc20366a714ca94712",
+          "node_id": "dom_c4",
+          "audio_member": "evidence/swansong-playthrough/route-3-audio.wav"
+        },
+        {
+          "route_index": 3,
+          "member": "evidence/swansong-playthrough/route-4-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "dom_title",
+            "dom_01",
+            "dom_02",
+            "dom_03",
+            "dom_04",
+            "dom_05",
+            "dom_06",
+            "dom_07",
+            "dom_08",
+            "dom_09",
+            "dom_10",
+            "dom_choice_1",
+            "dom_b1",
+            "dom_b2",
+            "dom_b3",
+            "dom_b4",
+            "dom_11",
+            "dom_12",
+            "dom_13",
+            "dom_14",
+            "dom_15",
+            "dom_16",
+            "dom_17",
+            "dom_choice_2",
+            "dom_d1",
+            "dom_d2",
+            "dom_d3",
+            "dom_d4",
+            "end"
+          ],
+          "observed_nodes": [
+            "dom_title",
+            "dom_01",
+            "dom_02",
+            "dom_03",
+            "dom_04",
+            "dom_05",
+            "dom_06",
+            "dom_07",
+            "dom_08",
+            "dom_09",
+            "dom_10",
+            "dom_choice_1",
+            "dom_b1",
+            "dom_b2",
+            "dom_b3",
+            "dom_b4",
+            "dom_11",
+            "dom_12",
+            "dom_13",
+            "dom_14",
+            "dom_15",
+            "dom_16",
+            "dom_17",
+            "dom_choice_2",
+            "dom_d1",
+            "dom_d2",
+            "dom_d3",
+            "dom_d4",
+            "end"
+          ],
+          "bytes": 19991,
+          "sha256": "d712b8b16556677baed875d4d49891c4b2e76ec3dfefefd39af009563777b31d",
+          "node_id": "dom_d4",
+          "audio_member": "evidence/swansong-playthrough/route-4-audio.wav"
+        }
+      ]
+    },
+    "readiness_assets": {
+      "contact_sheet": {
+        "member": "preview/contact_sheet.png",
+        "expected_sha256": "ffece9ddff12801b305754bb1f3ddfd524b2c742d8b3c75f20607a76f9dcf8bc",
+        "exists": true,
+        "sha256": "ffece9ddff12801b305754bb1f3ddfd524b2c742d8b3c75f20607a76f9dcf8bc"
+      },
+      "review_sheets": {
+        "scene_preview_sheet": {
+          "member": "preview/scene_preview_sheet.png",
+          "expected_sha256": "b63d37567f396cb1e82ded0516ef3b2a5a6b4c1f125fb60521abef159c0e7a14",
+          "exists": true,
+          "sha256": "b63d37567f396cb1e82ded0516ef3b2a5a6b4c1f125fb60521abef159c0e7a14"
+        },
+        "storyboard_sheet": {
+          "member": "preview/storyboard_sheet.png",
+          "expected_sha256": "d740d4772904a6ebc00ee1dd096d45d07d3853e983cd6bf6fd46812a6ef29730",
+          "exists": true,
+          "sha256": "d740d4772904a6ebc00ee1dd096d45d07d3853e983cd6bf6fd46812a6ef29730"
+        }
+      },
+      "sources": [
+        {
+          "member": "assets/sources/background_ending_a_imagegen_v1.png",
+          "expected_sha256": "5222dca3d43e19bf10b2ede495222fdfbf822c56d21f0aba2c88e0390436049d",
+          "exists": true,
+          "sha256": "5222dca3d43e19bf10b2ede495222fdfbf822c56d21f0aba2c88e0390436049d"
+        },
+        {
+          "member": "assets/sources/background_ending_b_imagegen_v1.png",
+          "expected_sha256": "57b0add8577d17a789d8d62d38c65b2469025d59ef8c17e939416af41072bafa",
+          "exists": true,
+          "sha256": "57b0add8577d17a789d8d62d38c65b2469025d59ef8c17e939416af41072bafa"
+        },
+        {
+          "member": "assets/sources/background_main_imagegen_v1.png",
+          "expected_sha256": "0082f372112c2ae33ff235629b332ebadb65ea18071bd69cf3f16956b76f5613",
+          "exists": true,
+          "sha256": "0082f372112c2ae33ff235629b332ebadb65ea18071bd69cf3f16956b76f5613"
+        },
+        {
+          "member": "assets/sources/background_title_imagegen_v1.png",
+          "expected_sha256": "c8e828f22e3c9ab46db893a4d01dc69cbbda67925c1356d6877ccba6e19fc3e6",
+          "exists": true,
+          "sha256": "c8e828f22e3c9ab46db893a4d01dc69cbbda67925c1356d6877ccba6e19fc3e6"
+        },
+        {
+          "member": "assets/sources/character_master_cutout_imagegen_v1.png",
+          "expected_sha256": "7a614532f45ca1435c71a39336e89e769b9bfa869c369bafe56bb2748d5d67b6",
+          "exists": true,
+          "sha256": "7a614532f45ca1435c71a39336e89e769b9bfa869c369bafe56bb2748d5d67b6"
+        },
+        {
+          "member": "assets/sources/character_master_imagegen_v1.png",
+          "expected_sha256": "dc04625cd5b283db3b6ec0613b9d7e7b6f7e3e12e3215d0462da01e4f9cad436",
+          "exists": true,
+          "sha256": "dc04625cd5b283db3b6ec0613b9d7e7b6f7e3e12e3215d0462da01e4f9cad436"
+        },
+        {
+          "member": "assets/sources/game_spec.json",
+          "expected_sha256": "5a6a81420afcd438e2981d6b9759e73834d28ca01898f9e374ea4a993b4c9282",
+          "exists": true,
+          "sha256": "5a6a81420afcd438e2981d6b9759e73834d28ca01898f9e374ea4a993b4c9282"
+        },
+        {
+          "member": "assets/sources/imagegen-prompts-v1.md",
+          "expected_sha256": "dd579879bffab63248f8099731d099666bd5d82b10e8a6087589845730bedc1d",
+          "exists": true,
+          "sha256": "dd579879bffab63248f8099731d099666bd5d82b10e8a6087589845730bedc1d"
+        }
+      ],
+      "extra_sources": [],
+      "review_sheets_report": {
+        "member": "reports/review-sheets-report.json",
+        "expected_sha256": "14706b3f87d346b2aa90e7b6b6648ba637a3ad71d56f47b250fc8bda256fd62b",
+        "exists": true,
+        "sha256": "14706b3f87d346b2aa90e7b6b6648ba637a3ad71d56f47b250fc8bda256fd62b"
+      },
+      "packaged_source_count": 8,
+      "backgrounds": {
+        "count": 4,
+        "files": [
+          {
+            "member": "assets/backgrounds/bg_title.png",
+            "expected_sha256": "976d27c3b3f1a392113626b82b1b3bec114d845380bb6c8eedfa82d64fd186ee",
+            "exists": true,
+            "sha256": "976d27c3b3f1a392113626b82b1b3bec114d845380bb6c8eedfa82d64fd186ee"
+          },
+          {
+            "member": "assets/backgrounds/bg_main.png",
+            "expected_sha256": "f6940ca70cc4c987f2d587edce3e8a24749290935a018ea52c3b171434e556bf",
+            "exists": true,
+            "sha256": "f6940ca70cc4c987f2d587edce3e8a24749290935a018ea52c3b171434e556bf"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_a.png",
+            "expected_sha256": "7edc37520874a0954729b166f91d795648f870df0610c23e2f50699b7116c322",
+            "exists": true,
+            "sha256": "7edc37520874a0954729b166f91d795648f870df0610c23e2f50699b7116c322"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_b.png",
+            "expected_sha256": "11da623deca8d8a10ff93d8f15060f0cd1d86fd8c61ee8d9f2ffd8966ce40e98",
+            "exists": true,
+            "sha256": "11da623deca8d8a10ff93d8f15060f0cd1d86fd8c61ee8d9f2ffd8966ce40e98"
+          }
+        ],
+        "packaged_count": 4,
+        "extra_members": []
+      },
+      "characters": {
+        "count": 3,
+        "files": [
+          {
+            "member": "assets/characters/dom_neutral.png",
+            "expected_sha256": "dbad2a79f50719df2412bd1260431c4f61817800fe653cecf187515b0e984adc",
+            "exists": true,
+            "sha256": "dbad2a79f50719df2412bd1260431c4f61817800fe653cecf187515b0e984adc"
+          },
+          {
+            "member": "assets/characters/dom_talk.png",
+            "expected_sha256": "74f94fc6e9354f23483d2a65c553ab977793adfb0d2e911c3148ed02fe0fe674",
+            "exists": true,
+            "sha256": "74f94fc6e9354f23483d2a65c553ab977793adfb0d2e911c3148ed02fe0fe674"
+          },
+          {
+            "member": "assets/characters/dom_blink.png",
+            "expected_sha256": "720acfa6a4c743fd93381130f49611c02ff73128caa7470d521734962a70046f",
+            "exists": true,
+            "sha256": "720acfa6a4c743fd93381130f49611c02ff73128caa7470d521734962a70046f"
+          }
+        ],
+        "packaged_count": 3,
+        "extra_members": []
+      },
+      "sfx": {
+        "count": 0,
+        "files": [],
+        "packaged_count": 0,
+        "extra_members": []
+      }
+    },
+    "project": {
+      "member": "project/doms-soup-route.wscvn.json",
+      "bytes": 174041,
+      "sha256": "22aae2b3e7a965c0b81a0e16e45ade72de7cba34c4d10235967c472f55914265"
+    },
+    "rom": {
+      "member": "rom/doms-soup-route.wsc",
+      "bytes": 8388608,
+      "sha256": "7fcf79ae30c59be0bd454a96e9aecf1eef367eedad273aeefe62a6eeb4c1827a",
+      "md5": "0x281a92b68c9380c65342cf0fa48c19a1"
+    },
+    "review_sheets_report": {
+      "present": true,
+      "member": "reports/review-sheets-report.json",
+      "project_file": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/projects/doms-soup-route.wscvn.json",
+        "bytes": 174041,
+        "sha256": "22aae2b3e7a965c0b81a0e16e45ade72de7cba34c4d10235967c472f55914265"
+      },
+      "nodes_rendered": 36,
+      "preview_node_ids": [
+        "dom_title",
+        "dom_01",
+        "dom_02",
+        "dom_03",
+        "dom_04",
+        "dom_05",
+        "dom_06",
+        "dom_07",
+        "dom_08",
+        "dom_09",
+        "dom_10",
+        "dom_choice_1",
+        "dom_a1",
+        "dom_a2",
+        "dom_a3",
+        "dom_a4",
+        "dom_b1",
+        "dom_b2",
+        "dom_b3",
+        "dom_b4",
+        "dom_11",
+        "dom_12",
+        "dom_13",
+        "dom_14",
+        "dom_15",
+        "dom_16",
+        "dom_17",
+        "dom_choice_2",
+        "dom_c1",
+        "dom_c2",
+        "dom_c3",
+        "dom_c4",
+        "dom_d1",
+        "dom_d2",
+        "dom_d3",
+        "dom_d4"
+      ],
+      "font": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+        "bytes": 5470,
+        "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+        "member": "runtime/src/font.h",
+        "packaged_bytes": 5470,
+        "packaged_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+      },
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/scene_preview_sheet.png",
+        "bytes": 204922,
+        "sha256": "b63d37567f396cb1e82ded0516ef3b2a5a6b4c1f125fb60521abef159c0e7a14",
+        "member": "preview/scene_preview_sheet.png",
+        "packaged_bytes": 204922,
+        "packaged_sha256": "b63d37567f396cb1e82ded0516ef3b2a5a6b4c1f125fb60521abef159c0e7a14"
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/storyboard_sheet.png",
+        "bytes": 71882,
+        "sha256": "d740d4772904a6ebc00ee1dd096d45d07d3853e983cd6bf6fd46812a6ef29730",
+        "member": "preview/storyboard_sheet.png",
+        "packaged_bytes": 71882,
+        "packaged_sha256": "d740d4772904a6ebc00ee1dd096d45d07d3853e983cd6bf6fd46812a6ef29730"
+      }
+    },
+    "project_report_bindings": {
+      "readiness": {
+        "present": true,
+        "member": "project/doms-soup-route.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/projects/doms-soup-route.wscvn.json",
+        "bytes": 174041,
+        "sha256": "22aae2b3e7a965c0b81a0e16e45ade72de7cba34c4d10235967c472f55914265"
+      },
+      "audit": {
+        "present": true,
+        "member": "project/doms-soup-route.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/projects/doms-soup-route.wscvn.json",
+        "bytes": 174041,
+        "sha256": "22aae2b3e7a965c0b81a0e16e45ade72de7cba34c4d10235967c472f55914265"
+      }
+    },
+    "audit_rom_binding": {
+      "present": true,
+      "member": "rom/doms-soup-route.wsc",
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/runtime-local/doms-soup-route.wsc",
+      "bytes": 8388608,
+      "sha256": "7fcf79ae30c59be0bd454a96e9aecf1eef367eedad273aeefe62a6eeb4c1827a"
+    },
+    "manifest_artifacts": {
+      "project": {
+        "present": true,
+        "member": "project/doms-soup-route.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/projects/doms-soup-route.wscvn.json",
+        "bytes": 174041,
+        "sha256": "22aae2b3e7a965c0b81a0e16e45ade72de7cba34c4d10235967c472f55914265"
+      },
+      "rom": {
+        "present": true,
+        "member": "rom/doms-soup-route.wsc",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/runtime-local/doms-soup-route.wsc",
+        "sha256": "7fcf79ae30c59be0bd454a96e9aecf1eef367eedad273aeefe62a6eeb4c1827a",
+        "md5": "0x281a92b68c9380c65342cf0fa48c19a1",
+        "checksum": "0x8aeb"
+      }
+    },
+    "release_summary": {
+      "lines": 46,
+      "expected_lines": 34,
+      "visual_evidence_lines": 8,
+      "has_visual_evidence": true,
+      "missing_expected_lines": []
+    }
+  }
+}

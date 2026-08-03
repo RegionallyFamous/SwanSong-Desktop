@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "errors": [],
+  "generated_at_utc": "2026-07-16T00:15:21.528315+00:00",
+  "project": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+    "bytes": 152799,
+    "sha256": "48012fa28dc528528339c409a261403ebb94928f097cbc91aa930f88aafd9af5"
+  },
+  "renderer": {
+    "backend": "legacy-tracker-wavetable-audition",
+    "sample_rate": 22050,
+    "loops": 2,
+    "channels": 1,
+    "sample_width_bits": 16,
+    "note": "Offline audition mirrors the runtime's 32-sample wave shapes; hardware output and emulator mixing may differ."
+  },
+  "tracks": [
+    {
+      "id": "bento_title",
+      "name": "Lunch Achieved Orbit",
+      "bpm": 136,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/audio/01-bento_title.wav",
+      "bytes": 311338,
+      "sha256": "731e8fdc9936d79b44eb01abbd0f3f9bc754b746f730a976f165b59edf0b05c9",
+      "duration_seconds": 7.059,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.213,
+        "near_silent_sample_share": 0.010228,
+        "max_loop_jump_linear": 0.055208
+      }
+    },
+    {
+      "id": "bento_main",
+      "name": "Eleven at Once",
+      "bpm": 160,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/audio/02-bento_main.wav",
+      "bytes": 264644,
+      "sha256": "2d1fa5735ae2220b199922064e04a869f66d879374eca87a7b0325016d7c5fd1",
+      "duration_seconds": 6.0,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.228,
+        "near_silent_sample_share": 0.010469,
+        "max_loop_jump_linear": 0.033662
+      }
+    },
+    {
+      "id": "bento_end_a",
+      "name": "Pudding Shield",
+      "bpm": 108,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/audio/03-bento_end_a.wav",
+      "bytes": 392044,
+      "sha256": "378014ea482495422faa31372d72a03bbafbc62c4fae6894739786a2ed7932c8",
+      "duration_seconds": 8.889,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.194,
+        "near_silent_sample_share": 0.011092,
+        "max_loop_jump_linear": 0.038362
+      }
+    },
+    {
+      "id": "bento_end_b",
+      "name": "Pickle Roommate",
+      "bpm": 126,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/audio/04-bento_end_b.wav",
+      "bytes": 336044,
+      "sha256": "ee79095b493fb5cb3aae7046b7ccec7bfee028b5ef02d53e1e50a3ae51c13558",
+      "duration_seconds": 7.619,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.196,
+        "near_silent_sample_share": 0.010411,
+        "max_loop_jump_linear": 0.073336
+      }
+    }
+  ],
+  "cues": [
+    {
+      "node": "bento_title",
+      "node_name": "Bento Title",
+      "track": "bento_title"
+    },
+    {
+      "node": "bento_01",
+      "node_name": "Bento 01",
+      "track": "bento_main"
+    },
+    {
+      "node": "bento_a1",
+      "node_name": "Bento A1",
+      "track": "bento_end_a"
+    },
+    {
+      "node": "bento_b1",
+      "node_name": "Bento B1",
+      "track": "bento_end_b"
+    }
+  ]
+}

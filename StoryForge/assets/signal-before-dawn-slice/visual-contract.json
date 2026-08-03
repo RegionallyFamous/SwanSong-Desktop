@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "characters": {
+    "mira": {
+      "speaker_names": [
+        "Mira"
+      ],
+      "base_ids": [
+        "char_mira_neutral"
+      ],
+      "required_moods": [
+        "worried",
+        "resolved",
+        "smile",
+        "action"
+      ]
+    },
+    "lune": {
+      "speaker_names": [
+        "Lune"
+      ],
+      "base_ids": [
+        "char_lune_neutral"
+      ],
+      "required_moods": [
+        "alert",
+        "warm",
+        "resolved",
+        "radio"
+      ]
+    }
+  },
+  "text": {
+    "cols": 26,
+    "quality_lines": 3
+  },
+  "staging": {
+    "allowed_positions": [
+      "left",
+      "right"
+    ],
+    "non_portrait_backgrounds": [
+      "bg_title_night"
+    ],
+    "forbid_center": true
+  },
+  "thresholds": {
+    "max_choice_label_chars": 22,
+    "min_sprite_bg_luma_delta": 50.0,
+    "max_background_detail_under_sprite": 62.0,
+    "min_mood_base_face_delta": 50,
+    "min_mood_pair_face_delta": 28,
+    "min_side_position_share": 0.25,
+    "max_same_side_staging_run": 5
+  },
+  "review_assets": {
+    "storyboard": {
+      "path": "storyboard_sheet.png",
+      "cols": 2,
+      "scale": 2,
+      "label_height": 18,
+      "gap": 14,
+      "margin": 12
+    },
+    "expression_audition": {
+      "path": "expression_audition_sheet.png",
+      "size": [
+        900,
+        1748
+      ]
+    }
+  }
+}

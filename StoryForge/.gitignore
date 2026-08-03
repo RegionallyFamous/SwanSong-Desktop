@@ -1,0 +1,21 @@
+runtime-local/
+releases/
+# Keep authored game projects, source art, runtime-ready art, and current proof
+# reports portable. Local builds, release archives, and stale runtime snapshots
+# are reproducible and far too large for source control.
+games/*/releases/
+games/*/runtime-local/
+games/*/reports/runtime-stale/
+assets/signal-before-dawn-slice/runtime-stale/
+games/*/reports/latest-build.log
+games/*/assets/latest-build.log
+assets/signal-before-dawn-slice/latest-build.log
+**/__pycache__/
+*.py[cod]
+*.wsc
+*.ws
+.DS_Store
+tools/catalog-signer/.build/
+*.ed25519-private
+*.ed25519-private.*
+*.private.b64

@@ -184,6 +184,56 @@ public struct TranslationDisplaySourceExpectedFrame: Equatable, Sendable {
     }
 }
 
+/// The read-only result of replaying one exact Original plan frame from clean
+/// power-on. This value deliberately contains no ROM bytes, persistence,
+/// save-state, memory, or provenance-query result. The authorized RouteRunner
+/// owns the private seal/closure serialization around it.
+public struct TranslationOriginalFrameAuthentication: Sendable {
+    public let hardwareModel: TranslationRouteHardwareModel
+    public let engine: TranslationRouteEngineIdentity
+    public let rtc: TranslationRouteRTCContext
+    public let persistencePolicy: String
+    public let rom: TranslationArtifactDigest
+    public let romFooterChecksum: UInt16
+    public let plan: TranslationArtifactDigest
+    public let planFrameIndex: UInt64
+    public let nativeFrameNumber: UInt64
+    public let checkpoint: TranslationRouteCheckpoint
+    public let gameRaster: TranslationGameRasterDescriptor
+    public let rasterBGRA8888SHA256: String
+    public let engineObservedQueryCount: Int
+
+    public init(
+        hardwareModel: TranslationRouteHardwareModel,
+        engine: TranslationRouteEngineIdentity,
+        rtc: TranslationRouteRTCContext,
+        persistencePolicy: String,
+        rom: TranslationArtifactDigest,
+        romFooterChecksum: UInt16,
+        plan: TranslationArtifactDigest,
+        planFrameIndex: UInt64,
+        nativeFrameNumber: UInt64,
+        checkpoint: TranslationRouteCheckpoint,
+        gameRaster: TranslationGameRasterDescriptor,
+        rasterBGRA8888SHA256: String,
+        engineObservedQueryCount: Int
+    ) {
+        self.hardwareModel = hardwareModel
+        self.engine = engine
+        self.rtc = rtc
+        self.persistencePolicy = persistencePolicy
+        self.rom = rom
+        self.romFooterChecksum = romFooterChecksum
+        self.plan = plan
+        self.planFrameIndex = planFrameIndex
+        self.nativeFrameNumber = nativeFrameNumber
+        self.checkpoint = checkpoint
+        self.gameRaster = gameRaster
+        self.rasterBGRA8888SHA256 = rasterBGRA8888SHA256
+        self.engineObservedQueryCount = engineObservedQueryCount
+    }
+}
+
 public enum TranslationDisplaySourceNativeQueryStage:
     String, Codable, Equatable, Sendable
 {
@@ -341,6 +391,25 @@ enum TranslationDisplaySourcePartitioner {
             }
             attemptCount += 1
             maximumObservedDepth = max(maximumObservedDepth, current.depth)
+            let currentPixels = Int(current.rectangle.width)
+                * Int(current.rectangle.height)
+            if currentPixels > TranslationDisplaySourceProbe.maximumRectanglePixels {
+                guard current.depth < maximumDepth,
+                      let children = split(current.rectangle) else {
+                    throw TranslationLabError.invalidRoute(
+                        "the atomic source context could not be partitioned into bounded native queries"
+                    )
+                }
+                guard attemptCount + pending.count + 2 <= attemptedNodeLimit else {
+                    throw TranslationLabError.invalidRoute(
+                        "the atomic source context would exceed its 64-node bound"
+                    )
+                }
+                splitCount += 1
+                pending.append((children.1, current.depth + 1))
+                pending.append((children.0, current.depth + 1))
+                continue
+            }
             do {
                 let payload = try probe(current.rectangle, current.depth)
                 guard terminals.count < terminalLeafLimit else {
@@ -448,17 +517,15 @@ enum TranslationDisplaySourcePartitioner {
     static func split(
         _ rectangle: EngineDisplayRectangle
     ) -> (EngineDisplayRectangle, EngineDisplayRectangle)? {
-        guard Int(rectangle.x) % atomicCellWidth == 0,
-              Int(rectangle.y) % atomicCellHeight == 0,
-              Int(rectangle.width) % atomicCellWidth == 0,
-              Int(rectangle.height) % atomicCellHeight == 0 else {
-            return nil
-        }
+        let canSplitWidth = Int(rectangle.width) % atomicCellWidth == 0
+            && Int(rectangle.width) >= atomicCellWidth * 2
+        let canSplitHeight = Int(rectangle.height) % atomicCellHeight == 0
+            && Int(rectangle.height) >= atomicCellHeight * 2
+        guard canSplitWidth || canSplitHeight else { return nil }
         let widthCells = Int(rectangle.width) / atomicCellWidth
         let heightCells = Int(rectangle.height) / atomicCellHeight
-        guard widthCells > 1 || heightCells > 1 else { return nil }
 
-        if widthCells >= heightCells, widthCells > 1 {
+        if canSplitWidth, !canSplitHeight || widthCells >= heightCells {
             let firstWidth = (widthCells / 2) * atomicCellWidth
             return (
                 EngineDisplayRectangle(
@@ -509,8 +576,232 @@ enum TranslationDisplaySourcePartitioner {
 }
 
 public enum TranslationDisplaySourceProbe {
+    /// Maximum pixels in any one caller-supplied source-context region.
     public static let maximumRectanglePixels = 4_096
+    /// Maximum number of regions in one atomic source-context request.
+    public static let maximumAtomicRegionCount = 8
+    /// Maximum total selected pixels in one atomic source-context request.
+    public static let maximumAtomicRegionPixels = 8_192
+    public static let atomicRegionPolicy =
+        "non-overlapping-exact-bounding-tiling-v1"
     public static let maximumTraceRecords = 262_144
+
+    /// Authenticates one Original frame without running either provenance
+    /// query and without publishing any project artifact. Callers must wrap
+    /// this in a separately authorized, immutable output graph.
+    public static func authenticateOriginalFrameAuthorized(
+        project: TranslationProject,
+        plan: TranslationFrameInputPlan,
+        frameIndex: UInt64
+    ) throws -> TranslationOriginalFrameAuthentication {
+        let hardware = try TranslationOriginalFrameAuthenticationStage
+            .project.perform {
+                try project.routeHardwareModel
+            }
+        try TranslationOriginalFrameAuthenticationStage
+            .plan.perform {
+                try plan.validate(for: hardware)
+            }
+        guard frameIndex < plan.totalFrames else {
+            throw TranslationOriginalFrameAuthenticationStageFailure(
+                stage: .plan
+            )
+        }
+        let planData = try TranslationOriginalFrameAuthenticationStage
+            .plan.perform {
+                try encoded(plan)
+            }
+        let romURL = try TranslationOriginalFrameAuthenticationStage
+            .project.perform {
+                try project.romURL(for: .original)
+            }
+        let rom = try TranslationOriginalFrameAuthenticationStage
+            .project.perform {
+                try Data(contentsOf: romURL, options: [.mappedIfSafe])
+            }
+        let metadata = try TranslationOriginalFrameAuthenticationStage
+            .inspect.perform {
+                try EngineSession.inspect(rom: rom)
+            }
+        let rtc = TranslationRouteRTCContext.proof
+        let engine = try TranslationOriginalFrameAuthenticationStage
+            .engine.perform {
+                try EngineSession(
+                    rtcMode: .deterministic(
+                        seedUnixSeconds: rtc.seedUnixSeconds
+                    ),
+                    hardwareModel: hardware.engineHardwareModel
+                )
+            }
+        guard engine.capabilities.contains(.execution),
+              engine.capabilities.contains(.displayProvenance),
+              engine.capabilities.contains(.displaySourceProvenance),
+              engine.backendName == "ares" else {
+            throw TranslationOriginalFrameAuthenticationStageFailure(
+                stage: .engine
+            )
+        }
+        _ = try TranslationOriginalFrameAuthenticationStage.load.perform {
+            try engine.load(rom: rom)
+        }
+        defer { try? engine.unload() }
+        guard engine.activeHardwareModel == hardware.engineHardwareModel else {
+            throw TranslationOriginalFrameAuthenticationStageFailure(
+                stage: .engine
+            )
+        }
+        let before = engine.displayProvenanceQuerySnapshot()
+        guard before.entries.isEmpty,
+              before.ownerEntryCount == 0,
+              before.sourceEntryCount == 0 else {
+            throw TranslationOriginalFrameAuthenticationStageFailure(
+                stage: .query
+            )
+        }
+        var frame: EngineVideoFrame?
+        for currentFrame in 0...frameIndex {
+            try TranslationOriginalFrameAuthenticationStage.run.perform {
+                try engine.setInput(plan.input(at: currentFrame))
+                try engine.runFrame()
+            }
+            frame = try TranslationOriginalFrameAuthenticationStage
+                .frame.perform {
+                    try engine.videoFrame()
+                }
+        }
+        guard let frame else {
+            throw TranslationOriginalFrameAuthenticationStageFailure(
+                stage: .frame
+            )
+        }
+        let after = engine.displayProvenanceQuerySnapshot()
+        guard after.entries.isEmpty,
+              after.ownerEntryCount == 0,
+              after.sourceEntryCount == 0 else {
+            throw TranslationOriginalFrameAuthenticationStageFailure(
+                stage: .query
+            )
+        }
+        let checkpoint = try TranslationOriginalFrameAuthenticationStage
+            .frame.perform {
+                try TranslationRouteCheckpoint(
+                    frameIndex: frameIndex,
+                    frame: frame
+                )
+            }
+        let raster = try TranslationOriginalFrameAuthenticationStage
+            .raster.perform {
+                try TranslationRouteCheckpoint.canonicalGameRaster(frame)
+            }
+        return TranslationOriginalFrameAuthentication(
+            hardwareModel: hardware,
+            engine: TranslationRouteEngineIdentity(
+                backend: engine.backendName,
+                buildID: engine.buildID
+            ),
+            rtc: rtc,
+            persistencePolicy:
+                TranslationRouteStartContext.isolatedPersistencePolicy,
+            rom: TranslationArtifactDigest(
+                byteCount: rom.count,
+                sha256: sha256(rom)
+            ),
+            romFooterChecksum: metadata.computedChecksum,
+            plan: TranslationArtifactDigest(
+                byteCount: planData.count,
+                sha256: sha256(planData)
+            ),
+            planFrameIndex: frameIndex,
+            nativeFrameNumber: frame.number,
+            checkpoint: checkpoint,
+            gameRaster: raster.descriptor,
+            rasterBGRA8888SHA256: sha256(raster.bgra8888),
+            engineObservedQueryCount: after.entries.count
+        )
+    }
+
+    /// Canonicalizes a bounded multi-region request to the exact rectangle
+    /// consumed by the native provenance implementation. Regions must be
+    /// non-overlapping and must tile their bounding rectangle without holes;
+    /// this preserves one atomic source context without sampling pixels that
+    /// the caller did not select.
+    public static func atomicBoundingRectangle(
+        rectangles: [EngineDisplayRectangle]
+    ) throws -> EngineDisplayRectangle {
+        guard !rectangles.isEmpty,
+              rectangles.count <= maximumAtomicRegionCount else {
+            throw TranslationLabError.invalidRoute(
+                "the upstream source context must contain 1 through \(maximumAtomicRegionCount) regions"
+            )
+        }
+        let ordered = rectangles.sorted { lhs, rhs in
+            if lhs.y != rhs.y { return lhs.y < rhs.y }
+            if lhs.x != rhs.x { return lhs.x < rhs.x }
+            if lhs.height != rhs.height { return lhs.height < rhs.height }
+            return lhs.width < rhs.width
+        }
+        var totalPixels = 0
+        var minimumX = Int.max
+        var minimumY = Int.max
+        var maximumX = 0
+        var maximumY = 0
+        for (index, rectangle) in ordered.enumerated() {
+            let width = Int(rectangle.width)
+            let height = Int(rectangle.height)
+            let (pixels, pixelOverflow) = width.multipliedReportingOverflow(
+                by: height
+            )
+            let (nextTotal, totalOverflow) = totalPixels.addingReportingOverflow(
+                pixels
+            )
+            let right = Int(rectangle.x) + width
+            let bottom = Int(rectangle.y) + height
+            guard width > 0,
+                  height > 0,
+                  !pixelOverflow,
+                  pixels <= maximumRectanglePixels,
+                  !totalOverflow,
+                  nextTotal <= maximumAtomicRegionPixels else {
+                throw TranslationLabError.invalidRoute(
+                    "each upstream source region must contain 1 through \(maximumRectanglePixels) native pixels and the atomic request at most \(maximumAtomicRegionPixels)"
+                )
+            }
+            for previous in ordered[..<index] {
+                let separated = right <= Int(previous.x)
+                    || Int(previous.x) + Int(previous.width) <= Int(rectangle.x)
+                    || bottom <= Int(previous.y)
+                    || Int(previous.y) + Int(previous.height) <= Int(rectangle.y)
+                guard separated else {
+                    throw TranslationLabError.invalidRoute(
+                        "the upstream source-context regions must not overlap"
+                    )
+                }
+            }
+            totalPixels = nextTotal
+            minimumX = min(minimumX, Int(rectangle.x))
+            minimumY = min(minimumY, Int(rectangle.y))
+            maximumX = max(maximumX, right)
+            maximumY = max(maximumY, bottom)
+        }
+        let boundingWidth = maximumX - minimumX
+        let boundingHeight = maximumY - minimumY
+        let (boundingPixels, boundingOverflow) = boundingWidth
+            .multipliedReportingOverflow(by: boundingHeight)
+        guard !boundingOverflow,
+              boundingPixels == totalPixels,
+              maximumX <= Int(UInt16.max),
+              maximumY <= Int(UInt16.max) else {
+            throw TranslationLabError.invalidRoute(
+                "the upstream source-context regions must exactly tile one bounded rectangle"
+            )
+        }
+        return EngineDisplayRectangle(
+            x: UInt16(minimumX),
+            y: UInt16(minimumY),
+            width: UInt16(boundingWidth),
+            height: UInt16(boundingHeight)
+        )
+    }
 
     public static func run(
         project: TranslationProject,
@@ -525,7 +816,28 @@ public enum TranslationDisplaySourceProbe {
             role: role,
             plan: plan,
             frameIndex: frameIndex,
-            rectangle: rectangle,
+            rectangles: [rectangle],
+            components: components,
+            publishInProject: true,
+            expectedFrame: nil,
+            querySnapshotObserver: nil
+        ).report
+    }
+
+    public static func run(
+        project: TranslationProject,
+        role: TranslationROMRole,
+        plan: TranslationFrameInputPlan,
+        frameIndex: UInt64,
+        rectangles: [EngineDisplayRectangle],
+        components: [EngineDisplaySourceComponent] = EngineDisplaySourceComponent.allCases
+    ) throws -> TranslationDisplaySourceProbeReport {
+        try runResult(
+            project: project,
+            role: role,
+            plan: plan,
+            frameIndex: frameIndex,
+            rectangles: rectangles,
             components: components,
             publishInProject: true,
             expectedFrame: nil,
@@ -549,7 +861,28 @@ public enum TranslationDisplaySourceProbe {
             role: role,
             plan: plan,
             frameIndex: frameIndex,
-            rectangle: rectangle,
+            rectangles: [rectangle],
+            components: components,
+            publishInProject: false,
+            expectedFrame: nil,
+            querySnapshotObserver: nil
+        )
+    }
+
+    public static func runAuthorized(
+        project: TranslationProject,
+        role: TranslationROMRole,
+        plan: TranslationFrameInputPlan,
+        frameIndex: UInt64,
+        rectangles: [EngineDisplayRectangle],
+        components: [EngineDisplaySourceComponent] = EngineDisplaySourceComponent.allCases
+    ) throws -> TranslationDisplaySourceProbeAuthorizedResult {
+        try runResult(
+            project: project,
+            role: role,
+            plan: plan,
+            frameIndex: frameIndex,
+            rectangles: rectangles,
             components: components,
             publishInProject: false,
             expectedFrame: nil,
@@ -575,7 +908,31 @@ public enum TranslationDisplaySourceProbe {
             role: role,
             plan: plan,
             frameIndex: frameIndex,
-            rectangle: rectangle,
+            rectangles: [rectangle],
+            components: components,
+            publishInProject: false,
+            expectedFrame: expectedFrame,
+            querySnapshotObserver: querySnapshotObserver
+        )
+    }
+
+    public static func runCaptureBoundAuthorized(
+        project: TranslationProject,
+        role: TranslationROMRole,
+        plan: TranslationFrameInputPlan,
+        frameIndex: UInt64,
+        rectangles: [EngineDisplayRectangle],
+        components: [EngineDisplaySourceComponent],
+        expectedFrame: TranslationDisplaySourceExpectedFrame,
+        querySnapshotObserver:
+            ((EngineDisplayProvenanceQuerySnapshot) -> Void)? = nil
+    ) throws -> TranslationDisplaySourceProbeAuthorizedResult {
+        try runResult(
+            project: project,
+            role: role,
+            plan: plan,
+            frameIndex: frameIndex,
+            rectangles: rectangles,
             components: components,
             publishInProject: false,
             expectedFrame: expectedFrame,
@@ -588,13 +945,20 @@ public enum TranslationDisplaySourceProbe {
         role: TranslationROMRole,
         plan: TranslationFrameInputPlan,
         frameIndex: UInt64,
-        rectangle: EngineDisplayRectangle,
+        rectangles: [EngineDisplayRectangle],
         components: [EngineDisplaySourceComponent],
         publishInProject: Bool,
         expectedFrame: TranslationDisplaySourceExpectedFrame?,
         querySnapshotObserver:
             ((EngineDisplayProvenanceQuerySnapshot) -> Void)?
     ) throws -> TranslationDisplaySourceProbeAuthorizedResult {
+        let rectangle = try atomicBoundingRectangle(rectangles: rectangles)
+        let orderedRectangles = rectangles.sorted { lhs, rhs in
+            if lhs.y != rhs.y { return lhs.y < rhs.y }
+            if lhs.x != rhs.x { return lhs.x < rhs.x }
+            if lhs.height != rhs.height { return lhs.height < rhs.height }
+            return lhs.width < rhs.width
+        }
         let hardware = try project.routeHardwareModel
         try plan.validate(for: hardware)
         guard frameIndex < plan.totalFrames else {
@@ -610,14 +974,6 @@ public enum TranslationDisplaySourceProbe {
         }
         let selectedComponents = components.sorted { $0.rawValue < $1.rawValue }
         let pixelCount = Int(rectangle.width) * Int(rectangle.height)
-        guard rectangle.width > 0,
-              rectangle.height > 0,
-              pixelCount > 0,
-              pixelCount <= maximumRectanglePixels else {
-            throw TranslationLabError.invalidRoute(
-                "the upstream source rectangle must contain 1 through 4096 native pixels"
-            )
-        }
 
         let planData = try encoded(plan)
         let projectURL = project.rootURL.appendingPathComponent(
@@ -705,13 +1061,21 @@ public enum TranslationDisplaySourceProbe {
             )
         }
 
-        let ownerSamples = try engine.displayOwnerProbe(rectangle: rectangle)
+        var ownerSamples: [EngineDisplayOwnerSample] = []
+        ownerSamples.reserveCapacity(pixelCount)
+        for region in orderedRectangles {
+            ownerSamples.append(
+                contentsOf: try engine.displayOwnerProbe(rectangle: region)
+            )
+        }
         if expectedFrame != nil {
             let ownerSnapshot = engine.displayProvenanceQuerySnapshot()
-            guard ownerSnapshot.entries.count == 1,
-                  ownerSnapshot.entries.first?.kind == .owner,
-                  ownerSnapshot.entries.first?.sequence == 1,
-                  ownerSnapshot.ownerEntryCount == 1,
+            guard ownerSnapshot.entries.count == orderedRectangles.count,
+                  ownerSnapshot.entries.allSatisfy({ $0.kind == .owner }),
+                  ownerSnapshot.entries.enumerated().allSatisfy({ index, entry in
+                    entry.sequence == UInt64(index + 1)
+                  }),
+                  ownerSnapshot.ownerEntryCount == orderedRectangles.count,
                   ownerSnapshot.sourceEntryCount == 0 else {
                 throw TranslationLabError.invalidRoute(
                     "STOP_PREEXECUTION_CAPABILITY: native owner-query entry order is invalid"
@@ -1109,10 +1473,14 @@ public enum TranslationDisplaySourceProbe {
               nativeFrameSHA256BeforeQueries == expectedFrame.checkpoint.sha256,
               nativeFrameNumberAfterQueries == expectedFrame.nativeFrameNumber,
               nativeFrameSHA256AfterQueries == expectedFrame.checkpoint.sha256,
-              ownerEntries.count == 1,
+              !ownerEntries.isEmpty,
+              ownerEntries.count <= maximumAtomicRegionCount,
               !sourceEntries.isEmpty,
               engineObservedQueryEntries.first?.kind == .owner,
-              engineObservedQueryEntries.dropFirst().allSatisfy({ $0.kind == .source }),
+              engineObservedQueryEntries.prefix(ownerEntries.count)
+                .allSatisfy({ $0.kind == .owner }),
+              engineObservedQueryEntries.dropFirst(ownerEntries.count)
+                .allSatisfy({ $0.kind == .source }),
               engineObservedQueryEntries.enumerated().allSatisfy({ index, entry in
                 entry.sequence == UInt64(index + 1)
               }),

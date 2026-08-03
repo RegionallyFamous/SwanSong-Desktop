@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "approval_type": "wscvn_sprite_audition_approval",
+  "approved_at": "2026-07-23T13:09:18+00:00",
+  "reviewer": "codex",
+  "notes": "Inspected exact runtime neutral/talk/blink family at native and enlarged scale after shutter migration. Mechanical sensors compress to localized one-pixel shutter slits; bodies, sockets, palettes, alpha, and silhouettes stay locked.",
+  "character": "generic",
+  "sheet_kind": "animation",
+  "runtime_ready": true,
+  "labels": [
+    "neutral",
+    "talk",
+    "blink"
+  ],
+  "tool_provenance": [
+    {
+      "path": "scripts/audition_wscvn_sprite_sheet.py",
+      "sha256": "3c3ff7d0eff71df59c58e51d6d1f7990516778f64749e3dad207ab05b2069338"
+    },
+    {
+      "path": "scripts/make_signal_before_dawn_slice.py",
+      "sha256": "c48f872b41a2bbe0310229ffd35ed4786096e7d886595f950605efcf622afc90"
+    },
+    {
+      "path": "scripts/wscvn_sprite_family.py",
+      "sha256": "3ebf274e1f493bd10bc06be29936eda8c43d6e85e0d7cd5d4ddcd980d1bbc1aa"
+    }
+  ],
+  "quality": {
+    "status": "pass",
+    "error_count": 0,
+    "warning_count": 0,
+    "info_count": 0,
+    "thresholds": {
+      "max_visible_colors": 15,
+      "min_talk_face_delta": 18,
+      "min_blink_face_delta": 0,
+      "min_alpha_coverage": 0.2,
+      "max_alpha_coverage": 0.75,
+      "max_animation_alpha_changed": 0,
+      "min_visible_above_textbox": 0.52,
+      "max_visible_above_textbox": 0.92,
+      "max_animation_bbox_area": 1200,
+      "max_source_center_drift": 0.09,
+      "max_source_scale_drift": 0.18,
+      "max_sprite_center_drift": 0.04,
+      "max_sprite_scale_drift": 0.08,
+      "max_tiny_color_pixels": 10,
+      "max_green_fringe_pixels": 0,
+      "max_alpha_components": 8,
+      "min_largest_alpha_component_share": 0.96
+    }
+  },
+  "audition_report": {
+    "path": "games/gouf-strings-attached/assets/auditions/gouf-strings-attached-runtime-audition.json",
+    "sha256": "a942f6a01e53771d80ca05b2df0c929e2b315c20145d014f9b597afe52527982"
+  },
+  "audition_png": {
+    "path": "games/gouf-strings-attached/assets/auditions/gouf-strings-attached-runtime-audition.png",
+    "sha256": "d95f50a21b45eac1eed9046f91b1196c1d1ad29a8994afae5ea0afe2c81b1aa7"
+  },
+  "sources": [
+    {
+      "label": "gouf",
+      "path": "games/gouf-strings-attached/assets/auditions/gouf-runtime-animation.png",
+      "sha256": "a4a901ce5dc0e06b18376c1d24086de8f9cebc48a207a47cec96f2a9fa149182"
+    }
+  ],
+  "covered_outputs": [
+    {
+      "path": "games/gouf-strings-attached/assets/characters/gouf_neutral.png",
+      "sha256": "49d7beda7cf2c3f078b66f94ed0436dc97d1d196d1574460fea5a067be23980f"
+    },
+    {
+      "path": "games/gouf-strings-attached/assets/characters/gouf_talk.png",
+      "sha256": "2201301134579b2c09806ada97f737c0bfe1a83870dec73bec8d360e2dbe15da"
+    },
+    {
+      "path": "games/gouf-strings-attached/assets/characters/gouf_blink.png",
+      "sha256": "2c8d4a0bb0e4662e2ae14acb13e00ab9e071c5858df438a8873e964407b8f370"
+    }
+  ]
+}

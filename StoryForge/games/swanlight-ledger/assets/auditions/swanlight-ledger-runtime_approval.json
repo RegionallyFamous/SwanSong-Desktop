@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "approval_type": "wscvn_sprite_audition_approval",
+  "approved_at": "2026-07-17T02:40:36+00:00",
+  "reviewer": "codex",
+  "notes": "Runtime-ready neutral/talk/blink families visually inspected.",
+  "character": "generic",
+  "sheet_kind": "animation",
+  "runtime_ready": true,
+  "labels": [
+    "neutral",
+    "talk",
+    "blink"
+  ],
+  "tool_provenance": [
+    {
+      "path": "scripts/audition_wscvn_sprite_sheet.py",
+      "sha256": "3c3ff7d0eff71df59c58e51d6d1f7990516778f64749e3dad207ab05b2069338"
+    },
+    {
+      "path": "scripts/make_signal_before_dawn_slice.py",
+      "sha256": "c48f872b41a2bbe0310229ffd35ed4786096e7d886595f950605efcf622afc90"
+    },
+    {
+      "path": "scripts/wscvn_sprite_family.py",
+      "sha256": "3ebf274e1f493bd10bc06be29936eda8c43d6e85e0d7cd5d4ddcd980d1bbc1aa"
+    }
+  ],
+  "quality": {
+    "status": "pass",
+    "error_count": 0,
+    "warning_count": 0,
+    "info_count": 0,
+    "thresholds": {
+      "max_visible_colors": 15,
+      "min_talk_face_delta": 18,
+      "min_blink_face_delta": 0,
+      "min_alpha_coverage": 0.2,
+      "max_alpha_coverage": 0.75,
+      "max_animation_alpha_changed": 0,
+      "min_visible_above_textbox": 0.52,
+      "max_visible_above_textbox": 0.92,
+      "max_animation_bbox_area": 1200,
+      "max_source_center_drift": 0.09,
+      "max_source_scale_drift": 0.18,
+      "max_sprite_center_drift": 0.04,
+      "max_sprite_scale_drift": 0.08,
+      "max_tiny_color_pixels": 10,
+      "max_green_fringe_pixels": 0,
+      "max_alpha_components": 8,
+      "min_largest_alpha_component_share": 0.96
+    }
+  },
+  "audition_report": {
+    "path": "games/swanlight-ledger/assets/auditions/swanlight-ledger-runtime-audition.json",
+    "sha256": "71ec2ea909b8a2e8359296f00367a870587111e54ebd483eb84576eacbcd3db6"
+  },
+  "audition_png": {
+    "path": "games/swanlight-ledger/assets/auditions/swanlight-ledger-runtime-audition.png",
+    "sha256": "16f6a084cb3cce076d8f8ca3fa9da515ca57fb4d1a8aeea02e264505f6f51a97"
+  },
+  "sources": [
+    {
+      "label": "emi_hope",
+      "path": "games/swanlight-ledger/assets/auditions/emi_hope-runtime-animation.png",
+      "sha256": "59fb22f714da422bef25ebac5ccc99ccfec9861418f5969fb5ab6e60aca76fbd"
+    },
+    {
+      "label": "emi",
+      "path": "games/swanlight-ledger/assets/auditions/emi-runtime-animation.png",
+      "sha256": "c9510b5e95b5c2dc440e57521482d9252d753b822fa6d92eb9d73669e4dbf1de"
+    },
+    {
+      "label": "kai",
+      "path": "games/swanlight-ledger/assets/auditions/kai-runtime-animation.png",
+      "sha256": "65c374a156a596b4d6f1c666c807918149b41192fd592c7e9a9e9c7b4d9f92c2"
+    },
+    {
+      "label": "kai_warm",
+      "path": "games/swanlight-ledger/assets/auditions/kai_warm-runtime-animation.png",
+      "sha256": "9f60a975b7eb1be1327c7836c410285852fba8db68de4b137bfe63210ce4d5af"
+    }
+  ],
+  "covered_outputs": [
+    {
+      "path": "games/swanlight-ledger/assets/characters/emi_hope_neutral.png",
+      "sha256": "c56a945bc9c6472f41b74cbfbaa57d96b9807c5f0beb9c8ff5ec09ba06604798"
+    },
+    {
+      "path": "games/swanlight-ledger/assets/characters/emi_hope_talk.png",
+      "sha256": "76129975973acf4e60a92101028657c5dd6eb49705560e2953af981df9ae46b4"
+    },
+    {
+      "path": "games/swanlight-ledger/assets/characters/emi_hope_blink.png",
+      "sha256": "6cb680fc6d1e2e421d561c257b7fde2a8963aedebc31e01d84be8470d6cac1ab"
+    },
+    {
+      "path": "games/swanlight-ledger/assets/characters/emi_neutral.png",
+      "sha256": "3b7a0e2f50dac7c0d1fbfc7ea1eb5aff990e278b59f73f67f66b8a8cea487750"
+    },
+    {
+      "path": "games/swanlight-ledger/assets/characters/emi_talk.png",
+      "sha256": "f741c4f28fdea2899552b86824bce7ea47bba79f3392034df76c6f5288037f79"
+    },
+    {
+      "path": "games/swanlight-ledger/assets/characters/emi_blink.png",
+      "sha256": "c8fb533b72914ac257d71f465de380763ad84bcd643e8b90ad97a83147c13045"
+    },
+    {
+      "path": "games/swanlight-ledger/assets/characters/kai_neutral.png",
+      "sha256": "1219a11df059c41492c4a681586207af32526e947637e2c13bf85aa89cd4e252"
+    },
+    {
+      "path": "games/swanlight-ledger/assets/characters/kai_talk.png",
+      "sha256": "542fe04bba8bcc98ebf087ec7b0983b806608bf5553135f859331a89db91fbf4"
+    },
+    {
+      "path": "games/swanlight-ledger/assets/characters/kai_blink.png",
+      "sha256": "5477a96b50a04eb418d35322cf7c7eb484dac6fbf4d39b11f8930c6a0ef227af"
+    },
+    {
+      "path": "games/swanlight-ledger/assets/characters/kai_warm_neutral.png",
+      "sha256": "10f8336f437590279c8921e9ee5f760ef771a2d88e248482f893bbf11534037f"
+    },
+    {
+      "path": "games/swanlight-ledger/assets/characters/kai_warm_talk.png",
+      "sha256": "c07a9cd5dafdd30177a7ee6187c63a76a96e2ac373ad64f7b5dbbab2b3cff371"
+    },
+    {
+      "path": "games/swanlight-ledger/assets/characters/kai_warm_blink.png",
+      "sha256": "647184f486b872f1829473718760e9bc87fc7c31cdc77058957840b3d9578536"
+    }
+  ]
+}

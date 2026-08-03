@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:28.884128+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "slug-validation",
+      "passed": true,
+      "rejected": [
+        "Sample",
+        "../bad",
+        "bad/path",
+        "-bad",
+        "bad_",
+        ""
+      ]
+    },
+    {
+      "name": "happy-path-runs-build-package-verify",
+      "passed": true,
+      "calls": [
+        "build",
+        "swansong-playthrough",
+        "package",
+        "verify"
+      ],
+      "payload_ok": true
+    },
+    {
+      "name": "declared-story-proof-runs-before-package",
+      "passed": true,
+      "calls": [
+        "build",
+        "swansong-playthrough",
+        "story-proof",
+        "package",
+        "verify"
+      ]
+    },
+    {
+      "name": "playthrough-failure-skips-package-and-verify",
+      "passed": true,
+      "calls": [
+        "build",
+        "swansong-playthrough"
+      ],
+      "errors": [
+        "Game ship command failed: swansong-playthrough"
+      ]
+    },
+    {
+      "name": "release-verify-sha-mismatch-fails",
+      "passed": true,
+      "errors": [
+        "release verify zip sha256 does not match actual zip",
+        "release verify zip sha256 does not match release report"
+      ]
+    },
+    {
+      "name": "missing-actual-zip-fails",
+      "passed": true,
+      "errors": [
+        "release zip is missing: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-ship-el_7ykk1/missing-zip/games/sample-game/releases/20260710T000000Z-abc123.zip"
+      ]
+    },
+    {
+      "name": "stale-actual-zip-fails",
+      "passed": true,
+      "errors": [
+        "release report zip sha256 does not match actual zip",
+        "release verify zip sha256 does not match actual zip"
+      ]
+    }
+  ]
+}

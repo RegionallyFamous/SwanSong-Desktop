@@ -48,6 +48,22 @@ private struct AutomationMethodCapability: Codable {
     let cleanBootReplay: Bool
 }
 
+private struct DisplayOwnerMethodCapability: Codable {
+    let command: String
+    let reportSchema: String
+    let privateDetailsSchema: String
+    let planSchema: String
+    let maximumPlanFrames: UInt64
+    let maximumRectanglePixels: Int
+    let maximumPrivateDetailsBytes: Int
+    let requiresEngineABI: UInt32
+    let requiredEngineCapabilities: [String]
+    let requiresDebugGuard: Bool
+    let requiresProjectWriteGuard: Bool
+    let cleanBootReplay: Bool
+    let saveStateRestoreAllowed: Bool
+}
+
 private struct SourceProbeMethodCapability: Codable {
     let command: String
     let reportSchema: String
@@ -56,6 +72,9 @@ private struct SourceProbeMethodCapability: Codable {
     let planSchema: String
     let maximumPlanFrames: UInt64
     let maximumRectanglePixels: Int
+    let maximumAtomicRegionCount: Int
+    let maximumAtomicRegionPixels: Int
+    let atomicRegionPolicy: String
     let maximumTraceRecords: Int
     let selectedComponents: [String]
     let requiresEngineABI: UInt32
@@ -91,8 +110,8 @@ private struct LocalPlaytestMethodCapability: Codable {
 
 private struct RouteRunnerEngineCapabilityReport: Codable {
     static let legacyABI9Schema = "swan-song-route-runner-engine-capability-v1"
-    static let consumedPrefetchABI10Schema =
-        "swan-song-route-runner-engine-capability-v2"
+    static let displayOwnerCapacityABI10Schema =
+        "swan-song-route-runner-engine-capability-v3"
 
     let schema: String
     let engineABI: UInt32
@@ -103,6 +122,7 @@ private struct RouteRunnerEngineCapabilityReport: Codable {
     let loadedDylibByteCount: Int
     let loadedDylibSHA256: String
     let capturePlan: AutomationMethodCapability
+    let probeRectangle: DisplayOwnerMethodCapability
     let probeRectangleSource: SourceProbeMethodCapability
     let consumedPrefetchProvenance: EngineConsumedPrefetchCapabilityProfile?
 }
@@ -204,6 +224,7 @@ private struct AutomationOptions {
     var role: TranslationROMRole?
     var frameIndex: UInt64?
     var rectangle: EngineDisplayRectangle?
+    var sourceRectangles: [EngineDisplayRectangle]?
     var components: [EngineDisplaySourceComponent]?
     var authorizationURL: URL?
     var capabilityReceiptURL: URL?
@@ -219,6 +240,7 @@ private struct AutomationOptions {
     var publicSourceProbeCaptureKAT: String?
     var publicSourceProbeCaptureKATWasProvided = false
     var commercialAuthorizedSourceProbe = false
+    var commercialAuthorizedOriginalFrameSeal = false
     var commercialSourceContractKAT = false
     var publicSourceWrongFrameKAT = false
     var publicSourceWrongFrameKATWasProvided = false
@@ -240,6 +262,7 @@ private struct AutomationOptions {
             || commercialCaptureContractKAT
             || publicSourceProbeCaptureKATWasProvided
             || commercialAuthorizedSourceProbe
+            || commercialAuthorizedOriginalFrameSeal
             || commercialSourceContractKAT
             || publicSourceWrongFrameKAT
             || publicCaptureBlockedPrefixWasProvided
@@ -303,10 +326,12 @@ private struct SwanSongRouteRunner {
       SwanSongRouteRunner capture-persistence-consumer --enable-debug-tools --allow-project-writes --project PROJECT --request REQUEST.json [--output REPORT.json]
       SwanSongRouteRunner export-static-analysis-seed --enable-debug-tools --allow-project-writes --project PROJECT --source-probe SOURCE_PROBE_DETAILS.json [--output REPORT.json]
       SwanSongRouteRunner probe-rectangle --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original|patched --frame INDEX --rect X,Y,WIDTH,HEIGHT [--output REPORT.json]
-      SwanSongRouteRunner probe-rectangle-source --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original|patched --frame INDEX --rect X,Y,WIDTH,HEIGHT [--components mapCell,palette,raster,spriteAttribute] [--output REPORT.json]
+      SwanSongRouteRunner probe-rectangle-source --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original|patched --frame INDEX (--rect X,Y,WIDTH,HEIGHT | --source-regions X,Y,WIDTH,HEIGHT;X,Y,WIDTH,HEIGHT) [--components mapCell,palette,raster,spriteAttribute] [--output REPORT.json]
         --base-capability-kat
       SwanSongRouteRunner probe-rectangle-source --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original --frame 2 --rect 8,8,1,1 --components raster [--output RUN/report.json]
         [--public-diagnostic-kat --authorization RUN/authorization.json --capability-receipt C.json --method-capability-receipt M.json --method-native-marker MARKER.json --run-directory RUN]
+      SwanSongRouteRunner probe-rectangle-source --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original --frame INDEX (--rect X,Y,WIDTH,HEIGHT | --source-regions REGIONS) --components COMPONENTS --output RUN/capture-frame-seal.json
+        --commercial-authorized-original-frame-seal --authorization RUN/authorization.json --capability-receipt C.json --method-capability-receipt M.json --qualified-method-capability-receipt M2.json --method-native-marker MARKER.json --run-directory RUN
       SwanSongRouteRunner probe-rectangle-source --enable-debug-tools --allow-project-writes --project PROJECT --plan PLAN.json --role original --frame 29 --rect 8,8,1,1 --components raster [--output RUN/report.json]
         --commercial-source-contract-kat --capture-frame-seal SEAL.json --authorization RUN/authorization.json --capability-receipt C.json --method-capability-receipt M.json --method-native-marker MARKER.json --run-directory RUN
         [--public-source-contract-wrong-frame-kat]
@@ -400,6 +425,11 @@ private struct SwanSongRouteRunner {
                 (.executedSourceReadContext, "executedSourceReadContext"),
                 (.displaySpriteAttributeProvenance, "displaySpriteAttributeProvenance"),
             ]
+            let ownerRequired: [(EngineCapabilities, String)] = [
+                (.execution, "execution"),
+                (.displayProvenance, "displayProvenance"),
+                (.displaySpriteAttributeProvenance, "displaySpriteAttributeProvenance"),
+            ]
             let consumedPrefetchProfile =
                 EngineConsumedPrefetchCapabilityProfile.exact(
                     engineABI: engine.abiVersion,
@@ -414,7 +444,9 @@ private struct SwanSongRouteRunner {
                 sourceProbeRequiredEngineABI = consumedPrefetchProfile?.engineABI
             }
             guard let sourceProbeRequiredEngineABI,
-                  required.allSatisfy({ capabilities.contains($0.0) }) else {
+                  required.allSatisfy({ capabilities.contains($0.0) }),
+                  ownerRequired.allSatisfy({ capabilities.contains($0.0) })
+            else {
                 throw RouteRunnerError(
                     message: "The loaded engine does not satisfy the ABI-9 method contract or the exact ABI-10 consumed-prefetch capability profile."
                 )
@@ -422,7 +454,7 @@ private struct SwanSongRouteRunner {
             let report = RouteRunnerEngineCapabilityReport(
                 schema: legacyABI9
                     ? RouteRunnerEngineCapabilityReport.legacyABI9Schema
-                    : RouteRunnerEngineCapabilityReport.consumedPrefetchABI10Schema,
+                    : RouteRunnerEngineCapabilityReport.displayOwnerCapacityABI10Schema,
                 engineABI: engine.abiVersion,
                 engineBackend: engine.backendName,
                 engineBuildID: engine.buildID,
@@ -439,6 +471,24 @@ private struct SwanSongRouteRunner {
                     requiresProjectWriteGuard: true,
                     cleanBootReplay: true
                 ),
+                probeRectangle: DisplayOwnerMethodCapability(
+                    command: AutomationCommand.probeRectangle.rawValue,
+                    reportSchema: TranslationDisplayOwnerProbeReport.currentSchema,
+                    privateDetailsSchema:
+                        TranslationDisplayOwnerProbeDetails.currentSchema,
+                    planSchema: TranslationFrameInputPlan.currentSchema,
+                    maximumPlanFrames: TranslationFrameInputPlan.maximumFrames,
+                    maximumRectanglePixels:
+                        TranslationDisplayOwnerProbe.maximumRectanglePixels,
+                    maximumPrivateDetailsBytes:
+                        TranslationDisplayOwnerProbe.maximumPrivateDetailsBytes,
+                    requiresEngineABI: engine.abiVersion,
+                    requiredEngineCapabilities: ownerRequired.map(\.1),
+                    requiresDebugGuard: true,
+                    requiresProjectWriteGuard: true,
+                    cleanBootReplay: true,
+                    saveStateRestoreAllowed: false
+                ),
                 probeRectangleSource: SourceProbeMethodCapability(
                     command: AutomationCommand.probeRectangleSource.rawValue,
                     reportSchema: TranslationDisplaySourceProbeReport.currentSchema,
@@ -447,6 +497,12 @@ private struct SwanSongRouteRunner {
                     planSchema: TranslationFrameInputPlan.currentSchema,
                     maximumPlanFrames: TranslationFrameInputPlan.maximumFrames,
                     maximumRectanglePixels: TranslationDisplaySourceProbe.maximumRectanglePixels,
+                    maximumAtomicRegionCount:
+                        TranslationDisplaySourceProbe.maximumAtomicRegionCount,
+                    maximumAtomicRegionPixels:
+                        TranslationDisplaySourceProbe.maximumAtomicRegionPixels,
+                    atomicRegionPolicy:
+                        TranslationDisplaySourceProbe.atomicRegionPolicy,
                     maximumTraceRecords: TranslationDisplaySourceProbe.maximumTraceRecords,
                     selectedComponents: EngineDisplaySourceComponent.allCases.map(\.rawValue),
                     requiresEngineABI: sourceProbeRequiredEngineABI,
@@ -871,6 +927,12 @@ private struct SwanSongRouteRunner {
         guard let projectURL = options.projectURL else {
             throw RouteRunnerError(message: "Missing --project.\n\n\(usage)")
         }
+        if options.sourceRectangles != nil,
+           command != .probeRectangleSource {
+            throw RouteRunnerError(
+                message: "--source-regions is valid only for probe-rectangle-source.\n\n\(usage)"
+            )
+        }
         if options.baseCapabilityKAT, command != .probeRectangleSource {
             throw RouteRunnerError(
                 message: "STOP_PREEXECUTION_CAPABILITY: --base-capability-kat is valid only for probe-rectangle-source."
@@ -906,6 +968,7 @@ private struct SwanSongRouteRunner {
                   options.methodNativeMarkerURL == nil,
                   options.captureFrameSealURL == nil,
                   !options.commercialAuthorizedSourceProbe,
+                  !options.commercialAuthorizedOriginalFrameSeal,
                   !options.commercialSourceContractKAT,
                   !options.publicSourceWrongFrameKAT else {
                 throw RouteRunnerError(
@@ -943,6 +1006,7 @@ private struct SwanSongRouteRunner {
                 options.publicDiagnosticKAT,
                 options.commercialSourceContractKAT,
                 options.commercialAuthorizedSourceProbe,
+                options.commercialAuthorizedOriginalFrameSeal,
             ].filter { $0 }.count
             guard let planURL = options.planURL,
                   let role = options.role,
@@ -956,10 +1020,12 @@ private struct SwanSongRouteRunner {
                   modeCount == 1,
                   !options.commercialAuthorizedCapture,
                   !options.commercialCaptureContractKAT,
-                  options.commercialAuthorizedSourceProbe
+                  (options.commercialAuthorizedSourceProbe
+                    || options.commercialAuthorizedOriginalFrameSeal)
                     ? options.qualifiedMethodCapabilityReceiptURL != nil
                     : options.qualifiedMethodCapabilityReceiptURL == nil,
-                  options.publicDiagnosticKAT
+                  (options.publicDiagnosticKAT
+                    || options.commercialAuthorizedOriginalFrameSeal)
                     ? options.captureFrameSealURL == nil
                     : options.captureFrameSealURL != nil,
                   options.captureIntakeCapabilityReceiptURL == nil,
@@ -971,16 +1037,48 @@ private struct SwanSongRouteRunner {
                     message: "STOP_PREEXECUTION_CAPABILITY: an authorized source probe requires exactly one diagnostic, public capture-contract, or commercial mode and its complete A/C/M/marker/seal/M2 input set.\n\n\(usage)"
                 )
             }
+            if options.commercialAuthorizedOriginalFrameSeal {
+                guard role == .original,
+                      let outputURL = options.outputURL else {
+                    throw RouteRunnerError(
+                        message: "STOP_PREEXECUTION_CAPABILITY: the read-only Original frame seal requires role=original and its exact output path.\n\n\(usage)"
+                    )
+                }
+                try AuthorizedOriginalFrameSealRunner.run(
+                    AuthorizedOriginalFrameSealInvocation(
+                        projectURL: projectURL,
+                        planURL: planURL,
+                        frameIndex: frameIndex,
+                        rectangle: rectangle,
+                        rectangles: options.sourceRectangles ?? [rectangle],
+                        components: (options.components
+                            ?? EngineDisplaySourceComponent.allCases).sorted {
+                                $0.rawValue < $1.rawValue
+                            },
+                        outputURL: outputURL,
+                        authorizationURL: authorizationURL,
+                        capabilityReceiptURL: capabilityReceiptURL,
+                        methodCapabilityReceiptURL: methodCapabilityReceiptURL,
+                        qualifiedMethodCapabilityReceiptURL:
+                            options.qualifiedMethodCapabilityReceiptURL!,
+                        methodNativeMarkerURL: methodNativeMarkerURL,
+                        runDirectoryURL: runDirectoryURL
+                    )
+                )
+                return
+            }
             let components = (options.components
                 ?? EngineDisplaySourceComponent.allCases).sorted {
                     $0.rawValue < $1.rawValue
                 }
+            let sourceRectangles = options.sourceRectangles ?? [rectangle]
             try AuthorizedSourceProbeRunner.run(AuthorizedSourceProbeInvocation(
                 projectURL: projectURL,
                 planURL: planURL,
                 role: role,
                 frameIndex: frameIndex,
                 rectangle: rectangle,
+                rectangles: sourceRectangles,
                 components: components,
                 outputURL: options.outputURL,
                 authorizationURL: authorizationURL,
@@ -1121,7 +1219,7 @@ private struct SwanSongRouteRunner {
                     role: role,
                     plan: plan,
                     frameIndex: frameIndex,
-                    rectangle: rectangle,
+                    rectangles: options.sourceRectangles ?? [rectangle],
                     components: options.components
                         ?? EngineDisplaySourceComponent.allCases
                 )
@@ -1234,6 +1332,7 @@ private struct SwanSongRouteRunner {
         }
         let allowedRectangles: Set<String> = [
             "8,8,1,1", "0,0,1,1", "0,0,128,32", "0,0,129,32",
+            "0,0,224,36",
         ]
         let rectangleKey = "\(rectangle.x),\(rectangle.y),\(rectangle.width),\(rectangle.height)"
         guard allowedRectangles.contains(rectangleKey) else {
@@ -1327,6 +1426,9 @@ private struct SwanSongRouteRunner {
             case "--commercial-authorized-source-probe":
                 options.commercialAuthorizedSourceProbe = true
                 index += 1
+            case "--commercial-authorized-original-frame-seal":
+                options.commercialAuthorizedOriginalFrameSeal = true
+                index += 1
             case "--base-capability-kat":
                 options.baseCapabilityKAT = true
                 index += 1
@@ -1394,9 +1496,33 @@ private struct SwanSongRouteRunner {
                 guard index + 1 < CommandLine.arguments.count else {
                     throw RouteRunnerError(message: "Missing value for --rect.\n\n\(usage)")
                 }
+                guard options.sourceRectangles == nil else {
+                    throw RouteRunnerError(
+                        message: "--rect and --source-regions are mutually exclusive.\n\n\(usage)"
+                    )
+                }
                 options.rectangle = try parseRectangle(
                     CommandLine.arguments[index + 1]
                 )
+                index += 2
+            case "--source-regions":
+                guard index + 1 < CommandLine.arguments.count else {
+                    throw RouteRunnerError(
+                        message: "Missing value for --source-regions.\n\n\(usage)"
+                    )
+                }
+                guard options.rectangle == nil,
+                      options.sourceRectangles == nil else {
+                    throw RouteRunnerError(
+                        message: "--rect and --source-regions are mutually exclusive.\n\n\(usage)"
+                    )
+                }
+                let rectangles = try CommandLine.arguments[index + 1]
+                    .split(separator: ";", omittingEmptySubsequences: false)
+                    .map { try parseRectangle(String($0)) }
+                options.sourceRectangles = rectangles
+                options.rectangle = try TranslationDisplaySourceProbe
+                    .atomicBoundingRectangle(rectangles: rectangles)
                 index += 2
             case "--components":
                 guard index + 1 < CommandLine.arguments.count else {

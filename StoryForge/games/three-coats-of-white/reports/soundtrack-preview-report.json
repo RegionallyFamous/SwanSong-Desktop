@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "errors": [],
+  "generated_at_utc": "2026-07-16T00:18:56.096121+00:00",
+  "project": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+    "bytes": 109109,
+    "sha256": "952a230f3866ff685a74a6c3412751209992be51c911bf9a600ba84c1111a2a8"
+  },
+  "renderer": {
+    "backend": "legacy-tracker-wavetable-audition",
+    "sample_rate": 22050,
+    "loops": 2,
+    "channels": 1,
+    "sample_width_bits": 16,
+    "note": "Offline audition mirrors the runtime's 32-sample wave shapes; hardware output and emulator mixing may differ."
+  },
+  "tracks": [
+    {
+      "id": "coat_title",
+      "name": "Primer Parade",
+      "bpm": 116,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/audio/01-coat_title.wav",
+      "bytes": 365010,
+      "sha256": "7dd5b75f18e0fd7fcb4ee1175e4f96fc6d0211871910d7637e59fbf5e9b74cdd",
+      "duration_seconds": 8.276,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.197,
+        "near_silent_sample_share": 0.010659,
+        "max_loop_jump_linear": 0.064425
+      }
+    },
+    {
+      "id": "coat_main",
+      "name": "Ventilation Situation",
+      "bpm": 148,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/audio/02-coat_main.wav",
+      "bytes": 286098,
+      "sha256": "cbca7d7a1e4ebdd95a32216993bf203752c2d3652aeee01b792eea34b199e9d5",
+      "duration_seconds": 6.486,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.216,
+        "near_silent_sample_share": 0.011928,
+        "max_loop_jump_linear": 0.017792
+      }
+    },
+    {
+      "id": "coat_end_a",
+      "name": "Perfect Finish",
+      "bpm": 104,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/audio/03-coat_end_a.wav",
+      "bytes": 407120,
+      "sha256": "6e622209df2654e58d3f4ecc163d81d1fcef9ed5f9c72484466c45e8ad35aab7",
+      "duration_seconds": 9.231,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.195,
+        "near_silent_sample_share": 0.010696,
+        "max_loop_jump_linear": 0.010254
+      }
+    },
+    {
+      "id": "coat_end_b",
+      "name": "Accidental Masterpiece",
+      "bpm": 132,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/audio/04-coat_end_b.wav",
+      "bytes": 320772,
+      "sha256": "d38688caf884e81d02259271ef5fac4d7c9c62b8053fd257274cb6475a5820ae",
+      "duration_seconds": 7.273,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.206,
+        "near_silent_sample_share": 0.010545,
+        "max_loop_jump_linear": 0.01294
+      }
+    }
+  ],
+  "cues": [
+    {
+      "node": "coat_title",
+      "node_name": "Coat Title",
+      "track": "coat_title"
+    },
+    {
+      "node": "coat_01",
+      "node_name": "Coat 01",
+      "track": "coat_main"
+    },
+    {
+      "node": "coat_a1",
+      "node_name": "Coat A1",
+      "track": "coat_end_a"
+    },
+    {
+      "node": "coat_b1",
+      "node_name": "Coat B1",
+      "track": "coat_end_b"
+    }
+  ]
+}

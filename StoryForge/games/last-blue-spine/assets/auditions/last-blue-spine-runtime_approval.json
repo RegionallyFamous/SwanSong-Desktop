@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "approval_type": "wscvn_sprite_audition_approval",
+  "approved_at": "2026-07-17T02:40:36+00:00",
+  "reviewer": "codex",
+  "notes": "Runtime-ready neutral/talk/blink families visually inspected.",
+  "character": "generic",
+  "sheet_kind": "animation",
+  "runtime_ready": true,
+  "labels": [
+    "neutral",
+    "talk",
+    "blink"
+  ],
+  "tool_provenance": [
+    {
+      "path": "scripts/audition_wscvn_sprite_sheet.py",
+      "sha256": "3c3ff7d0eff71df59c58e51d6d1f7990516778f64749e3dad207ab05b2069338"
+    },
+    {
+      "path": "scripts/make_signal_before_dawn_slice.py",
+      "sha256": "c48f872b41a2bbe0310229ffd35ed4786096e7d886595f950605efcf622afc90"
+    },
+    {
+      "path": "scripts/wscvn_sprite_family.py",
+      "sha256": "3ebf274e1f493bd10bc06be29936eda8c43d6e85e0d7cd5d4ddcd980d1bbc1aa"
+    }
+  ],
+  "quality": {
+    "status": "pass",
+    "error_count": 0,
+    "warning_count": 0,
+    "info_count": 0,
+    "thresholds": {
+      "max_visible_colors": 15,
+      "min_talk_face_delta": 18,
+      "min_blink_face_delta": 0,
+      "min_alpha_coverage": 0.2,
+      "max_alpha_coverage": 0.75,
+      "max_animation_alpha_changed": 0,
+      "min_visible_above_textbox": 0.52,
+      "max_visible_above_textbox": 0.92,
+      "max_animation_bbox_area": 1200,
+      "max_source_center_drift": 0.09,
+      "max_source_scale_drift": 0.18,
+      "max_sprite_center_drift": 0.04,
+      "max_sprite_scale_drift": 0.08,
+      "max_tiny_color_pixels": 10,
+      "max_green_fringe_pixels": 0,
+      "max_alpha_components": 8,
+      "min_largest_alpha_component_share": 0.96
+    }
+  },
+  "audition_report": {
+    "path": "games/last-blue-spine/assets/auditions/last-blue-spine-runtime-audition.json",
+    "sha256": "0fd1a6b57de36468956ad986bcd735f894921c58c2eed2a9c0c1269966b88fd8"
+  },
+  "audition_png": {
+    "path": "games/last-blue-spine/assets/auditions/last-blue-spine-runtime-audition.png",
+    "sha256": "93df8b2afd6f0fc386d7187ee32ceece304750f0033c402ae371ab70d8bca48a"
+  },
+  "sources": [
+    {
+      "label": "aya",
+      "path": "games/last-blue-spine/assets/auditions/aya-runtime-animation.png",
+      "sha256": "97d6175c1cb9c83887a689a096a677e698eb491909384f873bc49cfbc5871ee8"
+    },
+    {
+      "label": "ren",
+      "path": "games/last-blue-spine/assets/auditions/ren-runtime-animation.png",
+      "sha256": "4fb1f83fd559282fdfe912ef1ffc9e6b8674ae7b868ca02ae0503abd5d3c38e1"
+    }
+  ],
+  "covered_outputs": [
+    {
+      "path": "games/last-blue-spine/assets/characters/aya_neutral.png",
+      "sha256": "45c5ff2e9e6ac1514eb12e09408b7e78970a29bb0bcb398979fa82f96dd5d6bc"
+    },
+    {
+      "path": "games/last-blue-spine/assets/characters/aya_talk.png",
+      "sha256": "4041586d2a1d83e4f164024e539be867b8bd05911b5e52d384341653b40c645e"
+    },
+    {
+      "path": "games/last-blue-spine/assets/characters/aya_blink.png",
+      "sha256": "e3c4563daba8c8eafd5c6eae7714efaac49723e56e6513807f15c045c84db24c"
+    },
+    {
+      "path": "games/last-blue-spine/assets/characters/ren_neutral.png",
+      "sha256": "72d3787fee90caabf5a9d15dc71101e2cf0ad7131522a78c3dc2b9879c11d987"
+    },
+    {
+      "path": "games/last-blue-spine/assets/characters/ren_talk.png",
+      "sha256": "4ce1e91e31b79da21e319bc71c0dae2dc78c68f343306fe783a4855f7ceaeaae"
+    },
+    {
+      "path": "games/last-blue-spine/assets/characters/ren_blink.png",
+      "sha256": "e3794852a19812e0e41db6f44951dcf9160e21ebfc91f662285524ff724e5919"
+    }
+  ]
+}

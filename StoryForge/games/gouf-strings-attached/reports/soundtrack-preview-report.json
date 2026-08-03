@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "errors": [],
+  "generated_at_utc": "2026-07-16T00:15:19.249368+00:00",
+  "project": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/projects/gouf-strings-attached.wscvn.json",
+    "bytes": 139318,
+    "sha256": "50acf39030a370706084218480894f5efaed51454b1f95b6db561517f2631dc0"
+  },
+  "renderer": {
+    "backend": "legacy-tracker-wavetable-audition",
+    "sample_rate": 22050,
+    "loops": 2,
+    "channels": 1,
+    "sample_width_bits": 16,
+    "note": "Offline audition mirrors the runtime's 32-sample wave shapes; hardware output and emulator mixing may differ."
+  },
+  "tracks": [
+    {
+      "id": "gouf_title",
+      "name": "Cable at Dusk",
+      "bpm": 96,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/audio/01-gouf_title.wav",
+      "bytes": 441044,
+      "sha256": "57d9c88966a0d3d6f6d3b0016d072b8664abc36a1fb79a3fbca84bc7efea6e25",
+      "duration_seconds": 10.0,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.188,
+        "near_silent_sample_share": 0.010712,
+        "max_loop_jump_linear": 0.105625
+      }
+    },
+    {
+      "id": "gouf_main",
+      "name": "Courtyard Tangle",
+      "bpm": 112,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/audio/02-gouf_main.wav",
+      "bytes": 378044,
+      "sha256": "c6a2856b0e1d24cd4dd07ef2dff59327fb52b46645279f246bb2505f6e0b7893",
+      "duration_seconds": 8.571,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.171,
+        "near_silent_sample_share": 0.010302,
+        "max_loop_jump_linear": 0.013062
+      }
+    },
+    {
+      "id": "gouf_end_a",
+      "name": "Sky Spiral",
+      "bpm": 136,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/audio/03-gouf_end_a.wav",
+      "bytes": 311338,
+      "sha256": "0d9aadd349c95c41cbb5ed79e24132f1c5d2f1784e745c7cb341d7f8b87e1269",
+      "duration_seconds": 7.059,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.213,
+        "near_silent_sample_share": 0.011263,
+        "max_loop_jump_linear": 0.017792
+      }
+    },
+    {
+      "id": "gouf_end_b",
+      "name": "Dependable Glow",
+      "bpm": 84,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/audio/04-gouf_end_b.wav",
+      "bytes": 504044,
+      "sha256": "9acb4d911137230b8839cd91ff95ddfc0afc479c1ef4abdfaa76f325871f5033",
+      "duration_seconds": 11.429,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.183,
+        "near_silent_sample_share": 0.011254,
+        "max_loop_jump_linear": 0.03357
+      }
+    }
+  ],
+  "cues": [
+    {
+      "node": "gouf_title",
+      "node_name": "Gouf Title",
+      "track": "gouf_title"
+    },
+    {
+      "node": "gouf_01",
+      "node_name": "Gouf 01",
+      "track": "gouf_main"
+    },
+    {
+      "node": "gouf_a1",
+      "node_name": "Gouf A1",
+      "track": "gouf_end_a"
+    },
+    {
+      "node": "gouf_b1",
+      "node_name": "Gouf B1",
+      "track": "gouf_end_b"
+    }
+  ]
+}

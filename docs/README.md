@@ -29,7 +29,7 @@ tools. Versioned release notes remain authoritative for each build.
 
 | Surface | Source owner | Relationship |
 | --- | --- | --- |
-| Story Forge novel framework | [RegionallyFamous/swansong-story-forge](https://github.com/RegionallyFamous/swansong-story-forge) | Separate schema-v3 narrative policy and tool source. Desktop invokes only its typed local allowlist against explicitly selected projects. |
+| Story Forge novel framework | [`StoryForge/`](../StoryForge) in this repository | Canonical schema-v3 narrative policy, tools, novels, visual-novel projects, and evidence. The signed app embeds a minimal hash-verified framework payload and invokes only its typed local allowlist against selected projects. |
 | SwanSong Desktop for macOS | [`RegionallyFamous/SwanSong-Desktop`](https://github.com/RegionallyFamous/SwanSong-Desktop) | This repository: SwiftUI app, library, translation workbench, C ABI, release tooling, and tests. |
 | SwanSong for Analogue Pocket | [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core) | Separate FPGA project, artifacts, hardware qualification, and release lane. Desktop can merge only an immutable, authorized stable Core release onto a user-selected card; it does not build or publish the FPGA product. |
 | Yokoi hardware utilities | Yokoi Boot and Yokoi Cart Service at the immutable source revision recorded in [`SOURCE_PROVENANCE.md`](../SOURCE_PROVENANCE.md) | Separately executable GPLv3 WonderSwan programs used by Cartridge Tools. Desktop verifies their payload, license, notice, and corresponding-source location without linking them into the GPLv2 Mac executable. |

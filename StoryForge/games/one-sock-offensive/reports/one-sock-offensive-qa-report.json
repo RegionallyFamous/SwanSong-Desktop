@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/projects/one-sock-offensive.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/contact_sheet.png",
+    "nodes": 44,
+    "flags": 0,
+    "tracks": [
+      {
+        "id": "sock_title",
+        "name": "Sock Roll Call",
+        "bpm": 108
+      },
+      {
+        "id": "sock_main",
+        "name": "Washer Shuffle",
+        "bpm": 116
+      },
+      {
+        "id": "sock_end_a",
+        "name": "Headwear Recovery",
+        "bpm": 92
+      },
+      {
+        "id": "sock_end_b",
+        "name": "Crimson Cycle",
+        "bpm": 152
+      }
+    ],
+    "imagegen_source_sha256": {
+      "background_title_imagegen_v1.png": "6ed92386fb36d7f20327de1304dca6ba4750aed2a1e16802a9e991e361b6f051",
+      "background_main_imagegen_v1.png": "39b0fa4402ddfb72c8d12ad6ffc530b70518022736e053b3f25665b09c94efa8",
+      "background_ending_a_imagegen_v1.png": "815a84618cfa0d599242c0877fad94a87bbe892cada866801fc6f6cafbfd2756",
+      "background_ending_b_imagegen_v1.png": "93fba732efee44554b5a8eb2c9e6f5d5d455b1d21b649d9b690a65506cfe01a0",
+      "character_master_cutout_imagegen_v1.png": "0586a82fa724ef298adbdfb68c59eaa077ab4bc39956854b91edd9d9cb129105"
+    },
+    "source_master_count": 5,
+    "background_count": 4,
+    "character_frame_count": 3,
+    "art_policy": "ImageGen-first; no procedural pictorial fallback"
+  }
+}

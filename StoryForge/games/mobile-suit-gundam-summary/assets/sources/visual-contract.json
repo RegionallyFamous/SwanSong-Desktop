@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "characters": {
+    "rx78": {
+      "speaker_names": ["Docent RX"],
+      "base_ids": ["char_rx78_neutral"],
+      "required_moods": [],
+      "allow_base_neutral": true
+    },
+    "zaku": {
+      "speaker_names": ["Docent Zaku"],
+      "base_ids": ["char_zaku_neutral"],
+      "required_moods": [],
+      "allow_base_neutral": true
+    }
+  },
+  "text": {
+    "cols": 26,
+    "quality_lines": 3
+  },
+  "staging": {
+    "allowed_positions": ["left", "right"],
+    "non_portrait_backgrounds": ["bg_title"],
+    "forbid_center": true
+  },
+  "thresholds": {
+    "max_choice_label_chars": 22,
+    "min_sprite_bg_luma_delta": 22.0,
+    "max_background_detail_under_sprite": 70.0,
+    "min_mood_base_face_delta": 0,
+    "min_mood_pair_face_delta": 0,
+    "min_side_position_share": 0.25,
+    "max_same_side_staging_run": 5
+  },
+  "review_assets": {
+    "storyboard": {
+      "path": "storyboard_sheet.png",
+      "cols": 4,
+      "thumb_width": 112,
+      "thumb_height": 72,
+      "label_height": 16,
+      "gap": 8,
+      "margin": 8,
+      "include_types": ["title", "scene", "choice"]
+    },
+    "expression_audition": {
+      "path": "auditions/mobile-suit-gundam-summary-runtime-audition.png",
+      "size": [1976, 1198]
+    }
+  }
+}

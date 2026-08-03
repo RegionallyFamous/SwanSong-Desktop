@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:45:29.928345+00:00",
+  "errors": [],
+  "release_id": "20260727T024529Z-83a4903a9fbe",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/releases/20260727T024529Z-83a4903a9fbe",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/releases/20260727T024529Z-83a4903a9fbe.zip",
+    "bytes": 14165646,
+    "sha256": "35b2d42ce57792981fe97ca57f7c342384bb36758306f25612914fc9d6155238"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/releases/20260727T024529Z-83a4903a9fbe/manifest.json",
+    "sha256": "d74e7caae7a6f191f6d78ad7fc11303316094c4a32e4f32546dfe226041c0acc",
+    "files": 44
+  },
+  "rom_sha256": "83a4903a9fbe177354ed3b2b01106eacb992e641f6af2e3316e38886fff36493",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "gouf-strings-attached",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/reports/game-audit-report.json\nGame audit passed"
+  }
+}

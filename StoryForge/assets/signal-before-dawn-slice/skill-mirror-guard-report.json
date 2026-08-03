@@ -1,0 +1,159 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:35.480158+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "valid-skill-mirror",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_text": "",
+      "returncode": 0,
+      "output_tail": "Skill mirror report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/valid/report.json\nSkill mirror check passed",
+      "report_ok": true,
+      "report_errors": []
+    },
+    {
+      "name": "installed-match",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_text": "",
+      "returncode": 0,
+      "output_tail": "Skill mirror report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/installed-match/report.json\nSkill mirror check passed",
+      "report_ok": true,
+      "report_errors": []
+    },
+    {
+      "name": "missing-graphics-reference",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "Missing required skill mirror file",
+      "returncode": 1,
+      "output_tail": "Skill mirror report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/missing-graphics-reference/report.json\n[x] Missing required skill mirror file: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/missing-graphics-reference/build-wonderswan-vn/references/graphics-quality.md\n[x] Could not read /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/missing-graphics-reference/build-wonderswan-vn/references/graphics-quality.md: [Errno 2] No such file or directory: '/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/missing-graphics-reference/build-wonderswan-vn/references/graphics-quality.md'\n[x] graphics-quality.md missing required snippet: hard art-direction rule\n[x] graphics-quality.md missing required snippet: Do not create them with PIL drawing commands\n[x] graphics-quality.md missing required snippet: Record the ImageGen tool, final prompt\n[x] graphics-quality.md missing required snippet: 224x144\n[x] graphics-quality.md missing required snippet: 96x128\n[x] graphics-quality.md missing required snippet: RGB444\n[x] graphics-quality.md missing required snippet: index zero\n[x] graphics-quality.md missing required snippet: audition\n[x] graphics-quality.md missing required snippet: font-proof-sheet.png\n[x] graphics-quality.md missing required snippet: light-novel readiness\n[x] graphics-quality.md missing required snippet: visual-contract-template.json\n[x] graphics-quality.md missing required snippet: renderer-specific\n[x] graphics-quality.md missing required snippet: public domain\n[x] graphics-quality.md missing required snippet: selftest_wscvn_sprite_family.py\n[x] graphics-quality.md missing required snippet: all-scene native review sheet\n[x] graphics-quality.md missing required snippet: release-art proof",
+      "report_ok": false,
+      "report_errors": [
+        "Missing required skill mirror file: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/missing-graphics-reference/build-wonderswan-vn/references/graphics-quality.md",
+        "Could not read /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/missing-graphics-reference/build-wonderswan-vn/references/graphics-quality.md: [Errno 2] No such file or directory: '/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/missing-graphics-reference/build-wonderswan-vn/references/graphics-quality.md'",
+        "graphics-quality.md missing required snippet: hard art-direction rule",
+        "graphics-quality.md missing required snippet: Do not create them with PIL drawing commands",
+        "graphics-quality.md missing required snippet: Record the ImageGen tool, final prompt",
+        "graphics-quality.md missing required snippet: 224x144",
+        "graphics-quality.md missing required snippet: 96x128",
+        "graphics-quality.md missing required snippet: RGB444",
+        "graphics-quality.md missing required snippet: index zero",
+        "graphics-quality.md missing required snippet: audition",
+        "graphics-quality.md missing required snippet: font-proof-sheet.png",
+        "graphics-quality.md missing required snippet: light-novel readiness",
+        "graphics-quality.md missing required snippet: visual-contract-template.json",
+        "graphics-quality.md missing required snippet: renderer-specific",
+        "graphics-quality.md missing required snippet: public domain",
+        "graphics-quality.md missing required snippet: selftest_wscvn_sprite_family.py",
+        "graphics-quality.md missing required snippet: all-scene native review sheet",
+        "graphics-quality.md missing required snippet: release-art proof"
+      ]
+    },
+    {
+      "name": "missing-skill-graphics-routing",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "SKILL.md missing required routing/content snippet",
+      "returncode": 1,
+      "output_tail": "Skill mirror report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/missing-skill-routing/report.json\n[x] SKILL.md missing required routing/content snippet: references/graphics-quality.md",
+      "report_ok": false,
+      "report_errors": [
+        "SKILL.md missing required routing/content snippet: references/graphics-quality.md"
+      ]
+    },
+    {
+      "name": "missing-imagegen-policy",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "SKILL.md missing required routing/content snippet: Mandatory ImageGen Policy",
+      "returncode": 1,
+      "output_tail": "Skill mirror report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/missing-imagegen-policy/report.json\n[x] SKILL.md missing required routing/content snippet: Mandatory ImageGen Policy",
+      "report_ok": false,
+      "report_errors": [
+        "SKILL.md missing required routing/content snippet: Mandatory ImageGen Policy"
+      ]
+    },
+    {
+      "name": "missing-local-workflow-release-proof",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "local-workflow.md missing required snippet: do not rebuild long-form game routes sequentially inside the Signal release",
+      "returncode": 1,
+      "output_tail": "Skill mirror report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/missing-local-workflow-release-proof/report.json\n[x] local-workflow.md missing required snippet: do not rebuild long-form game routes sequentially inside the Signal release",
+      "report_ok": false,
+      "report_errors": [
+        "local-workflow.md missing required snippet: do not rebuild long-form game routes sequentially inside the Signal release"
+      ]
+    },
+    {
+      "name": "invalid-visual-contract-template",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "visual-contract-template.json missing threshold min_mood_pair_face_delta",
+      "returncode": 1,
+      "output_tail": "Skill mirror report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/invalid-visual-contract-template/report.json\n[x] visual-contract-template.json missing threshold min_mood_pair_face_delta",
+      "report_ok": false,
+      "report_errors": [
+        "visual-contract-template.json missing threshold min_mood_pair_face_delta"
+      ]
+    },
+    {
+      "name": "installed-mismatch-strict",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "Installed build-wonderswan-vn skill does not match the workspace mirror",
+      "returncode": 1,
+      "output_tail": "Skill mirror report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/installed-mismatch-strict/report.json\n[x] Installed build-wonderswan-vn skill does not match the workspace mirror",
+      "report_ok": false,
+      "report_errors": [
+        "Installed build-wonderswan-vn skill does not match the workspace mirror"
+      ]
+    },
+    {
+      "name": "installed-missing-new-reference",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "Installed build-wonderswan-vn skill does not match the workspace mirror",
+      "returncode": 1,
+      "output_tail": "Skill mirror report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/installed-missing-new-reference/report.json\n[x] audio-quality.md missing required snippet: 75.472 Hz\n[x] audio-quality.md missing required snippet: bpm * 106\n[x] audio-quality.md missing required snippet: 120,000\n[x] audio-quality.md missing required snippet: 53\n[x] audio-quality.md missing required snippet: Channel 2\n[x] audio-quality.md missing required snippet: measured repeat period\n[x] audio-quality.md missing required snippet: without another rebuild\n[x] audio-quality.md missing required snippet: normalized native audio\n[x] audio-quality.md missing required snippet: route-N-audio.wav\n[x] Installed build-wonderswan-vn skill does not match the workspace mirror",
+      "report_ok": false,
+      "report_errors": [
+        "audio-quality.md missing required snippet: 75.472 Hz",
+        "audio-quality.md missing required snippet: bpm * 106",
+        "audio-quality.md missing required snippet: 120,000",
+        "audio-quality.md missing required snippet: 53",
+        "audio-quality.md missing required snippet: Channel 2",
+        "audio-quality.md missing required snippet: measured repeat period",
+        "audio-quality.md missing required snippet: without another rebuild",
+        "audio-quality.md missing required snippet: normalized native audio",
+        "audio-quality.md missing required snippet: route-N-audio.wav",
+        "Installed build-wonderswan-vn skill does not match the workspace mirror"
+      ]
+    },
+    {
+      "name": "installed-extra-file-strict",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "Installed build-wonderswan-vn skill does not match the workspace mirror",
+      "returncode": 1,
+      "output_tail": "Skill mirror report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-skill-guard-qgaamlkf/installed-extra-file-strict/report.json\n[x] Installed build-wonderswan-vn skill does not match the workspace mirror",
+      "report_ok": false,
+      "report_errors": [
+        "Installed build-wonderswan-vn skill does not match the workspace mirror"
+      ]
+    }
+  ]
+}

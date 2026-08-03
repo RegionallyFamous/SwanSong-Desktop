@@ -113,6 +113,26 @@ check_dma_provenance_fixture() {
   echo "$first"
 }
 
+check_data_producer_fixture() {
+  fixture=$1
+  expected_sha256=$2
+  expected=$3
+  actual_sha256=$(shasum -a 256 "$fixture" | awk '{print $1}')
+  if [ "$actual_sha256" != "$expected_sha256" ]; then
+    echo "data-producer provenance fixture hash mismatch: $fixture" >&2
+    exit 1
+  fi
+  first=$("$BUILD_DIR/SwanAresSmoke" --data-producer-fixture "$fixture")
+  second=$("$BUILD_DIR/SwanAresSmoke" --data-producer-fixture "$fixture")
+  if [ "$first" != "$expected" ] || [ "$second" != "$expected" ]; then
+    echo "data-producer provenance fixture failed or was nondeterministic" >&2
+    echo "$first" >&2
+    echo "$second" >&2
+    exit 1
+  fi
+  echo "$first"
+}
+
 check_static_analysis_seed_v2_fixture() {
   fixture=$1
   expected_json=$2
@@ -160,6 +180,10 @@ check_dma_provenance_fixture \
   "$MACOS_DIR/testroms/swan-song/display_provenance/general_dma_source_lineage.wsc" \
   593e96231de93e77e1df63d6345698641eb4935d5c7f17f28c85417fa690ce49 \
   'PASS general-DMA source lineage exact=4 initiator=dma source=0001fe78 operand=ffe78'
+check_data_producer_fixture \
+  "$MACOS_DIR/testroms/swan-song/data_producer_provenance/data_producer_provenance.wsc" \
+  cadfbb6317efff57978f51c1d1230c62f2f9d9657eddb14a65e03c37d93e774c \
+  'PASS data-producer provenance target-bytes=6 source-bytes=6 writers=1 raw-memory=0 source=0001ff1f'
 check_mono_palette_fixture \
   "$MACOS_DIR/testroms/swan-song/display_provenance/mono_palette_out_owner.ws" \
   d38b05b8d062d662e97456ccb3499ed8b8fae17a0409ea0a800558cfae142b0d

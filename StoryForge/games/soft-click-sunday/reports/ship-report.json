@@ -1,0 +1,121 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-27T03:26:50.131317+00:00",
+  "errors": [],
+  "commands": [
+    {
+      "name": "build",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/build_wscvn_game.py",
+        "soft-click-sunday"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "k-sunday.wscvn.json --asset-root /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/game-readiness-report.json\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:219: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:220: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:222: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alpha_coverage = sum(1 for pixel in image.getdata() if pixel[3] > 0) / (image.width * image.height)\nGame readiness report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/game-readiness-report.json\n[i] Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.\nTechnical game readiness passed; aesthetic review remains separate\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_graphics_contract.py --asset-root /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/projects/soft-click-sunday.wscvn.json --allow-missing-provenance --out /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/graphics-contract-report.json\nGraphics contract report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/graphics-contract-report.json\nGraphics contract passed\n+ make convert JSON=/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/projects/soft-click-sunday.wscvn.json PY=/opt/homebrew/opt/python@3.14/bin/python3.14\n/opt/homebrew/opt/python@3.14/bin/python3.14 tools/convert_json.py \"/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/projects/soft-click-sunday.wscvn.json\" src/\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/runtime-local/tools/convert_json.py:939: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  indexed = list(q.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/runtime-local/tools/convert_json.py:517: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/runtime-local/tools/convert_json.py:580: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(frame.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/runtime-local/tools/convert_json.py:606: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/runtime-local/tools/convert_json.py:627: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgb.getdata())\n[+] Loaded \"Soft Click Sunday\" \u2014 74 nodes, 10 flags, 1 tracks, 3 backgrounds, 6 characters\n[+] Wrote src//game_data.h and src//game_data.c\n[+] Ready: run \"make\" from the project root.\n+ make clean NAME=soft-click-sunday\nrm -rf build/soft-click-sunday soft-click-sunday.wsc\n+ make NAME=soft-click-sunday\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/soft-click-sunday/src/main.o src/main.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/soft-click-sunday/src/game_data.o src/game_data.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -r -o build/soft-click-sunday/soft-click-sunday_stage1.elf build/soft-click-sunday/src/main.o build/soft-click-sunday/src/game_data.o /opt/wonderful/target/wswan/medium/lib/crt0.o -T/opt/wonderful/target/wswan/medium/link.ld -L/opt/wonderful/target/wswan/medium/lib -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -u __wse_tiles_2bpp -u __wse_color_palette -L/opt/wonderful/toolchain/gcc-ia16-elf/lib/v30mz-segelf/medium -lwse -lwsx -lws -lgcc\n/opt/wonderful/bin/wf-wswantool build rom -c wfconfig.toml -o soft-click-sunday.wsc --output-elf build/soft-click-sunday/soft-click-sunday.elf build/soft-click-sunday/soft-click-sunday_stage1.elf\n=== BUILD COMPLETE ===\n-rw-r--r--@ 1 nick  staff   8.0M Jul 26 22:20 soft-click-sunday.wsc\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/smoke_wscvn_rom.py /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/runtime-local/soft-click-sunday.wsc --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/emulator-smoke-report.json\nEmulator smoke report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/emulator-smoke-report.json\nBoot/checksum smoke passed (no pixels observed): wswan(WonderSwan) 8192KiB checksum 0x32db\nVisual verification not performed; no emulator screenshot proof was bound\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py soft-click-sunday --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/projects/soft-click-sunday.wscvn.json --runtime /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/runtime-local --build-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/build-report.json --smoke-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/emulator-smoke-report.json --readiness-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/game-readiness-report.json --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/game-audit-report.json\nGame audit report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/game-audit-report.json\nGame audit passed\nGame build report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/build-report.json\nGame build passed: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/runtime-local/soft-click-sunday.wsc"
+    },
+    {
+      "name": "swansong-playthrough",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/playtest_wscvn_swansong.py",
+        "soft-click-sunday",
+        "--route",
+        "all"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "soft-click-sunday: running route-1 (1/18) \u2014 Dig in loose carts / Buy Moonmilk / Play it first\nsoft-click-sunday: route-1 passed in 20.629s\nsoft-click-sunday: running route-2 (2/18) \u2014 Dig in loose carts / Buy Moonmilk / Clean the shell\nsoft-click-sunday: route-2 passed in 20.055s\nsoft-click-sunday: running route-3 (3/18) \u2014 Dig in loose carts / Buy Moonmilk / Write its story\nsoft-click-sunday: route-3 passed in 20.212s\nsoft-click-sunday: running route-4 (4/18) \u2014 Dig in loose carts / Step outside / Play it first\nsoft-click-sunday: route-4 passed in 20.255s\nsoft-click-sunday: running route-5 (5/18) \u2014 Dig in loose carts / Step outside / Clean the shell\nsoft-click-sunday: route-5 passed in 20.590s\nsoft-click-sunday: running route-6 (6/18) \u2014 Dig in loose carts / Step outside / Write its story\nsoft-click-sunday: route-6 passed in 20.516s\nsoft-click-sunday: running route-7 (7/18) \u2014 Read the list / Reserve Petal / Play it first\nsoft-click-sunday: route-7 passed in 20.991s\nsoft-click-sunday: running route-8 (8/18) \u2014 Read the list / Reserve Petal / Clean the shell\nsoft-click-sunday: route-8 passed in 21.820s\nsoft-click-sunday: running route-9 (9/18) \u2014 Read the list / Reserve Petal / Write its story\nsoft-click-sunday: route-9 passed in 21.194s\nsoft-click-sunday: running route-10 (10/18) \u2014 Read the list / Step outside / Play it first\nsoft-click-sunday: route-10 passed in 20.473s\nsoft-click-sunday: running route-11 (11/18) \u2014 Read the list / Step outside / Clean the shell\nsoft-click-sunday: route-11 passed in 20.289s\nsoft-click-sunday: running route-12 (12/18) \u2014 Read the list / Step outside / Write its story\nsoft-click-sunday: route-12 passed in 20.424s\nsoft-click-sunday: running route-13 (13/18) \u2014 Check the case / Test Star Pantry / Play it first\nsoft-click-sunday: route-13 passed in 20.263s\nsoft-click-sunday: running route-14 (14/18) \u2014 Check the case / Test Star Pantry / Clean the shell\nsoft-click-sunday: route-14 passed in 20.303s\nsoft-click-sunday: running route-15 (15/18) \u2014 Check the case / Test Star Pantry / Write its story\nsoft-click-sunday: route-15 passed in 20.441s\nsoft-click-sunday: running route-16 (16/18) \u2014 Check the case / Step outside / Play it first\nsoft-click-sunday: route-16 passed in 20.341s\nsoft-click-sunday: running route-17 (17/18) \u2014 Check the case / Step outside / Clean the shell\nsoft-click-sunday: route-17 passed in 23.395s\nsoft-click-sunday: running route-18 (18/18) \u2014 Check the case / Step outside / Write its story\nsoft-click-sunday: route-18 passed in 23.023s\nsoft-click-sunday: route 1=ok, route 2=ok, route 3=ok, route 4=ok, route 5=ok, route 6=ok, route 7=ok, route 8=ok, route 9=ok, route 10=ok, route 11=ok, route 12=ok, route 13=ok, route 14=ok, route 15=ok, route 16=ok, route 17=ok, route 18=ok; coverage=18/18; persistence=ok; audio-soak=ok"
+    },
+    {
+      "name": "package",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/package_wscvn_game.py",
+        "soft-click-sunday"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py soft-click-sunday --no-write\nGame release report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/release-report.json\nGame release package: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/releases/20260727T032649Z-4548d98341c7.zip\nGame release packaging passed"
+    },
+    {
+      "name": "verify",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+        "soft-click-sunday"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/release-verify-report.json\nGame release verification passed"
+    }
+  ],
+  "facts": {
+    "slug": "soft-click-sunday",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday",
+    "emulator_screenshot": null,
+    "swansong_dylib": null,
+    "reports": {
+      "build": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/build-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "readiness": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/game-readiness-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "smoke": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/emulator-smoke-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "audit": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/game-audit-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "swansong_playthrough": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/swansong-playthrough-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "release": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/release-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "release_verify": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/release-verify-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/releases/20260727T032649Z-4548d98341c7.zip",
+    "release_zip_sha256": "136cc685cef875de9b832660d2788689daa4d8889edc0e5853e11e1294776be3",
+    "actual_zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/releases/20260727T032649Z-4548d98341c7.zip",
+      "exists": true,
+      "bytes": 8443594,
+      "sha256": "136cc685cef875de9b832660d2788689daa4d8889edc0e5853e11e1294776be3"
+    },
+    "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/releases/20260727T032649Z-4548d98341c7.zip",
+    "verified_zip_sha256": "136cc685cef875de9b832660d2788689daa4d8889edc0e5853e11e1294776be3"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mednafen_version": "1.32.1",
+    "module": "wswan(WonderSwan)",
+    "rom_size_reported": "8192KiB",
+    "rom_md5": "0x9042d3b22a273cc2c34fa805b37cd667",
+    "recorded_checksum": "0x79ff",
+    "real_checksum": "0x79ff"
+  },
+  "verification": {
+    "boot": {
+      "performed": true,
+      "passed": true,
+      "method": "headless-mednafen-startup-metadata",
+      "pixels_observed": false
+    },
+    "checksum": {
+      "performed": true,
+      "passed": true,
+      "method": "mednafen-recorded-vs-real-checksum"
+    },
+    "visual": {
+      "performed": false,
+      "passed": null,
+      "status": "not-performed",
+      "pixels_observed": false,
+      "proof_bound": false,
+      "screenshot": null
+    }
+  },
+  "result_scope": "boot-and-checksum",
+  "exit_mode": "metadata-timeout-terminated",
+  "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/runtime-local/four-part-errand-run.wsc",
+  "output_excerpt": "Starting Mednafen 1.32.1\n  Using module: wswan(WonderSwan)\n   ROM:       8192KiB\n   ROM MD5:   0x9042d3b22a273cc2c34fa805b37cd667\n   Recorded Checksum:  0x79ff\n   Real Checksum:      0x79ff"
+}

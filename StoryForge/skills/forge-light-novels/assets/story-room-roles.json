@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "roles": [
+    {
+      "id": "premise-scout",
+      "label": "Premise Scout",
+      "mission": "Pressure-test the reader promise, freshness move, research burden, and ability to sustain a complete book.",
+      "focus": [
+        "Compare the selected premise with the rejected slate.",
+        "Identify derivative risk and the story-specific signature question.",
+        "Propose sharper promises without selecting one for the lead writer."
+      ]
+    },
+    {
+      "id": "architect",
+      "label": "Story Architect",
+      "mission": "Audit causal structure, escalation, chapter momentum, setup/payoff, and ending pressure.",
+      "focus": [
+        "Cite scene IDs for every structural concern.",
+        "Separate missing causality from deliberately quiet pacing.",
+        "Propose repairs that preserve the creative contract."
+      ]
+    },
+    {
+      "id": "character-editor",
+      "label": "Character Editor",
+      "mission": "Protect distinct voice, agency, contradiction, relationship chemistry, boundaries, and changed behavior.",
+      "focus": [
+        "Track who makes consequential choices.",
+        "Flag shared syntax or interchangeable reactions.",
+        "Test status flips and tenderness against scene evidence."
+      ]
+    },
+    {
+      "id": "continuity-editor",
+      "label": "Continuity Editor",
+      "mission": "Audit time, place, props, knowledge, promises, physical state, canon, and evolving motifs.",
+      "focus": [
+        "Distinguish contradiction from purposeful recontextualization.",
+        "Trace setup and payoff state changes.",
+        "Keep series continuity separate from volume closure."
+      ]
+    },
+    {
+      "id": "prose-editor",
+      "label": "Prose Editor",
+      "mission": "Find clarity, rhythm, viewpoint, voice, repetition, and scene-delivery problems without sanding away style.",
+      "focus": [
+        "Quote short, scene-bound evidence.",
+        "Treat automated findings as leads, never proof of quality.",
+        "Offer options when an unusual choice may be deliberate."
+      ]
+    },
+    {
+      "id": "art-director",
+      "label": "Art Director",
+      "mission": "Turn locked narrative moments into consistent, expressive ImageGen auditions and hash-bound review evidence.",
+      "focus": [
+        "Use ImageGen for all new or replacement production art.",
+        "Prefer scene turns and acting over generic standing portraits.",
+        "Review the full set for continuity and composition variety."
+      ]
+    },
+    {
+      "id": "music-director",
+      "label": "Music Director",
+      "mission": "Develop memorable motifs and fun cue arcs that support reading and survive WonderSwan constraints.",
+      "focus": [
+        "Give every cue a dramatic job and identifiable hook.",
+        "Audition two loops and inspect the seam in mono.",
+        "Keep approval human and bound to exact audio bytes."
+      ]
+    },
+    {
+      "id": "release-editor",
+      "label": "Release Editor",
+      "mission": "Audit reader evidence, rights, accessibility, publication proofs, locks, adaptation drift, and unresolved risks.",
+      "focus": [
+        "Never invent a reader, reviewer, or approval.",
+        "Require exact manuscript and asset hashes.",
+        "Block stale reports rather than carrying old green status forward."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,624 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:43:56.033648+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "gouf-strings-attached",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/projects/gouf-strings-attached.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/projects/gouf-strings-attached.wscvn.json",
+      "bytes": 187420,
+      "sha256": "83dc2a9e0978f6c9cbf34bb1eb427f309245334e97095c56987d83379f3cbf93"
+    },
+    "project_counts": {
+      "name": "Gouf: Strings Attached",
+      "nodes": 37,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 37,
+      "scene_nodes": 33,
+      "staged_scenes": 29,
+      "animated_staged_scenes": 29,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Child",
+        "Committee",
+        "Gouf",
+        "Narrator",
+        "Neighbor",
+        "SYSTEM"
+      ],
+      "backgrounds_used": [
+        "bg_end_a",
+        "bg_end_b",
+        "bg_main",
+        "bg_title"
+      ],
+      "ending_scenes": [
+        "gouf_c4",
+        "gouf_d4"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 37,
+      "start_node": "gouf_title"
+    },
+    "routes": {
+      "initial_flags": {},
+      "states_explored": 37,
+      "truncated": false,
+      "route_reachable_nodes": 37,
+      "route_reachable_ending_scenes": [
+        "gouf_c4",
+        "gouf_d4"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "gouf_a1",
+        "gouf_b1",
+        "gouf_c1",
+        "gouf_d1"
+      ],
+      "selectable_choice_targets": [
+        "gouf_a1",
+        "gouf_b1",
+        "gouf_c1",
+        "gouf_d1"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": []
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Start from center tree / Build the sky spiral",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1943,
+          "estimated_minutes_at_140_wpm": 13.88
+        },
+        {
+          "route_id": "route-2",
+          "label": "Start from center tree / Light the safe perimeter",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1934,
+          "estimated_minutes_at_140_wpm": 13.81
+        },
+        {
+          "route_id": "route-3",
+          "label": "Clip every corner first / Build the sky spiral",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1934,
+          "estimated_minutes_at_140_wpm": 13.81
+        },
+        {
+          "route_id": "route-4",
+          "label": "Clip every corner first / Light the safe perimeter",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1925,
+          "estimated_minutes_at_140_wpm": 13.75
+        }
+      ]
+    },
+    "text": {
+      "blocks": 231,
+      "max_pause_block_chars": 99,
+      "choice_labels": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 15,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 24,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_title",
+        "orig_name": "bg_title.png",
+        "embedded_sha256": "98b1e67a99eb69d191a78fca85438c5ec7f6686e292c3354996275c301d80ee7",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/backgrounds/bg_title.png",
+        "local_sha256": "98b1e67a99eb69d191a78fca85438c5ec7f6686e292c3354996275c301d80ee7"
+      },
+      {
+        "id": "bg_main",
+        "orig_name": "bg_main.png",
+        "embedded_sha256": "e2a4c63d7058fd85a671505b5df1611164e7d99ad34468984e0adf8db773703e",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/backgrounds/bg_main.png",
+        "local_sha256": "e2a4c63d7058fd85a671505b5df1611164e7d99ad34468984e0adf8db773703e"
+      },
+      {
+        "id": "bg_end_a",
+        "orig_name": "bg_end_a.png",
+        "embedded_sha256": "d8253d348479fdb2a5b8ad722ec8005c10dd780487ed13bf373965445c6fe342",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/backgrounds/bg_end_a.png",
+        "local_sha256": "d8253d348479fdb2a5b8ad722ec8005c10dd780487ed13bf373965445c6fe342"
+      },
+      {
+        "id": "bg_end_b",
+        "orig_name": "bg_end_b.png",
+        "embedded_sha256": "da6890a38b673ff06353e495348bbc1f81518fe3bf12b9f361a19cf97aa7628f",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/backgrounds/bg_end_b.png",
+        "local_sha256": "da6890a38b673ff06353e495348bbc1f81518fe3bf12b9f361a19cf97aa7628f"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_gouf_neutral",
+        "orig_name": "gouf_neutral.png",
+        "embedded_sha256": "49d7beda7cf2c3f078b66f94ed0436dc97d1d196d1574460fea5a067be23980f",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4929,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/characters/gouf_neutral.png",
+        "local_sha256": "49d7beda7cf2c3f078b66f94ed0436dc97d1d196d1574460fea5a067be23980f"
+      },
+      {
+        "id": "char_gouf_talk",
+        "orig_name": "gouf_talk.png",
+        "embedded_sha256": "2201301134579b2c09806ada97f737c0bfe1a83870dec73bec8d360e2dbe15da",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4929,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/characters/gouf_talk.png",
+        "local_sha256": "2201301134579b2c09806ada97f737c0bfe1a83870dec73bec8d360e2dbe15da"
+      },
+      {
+        "id": "char_gouf_blink",
+        "orig_name": "gouf_blink.png",
+        "embedded_sha256": "2c8d4a0bb0e4662e2ae14acb13e00ab9e071c5858df438a8873e964407b8f370",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4929,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/characters/gouf_blink.png",
+        "local_sha256": "2c8d4a0bb0e4662e2ae14acb13e00ab9e071c5858df438a8873e964407b8f370"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_title",
+          "textbox_mean_luma": 84.477,
+          "textbox_luma_stddev": 41.288,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_main",
+          "textbox_mean_luma": 105.035,
+          "textbox_luma_stddev": 43.105,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_a",
+          "textbox_mean_luma": 102.398,
+          "textbox_luma_stddev": 49.995,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_b",
+          "textbox_mean_luma": 102.185,
+          "textbox_luma_stddev": 47.743,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 29,
+      "families": [
+        {
+          "neutral": "char_gouf_neutral",
+          "talk": "char_gouf_talk",
+          "blink": "char_gouf_blink",
+          "talk_face_delta": 1.757,
+          "blink_face_delta": 0.811,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 33,
+            "changed_bbox": [
+              46,
+              39,
+              59,
+              48
+            ],
+            "changed_bbox_area": 117,
+            "changed_region_share": 0.009521,
+            "global_changed_share": 0.002686,
+            "face_changed_pixels": 33,
+            "face_changed_share": 0.015625,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 10,
+            "changed_bbox": [
+              46,
+              42,
+              50,
+              45
+            ],
+            "changed_bbox_area": 12,
+            "changed_region_share": 0.000977,
+            "global_changed_share": 0.000814,
+            "face_changed_pixels": 10,
+            "face_changed_share": 0.004735,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/sources",
+      "count": 6,
+      "packaged_file_count": 8,
+      "background_source_count": 4,
+      "character_source_count": 2,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/sources/background_ending_a_imagegen_v1.png",
+          "bytes": 2468213,
+          "sha256": "8c7b165f78a8df4e2582d7b3c1b5d5db2edd65e2709689d38dfc5282c559279e",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/sources/background_ending_b_imagegen_v1.png",
+          "bytes": 2393245,
+          "sha256": "9733c5ade04a079de308c981677d0d0b579e561438aa47f25ce6aac1217a16b0",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/sources/background_main_imagegen_v1.png",
+          "bytes": 2226860,
+          "sha256": "a66f0536366507457045048364827214533ffe18312d5f3f4fab20a28ca12d6a",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/sources/background_title_imagegen_v1.png",
+          "bytes": 2304411,
+          "sha256": "ed1f1e9823914ee54e2d2c52fa981dcafb29b7453a8c73b2a6f6e8e6b00d180f",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/sources/character_master_cutout_imagegen_v1.png",
+          "bytes": 1492594,
+          "sha256": "4673991f0e453467e4b7207faf66ca70fc6a25077498a5208c21b4483c7d442c",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1024,
+            1536
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/sources/character_master_imagegen_v1.png",
+          "bytes": 2007098,
+          "sha256": "03612222ae8eb17d4553e121f71ff169b06100e82c13b54d6c00fb25e17c1331",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1024,
+            1536
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/sources/game_spec.json",
+          "bytes": 21717,
+          "sha256": "20a4c447b33f81a9f9c832778bd8ea970462aec9dc8e9e44a7f3763221c2f890",
+          "categories": []
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/sources/imagegen-prompts-v1.md",
+          "bytes": 8834,
+          "sha256": "ac069ac618424d19935465a64f6c967953557cb623dff418c357cabefdd2e62a",
+          "categories": []
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 75637,
+      "sha256": "ae7cc1c6fa5bf57c7abbd2077381696b0bb58c7728a7f10e0cf49e07519531fd",
+      "size": [
+        478,
+        510
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 234084,
+        "sha256": "a7dbc534207a9a340fc05b7b79b02159a0eb849e575c53353b0485c9932daad5",
+        "size": [
+          712,
+          2050
+        ],
+        "mode": "RGB",
+        "unique_colors": 270,
+        "luma_stddev": 67.618
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 79897,
+        "sha256": "df5b3b13f013f1d68216a39a16fdcfe91350eefd1022bd4d6f29f1a820ff9a60",
+        "size": [
+          488,
+          872
+        ],
+        "mode": "RGB",
+        "unique_colors": 270,
+        "luma_stddev": 64.491
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 20223,
+        "sha256": "c224de35e8075074f6b7c58a16b4b22657b7c8a75289e7222cb9655e1904a836",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/projects/gouf-strings-attached.wscvn.json",
+          "exists": true,
+          "bytes": 187420,
+          "sha256": "83dc2a9e0978f6c9cbf34bb1eb427f309245334e97095c56987d83379f3cbf93"
+        },
+        "nodes_rendered": 36,
+        "preview_node_ids": [
+          "gouf_title",
+          "gouf_01",
+          "gouf_02",
+          "gouf_03",
+          "gouf_04",
+          "gouf_05",
+          "gouf_06",
+          "gouf_07",
+          "gouf_08",
+          "gouf_09",
+          "gouf_10",
+          "gouf_choice_1",
+          "gouf_a1",
+          "gouf_a2",
+          "gouf_a3",
+          "gouf_a4",
+          "gouf_b1",
+          "gouf_b2",
+          "gouf_b3",
+          "gouf_b4",
+          "gouf_11",
+          "gouf_12",
+          "gouf_13",
+          "gouf_14",
+          "gouf_15",
+          "gouf_16",
+          "gouf_17",
+          "gouf_choice_2",
+          "gouf_c1",
+          "gouf_c2",
+          "gouf_c3",
+          "gouf_c4",
+          "gouf_d1",
+          "gouf_d2",
+          "gouf_d3",
+          "gouf_d4"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 36,
+            "expected": 36
+          },
+          "storyboard_cells": {
+            "reported": 36,
+            "expected": 36
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/reports/gouf-strings-attached-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

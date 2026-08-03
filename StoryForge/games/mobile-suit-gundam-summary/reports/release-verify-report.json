@@ -1,0 +1,844 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mode": "normal",
+    "zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/releases/20260723T144525Z-beb02fecfff5.zip",
+      "bytes": 13733524,
+      "sha256": "4db96649c53e7c27a1d21588ad802634b595cc99e9f0e4cd620ddc2ebafbe3a8"
+    },
+    "entries": 63,
+    "members": 63,
+    "duplicate_members": [],
+    "unsafe_members": [],
+    "manifest": {
+      "schema_version": 1,
+      "slug": "mobile-suit-gundam-summary",
+      "title": "Mobile Suit Gundam: The One Year Tour",
+      "files": 62,
+      "runtime_inputs": 6,
+      "emulator_screenshot": false
+    },
+    "package_sources": {
+      "readme": {
+        "member": "docs/README.md",
+        "exists": true,
+        "bytes": 2734,
+        "sha256": "e7645c928a4371758670d36ba8498131e681dd6070068f1e9c2141a61ca74b65"
+      },
+      "asset_builder": {
+        "member": "source/build_mobile_suit_gundam_summary.py",
+        "exists": true,
+        "bytes": 29371,
+        "sha256": "a62bd7fdba535c551499e48b9709e50ee4c80cc3612795d8ed70113721d61910"
+      },
+      "qa_report": {
+        "member": "reports/mobile-suit-gundam-summary-qa-report.json",
+        "exists": true,
+        "bytes": 3609,
+        "sha256": "6184012a08fb50c52154b7ffec51f560c132e6ab9175efecb8dcff9e455ef576"
+      }
+    },
+    "runtime_inputs": {
+      "present": true,
+      "expected_count": 6,
+      "files": [
+        {
+          "member": "runtime/src/main.c",
+          "exists": true,
+          "bytes": 105606,
+          "sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a",
+          "manifest_bytes": 105606,
+          "manifest_sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a"
+        },
+        {
+          "member": "runtime/src/game_types.h",
+          "exists": true,
+          "bytes": 6650,
+          "sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec",
+          "manifest_bytes": 6650,
+          "manifest_sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec"
+        },
+        {
+          "member": "runtime/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+          "manifest_bytes": 5470,
+          "manifest_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        {
+          "member": "runtime/tools/convert_json.py",
+          "exists": true,
+          "bytes": 88977,
+          "sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387",
+          "manifest_bytes": 88977,
+          "manifest_sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387"
+        },
+        {
+          "member": "runtime/Makefile",
+          "exists": true,
+          "bytes": 3590,
+          "sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd",
+          "manifest_bytes": 3590,
+          "manifest_sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd"
+        },
+        {
+          "member": "runtime/wfconfig.toml",
+          "exists": true,
+          "bytes": 169,
+          "sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78",
+          "manifest_bytes": 169,
+          "manifest_sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78"
+        }
+      ],
+      "count": 6,
+      "missing": [],
+      "extra": [],
+      "duplicates": []
+    },
+    "current_workspace": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary",
+      "checked": 62,
+      "missing": [],
+      "mismatches": [],
+      "stable_report_diffs": [],
+      "unmapped": [],
+      "extra_current": []
+    },
+    "reports": {
+      "build": true,
+      "smoke": true,
+      "readiness": true,
+      "audit": true,
+      "swansong_playthrough": true,
+      "review_sheets": true
+    },
+    "smoke_verification": {
+      "result_scope": "boot-and-checksum",
+      "boot": {
+        "performed": true,
+        "passed": true,
+        "method": "headless-mednafen-startup-metadata",
+        "pixels_observed": false
+      },
+      "checksum": {
+        "performed": true,
+        "passed": true,
+        "method": "mednafen-recorded-vs-real-checksum"
+      },
+      "visual": {
+        "performed": false,
+        "passed": null,
+        "status": "not-performed",
+        "pixels_observed": false,
+        "proof_bound": false,
+        "screenshot": null
+      },
+      "proof_bound": false
+    },
+    "swansong_playthrough": {
+      "schema": "wscvn-swansong-playthrough-v2",
+      "app": {
+        "path": "/Applications/SwanSong.app",
+        "version": "0.8.1",
+        "build": "17",
+        "bundle_identifier": "com.regionallyfamous.swansong"
+      },
+      "route_count": 4,
+      "routes": [
+        {
+          "route_index": 0,
+          "member": "evidence/swansong-playthrough/route-1-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "tour_title",
+            "tour_01",
+            "tour_02",
+            "tour_03",
+            "tour_04",
+            "tour_05",
+            "tour_06",
+            "tour_07",
+            "tour_07b",
+            "tour_08",
+            "tour_09",
+            "lens_choice",
+            "whitebase_01",
+            "whitebase_02",
+            "earth_01",
+            "earth_02",
+            "earth_03",
+            "earth_04",
+            "earth_05",
+            "earth_05b",
+            "earth_06",
+            "earth_07",
+            "earth_07b",
+            "space_01",
+            "meaning_choice",
+            "people_01",
+            "people_02",
+            "people_03",
+            "people_04",
+            "people_05",
+            "people_06",
+            "people_07",
+            "end"
+          ],
+          "observed_nodes": [
+            "tour_title",
+            "tour_01",
+            "tour_02",
+            "tour_03",
+            "tour_04",
+            "tour_05",
+            "tour_06",
+            "tour_07",
+            "tour_07b",
+            "tour_08",
+            "tour_09",
+            "lens_choice",
+            "whitebase_01",
+            "whitebase_02",
+            "earth_01",
+            "earth_02",
+            "earth_03",
+            "earth_04",
+            "earth_05",
+            "earth_05b",
+            "earth_06",
+            "earth_07",
+            "earth_07b",
+            "space_01",
+            "meaning_choice",
+            "people_01",
+            "people_02",
+            "people_03",
+            "people_04",
+            "people_05",
+            "people_06",
+            "people_07",
+            "end"
+          ],
+          "bytes": 12490,
+          "sha256": "4ce1f5c578a54b1ed2ce473fd7112e47a9ecbe78ec66c44d3a6adef63b4541f1",
+          "node_id": "people_07",
+          "audio_member": "evidence/swansong-playthrough/route-1-audio.wav"
+        },
+        {
+          "route_index": 1,
+          "member": "evidence/swansong-playthrough/route-2-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "tour_title",
+            "tour_01",
+            "tour_02",
+            "tour_03",
+            "tour_04",
+            "tour_05",
+            "tour_06",
+            "tour_07",
+            "tour_07b",
+            "tour_08",
+            "tour_09",
+            "lens_choice",
+            "whitebase_01",
+            "whitebase_02",
+            "earth_01",
+            "earth_02",
+            "earth_03",
+            "earth_04",
+            "earth_05",
+            "earth_05b",
+            "earth_06",
+            "earth_07",
+            "earth_07b",
+            "space_01",
+            "meaning_choice",
+            "power_01",
+            "power_02",
+            "power_03",
+            "power_04",
+            "power_05",
+            "power_06",
+            "power_07",
+            "end"
+          ],
+          "observed_nodes": [
+            "tour_title",
+            "tour_01",
+            "tour_02",
+            "tour_03",
+            "tour_04",
+            "tour_05",
+            "tour_06",
+            "tour_07",
+            "tour_07b",
+            "tour_08",
+            "tour_09",
+            "lens_choice",
+            "whitebase_01",
+            "whitebase_02",
+            "earth_01",
+            "earth_02",
+            "earth_03",
+            "earth_04",
+            "earth_05",
+            "earth_05b",
+            "earth_06",
+            "earth_07",
+            "earth_07b",
+            "space_01",
+            "meaning_choice",
+            "power_01",
+            "power_02",
+            "power_03",
+            "power_04",
+            "power_05",
+            "power_06",
+            "power_07",
+            "end"
+          ],
+          "bytes": 13012,
+          "sha256": "b10b04885487ac602eba4ebca9c6af0fb2426691a8e29bbaf16438cc18ad6bdc",
+          "node_id": "power_07",
+          "audio_member": "evidence/swansong-playthrough/route-2-audio.wav"
+        },
+        {
+          "route_index": 2,
+          "member": "evidence/swansong-playthrough/route-3-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "tour_title",
+            "tour_01",
+            "tour_02",
+            "tour_03",
+            "tour_04",
+            "tour_05",
+            "tour_06",
+            "tour_07",
+            "tour_07b",
+            "tour_08",
+            "tour_09",
+            "lens_choice",
+            "warmap_01",
+            "warmap_02",
+            "earth_01",
+            "earth_02",
+            "earth_03",
+            "earth_04",
+            "earth_05",
+            "earth_05b",
+            "earth_06",
+            "earth_07",
+            "earth_07b",
+            "space_01",
+            "meaning_choice",
+            "people_01",
+            "people_02",
+            "people_03",
+            "people_04",
+            "people_05",
+            "people_06",
+            "people_07",
+            "end"
+          ],
+          "observed_nodes": [
+            "tour_title",
+            "tour_01",
+            "tour_02",
+            "tour_03",
+            "tour_04",
+            "tour_05",
+            "tour_06",
+            "tour_07",
+            "tour_07b",
+            "tour_08",
+            "tour_09",
+            "lens_choice",
+            "warmap_01",
+            "warmap_02",
+            "earth_01",
+            "earth_02",
+            "earth_03",
+            "earth_04",
+            "earth_05",
+            "earth_05b",
+            "earth_06",
+            "earth_07",
+            "earth_07b",
+            "space_01",
+            "meaning_choice",
+            "people_01",
+            "people_02",
+            "people_03",
+            "people_04",
+            "people_05",
+            "people_06",
+            "people_07",
+            "end"
+          ],
+          "bytes": 12490,
+          "sha256": "4ce1f5c578a54b1ed2ce473fd7112e47a9ecbe78ec66c44d3a6adef63b4541f1",
+          "node_id": "people_07",
+          "audio_member": "evidence/swansong-playthrough/route-3-audio.wav"
+        },
+        {
+          "route_index": 3,
+          "member": "evidence/swansong-playthrough/route-4-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "tour_title",
+            "tour_01",
+            "tour_02",
+            "tour_03",
+            "tour_04",
+            "tour_05",
+            "tour_06",
+            "tour_07",
+            "tour_07b",
+            "tour_08",
+            "tour_09",
+            "lens_choice",
+            "warmap_01",
+            "warmap_02",
+            "earth_01",
+            "earth_02",
+            "earth_03",
+            "earth_04",
+            "earth_05",
+            "earth_05b",
+            "earth_06",
+            "earth_07",
+            "earth_07b",
+            "space_01",
+            "meaning_choice",
+            "power_01",
+            "power_02",
+            "power_03",
+            "power_04",
+            "power_05",
+            "power_06",
+            "power_07",
+            "end"
+          ],
+          "observed_nodes": [
+            "tour_title",
+            "tour_01",
+            "tour_02",
+            "tour_03",
+            "tour_04",
+            "tour_05",
+            "tour_06",
+            "tour_07",
+            "tour_07b",
+            "tour_08",
+            "tour_09",
+            "lens_choice",
+            "warmap_01",
+            "warmap_02",
+            "earth_01",
+            "earth_02",
+            "earth_03",
+            "earth_04",
+            "earth_05",
+            "earth_05b",
+            "earth_06",
+            "earth_07",
+            "earth_07b",
+            "space_01",
+            "meaning_choice",
+            "power_01",
+            "power_02",
+            "power_03",
+            "power_04",
+            "power_05",
+            "power_06",
+            "power_07",
+            "end"
+          ],
+          "bytes": 13012,
+          "sha256": "b10b04885487ac602eba4ebca9c6af0fb2426691a8e29bbaf16438cc18ad6bdc",
+          "node_id": "power_07",
+          "audio_member": "evidence/swansong-playthrough/route-4-audio.wav"
+        }
+      ]
+    },
+    "readiness_assets": {
+      "contact_sheet": {
+        "member": "preview/contact_sheet.png",
+        "expected_sha256": "558efe35d014cc9ca5c043f05c277240dd3594d5d02274d0b65a79a346cd7d1d",
+        "exists": true,
+        "sha256": "558efe35d014cc9ca5c043f05c277240dd3594d5d02274d0b65a79a346cd7d1d"
+      },
+      "review_sheets": {
+        "scene_preview_sheet": {
+          "member": "preview/scene_preview_sheet.png",
+          "expected_sha256": "73118dc94c1220192576fbda9e332879807f9f72edecb60076973c6e7db2cf8c",
+          "exists": true,
+          "sha256": "73118dc94c1220192576fbda9e332879807f9f72edecb60076973c6e7db2cf8c"
+        },
+        "storyboard_sheet": {
+          "member": "preview/storyboard_sheet.png",
+          "expected_sha256": "2d3725db696bf24caefe884572f6e4f364ef5494b970f77b778d864a84a9c570",
+          "exists": true,
+          "sha256": "2d3725db696bf24caefe884572f6e4f364ef5494b970f77b778d864a84a9c570"
+        }
+      },
+      "sources": [
+        {
+          "member": "assets/sources/audio-redesign.md",
+          "expected_sha256": "835e4cdc69f00c725f3f9982c8ea7e652b05fb15576f18b38f0a99ff496754c6",
+          "exists": true,
+          "sha256": "835e4cdc69f00c725f3f9982c8ea7e652b05fb15576f18b38f0a99ff496754c6"
+        },
+        {
+          "member": "assets/sources/background_ending_a_imagegen_v1.png",
+          "expected_sha256": "e6052c7fbac3053645b40fe8bd6756d91d10dd7e98e15319e15fc419a53aff7a",
+          "exists": true,
+          "sha256": "e6052c7fbac3053645b40fe8bd6756d91d10dd7e98e15319e15fc419a53aff7a"
+        },
+        {
+          "member": "assets/sources/background_ending_b_imagegen_v1.png",
+          "expected_sha256": "7b47a1162288c29d5f30e94287633f2134b05dc82e7f0b01892f0707f64e7b9a",
+          "exists": true,
+          "sha256": "7b47a1162288c29d5f30e94287633f2134b05dc82e7f0b01892f0707f64e7b9a"
+        },
+        {
+          "member": "assets/sources/background_main_imagegen_v1.png",
+          "expected_sha256": "d7af7de7ed5a8e090a7e79bd0f451617329df92d212accaf10e2f7974176b241",
+          "exists": true,
+          "sha256": "d7af7de7ed5a8e090a7e79bd0f451617329df92d212accaf10e2f7974176b241"
+        },
+        {
+          "member": "assets/sources/background_title_imagegen_v1.png",
+          "expected_sha256": "12cf618490a5cb324be188004d86a90d4faa6c6efe4917a70843b7ec54aa29dd",
+          "exists": true,
+          "sha256": "12cf618490a5cb324be188004d86a90d4faa6c6efe4917a70843b7ec54aa29dd"
+        },
+        {
+          "member": "assets/sources/canon-research.md",
+          "expected_sha256": "43f04676b2eaac33bc51358b8c80d8222a640098e7c75110abf910e23fa74fec",
+          "exists": true,
+          "sha256": "43f04676b2eaac33bc51358b8c80d8222a640098e7c75110abf910e23fa74fec"
+        },
+        {
+          "member": "assets/sources/docent-rx78-cutout-imagegen-v1.png",
+          "expected_sha256": "68620bbdd0947dd45471bd91b810cae4764a88c4affa37a43b92fd2f2f178f31",
+          "exists": true,
+          "sha256": "68620bbdd0947dd45471bd91b810cae4764a88c4affa37a43b92fd2f2f178f31"
+        },
+        {
+          "member": "assets/sources/docent-rx78-imagegen-v1.png",
+          "expected_sha256": "c6760ec309fce4971f75143a0a23ac28ae97eee1b2b3af3bf8d461ed163feb19",
+          "exists": true,
+          "sha256": "c6760ec309fce4971f75143a0a23ac28ae97eee1b2b3af3bf8d461ed163feb19"
+        },
+        {
+          "member": "assets/sources/docent-zaku-cutout-imagegen-v1.png",
+          "expected_sha256": "69e14eaba286ea68f7b2df41b2caf415ac7de226f22d3b3da3bbf327c1d5d2bd",
+          "exists": true,
+          "sha256": "69e14eaba286ea68f7b2df41b2caf415ac7de226f22d3b3da3bbf327c1d5d2bd"
+        },
+        {
+          "member": "assets/sources/docent-zaku-imagegen-v1.png",
+          "expected_sha256": "a7b578c65db15bf4c1984f93f95073ea69ea795e0b6660e401755d52f49b20bd",
+          "exists": true,
+          "sha256": "a7b578c65db15bf4c1984f93f95073ea69ea795e0b6660e401755d52f49b20bd"
+        },
+        {
+          "member": "assets/sources/game_spec.json",
+          "expected_sha256": "0798540022b9ad4953f556bbf96e0a2712e5711eb1dfb989f4d1af152c24edd4",
+          "exists": true,
+          "sha256": "0798540022b9ad4953f556bbf96e0a2712e5711eb1dfb989f4d1af152c24edd4"
+        },
+        {
+          "member": "assets/sources/imagegen-prompts-v1.md",
+          "expected_sha256": "47c19cb56c104dc6ca98fd0034f5f21c2a8e0eadad510d464ebe0d11745419a4",
+          "exists": true,
+          "sha256": "47c19cb56c104dc6ca98fd0034f5f21c2a8e0eadad510d464ebe0d11745419a4"
+        },
+        {
+          "member": "assets/sources/story-map.md",
+          "expected_sha256": "f1b76ac0c07eb873081502e730430fac7f7108632eb078a4e634e4f59b6185e1",
+          "exists": true,
+          "sha256": "f1b76ac0c07eb873081502e730430fac7f7108632eb078a4e634e4f59b6185e1"
+        },
+        {
+          "member": "assets/sources/story-proof.json",
+          "expected_sha256": "9185b6f30302dbb76199c49121177d8436dbc311bf46781b53cb173be16cf4bb",
+          "exists": true,
+          "sha256": "9185b6f30302dbb76199c49121177d8436dbc311bf46781b53cb173be16cf4bb"
+        },
+        {
+          "member": "assets/sources/visual-contract.json",
+          "expected_sha256": "692decf900d81694e4ddc5a13c966c51b8621fff0ab0ec0be40b12f5e194826c",
+          "exists": true,
+          "sha256": "692decf900d81694e4ddc5a13c966c51b8621fff0ab0ec0be40b12f5e194826c"
+        }
+      ],
+      "extra_sources": [],
+      "review_sheets_report": {
+        "member": "reports/review-sheets-report.json",
+        "expected_sha256": "70d03c313d675583d4d0edcf3ad35c3e3a5293a4364dd8af4afeabb4954287c9",
+        "exists": true,
+        "sha256": "70d03c313d675583d4d0edcf3ad35c3e3a5293a4364dd8af4afeabb4954287c9"
+      },
+      "packaged_source_count": 15,
+      "backgrounds": {
+        "count": 4,
+        "files": [
+          {
+            "member": "assets/backgrounds/bg_title.png",
+            "expected_sha256": "44869fdda1094cec21e78a13ca28feabe1fc2121f8f32cac9201288a6e351c1c",
+            "exists": true,
+            "sha256": "44869fdda1094cec21e78a13ca28feabe1fc2121f8f32cac9201288a6e351c1c"
+          },
+          {
+            "member": "assets/backgrounds/bg_main.png",
+            "expected_sha256": "b251ce8d39721883ae0d8f52127e05b583ae4109c0b781411011ef27774a3862",
+            "exists": true,
+            "sha256": "b251ce8d39721883ae0d8f52127e05b583ae4109c0b781411011ef27774a3862"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_a.png",
+            "expected_sha256": "1771dd6860c3a2261303253b0554813b6e107d8b43b06090f9df632deb908a45",
+            "exists": true,
+            "sha256": "1771dd6860c3a2261303253b0554813b6e107d8b43b06090f9df632deb908a45"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_b.png",
+            "expected_sha256": "86dd18e6de4e0652b04b9c87602e5ad489b20abb3bf93394b368b1a59fbc1355",
+            "exists": true,
+            "sha256": "86dd18e6de4e0652b04b9c87602e5ad489b20abb3bf93394b368b1a59fbc1355"
+          }
+        ],
+        "packaged_count": 4,
+        "extra_members": []
+      },
+      "characters": {
+        "count": 4,
+        "files": [
+          {
+            "member": "assets/characters/rx78_neutral.png",
+            "expected_sha256": "e221a4d2d36a741614c2aec556c2c4c2d29a8bb0e93fa05eea590cfed529fc87",
+            "exists": true,
+            "sha256": "e221a4d2d36a741614c2aec556c2c4c2d29a8bb0e93fa05eea590cfed529fc87"
+          },
+          {
+            "member": "assets/characters/rx78_blink.png",
+            "expected_sha256": "76ffd55741b5cb20e9a9b82ed652ac695c41a05b31301021abf1440763ccde44",
+            "exists": true,
+            "sha256": "76ffd55741b5cb20e9a9b82ed652ac695c41a05b31301021abf1440763ccde44"
+          },
+          {
+            "member": "assets/characters/zaku_neutral.png",
+            "expected_sha256": "83d4bfd9425fa2c81b930c314b23154489bfb0295d4a61472e1407324d92daf3",
+            "exists": true,
+            "sha256": "83d4bfd9425fa2c81b930c314b23154489bfb0295d4a61472e1407324d92daf3"
+          },
+          {
+            "member": "assets/characters/zaku_blink.png",
+            "expected_sha256": "2a368739769b48135e953aaad1cb31925572d59e91bc1c29c36727c4725f5e2b",
+            "exists": true,
+            "sha256": "2a368739769b48135e953aaad1cb31925572d59e91bc1c29c36727c4725f5e2b"
+          }
+        ],
+        "packaged_count": 4,
+        "extra_members": []
+      },
+      "sfx": {
+        "count": 8,
+        "files": [
+          {
+            "member": "assets/sfx/gallery_chime.wav",
+            "expected_sha256": "dc0134d2826d825c52f4f74da73ff74944d37f280f69d556804ca6d46e5172df",
+            "exists": true,
+            "sha256": "dc0134d2826d825c52f4f74da73ff74944d37f280f69d556804ca6d46e5172df"
+          },
+          {
+            "member": "assets/sfx/relay_tick.wav",
+            "expected_sha256": "3fdac3ca5dc7b4573c80859cc643ffe9e23490c03719bc1787b554afb79745a8",
+            "exists": true,
+            "sha256": "3fdac3ca5dc7b4573c80859cc643ffe9e23490c03719bc1787b554afb79745a8"
+          },
+          {
+            "member": "assets/sfx/badge_click.wav",
+            "expected_sha256": "456bf68dc2bdb8becf1cc51318f19d9a3dcdc8d514915583bdf0ba814b711854",
+            "exists": true,
+            "sha256": "456bf68dc2bdb8becf1cc51318f19d9a3dcdc8d514915583bdf0ba814b711854"
+          },
+          {
+            "member": "assets/sfx/projector_relay.wav",
+            "expected_sha256": "16c3b60d25d088a95559864516b28b500736e32014359dc5c9112a202386db1b",
+            "exists": true,
+            "sha256": "16c3b60d25d088a95559864516b28b500736e32014359dc5c9112a202386db1b"
+          },
+          {
+            "member": "assets/sfx/map_servo.wav",
+            "expected_sha256": "ed43a517751d235441ac7667c14c2075e52504462fff04e7421722f61ff35b8c",
+            "exists": true,
+            "sha256": "ed43a517751d235441ac7667c14c2075e52504462fff04e7421722f61ff35b8c"
+          },
+          {
+            "member": "assets/sfx/archive_scan.wav",
+            "expected_sha256": "b9fb47200171e2d29af5961d0d241ef583f6107905f5ba1ce958eb446203d421",
+            "exists": true,
+            "sha256": "b9fb47200171e2d29af5961d0d241ef583f6107905f5ba1ce958eb446203d421"
+          },
+          {
+            "member": "assets/sfx/memorial_glass.wav",
+            "expected_sha256": "322599cd21e09825531da664abf7a15c4d9843781d1f45ab215fff09da5b589b",
+            "exists": true,
+            "sha256": "322599cd21e09825531da664abf7a15c4d9843781d1f45ab215fff09da5b589b"
+          },
+          {
+            "member": "assets/sfx/door_latch.wav",
+            "expected_sha256": "0ead375cbe42c9f704297018bd6f9c0995bcc7c0f7ab96e1f74fedb977cfb58b",
+            "exists": true,
+            "sha256": "0ead375cbe42c9f704297018bd6f9c0995bcc7c0f7ab96e1f74fedb977cfb58b"
+          }
+        ],
+        "packaged_count": 8,
+        "extra_members": []
+      }
+    },
+    "project": {
+      "member": "project/mobile-suit-gundam-summary.wscvn.json",
+      "bytes": 303289,
+      "sha256": "9f918c5e15458b50ea9d8f969e1d45f24ac4405e25a69a9a1b305b9725ea4261"
+    },
+    "rom": {
+      "member": "rom/mobile-suit-gundam-summary.wsc",
+      "bytes": 8388608,
+      "sha256": "beb02fecfff5f1c4e6e45fd06c688e17a9f3d97fe10fa67332f1cb8f3fcc30d7",
+      "md5": "0x2c1f728b30018eb071ab14d0aedb2d32"
+    },
+    "review_sheets_report": {
+      "present": true,
+      "member": "reports/review-sheets-report.json",
+      "project_file": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json",
+        "bytes": 303289,
+        "sha256": "9f918c5e15458b50ea9d8f969e1d45f24ac4405e25a69a9a1b305b9725ea4261"
+      },
+      "nodes_rendered": 41,
+      "preview_node_ids": [
+        "tour_title",
+        "tour_01",
+        "tour_02",
+        "tour_03",
+        "tour_04",
+        "tour_05",
+        "tour_06",
+        "tour_07",
+        "tour_07b",
+        "tour_08",
+        "tour_09",
+        "lens_choice",
+        "whitebase_01",
+        "whitebase_02",
+        "warmap_01",
+        "warmap_02",
+        "earth_01",
+        "earth_02",
+        "earth_03",
+        "earth_04",
+        "earth_05",
+        "earth_05b",
+        "earth_06",
+        "earth_07",
+        "earth_07b",
+        "space_01",
+        "meaning_choice",
+        "people_01",
+        "people_02",
+        "people_03",
+        "people_04",
+        "people_05",
+        "people_06",
+        "people_07",
+        "power_01",
+        "power_02",
+        "power_03",
+        "power_04",
+        "power_05",
+        "power_06",
+        "power_07"
+      ],
+      "font": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+        "bytes": 5470,
+        "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+        "member": "runtime/src/font.h",
+        "packaged_bytes": 5470,
+        "packaged_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+      },
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/scene_preview_sheet.png",
+        "bytes": 423672,
+        "sha256": "73118dc94c1220192576fbda9e332879807f9f72edecb60076973c6e7db2cf8c",
+        "member": "preview/scene_preview_sheet.png",
+        "packaged_bytes": 423672,
+        "packaged_sha256": "73118dc94c1220192576fbda9e332879807f9f72edecb60076973c6e7db2cf8c"
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/storyboard_sheet.png",
+        "bytes": 147254,
+        "sha256": "2d3725db696bf24caefe884572f6e4f364ef5494b970f77b778d864a84a9c570",
+        "member": "preview/storyboard_sheet.png",
+        "packaged_bytes": 147254,
+        "packaged_sha256": "2d3725db696bf24caefe884572f6e4f364ef5494b970f77b778d864a84a9c570"
+      }
+    },
+    "project_report_bindings": {
+      "readiness": {
+        "present": true,
+        "member": "project/mobile-suit-gundam-summary.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json",
+        "bytes": 303289,
+        "sha256": "9f918c5e15458b50ea9d8f969e1d45f24ac4405e25a69a9a1b305b9725ea4261"
+      },
+      "audit": {
+        "present": true,
+        "member": "project/mobile-suit-gundam-summary.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json",
+        "bytes": 303289,
+        "sha256": "9f918c5e15458b50ea9d8f969e1d45f24ac4405e25a69a9a1b305b9725ea4261"
+      }
+    },
+    "audit_rom_binding": {
+      "present": true,
+      "member": "rom/mobile-suit-gundam-summary.wsc",
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/runtime-local/mobile-suit-gundam-summary.wsc",
+      "bytes": 8388608,
+      "sha256": "beb02fecfff5f1c4e6e45fd06c688e17a9f3d97fe10fa67332f1cb8f3fcc30d7"
+    },
+    "manifest_artifacts": {
+      "project": {
+        "present": true,
+        "member": "project/mobile-suit-gundam-summary.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json",
+        "bytes": 303289,
+        "sha256": "9f918c5e15458b50ea9d8f969e1d45f24ac4405e25a69a9a1b305b9725ea4261"
+      },
+      "rom": {
+        "present": true,
+        "member": "rom/mobile-suit-gundam-summary.wsc",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/runtime-local/mobile-suit-gundam-summary.wsc",
+        "sha256": "beb02fecfff5f1c4e6e45fd06c688e17a9f3d97fe10fa67332f1cb8f3fcc30d7",
+        "md5": "0x2c1f728b30018eb071ab14d0aedb2d32",
+        "checksum": "0x4bb0"
+      }
+    },
+    "release_summary": {
+      "lines": 46,
+      "expected_lines": 34,
+      "visual_evidence_lines": 8,
+      "has_visual_evidence": true,
+      "missing_expected_lines": []
+    }
+  }
+}

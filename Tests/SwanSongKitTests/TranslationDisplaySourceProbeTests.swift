@@ -4,6 +4,121 @@ import Foundation
 import XCTest
 
 final class TranslationDisplaySourceProbeTests: XCTestCase {
+    func testDisplayOwnerCapacityAdmitsExactComponentsAndRejectsFirstOverflow() throws {
+        for (rectangle, expected) in [
+            (EngineDisplayRectangle(x: 0, y: 0, width: 218, height: 38), 8_284),
+            (EngineDisplayRectangle(x: 0, y: 0, width: 224, height: 48), 10_752),
+            (EngineDisplayRectangle(x: 0, y: 0, width: 128, height: 128), 16_384),
+        ] {
+            XCTAssertEqual(
+                try TranslationDisplayOwnerProbe.validatedSampleCount(for: rectangle),
+                expected
+            )
+        }
+        XCTAssertEqual(TranslationDisplayOwnerProbe.maximumRectanglePixels, 16_384)
+        XCTAssertThrowsError(
+            try TranslationDisplayOwnerProbe.validatedSampleCount(
+                for: EngineDisplayRectangle(
+                    x: 0, y: 0, width: 1, height: 16_385
+                )
+            )
+        )
+        XCTAssertEqual(TranslationDisplaySourceProbe.maximumRectanglePixels, 4_096)
+        XCTAssertEqual(TranslationDisplaySourceProbe.maximumAtomicRegionPixels, 8_192)
+    }
+
+    func testDisplayOwnerPrivateDetailsByteLimitIsInclusive() throws {
+        XCTAssertEqual(
+            TranslationDisplayOwnerProbe.maximumPrivateDetailsBytes,
+            16 * 1_024 * 1_024
+        )
+        XCTAssertNoThrow(
+            try TranslationDisplayOwnerProbe.validatePrivateDetailsByteCount(
+                TranslationDisplayOwnerProbe.maximumPrivateDetailsBytes
+            )
+        )
+        XCTAssertThrowsError(
+            try TranslationDisplayOwnerProbe.validatePrivateDetailsByteCount(
+                TranslationDisplayOwnerProbe.maximumPrivateDetailsBytes + 1
+            )
+        )
+    }
+
+    func testAtomicSourceContextAcceptsEpisodeOneWordmarkTiling() throws {
+        let bounding = try TranslationDisplaySourceProbe.atomicBoundingRectangle(
+            rectangles: [
+                EngineDisplayRectangle(x: 20, y: 28, width: 184, height: 18),
+                EngineDisplayRectangle(x: 20, y: 46, width: 184, height: 18),
+            ]
+        )
+
+        XCTAssertEqual(
+            bounding,
+            EngineDisplayRectangle(x: 20, y: 28, width: 184, height: 36)
+        )
+        XCTAssertEqual(Int(bounding.width) * Int(bounding.height), 6_624)
+        XCTAssertEqual(
+            TranslationDisplaySourceProbe.maximumAtomicRegionPixels,
+            8_192
+        )
+    }
+
+    func testAtomicSourceContextRejectsOverlapHoleAndOverboundTotal() {
+        for rectangles in [
+            [
+                EngineDisplayRectangle(x: 0, y: 0, width: 128, height: 32),
+                EngineDisplayRectangle(x: 64, y: 0, width: 64, height: 32),
+            ],
+            [
+                EngineDisplayRectangle(x: 0, y: 0, width: 128, height: 32),
+                EngineDisplayRectangle(x: 0, y: 33, width: 128, height: 32),
+            ],
+            [
+                EngineDisplayRectangle(x: 0, y: 0, width: 224, height: 18),
+                EngineDisplayRectangle(x: 0, y: 18, width: 224, height: 18),
+                EngineDisplayRectangle(x: 0, y: 36, width: 224, height: 1),
+            ],
+        ] {
+            XCTAssertThrowsError(
+                try TranslationDisplaySourceProbe.atomicBoundingRectangle(
+                    rectangles: rectangles
+                )
+            )
+        }
+    }
+
+    func testAtomicSourceContextPartitionsNativeQueriesBelowLegacyLimit() throws {
+        let root = EngineDisplayRectangle(
+            x: 0,
+            y: 0,
+            width: 224,
+            height: 36
+        )
+        let result = try TranslationDisplaySourcePartitioner.run(
+            rectangle: root
+        ) { rectangle, _ in
+            XCTAssertLessThanOrEqual(
+                Int(rectangle.width) * Int(rectangle.height),
+                TranslationDisplaySourceProbe.maximumRectanglePixels
+            )
+            return TranslationDisplaySourcePartitionPayload<Int>(
+                selected: [],
+                consumers: []
+            )
+        }
+        XCTAssertEqual(result.attemptCount, 3)
+        XCTAssertEqual(result.splitCount, 1)
+        XCTAssertEqual(result.terminals.count, 2)
+        let statistics = try TranslationDisplaySourcePartitioner.validateTerminalTree(
+            root: root,
+            terminals: result.terminals.map {
+                (rectangle: $0.rectangle, depth: $0.depth)
+            }
+        )
+        XCTAssertEqual(statistics.attemptCount, result.attemptCount)
+        XCTAssertEqual(statistics.splitCount, result.splitCount)
+    }
+
     func testSourceRunnerRejects4097PixelsBeforeCreatingRunState() throws {
         let root = FileManager.default.temporaryDirectory.appendingPathComponent(
             "swan-source-runner-overbound-\(UUID().uuidString)",
@@ -532,6 +647,26 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         )
         let analysisURL = projectRoot.appendingPathComponent("analysis", isDirectory: true)
         XCTAssertFalse(FileManager.default.fileExists(atPath: analysisURL.path))
+        let authenticatedOriginal = try TranslationDisplaySourceProbe
+            .authenticateOriginalFrameAuthorized(
+                project: project,
+                plan: plan,
+                frameIndex: 2
+            )
+        XCTAssertEqual(authenticatedOriginal.hardwareModel, .wonderSwanColor)
+        XCTAssertEqual(authenticatedOriginal.engine.backend, "ares")
+        XCTAssertEqual(authenticatedOriginal.persistencePolicy, "isolated-empty-v1")
+        XCTAssertEqual(authenticatedOriginal.planFrameIndex, 2)
+        XCTAssertEqual(authenticatedOriginal.nativeFrameNumber, 3)
+        XCTAssertEqual(authenticatedOriginal.checkpoint.width, 237)
+        XCTAssertEqual(authenticatedOriginal.checkpoint.height, 144)
+        XCTAssertEqual(authenticatedOriginal.gameRaster.width, 224)
+        XCTAssertEqual(authenticatedOriginal.gameRaster.height, 144)
+        XCTAssertEqual(authenticatedOriginal.engineObservedQueryCount, 0)
+        XCTAssertFalse(
+            FileManager.default.fileExists(atPath: analysisURL.path),
+            "read-only Original authentication must not publish project artifacts"
+        )
         let authorizedResult = try TranslationDisplaySourceProbe.runAuthorized(
             project: project,
             role: .original,
@@ -727,6 +862,86 @@ final class TranslationDisplaySourceProbeTests: XCTestCase {
         XCTAssertFalse(publicText.contains("prototypeeligible"))
 
         let store = TranslationPrivateArtifactStore()
+        let ownerRoot = analysisURL
+            .appendingPathComponent("swan-song-lab", isDirectory: true)
+            .appendingPathComponent("display-owner-probes", isDirectory: true)
+        let ownerCountBeforeOverflow = (
+            try? FileManager.default.contentsOfDirectory(
+                at: ownerRoot,
+                includingPropertiesForKeys: nil
+            ).count
+        ) ?? 0
+        XCTAssertThrowsError(try TranslationDisplayOwnerProbe.run(
+            project: project,
+            role: .original,
+            plan: plan,
+            frameIndex: 2,
+            rectangle: EngineDisplayRectangle(
+                x: 0, y: 0, width: 1, height: 16_385
+            )
+        ))
+        let ownerCountAfterOverflow = (
+            try? FileManager.default.contentsOfDirectory(
+                at: ownerRoot,
+                includingPropertiesForKeys: nil
+            ).count
+        ) ?? 0
+        XCTAssertEqual(ownerCountAfterOverflow, ownerCountBeforeOverflow)
+
+        let completePaneOwnerReport = try TranslationDisplayOwnerProbe.run(
+            project: project,
+            role: .original,
+            plan: plan,
+            frameIndex: 2,
+            rectangle: EngineDisplayRectangle(
+                x: 0, y: 0, width: 224, height: 48
+            )
+        )
+        XCTAssertEqual(completePaneOwnerReport.rectangleWidth, 224)
+        XCTAssertEqual(completePaneOwnerReport.rectangleHeight, 48)
+        XCTAssertEqual(completePaneOwnerReport.sampleCount, 10_752)
+        let completePanePublicText = String(
+            decoding: try JSONEncoder().encode(completePaneOwnerReport),
+            as: UTF8.self
+        ).lowercased()
+        for forbidden in [
+            "celladdress", "tileindex", "rasteraddress", "paletteaddress",
+            "palettecolor", "writerpc", "oamaddress", "oambytecount",
+            "oamwriterpc", "sourceaddress", "cartridgeoffset",
+            projectRoot.path.lowercased(),
+        ] {
+            XCTAssertFalse(completePanePublicText.contains(forbidden), forbidden)
+        }
+        let completePaneArtifact = try XCTUnwrap(
+            try store.list(project: project).first {
+                $0.kind == .displayOwnerProbe
+                    && $0.manifestSHA256
+                        == completePaneOwnerReport.privateDetailsSHA256
+            }
+        )
+        XCTAssertTrue(
+            completePaneArtifact.isIntact,
+            completePaneArtifact.integrityIssue ?? ""
+        )
+        let completePaneDetailsURL = completePaneArtifact.directoryURL
+            .appendingPathComponent("details.json")
+        let completePaneDetailsData = try Data(contentsOf: completePaneDetailsURL)
+        XCTAssertLessThanOrEqual(
+            completePaneDetailsData.count,
+            TranslationDisplayOwnerProbe.maximumPrivateDetailsBytes
+        )
+        let completePaneDecoder = JSONDecoder()
+        completePaneDecoder.dateDecodingStrategy = .iso8601
+        let completePaneDetails = try completePaneDecoder.decode(
+            TranslationDisplayOwnerProbeDetails.self,
+            from: completePaneDetailsData
+        )
+        XCTAssertEqual(completePaneDetails.samples.count, 10_752)
+        XCTAssertEqual(
+            completePaneDetails.rectangle,
+            EngineDisplayRectangle(x: 0, y: 0, width: 224, height: 48)
+        )
+
         let spriteOwnerReport = try TranslationDisplayOwnerProbe.run(
             project: project,
             role: .original,

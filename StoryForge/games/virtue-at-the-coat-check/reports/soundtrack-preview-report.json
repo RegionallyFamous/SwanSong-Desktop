@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "errors": [],
+  "generated_at_utc": "2026-07-16T00:25:32.255833+00:00",
+  "project": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json",
+    "bytes": 117430,
+    "sha256": "b7d4c573b9c0c17f633006bc8ffeea48aa7dc7ef3ca1fcf962992fae4854a091"
+  },
+  "renderer": {
+    "backend": "legacy-tracker-wavetable-audition",
+    "sample_rate": 22050,
+    "loops": 2,
+    "channels": 1,
+    "sample_width_bits": 16,
+    "note": "Offline audition mirrors the runtime's 32-sample wave shapes; hardware output and emulator mixing may differ."
+  },
+  "tracks": [
+    {
+      "id": "virtue_title",
+      "name": "Layered Liability",
+      "bpm": 108,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/audio/01-virtue_title.wav",
+      "bytes": 392044,
+      "sha256": "178bf9adcbeb10049b5a57fbf208bad6084fec0db96e7bf0be0494d51a3a8ebf",
+      "duration_seconds": 8.889,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.23,
+        "near_silent_sample_share": 0.009362,
+        "max_loop_jump_linear": 0.09537
+      }
+    },
+    {
+      "id": "virtue_main",
+      "name": "Claim Ticket 47",
+      "bpm": 140,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/audio/02-virtue_main.wav",
+      "bytes": 302444,
+      "sha256": "e1c932a26fd790defa3959a0815d071ec5b3b745badc89ec66d9ece51beced3c",
+      "duration_seconds": 6.857,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.22,
+        "near_silent_sample_share": 0.011283,
+        "max_loop_jump_linear": 0.064058
+      }
+    },
+    {
+      "id": "virtue_end_a",
+      "name": "Snack Bench",
+      "bpm": 112,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/audio/03-virtue_end_a.wav",
+      "bytes": 378044,
+      "sha256": "adaf41933054ef856c5107674599b459399e571f227e95e4a7375ad2656ce302",
+      "duration_seconds": 8.571,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.193,
+        "near_silent_sample_share": 0.011259,
+        "max_loop_jump_linear": 0.064516
+      }
+    },
+    {
+      "id": "virtue_end_b",
+      "name": "Bow Protocol",
+      "bpm": 96,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/audio/04-virtue_end_b.wav",
+      "bytes": 441044,
+      "sha256": "f4b27b71027d5d2eabf31aefff6769590b75fb4e20aa18292fae2f24afc34631",
+      "duration_seconds": 10.0,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.186,
+        "near_silent_sample_share": 0.010621,
+        "max_loop_jump_linear": 0.028047
+      }
+    }
+  ],
+  "cues": [
+    {
+      "node": "virtue_title",
+      "node_name": "Virtue Title",
+      "track": "virtue_title"
+    },
+    {
+      "node": "virtue_01",
+      "node_name": "Virtue 01",
+      "track": "virtue_main"
+    },
+    {
+      "node": "virtue_a1",
+      "node_name": "Virtue A1",
+      "track": "virtue_end_a"
+    },
+    {
+      "node": "virtue_b1",
+      "node_name": "Virtue B1",
+      "track": "virtue_end_b"
+    }
+  ]
+}

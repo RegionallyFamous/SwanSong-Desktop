@@ -1,0 +1,121 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-27T02:40:31.668732+00:00",
+  "errors": [],
+  "commands": [
+    {
+      "name": "build",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/build_wscvn_game.py",
+        "eleven-bento-emergency"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "t.json\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:219: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:220: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:222: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alpha_coverage = sum(1 for pixel in image.getdata() if pixel[3] > 0) / (image.width * image.height)\nGame readiness report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/game-readiness-report.json\n[i] Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.\nTechnical game readiness passed; aesthetic review remains separate\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_graphics_contract.py --asset-root /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json --allow-missing-provenance --out /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/graphics-contract-report.json\nGraphics contract report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/graphics-contract-report.json\nGraphics contract passed\n+ make convert JSON=/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json PY=/opt/homebrew/opt/python@3.14/bin/python3.14\n/opt/homebrew/opt/python@3.14/bin/python3.14 tools/convert_json.py \"/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json\" src/\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/runtime-local/tools/convert_json.py:939: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  indexed = list(q.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/runtime-local/tools/convert_json.py:517: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/runtime-local/tools/convert_json.py:580: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(frame.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/runtime-local/tools/convert_json.py:606: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/runtime-local/tools/convert_json.py:627: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgb.getdata())\n[+] Loaded \"Eleven Bento Emergency\" \u2014 37 nodes, 0 flags, 4 tracks, 4 backgrounds, 3 characters\n[+] Wrote src//game_data.h and src//game_data.c\n[+] Ready: run \"make\" from the project root.\n+ make clean NAME=eleven-bento-emergency\nrm -rf build/eleven-bento-emergency eleven-bento-emergency.wsc\n+ make NAME=eleven-bento-emergency\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/eleven-bento-emergency/src/main.o src/main.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/eleven-bento-emergency/src/game_data.o src/game_data.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -r -o build/eleven-bento-emergency/eleven-bento-emergency_stage1.elf build/eleven-bento-emergency/src/main.o build/eleven-bento-emergency/src/game_data.o /opt/wonderful/target/wswan/medium/lib/crt0.o -T/opt/wonderful/target/wswan/medium/link.ld -L/opt/wonderful/target/wswan/medium/lib -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -u __wse_tiles_2bpp -u __wse_color_palette -L/opt/wonderful/toolchain/gcc-ia16-elf/lib/v30mz-segelf/medium -lwse -lwsx -lws -lgcc\n/opt/wonderful/bin/wf-wswantool build rom -c wfconfig.toml -o eleven-bento-emergency.wsc --output-elf build/eleven-bento-emergency/eleven-bento-emergency.elf build/eleven-bento-emergency/eleven-bento-emergency_stage1.elf\n=== BUILD COMPLETE ===\n-rw-r--r--@ 1 nick  staff   8.0M Jul 26 21:38 eleven-bento-emergency.wsc\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/smoke_wscvn_rom.py /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/runtime-local/eleven-bento-emergency.wsc --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/emulator-smoke-report.json\nEmulator smoke report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/emulator-smoke-report.json\nBoot/checksum smoke passed (no pixels observed): wswan(WonderSwan) 8192KiB checksum 0x1aac\nVisual verification not performed; no emulator screenshot proof was bound\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py eleven-bento-emergency --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json --runtime /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/runtime-local --build-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/build-report.json --smoke-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/emulator-smoke-report.json --readiness-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/game-readiness-report.json --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/game-audit-report.json\nGame audit report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/game-audit-report.json\nGame audit passed\nGame build report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/build-report.json\nGame build passed: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/runtime-local/eleven-bento-emergency.wsc"
+    },
+    {
+      "name": "swansong-playthrough",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/playtest_wscvn_swansong.py",
+        "eleven-bento-emergency",
+        "--route",
+        "all"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "eleven-bento-emergency: running route-1 (1/4) \u2014 Rebuild lunch shield / Open pudding shield\neleven-bento-emergency: route-1 passed in 22.642s\neleven-bento-emergency: running route-2 (2/4) \u2014 Rebuild lunch shield / Let every Bit choose\neleven-bento-emergency: route-2 passed in 21.992s\neleven-bento-emergency: running route-3 (3/4) \u2014 Release roaming buffet / Open pudding shield\neleven-bento-emergency: route-3 passed in 21.951s\neleven-bento-emergency: running route-4 (4/4) \u2014 Release roaming buffet / Let every Bit choose\neleven-bento-emergency: route-4 passed in 22.650s\neleven-bento-emergency: route 1=ok, route 2=ok, route 3=ok, route 4=ok; coverage=4/4; persistence=ok; audio-soak=ok"
+    },
+    {
+      "name": "package",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/package_wscvn_game.py",
+        "eleven-bento-emergency"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py eleven-bento-emergency --no-write\nGame release report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/release-report.json\nGame release package: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/releases/20260727T024031Z-991341d1481d.zip\nGame release packaging passed"
+    },
+    {
+      "name": "verify",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+        "eleven-bento-emergency"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/release-verify-report.json\nGame release verification passed"
+    }
+  ],
+  "facts": {
+    "slug": "eleven-bento-emergency",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency",
+    "emulator_screenshot": null,
+    "swansong_dylib": null,
+    "reports": {
+      "build": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/build-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "readiness": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/game-readiness-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "smoke": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/emulator-smoke-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "audit": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/game-audit-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "swansong_playthrough": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/swansong-playthrough-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "release": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/release-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "release_verify": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/reports/release-verify-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/releases/20260727T024031Z-991341d1481d.zip",
+    "release_zip_sha256": "64ab27e7fd4d190c6565eb4cb48ec8284a696c27739de46d25886571a3c1d74c",
+    "actual_zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/releases/20260727T024031Z-991341d1481d.zip",
+      "exists": true,
+      "bytes": 14030563,
+      "sha256": "64ab27e7fd4d190c6565eb4cb48ec8284a696c27739de46d25886571a3c1d74c"
+    },
+    "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/releases/20260727T024031Z-991341d1481d.zip",
+    "verified_zip_sha256": "64ab27e7fd4d190c6565eb4cb48ec8284a696c27739de46d25886571a3c1d74c"
+  }
+}

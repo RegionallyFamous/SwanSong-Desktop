@@ -10,6 +10,7 @@ struct AuthorizedSourceProbeInvocation {
     let role: TranslationROMRole
     let frameIndex: UInt64
     let rectangle: EngineDisplayRectangle
+    let rectangles: [EngineDisplayRectangle]
     let components: [EngineDisplaySourceComponent]
     let outputURL: URL?
     let authorizationURL: URL
@@ -93,6 +94,8 @@ private struct AuthorizedSourceProbeContext {
         "wstrans-swansong-public-source-capture-frame-seal-v2"
     static let commercialCaptureFrameSealSchema =
         "wstrans-swansong-original-capture-frame-seal-v2"
+    static let commercialReadOnlyFrameSealSchema =
+        "wstrans-swansong-original-read-only-frame-seal-v1"
     static let closureSchema = "swan-song-authorized-method-closure-v1"
     static let completeReportSchema = "swan-song-authorized-display-source-probe-report-v1"
     static let blockedReportSchema = "swan-song-authorized-display-source-probe-blocked-report-v1"
@@ -111,11 +114,15 @@ private struct AuthorizedSourceProbeContext {
     static let directoryMode = 0o700
     static let linkPolicy = "regular-single-link-no-symlink"
     static let maximumRectanglePixels = 4_096
+    static let maximumAtomicRegionCount = 8
+    static let maximumAtomicRegionPixels = 8_192
+    static let atomicRegionPolicy =
+        "non-overlapping-exact-bounding-tiling-v1"
     static let maximumPlanFrames = 1_000_000
     static let legacyRunnerCapabilitySchema =
         "swan-song-route-runner-engine-capability-v1"
     static let consumedPrefetchRunnerCapabilitySchema =
-        "swan-song-route-runner-engine-capability-v2"
+        "swan-song-route-runner-engine-capability-v3"
     static let requiredSourceCapabilities = [
         "displayProvenance",
         "displaySourceProvenance",
@@ -593,12 +600,23 @@ private struct AuthorizedSourceProbeContext {
         }
         let (pixelCount, overflow) = Int(invocation.rectangle.width)
             .multipliedReportingOverflow(by: Int(invocation.rectangle.height))
-        guard invocation.rectangle.width > 0,
+        let normalizedRectangle: EngineDisplayRectangle
+        do {
+            normalizedRectangle = try TranslationDisplaySourceProbe
+                .atomicBoundingRectangle(rectangles: invocation.rectangles)
+        } catch {
+            throw stop(error.localizedDescription)
+        }
+        guard invocation.rectangle == normalizedRectangle,
+              invocation.rectangle.width > 0,
               invocation.rectangle.height > 0,
               !overflow,
               pixelCount > 0,
-              pixelCount <= maximumRectanglePixels else {
-            throw stop("the source-probe rectangle must contain 1 through 4096 native pixels")
+              pixelCount <= TranslationDisplaySourceProbe
+                .maximumAtomicRegionPixels else {
+            throw stop(
+                "the source-probe rectangle must be the exact bounded atomic region union"
+            )
         }
         guard !invocation.components.isEmpty,
               Set(invocation.components).count == invocation.components.count,
@@ -650,6 +668,18 @@ private struct AuthorizedSourceProbeContext {
               try integer(source["maximumPlanFrames"], label: "base plan bound") == maximumPlanFrames,
               try integer(source["maximumRectanglePixels"], label: "base rectangle bound")
                 == maximumRectanglePixels,
+              try integer(
+                source["maximumAtomicRegionCount"],
+                label: "base atomic region-count bound"
+              ) == maximumAtomicRegionCount,
+              try integer(
+                source["maximumAtomicRegionPixels"],
+                label: "base atomic region-pixel bound"
+              ) == maximumAtomicRegionPixels,
+              try string(
+                source["atomicRegionPolicy"],
+                label: "base atomic region policy"
+              ) == atomicRegionPolicy,
               try integer(source["maximumTraceRecords"], label: "base trace bound")
                 == TranslationDisplaySourceProbe.maximumTraceRecords,
               try integer(source["requiresEngineABI"], label: "base source ABI") == abi,
@@ -891,9 +921,11 @@ private struct AuthorizedSourceProbeContext {
         let expectedTransport: (width: Int, height: Int)
         let expectedRectangle: (x: Int, y: Int, width: Int, height: Int)
         let expectedOrientation: TranslationRouteFrameOrientation
+        let expectedHardwareModel: TranslationRouteHardwareModel
         let expectedComponents: [String]
         let publicSourceControlProfile: String?
         var publicControlNativeFrameSHA256: String? = nil
+        var commercialReadOnlySeal = false
         switch mode {
         case .publicDiagnostic:
             throw stop("the public diagnostic mode has no capture-frame seal")
@@ -913,10 +945,20 @@ private struct AuthorizedSourceProbeContext {
             expectedRectangle = profile == "success"
                 ? (8, 8, 1, 1) : (0, 0, 1, 1)
             expectedOrientation = .horizontal
+            expectedHardwareModel = .wonderSwanColor
             expectedComponents = ["raster"]
         case .commercialCaptureBound:
             publicSourceControlProfile = nil
-            expectedSchema = commercialCaptureFrameSealSchema
+            let schema = try string(
+                value["schema"],
+                label: "commercial capture-frame seal schema"
+            )
+            guard schema == commercialCaptureFrameSealSchema
+                    || schema == commercialReadOnlyFrameSealSchema else {
+                throw stop("the commercial capture-frame seal schema is unsupported")
+            }
+            expectedSchema = schema
+            commercialReadOnlySeal = schema == commercialReadOnlyFrameSealSchema
             expectedPlanFrame = try integer(
                 value["planFrameIndex"],
                 label: "commercial capture-frame plan index"
@@ -939,6 +981,17 @@ private struct AuthorizedSourceProbeContext {
                 throw stop("the commercial capture-frame orientation is invalid")
             }
             expectedOrientation = parsedOrientation
+            let hardwareModel = try string(
+                value["hardwareModel"],
+                label: "commercial sealed hardware model"
+            )
+            guard let parsedHardwareModel = TranslationRouteHardwareModel(
+                rawValue: hardwareModel
+            ), parsedHardwareModel == .wonderSwan
+                || parsedHardwareModel == .wonderSwanColor else {
+                throw stop("the commercial capture-frame hardware model is invalid")
+            }
+            expectedHardwareModel = parsedHardwareModel
             expectedTransport = (
                 try integer(
                     sealedTransport["width"],
@@ -1012,12 +1065,20 @@ private struct AuthorizedSourceProbeContext {
         guard let events = planObject["events"] as? [Any] else {
             throw stop("capture-bound plan events is not an array")
         }
+        let planTotalFrames = try integer(
+            planObject["totalFrames"],
+            label: "capture-bound plan frames"
+        )
+        let sealedTotalFrames = try integer(
+            planBinding["totalFrames"],
+            label: "sealed plan frames"
+        )
         guard try string(planObject["schema"], label: "capture-bound plan schema")
                 == planSchema,
-              try integer(planObject["totalFrames"], label: "capture-bound plan frames")
-                == expectedNativeFrame,
-              try integer(planBinding["totalFrames"], label: "sealed plan frames")
-                == expectedNativeFrame,
+              commercialReadOnlySeal
+                ? planTotalFrames > expectedPlanFrame
+                : planTotalFrames == expectedNativeFrame,
+              sealedTotalFrames == planTotalFrames,
               try integer(planBinding["eventCount"], label: "sealed plan event count")
                 == events.count,
               sameArtifact(
@@ -1043,6 +1104,11 @@ private struct AuthorizedSourceProbeContext {
         let relativeROM = try string(roms["original"], label: "capture-bound Original ROM")
         guard cleanRelativePath(relativeROM) else {
             throw stop("the capture-bound Original ROM path is unsafe")
+        }
+        let requiredROMExtension = expectedHardwareModel == .wonderSwan ? "ws" : "wsc"
+        guard (relativeROM as NSString).pathExtension.lowercased()
+                == requiredROMExtension else {
+            throw stop("the capture-frame hardware model and Original ROM role disagree")
         }
         let romFile = try readBoundFile(
             canonicalURL(
@@ -1119,25 +1185,80 @@ private struct AuthorizedSourceProbeContext {
         }
 
         let transport = try object(value["transportFrame"], label: "sealed transport frame")
-        _ = try artifact(
-            try object(transport["artifact"], label: "sealed transport artifact"),
-            label: "sealed transport artifact"
-        )
+        if commercialReadOnlySeal {
+            guard transport["artifact"] == nil else {
+                throw stop("the read-only frame seal cannot retain a transport artifact")
+            }
+        } else {
+            _ = try artifact(
+                try object(transport["artifact"], label: "sealed transport artifact"),
+                label: "sealed transport artifact"
+            )
+        }
         let orientationRaw = try string(
             transport["orientation"],
             label: "sealed transport orientation"
         )
-        let expectedGameSize = expectedOrientation == .horizontal
-            ? (width: 224, height: 144) : (width: 144, height: 224)
-        let requiredTransportSize = expectedOrientation == .horizontal
-            ? (width: 237, height: 144) : (width: 144, height: 237)
+        let expectedGameSize: (width: Int, height: Int)
+        let requiredTransportSize: (width: Int, height: Int)
+        switch expectedHardwareModel {
+        case .wonderSwanColor:
+            expectedGameSize = (224, 144)
+            requiredTransportSize = (237, 144)
+        case .wonderSwan:
+            expectedGameSize = (224, 144)
+            requiredTransportSize = (224, 157)
+        case .swanCrystal, .pocketChallengeV2:
+            throw stop("the capture-frame seal hardware model has no exact source geometry")
+        }
         guard orientationRaw == expectedOrientation.rawValue,
+              expectedOrientation == .horizontal,
               try integer(transport["width"], label: "sealed transport width")
                 == expectedTransport.width,
               try integer(transport["height"], label: "sealed transport height")
                 == expectedTransport.height,
               expectedTransport == requiredTransportSize else {
             throw stop("the capture-frame seal has the wrong native transport geometry")
+        }
+
+        let excludedRegionKey = expectedHardwareModel == .wonderSwan
+            ? "excludedBottomTransportRegion"
+            : "excludedRightTransportRegion"
+        let excludedRegion = try object(
+            value[excludedRegionKey],
+            label: "sealed excluded transport region"
+        )
+        try exactKeys(
+            excludedRegion,
+            ["edge", "height", "width", "x", "y"],
+            label: "sealed excluded transport region"
+        )
+        let requiredExcludedRegion = expectedHardwareModel == .wonderSwan
+            ? (
+                edge: "bottom",
+                x: 0,
+                y: expectedGameSize.height,
+                width: expectedGameSize.width,
+                height: requiredTransportSize.height - expectedGameSize.height
+            )
+            : (
+                edge: "right",
+                x: expectedGameSize.width,
+                y: 0,
+                width: requiredTransportSize.width - expectedGameSize.width,
+                height: expectedGameSize.height
+            )
+        guard try string(excludedRegion["edge"], label: "sealed excluded edge")
+                == requiredExcludedRegion.edge,
+              try integer(excludedRegion["x"], label: "sealed excluded x")
+                == requiredExcludedRegion.x,
+              try integer(excludedRegion["y"], label: "sealed excluded y")
+                == requiredExcludedRegion.y,
+              try integer(excludedRegion["width"], label: "sealed excluded width")
+                == requiredExcludedRegion.width,
+              try integer(excludedRegion["height"], label: "sealed excluded height")
+                == requiredExcludedRegion.height else {
+            throw stop("the capture-frame seal has an invalid excluded transport region")
         }
 
         let gameRaster = try object(value["gameRaster"], label: "sealed game raster")
@@ -1195,7 +1316,7 @@ private struct AuthorizedSourceProbeContext {
               !rectangleYOverflow,
               rectangleMaxX <= expectedGameSize.width,
               rectangleMaxY <= expectedGameSize.height,
-              pixelCount <= maximumRectanglePixels,
+              pixelCount <= maximumAtomicRegionPixels,
               try integer(rectangle["x"], label: "sealed rectangle x")
                 == expectedRectangle.x,
               try integer(rectangle["y"], label: "sealed rectangle y")
@@ -1230,10 +1351,51 @@ private struct AuthorizedSourceProbeContext {
                 throw stop("the public capture-frame seal overstates its authority")
             }
         } else {
-            guard !(try boolean(value["captureAuthorizesSourceProbe"], label: "commercial seal authority")),
-                  try boolean(value["sourceProbeAuthorizationRequired"], label: "commercial seal A2 boundary"),
-                  !(try boolean(value["promotionEligible"], label: "commercial seal promotion boundary")) else {
-                throw stop("the commercial capture-frame seal overstates its authority")
+            if commercialReadOnlySeal {
+                guard try boolean(
+                    value["readOnlyMethodAuthorization"],
+                    label: "read-only seal method boundary"
+                ),
+                      !(try boolean(
+                        value["projectWritesPerformed"],
+                        label: "read-only seal project writes"
+                      )),
+                      !(try boolean(
+                        value["romWritesPerformed"],
+                        label: "read-only seal ROM writes"
+                      )),
+                      try integer(
+                        value["provenanceQueriesPerformed"],
+                        label: "read-only seal provenance queries"
+                      ) == 0,
+                      !(try boolean(
+                        value["patchedRoleAccepted"],
+                        label: "read-only seal patched role"
+                      )),
+                      !(try boolean(
+                        value["comparisonPerformed"],
+                        label: "read-only seal comparison"
+                      )),
+                      !(try boolean(
+                        value["releaseWorkflowAuthorized"],
+                        label: "read-only seal release boundary"
+                      )),
+                      try boolean(
+                        value["sourceProbeAuthorizationRequired"],
+                        label: "read-only seal A2 boundary"
+                      ),
+                      !(try boolean(
+                        value["promotionEligible"],
+                        label: "read-only seal promotion boundary"
+                      )) else {
+                    throw stop("the read-only frame seal overstates its authority")
+                }
+            } else {
+                guard !(try boolean(value["captureAuthorizesSourceProbe"], label: "commercial seal authority")),
+                      try boolean(value["sourceProbeAuthorizationRequired"], label: "commercial seal A2 boundary"),
+                      !(try boolean(value["promotionEligible"], label: "commercial seal promotion boundary")) else {
+                    throw stop("the commercial capture-frame seal overstates its authority")
+                }
             }
         }
 
@@ -1597,7 +1759,8 @@ private struct AuthorizedSourceProbeContext {
               try integer(rectangle["y"], label: "rectangle y") == Int(invocation.rectangle.y),
               try integer(rectangle["width"], label: "rectangle width") == Int(invocation.rectangle.width),
               try integer(rectangle["height"], label: "rectangle height") == Int(invocation.rectangle.height),
-              Int(invocation.rectangle.width) * Int(invocation.rectangle.height) <= maximumRectanglePixels else {
+              Int(invocation.rectangle.width) * Int(invocation.rectangle.height)
+                <= maximumAtomicRegionPixels else {
             throw stop("A does not bind the exact bounded native rectangle")
         }
         let components = try stringArray(arguments["components"], label: "request components")
@@ -2331,7 +2494,7 @@ enum AuthorizedSourceProbeRunner {
                     role: invocation.role,
                     plan: plan,
                     frameIndex: invocation.frameIndex,
-                    rectangle: invocation.rectangle,
+                    rectangles: invocation.rectangles,
                     components: invocation.components,
                     expectedFrame: expectedFrame,
                     querySnapshotObserver: { finalQuerySnapshot = $0 }
@@ -2342,7 +2505,7 @@ enum AuthorizedSourceProbeRunner {
                     role: invocation.role,
                     plan: plan,
                     frameIndex: invocation.frameIndex,
-                    rectangle: invocation.rectangle,
+                    rectangles: invocation.rectangles,
                     components: invocation.components
                 )
             }

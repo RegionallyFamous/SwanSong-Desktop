@@ -1,0 +1,233 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-23T13:09:19+00:00",
+  "art_policy": "Pictorial masters are built-in ImageGen outputs; runtime frames are deterministic local derivatives.",
+  "outputs": {
+    "backgrounds/checklist.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_checklist_imagegen_v2.png",
+      "source_sha256": "3a9e80dcf0a1a527ae09f3c40b878d4c5989c2ba87628298f3657970bf9b7128",
+      "output_sha256": "fa4b7dffe3ee5b7bcbd5a00c90a4bd1e1eb706958e5e985583aa76d3da0bb8fb",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 9,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 51.93
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/clock.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_clock_imagegen_v2.png",
+      "source_sha256": "b7724b0fc105ae9497cb87f7ee85571d411a404dd413f3b902e06f00c67390e5",
+      "output_sha256": "7235cc5c36b8e29a5d0ade40783adbea67d9ac660792eb2c57782a91dadbce0c",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 11,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 30.52
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/kitchen.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_kitchen_imagegen_v2.png",
+      "source_sha256": "22b94038a45389b146868d921ee507cdf23473205316454fe5a9fa9ab55f83c6",
+      "output_sha256": "c321770fdc069e7ee456714efd16e6e2e5f1ebf3e456eeb8572c670736fd660b",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 43.27
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/title.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_title_imagegen_v2.png",
+      "source_sha256": "e077102fd8ea03b907fb901b04a2052b346aad0f0242d7e3aaf3a5a5fe6b4949",
+      "output_sha256": "b2aea66197e083c271d0663472f190d8ce8a7ad7960748db5f3b11523773a0ef",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 76.94
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/zaku_call.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_zaku_call_imagegen_v2.png",
+      "source_sha256": "282c7d281598e8e558ceb41449a853557013ce25862e9f24da92a59fa5b0c4e6",
+      "output_sha256": "97a804f18327a0b13dd499a3aed713c355cf48df8923aee29b2eab4f0578b325",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 9,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 72.5
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/rx78_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/character_rx78_checklist_master_cutout_imagegen_v2.png",
+      "source_sha256": "3d8a8a28de6f7bc4707d76ff546c44d93eb9b5bfa18459714297c8254196c333",
+      "output_sha256": "90c88b61ebb8c9bb886aa4b989903cbac7738631945deda13093b1b127d426f7",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          11,
+          6,
+          85,
+          126
+        ],
+        "alpha_coverage": 0.4603,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7595,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 83.52,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 82.89
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5656,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/rx78_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/character_rx78_checklist_master_imagegen_v2.png",
+      "source_sha256": "5d2f0f63f541b1966c1be08be2d9374e29e515d3164e263317276133eb3a57ca",
+      "output_sha256": "1a96851aeebefed4965606fad772774e983b7ee3a29d4b14ece0181fbe572d06",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          11,
+          6,
+          85,
+          126
+        ],
+        "alpha_coverage": 0.4603,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7595,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 82.77,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 81.43
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5656,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/rx78_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/character_rx78_checklist_master_imagegen_v2.png",
+      "source_sha256": "5d2f0f63f541b1966c1be08be2d9374e29e515d3164e263317276133eb3a57ca",
+      "output_sha256": "8e4945e943be9238fa9dba71fe02e1efe64dca34ae87fb4ccfce39a1afa217de",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          11,
+          6,
+          85,
+          126
+        ],
+        "alpha_coverage": 0.4603,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7595,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 82.82,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 80.82
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5656,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    }
+  }
+}

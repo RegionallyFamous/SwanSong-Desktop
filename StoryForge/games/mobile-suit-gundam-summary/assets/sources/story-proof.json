@@ -1,0 +1,333 @@
+{
+  "schema": "wscvn-story-proof-v1",
+  "title": "Mobile Suit Gundam: The One Year Tour — Story Ribbon",
+  "checkpoints": [
+    {
+      "id": "proof-tour-contract",
+      "label": "The museum promises complete causal coverage",
+      "story": {
+        "turn": "The docents accept a twenty-minute closing deadline without reducing the war to trophy labels.",
+        "consequence": "Every omission must be justified rather than hidden.",
+        "setup_ids": [
+          "closing-clock",
+          "tour-ticket"
+        ],
+        "payoff_ids": []
+      },
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tour_01",
+          "routes": [
+            "*"
+          ],
+          "background": "bg_main",
+          "character": "char_rx78_neutral",
+          "animation": "blink",
+          "transition": "fade",
+          "next": [
+            "tour_02"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proof-side-seven",
+      "label": "The war becomes a refugee story",
+      "story": {
+        "turn": "An unauthorized attack forces Amuro into Gundam.",
+        "consequence": "White Base is crewed by whoever survived.",
+        "setup_ids": [],
+        "payoff_ids": []
+      },
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tour_04",
+          "routes": [
+            "*"
+          ],
+          "background": "bg_side7",
+          "character": "char_rx78_neutral",
+          "animation": "blink",
+          "transition": "fade",
+          "next": [
+            "tour_05"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proof-first-lens",
+      "label": "The player chooses emphasis without rewriting canon",
+      "story": {
+        "turn": "The same Earth campaign can be read through crew or strategy.",
+        "consequence": "Both paths preserve Garma's fall and the full chronology.",
+        "interaction": {
+          "kind": "canon-safe lens choice",
+          "failure_progresses": true
+        },
+        "setup_ids": [],
+        "payoff_ids": []
+      },
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "lens_choice",
+          "routes": [
+            "*"
+          ],
+          "background": "bg_main",
+          "character": "char_rx78_neutral",
+          "animation": "blink",
+          "transition": "fade",
+          "next": [
+            "whitebase_01",
+            "warmap_01"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proof-earth-cost",
+      "label": "Victory accumulates human cost",
+      "story": {
+        "turn": "Ryu and Matilda die as White Base becomes strategically important.",
+        "consequence": "Amuro experiences Odessa as bereavement, not triumph.",
+        "setup_ids": [],
+        "payoff_ids": [
+          "names-on-glass"
+        ]
+      },
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "earth_04",
+          "routes": [
+            "*"
+          ],
+          "background": "bg_odessa",
+          "character": "char_rx78_neutral",
+          "animation": "blink",
+          "transition": "fade",
+          "next": [
+            "odessa_memorial_01"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proof-final-lens",
+      "label": "The player chooses the ending's interpretive lens",
+      "story": {
+        "turn": "People and power lenses diverge in presentation, not facts.",
+        "consequence": "All routes still cover Solomon through Escape.",
+        "interaction": {
+          "kind": "theme-bearing lens choice",
+          "failure_progresses": true
+        },
+        "setup_ids": [],
+        "payoff_ids": []
+      },
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "meaning_choice",
+          "routes": [
+            "*"
+          ],
+          "background": "bg_main",
+          "character": "char_rx78_neutral",
+          "animation": "blink",
+          "transition": "fade",
+          "next": [
+            "people_01",
+            "power_01"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proof-newtype-tragedy",
+      "label": "Understanding is converted into warfare",
+      "story": {
+        "turn": "Amuro and Lalah understand one another, but Lalah dies protecting Char.",
+        "consequence": "Connection becomes renewed rivalry.",
+        "setup_ids": [
+          "newtype-connection"
+        ],
+        "payoff_ids": [
+          "names-on-glass"
+        ]
+      },
+      "variants": [
+        {
+          "id": "people-lens",
+          "node_id": "people_03",
+          "background": "bg_side6",
+          "character": "char_rx78_neutral",
+          "animation": "blink",
+          "transition": "fade",
+          "next": [
+            "people_03b"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio"
+          ]
+        },
+        {
+          "id": "power-lens",
+          "node_id": "power_03",
+          "background": "bg_side6",
+          "character": "char_zaku_neutral",
+          "animation": "blink",
+          "transition": "fade",
+          "next": [
+            "power_03b"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proof-zabi-collapse",
+      "label": "Zeon's leadership destroys itself",
+      "story": {
+        "turn": "Solar Ray and the Zabi assassinations consume Zeon's command.",
+        "consequence": "A Baoa Qu begins with the regime already collapsing.",
+        "setup_ids": [
+          "zabi-board"
+        ],
+        "payoff_ids": [
+          "zabi-board"
+        ]
+      },
+      "variants": [
+        {
+          "id": "people-lens",
+          "node_id": "people_04",
+          "background": "bg_solar_ray",
+          "character": "char_zaku_pointer_neutral",
+          "animation": "blink",
+          "transition": "fade",
+          "next": [
+            "people_05"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio"
+          ]
+        },
+        {
+          "id": "power-lens",
+          "node_id": "power_04",
+          "background": "bg_solar_ray",
+          "character": "char_rx78_ticket_neutral",
+          "animation": "blink",
+          "transition": "fade",
+          "next": [
+            "power_05"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proof-home",
+      "label": "The machines end and the relationships survive",
+      "story": {
+        "turn": "Amuro and the White Base crew guide one another out.",
+        "consequence": "HERO and VILLAIN are replaced by WITNESS; the ticket ends at HOME.",
+        "setup_ids": [
+          "closing-clock",
+          "tour-ticket",
+          "exit-path"
+        ],
+        "payoff_ids": [
+          "closing-clock",
+          "tour-ticket",
+          "exit-path"
+        ]
+      },
+      "variants": [
+        {
+          "id": "people-ending",
+          "node_id": "people_coda",
+          "background": "bg_home_people",
+          "character": null,
+          "animation": "none",
+          "transition": "fade",
+          "next": [
+            "end"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio",
+            "ending-capture"
+          ]
+        },
+        {
+          "id": "power-ending",
+          "node_id": "power_coda",
+          "background": "bg_home_power",
+          "character": null,
+          "animation": "none",
+          "transition": "fade",
+          "next": [
+            "end"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio",
+            "ending-capture"
+          ]
+        }
+      ]
+    }
+  ]
+}

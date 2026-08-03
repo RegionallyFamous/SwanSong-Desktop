@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "errors": [],
+  "generated_at_utc": "2026-07-16T00:12:20.416543+00:00",
+  "project": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json",
+    "bytes": 116542,
+    "sha256": "3bbea64751bf4d57a3ac9627879a0bbf399710ce5dc550e2b1b5b234072ba6c9"
+  },
+  "renderer": {
+    "backend": "legacy-tracker-wavetable-audition",
+    "sample_rate": 22050,
+    "loops": 2,
+    "channels": 1,
+    "sample_width_bits": 16,
+    "note": "Offline audition mirrors the runtime's 32-sample wave shapes; hardware output and emulator mixing may differ."
+  },
+  "tracks": [
+    {
+      "id": "zgok_title",
+      "name": "Claw and Ribbon",
+      "bpm": 110,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/audio/01-zgok_title.wav",
+      "bytes": 384916,
+      "sha256": "c6ae745265a582d52a2346217565a04397732a07fa7c9fd9a8cac619c5681546",
+      "duration_seconds": 8.727,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.189,
+        "near_silent_sample_share": 0.011084,
+        "max_loop_jump_linear": 0.0
+      }
+    },
+    {
+      "id": "zgok_main",
+      "name": "Tape Trouble",
+      "bpm": 118,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/audio/02-zgok_main.wav",
+      "bytes": 358824,
+      "sha256": "1334e8f028465c947761d83a3157916a2f8066a77667fc30d98244346d0b228a",
+      "duration_seconds": 8.136,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.204,
+        "near_silent_sample_share": 0.010084,
+        "max_loop_jump_linear": 0.084964
+      }
+    },
+    {
+      "id": "zgok_end_a",
+      "name": "Mitten Protocol",
+      "bpm": 86,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/audio/03-zgok_end_a.wav",
+      "bytes": 492324,
+      "sha256": "f6f4bfb285140f648c602ab8edb970831dd8f53a997472db1746fc645d7640cc",
+      "duration_seconds": 11.163,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.182,
+        "near_silent_sample_share": 0.010657,
+        "max_loop_jump_linear": 0.098849
+      }
+    },
+    {
+      "id": "zgok_end_b",
+      "name": "Ribbon Cyclone",
+      "bpm": 144,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/audio/04-zgok_end_b.wav",
+      "bytes": 294044,
+      "sha256": "bc21ac7552112a067d6adb3f3c3de161d4274d42d17d85dad4debd1c3e5d16be",
+      "duration_seconds": 6.667,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.214,
+        "near_silent_sample_share": 0.011286,
+        "max_loop_jump_linear": 0.063997
+      }
+    }
+  ],
+  "cues": [
+    {
+      "node": "zgok_title",
+      "node_name": "Zgok Title",
+      "track": "zgok_title"
+    },
+    {
+      "node": "zgok_01",
+      "node_name": "Zgok 01",
+      "track": "zgok_main"
+    },
+    {
+      "node": "zgok_a1",
+      "node_name": "Zgok A1",
+      "track": "zgok_end_a"
+    },
+    {
+      "node": "zgok_b1",
+      "node_name": "Zgok B1",
+      "track": "zgok_end_b"
+    }
+  ]
+}

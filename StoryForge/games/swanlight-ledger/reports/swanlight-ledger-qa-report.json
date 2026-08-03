@@ -1,0 +1,336 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:30:09.728946+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/contact_sheet.png",
+    "nodes": 46,
+    "flags": 0,
+    "backgrounds": {
+      "bg_book_cart": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_end_archive": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_end_play": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_end_share": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_found_map": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_home_shelf": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_library_sale": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_library_sort": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 12,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_lost_box": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_staff_desk": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_test_blue": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_test_table": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_title": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 8,
+        "has_alpha": false,
+        "binary_alpha": true
+      }
+    },
+    "characters": {
+      "char_emi_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_emi_hope_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_emi_hope_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_emi_hope_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_emi_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_emi_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_kai_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_kai_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_kai_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_kai_warm_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_kai_warm_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_kai_warm_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true
+      }
+    },
+    "text": {
+      "blocks": 340,
+      "max_pause_block_chars": 99
+    },
+    "soundtrack": {
+      "track_count": 7,
+      "tracks": [
+        {
+          "id": "track_rain_on_glass",
+          "name": "Rain on Glass",
+          "bpm": 78,
+          "channels": 4,
+          "events": 20
+        },
+        {
+          "id": "track_silver_index",
+          "name": "Silver Index",
+          "bpm": 102,
+          "channels": 4,
+          "events": 28
+        },
+        {
+          "id": "track_blue_wake",
+          "name": "Blue Wake",
+          "bpm": 92,
+          "channels": 4,
+          "events": 27
+        },
+        {
+          "id": "track_lamp_at_home",
+          "name": "Lamp at Home",
+          "bpm": 84,
+          "channels": 4,
+          "events": 24
+        },
+        {
+          "id": "track_blue_sleeve",
+          "name": "Blue Sleeve",
+          "bpm": 70,
+          "channels": 4,
+          "events": 15
+        },
+        {
+          "id": "track_tiny_tide",
+          "name": "Tiny Tide",
+          "bpm": 116,
+          "channels": 4,
+          "events": 32
+        },
+        {
+          "id": "track_open_shelf",
+          "name": "Open Shelf",
+          "bpm": 88,
+          "channels": 4,
+          "events": 20
+        }
+      ],
+      "cues": [
+        {
+          "node": "title",
+          "track": "track_rain_on_glass"
+        },
+        {
+          "node": "sale_opens",
+          "track": "track_silver_index"
+        },
+        {
+          "node": "test_table",
+          "track": "track_blue_wake"
+        },
+        {
+          "node": "home_arrival",
+          "track": "track_lamp_at_home"
+        },
+        {
+          "node": "preserve_page",
+          "track": "track_blue_sleeve"
+        },
+        {
+          "node": "play_first",
+          "track": "track_tiny_tide"
+        },
+        {
+          "node": "share_note",
+          "track": "track_open_shelf"
+        }
+      ]
+    },
+    "art_direction": [
+      "Final backgrounds are individually composed at 224x144 and quantized to 16 RGB444 colors.",
+      "Final character families share one 96x128 master palette and alpha mask; talk and blink edits stay local.",
+      "Textbox readability comes from the runtime's opaque panel instead of baked darkness in scene art.",
+      "The score uses one shared motif across title, investigation, discovery, home, and three branch-specific endings.",
+      "All game/cart names are fictional; no commercial ROM contents or assets are used."
+    ]
+  }
+}

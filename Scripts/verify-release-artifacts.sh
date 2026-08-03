@@ -526,6 +526,7 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents/Resources/SPARKLE_LICENSE" \
     ! -path "$APP/Contents/Resources/ares.lock.json" \
     ! -path "$APP/Contents/Resources/sparkle.lock.json" \
+    ! -path "$APP/Contents/Resources/StoryForge/*" \
     ! -path "$APP/Contents/Resources/SwanSongSDK/*" \
     ! -path "$APP/Contents/Resources/YokoiHardware/*" \
     ! -path "$APP/Contents/_CodeSignature/CodeResources" \
@@ -546,6 +547,8 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents/Frameworks/Sparkle.framework/*" \
     ! -path "$APP/Contents/Resources" \
     ! -path "$APP/Contents/Resources/HomebrewTitleScreens" \
+    ! -path "$APP/Contents/Resources/StoryForge" \
+    ! -path "$APP/Contents/Resources/StoryForge/*" \
     ! -path "$APP/Contents/Resources/SwanSongSDK" \
     ! -path "$APP/Contents/Resources/SwanSongSDK/*" \
     ! -path "$APP/Contents/Resources/YokoiHardware" \
@@ -565,6 +568,9 @@ if [ -n "$APP" ]; then
   "$SCRIPT_DIR/check-swansong-sdk-payload.sh" \
     "$APP/Contents/Resources/SwanSongSDK" >/dev/null \
     || fail "embedded SwanSong SDK validation failed"
+  python3 "$SCRIPT_DIR/check-story-forge-framework.py" \
+    "$APP/Contents/Resources/StoryForge" >/dev/null \
+    || fail "embedded Story Forge framework validation failed"
   python3 "$SCRIPT_DIR/check-yokoi-hardware-payload.py" \
     "$APP/Contents/Resources/YokoiHardware" >/dev/null \
     || fail "embedded Yokoi hardware payload validation failed"

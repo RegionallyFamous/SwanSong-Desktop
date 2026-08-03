@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:45:37.177212+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "guntank-takes-the-stairs",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local/guntank-takes-the-stairs.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/guntank-takes-the-stairs-qa-report.json",
+    "project_counts": {
+      "name": "Guntank Takes the Stairs",
+      "nodes": 37,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "header_counts": {
+      "NUM_NODES": 37,
+      "NUM_FLAGS": 0,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 4,
+      "NUM_SFX": 0,
+      "NUM_BG_ASSETS": 4,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 3
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+      "bytes": 158712,
+      "sha256": "cf98d9b50fc27ea4ec33e8827acf9df26a0a95acd29c4439d86311a3893178f2"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local/guntank-takes-the-stairs.wsc",
+      "bytes": 8388608,
+      "sha256": "9fdb793814fa3e8e73d69df4faeed2e4a7db7649222f913d2f556f021729a68b"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/emulator-smoke-report.json",
+      "bytes": 1211,
+      "sha256": "1e0582f36ec17cff504caf7abec2555d039bd82b21e23b5d31a332a4a8d1cf30"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/game-readiness-report.json",
+      "bytes": 20585,
+      "sha256": "e0080de3299f52716d9888238ca11f872ea840c47681d0064c633934b1ae3ec9"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/guntank-takes-the-stairs-qa-report.json",
+      "bytes": 1804,
+      "sha256": "1fd43770c22ba9d386cc854956a77a5f19fcd803550e178356213038cbb869d9"
+    }
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-22T20:00:00-05:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/contact_sheet.png",
+    "nodes": 55,
+    "flags": 0,
+    "tracks": [
+      {
+        "id": "track_last_tour",
+        "name": "Last Tour, Lights Low",
+        "bpm": 58,
+        "length_steps": 192
+      },
+      {
+        "id": "track_war_map",
+        "name": "Arrows Across the Glass",
+        "bpm": 84,
+        "length_steps": 192
+      },
+      {
+        "id": "track_white_base",
+        "name": "Whoever Kept Moving",
+        "bpm": 72,
+        "length_steps": 192
+      },
+      {
+        "id": "track_archive_threshold",
+        "name": "The Next Door Opens",
+        "bpm": 64,
+        "length_steps": 192
+      },
+      {
+        "id": "track_memorial",
+        "name": "Names Under the Victory Lamp",
+        "bpm": 52,
+        "length_steps": 192
+      },
+      {
+        "id": "track_names_carried",
+        "name": "Carry Every Name Home",
+        "bpm": 58,
+        "length_steps": 192
+      },
+      {
+        "id": "track_power_reckoning",
+        "name": "What the Machines Could Not Decide",
+        "bpm": 68,
+        "length_steps": 192
+      }
+    ],
+    "audio_policy": "long-form three-voice reading score with hardware channel 2 reserved for diegetic PCM one-shots",
+    "audio_soak_seconds": 180,
+    "sfx": [
+      {
+        "id": "sfx_gallery_chime",
+        "name": "Gallery Chime"
+      },
+      {
+        "id": "sfx_relay_tick",
+        "name": "Relay Tick"
+      },
+      {
+        "id": "sfx_badge_click",
+        "name": "Badge Click"
+      },
+      {
+        "id": "sfx_projector_relay",
+        "name": "Projector Relay"
+      },
+      {
+        "id": "sfx_map_servo",
+        "name": "Map Servo"
+      },
+      {
+        "id": "sfx_archive_scan",
+        "name": "Archive Scan"
+      },
+      {
+        "id": "sfx_memorial_glass",
+        "name": "Memorial Glass"
+      },
+      {
+        "id": "sfx_door_latch",
+        "name": "Door Latch"
+      }
+    ],
+    "imagegen_source_sha256": {
+      "background_title_imagegen_v1.png": "12cf618490a5cb324be188004d86a90d4faa6c6efe4917a70843b7ec54aa29dd",
+      "background_main_imagegen_v1.png": "d7af7de7ed5a8e090a7e79bd0f451617329df92d212accaf10e2f7974176b241",
+      "background_ending_a_imagegen_v1.png": "e6052c7fbac3053645b40fe8bd6756d91d10dd7e98e15319e15fc419a53aff7a",
+      "background_ending_b_imagegen_v1.png": "7b47a1162288c29d5f30e94287633f2134b05dc82e7f0b01892f0707f64e7b9a",
+      "docent-rx78-cutout-imagegen-v1.png": "68620bbdd0947dd45471bd91b810cae4764a88c4affa37a43b92fd2f2f178f31",
+      "docent-zaku-cutout-imagegen-v1.png": "69e14eaba286ea68f7b2df41b2caf415ac7de226f22d3b3da3bbf327c1d5d2bd",
+      "background_ticket_imagegen_v2.png": "c0c5acf46b437e296a6d76e8e55eaa4ea50382db2e4d445579042ffa60db4226",
+      "background_side7_imagegen_v2.png": "c475947cbe3ba9053bebc071e315c036541db47a8529e52ae9ba1928b5092835",
+      "background_whitebase_imagegen_v2.png": "b5054232d5e23837c049c6c0cb593b309fa48c62778dae06310b012ca24ec903",
+      "background_odessa_imagegen_v2.png": "40c453899b42a05179163adb4d724f833b33ea505bcbbe0206aea1c56b11e2d8",
+      "background_miharu_imagegen_v2.png": "87c3ada84edad9e6ea37346d9a51a38e57efc405a6c47731054f3ed686fc62cc",
+      "background_side6_imagegen_v2.png": "3db5b730dc4632d736a82823963172cc5243c0a76d4a98c2d3d75bfc2b0bd568",
+      "background_solomon_imagegen_v2.png": "7ab9397160ae1ec72d1da0da15fdcd39889a3844a7fd1f37a0b77bcd5e098af9",
+      "background_solar_ray_imagegen_v2.png": "8b72225fb5c82f37ccb2571b89809793ecb77226d9a1286fb8586a63caf1f919",
+      "background_home_people_imagegen_v2.png": "4391ef8d83dcc56263139e010501c44668afd9cebb483fe1bc8752d64f4161d5",
+      "background_home_power_imagegen_v2.png": "95f3493aebc80e0dadec59501b4e491762e88428de47780fe53fdbdd3e7de63a",
+      "docent-rx78-ticket-cutout-imagegen-v2.png": "5877c47a7ab3e324cee13003362735189e76c302f06adb3062f8253686d9a44c",
+      "docent-zaku-pointer-cutout-imagegen-v2.png": "b1d52b19f9abf18b9cfe8eee78b481e8fac424cdf628d05bce760fe890e40324",
+      "docent-rx78-ticket-imagegen-v2.png": "ce7496024881ec603fff2353301fc469818a6f281c12824a31b72fc9d5c065bd",
+      "docent-zaku-pointer-imagegen-v2.png": "7a7ba5ca37d4990f08f5de9a0192a467c59d2a94e98ce9d312821ab6beef0946",
+      "docent-rx78-imagegen-v1.png": "c6760ec309fce4971f75143a0a23ac28ae97eee1b2b3af3bf8d461ed163feb19",
+      "docent-zaku-imagegen-v1.png": "a7b578c65db15bf4c1984f93f95073ea69ea795e0b6660e401755d52f49b20bd"
+    },
+    "source_master_count": 22,
+    "background_count": 14,
+    "character_frame_count": 8,
+    "animation_policy": "body-locked blink-only; no talk-frame substitution",
+    "art_policy": "ImageGen-first; no procedural pictorial fallback",
+    "story_proof_contract": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/story-proof.json",
+    "story_proof_checkpoints": 8
+  }
+}

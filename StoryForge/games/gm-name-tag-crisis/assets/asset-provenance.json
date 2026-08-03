@@ -1,0 +1,215 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "art_policy": "Every pictorial source master was generated with built-in ImageGen; scripts only post-process accepted masters.",
+  "outputs": {
+    "backgrounds/bg_title.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/background_title_imagegen_v1.png",
+      "source_sha256": "b79d75ddfd15eafab1023f76faffd22f487686428bf5a68a6fafb0bc71199ef3",
+      "output_sha256": "abd7809c7516b2dd3473fdf6033d9ce09d823aa4928dd81f7adfb1e1ded9e5c7",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 157.63
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_main.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/background_main_imagegen_v1.png",
+      "source_sha256": "70b4dd2b3b895b8949a9f3014b03f075d3abf4f4214ad17b5cc5689d9f182f77",
+      "output_sha256": "161732d9b4c5c92a351671c12c18f1d909ae89917b705a24c14d891730064a92",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 11,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 184.75
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_a.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/background_ending_a_imagegen_v1.png",
+      "source_sha256": "b0647fe419bd741976f117702fc010a1156e551a62896a2f319488d1ca1955f7",
+      "output_sha256": "ae6d738232ad343bf36f6d975db56d58e6796c672d09f6bd376918b26f5c0a2c",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 183.87
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_b.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/background_ending_b_imagegen_v1.png",
+      "source_sha256": "d4556a83336659d90feaf290eb321faa7b54d749fabe4e25f8b28e4fbc65b3d9",
+      "output_sha256": "f3388132557ed0321f1e2943d1ec78c18a86f837aa4012cfed86f25388000404",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 88.07
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "characters/gm_neutral.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "3f005fb58ce0e32c286a16737040ade063574c9ad66683d976803b533731acd1",
+      "output_sha256": "36f82f0377b16eda55604180b5d8ea8e6b1690cb0a664a6e6ad658ff75dc495f",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          14,
+          3,
+          82,
+          127
+        ],
+        "alpha_coverage": 0.4246,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6742,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 77.66,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 83.11
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5218,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/gm_talk.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "3f005fb58ce0e32c286a16737040ade063574c9ad66683d976803b533731acd1",
+      "output_sha256": "4ad12a5c67b26146a4413e7b84d5aafd9914bfe3a9c69d312924b709f35bfd45",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          14,
+          3,
+          82,
+          127
+        ],
+        "alpha_coverage": 0.4246,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6742,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 77.22,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 82.92
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5218,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/gm_blink.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "3f005fb58ce0e32c286a16737040ade063574c9ad66683d976803b533731acd1",
+      "output_sha256": "3c0f4da1154a60025c6f6941ad7027b116c4699f7bf2fc402510fc74b93c333e",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          14,
+          3,
+          82,
+          127
+        ],
+        "alpha_coverage": 0.4246,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6742,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 79.4,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 84.73
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5218,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    }
+  }
+}

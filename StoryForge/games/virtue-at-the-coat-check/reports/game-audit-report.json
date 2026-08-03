@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:34:46.483107+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "virtue-at-the-coat-check",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/runtime-local/virtue-at-the-coat-check.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/virtue-at-the-coat-check-qa-report.json",
+    "project_counts": {
+      "name": "Virtue at the Coat Check",
+      "nodes": 44,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "header_counts": {
+      "NUM_NODES": 44,
+      "NUM_FLAGS": 0,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 4,
+      "NUM_SFX": 0,
+      "NUM_BG_ASSETS": 4,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 3
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json",
+      "bytes": 172513,
+      "sha256": "f340b0307c3c34057a4db790a5a0e5a8dbd671d00f402a6d6c87ded19564e938"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/runtime-local/virtue-at-the-coat-check.wsc",
+      "bytes": 8388608,
+      "sha256": "6502e0433fc2673ccf68fcb670207e0f754713abe147d64215a6a52370d74438"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/emulator-smoke-report.json",
+      "bytes": 1211,
+      "sha256": "3144e1d0c43e7277c5314a9cd097a660ade2b22637fba5a830929b56301be681"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/game-readiness-report.json",
+      "bytes": 20547,
+      "sha256": "0a257cabefdb54e739fdc63b26b6c43e04146013cd9e912cf0762308aef869d1"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/virtue-at-the-coat-check-qa-report.json",
+      "bytes": 1618,
+      "sha256": "ae267c6db1cc3a5ba86565ed6345a3060422a2cb8d626a5d770a3f8163e54ce3"
+    }
+  }
+}

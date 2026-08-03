@@ -113,6 +113,11 @@ and live reaction bookmarks, audition ImageGen art and music, then hand a
 source-mapped adaptation to SwanSong Studio and prove its delivery with the
 visual Story Ribbon.
 
+The complete Story Forge source now lives in this repository under
+[`StoryForge/`](StoryForge). The signed app includes its fixed, hash-verified
+writing framework, so ordinary use no longer needs a separate framework
+checkout.
+
 ### Cartridge Tools
 
 Put the real handheld back in the loop. With a WonderSwan Color or SwanCrystal,

@@ -54,6 +54,8 @@ int main(int argc, char** argv) {
        SWAN_CAPABILITY_DISPLAY_SPRITE_ATTRIBUTE_PROVENANCE) != 0;
   const bool consumed_prefetch_provenance_ok =
       (capabilities & SWAN_CAPABILITY_CONSUMED_PREFETCH_PROVENANCE) != 0;
+  const bool data_producer_provenance_ok =
+      (capabilities & SWAN_CAPABILITY_DATA_PRODUCER_PROVENANCE) != 0;
 
   if (!backend_ok || !execution_ok || !audio_ok || !provenance_ok ||
       !source_provenance_ok || !source_selection_ok || !source_read_context_ok ||
@@ -78,9 +80,11 @@ int main(int argc, char** argv) {
       std::strcmp(argv[1], "--dma-provenance-fixture") == 0;
   const bool input_frame_fixture =
       argc == 3 && std::strcmp(argv[1], "--input-frame-fixture") == 0;
+  const bool data_producer_fixture =
+      argc == 3 && std::strcmp(argv[1], "--data-producer-fixture") == 0;
   const char* rom_path = provenance_fixture || mono_palette_fixture ||
           mapper_window_fixture || static_analysis_seed_v2_fixture ||
-          dma_provenance_fixture || input_frame_fixture
+          dma_provenance_fixture || input_frame_fixture || data_producer_fixture
       ? argv[2] : (argc > 1 ? argv[1] : nullptr);
   const uint8_t expected_raster_bytes = provenance_fixture
       ? static_cast<uint8_t>(std::strcmp(argv[3], "packed") == 0 ? 1 : 4)
@@ -122,6 +126,27 @@ int main(int argc, char** argv) {
                    swan_result_message(result), swan_engine_last_error(engine));
       swan_engine_destroy(engine);
       return 1;
+    }
+
+    swan_data_producer_probe_options_t data_producer_options{};
+    if (data_producer_fixture) {
+      if (!data_producer_provenance_ok) {
+        std::fputs("ares did not advertise bounded data-producer provenance\n",
+                   stderr);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      data_producer_options.struct_size = sizeof(data_producer_options);
+      data_producer_options.address = 0x13456;
+      data_producer_options.byte_count = 6;
+      result = swan_engine_begin_data_producer_probe(
+          engine, &data_producer_options);
+      if (result != SWAN_RESULT_OK) {
+        std::fprintf(stderr, "could not arm data-producer provenance: %s\n",
+                     swan_engine_last_error(engine));
+        swan_engine_destroy(engine);
+        return 1;
+      }
     }
 
     size_t staged_readback_size = 0;
@@ -172,6 +197,89 @@ int main(int argc, char** argv) {
         video_hash ^= frame.pixels[offset];
         video_hash *= 1099511628211ull;
       }
+    }
+
+    if (data_producer_fixture) {
+      size_t trace_count = 0;
+      result = swan_engine_data_producer_probe(
+          engine, &data_producer_options, nullptr, 0, &trace_count);
+      std::vector<swan_data_producer_trace_t> traces(trace_count);
+      size_t written = 0;
+      if (result == SWAN_RESULT_OK) {
+        result = swan_engine_data_producer_probe(
+            engine, &data_producer_options,
+            traces.data(), traces.size(), &written);
+      }
+      constexpr std::array<uint8_t, 6> kExpectedSource = {
+          0x31, 0x7a, 0xc4, 0x09, 0xe2, 0x5d,
+      };
+      const auto source = std::search(
+          rom.begin(), rom.end(),
+          kExpectedSource.begin(), kExpectedSource.end());
+      const auto duplicate = source == rom.end() ? rom.end() : std::search(
+          source + kExpectedSource.size(), rom.end(),
+          kExpectedSource.begin(), kExpectedSource.end());
+      const uint32_t source_lower = source == rom.end()
+          ? UINT32_MAX : static_cast<uint32_t>(source - rom.begin());
+      const uint32_t source_upper = source_lower + kExpectedSource.size();
+      std::array<bool, 6> covered{};
+      std::optional<uint32_t> writer;
+      bool exact = result == SWAN_RESULT_OK && trace_count == written &&
+          trace_count >= kExpectedSource.size() &&
+          trace_count <= data_producer_options.byte_count * 8 &&
+          source != rom.end() && duplicate == rom.end();
+      for (const auto& trace : traces) {
+        if (trace.struct_size != sizeof(trace) ||
+            trace.target_byte_count != 1 ||
+            trace.target_address < data_producer_options.address ||
+            trace.target_address >= data_producer_options.address +
+                data_producer_options.byte_count) {
+          exact = false;
+          continue;
+        }
+        const uint64_t range_upper =
+            static_cast<uint64_t>(trace.cartridge_offset) +
+            trace.cartridge_length;
+        if (trace.cartridge_offset >= source_upper ||
+            source_lower >= range_upper) continue;
+        const uint32_t index = trace.target_address -
+            data_producer_options.address;
+        covered[index] = true;
+        const uint32_t required =
+            static_cast<uint32_t>(SWAN_DATA_PRODUCER_FLAG_WRITER_PRESENT) |
+            static_cast<uint32_t>(SWAN_DISPLAY_SOURCE_FLAG_EXACT);
+        const uint32_t forbidden =
+            static_cast<uint32_t>(
+                SWAN_DATA_PRODUCER_FLAG_NO_CARTRIDGE_SOURCE) |
+            static_cast<uint32_t>(
+                SWAN_DISPLAY_SOURCE_FLAG_UNKNOWN_DEPENDENCY) |
+            static_cast<uint32_t>(SWAN_DISPLAY_SOURCE_FLAG_RANGE_OVERFLOW) |
+            static_cast<uint32_t>(
+                SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW);
+        exact = exact && (trace.flags & required) == required &&
+            (trace.flags & forbidden) == 0 &&
+            trace.read_context_flags ==
+                SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED &&
+            trace.read_context_initiator ==
+                SWAN_DISPLAY_SOURCE_READ_INITIATOR_CPU;
+        if (!writer) writer = trace.writer_pc;
+        exact = exact && *writer == trace.writer_pc;
+      }
+      exact = exact && std::all_of(
+          covered.begin(), covered.end(), [](bool value) { return value; });
+      if (!exact) {
+        std::fprintf(
+            stderr,
+            "data-producer provenance was incomplete result=%u count=%zu/%zu source=%08x\n",
+            result, trace_count, written, source_lower);
+        swan_engine_destroy(engine);
+        return 1;
+      }
+      std::printf(
+          "PASS data-producer provenance target-bytes=6 source-bytes=6 writers=1 raw-memory=0 source=%08x\n",
+          source_lower);
+      swan_engine_destroy(engine);
+      return 0;
     }
 
     if (dma_provenance_fixture) {

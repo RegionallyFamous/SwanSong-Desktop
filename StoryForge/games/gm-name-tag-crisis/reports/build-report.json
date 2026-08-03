@@ -1,0 +1,228 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:42:24.476959+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "gm-name-tag-crisis",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis",
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+      "bytes": 169599,
+      "sha256": "d8f1dc4fe0853e08a1fc1439ee2324fed5e537055adb6e67f4885d054aea9bb1"
+    },
+    "project_counts": {
+      "name": "The GM Name-Tag Crisis",
+      "nodes": 37,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local",
+    "runtime_sync": {
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local",
+      "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local",
+      "copied": [
+        ".gitignore",
+        "Makefile",
+        "README.md",
+        "music/.gitkeep",
+        "src/font.h",
+        "src/game_types.h",
+        "src/main.c",
+        "third_party/README.md",
+        "tools/analyze_vnds.py",
+        "tools/convert_json.py",
+        "tools/convert_nscripter_proof.py",
+        "tools/convert_vnds_proof.py",
+        "tools/extract_nsa.py",
+        "tools/gen_ambient_sfx.py",
+        "tools/gen_cygnals_menu_fur.py",
+        "tools/saveload_bg.png",
+        "tools/selftest_choice_visuals.py",
+        "tools/wsc_image_prep.py",
+        "wfconfig.toml"
+      ],
+      "skipped": [
+        "build/signal-before-dawn-slice/signal-before-dawn-slice.elf",
+        "build/signal-before-dawn-slice/signal-before-dawn-slice_stage1.elf",
+        "build/signal-before-dawn-slice/src/game_data.d",
+        "build/signal-before-dawn-slice/src/game_data.o",
+        "build/signal-before-dawn-slice/src/main.d",
+        "build/signal-before-dawn-slice/src/main.o",
+        "signal-before-dawn-slice.wsc",
+        "src/game_data.c",
+        "src/game_data.h"
+      ],
+      "quarantined": [],
+      "quarantine_root": null
+    },
+    "runtime_source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local",
+    "asset_builder": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/build_gm_name_tag_crisis.py",
+    "name": "gm-name-tag-crisis",
+    "rom": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local/gm-name-tag-crisis.wsc",
+      "bytes": 8388608,
+      "sha256": "9c4a427a6d6a77f9a5b3de6e185155dd26dfb47fd1f7ccf695323664b5407358"
+    },
+    "smoke_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/emulator-smoke-report.json",
+      "bytes": 1199,
+      "sha256": "f698dd5d4246d8295c962a05fca00c26f16de3c950283d6e0e7a26b28770cec7"
+    },
+    "readiness_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/game-readiness-report.json",
+      "bytes": 20004,
+      "sha256": "37c94d9808485bf370a95144afeac220e5428851001b3106323cbc06b5a2ff7b"
+    },
+    "graphics_contract_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/graphics-contract-report.json",
+      "bytes": 33443,
+      "sha256": "e9381f030ba4cda2e7086c3706a2093f6481005621c6f0a4a0510b013cbb73c2"
+    },
+    "experience_polish_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/experience-polish-report.json",
+      "exists": false
+    },
+    "audit_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/game-audit-report.json",
+      "bytes": 3152,
+      "sha256": "a2ed9d86b29ddafac0e15db2822cac62d2c5803fc8f217a0b0dc219111cf64ab"
+    },
+    "commands": [
+      {
+        "name": "asset-builder",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/build_gm_name_tag_crisis.py"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis",
+        "returncode": 0,
+        "output_tail": "Wrote project: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json\nWrote contact sheet: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/contact_sheet.png\nWrote QA report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/gm-name-tag-crisis-qa-report.json"
+      },
+      {
+        "name": "review-sheets",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/make_wscvn_game_review_sheets.py",
+          "gm-name-tag-crisis",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+          "--asset-root",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/review-sheets-report.json",
+          "--font",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis",
+        "returncode": 0,
+        "output_tail": "Scene preview sheet: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/scene_preview_sheet.png\nStoryboard sheet: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/storyboard_sheet.png\nReview sheets report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/review-sheets-report.json"
+      },
+      {
+        "name": "readiness",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py",
+          "gm-name-tag-crisis",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+          "--asset-root",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/game-readiness-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis",
+        "returncode": 0,
+        "output_tail": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:219: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:220: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:222: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alpha_coverage = sum(1 for pixel in image.getdata() if pixel[3] > 0) / (image.width * image.height)\nGame readiness report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/game-readiness-report.json\n[i] Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.\nTechnical game readiness passed; aesthetic review remains separate"
+      },
+      {
+        "name": "graphics-contract",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_graphics_contract.py",
+          "--asset-root",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+          "--allow-missing-provenance",
+          "--out",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/graphics-contract-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis",
+        "returncode": 0,
+        "output_tail": "Graphics contract report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/graphics-contract-report.json\nGraphics contract passed"
+      },
+      {
+        "name": "convert",
+        "cmd": [
+          "make",
+          "convert",
+          "JSON=/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+          "PY=/opt/homebrew/opt/python@3.14/bin/python3.14"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local",
+        "returncode": 0,
+        "output_tail": "/opt/homebrew/opt/python@3.14/bin/python3.14 tools/convert_json.py \"/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json\" src/\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local/tools/convert_json.py:939: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  indexed = list(q.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local/tools/convert_json.py:517: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local/tools/convert_json.py:580: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(frame.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local/tools/convert_json.py:606: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local/tools/convert_json.py:627: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgb.getdata())\n[+] Loaded \"The GM Name-Tag Crisis\" \u2014 37 nodes, 0 flags, 4 tracks, 4 backgrounds, 3 characters\n[+] Wrote src//game_data.h and src//game_data.c\n[+] Ready: run \"make\" from the project root."
+      },
+      {
+        "name": "clean",
+        "cmd": [
+          "make",
+          "clean",
+          "NAME=gm-name-tag-crisis"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local",
+        "returncode": 0,
+        "output_tail": "rm -rf build/gm-name-tag-crisis gm-name-tag-crisis.wsc"
+      },
+      {
+        "name": "build",
+        "cmd": [
+          "make",
+          "NAME=gm-name-tag-crisis"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local",
+        "returncode": 0,
+        "output_tail": "/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/gm-name-tag-crisis/src/main.o src/main.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/gm-name-tag-crisis/src/game_data.o src/game_data.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -r -o build/gm-name-tag-crisis/gm-name-tag-crisis_stage1.elf build/gm-name-tag-crisis/src/main.o build/gm-name-tag-crisis/src/game_data.o /opt/wonderful/target/wswan/medium/lib/crt0.o -T/opt/wonderful/target/wswan/medium/link.ld -L/opt/wonderful/target/wswan/medium/lib -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -u __wse_tiles_2bpp -u __wse_color_palette -L/opt/wonderful/toolchain/gcc-ia16-elf/lib/v30mz-segelf/medium -lwse -lwsx -lws -lgcc\n/opt/wonderful/bin/wf-wswantool build rom -c wfconfig.toml -o gm-name-tag-crisis.wsc --output-elf build/gm-name-tag-crisis/gm-name-tag-crisis.elf build/gm-name-tag-crisis/gm-name-tag-crisis_stage1.elf\n=== BUILD COMPLETE ===\n-rw-r--r--@ 1 nick  staff   8.0M Jul 26 21:42 gm-name-tag-crisis.wsc"
+      },
+      {
+        "name": "smoke",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/smoke_wscvn_rom.py",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local/gm-name-tag-crisis.wsc",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/emulator-smoke-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis",
+        "returncode": 0,
+        "output_tail": "Emulator smoke report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/emulator-smoke-report.json\nBoot/checksum smoke passed (no pixels observed): wswan(WonderSwan) 8192KiB checksum 0xba0b\nVisual verification not performed; no emulator screenshot proof was bound"
+      },
+      {
+        "name": "audit",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+          "gm-name-tag-crisis",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+          "--runtime",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local",
+          "--build-report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/build-report.json",
+          "--smoke-report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/emulator-smoke-report.json",
+          "--readiness-report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/game-readiness-report.json",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/game-audit-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis",
+        "returncode": 0,
+        "output_tail": "Game audit report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/game-audit-report.json\nGame audit passed"
+      }
+    ]
+  }
+}

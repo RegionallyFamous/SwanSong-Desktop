@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:40:39.292166+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "four-part-errand-run",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/projects/four-part-errand-run.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/runtime-local/four-part-errand-run.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/four-part-errand-run-qa-report.json",
+    "project_counts": {
+      "name": "The Four-Part Errand Run",
+      "nodes": 37,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "header_counts": {
+      "NUM_NODES": 37,
+      "NUM_FLAGS": 0,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 4,
+      "NUM_SFX": 0,
+      "NUM_BG_ASSETS": 4,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 3
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/projects/four-part-errand-run.wscvn.json",
+      "bytes": 180149,
+      "sha256": "009d553892424951f5929ddb5f76bb705c7d79a0706504b8331eac48515c7913"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/runtime-local/four-part-errand-run.wsc",
+      "bytes": 8388608,
+      "sha256": "cdee2249ef9db6e071cd051d29e1495edb268d4d1d126a8b4af14a7df333acbc"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/emulator-smoke-report.json",
+      "bytes": 1203,
+      "sha256": "d9b763fa69c56c7092f910bd36fb91e3828d62438dbf9d09ee88b21e21a8ad40"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/game-readiness-report.json",
+      "bytes": 20308,
+      "sha256": "f054901afcfa1c0585c9e2547da504d46ffc7fe6fab10554502f97018ad2d4e3"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/four-part-errand-run-qa-report.json",
+      "bytes": 1628,
+      "sha256": "0a8dd45e4e56a11a138460a57bae191849f761ac62291f1276e30e65bd2a7865"
+    }
+  }
+}

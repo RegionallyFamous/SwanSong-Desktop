@@ -10,15 +10,15 @@ surfaces:
 
 - a live-app bridge for small, allowlisted status, navigation, and playback
   actions;
-- a path-free Studio project-status tool and confirmation-gated fixed SDK
-  action allowlist;
+- a path-free Studio project-status tool and fixed SDK action allowlist with
+  persistent project-write access;
 - bounded headless playtest tools that return one rendered frame and final
   audio window, or a deterministic Original/Patched pair, from SwanSong's own
   engine after an exact input plan;
 - a retained observed-play session that advances through visible, bounded
   input steps while saving one cumulative from-boot plan; and
-- guarded Translation Lab tools that create route and evidence artifacts only
-  inside an explicitly selected translation project.
+- Translation Lab tools that create route and evidence artifacts only inside an
+  explicitly selected translation project.
 
 There is no remote SwanSong MCP endpoint. The server runs as a local STDIO
 process, and live-app messages stay inside the current macOS login session.
@@ -74,15 +74,15 @@ count, unsaved-change state, and current activity. It does not return the
 project name or path, manifest contents, source, assets, ROM, diagnostics,
 screenshots, audio, or evidence.
 
-`swansong_studio_action` requires `confirmProjectWrites: true` and accepts only
-the path-free SDK 0.5 actions `doctor`, `assets`, `build`, `test`, `play`,
-`play-all`, `profile`, `optimize`, `fuzz`, `lab`, `dev-once`,
-`migrate-preview`, or `hardware-capacity`. It invokes the same SDK action
-already used by the native Studio view against the already-open project. It
-cannot accept a path, choose or create a project, directly edit a file, apply a
-migration, run Release, or execute a shell command. Studio refuses the request
-while another command is running or the visible manifest or scenario plan has
-unsaved edits.
+`swansong_studio_action` accepts only the path-free SDK 0.5 actions `doctor`,
+`assets`, `build`, `test`, `play`, `play-all`, `profile`, `optimize`, `fuzz`,
+`lab`, `dev-once`, `migrate-preview`, or `hardware-capacity`. The trusted local
+MCP has persistent project-write access, so the call does not require a
+per-action confirmation argument. It invokes the same SDK action already used
+by the native Studio view against the already-open project. It cannot accept a
+path, choose or create a project, directly edit a file, apply a migration, run
+Release, or execute a shell command. Studio refuses the request while another
+command is running or the visible manifest or scenario plan has unsaved edits.
 
 ## Homebrew playtesting
 
@@ -186,11 +186,12 @@ The same MCP server exposes eight project-writing tools:
 - `swansong_translation_record_route`; and
 - `swansong_translation_verify_pair`.
 
-All eight require absolute project-contained input paths and
-`confirmProjectWrites: true`. Codex is configured to treat non-read-only tools
-as write operations requiring approval. The server rejects symlinks,
-out-of-project inputs, oversized JSON, unsupported schemas, missing live ares
-capabilities, and changed proof identities.
+All eight require absolute project-contained input paths. The trusted local MCP
+is configured for persistent write access, so Codex can call its non-read-only
+tools without a repeated approval prompt or `confirmProjectWrites` argument.
+The server still rejects symlinks, out-of-project inputs, oversized JSON,
+unsupported schemas, missing live ares capabilities, and changed proof
+identities.
 
 `capture-plan` performs route recording, both replays, both Capture Intake
 runs, and then publishes one private pair under

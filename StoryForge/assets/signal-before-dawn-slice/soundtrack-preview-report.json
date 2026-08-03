@@ -1,0 +1,236 @@
+{
+  "ok": true,
+  "errors": [],
+  "generated_at_utc": "2026-07-27T03:39:52.143469+00:00",
+  "project": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/projects/signal-before-dawn-slice.wscvn.json",
+    "bytes": 474460,
+    "sha256": "12e91e46f011e49043a3e43bfc58674c37b7c66c6a6af76bb1baf653bf1d2480"
+  },
+  "renderer": {
+    "backend": "legacy-tracker-wavetable-audition",
+    "sample_rate": 22050,
+    "loops": 2,
+    "channels": 1,
+    "sample_width_bits": 16,
+    "note": "Offline audition mirrors the runtime's 32-sample wave shapes and variable-length 16th-note grid; hardware output and emulator mixing may differ."
+  },
+  "tracks": [
+    {
+      "id": "track_dead_air",
+      "name": "Dead Air",
+      "bpm": 72,
+      "length_steps": 32,
+      "loop_seconds": 6.667,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/audio/signal-before-dawn-slice/01-dead_air.wav",
+      "bytes": 588044,
+      "sha256": "ed2d0dc9b707e2e6a114d5bc3d7742d9e9287186b1b5121bc6118fa51412cfe9",
+      "duration_seconds": 13.333,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -19.212,
+        "near_silent_sample_share": 0.019133,
+        "max_loop_jump_linear": 0.059481
+      }
+    },
+    {
+      "id": "track_three_notes",
+      "name": "Three Notes",
+      "bpm": 92,
+      "length_steps": 32,
+      "loop_seconds": 5.217,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/audio/signal-before-dawn-slice/02-three_notes.wav",
+      "bytes": 460218,
+      "sha256": "8d9048fdedcad80762ad2d488deb4eecf422357fe318fc5715c719e3defb29a7",
+      "duration_seconds": 10.435,
+      "metrics": {
+        "peak_dbfs": -10.411,
+        "rms_dbfs": -18.67,
+        "near_silent_sample_share": 0.015512,
+        "max_loop_jump_linear": 0.011841
+      }
+    },
+    {
+      "id": "track_below_the_light",
+      "name": "Below the Light",
+      "bpm": 86,
+      "length_steps": 32,
+      "loop_seconds": 5.581,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/audio/signal-before-dawn-slice/03-below_the_light.wav",
+      "bytes": 492324,
+      "sha256": "881c5d3176b3e5afdf10681d8649a28206ebf7c50abf46d454d5c65d49bc1d8c",
+      "duration_seconds": 11.163,
+      "metrics": {
+        "peak_dbfs": -8.587,
+        "rms_dbfs": -16.105,
+        "near_silent_sample_share": 0.008495,
+        "max_loop_jump_linear": 0.001282
+      }
+    },
+    {
+      "id": "track_answer_together",
+      "name": "Answer Together",
+      "bpm": 82,
+      "length_steps": 32,
+      "loop_seconds": 5.854,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/audio/signal-before-dawn-slice/04-answer_together.wav",
+      "bytes": 516336,
+      "sha256": "cdb9f59467904b8705b8e2455e95494a9e4463b0429703f6666488219a2f0d94",
+      "duration_seconds": 11.707,
+      "metrics": {
+        "peak_dbfs": -7.588,
+        "rms_dbfs": -15.773,
+        "near_silent_sample_share": 0.009165,
+        "max_loop_jump_linear": 0.09238
+      }
+    },
+    {
+      "id": "track_blue_lens",
+      "name": "Blue Lens",
+      "bpm": 90,
+      "length_steps": 32,
+      "loop_seconds": 5.333,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/audio/signal-before-dawn-slice/05-blue_lens.wav",
+      "bytes": 470444,
+      "sha256": "c30b3602f8fb20019413cd8ce771bbf32b62311ac4b11d7d73b265672e3b247f",
+      "duration_seconds": 10.667,
+      "metrics": {
+        "peak_dbfs": -8.587,
+        "rms_dbfs": -16.915,
+        "near_silent_sample_share": 0.010867,
+        "max_loop_jump_linear": 0.0
+      }
+    },
+    {
+      "id": "track_hidden_room",
+      "name": "Hidden Room",
+      "bpm": 76,
+      "length_steps": 32,
+      "loop_seconds": 6.316,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/audio/signal-before-dawn-slice/06-hidden_room.wav",
+      "bytes": 557096,
+      "sha256": "41c19bf5cf95cb4b7f965f253414364581b51f8148a453a9ed813bfa441ee0d5",
+      "duration_seconds": 12.632,
+      "metrics": {
+        "peak_dbfs": -9.03,
+        "rms_dbfs": -17.411,
+        "near_silent_sample_share": 0.018759,
+        "max_loop_jump_linear": 0.048036
+      }
+    },
+    {
+      "id": "track_far_reply",
+      "name": "Far Reply",
+      "bpm": 84,
+      "length_steps": 32,
+      "loop_seconds": 5.714,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/audio/signal-before-dawn-slice/07-far_reply.wav",
+      "bytes": 504044,
+      "sha256": "64ddc18de2b699a3f215e140dbf16660a9162e6c245482f359caff5c8d6ab1a8",
+      "duration_seconds": 11.429,
+      "metrics": {
+        "peak_dbfs": -9.146,
+        "rms_dbfs": -17.586,
+        "near_silent_sample_share": 0.022508,
+        "max_loop_jump_linear": 0.017182
+      }
+    },
+    {
+      "id": "track_first_gull",
+      "name": "First Gull",
+      "bpm": 68,
+      "length_steps": 32,
+      "loop_seconds": 7.059,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/audio/signal-before-dawn-slice/08-first_gull.wav",
+      "bytes": 622632,
+      "sha256": "28c6a536a33b81cd1e4188bfcf34fa1d8c403bc2e5aebc7a210059fd6f925f5c",
+      "duration_seconds": 14.118,
+      "metrics": {
+        "peak_dbfs": -8.587,
+        "rms_dbfs": -17.764,
+        "near_silent_sample_share": 0.021584,
+        "max_loop_jump_linear": 0.013428
+      }
+    }
+  ],
+  "cues": [
+    {
+      "node": "title",
+      "node_name": "Title Screen",
+      "track": "track_dead_air"
+    },
+    {
+      "node": "lune_enters",
+      "node_name": "Three Notes",
+      "track": "track_three_notes"
+    },
+    {
+      "node": "lighthouse_signal",
+      "node_name": "Below The Light",
+      "track": "track_below_the_light"
+    },
+    {
+      "node": "signal_key_clue",
+      "node_name": "Signal And Key",
+      "track": "track_below_the_light"
+    },
+    {
+      "node": "all_clues",
+      "node_name": "All Three Clues",
+      "track": "track_below_the_light"
+    },
+    {
+      "node": "together_answer",
+      "node_name": "Together Answer",
+      "track": "track_answer_together"
+    },
+    {
+      "node": "signal_lune_clue",
+      "node_name": "Signal And Lune",
+      "track": "track_below_the_light"
+    },
+    {
+      "node": "under_hatch",
+      "node_name": "Under The Deck",
+      "track": "track_below_the_light"
+    },
+    {
+      "node": "key_lune_clue",
+      "node_name": "Key And Lune",
+      "track": "track_below_the_light"
+    },
+    {
+      "node": "shared_clue",
+      "node_name": "A Shared Clue",
+      "track": "track_below_the_light"
+    },
+    {
+      "node": "beacon_answer",
+      "node_name": "Beacon Answer",
+      "track": "track_blue_lens"
+    },
+    {
+      "node": "hatch_room_wakes",
+      "node_name": "Room Wakes",
+      "track": "track_hidden_room"
+    },
+    {
+      "node": "lune_reply",
+      "node_name": "Lune Reply",
+      "track": "track_far_reply"
+    },
+    {
+      "node": "sunrise_wait",
+      "node_name": "Sunrise Wait",
+      "track": "track_first_gull"
+    }
+  ]
+}

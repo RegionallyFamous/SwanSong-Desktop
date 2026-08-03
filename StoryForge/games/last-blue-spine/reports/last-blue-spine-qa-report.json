@@ -1,0 +1,107 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:47:04.886435+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/projects/last-blue-spine.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/contact_sheet.png",
+    "nodes": 35,
+    "flags": 6,
+    "backgrounds": {
+      "bg_shelf_room": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_station_swap": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 14,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_test_counter": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true
+      }
+    },
+    "characters": {
+      "char_aya_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_aya_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_aya_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_ren_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_ren_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_ren_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      }
+    },
+    "text": {
+      "blocks": 185,
+      "max_pause_block_chars": 99
+    },
+    "art_direction": [
+      "All cart/game names are fictional; no commercial ROM contents are used.",
+      "The story centers on care, condition, and memory in WonderSwan collecting.",
+      "Final backgrounds are 224x144, 16-color, RGB444-snapped, with quiet portrait lanes.",
+      "Final character frames are 96x128, transparent, RGB444-snapped, and capped at 15 visible colors."
+    ]
+  }
+}

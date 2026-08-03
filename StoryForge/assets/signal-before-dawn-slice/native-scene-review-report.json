@@ -1,0 +1,2128 @@
+{
+  "generator": {
+    "method": "crop storyboard 2x cells and restore exact native pixels with nearest-neighbor",
+    "path": "scripts/make_signal_before_dawn_native_review.py",
+    "sha256": "c9dde4df7a78642d632457565ee0d73f270fc82fe5d550e9822fda5ab27efc09",
+    "timestamps_included": false
+  },
+  "output": {
+    "bytes": 567310,
+    "columns": 5,
+    "dimensions": [
+      1212,
+      1254
+    ],
+    "image_path": "assets/signal-before-dawn-slice/native-scene-review-sheet.png",
+    "mode": "RGBA",
+    "native_content_dimensions": [
+      224,
+      144
+    ],
+    "pixel_sha256": "91247ec7c496b6f3775eb6992bcba50a952bc6019f354d368a29875db99dede5",
+    "report_path": "assets/signal-before-dawn-slice/native-scene-review-report.json",
+    "rows": 7,
+    "scene_count": 35,
+    "scene_ids": [
+      "opening_watch",
+      "deck_open",
+      "lune_enters",
+      "radio_tune",
+      "locker",
+      "wake_lune",
+      "quiet_deck",
+      "radio_second",
+      "locker_second",
+      "lune_second",
+      "radio_third",
+      "locker_third",
+      "lune_third",
+      "lighthouse_signal",
+      "signal_key_clue",
+      "all_clues",
+      "together_answer",
+      "signal_lune_clue",
+      "under_hatch",
+      "key_lune_clue",
+      "shared_clue",
+      "beacon_answer",
+      "hatch_room_wakes",
+      "lune_reply",
+      "sunrise_wait",
+      "ending_signal",
+      "signal_coda",
+      "ending_together",
+      "together_coda",
+      "ending_hatch",
+      "hatch_coda",
+      "ending_lune",
+      "lune_coda",
+      "ending_sunrise",
+      "sunrise_coda"
+    ],
+    "sha256": "af464f915f78ba930e2abee05953b73a012bd33ab7ace35d2b8447dc08bf5478"
+  },
+  "project": {
+    "bytes": 474460,
+    "name": "Signal Before Dawn: Vertical Slice",
+    "path": "projects/signal-before-dawn-slice.wscvn.json",
+    "scene_node_count": 35,
+    "scene_node_ids": [
+      "opening_watch",
+      "deck_open",
+      "lune_enters",
+      "radio_tune",
+      "locker",
+      "wake_lune",
+      "quiet_deck",
+      "radio_second",
+      "locker_second",
+      "lune_second",
+      "radio_third",
+      "locker_third",
+      "lune_third",
+      "lighthouse_signal",
+      "signal_key_clue",
+      "all_clues",
+      "together_answer",
+      "signal_lune_clue",
+      "under_hatch",
+      "key_lune_clue",
+      "shared_clue",
+      "beacon_answer",
+      "hatch_room_wakes",
+      "lune_reply",
+      "sunrise_wait",
+      "ending_signal",
+      "signal_coda",
+      "ending_together",
+      "together_coda",
+      "ending_hatch",
+      "hatch_coda",
+      "ending_lune",
+      "lune_coda",
+      "ending_sunrise",
+      "sunrise_coda"
+    ],
+    "sha256": "12e91e46f011e49043a3e43bfc58674c37b7c66c6a6af76bb1baf653bf1d2480",
+    "start_node_id": "title",
+    "total_node_count": 46,
+    "version": 1
+  },
+  "schema_version": 1,
+  "source_storyboard": {
+    "bytes": 816983,
+    "columns": 2,
+    "dimensions": [
+      934,
+      5770
+    ],
+    "expected_dimensions": [
+      934,
+      5770
+    ],
+    "mode": "RGBA",
+    "path": "assets/signal-before-dawn-slice/storyboard_sheet.png",
+    "pixel_sha256": "6d2898994092c0cd0bddbeb6f7257f8ae6e932d0b21615506e049c90d0feed25",
+    "render_scale": 2,
+    "rendered_cell_dimensions": [
+      448,
+      288
+    ],
+    "sha256": "cf31b10e63419b7b08396674516139fa20c02c15f5681048bf9b304a78581752"
+  },
+  "status": "pass",
+  "verification": {
+    "checks": {
+      "all_cell_pixel_hashes_are_unique": true,
+      "all_cells_are_exactly_224x144": true,
+      "all_cells_are_nonblank": true,
+      "all_cells_meet_nearest_difference_threshold": true,
+      "all_labels_are_outside_frames": true,
+      "all_scene_nodes_appear_once": true,
+      "project_scene_count_is_35": true,
+      "project_scene_ids_are_unique": true,
+      "saved_output_cells_match_source_cells": true,
+      "source_cells_are_exact_nearest_2x": true,
+      "source_labels_match_project_order": true,
+      "source_storyboard_dimensions_match": true
+    },
+    "passed": true,
+    "scenes": [
+      {
+        "id": "opening_watch",
+        "index": 1,
+        "luma_entropy": 3.974443,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.14871652,
+          "scene_id": "quiet_deck"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          18,
+          36,
+          242,
+          180
+        ],
+        "output_label": "01 opening_watch",
+        "output_label_box": [
+          18,
+          18,
+          242,
+          36
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "57af28b29cd76c16d02b00f745453a6a52bbf7394bbda3018c72c71f04667228",
+        "source_frame_box": [
+          12,
+          30,
+          460,
+          318
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "01 opening_watch  right  char_mira_action_neutral",
+        "source_label_box": [
+          12,
+          12,
+          460,
+          30
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 263,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "deck_open",
+        "index": 2,
+        "luma_entropy": 3.875886,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.04330977,
+          "scene_id": "quiet_deck"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          256,
+          36,
+          480,
+          180
+        ],
+        "output_label": "02 deck_open",
+        "output_label_box": [
+          256,
+          18,
+          480,
+          36
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "388197339653421cacdda12262dc6fbb0179bb1e182862f466ff609ddf4ab7d3",
+        "source_frame_box": [
+          474,
+          30,
+          922,
+          318
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "02 deck_open  right  char_mira_worried_neutral",
+        "source_label_box": [
+          474,
+          12,
+          922,
+          30
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 224,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "lune_enters",
+        "index": 3,
+        "luma_entropy": 3.925467,
+        "luma_max": 237,
+        "luma_min": 0,
+        "luma_range": 237,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.05081225,
+          "scene_id": "lune_reply"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          494,
+          36,
+          718,
+          180
+        ],
+        "output_label": "03 lune_enters",
+        "output_label_box": [
+          494,
+          18,
+          718,
+          36
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "0ad2c7fa3ec8ae622fc9d181a77c5f695e678958bcd0dc333c5a187d15ce1ce5",
+        "source_frame_box": [
+          12,
+          350,
+          460,
+          638
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "03 lune_enters  left  char_lune_radio_neutral",
+        "source_label_box": [
+          12,
+          332,
+          460,
+          350
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 205,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "radio_tune",
+        "index": 4,
+        "luma_entropy": 3.983245,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.05071925,
+          "scene_id": "radio_second"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          732,
+          36,
+          956,
+          180
+        ],
+        "output_label": "04 radio_tune",
+        "output_label_box": [
+          732,
+          18,
+          956,
+          36
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "cec0bf7bf3c6a2506ae72ce533ec446be9295b039fb6f7bef8cdf0461c06050b",
+        "source_frame_box": [
+          474,
+          350,
+          922,
+          638
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "04 radio_tune  left  char_mira_resolved_neutral",
+        "source_label_box": [
+          474,
+          332,
+          922,
+          350
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 288,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "locker",
+        "index": 5,
+        "luma_entropy": 4.098833,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.06432912,
+          "scene_id": "key_lune_clue"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          970,
+          36,
+          1194,
+          180
+        ],
+        "output_label": "05 locker",
+        "output_label_box": [
+          970,
+          18,
+          1194,
+          36
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "0d5c9ca6924db8b73e8922a4a4e4d42508d28e66636386ddbd5c1daf72ea4990",
+        "source_frame_box": [
+          12,
+          670,
+          460,
+          958
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "05 locker  left  char_lune_alert_neutral",
+        "source_label_box": [
+          12,
+          652,
+          460,
+          670
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 240,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "wake_lune",
+        "index": 6,
+        "luma_entropy": 4.089358,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.29392981,
+          "scene_id": "lune_third"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          18,
+          212,
+          242,
+          356
+        ],
+        "output_label": "06 wake_lune",
+        "output_label_box": [
+          18,
+          194,
+          242,
+          212
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "720b9c8eabb9c255bd2bb146a99bf276bf7ad0bf6e29afe96569646ea55a7bf0",
+        "source_frame_box": [
+          474,
+          670,
+          922,
+          958
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "06 wake_lune  right  char_lune_radio_neutral",
+        "source_label_box": [
+          474,
+          652,
+          922,
+          670
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 234,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "quiet_deck",
+        "index": 7,
+        "luma_entropy": 3.87645,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.04330977,
+          "scene_id": "deck_open"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          256,
+          212,
+          480,
+          356
+        ],
+        "output_label": "07 quiet_deck",
+        "output_label_box": [
+          256,
+          194,
+          480,
+          212
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "3f37e1b8d8c7daadd558f200a2d965838ed8062d38fd441d81bf5218e45867fb",
+        "source_frame_box": [
+          12,
+          990,
+          460,
+          1278
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "07 quiet_deck  right  char_mira_worried_neutral",
+        "source_label_box": [
+          12,
+          972,
+          460,
+          990
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 260,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "radio_second",
+        "index": 8,
+        "luma_entropy": 3.995118,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.05071925,
+          "scene_id": "radio_tune"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          494,
+          212,
+          718,
+          356
+        ],
+        "output_label": "08 radio_second",
+        "output_label_box": [
+          494,
+          194,
+          718,
+          212
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "1f58b5dc371dba298cdb9b40956ced09603353763f257d173dc1262770bbeac1",
+        "source_frame_box": [
+          474,
+          990,
+          922,
+          1278
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "08 radio_second  left  char_mira_resolved_neutral",
+        "source_label_box": [
+          474,
+          972,
+          922,
+          990
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 254,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "locker_second",
+        "index": 9,
+        "luma_entropy": 4.143391,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.04594494,
+          "scene_id": "locker_third"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          732,
+          212,
+          956,
+          356
+        ],
+        "output_label": "09 locker_second",
+        "output_label_box": [
+          732,
+          194,
+          956,
+          212
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "5d1d9e27723d106c40a3f67ea7c9086e38d98a94564ba05aa2e3ec5c955bd2e6",
+        "source_frame_box": [
+          12,
+          1310,
+          460,
+          1598
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "09 locker_second  right  char_lune_resolved_neutral",
+        "source_label_box": [
+          12,
+          1292,
+          460,
+          1310
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 234,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "lune_second",
+        "index": 10,
+        "luma_entropy": 4.129177,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.04523189,
+          "scene_id": "lune_third"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          970,
+          212,
+          1194,
+          356
+        ],
+        "output_label": "10 lune_second",
+        "output_label_box": [
+          970,
+          194,
+          1194,
+          212
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "edbbe79e082398c7f8ee470b0e69b31729af8f0ae48a2a5469095cb1627cea94",
+        "source_frame_box": [
+          474,
+          1310,
+          922,
+          1598
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "10 lune_second  left  char_lune_radio_neutral",
+        "source_label_box": [
+          474,
+          1292,
+          922,
+          1310
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 213,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "radio_third",
+        "index": 11,
+        "luma_entropy": 4.035532,
+        "luma_max": 240,
+        "luma_min": 0,
+        "luma_range": 240,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.05350942,
+          "scene_id": "radio_second"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          18,
+          388,
+          242,
+          532
+        ],
+        "output_label": "11 radio_third",
+        "output_label_box": [
+          18,
+          370,
+          242,
+          388
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "7ca21cafc248cff583c74defe2e225d4e1e02e0d2cf3e36770aa313643858fec",
+        "source_frame_box": [
+          12,
+          1630,
+          460,
+          1918
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "11 radio_third  left  char_mira_resolved_neutral",
+        "source_label_box": [
+          12,
+          1612,
+          460,
+          1630
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 301,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "locker_third",
+        "index": 12,
+        "luma_entropy": 4.147916,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.04594494,
+          "scene_id": "locker_second"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          256,
+          388,
+          480,
+          532
+        ],
+        "output_label": "12 locker_third",
+        "output_label_box": [
+          256,
+          370,
+          480,
+          388
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "44803b5cd98fe98452ad9f45cb5a46b61dc5c8353ef01a1a34dce8f2c734ae7a",
+        "source_frame_box": [
+          474,
+          1630,
+          922,
+          1918
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "12 locker_third  right  char_lune_resolved_neutral",
+        "source_label_box": [
+          474,
+          1612,
+          922,
+          1630
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 211,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "lune_third",
+        "index": 13,
+        "luma_entropy": 4.1312,
+        "luma_max": 237,
+        "luma_min": 0,
+        "luma_range": 237,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.04523189,
+          "scene_id": "lune_second"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          494,
+          388,
+          718,
+          532
+        ],
+        "output_label": "13 lune_third",
+        "output_label_box": [
+          494,
+          370,
+          718,
+          388
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "8c78264df31ed9249da415fbac8de72ba2a0a1ce7e710cc0752bab24ccfef4bc",
+        "source_frame_box": [
+          12,
+          1950,
+          460,
+          2238
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "13 lune_third  left  char_lune_radio_neutral",
+        "source_label_box": [
+          12,
+          1932,
+          460,
+          1950
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 222,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "lighthouse_signal",
+        "index": 14,
+        "luma_entropy": 3.984584,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.04808408,
+          "scene_id": "all_clues"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          732,
+          388,
+          956,
+          532
+        ],
+        "output_label": "14 lighthouse_signal",
+        "output_label_box": [
+          732,
+          370,
+          956,
+          388
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "a4dd88a770bf7bc09159934892747405c06c0918b35c9f46c659d1915563699b",
+        "source_frame_box": [
+          474,
+          1950,
+          922,
+          2238
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "14 lighthouse_signal  right  char_mira_resolved_neutral",
+        "source_label_box": [
+          474,
+          1932,
+          922,
+          1950
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 248,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "signal_key_clue",
+        "index": 15,
+        "luma_entropy": 3.897251,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.03583829,
+          "scene_id": "all_clues"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          970,
+          388,
+          1194,
+          532
+        ],
+        "output_label": "15 signal_key_clue",
+        "output_label_box": [
+          970,
+          370,
+          1194,
+          388
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "ca2f916cc7a73d6281b72f2bc0c782a2df0ac6b6d493767b6237c0bd19e5f745",
+        "source_frame_box": [
+          12,
+          2270,
+          460,
+          2558
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "15 signal_key_clue  right  char_mira_resolved_neutral",
+        "source_label_box": [
+          12,
+          2252,
+          460,
+          2270
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 260,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "all_clues",
+        "index": 16,
+        "luma_entropy": 3.917441,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.03583829,
+          "scene_id": "signal_key_clue"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          18,
+          564,
+          242,
+          708
+        ],
+        "output_label": "16 all_clues",
+        "output_label_box": [
+          18,
+          546,
+          242,
+          564
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "25d1e4875d228ce33eb72b1b85df2430f77ed6bc39bdef969bd91e380c897bdf",
+        "source_frame_box": [
+          474,
+          2270,
+          922,
+          2558
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "16 all_clues  right  char_mira_resolved_neutral",
+        "source_label_box": [
+          474,
+          2252,
+          922,
+          2270
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 257,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "together_answer",
+        "index": 17,
+        "luma_entropy": 3.786132,
+        "luma_max": 238,
+        "luma_min": 0,
+        "luma_range": 238,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.04609995,
+          "scene_id": "ending_lune"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          256,
+          564,
+          480,
+          708
+        ],
+        "output_label": "17 together_answer",
+        "output_label_box": [
+          256,
+          546,
+          480,
+          564
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "aa90888bdbc4519cba7fbac9ee0e671739ddace1c2022615c11305ef45f586d6",
+        "source_frame_box": [
+          12,
+          2590,
+          460,
+          2878
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "17 together_answer  right  char_lune_warm_neutral",
+        "source_label_box": [
+          12,
+          2572,
+          460,
+          2590
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 220,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "signal_lune_clue",
+        "index": 18,
+        "luma_entropy": 3.892877,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.43418279,
+          "scene_id": "all_clues"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          494,
+          564,
+          718,
+          708
+        ],
+        "output_label": "18 signal_lune_clue",
+        "output_label_box": [
+          494,
+          546,
+          718,
+          564
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "28f305014654aeb4596a23fc407e72097f94ef4a7fbab3343899a3bf55b96ea6",
+        "source_frame_box": [
+          474,
+          2590,
+          922,
+          2878
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "18 signal_lune_clue  right  char_lune_radio_neutral",
+        "source_label_box": [
+          474,
+          2572,
+          922,
+          2590
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 214,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "under_hatch",
+        "index": 19,
+        "luma_entropy": 3.995349,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.08807664,
+          "scene_id": "ending_hatch"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          732,
+          564,
+          956,
+          708
+        ],
+        "output_label": "19 under_hatch",
+        "output_label_box": [
+          732,
+          546,
+          956,
+          564
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "7cf68099d03054c42bdf8663c71c72c4baf5f00a5720ca401f7256ae22a1d03e",
+        "source_frame_box": [
+          12,
+          2910,
+          460,
+          3198
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "19 under_hatch  left  char_lune_alert_neutral",
+        "source_label_box": [
+          12,
+          2892,
+          460,
+          2910
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 234,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "key_lune_clue",
+        "index": 20,
+        "luma_entropy": 4.137006,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.06432912,
+          "scene_id": "locker"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          970,
+          564,
+          1194,
+          708
+        ],
+        "output_label": "20 key_lune_clue",
+        "output_label_box": [
+          970,
+          546,
+          1194,
+          564
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "8bac5ac48d56b624be74ab9ec0ff07f74d8e4f9f419fc01491121087d49ab254",
+        "source_frame_box": [
+          474,
+          2910,
+          922,
+          3198
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "20 key_lune_clue  left  char_lune_warm_neutral",
+        "source_label_box": [
+          474,
+          2892,
+          922,
+          2910
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 235,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "shared_clue",
+        "index": 21,
+        "luma_entropy": 4.133018,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.13845486,
+          "scene_id": "lune_third"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          18,
+          740,
+          242,
+          884
+        ],
+        "output_label": "21 shared_clue",
+        "output_label_box": [
+          18,
+          722,
+          242,
+          740
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "93d4482e2ec925b095bf9a098ba55205bde794ac8497d36f1aa183478e205194",
+        "source_frame_box": [
+          12,
+          3230,
+          460,
+          3518
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "21 shared_clue  left  char_lune_warm_neutral",
+        "source_label_box": [
+          12,
+          3212,
+          460,
+          3230
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 239,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "beacon_answer",
+        "index": 22,
+        "luma_entropy": 3.924925,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.07130456,
+          "scene_id": "ending_signal"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          256,
+          740,
+          480,
+          884
+        ],
+        "output_label": "22 beacon_answer",
+        "output_label_box": [
+          256,
+          722,
+          480,
+          740
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "43257719753b1c304eff9a0af79821e5e197947fcfd3c9d49405e549da47223c",
+        "source_frame_box": [
+          474,
+          3230,
+          922,
+          3518
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "22 beacon_answer  right  char_mira_resolved_neutral",
+        "source_label_box": [
+          474,
+          3212,
+          922,
+          3230
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 252,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "hatch_room_wakes",
+        "index": 23,
+        "luma_entropy": 4.028458,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.04895213,
+          "scene_id": "ending_hatch"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          494,
+          740,
+          718,
+          884
+        ],
+        "output_label": "23 hatch_room_wakes",
+        "output_label_box": [
+          494,
+          722,
+          718,
+          740
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "b7a6fd693fc3c7969bfa31b994478597b289626a890222c19dc7bdaa9ea0efd4",
+        "source_frame_box": [
+          12,
+          3550,
+          460,
+          3838
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "23 hatch_room_wakes  left  char_lune_resolved_neutral",
+        "source_label_box": [
+          12,
+          3532,
+          460,
+          3550
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 242,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "lune_reply",
+        "index": 24,
+        "luma_entropy": 3.962537,
+        "luma_max": 237,
+        "luma_min": 0,
+        "luma_range": 237,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.05081225,
+          "scene_id": "lune_enters"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          732,
+          740,
+          956,
+          884
+        ],
+        "output_label": "24 lune_reply",
+        "output_label_box": [
+          732,
+          722,
+          956,
+          740
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "bbdc925b68cd39a744734fd7a48a91a22610673e0acdd33666985e08e6035cc2",
+        "source_frame_box": [
+          474,
+          3550,
+          922,
+          3838
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "24 lune_reply  left  char_lune_radio_neutral",
+        "source_label_box": [
+          474,
+          3532,
+          922,
+          3550
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 205,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "sunrise_wait",
+        "index": 25,
+        "luma_entropy": 4.162474,
+        "luma_max": 239,
+        "luma_min": 2,
+        "luma_range": 237,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.1484995,
+          "scene_id": "ending_sunrise"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          970,
+          740,
+          1194,
+          884
+        ],
+        "output_label": "25 sunrise_wait",
+        "output_label_box": [
+          970,
+          722,
+          1194,
+          740
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "e1d410a522c69b5673aad143933ddcba6dd19bc31d17b17158119a8342a66b5c",
+        "source_frame_box": [
+          12,
+          3870,
+          460,
+          4158
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "25 sunrise_wait  right  char_mira_action_neutral",
+        "source_label_box": [
+          12,
+          3852,
+          460,
+          3870
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 257,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "ending_signal",
+        "index": 26,
+        "luma_entropy": 3.875284,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.04498388,
+          "scene_id": "ending_together"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          18,
+          916,
+          242,
+          1060
+        ],
+        "output_label": "26 ending_signal",
+        "output_label_box": [
+          18,
+          898,
+          242,
+          916
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "4b1ad0f5547d041c37164b67f9f692a7edaeadcfe55dba5260fdba7271641cc2",
+        "source_frame_box": [
+          474,
+          3870,
+          922,
+          4158
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "26 ending_signal  right  char_mira_smile_neutral",
+        "source_label_box": [
+          474,
+          3852,
+          922,
+          3870
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 247,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "signal_coda",
+        "index": 27,
+        "luma_entropy": 3.886627,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.0453559,
+          "scene_id": "ending_together"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          256,
+          916,
+          480,
+          1060
+        ],
+        "output_label": "27 signal_coda",
+        "output_label_box": [
+          256,
+          898,
+          480,
+          916
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "8d65a5434cdf806001e6bf8af856a5dca6af23223d7333e7c386830360aca3cf",
+        "source_frame_box": [
+          12,
+          4190,
+          460,
+          4478
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "27 signal_coda  right  char_mira_smile_neutral",
+        "source_label_box": [
+          12,
+          4172,
+          460,
+          4190
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 269,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "ending_together",
+        "index": 28,
+        "luma_entropy": 3.826008,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.04498388,
+          "scene_id": "ending_signal"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          494,
+          916,
+          718,
+          1060
+        ],
+        "output_label": "28 ending_together",
+        "output_label_box": [
+          494,
+          898,
+          718,
+          916
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "22d75105edb964bd3d43516b0efa473680c7a7d8d5b6c75b6889ce3073fe3894",
+        "source_frame_box": [
+          474,
+          4190,
+          922,
+          4478
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "28 ending_together  right  char_mira_smile_neutral",
+        "source_label_box": [
+          474,
+          4172,
+          922,
+          4190
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 242,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "together_coda",
+        "index": 29,
+        "luma_entropy": 4.189882,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.30564856,
+          "scene_id": "lune_coda"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          732,
+          916,
+          956,
+          1060
+        ],
+        "output_label": "29 together_coda",
+        "output_label_box": [
+          732,
+          898,
+          956,
+          916
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "1965c7aab5b99e0dd686cbf8b87131260ef43974ea470332058d11a2fdb8c44f",
+        "source_frame_box": [
+          12,
+          4510,
+          460,
+          4798
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "29 together_coda  left  char_lune_warm_neutral",
+        "source_label_box": [
+          12,
+          4492,
+          460,
+          4510
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 232,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "ending_hatch",
+        "index": 30,
+        "luma_entropy": 3.988293,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.04495288,
+          "scene_id": "hatch_coda"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          970,
+          916,
+          1194,
+          1060
+        ],
+        "output_label": "30 ending_hatch",
+        "output_label_box": [
+          970,
+          898,
+          1194,
+          916
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "9f2b1a572c65a29226341affcb55c7dadc967ae5d6ef613d35d4cadea66c0fec",
+        "source_frame_box": [
+          474,
+          4510,
+          922,
+          4798
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "30 ending_hatch  left  char_lune_resolved_neutral",
+        "source_label_box": [
+          474,
+          4492,
+          922,
+          4510
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 228,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "hatch_coda",
+        "index": 31,
+        "luma_entropy": 3.996915,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.04495288,
+          "scene_id": "ending_hatch"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          18,
+          1092,
+          242,
+          1236
+        ],
+        "output_label": "31 hatch_coda",
+        "output_label_box": [
+          18,
+          1074,
+          242,
+          1092
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "23a0e87d676afbafa1ecdfd4633010ee391983de31ef318874651f659b513e38",
+        "source_frame_box": [
+          12,
+          4830,
+          460,
+          5118
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "31 hatch_coda  left  char_lune_resolved_neutral",
+        "source_label_box": [
+          12,
+          4812,
+          460,
+          4830
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 224,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "ending_lune",
+        "index": 32,
+        "luma_entropy": 3.754806,
+        "luma_max": 237,
+        "luma_min": 0,
+        "luma_range": 237,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.04609995,
+          "scene_id": "together_answer"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          256,
+          1092,
+          480,
+          1236
+        ],
+        "output_label": "32 ending_lune",
+        "output_label_box": [
+          256,
+          1074,
+          480,
+          1092
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "181358f1a8382d27fe9210040b03725f86fb2734143ba1cbc1568c04f93f9dcb",
+        "source_frame_box": [
+          474,
+          4830,
+          922,
+          5118
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "32 ending_lune  right  char_lune_warm_neutral",
+        "source_label_box": [
+          474,
+          4812,
+          922,
+          4830
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 223,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "lune_coda",
+        "index": 33,
+        "luma_entropy": 4.253637,
+        "luma_max": 239,
+        "luma_min": 0,
+        "luma_range": 239,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.30564856,
+          "scene_id": "together_coda"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          494,
+          1092,
+          718,
+          1236
+        ],
+        "output_label": "33 lune_coda",
+        "output_label_box": [
+          494,
+          1074,
+          718,
+          1092
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "20d0c61860ba025a6a7eccc0665c563dd0f014746facf010248c71089c9144ae",
+        "source_frame_box": [
+          12,
+          5150,
+          460,
+          5438
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "33 lune_coda  right  char_lune_warm_neutral",
+        "source_label_box": [
+          12,
+          5132,
+          460,
+          5150
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 225,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "ending_sunrise",
+        "index": 34,
+        "luma_entropy": 4.102814,
+        "luma_max": 239,
+        "luma_min": 2,
+        "luma_range": 237,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.1484995,
+          "scene_id": "sunrise_wait"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          732,
+          1092,
+          956,
+          1236
+        ],
+        "output_label": "34 ending_sunrise",
+        "output_label_box": [
+          732,
+          1074,
+          956,
+          1092
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "fb2393c80daa33b12a5ea23dcaae74dab9d0c2a5c352f65f08bc7c123f30f30e",
+        "source_frame_box": [
+          474,
+          5150,
+          922,
+          5438
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "34 ending_sunrise  right  char_mira_smile_neutral",
+        "source_label_box": [
+          474,
+          5132,
+          922,
+          5150
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 253,
+        "unique_pixel_hash": true
+      },
+      {
+        "id": "sunrise_coda",
+        "index": 35,
+        "luma_entropy": 4.064568,
+        "luma_max": 239,
+        "luma_min": 2,
+        "luma_range": 237,
+        "native_dimensions": [
+          224,
+          144
+        ],
+        "nearest_difference_passes": true,
+        "nearest_scene": {
+          "pixel_difference_ratio": 0.31051587,
+          "scene_id": "sunrise_wait"
+        },
+        "nonblank": true,
+        "opaque_pixel_ratio": 1.0,
+        "output_frame_box": [
+          970,
+          1092,
+          1194,
+          1236
+        ],
+        "output_label": "35 sunrise_coda",
+        "output_label_box": [
+          970,
+          1074,
+          1194,
+          1092
+        ],
+        "output_label_outside_frame": true,
+        "output_pixels_match_source_cell": true,
+        "pixel_sha256": "40bda6bbdaebcdfacb2f6e44fa02ad4f1b6864e52a8767c62b4c63eefc317980",
+        "source_frame_box": [
+          12,
+          5470,
+          460,
+          5758
+        ],
+        "source_frame_dimensions": [
+          448,
+          288
+        ],
+        "source_is_exact_nearest_2x": true,
+        "source_label": "35 sunrise_coda  left  char_mira_smile_neutral",
+        "source_label_box": [
+          12,
+          5452,
+          460,
+          5470
+        ],
+        "source_label_matches_project": true,
+        "unique_color_count": 259,
+        "unique_pixel_hash": true
+      }
+    ],
+    "summary": {
+      "minimum_luma_entropy": 3.754806,
+      "minimum_luma_range": 237,
+      "minimum_nearest_pixel_difference_ratio": 0.03583829,
+      "minimum_unique_color_count": 205,
+      "nonblank_scene_count": 35,
+      "placed_scene_count": 35,
+      "unique_pixel_hash_count": 35
+    },
+    "thresholds": {
+      "minimum_luma_entropy": 2.0,
+      "minimum_luma_range": 32,
+      "minimum_nearest_pixel_difference_ratio": 0.01,
+      "minimum_unique_colors": 16
+    }
+  }
+}

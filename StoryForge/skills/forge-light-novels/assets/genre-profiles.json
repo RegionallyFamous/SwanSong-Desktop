@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "custom": {
+      "label": "Custom",
+      "required_pleasures": []
+    },
+    "cozy-comedy": {
+      "label": "Cozy comedy",
+      "required_pleasures": [
+        {"id": "welcoming-ritual", "expectation": "A recurring place, ritual, or task becomes more welcoming through character action."},
+        {"id": "escalating-inconvenience", "expectation": "A small social or physical inconvenience escalates through character logic rather than random noise."},
+        {"id": "sincere-landing", "expectation": "At least one vulnerable beat lands without an immediate joke cancelling it."}
+      ]
+    },
+    "romance": {
+      "label": "Romance",
+      "required_pleasures": [
+        {"id": "specific-attraction", "expectation": "Attraction grows from specific observed behavior rather than generic desirability."},
+        {"id": "value-obstacle", "expectation": "The central obstacle tests incompatible values, needs, or choices rather than avoidable silence alone."},
+        {"id": "mutual-choice", "expectation": "The emotional payoff requires visible reciprocal choice and changed behavior."}
+      ]
+    },
+    "mystery": {
+      "label": "Mystery",
+      "required_pleasures": [
+        {"id": "clear-question", "expectation": "The reader knows the central question and why its answer matters."},
+        {"id": "fair-clues", "expectation": "Material clues appear before the solution and permit a fair competing theory."},
+        {"id": "recontextualizing-solution", "expectation": "The solution changes the meaning of earlier evidence and forces a consequential choice."}
+      ]
+    },
+    "adventure": {
+      "label": "Adventure",
+      "required_pleasures": [
+        {"id": "active-objective", "expectation": "The protagonists pursue a concrete objective with visible progress and setbacks."},
+        {"id": "escalating-obstacles", "expectation": "Obstacles change tactics, costs, or relationships rather than only becoming larger."},
+        {"id": "costly-choice", "expectation": "The climax demands a value-revealing sacrifice, risk, or commitment."}
+      ]
+    },
+    "slice-of-life": {
+      "label": "Slice of life",
+      "required_pleasures": [
+        {"id": "specific-observation", "expectation": "Ordinary activity gains freshness from precise behavior, place, and point of view."},
+        {"id": "relationship-movement", "expectation": "Small interactions change what a relationship permits or understands."},
+        {"id": "small-consequence", "expectation": "The ending makes a modest but visible choice or change feel complete."}
+      ]
+    },
+    "drama": {
+      "label": "Drama",
+      "required_pleasures": [
+        {"id": "competing-values", "expectation": "Major characters pursue defensible but incompatible values."},
+        {"id": "irreversible-consequence", "expectation": "A central decision creates a consequence that cannot be cosmetically reset."},
+        {"id": "earned-catharsis", "expectation": "The ending releases pressure through changed behavior, loss, or acceptance."}
+      ]
+    },
+    "fantasy": {
+      "label": "Fantasy",
+      "required_pleasures": [
+        {"id": "constrained-wonder", "expectation": "Wonder emerges through specific rules, costs, and sensory consequences."},
+        {"id": "magic-consequence", "expectation": "Magic changes available choices and creates responsibility rather than decorative lore."},
+        {"id": "human-payoff", "expectation": "The climax resolves a human decision that the fantastic element makes visible."}
+      ]
+    },
+    "science-fiction": {
+      "label": "Science fiction",
+      "required_pleasures": [
+        {"id": "speculative-constraint", "expectation": "The speculative premise imposes a clear constraint on ordinary behavior."},
+        {"id": "systemic-consequence", "expectation": "The technology or social system produces second-order consequences."},
+        {"id": "emotional-payoff", "expectation": "The ending makes the speculative question matter through a personal choice."}
+      ]
+    }
+  }
+}

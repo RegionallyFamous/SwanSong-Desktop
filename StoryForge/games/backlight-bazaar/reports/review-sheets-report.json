@@ -1,0 +1,973 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:31:06.844418+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "backlight-bazaar",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/projects/backlight-bazaar.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/projects/backlight-bazaar.wscvn.json",
+      "exists": true,
+      "bytes": 99576,
+      "sha256": "0fc9b3c3018a9aeb3fbc2bc5bf474e2019e633efc032d2b47ca44d548d921c89"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 40,
+    "preview_node_ids": [
+      "title",
+      "bb01",
+      "bb02",
+      "bb03",
+      "bb04",
+      "bb05",
+      "bb06",
+      "bb07",
+      "bb08",
+      "bb09",
+      "bb10",
+      "bb11",
+      "bb12",
+      "bb13",
+      "bb14",
+      "bb15",
+      "bb16",
+      "bb17",
+      "bb_choice_one",
+      "bb_first_contacts",
+      "bb_first_memory",
+      "bb_first_paper",
+      "bb18",
+      "bb19",
+      "bb20",
+      "bb21",
+      "bb22",
+      "bb_choice_two",
+      "bb_save_preserve",
+      "bb_save_begin",
+      "bb_save_copy",
+      "bb_end_preserve_contacts",
+      "bb_end_preserve_memory",
+      "bb_end_preserve_paper",
+      "bb_end_begin_contacts",
+      "bb_end_begin_memory",
+      "bb_end_begin_paper",
+      "bb_end_copy_contacts",
+      "bb_end_copy_memory",
+      "bb_end_copy_paper"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 122728,
+      "sha256": "2a083fcadc37978df1682046a32c920d3384d8cda13f5a8c6e733e2502b19dc3",
+      "size": [
+        712,
+        2390
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 58001,
+      "sha256": "eae316098e4d52cc7cd63b28069d6b78a8a0118e28b8322c85017b4f01e396b5",
+      "size": [
+        488,
+        968
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "3ced38424f1e138e052567161191ce958f45942a99cba26eb20ea9cfd37d94eb"
+      },
+      {
+        "index": 1,
+        "node_id": "bb01",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "ee32c06b55bfff9c2764afa07eb4089cc7f66514533e2ea51f52558b13024b4f"
+      },
+      {
+        "index": 2,
+        "node_id": "bb02",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "2039af93147e18202cfbee77d23fd0cc086aa6c479b7d1cfb0de996530626853"
+      },
+      {
+        "index": 3,
+        "node_id": "bb03",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "1cfbe1a19a29a68eafa9498137ce673ee20c8026a48b60b063a41e4a0ad6338f"
+      },
+      {
+        "index": 4,
+        "node_id": "bb04",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "b42bd28106aa196b403cd44d69f84ea5386111047d90462cd8297a1b6860ed63"
+      },
+      {
+        "index": 5,
+        "node_id": "bb05",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "6e560120c462e4b43cf5da32486c93dd13670181ea1459a578854cf4e48ac8a9"
+      },
+      {
+        "index": 6,
+        "node_id": "bb06",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "f8d71e137d1d3c8206292224befbf3b19c8910d761449824379985e9e389820b"
+      },
+      {
+        "index": 7,
+        "node_id": "bb07",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "fbbb2a025a190ddea601239433d2074faaa36cc163340dba532259838add5705"
+      },
+      {
+        "index": 8,
+        "node_id": "bb08",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "e3e1b610b9c879ebb2313e1e71e2e43f948239cfedf015ae1cb60288b47503a3"
+      },
+      {
+        "index": 9,
+        "node_id": "bb09",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "7e56cab94b66c199bf0ac49d8a6bb73640c3b1758deba009db8907c9e23bf371"
+      },
+      {
+        "index": 10,
+        "node_id": "bb10",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "1bdafb00c1a5fb05a235970b9bb6b64aadfe88a457949c2ebf9bc39190c92393"
+      },
+      {
+        "index": 11,
+        "node_id": "bb11",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "ea8aa6212cdb66ef16507ac39eb80e9e1490f2592e3545b51ff53de8d59fe4e2"
+      },
+      {
+        "index": 12,
+        "node_id": "bb12",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "1ddfc61c101f214ac65ac8523e359c770d6c28aaaf2d33b9d22acce1072c1c62"
+      },
+      {
+        "index": 13,
+        "node_id": "bb13",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "e889e342dc57dd6daee1639c3cd4775393f8732e1e0057c28e3e276985b98dd2"
+      },
+      {
+        "index": 14,
+        "node_id": "bb14",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "9f9bd234eeb9c9424d23e3aa4a2b68af7b95bf698264f51f07e7093f829039b9"
+      },
+      {
+        "index": 15,
+        "node_id": "bb15",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "cc326cb37dbc86b8f8c2ee9c4cb252f7188aa9494cac734dad6b7296d8bc08bb"
+      },
+      {
+        "index": 16,
+        "node_id": "bb16",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "5925762fe9b6be5760dfabcf07e7f4a60e863c6aa9c5ddd6f4ac8cf2d393a4ea"
+      },
+      {
+        "index": 17,
+        "node_id": "bb17",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "b4b6134c067c69f5a6e4d81a27f82f6cc3af95bb5955543b47138019545a9490"
+      },
+      {
+        "index": 18,
+        "node_id": "bb_choice_one",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "db75e5bbc7c5ef8f5ca665fda4405bae8e29440717286c028598da4cc3dca2a4"
+      },
+      {
+        "index": 19,
+        "node_id": "bb_first_contacts",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "7219feb315305f5bf21a89359d0dc4b0394538def2326f0a18028e4d49dfffa2"
+      },
+      {
+        "index": 20,
+        "node_id": "bb_first_memory",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "de311a8742523a9cf340aca5e4d8f98a9ec3b49e3cc829800a5b5d699c380d28"
+      },
+      {
+        "index": 21,
+        "node_id": "bb_first_paper",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "332417c1ad8941a82338a0fddd796bf4ccd71d206aa8f47480c03ef0e0cf7492"
+      },
+      {
+        "index": 22,
+        "node_id": "bb18",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "3dc76413d4d30bcc62c4fef1df8798a9a2a4d38545898849776fcdb88f8a7ddf"
+      },
+      {
+        "index": 23,
+        "node_id": "bb19",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "2a79a68b73f982aaf6613db8ccc336761c80906a34b6176d2fab019bc938dfc0"
+      },
+      {
+        "index": 24,
+        "node_id": "bb20",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "ab9c752767f97ca4d869fac245ed62eedd32df9a7345b02803474f1151459320"
+      },
+      {
+        "index": 25,
+        "node_id": "bb21",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "e8f65ca98c14b21c587e7a19b8f14157ec09c154c4c10c144db8a52a422ef584"
+      },
+      {
+        "index": 26,
+        "node_id": "bb22",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "fda1a8740497d8eafad2dcd6f72d84bd231e761d63f612ea1752ca1b517441bb"
+      },
+      {
+        "index": 27,
+        "node_id": "bb_choice_two",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "eccb26e7ea949ad2553de364e791adccbe63412705a554a0a1060aadc6c1c04b"
+      },
+      {
+        "index": 28,
+        "node_id": "bb_save_preserve",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "bd1770461a1a60f933cdd1c107786ec58e29c6886735ff91f2478c3363aed69f"
+      },
+      {
+        "index": 29,
+        "node_id": "bb_save_begin",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "f922ea106b35846c73e26f82d1528cfad032d508330941db1fab119f266971d4"
+      },
+      {
+        "index": 30,
+        "node_id": "bb_save_copy",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "34039bbf72f7e2395ace075d3bf69277361219316d7ed043ae40b39d99bbf904"
+      },
+      {
+        "index": 31,
+        "node_id": "bb_end_preserve_contacts",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "6a7d4b548edc7f5cbc3ec72890782e2b5eab171df8574338f37cde9a6525ed2a"
+      },
+      {
+        "index": 32,
+        "node_id": "bb_end_preserve_memory",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "4515a9c02c9c3696b05fa9ac0ac0d056fe8b76ec8be260d8c79986fa46e10e45"
+      },
+      {
+        "index": 33,
+        "node_id": "bb_end_preserve_paper",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "6a7d4b548edc7f5cbc3ec72890782e2b5eab171df8574338f37cde9a6525ed2a"
+      },
+      {
+        "index": 34,
+        "node_id": "bb_end_begin_contacts",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "4515a9c02c9c3696b05fa9ac0ac0d056fe8b76ec8be260d8c79986fa46e10e45"
+      },
+      {
+        "index": 35,
+        "node_id": "bb_end_begin_memory",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "6a7d4b548edc7f5cbc3ec72890782e2b5eab171df8574338f37cde9a6525ed2a"
+      },
+      {
+        "index": 36,
+        "node_id": "bb_end_begin_paper",
+        "rect": [
+          10,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "4515a9c02c9c3696b05fa9ac0ac0d056fe8b76ec8be260d8c79986fa46e10e45"
+      },
+      {
+        "index": 37,
+        "node_id": "bb_end_copy_contacts",
+        "rect": [
+          244,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "6a7d4b548edc7f5cbc3ec72890782e2b5eab171df8574338f37cde9a6525ed2a"
+      },
+      {
+        "index": 38,
+        "node_id": "bb_end_copy_memory",
+        "rect": [
+          478,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "4515a9c02c9c3696b05fa9ac0ac0d056fe8b76ec8be260d8c79986fa46e10e45"
+      },
+      {
+        "index": 39,
+        "node_id": "bb_end_copy_paper",
+        "rect": [
+          10,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "6a7d4b548edc7f5cbc3ec72890782e2b5eab171df8574338f37cde9a6525ed2a"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "2e63846f5ec104bef91a0c77b7a201760ca8bbe527cddb7a8508111ae843240a"
+      },
+      {
+        "index": 1,
+        "node_id": "bb01",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "bbf95a30aa0e2635bfefe9da530a2456e4a59953997eda216c58510786ad15e2"
+      },
+      {
+        "index": 2,
+        "node_id": "bb02",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "5bc32ba85166a4ee4a8dfb6dc63f813da890f216a032f8d40c3be67bf939f346"
+      },
+      {
+        "index": 3,
+        "node_id": "bb03",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "da0e52497daf0f9a4ca524734918b95835b377ff22cee36f72cd8ab50a56013b"
+      },
+      {
+        "index": 4,
+        "node_id": "bb04",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "345d222df0f924765868891b24a46e833167e90a5d27c1de94c451fedfae307d"
+      },
+      {
+        "index": 5,
+        "node_id": "bb05",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "7d7a2edbc83e23511cce272d5d716c06877d9a4248edbf3665eaf4b07aa2f985"
+      },
+      {
+        "index": 6,
+        "node_id": "bb06",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "62933bc2de9919fc63487a433b6f3aac277531c7a78e44cfe72d8922aef8bb16"
+      },
+      {
+        "index": 7,
+        "node_id": "bb07",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "0fa3975fd7e566205599c45e84f133b0aea7adeb457eb55afb934fd7f130ad61"
+      },
+      {
+        "index": 8,
+        "node_id": "bb08",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "3055d2487e48c1b73a47014becbcc6c988cf6ffe3778585dcc43c649bcdeefac"
+      },
+      {
+        "index": 9,
+        "node_id": "bb09",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "3b3d566e8e756cdf427cd2dba2fc44c648c0eea556d672a2f8a271d540556d61"
+      },
+      {
+        "index": 10,
+        "node_id": "bb10",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "6337d444e5f35fdc0190dd57d4a3df2ab59a20e4334b3f4b2db05a9f90b262b3"
+      },
+      {
+        "index": 11,
+        "node_id": "bb11",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "54895edd2519d4ae12087bac3ecf29e9f66142d96f436620b3e65f5002665bdf"
+      },
+      {
+        "index": 12,
+        "node_id": "bb12",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "aac2e18582070510df591314d1578693ce555451e62f0efc1cd49c0a73ba6254"
+      },
+      {
+        "index": 13,
+        "node_id": "bb13",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "844f74326797655d0876648a01e46c29341fc2b48ebec64e9da52d1930a85c6e"
+      },
+      {
+        "index": 14,
+        "node_id": "bb14",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "342a785cd76d9887c95f397a5014939d4c6c65a1811454a059b8d5fa12572434"
+      },
+      {
+        "index": 15,
+        "node_id": "bb15",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "6c010df5dc07001a7cedccdf716d07345287f75db38f22bcd4e6fabdcb8554f0"
+      },
+      {
+        "index": 16,
+        "node_id": "bb16",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "b045be2e357051bdf515308e7152410143d16ce25bbd6e51fe6e285ec7a01f6d"
+      },
+      {
+        "index": 17,
+        "node_id": "bb17",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "d1e0bd45f246addcf91c9db91f500ca25fd0ffb00586cd0a4bfa79f72790950d"
+      },
+      {
+        "index": 18,
+        "node_id": "bb_choice_one",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "87c95f482abdcbf18b90860d5191b04aa66704576f0c5d3a2113c16f088a0927"
+      },
+      {
+        "index": 19,
+        "node_id": "bb_first_contacts",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "bf10d9e06216eb4eee927598ec3cda38c8b52f22c23ee84f133fac726355df50"
+      },
+      {
+        "index": 20,
+        "node_id": "bb_first_memory",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "1426b7981c8236d635ad9c1dd06f87c15339a53660ce0196cb876c8cc9bd9d9e"
+      },
+      {
+        "index": 21,
+        "node_id": "bb_first_paper",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "4c5415efc9401bff7e17c96c2421892656a171c3387408d642f78c15d0e922b9"
+      },
+      {
+        "index": 22,
+        "node_id": "bb18",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "45dad67af3c585d6a00d2140fd4c7929a11190ae9742a7e56d4827a12d62ff80"
+      },
+      {
+        "index": 23,
+        "node_id": "bb19",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "60570329c3febfc979c0121b1fe812a2eadadf2d69b4be142da22f37e561c3b4"
+      },
+      {
+        "index": 24,
+        "node_id": "bb20",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "4a8c661826222c992f208241f58d91b926af626dacd307b8c71fccb94ade5909"
+      },
+      {
+        "index": 25,
+        "node_id": "bb21",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "48dc6cbd61a8baeb0b496b6b75b10c748c2fdc97a4b420e92f6b511ab04b0488"
+      },
+      {
+        "index": 26,
+        "node_id": "bb22",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "c9ecb9b1a632c350eec5d6f7b348a08b62b0647f9e82ce6626f7bc6bde7b6b50"
+      },
+      {
+        "index": 27,
+        "node_id": "bb_choice_two",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "d274dfb254b8bc13427c66188decd7a5f8f4035be5817b66e55d1d87b8e2e6de"
+      },
+      {
+        "index": 28,
+        "node_id": "bb_save_preserve",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "9693ad8cfa174d0d9bcf9befb5d5e018593b86f948e6bc757a3196929dd85aff"
+      },
+      {
+        "index": 29,
+        "node_id": "bb_save_begin",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "45bc66a7431298e458acf369709216e423b5cc4fb96a2e18300256f1f9e7ab7d"
+      },
+      {
+        "index": 30,
+        "node_id": "bb_save_copy",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "9f884e5956639ae0b81e4fed747d0e3efeceb8a3a86550dc81b2ddc9ac7e1ab6"
+      },
+      {
+        "index": 31,
+        "node_id": "bb_end_preserve_contacts",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "988ab3b1f34d142ba08d664bf02529ff2223b57f9dd8ec54e13e2d4b63cf96f2"
+      },
+      {
+        "index": 32,
+        "node_id": "bb_end_preserve_memory",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "37aa655b45986b625570f20c3874865850a977699a53a34f8d0ea9e09394c436"
+      },
+      {
+        "index": 33,
+        "node_id": "bb_end_preserve_paper",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "988ab3b1f34d142ba08d664bf02529ff2223b57f9dd8ec54e13e2d4b63cf96f2"
+      },
+      {
+        "index": 34,
+        "node_id": "bb_end_begin_contacts",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "37aa655b45986b625570f20c3874865850a977699a53a34f8d0ea9e09394c436"
+      },
+      {
+        "index": 35,
+        "node_id": "bb_end_begin_memory",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "988ab3b1f34d142ba08d664bf02529ff2223b57f9dd8ec54e13e2d4b63cf96f2"
+      },
+      {
+        "index": 36,
+        "node_id": "bb_end_begin_paper",
+        "rect": [
+          8,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "37aa655b45986b625570f20c3874865850a977699a53a34f8d0ea9e09394c436"
+      },
+      {
+        "index": 37,
+        "node_id": "bb_end_copy_contacts",
+        "rect": [
+          128,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "988ab3b1f34d142ba08d664bf02529ff2223b57f9dd8ec54e13e2d4b63cf96f2"
+      },
+      {
+        "index": 38,
+        "node_id": "bb_end_copy_memory",
+        "rect": [
+          248,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "37aa655b45986b625570f20c3874865850a977699a53a34f8d0ea9e09394c436"
+      },
+      {
+        "index": 39,
+        "node_id": "bb_end_copy_paper",
+        "rect": [
+          368,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "988ab3b1f34d142ba08d664bf02529ff2223b57f9dd8ec54e13e2d4b63cf96f2"
+      }
+    ]
+  }
+}

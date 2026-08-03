@@ -81,7 +81,8 @@ final class StoryForgeWorkspaceModelTests: XCTestCase {
         return StoryForgeWorkspaceModel(
             completionNotifier: { _ in },
             defaults: defaults,
-            environment: [:]
+            environment: [:],
+            includedFrameworkRoot: nil
         )
     }
 

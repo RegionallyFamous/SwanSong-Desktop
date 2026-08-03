@@ -25,6 +25,7 @@ SIGNING_MODE=${SWAN_SIGNING_MODE:-adhoc}
 SIGNING_IDENTITY=${SWAN_CODE_SIGN_IDENTITY:-}
 SDK_REPOSITORY=${SWAN_SDK_SOURCE_REPOSITORY:-"$MACOS_DIR/../swansong-sdk"}
 SDK_PAYLOAD_SOURCE=${SWAN_SDK_PAYLOAD_SOURCE:-}
+STORY_FORGE_SOURCE=${SWAN_STORY_FORGE_SOURCE:-"$MACOS_DIR/StoryForge"}
 SOURCE_COMMIT=$(git -C "$MACOS_DIR" rev-parse --verify HEAD)
 printf '%s\n' "$SOURCE_COMMIT" | grep -Eq '^[0-9a-f]{40}$' || {
   echo "could not determine a 40-character Git source commit" >&2
@@ -437,6 +438,12 @@ else
 fi
 "$SCRIPT_DIR/check-swansong-sdk-payload.sh" \
   "$APP_DIR/Contents/Resources/SwanSongSDK" >/dev/null
+python3 "$SCRIPT_DIR/materialize-story-forge-framework.py" \
+  "$STORY_FORGE_SOURCE" \
+  "$APP_DIR/Contents/Resources/StoryForge" \
+  --source-commit "$SOURCE_COMMIT"
+python3 "$SCRIPT_DIR/check-story-forge-framework.py" \
+  "$APP_DIR/Contents/Resources/StoryForge" >/dev/null
 
 list_rpaths() {
   otool -l "$1" | awk '

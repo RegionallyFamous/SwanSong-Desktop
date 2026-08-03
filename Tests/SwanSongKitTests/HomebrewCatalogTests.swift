@@ -742,7 +742,7 @@ final class HomebrewCatalogTests: XCTestCase {
     }
 
     private let catalogSourceURL = URL(
-        string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-story-forge/main/distribution/catalog-v1.json"
+        string: "https://raw.githubusercontent.com/RegionallyFamous/SwanSong-Desktop/main/StoryForge/distribution/catalog-v1.json"
     )!
 
     private let immutableCommit = String(repeating: "a", count: 40)
@@ -777,14 +777,14 @@ final class HomebrewCatalogTests: XCTestCase {
             summary: "A deterministic WonderSwan test game.",
             description: "A first-party fixture used to prove the catalog installation transaction.",
             sourceURL: URL(
-                string: "https://github.com/RegionallyFamous/swansong-story-forge/tree/\(immutableCommit)/games/test-game"
+                string: "https://github.com/RegionallyFamous/SwanSong-Desktop/tree/\(immutableCommit)/StoryForge/games/test-game"
             )!,
             provenanceURL: URL(
-                string: "https://github.com/RegionallyFamous/swansong-story-forge/blob/\(immutableCommit)/games/test-game/reports/release-report.json"
+                string: "https://github.com/RegionallyFamous/SwanSong-Desktop/blob/\(immutableCommit)/StoryForge/games/test-game/reports/release-report.json"
             )!,
             licenseName: "MIT License",
             licenseURL: URL(
-                string: "https://github.com/RegionallyFamous/swansong-story-forge/blob/\(immutableCommit)/LICENSE"
+                string: "https://github.com/RegionallyFamous/SwanSong-Desktop/blob/\(immutableCommit)/LICENSE"
             )!,
             releases: releases
         )
@@ -816,13 +816,13 @@ final class HomebrewCatalogTests: XCTestCase {
 
     private func releaseURL(tag: String) -> URL {
         URL(
-            string: "https://github.com/RegionallyFamous/swansong-story-forge/releases/tag/\(tag)"
+            string: "https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/\(tag)"
         )!
     }
 
     private func assetURL(tag: String, fileName: String) -> URL {
         URL(
-            string: "https://github.com/RegionallyFamous/swansong-story-forge/releases/download/\(tag)/\(fileName)"
+            string: "https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/\(tag)/\(fileName)"
         )!
     }
 

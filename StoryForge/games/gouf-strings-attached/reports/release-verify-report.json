@@ -1,0 +1,710 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mode": "normal",
+    "zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/releases/20260727T024529Z-83a4903a9fbe.zip",
+      "bytes": 14165646,
+      "sha256": "35b2d42ce57792981fe97ca57f7c342384bb36758306f25612914fc9d6155238"
+    },
+    "entries": 45,
+    "members": 45,
+    "duplicate_members": [],
+    "unsafe_members": [],
+    "manifest": {
+      "schema_version": 1,
+      "slug": "gouf-strings-attached",
+      "title": "Gouf: Strings Attached",
+      "files": 44,
+      "runtime_inputs": 6,
+      "emulator_screenshot": false
+    },
+    "package_sources": {
+      "readme": {
+        "member": "docs/README.md",
+        "exists": true,
+        "bytes": 1242,
+        "sha256": "1d4267be711dc093f589aec94be08da3ad11cb0a719dc9b60d6971ad2bb129ac"
+      },
+      "asset_builder": {
+        "member": "source/build_gouf_strings_attached.py",
+        "exists": true,
+        "bytes": 23181,
+        "sha256": "8ac9a961f7a8bf3090f9d184bf59e7de6b203b654e0dc2962b1fb8e84c328d67"
+      },
+      "qa_report": {
+        "member": "reports/gouf-strings-attached-qa-report.json",
+        "exists": true,
+        "bytes": 1599,
+        "sha256": "f9f268d9d582e052ec54bd5480ae92f2af05a289f70b10b08a611b250666a664"
+      }
+    },
+    "runtime_inputs": {
+      "present": true,
+      "expected_count": 6,
+      "files": [
+        {
+          "member": "runtime/src/main.c",
+          "exists": true,
+          "bytes": 105606,
+          "sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a",
+          "manifest_bytes": 105606,
+          "manifest_sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a"
+        },
+        {
+          "member": "runtime/src/game_types.h",
+          "exists": true,
+          "bytes": 6650,
+          "sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec",
+          "manifest_bytes": 6650,
+          "manifest_sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec"
+        },
+        {
+          "member": "runtime/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+          "manifest_bytes": 5470,
+          "manifest_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        {
+          "member": "runtime/tools/convert_json.py",
+          "exists": true,
+          "bytes": 88977,
+          "sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387",
+          "manifest_bytes": 88977,
+          "manifest_sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387"
+        },
+        {
+          "member": "runtime/Makefile",
+          "exists": true,
+          "bytes": 3590,
+          "sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd",
+          "manifest_bytes": 3590,
+          "manifest_sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd"
+        },
+        {
+          "member": "runtime/wfconfig.toml",
+          "exists": true,
+          "bytes": 169,
+          "sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78",
+          "manifest_bytes": 169,
+          "manifest_sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78"
+        }
+      ],
+      "count": 6,
+      "missing": [],
+      "extra": [],
+      "duplicates": []
+    },
+    "current_workspace": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached",
+      "checked": 44,
+      "missing": [],
+      "mismatches": [],
+      "stable_report_diffs": [],
+      "unmapped": [],
+      "extra_current": []
+    },
+    "reports": {
+      "build": true,
+      "smoke": true,
+      "readiness": true,
+      "audit": true,
+      "swansong_playthrough": true,
+      "review_sheets": true
+    },
+    "smoke_verification": {
+      "result_scope": "boot-and-checksum",
+      "boot": {
+        "performed": true,
+        "passed": true,
+        "method": "headless-mednafen-startup-metadata",
+        "pixels_observed": false
+      },
+      "checksum": {
+        "performed": true,
+        "passed": true,
+        "method": "mednafen-recorded-vs-real-checksum"
+      },
+      "visual": {
+        "performed": false,
+        "passed": null,
+        "status": "not-performed",
+        "pixels_observed": false,
+        "proof_bound": false,
+        "screenshot": null
+      },
+      "proof_bound": false
+    },
+    "swansong_playthrough": {
+      "schema": "wscvn-swansong-playthrough-v2",
+      "app": {
+        "path": "/Applications/SwanSong.app",
+        "version": "0.9.0",
+        "build": "18",
+        "bundle_identifier": "com.regionallyfamous.swansong"
+      },
+      "route_count": 4,
+      "routes": [
+        {
+          "route_index": 0,
+          "member": "evidence/swansong-playthrough/route-1-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "gouf_title",
+            "gouf_01",
+            "gouf_02",
+            "gouf_03",
+            "gouf_04",
+            "gouf_05",
+            "gouf_06",
+            "gouf_07",
+            "gouf_08",
+            "gouf_09",
+            "gouf_10",
+            "gouf_choice_1",
+            "gouf_a1",
+            "gouf_a2",
+            "gouf_a3",
+            "gouf_a4",
+            "gouf_11",
+            "gouf_12",
+            "gouf_13",
+            "gouf_14",
+            "gouf_15",
+            "gouf_16",
+            "gouf_17",
+            "gouf_choice_2",
+            "gouf_c1",
+            "gouf_c2",
+            "gouf_c3",
+            "gouf_c4",
+            "end"
+          ],
+          "observed_nodes": [
+            "gouf_title",
+            "gouf_01",
+            "gouf_02",
+            "gouf_03",
+            "gouf_04",
+            "gouf_05",
+            "gouf_06",
+            "gouf_07",
+            "gouf_08",
+            "gouf_09",
+            "gouf_10",
+            "gouf_choice_1",
+            "gouf_a1",
+            "gouf_a2",
+            "gouf_a3",
+            "gouf_a4",
+            "gouf_11",
+            "gouf_12",
+            "gouf_13",
+            "gouf_14",
+            "gouf_15",
+            "gouf_16",
+            "gouf_17",
+            "gouf_choice_2",
+            "gouf_c1",
+            "gouf_c2",
+            "gouf_c3",
+            "gouf_c4",
+            "end"
+          ],
+          "bytes": 20657,
+          "sha256": "7c0f855a5e0a02366e519a618039fa833cfb50b8416823570d3bef485175a238",
+          "node_id": "gouf_c4",
+          "audio_member": "evidence/swansong-playthrough/route-1-audio.wav"
+        },
+        {
+          "route_index": 1,
+          "member": "evidence/swansong-playthrough/route-2-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "gouf_title",
+            "gouf_01",
+            "gouf_02",
+            "gouf_03",
+            "gouf_04",
+            "gouf_05",
+            "gouf_06",
+            "gouf_07",
+            "gouf_08",
+            "gouf_09",
+            "gouf_10",
+            "gouf_choice_1",
+            "gouf_a1",
+            "gouf_a2",
+            "gouf_a3",
+            "gouf_a4",
+            "gouf_11",
+            "gouf_12",
+            "gouf_13",
+            "gouf_14",
+            "gouf_15",
+            "gouf_16",
+            "gouf_17",
+            "gouf_choice_2",
+            "gouf_d1",
+            "gouf_d2",
+            "gouf_d3",
+            "gouf_d4",
+            "end"
+          ],
+          "observed_nodes": [
+            "gouf_title",
+            "gouf_01",
+            "gouf_02",
+            "gouf_03",
+            "gouf_04",
+            "gouf_05",
+            "gouf_06",
+            "gouf_07",
+            "gouf_08",
+            "gouf_09",
+            "gouf_10",
+            "gouf_choice_1",
+            "gouf_a1",
+            "gouf_a2",
+            "gouf_a3",
+            "gouf_a4",
+            "gouf_11",
+            "gouf_12",
+            "gouf_13",
+            "gouf_14",
+            "gouf_15",
+            "gouf_16",
+            "gouf_17",
+            "gouf_choice_2",
+            "gouf_d1",
+            "gouf_d2",
+            "gouf_d3",
+            "gouf_d4",
+            "end"
+          ],
+          "bytes": 16957,
+          "sha256": "25e37c6d28eeb767e643f59b8285c9c907c4ee6dca64a226dd5a69ca2308022b",
+          "node_id": "gouf_d4",
+          "audio_member": "evidence/swansong-playthrough/route-2-audio.wav"
+        },
+        {
+          "route_index": 2,
+          "member": "evidence/swansong-playthrough/route-3-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "gouf_title",
+            "gouf_01",
+            "gouf_02",
+            "gouf_03",
+            "gouf_04",
+            "gouf_05",
+            "gouf_06",
+            "gouf_07",
+            "gouf_08",
+            "gouf_09",
+            "gouf_10",
+            "gouf_choice_1",
+            "gouf_b1",
+            "gouf_b2",
+            "gouf_b3",
+            "gouf_b4",
+            "gouf_11",
+            "gouf_12",
+            "gouf_13",
+            "gouf_14",
+            "gouf_15",
+            "gouf_16",
+            "gouf_17",
+            "gouf_choice_2",
+            "gouf_c1",
+            "gouf_c2",
+            "gouf_c3",
+            "gouf_c4",
+            "end"
+          ],
+          "observed_nodes": [
+            "gouf_title",
+            "gouf_01",
+            "gouf_02",
+            "gouf_03",
+            "gouf_04",
+            "gouf_05",
+            "gouf_06",
+            "gouf_07",
+            "gouf_08",
+            "gouf_09",
+            "gouf_10",
+            "gouf_choice_1",
+            "gouf_b1",
+            "gouf_b2",
+            "gouf_b3",
+            "gouf_b4",
+            "gouf_11",
+            "gouf_12",
+            "gouf_13",
+            "gouf_14",
+            "gouf_15",
+            "gouf_16",
+            "gouf_17",
+            "gouf_choice_2",
+            "gouf_c1",
+            "gouf_c2",
+            "gouf_c3",
+            "gouf_c4",
+            "end"
+          ],
+          "bytes": 20657,
+          "sha256": "7c0f855a5e0a02366e519a618039fa833cfb50b8416823570d3bef485175a238",
+          "node_id": "gouf_c4",
+          "audio_member": "evidence/swansong-playthrough/route-3-audio.wav"
+        },
+        {
+          "route_index": 3,
+          "member": "evidence/swansong-playthrough/route-4-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "gouf_title",
+            "gouf_01",
+            "gouf_02",
+            "gouf_03",
+            "gouf_04",
+            "gouf_05",
+            "gouf_06",
+            "gouf_07",
+            "gouf_08",
+            "gouf_09",
+            "gouf_10",
+            "gouf_choice_1",
+            "gouf_b1",
+            "gouf_b2",
+            "gouf_b3",
+            "gouf_b4",
+            "gouf_11",
+            "gouf_12",
+            "gouf_13",
+            "gouf_14",
+            "gouf_15",
+            "gouf_16",
+            "gouf_17",
+            "gouf_choice_2",
+            "gouf_d1",
+            "gouf_d2",
+            "gouf_d3",
+            "gouf_d4",
+            "end"
+          ],
+          "observed_nodes": [
+            "gouf_title",
+            "gouf_01",
+            "gouf_02",
+            "gouf_03",
+            "gouf_04",
+            "gouf_05",
+            "gouf_06",
+            "gouf_07",
+            "gouf_08",
+            "gouf_09",
+            "gouf_10",
+            "gouf_choice_1",
+            "gouf_b1",
+            "gouf_b2",
+            "gouf_b3",
+            "gouf_b4",
+            "gouf_11",
+            "gouf_12",
+            "gouf_13",
+            "gouf_14",
+            "gouf_15",
+            "gouf_16",
+            "gouf_17",
+            "gouf_choice_2",
+            "gouf_d1",
+            "gouf_d2",
+            "gouf_d3",
+            "gouf_d4",
+            "end"
+          ],
+          "bytes": 16957,
+          "sha256": "25e37c6d28eeb767e643f59b8285c9c907c4ee6dca64a226dd5a69ca2308022b",
+          "node_id": "gouf_d4",
+          "audio_member": "evidence/swansong-playthrough/route-4-audio.wav"
+        }
+      ]
+    },
+    "readiness_assets": {
+      "contact_sheet": {
+        "member": "preview/contact_sheet.png",
+        "expected_sha256": "ae7cc1c6fa5bf57c7abbd2077381696b0bb58c7728a7f10e0cf49e07519531fd",
+        "exists": true,
+        "sha256": "ae7cc1c6fa5bf57c7abbd2077381696b0bb58c7728a7f10e0cf49e07519531fd"
+      },
+      "review_sheets": {
+        "scene_preview_sheet": {
+          "member": "preview/scene_preview_sheet.png",
+          "expected_sha256": "a7dbc534207a9a340fc05b7b79b02159a0eb849e575c53353b0485c9932daad5",
+          "exists": true,
+          "sha256": "a7dbc534207a9a340fc05b7b79b02159a0eb849e575c53353b0485c9932daad5"
+        },
+        "storyboard_sheet": {
+          "member": "preview/storyboard_sheet.png",
+          "expected_sha256": "df5b3b13f013f1d68216a39a16fdcfe91350eefd1022bd4d6f29f1a820ff9a60",
+          "exists": true,
+          "sha256": "df5b3b13f013f1d68216a39a16fdcfe91350eefd1022bd4d6f29f1a820ff9a60"
+        }
+      },
+      "sources": [
+        {
+          "member": "assets/sources/background_ending_a_imagegen_v1.png",
+          "expected_sha256": "8c7b165f78a8df4e2582d7b3c1b5d5db2edd65e2709689d38dfc5282c559279e",
+          "exists": true,
+          "sha256": "8c7b165f78a8df4e2582d7b3c1b5d5db2edd65e2709689d38dfc5282c559279e"
+        },
+        {
+          "member": "assets/sources/background_ending_b_imagegen_v1.png",
+          "expected_sha256": "9733c5ade04a079de308c981677d0d0b579e561438aa47f25ce6aac1217a16b0",
+          "exists": true,
+          "sha256": "9733c5ade04a079de308c981677d0d0b579e561438aa47f25ce6aac1217a16b0"
+        },
+        {
+          "member": "assets/sources/background_main_imagegen_v1.png",
+          "expected_sha256": "a66f0536366507457045048364827214533ffe18312d5f3f4fab20a28ca12d6a",
+          "exists": true,
+          "sha256": "a66f0536366507457045048364827214533ffe18312d5f3f4fab20a28ca12d6a"
+        },
+        {
+          "member": "assets/sources/background_title_imagegen_v1.png",
+          "expected_sha256": "ed1f1e9823914ee54e2d2c52fa981dcafb29b7453a8c73b2a6f6e8e6b00d180f",
+          "exists": true,
+          "sha256": "ed1f1e9823914ee54e2d2c52fa981dcafb29b7453a8c73b2a6f6e8e6b00d180f"
+        },
+        {
+          "member": "assets/sources/character_master_cutout_imagegen_v1.png",
+          "expected_sha256": "4673991f0e453467e4b7207faf66ca70fc6a25077498a5208c21b4483c7d442c",
+          "exists": true,
+          "sha256": "4673991f0e453467e4b7207faf66ca70fc6a25077498a5208c21b4483c7d442c"
+        },
+        {
+          "member": "assets/sources/character_master_imagegen_v1.png",
+          "expected_sha256": "03612222ae8eb17d4553e121f71ff169b06100e82c13b54d6c00fb25e17c1331",
+          "exists": true,
+          "sha256": "03612222ae8eb17d4553e121f71ff169b06100e82c13b54d6c00fb25e17c1331"
+        },
+        {
+          "member": "assets/sources/game_spec.json",
+          "expected_sha256": "20a4c447b33f81a9f9c832778bd8ea970462aec9dc8e9e44a7f3763221c2f890",
+          "exists": true,
+          "sha256": "20a4c447b33f81a9f9c832778bd8ea970462aec9dc8e9e44a7f3763221c2f890"
+        },
+        {
+          "member": "assets/sources/imagegen-prompts-v1.md",
+          "expected_sha256": "ac069ac618424d19935465a64f6c967953557cb623dff418c357cabefdd2e62a",
+          "exists": true,
+          "sha256": "ac069ac618424d19935465a64f6c967953557cb623dff418c357cabefdd2e62a"
+        }
+      ],
+      "extra_sources": [],
+      "review_sheets_report": {
+        "member": "reports/review-sheets-report.json",
+        "expected_sha256": "c224de35e8075074f6b7c58a16b4b22657b7c8a75289e7222cb9655e1904a836",
+        "exists": true,
+        "sha256": "c224de35e8075074f6b7c58a16b4b22657b7c8a75289e7222cb9655e1904a836"
+      },
+      "packaged_source_count": 8,
+      "backgrounds": {
+        "count": 4,
+        "files": [
+          {
+            "member": "assets/backgrounds/bg_title.png",
+            "expected_sha256": "98b1e67a99eb69d191a78fca85438c5ec7f6686e292c3354996275c301d80ee7",
+            "exists": true,
+            "sha256": "98b1e67a99eb69d191a78fca85438c5ec7f6686e292c3354996275c301d80ee7"
+          },
+          {
+            "member": "assets/backgrounds/bg_main.png",
+            "expected_sha256": "e2a4c63d7058fd85a671505b5df1611164e7d99ad34468984e0adf8db773703e",
+            "exists": true,
+            "sha256": "e2a4c63d7058fd85a671505b5df1611164e7d99ad34468984e0adf8db773703e"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_a.png",
+            "expected_sha256": "d8253d348479fdb2a5b8ad722ec8005c10dd780487ed13bf373965445c6fe342",
+            "exists": true,
+            "sha256": "d8253d348479fdb2a5b8ad722ec8005c10dd780487ed13bf373965445c6fe342"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_b.png",
+            "expected_sha256": "da6890a38b673ff06353e495348bbc1f81518fe3bf12b9f361a19cf97aa7628f",
+            "exists": true,
+            "sha256": "da6890a38b673ff06353e495348bbc1f81518fe3bf12b9f361a19cf97aa7628f"
+          }
+        ],
+        "packaged_count": 4,
+        "extra_members": []
+      },
+      "characters": {
+        "count": 3,
+        "files": [
+          {
+            "member": "assets/characters/gouf_neutral.png",
+            "expected_sha256": "49d7beda7cf2c3f078b66f94ed0436dc97d1d196d1574460fea5a067be23980f",
+            "exists": true,
+            "sha256": "49d7beda7cf2c3f078b66f94ed0436dc97d1d196d1574460fea5a067be23980f"
+          },
+          {
+            "member": "assets/characters/gouf_talk.png",
+            "expected_sha256": "2201301134579b2c09806ada97f737c0bfe1a83870dec73bec8d360e2dbe15da",
+            "exists": true,
+            "sha256": "2201301134579b2c09806ada97f737c0bfe1a83870dec73bec8d360e2dbe15da"
+          },
+          {
+            "member": "assets/characters/gouf_blink.png",
+            "expected_sha256": "2c8d4a0bb0e4662e2ae14acb13e00ab9e071c5858df438a8873e964407b8f370",
+            "exists": true,
+            "sha256": "2c8d4a0bb0e4662e2ae14acb13e00ab9e071c5858df438a8873e964407b8f370"
+          }
+        ],
+        "packaged_count": 3,
+        "extra_members": []
+      },
+      "sfx": {
+        "count": 0,
+        "files": [],
+        "packaged_count": 0,
+        "extra_members": []
+      }
+    },
+    "project": {
+      "member": "project/gouf-strings-attached.wscvn.json",
+      "bytes": 187420,
+      "sha256": "83dc2a9e0978f6c9cbf34bb1eb427f309245334e97095c56987d83379f3cbf93"
+    },
+    "rom": {
+      "member": "rom/gouf-strings-attached.wsc",
+      "bytes": 8388608,
+      "sha256": "83a4903a9fbe177354ed3b2b01106eacb992e641f6af2e3316e38886fff36493",
+      "md5": "0xe508d4c9c84521e9b69aa861a77de74b"
+    },
+    "review_sheets_report": {
+      "present": true,
+      "member": "reports/review-sheets-report.json",
+      "project_file": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/projects/gouf-strings-attached.wscvn.json",
+        "bytes": 187420,
+        "sha256": "83dc2a9e0978f6c9cbf34bb1eb427f309245334e97095c56987d83379f3cbf93"
+      },
+      "nodes_rendered": 36,
+      "preview_node_ids": [
+        "gouf_title",
+        "gouf_01",
+        "gouf_02",
+        "gouf_03",
+        "gouf_04",
+        "gouf_05",
+        "gouf_06",
+        "gouf_07",
+        "gouf_08",
+        "gouf_09",
+        "gouf_10",
+        "gouf_choice_1",
+        "gouf_a1",
+        "gouf_a2",
+        "gouf_a3",
+        "gouf_a4",
+        "gouf_b1",
+        "gouf_b2",
+        "gouf_b3",
+        "gouf_b4",
+        "gouf_11",
+        "gouf_12",
+        "gouf_13",
+        "gouf_14",
+        "gouf_15",
+        "gouf_16",
+        "gouf_17",
+        "gouf_choice_2",
+        "gouf_c1",
+        "gouf_c2",
+        "gouf_c3",
+        "gouf_c4",
+        "gouf_d1",
+        "gouf_d2",
+        "gouf_d3",
+        "gouf_d4"
+      ],
+      "font": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+        "bytes": 5470,
+        "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+        "member": "runtime/src/font.h",
+        "packaged_bytes": 5470,
+        "packaged_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+      },
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/scene_preview_sheet.png",
+        "bytes": 234084,
+        "sha256": "a7dbc534207a9a340fc05b7b79b02159a0eb849e575c53353b0485c9932daad5",
+        "member": "preview/scene_preview_sheet.png",
+        "packaged_bytes": 234084,
+        "packaged_sha256": "a7dbc534207a9a340fc05b7b79b02159a0eb849e575c53353b0485c9932daad5"
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/storyboard_sheet.png",
+        "bytes": 79897,
+        "sha256": "df5b3b13f013f1d68216a39a16fdcfe91350eefd1022bd4d6f29f1a820ff9a60",
+        "member": "preview/storyboard_sheet.png",
+        "packaged_bytes": 79897,
+        "packaged_sha256": "df5b3b13f013f1d68216a39a16fdcfe91350eefd1022bd4d6f29f1a820ff9a60"
+      }
+    },
+    "project_report_bindings": {
+      "readiness": {
+        "present": true,
+        "member": "project/gouf-strings-attached.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/projects/gouf-strings-attached.wscvn.json",
+        "bytes": 187420,
+        "sha256": "83dc2a9e0978f6c9cbf34bb1eb427f309245334e97095c56987d83379f3cbf93"
+      },
+      "audit": {
+        "present": true,
+        "member": "project/gouf-strings-attached.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/projects/gouf-strings-attached.wscvn.json",
+        "bytes": 187420,
+        "sha256": "83dc2a9e0978f6c9cbf34bb1eb427f309245334e97095c56987d83379f3cbf93"
+      }
+    },
+    "audit_rom_binding": {
+      "present": true,
+      "member": "rom/gouf-strings-attached.wsc",
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/runtime-local/gouf-strings-attached.wsc",
+      "bytes": 8388608,
+      "sha256": "83a4903a9fbe177354ed3b2b01106eacb992e641f6af2e3316e38886fff36493"
+    },
+    "manifest_artifacts": {
+      "project": {
+        "present": true,
+        "member": "project/gouf-strings-attached.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/projects/gouf-strings-attached.wscvn.json",
+        "bytes": 187420,
+        "sha256": "83dc2a9e0978f6c9cbf34bb1eb427f309245334e97095c56987d83379f3cbf93"
+      },
+      "rom": {
+        "present": true,
+        "member": "rom/gouf-strings-attached.wsc",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/runtime-local/gouf-strings-attached.wsc",
+        "sha256": "83a4903a9fbe177354ed3b2b01106eacb992e641f6af2e3316e38886fff36493",
+        "md5": "0xe508d4c9c84521e9b69aa861a77de74b",
+        "checksum": "0x771f"
+      }
+    },
+    "release_summary": {
+      "lines": 46,
+      "expected_lines": 34,
+      "visual_evidence_lines": 8,
+      "has_visual_evidence": true,
+      "missing_expected_lines": []
+    }
+  }
+}

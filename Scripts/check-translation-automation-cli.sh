@@ -593,7 +593,7 @@ if SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" probe-rectangle \
   --plan "$PROJECT/automation/opening-plan.json" \
   --role original \
   --frame 29 \
-  --rect 0,0,8,8 >/dev/null 2>&1; then
+  --rect 0,0,224,48 >/dev/null 2>&1; then
   echo "probe-rectangle accepted private project writes without its explicit second guard" >&2
   exit 1
 fi
@@ -605,7 +605,7 @@ SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" probe-rectangle \
   --plan "$PROJECT/automation/opening-plan.json" \
   --role original \
   --frame 29 \
-  --rect 0,0,8,8 \
+  --rect 0,0,224,48 \
   >"$PROJECT/automation/probe-report.json"
 
 SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" probe-rectangle \
@@ -615,7 +615,7 @@ SWAN_ARES_ENGINE_DIR="$BUILD_DIR" "$RUNNER" probe-rectangle \
   --plan "$PROJECT/automation/opening-plan.json" \
   --role original \
   --frame 29 \
-  --rect 0,0,8,8 \
+  --rect 0,0,224,48 \
   >"$PROJECT/automation/probe-report-b.json"
 
 python3 - \
@@ -639,9 +639,9 @@ if report.get("schema") != "swan-song-display-owner-probe-report-v2":
     raise SystemExit("probe-rectangle report schema mismatch")
 if report.get("role") != "original" or report.get("planFrameIndex") != 29:
     raise SystemExit("probe-rectangle lost its exact replay target")
-if report.get("rectangleWidth") != 8 or report.get("rectangleHeight") != 8:
+if report.get("rectangleWidth") != 224 or report.get("rectangleHeight") != 48:
     raise SystemExit("probe-rectangle changed native geometry")
-if report.get("sampleCount") != 64:
+if report.get("sampleCount") != 10752:
     raise SystemExit("probe-rectangle returned the wrong sample count")
 for key in (
     "mapCellsSHA256",
@@ -702,7 +702,7 @@ if details.get("persistencePolicy") != "isolated-empty-v1":
     raise SystemExit("private display-owner probe lost empty persistence")
 if details.get("rtc", {}).get("seedUnixSeconds") != 946684800:
     raise SystemExit("private display-owner probe lost fixed RTC")
-if len(details.get("samples", [])) != 64:
+if len(details.get("samples", [])) != 10752:
     raise SystemExit("private display-owner probe lost per-pixel details")
 required_sample_keys = {
     "layer", "sourceKind", "cellAddress", "tileIndex", "rasterAddress",
@@ -790,17 +790,16 @@ def call(request_id, name, arguments):
             return response["result"]
 
 source_guard = call(-1, "swansong_translation_probe_rectangle_source", {})
-if not source_guard.get("isError") or "confirmProjectWrites" not in json.dumps(source_guard):
-    raise SystemExit("upstream source probe lost its explicit project-write guard")
+if not source_guard.get("isError") or "confirmProjectWrites" in json.dumps(source_guard):
+    raise SystemExit("upstream source probe regained per-call project-write confirmation")
 
 seed_guard = call(0, "swansong_translation_export_static_analysis_seed", {})
-if not seed_guard.get("isError") or "confirmProjectWrites" not in json.dumps(seed_guard):
-    raise SystemExit("static-analysis seed export lost its explicit project-write guard")
+if not seed_guard.get("isError") or "confirmProjectWrites" in json.dumps(seed_guard):
+    raise SystemExit("static-analysis seed export regained per-call project-write confirmation")
 missing_seed = project / "analysis/swan-song-lab/display-source-probes/missing/details.json"
 seed_refusal = call(9, "swansong_translation_export_static_analysis_seed", {
     "projectPath": str(project),
     "sourceProbeDetailsPath": str(missing_seed),
-    "confirmProjectWrites": True,
 })
 seed_refusal_text = json.dumps(seed_refusal)
 if not seed_refusal.get("isError"):
@@ -811,7 +810,6 @@ if str(project) in seed_refusal_text or str(missing_seed) in seed_refusal_text:
 start = call(1, "swansong_observed_play_start", {
     "projectPath": str(project),
     "role": "original",
-    "confirmProjectWrites": True,
 })
 if start.get("isError"):
     raise SystemExit(f"observed-play start failed: {start}")
@@ -914,7 +912,6 @@ assert process.stdin and process.stdout
 resume = call(5, "swansong_observed_play_resume", {
     "projectPath": str(project),
     "sessionID": session_id,
-    "confirmProjectWrites": True,
 })
 if resume.get("isError"):
     raise SystemExit(f"observed-play recovery failed: {resume}")
@@ -942,14 +939,8 @@ plan_final = json.loads(plan_final_data)
 if plan_final.get("totalFrames") != 35 or plan_final.get("events") != plan_two.get("events"):
     raise SystemExit("recovered observed-play session did not restore its final held input")
 
-finish_guard = call(7, "swansong_observed_play_finish", {
-    "sessionID": session_id,
-})
-if not finish_guard.get("isError") or "confirmProjectWrites" not in json.dumps(finish_guard):
-    raise SystemExit("observed-play finish lost its project-write guard")
 finish = call(8, "swansong_observed_play_finish", {
     "sessionID": session_id,
-    "confirmProjectWrites": True,
 })
 if finish.get("isError"):
     raise SystemExit(f"observed-play finish failed: {finish}")

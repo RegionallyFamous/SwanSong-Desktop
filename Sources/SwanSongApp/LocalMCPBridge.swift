@@ -129,11 +129,6 @@ final class SwanSongLocalMCPBridge {
     }
 
     private func runStudioAction(_ arguments: [String: Any]) throws -> [String: Any] {
-        guard arguments["confirmProjectWrites"] as? Bool == true else {
-            throw BridgeError(
-                "Set confirmProjectWrites to true after confirming the current Studio project may be built or updated."
-            )
-        }
         guard let action = arguments["action"] as? String else {
             throw BridgeError("action is required")
         }
@@ -371,10 +366,16 @@ private final class SwanSongLocalMCPUnixServer: @unchecked Sendable {
     }
 }
 
-private enum SwanSongMCPCodeSignature {
+enum SwanSongMCPCodeSignature {
+    struct Identity: Equatable {
+        let identifier: String
+        let teamIdentifier: String?
+        let valid: Bool
+        let executableURL: URL
+    }
+
     static func trusts(pid: pid_t) -> Bool {
         guard let peer = signingIdentity(pid: pid),
-              peer.identifier == SwanSongLocalMCPAccess.officialClientIdentifier,
               let own = signingIdentity(pid: getpid()) else {
             #if DEBUG
             return true
@@ -382,19 +383,46 @@ private enum SwanSongMCPCodeSignature {
             return false
             #endif
         }
-        if let ownTeam = own.teamIdentifier, !ownTeam.isEmpty {
-            return peer.teamIdentifier == ownTeam && peer.valid
-        }
+        let expectedPeerURL = Bundle.main.bundleURL
+            .appendingPathComponent(
+                "Contents/Helpers/SwanSongMCP", isDirectory: false
+            )
+            .standardizedFileURL
+            .resolvingSymlinksInPath()
         #if DEBUG
-        return peer.valid
+        return true
         #else
-        return false
+        return trusts(
+            peer: peer, own: own, expectedPeerURL: expectedPeerURL
+        )
         #endif
+    }
+
+    static func trusts(
+        peer: Identity,
+        own: Identity,
+        expectedPeerURL: URL
+    ) -> Bool {
+        guard peer.identifier == SwanSongLocalMCPAccess.officialClientIdentifier,
+              peer.valid, own.valid else { return false }
+        if let ownTeam = own.teamIdentifier, !ownTeam.isEmpty {
+            return peer.teamIdentifier == ownTeam
+        }
+
+        // Local deterministic builds are ad-hoc signed. They have no team
+        // identifier, so permit only the exact helper embedded beside the
+        // running app. Team-signed releases stay on the same-team branch.
+        guard peer.teamIdentifier == nil else { return false }
+        let expected = expectedPeerURL.standardizedFileURL
+            .resolvingSymlinksInPath()
+        let actual = peer.executableURL.standardizedFileURL
+            .resolvingSymlinksInPath()
+        return actual == expected
     }
 
     private static func signingIdentity(
         pid: pid_t
-    ) -> (identifier: String, teamIdentifier: String?, valid: Bool)? {
+    ) -> Identity? {
         let attributes = [kSecGuestAttributePid as String: NSNumber(value: pid)] as CFDictionary
         var code: SecCode?
         guard SecCodeCopyGuestWithAttributes(nil, attributes, [], &code) == errSecSuccess,
@@ -422,10 +450,12 @@ private enum SwanSongMCPCodeSignature {
             return nil
         }
         let valid = SecCodeCheckValidity(code, [], nil) == errSecSuccess
-        return (
-            identifier,
-            values[kSecCodeInfoTeamIdentifier as String] as? String,
-            valid
+        return Identity(
+            identifier: identifier,
+            teamIdentifier: values[kSecCodeInfoTeamIdentifier as String]
+                as? String,
+            valid: valid,
+            executableURL: codeURL as URL
         )
     }
 }

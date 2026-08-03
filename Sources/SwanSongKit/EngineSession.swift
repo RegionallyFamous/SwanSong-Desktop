@@ -49,6 +49,9 @@ public struct EngineCapabilities: OptionSet, Sendable {
     public static let consumedPrefetchProvenance = Self(
         rawValue: UInt64(SWAN_CAPABILITY_CONSUMED_PREFETCH_PROVENANCE)
     )
+    public static let dataProducerProvenance = Self(
+        rawValue: UInt64(SWAN_CAPABILITY_DATA_PRODUCER_PROVENANCE)
+    )
 }
 
 public struct EngineConsumedPrefetchCapabilityProfile: Codable, Equatable, Sendable {
@@ -473,6 +476,36 @@ public struct EngineExecutedSourceReadContext: Codable, Equatable, Sendable {
         mapperBank = cValue.mapper_bank
         resolvedCartridgeOperand = cValue.resolved_cartridge_operand
     }
+
+    fileprivate init(cValue: swan_data_producer_trace_t) throws {
+        switch cValue.read_context_initiator {
+        case swan_display_source_read_initiator_t(
+            SWAN_DISPLAY_SOURCE_READ_INITIATOR_CPU
+        ):
+            initiator = .cpu
+            immediateCaller = cValue.immediate_caller_or_general_dma_source_operand
+            generalDMASourceOperand = nil
+        case swan_display_source_read_initiator_t(
+            SWAN_DISPLAY_SOURCE_READ_INITIATOR_GENERAL_DMA
+        ):
+            initiator = .generalDMA
+            immediateCaller = 0
+            generalDMASourceOperand =
+                cValue.immediate_caller_or_general_dma_source_operand
+        default:
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned data-producer lineage without an explicit initiator."
+            )
+        }
+        callerSegment = cValue.caller_segment
+        callerOffset = cValue.caller_offset
+        operandSegment = cValue.operand_segment
+        operandOffset = cValue.operand_offset
+        mapperWindow = cValue.mapper_window
+        mapperBank = cValue.mapper_bank
+        resolvedCartridgeOperand = cValue.resolved_cartridge_operand
+    }
 }
 
 public enum EngineDisplaySourceConservativeReason: String, Codable, Equatable, Sendable {
@@ -533,6 +566,80 @@ public struct EngineDisplaySourceConservativeOrigin: Codable, Equatable, Sendabl
             throw SwanEngineError(
                 code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
                 detail: "The engine returned an inconsistent conservative-dataflow origin."
+            )
+        }
+    }
+
+    fileprivate init(cValue: swan_data_producer_trace_t) throws {
+        reason = try EngineDisplaySourceConservativeReason(
+            cValue: cValue.conservative_reason
+        )
+        origin20Bit = cValue.conservative_origin
+        segment = cValue.conservative_origin_segment
+        offset = cValue.conservative_origin_offset
+        let expected = UInt32(
+            ((UInt64(segment) << 4) + UInt64(offset)) & 0xF_FFFF
+        )
+        guard origin20Bit == expected else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned an inconsistent data-producer conservative origin."
+            )
+        }
+    }
+}
+
+/// Private lineage for one byte in a bounded cartridge-RAM record. The RAM
+/// value itself is deliberately absent.
+public struct EngineDataProducerTrace: Codable, Equatable, Sendable {
+    public let targetAddress: UInt32
+    public let targetByteCount: UInt16
+    public let writerPC: UInt32?
+    public let minimumInstructionHops: UInt16
+    public let maximumInstructionHops: UInt16
+    public let cartridgeOffset: UInt32?
+    public let cartridgeLength: UInt32
+    public let hasExactRange: Bool
+    public let isTransformed: Bool
+    public let hasUnknownDependency: Bool
+    public let rangeSetOverflowed: Bool
+    public let usesConservativeDataflow: Bool
+    public let executedReadContext: EngineExecutedSourceReadContext?
+    public let conservativeOrigin: EngineDisplaySourceConservativeOrigin?
+
+    fileprivate init(cValue: swan_data_producer_trace_t) throws {
+        targetAddress = cValue.target_address
+        targetByteCount = cValue.target_byte_count
+        writerPC = cValue.flags
+            & UInt32(SWAN_DATA_PRODUCER_FLAG_WRITER_PRESENT) != 0
+            ? cValue.writer_pc : nil
+        minimumInstructionHops = cValue.minimum_instruction_hops
+        maximumInstructionHops = cValue.maximum_instruction_hops
+        let hasSource = cValue.flags
+            & UInt32(SWAN_DATA_PRODUCER_FLAG_NO_CARTRIDGE_SOURCE) == 0
+        cartridgeOffset = hasSource ? cValue.cartridge_offset : nil
+        cartridgeLength = cValue.cartridge_length
+        hasExactRange = cValue.flags & UInt32(SWAN_DISPLAY_SOURCE_FLAG_EXACT) != 0
+        isTransformed = cValue.flags
+            & UInt32(SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED) != 0
+        hasUnknownDependency = cValue.flags
+            & UInt32(SWAN_DISPLAY_SOURCE_FLAG_UNKNOWN_DEPENDENCY) != 0
+        rangeSetOverflowed = cValue.flags
+            & UInt32(SWAN_DISPLAY_SOURCE_FLAG_RANGE_OVERFLOW) != 0
+        usesConservativeDataflow = cValue.flags
+            & UInt32(SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW) != 0
+        executedReadContext = cValue.read_context_flags
+            & UInt32(SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED) != 0
+            ? try EngineExecutedSourceReadContext(cValue: cValue) : nil
+        conservativeOrigin = cValue.conservative_reason
+            != SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE
+            ? try EngineDisplaySourceConservativeOrigin(cValue: cValue) : nil
+        guard usesConservativeDataflow == (conservativeOrigin != nil),
+              hasSource == (cartridgeLength > 0),
+              targetByteCount == 1 else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned inconsistent data-producer evidence."
             )
         }
     }
@@ -1137,6 +1244,77 @@ public final class EngineSession: @unchecked Sendable {
             )
         }
         return try raw.prefix(written).map(EngineDisplaySourceTrace.init(cValue:))
+    }
+
+    public func beginDataProducerProbe(
+        address: UInt32,
+        byteCount: UInt32
+    ) throws {
+        guard capabilities.contains(.dataProducerProvenance) else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_UNSUPPORTED.rawValue),
+                detail: "The active engine does not support bounded data-producer provenance."
+            )
+        }
+        var options = swan_data_producer_probe_options_t(
+            struct_size: UInt32(
+                MemoryLayout<swan_data_producer_probe_options_t>.size
+            ),
+            address: address,
+            byte_count: byteCount
+        )
+        try check(swan_engine_begin_data_producer_probe(handle, &options))
+    }
+
+    public func dataProducerProbe(
+        address: UInt32,
+        byteCount: UInt32
+    ) throws -> [EngineDataProducerTrace] {
+        guard capabilities.contains(.dataProducerProvenance) else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_UNSUPPORTED.rawValue),
+                detail: "The active engine does not support bounded data-producer provenance."
+            )
+        }
+        var options = swan_data_producer_probe_options_t(
+            struct_size: UInt32(
+                MemoryLayout<swan_data_producer_probe_options_t>.size
+            ),
+            address: address,
+            byte_count: byteCount
+        )
+        var count = 0
+        try check(swan_engine_data_producer_probe(
+            handle, &options, nil, 0, &count
+        ))
+        guard count <= Int(byteCount) * 8 else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine exceeded the bounded data-producer trace limit."
+            )
+        }
+        var raw = [swan_data_producer_trace_t](
+            repeating: swan_data_producer_trace_t(),
+            count: count
+        )
+        var written = 0
+        let result = raw.withUnsafeMutableBufferPointer { buffer in
+            swan_engine_data_producer_probe(
+                handle,
+                &options,
+                buffer.baseAddress,
+                buffer.count,
+                &written
+            )
+        }
+        try check(result)
+        guard written == count else {
+            throw SwanEngineError(
+                code: Int32(SWAN_RESULT_INTERNAL_ERROR.rawValue),
+                detail: "The engine returned incomplete data-producer provenance."
+            )
+        }
+        return try raw.prefix(written).map(EngineDataProducerTrace.init(cValue:))
     }
 
     /// ABI-10-only consumed-prefetch evidence. This is private decoder input,

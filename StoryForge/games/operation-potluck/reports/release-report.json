@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:10:40.471127+00:00",
+  "errors": [],
+  "release_id": "20260727T031040Z-a14776ca911c",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/releases/20260727T031040Z-a14776ca911c",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/releases/20260727T031040Z-a14776ca911c.zip",
+    "bytes": 11811158,
+    "sha256": "3e17d682fb27e15c5411e3dd9e97021b6fbb2a2951806ee6fc73d63b57de1727"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/releases/20260727T031040Z-a14776ca911c/manifest.json",
+    "sha256": "a659fdd60836a0a00eb039971c30b0295f92c2a6787545a8b8b15b02336d4851",
+    "files": 44
+  },
+  "rom_sha256": "a14776ca911c24bf5f427a01d376203a3b5354069447a351a9cde7ea050d4fd2",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "operation-potluck",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/game-audit-report.json\nGame audit passed"
+  }
+}

@@ -1,0 +1,715 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:34:06.737948+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "catalog-after-midnight",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json",
+      "bytes": 105266,
+      "sha256": "7f5ebccfbfcc413e61bf2b5d82c55b9e1195256c7be9b56f6dadbdc3f00bf342"
+    },
+    "project_counts": {
+      "name": "Catalog After Midnight",
+      "nodes": 47,
+      "flags": 6,
+      "tracks": 1,
+      "backgrounds": 3,
+      "characters": 6,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 47,
+      "scene_nodes": 40,
+      "staged_scenes": 40,
+      "animated_staged_scenes": 40,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Miki",
+        "Nao"
+      ],
+      "backgrounds_used": [
+        "bg_back_shelf",
+        "bg_last_train",
+        "bg_repair_counter"
+      ],
+      "ending_scenes": [
+        "cam_end_sealed_labels",
+        "cam_end_sealed_boots",
+        "cam_end_sealed_names",
+        "cam_end_open_labels",
+        "cam_end_open_boots",
+        "cam_end_open_names",
+        "cam_end_photo_labels",
+        "cam_end_photo_boots",
+        "cam_end_photo_names"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 47,
+      "start_node": "title"
+    },
+    "routes": {
+      "initial_flags": {
+        "case_open": 0,
+        "case_photo": 0,
+        "case_sealed": 0,
+        "method_boots": 0,
+        "method_labels": 0,
+        "method_names": 0
+      },
+      "states_explored": 103,
+      "truncated": false,
+      "route_reachable_nodes": 47,
+      "route_reachable_ending_scenes": [
+        "cam_end_open_boots",
+        "cam_end_open_labels",
+        "cam_end_open_names",
+        "cam_end_photo_boots",
+        "cam_end_photo_labels",
+        "cam_end_photo_names",
+        "cam_end_sealed_boots",
+        "cam_end_sealed_labels",
+        "cam_end_sealed_names"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "cam_case_open",
+        "cam_case_photo",
+        "cam_case_sealed",
+        "cam_method_boots",
+        "cam_method_labels",
+        "cam_method_names"
+      ],
+      "selectable_choice_targets": [
+        "cam_case_open",
+        "cam_case_photo",
+        "cam_case_sealed",
+        "cam_method_boots",
+        "cam_method_labels",
+        "cam_method_names"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": [
+        "cam_end_open_boots",
+        "cam_end_open_labels",
+        "cam_end_open_names",
+        "cam_end_photo_boots",
+        "cam_end_photo_labels",
+        "cam_end_photo_names",
+        "cam_end_sealed_boots",
+        "cam_end_sealed_labels",
+        "cam_end_sealed_names"
+      ]
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Document labels / Keep it sealed",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 1918,
+          "estimated_minutes_at_140_wpm": 13.7
+        },
+        {
+          "route_id": "route-2",
+          "label": "Document labels / Open and test",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 1914,
+          "estimated_minutes_at_140_wpm": 13.67
+        },
+        {
+          "route_id": "route-3",
+          "label": "Document labels / Photo, then open",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 1914,
+          "estimated_minutes_at_140_wpm": 13.67
+        },
+        {
+          "route_id": "route-4",
+          "label": "Boot every cart / Keep it sealed",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 1921,
+          "estimated_minutes_at_140_wpm": 13.72
+        },
+        {
+          "route_id": "route-5",
+          "label": "Boot every cart / Open and test",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 1919,
+          "estimated_minutes_at_140_wpm": 13.71
+        },
+        {
+          "route_id": "route-6",
+          "label": "Boot every cart / Photo, then open",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 1915,
+          "estimated_minutes_at_140_wpm": 13.68
+        },
+        {
+          "route_id": "route-7",
+          "label": "Read every name / Keep it sealed",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 1918,
+          "estimated_minutes_at_140_wpm": 13.7
+        },
+        {
+          "route_id": "route-8",
+          "label": "Read every name / Open and test",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 1917,
+          "estimated_minutes_at_140_wpm": 13.69
+        },
+        {
+          "route_id": "route-9",
+          "label": "Read every name / Photo, then open",
+          "ending_node": "end",
+          "scene_beats": 28,
+          "words": 1914,
+          "estimated_minutes_at_140_wpm": 13.67
+        }
+      ]
+    },
+    "text": {
+      "blocks": 202,
+      "max_pause_block_chars": 95,
+      "choice_labels": 6,
+      "max_choice_label_chars": 16,
+      "max_choice_prompt_chars": 20,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 14,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 22,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_back_shelf",
+        "orig_name": "back_shelf.png",
+        "embedded_sha256": "f6b9a862150de0d9c6fe6693296b6ac56a39f537354c2dc5c47aba3e5f8caa61",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 12,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/backgrounds/back_shelf.png",
+        "local_sha256": "f6b9a862150de0d9c6fe6693296b6ac56a39f537354c2dc5c47aba3e5f8caa61"
+      },
+      {
+        "id": "bg_last_train",
+        "orig_name": "last_train.png",
+        "embedded_sha256": "b5695de8a2edad1e566b1c0f61a3290b41a84b5af82a643801d956d44dd13a6d",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 11,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/backgrounds/last_train.png",
+        "local_sha256": "b5695de8a2edad1e566b1c0f61a3290b41a84b5af82a643801d956d44dd13a6d"
+      },
+      {
+        "id": "bg_repair_counter",
+        "orig_name": "repair_counter.png",
+        "embedded_sha256": "f1082d2fed6135e93813545f5139ae051b7c0dad1ce1d631a4e4682fe876a52b",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 10,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/backgrounds/repair_counter.png",
+        "local_sha256": "f1082d2fed6135e93813545f5139ae051b7c0dad1ce1d631a4e4682fe876a52b"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_miki_blink",
+        "orig_name": "miki_blink.png",
+        "embedded_sha256": "37cb33fb68bf342a44a07f534ebe451b4df03c14d48ce8e53f90ffe8e8b8e8ed",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4836,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/characters/miki_blink.png",
+        "local_sha256": "37cb33fb68bf342a44a07f534ebe451b4df03c14d48ce8e53f90ffe8e8b8e8ed"
+      },
+      {
+        "id": "char_miki_neutral",
+        "orig_name": "miki_neutral.png",
+        "embedded_sha256": "1b8752004bc388a3142b33c3371b62bc90913b82346f87bd6b4845a9f3f44bc6",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4836,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/characters/miki_neutral.png",
+        "local_sha256": "1b8752004bc388a3142b33c3371b62bc90913b82346f87bd6b4845a9f3f44bc6"
+      },
+      {
+        "id": "char_miki_talk",
+        "orig_name": "miki_talk.png",
+        "embedded_sha256": "89763909d902c3f3729968aed2367644e0a415809becad59f30d650185f94c9f",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4836,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/characters/miki_talk.png",
+        "local_sha256": "89763909d902c3f3729968aed2367644e0a415809becad59f30d650185f94c9f"
+      },
+      {
+        "id": "char_nao_blink",
+        "orig_name": "nao_blink.png",
+        "embedded_sha256": "17510e044e05f73438d01a868c86a533205cbb3a75cefa310969004e310a21d4",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 10,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4671,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/characters/nao_blink.png",
+        "local_sha256": "17510e044e05f73438d01a868c86a533205cbb3a75cefa310969004e310a21d4"
+      },
+      {
+        "id": "char_nao_neutral",
+        "orig_name": "nao_neutral.png",
+        "embedded_sha256": "7b95aef2bbed6547601b6170c94fef9d2761705cb07ab9725e7a730cbf97db26",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 10,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4671,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/characters/nao_neutral.png",
+        "local_sha256": "7b95aef2bbed6547601b6170c94fef9d2761705cb07ab9725e7a730cbf97db26"
+      },
+      {
+        "id": "char_nao_talk",
+        "orig_name": "nao_talk.png",
+        "embedded_sha256": "f804853c88807d27431f6c1a11334097fd8975f316f3120c8c0c36b6f2d3c024",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 10,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4671,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/characters/nao_talk.png",
+        "local_sha256": "f804853c88807d27431f6c1a11334097fd8975f316f3120c8c0c36b6f2d3c024"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_back_shelf",
+          "textbox_mean_luma": 11.805,
+          "textbox_luma_stddev": 21.871,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_last_train",
+          "textbox_mean_luma": 14.0,
+          "textbox_luma_stddev": 26.883,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_repair_counter",
+          "textbox_mean_luma": 18.289,
+          "textbox_luma_stddev": 32.56,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 40,
+      "families": [
+        {
+          "neutral": "char_miki_neutral",
+          "talk": "char_miki_talk",
+          "blink": "char_miki_blink",
+          "talk_face_delta": 4.462,
+          "blink_face_delta": 9.627,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 97,
+            "changed_bbox": [
+              42,
+              63,
+              55,
+              72
+            ],
+            "changed_bbox_area": 117,
+            "changed_region_share": 0.009521,
+            "global_changed_share": 0.007894,
+            "face_changed_pixels": 97,
+            "face_changed_share": 0.045928,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 204,
+            "changed_bbox": [
+              30,
+              39,
+              66,
+              49
+            ],
+            "changed_bbox_area": 360,
+            "changed_region_share": 0.029297,
+            "global_changed_share": 0.016602,
+            "face_changed_pixels": 204,
+            "face_changed_share": 0.096591,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        },
+        {
+          "neutral": "char_nao_neutral",
+          "talk": "char_nao_talk",
+          "blink": "char_nao_blink",
+          "talk_face_delta": 4.265,
+          "blink_face_delta": 9.76,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 92,
+            "changed_bbox": [
+              42,
+              56,
+              55,
+              72
+            ],
+            "changed_bbox_area": 208,
+            "changed_region_share": 0.016927,
+            "global_changed_share": 0.007487,
+            "face_changed_pixels": 92,
+            "face_changed_share": 0.043561,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 204,
+            "changed_bbox": [
+              30,
+              39,
+              66,
+              49
+            ],
+            "changed_bbox_area": 360,
+            "changed_region_share": 0.029297,
+            "global_changed_share": 0.016602,
+            "face_changed_pixels": 204,
+            "face_changed_share": 0.096591,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/sources",
+      "count": 2,
+      "packaged_file_count": 2,
+      "background_source_count": 1,
+      "character_source_count": 1,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/sources/backgrounds_imagegen_source.png",
+          "bytes": 4317,
+          "sha256": "4e5f62c84e51e2601d3e87c582ae13c7e40bc5e0d32432309f6173559db5193f",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            672,
+            144
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/sources/characters_imagegen_source.png",
+          "bytes": 20031,
+          "sha256": "7e78037b339de8a342c1632a4f433520fefba0e482c32b2d6bcfbe320787c4b6",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1152,
+            1024
+          ],
+          "mode": "RGB"
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 28781,
+      "sha256": "3e085fb5f930a7caa1968615ac331d2efd845ba11cac2d704003ea081b646887",
+      "size": [
+        712,
+        658
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 134134,
+        "sha256": "de7e44f495bb8d54ed4028c18d6e5a5fcc2daefd427a20fe5d6b4e1a3fea8a4d",
+        "size": [
+          712,
+          2560
+        ],
+        "mode": "RGB",
+        "unique_colors": 271,
+        "luma_stddev": 52.916
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 63912,
+        "sha256": "0e698eda0c6a6dbefe3224c95b8d485e6797d5cb9af7399248fdcdbfaad6aa49",
+        "size": [
+          488,
+          1064
+        ],
+        "mode": "RGB",
+        "unique_colors": 269,
+        "luma_stddev": 49.725
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 24135,
+        "sha256": "4eba9d6f68ebaa720380cd80ac98ac39b5c25d71a1dcd882f1e3c45af0da3880",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json",
+          "exists": true,
+          "bytes": 105266,
+          "sha256": "7f5ebccfbfcc413e61bf2b5d82c55b9e1195256c7be9b56f6dadbdc3f00bf342"
+        },
+        "nodes_rendered": 43,
+        "preview_node_ids": [
+          "title",
+          "cam01",
+          "cam02",
+          "cam03",
+          "cam04",
+          "cam05",
+          "cam06",
+          "cam07",
+          "cam08",
+          "cam_choice_method",
+          "cam_method_labels",
+          "cam_method_boots",
+          "cam_method_names",
+          "cam09",
+          "cam10",
+          "cam11",
+          "cam12",
+          "cam13",
+          "cam14",
+          "cam15",
+          "cam16",
+          "cam17",
+          "cam18",
+          "cam19",
+          "cam20",
+          "cam21",
+          "cam22",
+          "cam23",
+          "cam24",
+          "cam25",
+          "cam_choice_case",
+          "cam_case_sealed",
+          "cam_case_open",
+          "cam_case_photo",
+          "cam_end_sealed_labels",
+          "cam_end_sealed_boots",
+          "cam_end_sealed_names",
+          "cam_end_open_labels",
+          "cam_end_open_boots",
+          "cam_end_open_names",
+          "cam_end_photo_labels",
+          "cam_end_photo_boots",
+          "cam_end_photo_names"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 43,
+            "expected": 43
+          },
+          "storyboard_cells": {
+            "reported": 43,
+            "expected": 43
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/catalog-after-midnight-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

@@ -1,0 +1,228 @@
+{
+  "ok": true,
+  "errors": [],
+  "generated_at_utc": "2026-07-23T19:37:51.375424+00:00",
+  "project": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json",
+    "bytes": 469481,
+    "sha256": "8ce216c425178b52d3933ecd9e412cfb202887c91db3b57081239e4aeb72270a"
+  },
+  "renderer": {
+    "backend": "legacy-tracker-wavetable-audition",
+    "sample_rate": 22050,
+    "loops": 2,
+    "channels": 1,
+    "sample_width_bits": 16,
+    "note": "Offline audition mirrors the runtime's 32-sample wave shapes and variable-length 16th-note grid; hardware output and emulator mixing may differ."
+  },
+  "tracks": [
+    {
+      "id": "track_last_tour",
+      "name": "Last Tour, Lights Low",
+      "bpm": 58,
+      "length_steps": 192,
+      "loop_seconds": 49.655,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/audio/01-last_tour.wav",
+      "bytes": 4379630,
+      "sha256": "e0ba04100a806ca5432aa9757993499af7ef7f443dfef77301d60e926e61b23e",
+      "duration_seconds": 99.31,
+      "metrics": {
+        "peak_dbfs": -17.844,
+        "rms_dbfs": -26.173,
+        "near_silent_sample_share": 0.184348,
+        "max_loop_jump_linear": 0.0
+      }
+    },
+    {
+      "id": "track_war_map",
+      "name": "Arrows Across the Glass",
+      "bpm": 84,
+      "length_steps": 192,
+      "loop_seconds": 34.286,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/audio/02-war_map.wav",
+      "bytes": 3024044,
+      "sha256": "036d767ddebcedaace4ba06fefd5279d2a1a58f5e228e8ac62dd78c793de4f04",
+      "duration_seconds": 68.571,
+      "metrics": {
+        "peak_dbfs": -14.957,
+        "rms_dbfs": -22.549,
+        "near_silent_sample_share": 0.121754,
+        "max_loop_jump_linear": 0.000732
+      }
+    },
+    {
+      "id": "track_white_base",
+      "name": "Whoever Kept Moving",
+      "bpm": 72,
+      "length_steps": 192,
+      "loop_seconds": 40.0,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/audio/03-white_base.wav",
+      "bytes": 3528044,
+      "sha256": "fff147b17a5016c10eceb31ce9801bffbf4ef48bd7111cc8e392f57649a17e87",
+      "duration_seconds": 80.0,
+      "metrics": {
+        "peak_dbfs": -14.957,
+        "rms_dbfs": -24.585,
+        "near_silent_sample_share": 0.140652,
+        "max_loop_jump_linear": 0.001099
+      }
+    },
+    {
+      "id": "track_archive_threshold",
+      "name": "The Next Door Opens",
+      "bpm": 64,
+      "length_steps": 192,
+      "loop_seconds": 45.0,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/audio/04-archive_threshold.wav",
+      "bytes": 3969044,
+      "sha256": "6e002ee1dab66ef81d0e7ee036ccf48177d33347b80df8bcc786cd96f847137c",
+      "duration_seconds": 90.0,
+      "metrics": {
+        "peak_dbfs": -16.277,
+        "rms_dbfs": -26.172,
+        "near_silent_sample_share": 0.184623,
+        "max_loop_jump_linear": 0.000519
+      }
+    },
+    {
+      "id": "track_memorial",
+      "name": "Names Under the Victory Lamp",
+      "bpm": 52,
+      "length_steps": 192,
+      "loop_seconds": 55.385,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/audio/05-memorial.wav",
+      "bytes": 4884968,
+      "sha256": "7eab94fe41df5783908730f5515a6a229a3e754b3ebab5e33dce3dbb666b7918",
+      "duration_seconds": 110.769,
+      "metrics": {
+        "peak_dbfs": -17.844,
+        "rms_dbfs": -26.232,
+        "near_silent_sample_share": 0.188624,
+        "max_loop_jump_linear": 0.000885
+      }
+    },
+    {
+      "id": "track_names_carried",
+      "name": "Carry Every Name Home",
+      "bpm": 58,
+      "length_steps": 192,
+      "loop_seconds": 49.655,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/audio/06-names_carried.wav",
+      "bytes": 4379630,
+      "sha256": "5a02754c3307f9cbb133f5d1351c55c708e87a686c9084919dc4ee7eb025d108",
+      "duration_seconds": 99.31,
+      "metrics": {
+        "peak_dbfs": -14.957,
+        "rms_dbfs": -23.877,
+        "near_silent_sample_share": 0.099531,
+        "max_loop_jump_linear": 0.0
+      }
+    },
+    {
+      "id": "track_power_reckoning",
+      "name": "What the Machines Could Not Decide",
+      "bpm": 68,
+      "length_steps": 192,
+      "loop_seconds": 42.353,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/audio/07-power_reckoning.wav",
+      "bytes": 3735574,
+      "sha256": "97705d2175185c379b73623f2831542585ac7beca2573b5d6541a520fc236783",
+      "duration_seconds": 84.706,
+      "metrics": {
+        "peak_dbfs": -16.277,
+        "rms_dbfs": -25.055,
+        "near_silent_sample_share": 0.150415,
+        "max_loop_jump_linear": 0.0
+      }
+    }
+  ],
+  "cues": [
+    {
+      "node": "tour_title",
+      "node_name": "Tour Title",
+      "track": "track_last_tour"
+    },
+    {
+      "node": "tour_03",
+      "node_name": "Tour 03",
+      "track": "track_war_map"
+    },
+    {
+      "node": "tour_05",
+      "node_name": "Tour 05",
+      "track": "track_white_base"
+    },
+    {
+      "node": "tour_09",
+      "node_name": "Tour 09",
+      "track": "track_archive_threshold"
+    },
+    {
+      "node": "whitebase_01",
+      "node_name": "Whitebase 01",
+      "track": "track_white_base"
+    },
+    {
+      "node": "warmap_01",
+      "node_name": "Warmap 01",
+      "track": "track_war_map"
+    },
+    {
+      "node": "earth_03",
+      "node_name": "Earth 03",
+      "track": "track_memorial"
+    },
+    {
+      "node": "earth_06",
+      "node_name": "Earth 06",
+      "track": "track_war_map"
+    },
+    {
+      "node": "side6_archive_01",
+      "node_name": "Side6 Archive 01",
+      "track": "track_archive_threshold"
+    },
+    {
+      "node": "solomon_memorial_01",
+      "node_name": "Solomon Memorial 01",
+      "track": "track_memorial"
+    },
+    {
+      "node": "people_04",
+      "node_name": "People 04",
+      "track": "track_war_map"
+    },
+    {
+      "node": "people_06",
+      "node_name": "People 06",
+      "track": "track_names_carried"
+    },
+    {
+      "node": "power_01",
+      "node_name": "Power 01",
+      "track": "track_war_map"
+    },
+    {
+      "node": "power_03",
+      "node_name": "Power 03",
+      "track": "track_memorial"
+    },
+    {
+      "node": "power_03b",
+      "node_name": "Power 03B",
+      "track": "track_war_map"
+    },
+    {
+      "node": "power_06",
+      "node_name": "Power 06",
+      "track": "track_power_reckoning"
+    }
+  ]
+}

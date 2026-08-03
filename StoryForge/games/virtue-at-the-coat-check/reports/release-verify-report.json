@@ -1,0 +1,789 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mode": "normal",
+    "zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/releases/20260727T033608Z-6502e0433fc2.zip",
+      "bytes": 12872166,
+      "sha256": "7a1eae6b4b4fc2601e008434a75b2e764f64b0277279823f6c4fa9f79df8c03a"
+    },
+    "entries": 45,
+    "members": 45,
+    "duplicate_members": [],
+    "unsafe_members": [],
+    "manifest": {
+      "schema_version": 1,
+      "slug": "virtue-at-the-coat-check",
+      "title": "Virtue at the Coat Check",
+      "files": 44,
+      "runtime_inputs": 6,
+      "emulator_screenshot": false
+    },
+    "package_sources": {
+      "readme": {
+        "member": "docs/README.md",
+        "exists": true,
+        "bytes": 1424,
+        "sha256": "3ab8748df043e51fe7c6960aa81760a5fc4325868df743933ca48670bd3c7d61"
+      },
+      "asset_builder": {
+        "member": "source/build_virtue_at_the_coat_check.py",
+        "exists": true,
+        "bytes": 23181,
+        "sha256": "8ac9a961f7a8bf3090f9d184bf59e7de6b203b654e0dc2962b1fb8e84c328d67"
+      },
+      "qa_report": {
+        "member": "reports/virtue-at-the-coat-check-qa-report.json",
+        "exists": true,
+        "bytes": 1618,
+        "sha256": "ae267c6db1cc3a5ba86565ed6345a3060422a2cb8d626a5d770a3f8163e54ce3"
+      }
+    },
+    "runtime_inputs": {
+      "present": true,
+      "expected_count": 6,
+      "files": [
+        {
+          "member": "runtime/src/main.c",
+          "exists": true,
+          "bytes": 105606,
+          "sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a",
+          "manifest_bytes": 105606,
+          "manifest_sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a"
+        },
+        {
+          "member": "runtime/src/game_types.h",
+          "exists": true,
+          "bytes": 6650,
+          "sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec",
+          "manifest_bytes": 6650,
+          "manifest_sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec"
+        },
+        {
+          "member": "runtime/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+          "manifest_bytes": 5470,
+          "manifest_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        {
+          "member": "runtime/tools/convert_json.py",
+          "exists": true,
+          "bytes": 88977,
+          "sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387",
+          "manifest_bytes": 88977,
+          "manifest_sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387"
+        },
+        {
+          "member": "runtime/Makefile",
+          "exists": true,
+          "bytes": 3590,
+          "sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd",
+          "manifest_bytes": 3590,
+          "manifest_sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd"
+        },
+        {
+          "member": "runtime/wfconfig.toml",
+          "exists": true,
+          "bytes": 169,
+          "sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78",
+          "manifest_bytes": 169,
+          "manifest_sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78"
+        }
+      ],
+      "count": 6,
+      "missing": [],
+      "extra": [],
+      "duplicates": []
+    },
+    "current_workspace": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check",
+      "checked": 44,
+      "missing": [],
+      "mismatches": [],
+      "stable_report_diffs": [],
+      "unmapped": [],
+      "extra_current": []
+    },
+    "reports": {
+      "build": true,
+      "smoke": true,
+      "readiness": true,
+      "audit": true,
+      "swansong_playthrough": true,
+      "review_sheets": true
+    },
+    "smoke_verification": {
+      "result_scope": "boot-and-checksum",
+      "boot": {
+        "performed": true,
+        "passed": true,
+        "method": "headless-mednafen-startup-metadata",
+        "pixels_observed": false
+      },
+      "checksum": {
+        "performed": true,
+        "passed": true,
+        "method": "mednafen-recorded-vs-real-checksum"
+      },
+      "visual": {
+        "performed": false,
+        "passed": null,
+        "status": "not-performed",
+        "pixels_observed": false,
+        "proof_bound": false,
+        "screenshot": null
+      },
+      "proof_bound": false
+    },
+    "swansong_playthrough": {
+      "schema": "wscvn-swansong-playthrough-v2",
+      "app": {
+        "path": "/Applications/SwanSong.app",
+        "version": "0.9.0",
+        "build": "18",
+        "bundle_identifier": "com.regionallyfamous.swansong"
+      },
+      "route_count": 4,
+      "routes": [
+        {
+          "route_index": 0,
+          "member": "evidence/swansong-playthrough/route-1-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "virtue_title",
+            "virtue_01",
+            "virtue_02",
+            "virtue_03",
+            "virtue_04",
+            "virtue_05",
+            "virtue_06",
+            "virtue_07",
+            "virtue_08",
+            "virtue_09",
+            "virtue_10",
+            "virtue_method",
+            "virtue_ticket_1",
+            "virtue_ticket_2",
+            "virtue_11",
+            "virtue_12",
+            "virtue_13",
+            "virtue_14",
+            "virtue_15",
+            "virtue_16",
+            "virtue_17",
+            "virtue_18",
+            "virtue_19",
+            "virtue_20",
+            "virtue_21",
+            "virtue_22",
+            "virtue_23",
+            "virtue_24",
+            "virtue_25",
+            "virtue_26",
+            "virtue_27",
+            "virtue_28",
+            "virtue_choice",
+            "virtue_a1",
+            "virtue_a2",
+            "virtue_a3",
+            "virtue_a4",
+            "end"
+          ],
+          "observed_nodes": [
+            "virtue_title",
+            "virtue_01",
+            "virtue_02",
+            "virtue_03",
+            "virtue_04",
+            "virtue_05",
+            "virtue_06",
+            "virtue_07",
+            "virtue_08",
+            "virtue_09",
+            "virtue_10",
+            "virtue_method",
+            "virtue_ticket_1",
+            "virtue_ticket_2",
+            "virtue_11",
+            "virtue_12",
+            "virtue_13",
+            "virtue_14",
+            "virtue_15",
+            "virtue_16",
+            "virtue_17",
+            "virtue_18",
+            "virtue_19",
+            "virtue_20",
+            "virtue_21",
+            "virtue_22",
+            "virtue_23",
+            "virtue_24",
+            "virtue_25",
+            "virtue_26",
+            "virtue_27",
+            "virtue_28",
+            "virtue_choice",
+            "virtue_a1",
+            "virtue_a2",
+            "virtue_a3",
+            "virtue_a4",
+            "end"
+          ],
+          "bytes": 12230,
+          "sha256": "9416e42a9e45cade0be749e52e885837f6973f51c910b342b7697957e309a774",
+          "node_id": "virtue_a4",
+          "audio_member": "evidence/swansong-playthrough/route-1-audio.wav"
+        },
+        {
+          "route_index": 1,
+          "member": "evidence/swansong-playthrough/route-2-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "virtue_title",
+            "virtue_01",
+            "virtue_02",
+            "virtue_03",
+            "virtue_04",
+            "virtue_05",
+            "virtue_06",
+            "virtue_07",
+            "virtue_08",
+            "virtue_09",
+            "virtue_10",
+            "virtue_method",
+            "virtue_ticket_1",
+            "virtue_ticket_2",
+            "virtue_11",
+            "virtue_12",
+            "virtue_13",
+            "virtue_14",
+            "virtue_15",
+            "virtue_16",
+            "virtue_17",
+            "virtue_18",
+            "virtue_19",
+            "virtue_20",
+            "virtue_21",
+            "virtue_22",
+            "virtue_23",
+            "virtue_24",
+            "virtue_25",
+            "virtue_26",
+            "virtue_27",
+            "virtue_28",
+            "virtue_choice",
+            "virtue_b1",
+            "virtue_b2",
+            "virtue_b3",
+            "virtue_b4",
+            "end"
+          ],
+          "observed_nodes": [
+            "virtue_title",
+            "virtue_01",
+            "virtue_02",
+            "virtue_03",
+            "virtue_04",
+            "virtue_05",
+            "virtue_06",
+            "virtue_07",
+            "virtue_08",
+            "virtue_09",
+            "virtue_10",
+            "virtue_method",
+            "virtue_ticket_1",
+            "virtue_ticket_2",
+            "virtue_11",
+            "virtue_12",
+            "virtue_13",
+            "virtue_14",
+            "virtue_15",
+            "virtue_16",
+            "virtue_17",
+            "virtue_18",
+            "virtue_19",
+            "virtue_20",
+            "virtue_21",
+            "virtue_22",
+            "virtue_23",
+            "virtue_24",
+            "virtue_25",
+            "virtue_26",
+            "virtue_27",
+            "virtue_28",
+            "virtue_choice",
+            "virtue_b1",
+            "virtue_b2",
+            "virtue_b3",
+            "virtue_b4",
+            "end"
+          ],
+          "bytes": 21098,
+          "sha256": "65620dca989e9e5db0a36072068da7a0c020ce42328b8b839de73870e0a242ea",
+          "node_id": "virtue_b4",
+          "audio_member": "evidence/swansong-playthrough/route-2-audio.wav"
+        },
+        {
+          "route_index": 2,
+          "member": "evidence/swansong-playthrough/route-3-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "virtue_title",
+            "virtue_01",
+            "virtue_02",
+            "virtue_03",
+            "virtue_04",
+            "virtue_05",
+            "virtue_06",
+            "virtue_07",
+            "virtue_08",
+            "virtue_09",
+            "virtue_10",
+            "virtue_method",
+            "virtue_map_1",
+            "virtue_map_2",
+            "virtue_11",
+            "virtue_12",
+            "virtue_13",
+            "virtue_14",
+            "virtue_15",
+            "virtue_16",
+            "virtue_17",
+            "virtue_18",
+            "virtue_19",
+            "virtue_20",
+            "virtue_21",
+            "virtue_22",
+            "virtue_23",
+            "virtue_24",
+            "virtue_25",
+            "virtue_26",
+            "virtue_27",
+            "virtue_28",
+            "virtue_choice",
+            "virtue_a1",
+            "virtue_a2",
+            "virtue_a3",
+            "virtue_a4",
+            "end"
+          ],
+          "observed_nodes": [
+            "virtue_title",
+            "virtue_01",
+            "virtue_02",
+            "virtue_03",
+            "virtue_04",
+            "virtue_05",
+            "virtue_06",
+            "virtue_07",
+            "virtue_08",
+            "virtue_09",
+            "virtue_10",
+            "virtue_method",
+            "virtue_map_1",
+            "virtue_map_2",
+            "virtue_11",
+            "virtue_12",
+            "virtue_13",
+            "virtue_14",
+            "virtue_15",
+            "virtue_16",
+            "virtue_17",
+            "virtue_18",
+            "virtue_19",
+            "virtue_20",
+            "virtue_21",
+            "virtue_22",
+            "virtue_23",
+            "virtue_24",
+            "virtue_25",
+            "virtue_26",
+            "virtue_27",
+            "virtue_28",
+            "virtue_choice",
+            "virtue_a1",
+            "virtue_a2",
+            "virtue_a3",
+            "virtue_a4",
+            "end"
+          ],
+          "bytes": 12230,
+          "sha256": "9416e42a9e45cade0be749e52e885837f6973f51c910b342b7697957e309a774",
+          "node_id": "virtue_a4",
+          "audio_member": "evidence/swansong-playthrough/route-3-audio.wav"
+        },
+        {
+          "route_index": 3,
+          "member": "evidence/swansong-playthrough/route-4-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "virtue_title",
+            "virtue_01",
+            "virtue_02",
+            "virtue_03",
+            "virtue_04",
+            "virtue_05",
+            "virtue_06",
+            "virtue_07",
+            "virtue_08",
+            "virtue_09",
+            "virtue_10",
+            "virtue_method",
+            "virtue_map_1",
+            "virtue_map_2",
+            "virtue_11",
+            "virtue_12",
+            "virtue_13",
+            "virtue_14",
+            "virtue_15",
+            "virtue_16",
+            "virtue_17",
+            "virtue_18",
+            "virtue_19",
+            "virtue_20",
+            "virtue_21",
+            "virtue_22",
+            "virtue_23",
+            "virtue_24",
+            "virtue_25",
+            "virtue_26",
+            "virtue_27",
+            "virtue_28",
+            "virtue_choice",
+            "virtue_b1",
+            "virtue_b2",
+            "virtue_b3",
+            "virtue_b4",
+            "end"
+          ],
+          "observed_nodes": [
+            "virtue_title",
+            "virtue_01",
+            "virtue_02",
+            "virtue_03",
+            "virtue_04",
+            "virtue_05",
+            "virtue_06",
+            "virtue_07",
+            "virtue_08",
+            "virtue_09",
+            "virtue_10",
+            "virtue_method",
+            "virtue_map_1",
+            "virtue_map_2",
+            "virtue_11",
+            "virtue_12",
+            "virtue_13",
+            "virtue_14",
+            "virtue_15",
+            "virtue_16",
+            "virtue_17",
+            "virtue_18",
+            "virtue_19",
+            "virtue_20",
+            "virtue_21",
+            "virtue_22",
+            "virtue_23",
+            "virtue_24",
+            "virtue_25",
+            "virtue_26",
+            "virtue_27",
+            "virtue_28",
+            "virtue_choice",
+            "virtue_b1",
+            "virtue_b2",
+            "virtue_b3",
+            "virtue_b4",
+            "end"
+          ],
+          "bytes": 21098,
+          "sha256": "65620dca989e9e5db0a36072068da7a0c020ce42328b8b839de73870e0a242ea",
+          "node_id": "virtue_b4",
+          "audio_member": "evidence/swansong-playthrough/route-4-audio.wav"
+        }
+      ]
+    },
+    "readiness_assets": {
+      "contact_sheet": {
+        "member": "preview/contact_sheet.png",
+        "expected_sha256": "88f14c6b5daca91d85e224b1de91c0b313a80f58624e96ef6dd51a140c6cdcb0",
+        "exists": true,
+        "sha256": "88f14c6b5daca91d85e224b1de91c0b313a80f58624e96ef6dd51a140c6cdcb0"
+      },
+      "review_sheets": {
+        "scene_preview_sheet": {
+          "member": "preview/scene_preview_sheet.png",
+          "expected_sha256": "50941d647f21c80aa6c4b6d0815698b0724b1d955cd3570f91d39ff5afe788b5",
+          "exists": true,
+          "sha256": "50941d647f21c80aa6c4b6d0815698b0724b1d955cd3570f91d39ff5afe788b5"
+        },
+        "storyboard_sheet": {
+          "member": "preview/storyboard_sheet.png",
+          "expected_sha256": "454d7ce4f845ca932406880fd41ec6aaa84322eec0165e63cc18ed1522ba847f",
+          "exists": true,
+          "sha256": "454d7ce4f845ca932406880fd41ec6aaa84322eec0165e63cc18ed1522ba847f"
+        }
+      },
+      "sources": [
+        {
+          "member": "assets/sources/background_ending_a_imagegen_v1.png",
+          "expected_sha256": "55b921320c77ff476d21251ffdb98e668e78a6901d13f3db92f44578c51e8fa3",
+          "exists": true,
+          "sha256": "55b921320c77ff476d21251ffdb98e668e78a6901d13f3db92f44578c51e8fa3"
+        },
+        {
+          "member": "assets/sources/background_ending_b_imagegen_v1.png",
+          "expected_sha256": "74aa61b6a8c49ee62fa61b7dbfd550366c9a788b1a2aedc89b0138fb37bf6700",
+          "exists": true,
+          "sha256": "74aa61b6a8c49ee62fa61b7dbfd550366c9a788b1a2aedc89b0138fb37bf6700"
+        },
+        {
+          "member": "assets/sources/background_main_imagegen_v1.png",
+          "expected_sha256": "cdd5c0db676a24db42200e35a8dd326961118f3076f82e33862d43443a1e6162",
+          "exists": true,
+          "sha256": "cdd5c0db676a24db42200e35a8dd326961118f3076f82e33862d43443a1e6162"
+        },
+        {
+          "member": "assets/sources/background_title_imagegen_v1.png",
+          "expected_sha256": "b3114a2812cafac533e70557cba568251203e1af4aada4d543e7ae7085526a6d",
+          "exists": true,
+          "sha256": "b3114a2812cafac533e70557cba568251203e1af4aada4d543e7ae7085526a6d"
+        },
+        {
+          "member": "assets/sources/character_master_cutout_imagegen_v1.png",
+          "expected_sha256": "99c37da247cc0cd512e55f96c57602defbe4772a220c3e13d62a5d9b02aed2cc",
+          "exists": true,
+          "sha256": "99c37da247cc0cd512e55f96c57602defbe4772a220c3e13d62a5d9b02aed2cc"
+        },
+        {
+          "member": "assets/sources/character_master_imagegen_v1.png",
+          "expected_sha256": "e1bcef86fa1428ce7974cd353d20ae8b994129c209d064621c004034287fc0e2",
+          "exists": true,
+          "sha256": "e1bcef86fa1428ce7974cd353d20ae8b994129c209d064621c004034287fc0e2"
+        },
+        {
+          "member": "assets/sources/game_spec.json",
+          "expected_sha256": "9e5a3460901f8e35bad4efc8d4d38c7cbfb33d2dd76c20d50eed6699bd9280e6",
+          "exists": true,
+          "sha256": "9e5a3460901f8e35bad4efc8d4d38c7cbfb33d2dd76c20d50eed6699bd9280e6"
+        },
+        {
+          "member": "assets/sources/imagegen-prompts-v1.md",
+          "expected_sha256": "a3b80dc175cd4f53fb4c0dd4e1923b9a1dd84461791e7ef48168e0381863d5ea",
+          "exists": true,
+          "sha256": "a3b80dc175cd4f53fb4c0dd4e1923b9a1dd84461791e7ef48168e0381863d5ea"
+        }
+      ],
+      "extra_sources": [],
+      "review_sheets_report": {
+        "member": "reports/review-sheets-report.json",
+        "expected_sha256": "e18a74367cc50a721f2ba2c6902e8ded49dd3f311f8d031f8aaa36dceef6a3a7",
+        "exists": true,
+        "sha256": "e18a74367cc50a721f2ba2c6902e8ded49dd3f311f8d031f8aaa36dceef6a3a7"
+      },
+      "packaged_source_count": 8,
+      "backgrounds": {
+        "count": 4,
+        "files": [
+          {
+            "member": "assets/backgrounds/bg_title.png",
+            "expected_sha256": "7f04e2685e997fec2aba43f31cd0d5a8d6adbcc6d6b5c8f725f3203d101993a7",
+            "exists": true,
+            "sha256": "7f04e2685e997fec2aba43f31cd0d5a8d6adbcc6d6b5c8f725f3203d101993a7"
+          },
+          {
+            "member": "assets/backgrounds/bg_main.png",
+            "expected_sha256": "e4f18c722268fe0e1b4f6e7fb4f70a2fd17c37f200e603838690c09bd8fdb32d",
+            "exists": true,
+            "sha256": "e4f18c722268fe0e1b4f6e7fb4f70a2fd17c37f200e603838690c09bd8fdb32d"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_a.png",
+            "expected_sha256": "a193831f10e84c190af22b33e88f2402539517b795b4c46197087fbbbc7ddb4c",
+            "exists": true,
+            "sha256": "a193831f10e84c190af22b33e88f2402539517b795b4c46197087fbbbc7ddb4c"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_b.png",
+            "expected_sha256": "3f099d4959034e70a5c121f560bef9f6b10b44ca669ce057ba91337028144639",
+            "exists": true,
+            "sha256": "3f099d4959034e70a5c121f560bef9f6b10b44ca669ce057ba91337028144639"
+          }
+        ],
+        "packaged_count": 4,
+        "extra_members": []
+      },
+      "characters": {
+        "count": 3,
+        "files": [
+          {
+            "member": "assets/characters/virtue_neutral.png",
+            "expected_sha256": "b16564ddb94403482195f6ec5e34f7fbac854d571918e8b7d06e7128106204b9",
+            "exists": true,
+            "sha256": "b16564ddb94403482195f6ec5e34f7fbac854d571918e8b7d06e7128106204b9"
+          },
+          {
+            "member": "assets/characters/virtue_talk.png",
+            "expected_sha256": "ef05e56e68df978f4905253031350ef0a794f31ed6bb6ee72c16faaab259f8e0",
+            "exists": true,
+            "sha256": "ef05e56e68df978f4905253031350ef0a794f31ed6bb6ee72c16faaab259f8e0"
+          },
+          {
+            "member": "assets/characters/virtue_blink.png",
+            "expected_sha256": "7ffd086e330fec2f6a87360a4c3618349c8237ffc175e95ec7d4a894d635ba5e",
+            "exists": true,
+            "sha256": "7ffd086e330fec2f6a87360a4c3618349c8237ffc175e95ec7d4a894d635ba5e"
+          }
+        ],
+        "packaged_count": 3,
+        "extra_members": []
+      },
+      "sfx": {
+        "count": 0,
+        "files": [],
+        "packaged_count": 0,
+        "extra_members": []
+      }
+    },
+    "project": {
+      "member": "project/virtue-at-the-coat-check.wscvn.json",
+      "bytes": 172513,
+      "sha256": "f340b0307c3c34057a4db790a5a0e5a8dbd671d00f402a6d6c87ded19564e938"
+    },
+    "rom": {
+      "member": "rom/virtue-at-the-coat-check.wsc",
+      "bytes": 8388608,
+      "sha256": "6502e0433fc2673ccf68fcb670207e0f754713abe147d64215a6a52370d74438",
+      "md5": "0x488cec45558bb834fc71240df9df8705"
+    },
+    "review_sheets_report": {
+      "present": true,
+      "member": "reports/review-sheets-report.json",
+      "project_file": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json",
+        "bytes": 172513,
+        "sha256": "f340b0307c3c34057a4db790a5a0e5a8dbd671d00f402a6d6c87ded19564e938"
+      },
+      "nodes_rendered": 43,
+      "preview_node_ids": [
+        "virtue_title",
+        "virtue_01",
+        "virtue_02",
+        "virtue_03",
+        "virtue_04",
+        "virtue_05",
+        "virtue_06",
+        "virtue_07",
+        "virtue_08",
+        "virtue_09",
+        "virtue_10",
+        "virtue_method",
+        "virtue_ticket_1",
+        "virtue_ticket_2",
+        "virtue_map_1",
+        "virtue_map_2",
+        "virtue_11",
+        "virtue_12",
+        "virtue_13",
+        "virtue_14",
+        "virtue_15",
+        "virtue_16",
+        "virtue_17",
+        "virtue_18",
+        "virtue_19",
+        "virtue_20",
+        "virtue_21",
+        "virtue_22",
+        "virtue_23",
+        "virtue_24",
+        "virtue_25",
+        "virtue_26",
+        "virtue_27",
+        "virtue_28",
+        "virtue_choice",
+        "virtue_a1",
+        "virtue_a2",
+        "virtue_a3",
+        "virtue_a4",
+        "virtue_b1",
+        "virtue_b2",
+        "virtue_b3",
+        "virtue_b4"
+      ],
+      "font": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+        "bytes": 5470,
+        "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+        "member": "runtime/src/font.h",
+        "packaged_bytes": 5470,
+        "packaged_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+      },
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/scene_preview_sheet.png",
+        "bytes": 293563,
+        "sha256": "50941d647f21c80aa6c4b6d0815698b0724b1d955cd3570f91d39ff5afe788b5",
+        "member": "preview/scene_preview_sheet.png",
+        "packaged_bytes": 293563,
+        "packaged_sha256": "50941d647f21c80aa6c4b6d0815698b0724b1d955cd3570f91d39ff5afe788b5"
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/storyboard_sheet.png",
+        "bytes": 96403,
+        "sha256": "454d7ce4f845ca932406880fd41ec6aaa84322eec0165e63cc18ed1522ba847f",
+        "member": "preview/storyboard_sheet.png",
+        "packaged_bytes": 96403,
+        "packaged_sha256": "454d7ce4f845ca932406880fd41ec6aaa84322eec0165e63cc18ed1522ba847f"
+      }
+    },
+    "project_report_bindings": {
+      "readiness": {
+        "present": true,
+        "member": "project/virtue-at-the-coat-check.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json",
+        "bytes": 172513,
+        "sha256": "f340b0307c3c34057a4db790a5a0e5a8dbd671d00f402a6d6c87ded19564e938"
+      },
+      "audit": {
+        "present": true,
+        "member": "project/virtue-at-the-coat-check.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json",
+        "bytes": 172513,
+        "sha256": "f340b0307c3c34057a4db790a5a0e5a8dbd671d00f402a6d6c87ded19564e938"
+      }
+    },
+    "audit_rom_binding": {
+      "present": true,
+      "member": "rom/virtue-at-the-coat-check.wsc",
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/runtime-local/virtue-at-the-coat-check.wsc",
+      "bytes": 8388608,
+      "sha256": "6502e0433fc2673ccf68fcb670207e0f754713abe147d64215a6a52370d74438"
+    },
+    "manifest_artifacts": {
+      "project": {
+        "present": true,
+        "member": "project/virtue-at-the-coat-check.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json",
+        "bytes": 172513,
+        "sha256": "f340b0307c3c34057a4db790a5a0e5a8dbd671d00f402a6d6c87ded19564e938"
+      },
+      "rom": {
+        "present": true,
+        "member": "rom/virtue-at-the-coat-check.wsc",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/runtime-local/virtue-at-the-coat-check.wsc",
+        "sha256": "6502e0433fc2673ccf68fcb670207e0f754713abe147d64215a6a52370d74438",
+        "md5": "0x488cec45558bb834fc71240df9df8705",
+        "checksum": "0x224d"
+      }
+    },
+    "release_summary": {
+      "lines": 46,
+      "expected_lines": 34,
+      "visual_evidence_lines": 8,
+      "has_visual_evidence": true,
+      "missing_expected_lines": []
+    }
+  }
+}

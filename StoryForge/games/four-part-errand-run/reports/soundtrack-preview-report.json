@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "errors": [],
+  "generated_at_utc": "2026-07-16T00:09:48.428504+00:00",
+  "project": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/projects/four-part-errand-run.wscvn.json",
+    "bytes": 131161,
+    "sha256": "32387f1ffdb51fd98ada85c0248bb8d4400a37bd989d897710ad40e38c6be3d7"
+  },
+  "renderer": {
+    "backend": "legacy-tracker-wavetable-audition",
+    "sample_rate": 22050,
+    "loops": 2,
+    "channels": 1,
+    "sample_width_bits": 16,
+    "note": "Offline audition mirrors the runtime's 32-sample wave shapes; hardware output and emulator mixing may differ."
+  },
+  "tracks": [
+    {
+      "id": "errand_title",
+      "name": "Four Stops Before Noon",
+      "bpm": 126,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/audio/01-errand_title.wav",
+      "bytes": 336044,
+      "sha256": "4a5ffd5f10f8ba8b45c58f948a28cd89e9c2570ac0546a565877c076386e2f6d",
+      "duration_seconds": 7.619,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.265,
+        "near_silent_sample_share": 0.01003,
+        "max_loop_jump_linear": 0.074129
+      }
+    },
+    {
+      "id": "errand_main",
+      "name": "Component Commuter",
+      "bpm": 156,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/audio/02-errand_main.wav",
+      "bytes": 271428,
+      "sha256": "0e15a090011b97e29dc530cc857f9f938a4cfbe8f8b38ab9ba4c12246d83eaa1",
+      "duration_seconds": 6.154,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.234,
+        "near_silent_sample_share": 0.009617,
+        "max_loop_jump_linear": 0.027467
+      }
+    },
+    {
+      "id": "errand_end_a",
+      "name": "Muffin Reassembly",
+      "bpm": 118,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/audio/03-errand_end_a.wav",
+      "bytes": 358824,
+      "sha256": "cd53d69d91d8510effbc487fd89033410026eb861520191eb8673212a4a00803",
+      "duration_seconds": 8.136,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.2,
+        "near_silent_sample_share": 0.01077,
+        "max_loop_jump_linear": 0.033662
+      }
+    },
+    {
+      "id": "errand_end_b",
+      "name": "Saturday Separation",
+      "bpm": 144,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/audio/04-errand_end_b.wav",
+      "bytes": 294044,
+      "sha256": "1ba035a36cfe1491137060dd7b8a5a659f3a49043023832956be8fec562b443f",
+      "duration_seconds": 6.667,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.217,
+        "near_silent_sample_share": 0.010646,
+        "max_loop_jump_linear": 0.017792
+      }
+    }
+  ],
+  "cues": [
+    {
+      "node": "errand_title",
+      "node_name": "Errand Title",
+      "track": "errand_title"
+    },
+    {
+      "node": "errand_01",
+      "node_name": "Errand 01",
+      "track": "errand_main"
+    },
+    {
+      "node": "errand_a1",
+      "node_name": "Errand A1",
+      "track": "errand_end_a"
+    },
+    {
+      "node": "errand_b1",
+      "node_name": "Errand B1",
+      "track": "errand_end_b"
+    }
+  ]
+}

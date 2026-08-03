@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:26:57.247452+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "swan-case-club",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/projects/swan-case-club.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/runtime-local/swan-case-club.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/swan-case-club-qa-report.json",
+    "project_counts": {
+      "name": "Swan Case Club",
+      "nodes": 52,
+      "flags": 6,
+      "tracks": 1,
+      "backgrounds": 3,
+      "characters": 6,
+      "sfx": 0
+    },
+    "header_counts": {
+      "NUM_NODES": 52,
+      "NUM_FLAGS": 6,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 1,
+      "NUM_SFX": 0,
+      "NUM_BG_ASSETS": 3,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 6
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/projects/swan-case-club.wscvn.json",
+      "bytes": 112197,
+      "sha256": "30aeec060d81d43a848cba255cc1cae9bf96a7d4f9e51f296dc120dfff64016e"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/runtime-local/swan-case-club.wsc",
+      "bytes": 8388608,
+      "sha256": "9f8ffec821fb3960f1b15fc9ab21b08de9403c5c545ed1891348ed568c3f3ef5"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/emulator-smoke-report.json",
+      "bytes": 1191,
+      "sha256": "dfbfbbee7700edc5b1d6217435b3175524740b167179bd69426b89de2ee8c7ef"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/game-readiness-report.json",
+      "bytes": 22418,
+      "sha256": "359146e8805976bcd20192d66684dbdb538500f8b80c8dcfe42ec38220db7797"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/reports/swan-case-club-qa-report.json",
+      "bytes": 2493,
+      "sha256": "b4620e2ed649d4bb289ee40fa916a32c43e1bfa292a127faa4c41f1508546ec4"
+    }
+  }
+}

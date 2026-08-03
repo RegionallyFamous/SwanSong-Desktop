@@ -1,0 +1,121 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-27T03:36:09.037034+00:00",
+  "errors": [],
+  "commands": [
+    {
+      "name": "build",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/build_wscvn_game.py",
+        "virtue-at-the-coat-check"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "ss.py:219: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:220: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:222: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alpha_coverage = sum(1 for pixel in image.getdata() if pixel[3] > 0) / (image.width * image.height)\nGame readiness report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/game-readiness-report.json\n[i] Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.\nTechnical game readiness passed; aesthetic review remains separate\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_graphics_contract.py --asset-root /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json --allow-missing-provenance --out /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/graphics-contract-report.json\nGraphics contract report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/graphics-contract-report.json\nGraphics contract passed\n+ make convert JSON=/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json PY=/opt/homebrew/opt/python@3.14/bin/python3.14\n/opt/homebrew/opt/python@3.14/bin/python3.14 tools/convert_json.py \"/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json\" src/\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/runtime-local/tools/convert_json.py:939: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  indexed = list(q.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/runtime-local/tools/convert_json.py:517: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/runtime-local/tools/convert_json.py:580: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(frame.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/runtime-local/tools/convert_json.py:606: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/runtime-local/tools/convert_json.py:627: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgb.getdata())\n[+] Loaded \"Virtue at the Coat Check\" \u2014 44 nodes, 0 flags, 4 tracks, 4 backgrounds, 3 characters\n[+] Wrote src//game_data.h and src//game_data.c\n[+] Ready: run \"make\" from the project root.\n+ make clean NAME=virtue-at-the-coat-check\nrm -rf build/virtue-at-the-coat-check virtue-at-the-coat-check.wsc\n+ make NAME=virtue-at-the-coat-check\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/virtue-at-the-coat-check/src/main.o src/main.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/virtue-at-the-coat-check/src/game_data.o src/game_data.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -r -o build/virtue-at-the-coat-check/virtue-at-the-coat-check_stage1.elf build/virtue-at-the-coat-check/src/main.o build/virtue-at-the-coat-check/src/game_data.o /opt/wonderful/target/wswan/medium/lib/crt0.o -T/opt/wonderful/target/wswan/medium/link.ld -L/opt/wonderful/target/wswan/medium/lib -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -u __wse_tiles_2bpp -u __wse_color_palette -L/opt/wonderful/toolchain/gcc-ia16-elf/lib/v30mz-segelf/medium -lwse -lwsx -lws -lgcc\n/opt/wonderful/bin/wf-wswantool build rom -c wfconfig.toml -o virtue-at-the-coat-check.wsc --output-elf build/virtue-at-the-coat-check/virtue-at-the-coat-check.elf build/virtue-at-the-coat-check/virtue-at-the-coat-check_stage1.elf\n=== BUILD COMPLETE ===\n-rw-r--r--@ 1 nick  staff   8.0M Jul 26 22:34 virtue-at-the-coat-check.wsc\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/smoke_wscvn_rom.py /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/runtime-local/virtue-at-the-coat-check.wsc --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/emulator-smoke-report.json\nEmulator smoke report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/emulator-smoke-report.json\nBoot/checksum smoke passed (no pixels observed): wswan(WonderSwan) 8192KiB checksum 0x224d\nVisual verification not performed; no emulator screenshot proof was bound\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py virtue-at-the-coat-check --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json --runtime /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/runtime-local --build-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/build-report.json --smoke-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/emulator-smoke-report.json --readiness-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/game-readiness-report.json --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/game-audit-report.json\nGame audit report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/game-audit-report.json\nGame audit passed\nGame build report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/build-report.json\nGame build passed: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/runtime-local/virtue-at-the-coat-check.wsc"
+    },
+    {
+      "name": "swansong-playthrough",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/playtest_wscvn_swansong.py",
+        "virtue-at-the-coat-check",
+        "--route",
+        "all"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "virtue-at-the-coat-check: running route-1 (1/4) \u2014 Use strict ticket order / Build a snack bench\nvirtue-at-the-coat-check: route-1 passed in 18.720s\nvirtue-at-the-coat-check: running route-2 (2/4) \u2014 Use strict ticket order / Use cords as coat rack\nvirtue-at-the-coat-check: route-2 passed in 18.094s\nvirtue-at-the-coat-check: running route-3 (3/4) \u2014 Build a body map / Build a snack bench\nvirtue-at-the-coat-check: route-3 passed in 18.100s\nvirtue-at-the-coat-check: running route-4 (4/4) \u2014 Build a body map / Use cords as coat rack\nvirtue-at-the-coat-check: route-4 passed in 18.152s\nvirtue-at-the-coat-check: route 1=ok, route 2=ok, route 3=ok, route 4=ok; coverage=4/4; persistence=ok; audio-soak=ok"
+    },
+    {
+      "name": "package",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/package_wscvn_game.py",
+        "virtue-at-the-coat-check"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py virtue-at-the-coat-check --no-write\nGame release report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/release-report.json\nGame release package: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/releases/20260727T033608Z-6502e0433fc2.zip\nGame release packaging passed"
+    },
+    {
+      "name": "verify",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+        "virtue-at-the-coat-check"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/release-verify-report.json\nGame release verification passed"
+    }
+  ],
+  "facts": {
+    "slug": "virtue-at-the-coat-check",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check",
+    "emulator_screenshot": null,
+    "swansong_dylib": null,
+    "reports": {
+      "build": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/build-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "readiness": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/game-readiness-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "smoke": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/emulator-smoke-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "audit": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/game-audit-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "swansong_playthrough": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/swansong-playthrough-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "release": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/release-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "release_verify": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/release-verify-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/releases/20260727T033608Z-6502e0433fc2.zip",
+    "release_zip_sha256": "7a1eae6b4b4fc2601e008434a75b2e764f64b0277279823f6c4fa9f79df8c03a",
+    "actual_zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/releases/20260727T033608Z-6502e0433fc2.zip",
+      "exists": true,
+      "bytes": 12872166,
+      "sha256": "7a1eae6b4b4fc2601e008434a75b2e764f64b0277279823f6c4fa9f79df8c03a"
+    },
+    "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/releases/20260727T033608Z-6502e0433fc2.zip",
+    "verified_zip_sha256": "7a1eae6b4b4fc2601e008434a75b2e764f64b0277279823f6c4fa9f79df8c03a"
+  }
+}

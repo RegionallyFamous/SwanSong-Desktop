@@ -27,11 +27,14 @@ static_assert(offsetof(swan_display_source_trace_v2_t,
 static_assert(sizeof(swan_display_source_trace_v2_t) == 96);
 static_assert(sizeof(swan_instruction_fetch_context_t) == 80);
 static_assert(sizeof(swan_instruction_fetch_byte_t) == 72);
+static_assert(sizeof(swan_data_producer_probe_options_t) == 12);
+static_assert(sizeof(swan_data_producer_trace_t) == 72);
 
 constexpr size_t kFooterSize = 16;
 constexpr size_t kBankSize = 64u * 1024u;
 constexpr size_t kMinimumCompactSize = 64u * 1024u;
 constexpr size_t kMaximumSize = 16u * 1024u * 1024u;
+constexpr size_t kMaximumDisplayOwnerRectanglePixels = 16u * 1024u;
 
 bool is_power_of_two(size_t value) {
   return value != 0 && (value & (value - 1)) == 0;
@@ -497,7 +500,9 @@ swan_result_t swan_engine_display_owner_probe(
   if (!engine->loaded) return SWAN_RESULT_NOT_LOADED;
   const size_t width = rectangle->width;
   const size_t height = rectangle->height;
-  if (height > 4096u / width) return SWAN_RESULT_INVALID_ARGUMENT;
+  if (height > kMaximumDisplayOwnerRectanglePixels / width) {
+    return SWAN_RESULT_INVALID_ARGUMENT;
+  }
   const size_t expected = width * height;
   *out_count = 0;
   if (out_samples && capacity < expected) {
@@ -623,6 +628,63 @@ swan_result_t swan_engine_display_source_probe_v2(
           trace_output, *out_trace_count,
           context_output, *out_context_count,
           byte_output, *out_byte_count, error),
+      std::move(error));
+}
+
+swan_result_t swan_engine_begin_data_producer_probe(
+    swan_engine_t* engine,
+    const swan_data_producer_probe_options_t* options) {
+  if (!engine || !options ||
+      options->struct_size < sizeof(swan_data_producer_probe_options_t) ||
+      options->byte_count == 0 || options->byte_count > 64u ||
+      options->address < 0x10000u || options->address >= 0x20000u ||
+      options->byte_count > 0x20000u - options->address) {
+    return SWAN_RESULT_INVALID_ARGUMENT;
+  }
+  if (!engine->loaded) return SWAN_RESULT_NOT_LOADED;
+  if ((engine->backend->capabilities() &
+       SWAN_CAPABILITY_DATA_PRODUCER_PROVENANCE) == 0) {
+    engine->last_error =
+        "data-producer provenance is unavailable in this backend";
+    return SWAN_RESULT_UNSUPPORTED;
+  }
+  std::string error;
+  return finish_backend_call(
+      engine,
+      engine->backend->begin_data_producer_probe(*options, error),
+      std::move(error));
+}
+
+swan_result_t swan_engine_data_producer_probe(
+    swan_engine_t* engine,
+    const swan_data_producer_probe_options_t* options,
+    swan_data_producer_trace_t* out_traces,
+    size_t capacity,
+    size_t* out_count) {
+  if (!engine || !options || !out_count ||
+      (!out_traces && capacity != 0) ||
+      options->struct_size < sizeof(swan_data_producer_probe_options_t) ||
+      options->byte_count == 0 || options->byte_count > 64u ||
+      options->address < 0x10000u || options->address >= 0x20000u ||
+      options->byte_count > 0x20000u - options->address) {
+    return SWAN_RESULT_INVALID_ARGUMENT;
+  }
+  *out_count = 0;
+  if (!engine->loaded) return SWAN_RESULT_NOT_LOADED;
+  if ((engine->backend->capabilities() &
+       SWAN_CAPABILITY_DATA_PRODUCER_PROVENANCE) == 0) {
+    engine->last_error =
+        "data-producer provenance is unavailable in this backend";
+    return SWAN_RESULT_UNSUPPORTED;
+  }
+  std::string error;
+  const auto output = out_traces
+      ? std::span<swan_data_producer_trace_t>(out_traces, capacity)
+      : std::span<swan_data_producer_trace_t>();
+  return finish_backend_call(
+      engine,
+      engine->backend->data_producer_probe(
+          *options, output, *out_count, error),
       std::move(error));
 }
 

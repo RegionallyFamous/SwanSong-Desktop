@@ -1,0 +1,868 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:56:35.476094+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "mono-cart-morning",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/projects/mono-cart-morning.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/projects/mono-cart-morning.wscvn.json",
+      "bytes": 136956,
+      "sha256": "45410392d41d516e946ff9d476b23adbb156e57c155dba5ebfdd0c5d117f225c"
+    },
+    "project_counts": {
+      "name": "Mono Cart Morning",
+      "nodes": 63,
+      "flags": 9,
+      "tracks": 1,
+      "backgrounds": 3,
+      "characters": 6,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 63,
+      "scene_nodes": 57,
+      "staged_scenes": 57,
+      "animated_staged_scenes": 57,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Jun",
+        "Sora"
+      ],
+      "backgrounds_used": [
+        "bg_glass_case",
+        "bg_market_aisle",
+        "bg_platform_trade"
+      ],
+      "ending_scenes": [
+        "end_shelf__beat3",
+        "end_log__beat3",
+        "end_lending__beat3"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 63,
+      "start_node": "title"
+    },
+    "routes": {
+      "initial_flags": {
+        "boxed_unit": 0,
+        "catalog_score": 0,
+        "future_lending": 0,
+        "future_log": 0,
+        "future_shelf": 0,
+        "loose_lot": 0,
+        "play_score": 0,
+        "save_trade": 0,
+        "share_score": 0
+      },
+      "states_explored": 371,
+      "truncated": false,
+      "route_reachable_nodes": 63,
+      "route_reachable_ending_scenes": [
+        "end_lending__beat3",
+        "end_log__beat3",
+        "end_shelf__beat3"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "ask_stories",
+        "boot_them",
+        "boxed_unit",
+        "check_shells",
+        "loose_lot",
+        "make_lending",
+        "make_log",
+        "make_shelf",
+        "save_trade"
+      ],
+      "selectable_choice_targets": [
+        "ask_stories",
+        "boot_them",
+        "boxed_unit",
+        "check_shells",
+        "loose_lot",
+        "make_lending",
+        "make_log",
+        "make_shelf",
+        "save_trade"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": [
+        "end_lending",
+        "end_log",
+        "end_shelf"
+      ]
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Check shells / Boxed unit / Museum shelf",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2312,
+          "estimated_minutes_at_140_wpm": 16.51
+        },
+        {
+          "route_id": "route-2",
+          "label": "Check shells / Boxed unit / Play log",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2313,
+          "estimated_minutes_at_140_wpm": 16.52
+        },
+        {
+          "route_id": "route-3",
+          "label": "Check shells / Boxed unit / Lending case",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2308,
+          "estimated_minutes_at_140_wpm": 16.49
+        },
+        {
+          "route_id": "route-4",
+          "label": "Check shells / Loose cart lot / Museum shelf",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2311,
+          "estimated_minutes_at_140_wpm": 16.51
+        },
+        {
+          "route_id": "route-5",
+          "label": "Check shells / Loose cart lot / Play log",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2312,
+          "estimated_minutes_at_140_wpm": 16.51
+        },
+        {
+          "route_id": "route-6",
+          "label": "Check shells / Loose cart lot / Lending case",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2307,
+          "estimated_minutes_at_140_wpm": 16.48
+        },
+        {
+          "route_id": "route-7",
+          "label": "Check shells / Save for trade / Museum shelf",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2307,
+          "estimated_minutes_at_140_wpm": 16.48
+        },
+        {
+          "route_id": "route-8",
+          "label": "Check shells / Save for trade / Play log",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2308,
+          "estimated_minutes_at_140_wpm": 16.49
+        },
+        {
+          "route_id": "route-9",
+          "label": "Check shells / Save for trade / Lending case",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2303,
+          "estimated_minutes_at_140_wpm": 16.45
+        },
+        {
+          "route_id": "route-10",
+          "label": "Boot them / Boxed unit / Museum shelf",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2311,
+          "estimated_minutes_at_140_wpm": 16.51
+        },
+        {
+          "route_id": "route-11",
+          "label": "Boot them / Boxed unit / Play log",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2312,
+          "estimated_minutes_at_140_wpm": 16.51
+        },
+        {
+          "route_id": "route-12",
+          "label": "Boot them / Boxed unit / Lending case",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2307,
+          "estimated_minutes_at_140_wpm": 16.48
+        },
+        {
+          "route_id": "route-13",
+          "label": "Boot them / Loose cart lot / Museum shelf",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2310,
+          "estimated_minutes_at_140_wpm": 16.5
+        },
+        {
+          "route_id": "route-14",
+          "label": "Boot them / Loose cart lot / Play log",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2311,
+          "estimated_minutes_at_140_wpm": 16.51
+        },
+        {
+          "route_id": "route-15",
+          "label": "Boot them / Loose cart lot / Lending case",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2306,
+          "estimated_minutes_at_140_wpm": 16.47
+        },
+        {
+          "route_id": "route-16",
+          "label": "Boot them / Save for trade / Museum shelf",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2306,
+          "estimated_minutes_at_140_wpm": 16.47
+        },
+        {
+          "route_id": "route-17",
+          "label": "Boot them / Save for trade / Play log",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2307,
+          "estimated_minutes_at_140_wpm": 16.48
+        },
+        {
+          "route_id": "route-18",
+          "label": "Boot them / Save for trade / Lending case",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2302,
+          "estimated_minutes_at_140_wpm": 16.44
+        },
+        {
+          "route_id": "route-19",
+          "label": "Ask stories / Boxed unit / Museum shelf",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2313,
+          "estimated_minutes_at_140_wpm": 16.52
+        },
+        {
+          "route_id": "route-20",
+          "label": "Ask stories / Boxed unit / Play log",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2314,
+          "estimated_minutes_at_140_wpm": 16.53
+        },
+        {
+          "route_id": "route-21",
+          "label": "Ask stories / Boxed unit / Lending case",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2309,
+          "estimated_minutes_at_140_wpm": 16.49
+        },
+        {
+          "route_id": "route-22",
+          "label": "Ask stories / Loose cart lot / Museum shelf",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2312,
+          "estimated_minutes_at_140_wpm": 16.51
+        },
+        {
+          "route_id": "route-23",
+          "label": "Ask stories / Loose cart lot / Play log",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2313,
+          "estimated_minutes_at_140_wpm": 16.52
+        },
+        {
+          "route_id": "route-24",
+          "label": "Ask stories / Loose cart lot / Lending case",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2308,
+          "estimated_minutes_at_140_wpm": 16.49
+        },
+        {
+          "route_id": "route-25",
+          "label": "Ask stories / Save for trade / Museum shelf",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2308,
+          "estimated_minutes_at_140_wpm": 16.49
+        },
+        {
+          "route_id": "route-26",
+          "label": "Ask stories / Save for trade / Play log",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2309,
+          "estimated_minutes_at_140_wpm": 16.49
+        },
+        {
+          "route_id": "route-27",
+          "label": "Ask stories / Save for trade / Lending case",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2304,
+          "estimated_minutes_at_140_wpm": 16.46
+        }
+      ]
+    },
+    "text": {
+      "blocks": 373,
+      "max_pause_block_chars": 99,
+      "choice_labels": 9,
+      "max_choice_label_chars": 14,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 13,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 21,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_glass_case",
+        "orig_name": "glass_case.png",
+        "embedded_sha256": "aba48a22d6b161fbf46d49e54113ee69f8b8448f59414b2406f4cac6716677a1",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 14,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/backgrounds/glass_case.png",
+        "local_sha256": "aba48a22d6b161fbf46d49e54113ee69f8b8448f59414b2406f4cac6716677a1"
+      },
+      {
+        "id": "bg_market_aisle",
+        "orig_name": "market_aisle.png",
+        "embedded_sha256": "32011ae73dc5323b14a97a4d12883fe56cba96ad7e17ebe72553df2137d1d4f5",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/backgrounds/market_aisle.png",
+        "local_sha256": "32011ae73dc5323b14a97a4d12883fe56cba96ad7e17ebe72553df2137d1d4f5"
+      },
+      {
+        "id": "bg_platform_trade",
+        "orig_name": "platform_trade.png",
+        "embedded_sha256": "20aab921e3c923c8f85673df47bc3aec56da740ac98a20d5e5c9284b3406eea1",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 11,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/backgrounds/platform_trade.png",
+        "local_sha256": "20aab921e3c923c8f85673df47bc3aec56da740ac98a20d5e5c9284b3406eea1"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_jun_blink",
+        "orig_name": "jun_blink.png",
+        "embedded_sha256": "8712f7140c593d6eb3bb9efd5cf0ddbe4e42ab3fc06cdc0313ad5183c8818386",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 10,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4777,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/characters/jun_blink.png",
+        "local_sha256": "8712f7140c593d6eb3bb9efd5cf0ddbe4e42ab3fc06cdc0313ad5183c8818386"
+      },
+      {
+        "id": "char_jun_neutral",
+        "orig_name": "jun_neutral.png",
+        "embedded_sha256": "3b6fed40e724873e1e16f11a771317372c1124e370f9930c0d14ff13f0fb2bc3",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 10,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4777,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/characters/jun_neutral.png",
+        "local_sha256": "3b6fed40e724873e1e16f11a771317372c1124e370f9930c0d14ff13f0fb2bc3"
+      },
+      {
+        "id": "char_jun_talk",
+        "orig_name": "jun_talk.png",
+        "embedded_sha256": "8039af674288b8482785804cf9928e2788680a1faa10a047a7623cf2abcee9ca",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 10,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4777,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/characters/jun_talk.png",
+        "local_sha256": "8039af674288b8482785804cf9928e2788680a1faa10a047a7623cf2abcee9ca"
+      },
+      {
+        "id": "char_sora_blink",
+        "orig_name": "sora_blink.png",
+        "embedded_sha256": "d0f354f16f0f367074fa079d7391c98df983127be3652223e1510781b100c041",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5037,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/characters/sora_blink.png",
+        "local_sha256": "d0f354f16f0f367074fa079d7391c98df983127be3652223e1510781b100c041"
+      },
+      {
+        "id": "char_sora_neutral",
+        "orig_name": "sora_neutral.png",
+        "embedded_sha256": "eabeeafa51ed5182cdfd838a532ab2686aae6de59a8713bd1dda9df026cd3543",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5037,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/characters/sora_neutral.png",
+        "local_sha256": "eabeeafa51ed5182cdfd838a532ab2686aae6de59a8713bd1dda9df026cd3543"
+      },
+      {
+        "id": "char_sora_talk",
+        "orig_name": "sora_talk.png",
+        "embedded_sha256": "fbfa976508e244f8ba77530d237d6cf4b32e016a7ff99ed13d522a2085ff3fef",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5037,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/characters/sora_talk.png",
+        "local_sha256": "fbfa976508e244f8ba77530d237d6cf4b32e016a7ff99ed13d522a2085ff3fef"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_glass_case",
+          "textbox_mean_luma": 23.363,
+          "textbox_luma_stddev": 28.407,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_market_aisle",
+          "textbox_mean_luma": 15.377,
+          "textbox_luma_stddev": 27.313,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_platform_trade",
+          "textbox_mean_luma": 7.214,
+          "textbox_luma_stddev": 5.265,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 57,
+      "families": [
+        {
+          "neutral": "char_jun_neutral",
+          "talk": "char_jun_talk",
+          "blink": "char_jun_blink",
+          "talk_face_delta": 4.468,
+          "blink_face_delta": 10.2,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 104,
+            "changed_bbox": [
+              42,
+              64,
+              56,
+              72
+            ],
+            "changed_bbox_area": 112,
+            "changed_region_share": 0.009115,
+            "global_changed_share": 0.008464,
+            "face_changed_pixels": 104,
+            "face_changed_share": 0.049242,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 203,
+            "changed_bbox": [
+              30,
+              39,
+              66,
+              49
+            ],
+            "changed_bbox_area": 360,
+            "changed_region_share": 0.029297,
+            "global_changed_share": 0.01652,
+            "face_changed_pixels": 203,
+            "face_changed_share": 0.096117,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        },
+        {
+          "neutral": "char_sora_neutral",
+          "talk": "char_sora_talk",
+          "blink": "char_sora_blink",
+          "talk_face_delta": 4.909,
+          "blink_face_delta": 9.948,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 111,
+            "changed_bbox": [
+              38,
+              56,
+              59,
+              72
+            ],
+            "changed_bbox_area": 336,
+            "changed_region_share": 0.027344,
+            "global_changed_share": 0.009033,
+            "face_changed_pixels": 111,
+            "face_changed_share": 0.052557,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 204,
+            "changed_bbox": [
+              30,
+              39,
+              66,
+              49
+            ],
+            "changed_bbox_area": 360,
+            "changed_region_share": 0.029297,
+            "global_changed_share": 0.016602,
+            "face_changed_pixels": 204,
+            "face_changed_share": 0.096591,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/sources",
+      "count": 2,
+      "packaged_file_count": 2,
+      "background_source_count": 1,
+      "character_source_count": 1,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/sources/backgrounds_source.png",
+          "bytes": 5865,
+          "sha256": "fa07e2ddcdc30d1b0814065da25eaf04df8b18620c2b27b43c912c0ec14d351d",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            672,
+            144
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/sources/characters_source.png",
+          "bytes": 18985,
+          "sha256": "d2636e1c096d94dad89d222b5a1b0c54b4edced39fd437100012aa5e7c54c35a",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1152,
+            1024
+          ],
+          "mode": "RGB"
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 30468,
+      "sha256": "a5b879ba97eb7ed07a2385cd1b406c2309a31b2c52029f074ebbb05fe21e1f80",
+      "size": [
+        712,
+        658
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 174208,
+        "sha256": "f1141eed85f20449f70bfe6c2665b1c0308fe2d3c80a73a767996d1dd04a8b0e",
+        "size": [
+          712,
+          3580
+        ],
+        "mode": "RGB",
+        "unique_colors": 261,
+        "luma_stddev": 62.71
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 81356,
+        "sha256": "17cee98cbb2558af96430c1bb24750738b1d5503e2902711bd91abda7af7aa6c",
+        "size": [
+          488,
+          1544
+        ],
+        "mode": "RGB",
+        "unique_colors": 260,
+        "luma_stddev": 59.279
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 34329,
+        "sha256": "99af07f0b50550479911e19738564644bf5baac4e76e3757253ff22c8e2f098a",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/projects/mono-cart-morning.wscvn.json",
+          "exists": true,
+          "bytes": 136956,
+          "sha256": "45410392d41d516e946ff9d476b23adbb156e57c155dba5ebfdd0c5d117f225c"
+        },
+        "nodes_rendered": 61,
+        "preview_node_ids": [
+          "title",
+          "aisle_open",
+          "aisle_open__beat2",
+          "aisle_open__beat3",
+          "battery_test",
+          "battery_test__beat2",
+          "battery_test__beat3",
+          "first_rule",
+          "check_shells",
+          "check_shells__beat2",
+          "check_shells__beat3",
+          "boot_them",
+          "boot_them__beat2",
+          "boot_them__beat3",
+          "ask_stories",
+          "ask_stories__beat2",
+          "ask_stories__beat3",
+          "glass_signal",
+          "glass_signal__beat2",
+          "glass_signal__beat3",
+          "case_look",
+          "case_look__beat2",
+          "case_look__beat3",
+          "budget_choice",
+          "boxed_unit",
+          "boxed_unit__beat2",
+          "boxed_unit__beat3",
+          "loose_lot",
+          "loose_lot__beat2",
+          "loose_lot__beat3",
+          "save_trade",
+          "save_trade__beat2",
+          "save_trade__beat3",
+          "list_inside",
+          "list_inside__beat2",
+          "list_inside__beat3",
+          "train_signal",
+          "train_signal__beat2",
+          "train_signal__beat3",
+          "platform_meet",
+          "platform_meet__beat2",
+          "platform_meet__beat3",
+          "future_choice",
+          "make_shelf",
+          "make_shelf__beat2",
+          "make_shelf__beat3",
+          "make_log",
+          "make_log__beat2",
+          "make_log__beat3",
+          "make_lending",
+          "make_lending__beat2",
+          "make_lending__beat3",
+          "end_shelf",
+          "end_shelf__beat2",
+          "end_shelf__beat3",
+          "end_log",
+          "end_log__beat2",
+          "end_log__beat3",
+          "end_lending",
+          "end_lending__beat2",
+          "end_lending__beat3"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 61,
+            "expected": 61
+          },
+          "storyboard_cells": {
+            "reported": 61,
+            "expected": 61
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/mono-cart-morning-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:10:47.781750+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "pocket-harbor",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/runtime-local/pocket-harbor.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/pocket-harbor-qa-report.json",
+    "project_counts": {
+      "name": "Pocket Harbor",
+      "nodes": 63,
+      "flags": 9,
+      "tracks": 1,
+      "backgrounds": 3,
+      "characters": 6,
+      "sfx": 0
+    },
+    "header_counts": {
+      "NUM_NODES": 63,
+      "NUM_FLAGS": 9,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 1,
+      "NUM_SFX": 0,
+      "NUM_BG_ASSETS": 3,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 6
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json",
+      "bytes": 214428,
+      "sha256": "051e898b5102afd680bea490da2d5950cbc93e5fb948e1520baf580367338755"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/runtime-local/pocket-harbor.wsc",
+      "bytes": 8388608,
+      "sha256": "518e84ed00b535ab249acbe39a49a217bc7280cbac6e245e49abbab271c2441e"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/emulator-smoke-report.json",
+      "bytes": 1189,
+      "sha256": "ef09c239f883969dd6509c78090ed836d87fa3d0b6a93eac91217f6f6681e2c4"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/game-readiness-report.json",
+      "bytes": 27744,
+      "sha256": "bc5328369e25b64751f51f7148ce2ae83d61add5b0efe24e21ffc59d74bc4a18"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/pocket-harbor-qa-report.json",
+      "bytes": 2589,
+      "sha256": "8433c65b27708e6ac5d302daebe79ccf36122994e905b1dc9248002483f50397"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-10T20:39:51.286057+00:00",
+  "errors": [],
+  "facts": {
+    "capture_method": "Mednafen -soundrecord from compiled WonderSwan ROM",
+    "track": {
+      "id": "track_rain_on_glass",
+      "name": "Rain on Glass",
+      "bpm": 78,
+      "loop_seconds": 6.153846,
+      "expected_loops": 2,
+      "cue_nodes": [
+        "title"
+      ]
+    },
+    "audio": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/audio/00-rain_on_glass-emulator-proof.wav",
+      "bytes": 542860,
+      "sha256": "a24f6397eb0d47a345a9fd4288aed4a863ccd57d86485b4cd12e50407bfeba63",
+      "channels": 1,
+      "sample_width_bytes": 2,
+      "sample_rate": 22050,
+      "frames": 271391,
+      "duration_seconds": 12.307982,
+      "peak_linear": 0.165868,
+      "peak_dbfs": -15.605,
+      "rms_linear": 0.044352,
+      "rms_dbfs": -27.062,
+      "dc_offset": 6.384e-05,
+      "near_silent_sample_share": 0.032742
+    },
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+      "bytes": 352004,
+      "sha256": "1b1ff31bdf658ec4a173da1d96d02f3d3b415a7197a544fe8001144b25ec385f"
+    },
+    "rom": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/runtime-local/swanlight-ledger.wsc",
+      "bytes": 8388608,
+      "sha256": "9b210f01fc6b8e38b162f5915d951206df4176749c71b22200369f83993edeb5"
+    }
+  }
+}

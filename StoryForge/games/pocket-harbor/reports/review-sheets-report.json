@@ -1,0 +1,1456 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:10:41.399030+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "pocket-harbor",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json",
+      "exists": true,
+      "bytes": 214428,
+      "sha256": "051e898b5102afd680bea490da2d5950cbc93e5fb948e1520baf580367338755"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 61,
+    "preview_node_ids": [
+      "title",
+      "market_open",
+      "market_open__beat2",
+      "market_open__beat3",
+      "mina_rule",
+      "mina_rule__beat2",
+      "mina_rule__beat3",
+      "booth_glass",
+      "booth_glass__beat2",
+      "booth_glass__beat3",
+      "first_choice",
+      "inspect_pins",
+      "inspect_pins__beat2",
+      "inspect_pins__beat3",
+      "ask_price",
+      "ask_price__beat2",
+      "ask_price__beat3",
+      "read_manual",
+      "read_manual__beat2",
+      "read_manual__beat3",
+      "seller_trade",
+      "seller_trade__beat2",
+      "seller_trade__beat3",
+      "duplicate_cart",
+      "duplicate_cart__beat2",
+      "duplicate_cart__beat3",
+      "trade_choice",
+      "trade_cart",
+      "trade_cart__beat2",
+      "trade_cart__beat3",
+      "keep_cart",
+      "keep_cart__beat2",
+      "keep_cart__beat3",
+      "help_buyer",
+      "help_buyer__beat2",
+      "help_buyer__beat3",
+      "last_call",
+      "last_call__beat2",
+      "last_call__beat3",
+      "care_choice",
+      "boot_now",
+      "boot_now__beat2",
+      "boot_now__beat3",
+      "note_card",
+      "note_card__beat2",
+      "note_card__beat3",
+      "sleeve_home",
+      "sleeve_home__beat2",
+      "sleeve_home__beat3",
+      "shelf_home",
+      "shelf_home__beat2",
+      "shelf_home__beat3",
+      "end_first_cart",
+      "end_first_cart__beat2",
+      "end_first_cart__beat3",
+      "end_archive",
+      "end_archive__beat2",
+      "end_archive__beat3",
+      "end_market_runner",
+      "end_market_runner__beat2",
+      "end_market_runner__beat3"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 479783,
+      "sha256": "e69737e0957016c25b5da27801c51414c74f22cbdb99e454ac1081590c49641f",
+      "size": [
+        712,
+        3580
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 153687,
+      "sha256": "beb278bdfb9e839d54a65d23edfbad6abd7a64ec327a566dc2f615c05f0faf17",
+      "size": [
+        488,
+        1544
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "0e59598d79561c6cd1026a93a12b4a93e764323f1399404873e39f9c4b5acd88"
+      },
+      {
+        "index": 1,
+        "node_id": "market_open",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "b65fe51f573b76283a7ccfad92977c7ed38f011c24a4aa4ffbd60dfb5bfefb38"
+      },
+      {
+        "index": 2,
+        "node_id": "market_open__beat2",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "dfd0908e275b2eab26f1b6e47409b117b4b7806cf6eaf57ad6aa18e1f685e7e9"
+      },
+      {
+        "index": 3,
+        "node_id": "market_open__beat3",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "b417d58a42e4dff8a1eb0edc102b485665e454a066d13fa1b1dbfb6286b1613a"
+      },
+      {
+        "index": 4,
+        "node_id": "mina_rule",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "a9be4ecc159e60bd7f975bd8d7723f182d1869fdb861d0f177791c93c204127c"
+      },
+      {
+        "index": 5,
+        "node_id": "mina_rule__beat2",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "ae5d73e0708f00b640ee5240dfbe1c8f1a8dbe1e38fa78b60b0f9681c9cc8b2a"
+      },
+      {
+        "index": 6,
+        "node_id": "mina_rule__beat3",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "49ceea335c8ea5a4c9550344f8d560be54ad874d10018268b0328d34fad1a091"
+      },
+      {
+        "index": 7,
+        "node_id": "booth_glass",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "1bc93142ba3ba84737917594c827e73d449184b26f4332ffe5ff1ebcabf90881"
+      },
+      {
+        "index": 8,
+        "node_id": "booth_glass__beat2",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "c2d91520f771a9a40d561b65aca7126734e34710b1bc13078b6120eebc63435e"
+      },
+      {
+        "index": 9,
+        "node_id": "booth_glass__beat3",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "b417d58a42e4dff8a1eb0edc102b485665e454a066d13fa1b1dbfb6286b1613a"
+      },
+      {
+        "index": 10,
+        "node_id": "first_choice",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "b117cfcd397ed895786a262cc0d4d65c1538736586ff37123c06f98a890dd175"
+      },
+      {
+        "index": 11,
+        "node_id": "inspect_pins",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "170db622884674c9ead87ff5740bd736c7606dbd0b7429ce77787c0c196d9864"
+      },
+      {
+        "index": 12,
+        "node_id": "inspect_pins__beat2",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "c581a0736acdc27086176c2e8fb464c135ce172cd8dc2481dcfa62ca9c873a1a"
+      },
+      {
+        "index": 13,
+        "node_id": "inspect_pins__beat3",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "49ceea335c8ea5a4c9550344f8d560be54ad874d10018268b0328d34fad1a091"
+      },
+      {
+        "index": 14,
+        "node_id": "ask_price",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "c772389e2e0d8c49f299b41a14e500837e62ab72d463086f3c79a33b0e5dc8e6"
+      },
+      {
+        "index": 15,
+        "node_id": "ask_price__beat2",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "6a08462317086899ce968a9d84b0e9bc533eb678c58e80b2512ce3bbd6b369e2"
+      },
+      {
+        "index": 16,
+        "node_id": "ask_price__beat3",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "b417d58a42e4dff8a1eb0edc102b485665e454a066d13fa1b1dbfb6286b1613a"
+      },
+      {
+        "index": 17,
+        "node_id": "read_manual",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "d2d34062e8e8a148093bfa6995c1d8a0e6c2af82e5163f109389472100d250f2"
+      },
+      {
+        "index": 18,
+        "node_id": "read_manual__beat2",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "6839d88cc6f764d058d3a0dfc45b5df89b5dd985248dfe81d94331f7bfd55c19"
+      },
+      {
+        "index": 19,
+        "node_id": "read_manual__beat3",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "49ceea335c8ea5a4c9550344f8d560be54ad874d10018268b0328d34fad1a091"
+      },
+      {
+        "index": 20,
+        "node_id": "seller_trade",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "43bdb56e0abc4829b98aeb1d329841cfbbe7eb8980ff73a0cc8a135d96b80441"
+      },
+      {
+        "index": 21,
+        "node_id": "seller_trade__beat2",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "cf8f46b14783f2732e9277e31136d6d2a0a4f9b9047b4b8a90dd482cd6d38329"
+      },
+      {
+        "index": 22,
+        "node_id": "seller_trade__beat3",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "c843eeea7c8c651000d0b559c1b7d77c030e675eef167d0e9d09ece87ab7d602"
+      },
+      {
+        "index": 23,
+        "node_id": "duplicate_cart",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "869200c9574e5694bf9746783c13b2dbe0dec1628ac56cad83dbf44ef3eb57e8"
+      },
+      {
+        "index": 24,
+        "node_id": "duplicate_cart__beat2",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "7fc67704aa2005b828acc5d0f95bfce2b99b28f57ef3388f793442762aa2f814"
+      },
+      {
+        "index": 25,
+        "node_id": "duplicate_cart__beat3",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "07e89212da4c3de7e662108e4500fbf466063a251ddc2548293037539db5878c"
+      },
+      {
+        "index": 26,
+        "node_id": "trade_choice",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "a44157318ed458a87b4f173c2006cad3bdb4fa2134343f1fbf081966a34bdf35"
+      },
+      {
+        "index": 27,
+        "node_id": "trade_cart",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "d41092f4109e99f13584fefae89ddf2bb7bbe49a53a15eddeaef3dc1be72ca7b"
+      },
+      {
+        "index": 28,
+        "node_id": "trade_cart__beat2",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "9caf8fca50b362012c6f1f284b70cd761792a4974e469bffc69d0cc76cfb1e0e"
+      },
+      {
+        "index": 29,
+        "node_id": "trade_cart__beat3",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "07e89212da4c3de7e662108e4500fbf466063a251ddc2548293037539db5878c"
+      },
+      {
+        "index": 30,
+        "node_id": "keep_cart",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "74e890883cba3e050210347c9d18ebad7d06dd16f854024ffc2bf018724048f5"
+      },
+      {
+        "index": 31,
+        "node_id": "keep_cart__beat2",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "9badb8dca13cdd9b7f79349e1f1c03874c32ca96dc0c9f377c83c39c0df5e130"
+      },
+      {
+        "index": 32,
+        "node_id": "keep_cart__beat3",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "07e89212da4c3de7e662108e4500fbf466063a251ddc2548293037539db5878c"
+      },
+      {
+        "index": 33,
+        "node_id": "help_buyer",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "af0839e2cf66ada0955b7d14991002fa8041d8510ba21c098de544a93909a6da"
+      },
+      {
+        "index": 34,
+        "node_id": "help_buyer__beat2",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "ad07ce0eaadcd14b002d1b622aa1db039a0a7cb80eb98b4cfc2b9492164e80cb"
+      },
+      {
+        "index": 35,
+        "node_id": "help_buyer__beat3",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "c843eeea7c8c651000d0b559c1b7d77c030e675eef167d0e9d09ece87ab7d602"
+      },
+      {
+        "index": 36,
+        "node_id": "last_call",
+        "rect": [
+          10,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "8dd7c20409768595462593cdfcd1250df749f38954f789e2141f76bfa514da4c"
+      },
+      {
+        "index": 37,
+        "node_id": "last_call__beat2",
+        "rect": [
+          244,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "2d3a7854446625be8bf5783e160b535df9c360456a321261d16d058ee3fff1c7"
+      },
+      {
+        "index": 38,
+        "node_id": "last_call__beat3",
+        "rect": [
+          478,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "c843eeea7c8c651000d0b559c1b7d77c030e675eef167d0e9d09ece87ab7d602"
+      },
+      {
+        "index": 39,
+        "node_id": "care_choice",
+        "rect": [
+          10,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "370039f769dd36824dc3905f0b380c521aff3aaf03dd151d05462232bb5ffecd"
+      },
+      {
+        "index": 40,
+        "node_id": "boot_now",
+        "rect": [
+          244,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "6aba1da49b3d4cee784fca47b8bfc97dfb2b936ada69afcb63a4e3a4fb7104f1"
+      },
+      {
+        "index": 41,
+        "node_id": "boot_now__beat2",
+        "rect": [
+          478,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "e37324956a67e02544c5c6d4f6cf37875171eed4a575a46393a8487779ea68a8"
+      },
+      {
+        "index": 42,
+        "node_id": "boot_now__beat3",
+        "rect": [
+          10,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "07e89212da4c3de7e662108e4500fbf466063a251ddc2548293037539db5878c"
+      },
+      {
+        "index": 43,
+        "node_id": "note_card",
+        "rect": [
+          244,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "a8ddcb3bbbc1da5f483f528eb704cc0f6e0fdebacc9c426654219624689b3dbf"
+      },
+      {
+        "index": 44,
+        "node_id": "note_card__beat2",
+        "rect": [
+          478,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "6a8e9a1b516a2f406b9094f1a70dcaa31ffb64fc03a6af38e17d04cad822b982"
+      },
+      {
+        "index": 45,
+        "node_id": "note_card__beat3",
+        "rect": [
+          10,
+          2576,
+          224,
+          144
+        ],
+        "image_sha256": "5b5a3243e9f020caec17319bf076cc51ab737441b4108cf554d5bf786a7c64d0"
+      },
+      {
+        "index": 46,
+        "node_id": "sleeve_home",
+        "rect": [
+          244,
+          2576,
+          224,
+          144
+        ],
+        "image_sha256": "18973fdfff92f39e987bce8438d57f67d9ebe1236c0b8d05c7693bf83216cf65"
+      },
+      {
+        "index": 47,
+        "node_id": "sleeve_home__beat2",
+        "rect": [
+          478,
+          2576,
+          224,
+          144
+        ],
+        "image_sha256": "f908fbccf8efd656c7703ff83179472c9948280dd8601056fba1d2655e715672"
+      },
+      {
+        "index": 48,
+        "node_id": "sleeve_home__beat3",
+        "rect": [
+          10,
+          2746,
+          224,
+          144
+        ],
+        "image_sha256": "45f37e87d2441fbba471a6ef2d6522ecb9d72671763a5c528eeff96f6053a1ce"
+      },
+      {
+        "index": 49,
+        "node_id": "shelf_home",
+        "rect": [
+          244,
+          2746,
+          224,
+          144
+        ],
+        "image_sha256": "0eeeb4393f11e0bfadcb76a7fc0cee91c900e7c14f0f8f225c9e422c0bbdba79"
+      },
+      {
+        "index": 50,
+        "node_id": "shelf_home__beat2",
+        "rect": [
+          478,
+          2746,
+          224,
+          144
+        ],
+        "image_sha256": "89ef8169339f17e9b190f8fab0708463de457e87935c5011fdb1e68cd581a831"
+      },
+      {
+        "index": 51,
+        "node_id": "shelf_home__beat3",
+        "rect": [
+          10,
+          2916,
+          224,
+          144
+        ],
+        "image_sha256": "5b5a3243e9f020caec17319bf076cc51ab737441b4108cf554d5bf786a7c64d0"
+      },
+      {
+        "index": 52,
+        "node_id": "end_first_cart",
+        "rect": [
+          244,
+          2916,
+          224,
+          144
+        ],
+        "image_sha256": "a49f4f19481abd190bfa5abb7f731d8bfe58725bb1d3ddae860063346ffc7373"
+      },
+      {
+        "index": 53,
+        "node_id": "end_first_cart__beat2",
+        "rect": [
+          478,
+          2916,
+          224,
+          144
+        ],
+        "image_sha256": "2a718fe873db8ecea0eccbd77cf8e5f814e0b0689a05ed6c023302f3f1651bb3"
+      },
+      {
+        "index": 54,
+        "node_id": "end_first_cart__beat3",
+        "rect": [
+          10,
+          3086,
+          224,
+          144
+        ],
+        "image_sha256": "4eb49e6ff0568cdae463faefae9d239e4c7a40ca4907f424e20a19868a045962"
+      },
+      {
+        "index": 55,
+        "node_id": "end_archive",
+        "rect": [
+          244,
+          3086,
+          224,
+          144
+        ],
+        "image_sha256": "3d86bfc3c963c2f2d43ee68f3dff1e7cae942b5268ea5686dd71aa498d5f7121"
+      },
+      {
+        "index": 56,
+        "node_id": "end_archive__beat2",
+        "rect": [
+          478,
+          3086,
+          224,
+          144
+        ],
+        "image_sha256": "ddcfec17493f950ce791a56bb63347e5884ed31956cb8b4acec49184d0e50943"
+      },
+      {
+        "index": 57,
+        "node_id": "end_archive__beat3",
+        "rect": [
+          10,
+          3256,
+          224,
+          144
+        ],
+        "image_sha256": "c5299756902e5a6f1fe3bca6192237443a2389dfd8984f0c7ad56460c6b671db"
+      },
+      {
+        "index": 58,
+        "node_id": "end_market_runner",
+        "rect": [
+          244,
+          3256,
+          224,
+          144
+        ],
+        "image_sha256": "e1baff67e660f6c90357117310792e8a280d9c684c1723ac87f6286a6f727119"
+      },
+      {
+        "index": 59,
+        "node_id": "end_market_runner__beat2",
+        "rect": [
+          478,
+          3256,
+          224,
+          144
+        ],
+        "image_sha256": "313cebec8c4799324a23c016f09e50cdab73bd2935a1c4a457c33fd8f01c90cf"
+      },
+      {
+        "index": 60,
+        "node_id": "end_market_runner__beat3",
+        "rect": [
+          10,
+          3426,
+          224,
+          144
+        ],
+        "image_sha256": "edb859201564ffbde5297a9c95a0b153dc5110a976f09f9cc28884e9109d466d"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "36f9150d155a5f8a9a3e560f93269b2fe65a612814afb4c43ad9db61721c93ab"
+      },
+      {
+        "index": 1,
+        "node_id": "market_open",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "88459bb6810b6868a6dac6a5db8a02aa0b602ff6d82b8ed7234ea928888e6a6d"
+      },
+      {
+        "index": 2,
+        "node_id": "market_open__beat2",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "faf2f6d6d58337235904ce1189093ec2e1ba5d629b1cfb5cd052572275ffd02e"
+      },
+      {
+        "index": 3,
+        "node_id": "market_open__beat3",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "1934f64eb482e3f006e30422cf407716af90520d23f1d62ea17849672829d49c"
+      },
+      {
+        "index": 4,
+        "node_id": "mina_rule",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "bbabe37fba6ed0b3d100c4012ec194a261e1284ee46f0869698d41f7aac6c96e"
+      },
+      {
+        "index": 5,
+        "node_id": "mina_rule__beat2",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "15d0c29d43b62615c4050f4f9fcf4c80e91c8a73202d4e0f18d76c471c0e6d4d"
+      },
+      {
+        "index": 6,
+        "node_id": "mina_rule__beat3",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "eaaf5f788fb0458553e18f616188e9de41bed08f3d73a36e968ebcc6f25d20da"
+      },
+      {
+        "index": 7,
+        "node_id": "booth_glass",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "5e0865a635ae4ab7908bb8211b3c2db4e680d8784cb57eadd58708c7f37b90ac"
+      },
+      {
+        "index": 8,
+        "node_id": "booth_glass__beat2",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "afea68c6bff0686347036d8056cf57f3b90ad79575f4229bf066153cb14036dc"
+      },
+      {
+        "index": 9,
+        "node_id": "booth_glass__beat3",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "1934f64eb482e3f006e30422cf407716af90520d23f1d62ea17849672829d49c"
+      },
+      {
+        "index": 10,
+        "node_id": "first_choice",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "c5cebc871763f79f22704c033f5b53dec2b3637db6a4543426cae88f60c3aeb8"
+      },
+      {
+        "index": 11,
+        "node_id": "inspect_pins",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "9f028f0bb9c1b43759cc764925108b294f2f0d3fa50154910ed33e89d1782f16"
+      },
+      {
+        "index": 12,
+        "node_id": "inspect_pins__beat2",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "7389b05e74be7e6500445094f0fe2af87e3d1c237081f84e61eb2548e2a415e6"
+      },
+      {
+        "index": 13,
+        "node_id": "inspect_pins__beat3",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "eaaf5f788fb0458553e18f616188e9de41bed08f3d73a36e968ebcc6f25d20da"
+      },
+      {
+        "index": 14,
+        "node_id": "ask_price",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "573da22cb83e835b4ada9a053866c50741535849aa9ea1283abdfedbcb337816"
+      },
+      {
+        "index": 15,
+        "node_id": "ask_price__beat2",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "040d8a9e8a8166d91cdad010124d27636a2a9a250703f2dd312e781a39c87548"
+      },
+      {
+        "index": 16,
+        "node_id": "ask_price__beat3",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "1934f64eb482e3f006e30422cf407716af90520d23f1d62ea17849672829d49c"
+      },
+      {
+        "index": 17,
+        "node_id": "read_manual",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "d3dc24645d307ad54fb79d4069adf9021c7ddd78d9869e9ca3f0d4029a170c67"
+      },
+      {
+        "index": 18,
+        "node_id": "read_manual__beat2",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "5253c269e35dd2cdfa548c38cd3f6f632b774849007b903fb52a93e148d43249"
+      },
+      {
+        "index": 19,
+        "node_id": "read_manual__beat3",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "eaaf5f788fb0458553e18f616188e9de41bed08f3d73a36e968ebcc6f25d20da"
+      },
+      {
+        "index": 20,
+        "node_id": "seller_trade",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "332fdb1cc80e2f2b94d5dad198149e6190919ce85972d3c8949b730e16e7b07c"
+      },
+      {
+        "index": 21,
+        "node_id": "seller_trade__beat2",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "6860e5556252227f3c7abab1cbc39ee0fb2f3f93b4acec4d1c43fcdd07a953f5"
+      },
+      {
+        "index": 22,
+        "node_id": "seller_trade__beat3",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "aede8190ee72fff41b2c25c54e143d468125494875d14c894b6b1e4d399e64ce"
+      },
+      {
+        "index": 23,
+        "node_id": "duplicate_cart",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "563c112fdb16ca12d53fc8dae58d40921145d386effe4937874cefc7c5959cf1"
+      },
+      {
+        "index": 24,
+        "node_id": "duplicate_cart__beat2",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "815d108a5c3a7a350514d544d385a2d0cb77d04ab573fc3932e98ec54a9e4e98"
+      },
+      {
+        "index": 25,
+        "node_id": "duplicate_cart__beat3",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "9c7f1b032739f5ff0687b02769f8df6c70a57388bf771788017a79faffe0007a"
+      },
+      {
+        "index": 26,
+        "node_id": "trade_choice",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "0419f8d8466bf224fb73edff3aa953008ab7b786d6ac6f5118be8aabfa3d09b6"
+      },
+      {
+        "index": 27,
+        "node_id": "trade_cart",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "fed46d234d1502f59b6e0d0e283b9187dd4708c0380aeeb3bf91598ae4437a9c"
+      },
+      {
+        "index": 28,
+        "node_id": "trade_cart__beat2",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "2cc15d01aa441adc50c0324917d0bd38ac3578e198595da175a830e8f89e228d"
+      },
+      {
+        "index": 29,
+        "node_id": "trade_cart__beat3",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "9c7f1b032739f5ff0687b02769f8df6c70a57388bf771788017a79faffe0007a"
+      },
+      {
+        "index": 30,
+        "node_id": "keep_cart",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "26c6b659c0840ddca4f4b2b4358845f3f4809e6912661808e019765c55f506b1"
+      },
+      {
+        "index": 31,
+        "node_id": "keep_cart__beat2",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "4217c7acce4f36b5640621254c495845a512fa261257c6d405abe12efa005c52"
+      },
+      {
+        "index": 32,
+        "node_id": "keep_cart__beat3",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "9c7f1b032739f5ff0687b02769f8df6c70a57388bf771788017a79faffe0007a"
+      },
+      {
+        "index": 33,
+        "node_id": "help_buyer",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "5d59cc77cbf7be613bb45136e6ba14042583bb3d05995b605c44dca98ed75a32"
+      },
+      {
+        "index": 34,
+        "node_id": "help_buyer__beat2",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "8b2aa2498d5eb8f0c9140ce2052e0af017443dee27948ea2fb8e1f3432723019"
+      },
+      {
+        "index": 35,
+        "node_id": "help_buyer__beat3",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "aede8190ee72fff41b2c25c54e143d468125494875d14c894b6b1e4d399e64ce"
+      },
+      {
+        "index": 36,
+        "node_id": "last_call",
+        "rect": [
+          8,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "2ec2091db74204f93443c0224308b5454f58ad99dcbb857a02be2aa2618e050f"
+      },
+      {
+        "index": 37,
+        "node_id": "last_call__beat2",
+        "rect": [
+          128,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "74cfb13594c20dffd94e60d0b218bd63645706cbd195e8b648ddc291e3d64856"
+      },
+      {
+        "index": 38,
+        "node_id": "last_call__beat3",
+        "rect": [
+          248,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "aede8190ee72fff41b2c25c54e143d468125494875d14c894b6b1e4d399e64ce"
+      },
+      {
+        "index": 39,
+        "node_id": "care_choice",
+        "rect": [
+          368,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "73b1cf49f5dcfc34c83f7a4566eddbe849747975bff62bc7d214001c9054d11e"
+      },
+      {
+        "index": 40,
+        "node_id": "boot_now",
+        "rect": [
+          8,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "56e73adf6e6e5bdc12d9feac5176de367c3b3d55841dd6207b5796bb1535eed9"
+      },
+      {
+        "index": 41,
+        "node_id": "boot_now__beat2",
+        "rect": [
+          128,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "4086aef884e305421469563afc2af3cb16757ae94da9c55cd9e64965edb1879e"
+      },
+      {
+        "index": 42,
+        "node_id": "boot_now__beat3",
+        "rect": [
+          248,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "9c7f1b032739f5ff0687b02769f8df6c70a57388bf771788017a79faffe0007a"
+      },
+      {
+        "index": 43,
+        "node_id": "note_card",
+        "rect": [
+          368,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "5e8d5cf6a1ad098cfb2153f8ad9dad605584dfa8cefbce294e369e0420349d89"
+      },
+      {
+        "index": 44,
+        "node_id": "note_card__beat2",
+        "rect": [
+          8,
+          1064,
+          112,
+          72
+        ],
+        "image_sha256": "9077ef363ae7084cd3d4b7af3d53b242f4fa8002a9dc165168cb00ac84b89b87"
+      },
+      {
+        "index": 45,
+        "node_id": "note_card__beat3",
+        "rect": [
+          128,
+          1064,
+          112,
+          72
+        ],
+        "image_sha256": "d074f5f9059842f81ec083883240eea011831f0131b575c6d01d3ae78d18f412"
+      },
+      {
+        "index": 46,
+        "node_id": "sleeve_home",
+        "rect": [
+          248,
+          1064,
+          112,
+          72
+        ],
+        "image_sha256": "0c7b88f6296c132e7d9a1afd7b976f0ffa2499532601d04ceb3192a80321c77b"
+      },
+      {
+        "index": 47,
+        "node_id": "sleeve_home__beat2",
+        "rect": [
+          368,
+          1064,
+          112,
+          72
+        ],
+        "image_sha256": "c6391aa38ab3a6e0261fcc465c4be53eb5d9fb5d190a9e06f4079d6644c73e86"
+      },
+      {
+        "index": 48,
+        "node_id": "sleeve_home__beat3",
+        "rect": [
+          8,
+          1160,
+          112,
+          72
+        ],
+        "image_sha256": "e083c821d7fbee552cc78e31e6eb668b919430e67dd55d237260dbad26c970c5"
+      },
+      {
+        "index": 49,
+        "node_id": "shelf_home",
+        "rect": [
+          128,
+          1160,
+          112,
+          72
+        ],
+        "image_sha256": "23ddd9ea065f5054f08c4056d3091c2c932e5bc9624214b9e024b2cd0f70f653"
+      },
+      {
+        "index": 50,
+        "node_id": "shelf_home__beat2",
+        "rect": [
+          248,
+          1160,
+          112,
+          72
+        ],
+        "image_sha256": "68c74fd1c97e71e7513a93aea5e79c10306c426232f8d9609e38e39907eafc1d"
+      },
+      {
+        "index": 51,
+        "node_id": "shelf_home__beat3",
+        "rect": [
+          368,
+          1160,
+          112,
+          72
+        ],
+        "image_sha256": "d074f5f9059842f81ec083883240eea011831f0131b575c6d01d3ae78d18f412"
+      },
+      {
+        "index": 52,
+        "node_id": "end_first_cart",
+        "rect": [
+          8,
+          1256,
+          112,
+          72
+        ],
+        "image_sha256": "d1c4dc9ba93c2741d7f559b987e2c8c041e9ef99327da052e1ddbc8cd9fa3213"
+      },
+      {
+        "index": 53,
+        "node_id": "end_first_cart__beat2",
+        "rect": [
+          128,
+          1256,
+          112,
+          72
+        ],
+        "image_sha256": "8387fc675f6a86001a2a2c3b2ccfb5f832df997f5dfb0492e3d5fe1f1c84a3de"
+      },
+      {
+        "index": 54,
+        "node_id": "end_first_cart__beat3",
+        "rect": [
+          248,
+          1256,
+          112,
+          72
+        ],
+        "image_sha256": "103319e05192f168dec3250a44db942cc8a859b64d33da7d6a2c71b69a94635a"
+      },
+      {
+        "index": 55,
+        "node_id": "end_archive",
+        "rect": [
+          368,
+          1256,
+          112,
+          72
+        ],
+        "image_sha256": "21bd5ed0a71b21735f0b7b250d2d4b811514e877c86aa0f2b84410c620e34443"
+      },
+      {
+        "index": 56,
+        "node_id": "end_archive__beat2",
+        "rect": [
+          8,
+          1352,
+          112,
+          72
+        ],
+        "image_sha256": "3fbb68afaa9a55a25493f330942531022b7f677755e28c3f7cd6291482a25bdb"
+      },
+      {
+        "index": 57,
+        "node_id": "end_archive__beat3",
+        "rect": [
+          128,
+          1352,
+          112,
+          72
+        ],
+        "image_sha256": "d620215ade546330aa3437a51992693f7e70961a32994860e257b0ca6713b348"
+      },
+      {
+        "index": 58,
+        "node_id": "end_market_runner",
+        "rect": [
+          248,
+          1352,
+          112,
+          72
+        ],
+        "image_sha256": "2cecca368ca1b43b9b76a4956bf7b680e01cf2adb13cf1a6b8ec51da5c68d31c"
+      },
+      {
+        "index": 59,
+        "node_id": "end_market_runner__beat2",
+        "rect": [
+          368,
+          1352,
+          112,
+          72
+        ],
+        "image_sha256": "5da969a0b059f6656ef438484e6b62e7622c16adf7c96d0756a1667ea2edf643"
+      },
+      {
+        "index": 60,
+        "node_id": "end_market_runner__beat3",
+        "rect": [
+          8,
+          1448,
+          112,
+          72
+        ],
+        "image_sha256": "6a1823a40439e39aec8cacf29705173a54a1ed033f9c1c380c229289f6382589"
+      }
+    ]
+  }
+}

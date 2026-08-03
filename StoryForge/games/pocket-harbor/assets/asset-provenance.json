@@ -1,0 +1,332 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-17T01:55:00+00:00",
+  "art_policy": "Pictorial masters are built-in ImageGen outputs; runtime frames are deterministic local derivatives.",
+  "outputs": {
+    "backgrounds/rain_counter.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/sources/backgrounds_imagegen_source.png",
+      "source_sha256": "ff9e97d2d37e456a3aca2f3826f36cdb9a0d66ac01dc0a18bdf646508cc45c51",
+      "output_sha256": "c6365aeabe325126f517d2b68ed60ada2fb0e85c5222c067bec021ab1fdd753e",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 39.14
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/shelf_room.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/sources/backgrounds_imagegen_source.png",
+      "source_sha256": "ff9e97d2d37e456a3aca2f3826f36cdb9a0d66ac01dc0a18bdf646508cc45c51",
+      "output_sha256": "aa137feea6b056d8652e149cd70bb947290d4fa245459de6aadead8035d259d4",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 26.43
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/swap_table.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/sources/backgrounds_imagegen_source.png",
+      "source_sha256": "ff9e97d2d37e456a3aca2f3826f36cdb9a0d66ac01dc0a18bdf646508cc45c51",
+      "output_sha256": "c8024a42763d81d9fabf003b4397b0c3a836ecbd50bdc233f3d7bbcb9dbcf54b",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 47.11
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/mina_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "02260a9f6aabde1c91d99e1c9a4c8ebb04c0dae94bb0527c3362e2f0a60a2779",
+      "output_sha256": "652f27ad5a91b742275a59606bab75b5dd236c4930dc3178021091cfc0fe8cc5",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          6,
+          86,
+          125
+        ],
+        "alpha_coverage": 0.5506,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6166,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 59.8,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 76.27
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6766,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/mina_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "02260a9f6aabde1c91d99e1c9a4c8ebb04c0dae94bb0527c3362e2f0a60a2779",
+      "output_sha256": "dfca0f7a742e9e718bc435e263167d731d7964634aad733659ae360e4209f5e1",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          6,
+          86,
+          125
+        ],
+        "alpha_coverage": 0.5506,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6166,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 58.31,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 75.48
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6766,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/mina_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "02260a9f6aabde1c91d99e1c9a4c8ebb04c0dae94bb0527c3362e2f0a60a2779",
+      "output_sha256": "2a067219297652288d2a0efba00d96bddaa0bb285bc3f5ac48034134e9591638",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          6,
+          86,
+          125
+        ],
+        "alpha_coverage": 0.5506,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6166,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 57.78,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 77.77
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6766,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/ren_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "02260a9f6aabde1c91d99e1c9a4c8ebb04c0dae94bb0527c3362e2f0a60a2779",
+      "output_sha256": "bec91f13a2d81b1a6b3e2ce05eb9fb49e3f3423a810850f256edab4d32012e86",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          7,
+          86,
+          125
+        ],
+        "alpha_coverage": 0.5413,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6061,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 59.17,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 74.05
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6652,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/ren_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "02260a9f6aabde1c91d99e1c9a4c8ebb04c0dae94bb0527c3362e2f0a60a2779",
+      "output_sha256": "4bdb5053c0a0aa6bf137c3b26fce0337bf1caa22b0af40c644413c26ac06b783",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          7,
+          86,
+          125
+        ],
+        "alpha_coverage": 0.5413,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6061,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 58.06,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 75.17
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6652,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/ren_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "02260a9f6aabde1c91d99e1c9a4c8ebb04c0dae94bb0527c3362e2f0a60a2779",
+      "output_sha256": "d6015da912bce9606139d4789c3386ecacb058ba2682dd9637cf5289886346f7",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          7,
+          86,
+          125
+        ],
+        "alpha_coverage": 0.5413,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6061,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 56.85,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 75.85
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6652,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:36:08.863909+00:00",
+  "errors": [],
+  "release_id": "20260727T033608Z-6502e0433fc2",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/releases/20260727T033608Z-6502e0433fc2",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/releases/20260727T033608Z-6502e0433fc2.zip",
+    "bytes": 12872166,
+    "sha256": "7a1eae6b4b4fc2601e008434a75b2e764f64b0277279823f6c4fa9f79df8c03a"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/releases/20260727T033608Z-6502e0433fc2/manifest.json",
+    "sha256": "1de13fb291be33cc88d58e076588f1b246011a9c74fc4ca302a2263f05c471d4",
+    "files": 44
+  },
+  "rom_sha256": "6502e0433fc2673ccf68fcb670207e0f754713abe147d64215a6a52370d74438",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "virtue-at-the-coat-check",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/game-audit-report.json\nGame audit passed"
+  }
+}

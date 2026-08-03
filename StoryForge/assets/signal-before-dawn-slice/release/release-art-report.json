@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-11T01:37:24.410450+00:00",
+  "method": "imagegen key art with deterministic runtime-font lettering",
+  "font": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+    "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+    "license": "public domain; see font.h"
+  },
+  "sources": {
+    "cover": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/sources/cover_key_art_source_v1.png",
+      "bytes": 2087829,
+      "sha256": "b4bc15e9cd048f8ecf80ca1fef89736d530dd21cf3ff003a318ef2d9de9c4f2c",
+      "size": [
+        1024,
+        1536
+      ]
+    },
+    "cartridge_label": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/sources/cartridge_label_source_v1.png",
+      "bytes": 2109580,
+      "sha256": "be172247766e0ed5d289414b99e6549c09d8f1c4228c2fba1247f7defd5dfd4c",
+      "size": [
+        1536,
+        1024
+      ]
+    }
+  },
+  "outputs": {
+    "cover": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/release/cover-art-v1.png",
+      "bytes": 1797287,
+      "sha256": "2fea73300c5fe5299f47a32842f9f426cc628cb4edc43a33dea210bd8e701d59",
+      "size": [
+        1024,
+        1536
+      ]
+    },
+    "cartridge_label": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/release/cartridge-label-v1.png",
+      "bytes": 1682380,
+      "sha256": "7cf728447789db3a40b2f17f3ac45f9be0f8fadd5a41a8353a378859cccaea58",
+      "size": [
+        1500,
+        900
+      ]
+    },
+    "preview": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/release/release-art-preview.png",
+      "bytes": 1025895,
+      "sha256": "eb661f767edc3f204f89d06bcf5e39f42688329d931068c63238787706627c71",
+      "size": [
+        1500,
+        980
+      ]
+    }
+  },
+  "physical_print_status": "pending-real-cartridge-measurement"
+}

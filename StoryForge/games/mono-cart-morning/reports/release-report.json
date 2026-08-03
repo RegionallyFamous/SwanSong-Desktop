@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:07:46.922123+00:00",
+  "errors": [],
+  "release_id": "20260727T030746Z-a0144833608f",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/releases/20260727T030746Z-a0144833608f",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/releases/20260727T030746Z-a0144833608f.zip",
+    "bytes": 3303372,
+    "sha256": "eefd4e4ed7f1947e18a0022dc6a7270e6362e2d594c58cc939779afebe5c7641"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/releases/20260727T030746Z-a0144833608f/manifest.json",
+    "sha256": "69a32899b78413efe5ed394a180850aefcda70996de039c800776004d83dd344",
+    "files": 86
+  },
+  "rom_sha256": "a0144833608f68b670c7b328b3932e7da4fdd4998077ba98b67129b2274697ba",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "mono-cart-morning",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/game-audit-report.json\nGame audit passed"
+  }
+}

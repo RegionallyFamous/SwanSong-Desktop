@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:05.309935+00:00",
+  "errors": [],
+  "facts": {
+    "frames": {
+      "neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 5,
+        "rgb444": true
+      },
+      "talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 5,
+        "rgb444": true
+      },
+      "blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 4,
+        "rgb444": true
+      }
+    },
+    "talk_changed_pixels": 154,
+    "blink_changed_pixels": 240,
+    "derived_human_blink_changed_pixels": 236,
+    "derived_mechanical_blink_changed_pixels": 128,
+    "derived_mechanical_talk_changed_pixels": 144
+  }
+}

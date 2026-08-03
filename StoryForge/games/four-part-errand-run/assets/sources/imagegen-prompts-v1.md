@@ -1,0 +1,25 @@
+# ImageGen prompts v1
+
+Every pictorial source master in this folder was generated with the built-in
+`image_gen.imagegen` tool. The original outputs remain in the Codex generated
+image store. These are the exact accepted prompts.
+
+## Title
+
+Create a high-resolution 14:9 source illustration for a cozy comedy visual novel title screen. Actual SD Force Impulse Gundam is a living little robot person, about two heads tall, separating neatly into Core Splendor, Chest Flyer, Leg Flyer, and Silhouette Flyer; each component carries one harmless neighborhood errand item: a muffin box, library books, rolled blank posters, or a small announcement microphone. Warm community-center street, playful commuter energy, mechanical faces only, recognizable franchise color design, crisp 1990s Japanese cel-animation look with bold colored outlines and simple lighting, 4–6 dominant colors, clean 16-bit handheld readability. Keep a quiet uncluttered upper-left field for runtime title lettering and a calm lower band for dialogue UI. Domestic noncombat scene. No weapons in use, no pilots, no humans inside robots, no model kits, no hangar, no cockpit, no readable text, no logos, no decals, no pseudo-text, no watermark.
+
+## Main background
+
+Create a high-resolution 14:9 source illustration for a cozy comedy visual novel background. Character-free community-center service counter arranged as four clear harmless errand stations: a pink muffin box at the bakery pickup, a short stack of library books, rolled completely blank posters with tape, and a small announcement microphone. Warm indoor morning light, playful public-space decor, strong depth, crisp 1990s Japanese cel-animation look with bold colored outlines and simple lighting, 4–6 dominant colors, clean 16-bit handheld readability. Reserve a broad calm right-side lane for an SD robot portrait and keep the lower frame visually quiet for dialogue UI. No people, no characters, no robots, no readable text, no logos, no pseudo-text, no watermark.
+
+## Ending A
+
+Create a high-resolution 14:9 source illustration for a cozy comedy visual novel ending. Actual assembled SD Force Impulse Gundam, a living little robot person about two heads tall with a fully mechanical face, poses proudly inside a community center beside Strike Rouge's simple colored-block route map with no writing. Two muffins comically protrude from Force Impulse's foot vents after reassembly. Strike Rouge points to the color blocks with amused mechanical body language. Warm morning light, harmless neighborhood errand comedy, crisp 1990s Japanese cel-animation look with bold colored outlines and simple lighting, 4–6 dominant colors, strong clean silhouettes for 16-bit handheld downsampling. Keep the payoff above a calm lower dialogue band. Recognizable franchise designs. No weapons in use, no pilots, no humans inside robots, no readable text, no logos, no decals, no pseudo-text, no watermark.
+
+## Ending B
+
+Regenerate a high-resolution 14:9 cozy comedy ending illustration with NO HUMANS and NO ORGANIC PEOPLE anywhere. Only living SD mobile-suit robots with fully mechanical Gundam-style faces: no pupils, no cartoon eyes, no mouths, no skin. Show the four recognizable separated Force Impulse Gundam components—Core Splendor, Chest Flyer, Leg Flyer, and Silhouette Flyer—as the actual machinery, each completing one harmless community errand in a clean four-way montage: muffin delivery, library-book return, hanging completely blank posters, and using a small announcement microphone. In the center, a small classic RGM-79 GM robot coordinator applauds. Actual franchise mechanical designs, roughly two-head-tall SD proportions where applicable, crisp 1990s Japanese cel-animation, bold colored outlines, simple lighting, 4–6 dominant colors, readable silhouettes for 16-bit handheld downsampling. Keep a calm blank lower band for VN dialogue. Domestic noncombat world. No human beings, no organic faces, no kawaii eye screens, no weapons in use, no pilots, no model kits, no text, no logos, no decals, no pseudo-text, no watermark.
+
+## Character master
+
+Create a single high-resolution isolated character master for a cozy SD mobile-suit visual novel. Actual assembled Force Impulse Gundam, recognizable white-blue-red-yellow mechanical design, a living little robot person about two heads tall, full body from antenna tips to feet, centered front three-quarter view, holding one small basket divided into four harmless errands: muffin box, library books, rolled blank poster, and microphone. Emphasize clean separation seams. Fully mechanical Gundam face only, no human features. Neutral attentive pose suitable for locally derived talk/blink camera frames. Crisp 1990s Japanese cel-animation, bold dark colored outlines, simple lighting, 6–10 clean colors, highly readable silhouette for 96x128 downsampling. BACKGROUND MUST BE one perfectly uniform solid flat chroma magenta #ff00ff edge-to-edge with no gradient, no texture, no floor, no cast shadow, no glow, no props outside the held basket. No weapons in use, no pilots, no model-kit cues, no text, no logos, no decals, no pseudo-text, no watermark.

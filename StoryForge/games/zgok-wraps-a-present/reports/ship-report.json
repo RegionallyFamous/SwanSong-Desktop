@@ -1,0 +1,121 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-27T03:37:41.418398+00:00",
+  "errors": [],
+  "commands": [
+    {
+      "name": "build",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/build_wscvn_game.py",
+        "zgok-wraps-a-present"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "ents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/game-readiness-report.json\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:219: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:220: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:222: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alpha_coverage = sum(1 for pixel in image.getdata() if pixel[3] > 0) / (image.width * image.height)\nGame readiness report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/game-readiness-report.json\n[i] Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.\nTechnical game readiness passed; aesthetic review remains separate\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_graphics_contract.py --asset-root /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json --allow-missing-provenance --out /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/graphics-contract-report.json\nGraphics contract report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/graphics-contract-report.json\nGraphics contract passed\n+ make convert JSON=/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json PY=/opt/homebrew/opt/python@3.14/bin/python3.14\n/opt/homebrew/opt/python@3.14/bin/python3.14 tools/convert_json.py \"/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json\" src/\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/runtime-local/tools/convert_json.py:939: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  indexed = list(q.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/runtime-local/tools/convert_json.py:517: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/runtime-local/tools/convert_json.py:580: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(frame.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/runtime-local/tools/convert_json.py:606: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/runtime-local/tools/convert_json.py:627: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgb.getdata())\n[+] Loaded \"Z'Gok Wraps a Present\" \u2014 44 nodes, 0 flags, 4 tracks, 4 backgrounds, 3 characters\n[+] Wrote src//game_data.h and src//game_data.c\n[+] Ready: run \"make\" from the project root.\n+ make clean NAME=zgok-wraps-a-present\nrm -rf build/zgok-wraps-a-present zgok-wraps-a-present.wsc\n+ make NAME=zgok-wraps-a-present\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/zgok-wraps-a-present/src/main.o src/main.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/zgok-wraps-a-present/src/game_data.o src/game_data.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -r -o build/zgok-wraps-a-present/zgok-wraps-a-present_stage1.elf build/zgok-wraps-a-present/src/main.o build/zgok-wraps-a-present/src/game_data.o /opt/wonderful/target/wswan/medium/lib/crt0.o -T/opt/wonderful/target/wswan/medium/link.ld -L/opt/wonderful/target/wswan/medium/lib -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -u __wse_tiles_2bpp -u __wse_color_palette -L/opt/wonderful/toolchain/gcc-ia16-elf/lib/v30mz-segelf/medium -lwse -lwsx -lws -lgcc\n/opt/wonderful/bin/wf-wswantool build rom -c wfconfig.toml -o zgok-wraps-a-present.wsc --output-elf build/zgok-wraps-a-present/zgok-wraps-a-present.elf build/zgok-wraps-a-present/zgok-wraps-a-present_stage1.elf\n=== BUILD COMPLETE ===\n-rw-r--r--@ 1 nick  staff   8.0M Jul 26 22:36 zgok-wraps-a-present.wsc\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/smoke_wscvn_rom.py /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/runtime-local/zgok-wraps-a-present.wsc --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/emulator-smoke-report.json\nEmulator smoke report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/emulator-smoke-report.json\nBoot/checksum smoke passed (no pixels observed): wswan(WonderSwan) 8192KiB checksum 0xcf8f\nVisual verification not performed; no emulator screenshot proof was bound\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py zgok-wraps-a-present --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json --runtime /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/runtime-local --build-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/build-report.json --smoke-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/emulator-smoke-report.json --readiness-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/game-readiness-report.json --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/game-audit-report.json\nGame audit report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/game-audit-report.json\nGame audit passed\nGame build report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/build-report.json\nGame build passed: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/runtime-local/zgok-wraps-a-present.wsc"
+    },
+    {
+      "name": "swansong-playthrough",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/playtest_wscvn_swansong.py",
+        "zgok-wraps-a-present",
+        "--route",
+        "all"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "zgok-wraps-a-present: running route-1 (1/4) \u2014 Fold scrap paper first / Use oven mitts\nzgok-wraps-a-present: route-1 passed in 18.892s\nzgok-wraps-a-present: running route-2 (2/4) \u2014 Fold scrap paper first / Spin the ribbon\nzgok-wraps-a-present: route-2 passed in 20.639s\nzgok-wraps-a-present: running route-3 (3/4) \u2014 Build a claw guide / Use oven mitts\nzgok-wraps-a-present: route-3 passed in 17.997s\nzgok-wraps-a-present: running route-4 (4/4) \u2014 Build a claw guide / Spin the ribbon\nzgok-wraps-a-present: route-4 passed in 18.187s\nzgok-wraps-a-present: route 1=ok, route 2=ok, route 3=ok, route 4=ok; coverage=4/4; persistence=ok; audio-soak=ok"
+    },
+    {
+      "name": "package",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/package_wscvn_game.py",
+        "zgok-wraps-a-present"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py zgok-wraps-a-present --no-write\nGame release report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/release-report.json\nGame release package: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/releases/20260727T033740Z-4c7c92b8b0e7.zip\nGame release packaging passed"
+    },
+    {
+      "name": "verify",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+        "zgok-wraps-a-present"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/release-verify-report.json\nGame release verification passed"
+    }
+  ],
+  "facts": {
+    "slug": "zgok-wraps-a-present",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present",
+    "emulator_screenshot": null,
+    "swansong_dylib": null,
+    "reports": {
+      "build": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/build-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "readiness": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/game-readiness-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "smoke": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/emulator-smoke-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "audit": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/game-audit-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "swansong_playthrough": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/swansong-playthrough-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "release": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/release-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "release_verify": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/release-verify-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/releases/20260727T033740Z-4c7c92b8b0e7.zip",
+    "release_zip_sha256": "bedc08fbae5b4e58ea0cbfecda17ef64fb24211ce98b759df8c0206e7b514d9a",
+    "actual_zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/releases/20260727T033740Z-4c7c92b8b0e7.zip",
+      "exists": true,
+      "bytes": 12302756,
+      "sha256": "bedc08fbae5b4e58ea0cbfecda17ef64fb24211ce98b759df8c0206e7b514d9a"
+    },
+    "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/releases/20260727T033740Z-4c7c92b8b0e7.zip",
+    "verified_zip_sha256": "bedc08fbae5b4e58ea0cbfecda17ef64fb24211ce98b759df8c0206e7b514d9a"
+  }
+}

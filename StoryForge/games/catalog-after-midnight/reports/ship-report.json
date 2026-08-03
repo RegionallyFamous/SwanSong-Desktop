@@ -1,0 +1,121 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-27T02:37:05.998389+00:00",
+  "errors": [],
+  "commands": [
+    {
+      "name": "build",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/build_wscvn_game.py",
+        "catalog-after-midnight"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "t.json\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:219: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:220: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:222: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alpha_coverage = sum(1 for pixel in image.getdata() if pixel[3] > 0) / (image.width * image.height)\nGame readiness report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/game-readiness-report.json\n[i] Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.\nTechnical game readiness passed; aesthetic review remains separate\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_graphics_contract.py --asset-root /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json --allow-missing-provenance --out /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/graphics-contract-report.json\nGraphics contract report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/graphics-contract-report.json\nGraphics contract passed\n+ make convert JSON=/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json PY=/opt/homebrew/opt/python@3.14/bin/python3.14\n/opt/homebrew/opt/python@3.14/bin/python3.14 tools/convert_json.py \"/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json\" src/\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/runtime-local/tools/convert_json.py:939: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  indexed = list(q.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/runtime-local/tools/convert_json.py:517: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/runtime-local/tools/convert_json.py:580: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(frame.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/runtime-local/tools/convert_json.py:606: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/runtime-local/tools/convert_json.py:627: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgb.getdata())\n[+] Loaded \"Catalog After Midnight\" \u2014 47 nodes, 6 flags, 1 tracks, 3 backgrounds, 6 characters\n[+] Wrote src//game_data.h and src//game_data.c\n[+] Ready: run \"make\" from the project root.\n+ make clean NAME=catalog-after-midnight\nrm -rf build/catalog-after-midnight catalog-after-midnight.wsc\n+ make NAME=catalog-after-midnight\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/catalog-after-midnight/src/main.o src/main.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/catalog-after-midnight/src/game_data.o src/game_data.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -r -o build/catalog-after-midnight/catalog-after-midnight_stage1.elf build/catalog-after-midnight/src/main.o build/catalog-after-midnight/src/game_data.o /opt/wonderful/target/wswan/medium/lib/crt0.o -T/opt/wonderful/target/wswan/medium/link.ld -L/opt/wonderful/target/wswan/medium/lib -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -u __wse_tiles_2bpp -u __wse_color_palette -L/opt/wonderful/toolchain/gcc-ia16-elf/lib/v30mz-segelf/medium -lwse -lwsx -lws -lgcc\n/opt/wonderful/bin/wf-wswantool build rom -c wfconfig.toml -o catalog-after-midnight.wsc --output-elf build/catalog-after-midnight/catalog-after-midnight.elf build/catalog-after-midnight/catalog-after-midnight_stage1.elf\n=== BUILD COMPLETE ===\n-rw-r--r--@ 1 nick  staff   8.0M Jul 26 21:34 catalog-after-midnight.wsc\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/smoke_wscvn_rom.py /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/runtime-local/catalog-after-midnight.wsc --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/emulator-smoke-report.json\nEmulator smoke report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/emulator-smoke-report.json\nBoot/checksum smoke passed (no pixels observed): wswan(WonderSwan) 8192KiB checksum 0x917f\nVisual verification not performed; no emulator screenshot proof was bound\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py catalog-after-midnight --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json --runtime /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/runtime-local --build-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/build-report.json --smoke-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/emulator-smoke-report.json --readiness-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/game-readiness-report.json --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/game-audit-report.json\nGame audit report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/game-audit-report.json\nGame audit passed\nGame build report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/build-report.json\nGame build passed: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/runtime-local/catalog-after-midnight.wsc"
+    },
+    {
+      "name": "swansong-playthrough",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/playtest_wscvn_swansong.py",
+        "catalog-after-midnight",
+        "--route",
+        "all"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "catalog-after-midnight: running route-1 (1/9) \u2014 Document labels / Keep it sealed\ncatalog-after-midnight: route-1 passed in 19.256s\ncatalog-after-midnight: running route-2 (2/9) \u2014 Document labels / Open and test\ncatalog-after-midnight: route-2 passed in 17.913s\ncatalog-after-midnight: running route-3 (3/9) \u2014 Document labels / Photo, then open\ncatalog-after-midnight: route-3 passed in 17.860s\ncatalog-after-midnight: running route-4 (4/9) \u2014 Boot every cart / Keep it sealed\ncatalog-after-midnight: route-4 passed in 17.848s\ncatalog-after-midnight: running route-5 (5/9) \u2014 Boot every cart / Open and test\ncatalog-after-midnight: route-5 passed in 17.899s\ncatalog-after-midnight: running route-6 (6/9) \u2014 Boot every cart / Photo, then open\ncatalog-after-midnight: route-6 passed in 17.911s\ncatalog-after-midnight: running route-7 (7/9) \u2014 Read every name / Keep it sealed\ncatalog-after-midnight: route-7 passed in 18.169s\ncatalog-after-midnight: running route-8 (8/9) \u2014 Read every name / Open and test\ncatalog-after-midnight: route-8 passed in 17.942s\ncatalog-after-midnight: running route-9 (9/9) \u2014 Read every name / Photo, then open\ncatalog-after-midnight: route-9 passed in 18.315s\ncatalog-after-midnight: route 1=ok, route 2=ok, route 3=ok, route 4=ok, route 5=ok, route 6=ok, route 7=ok, route 8=ok, route 9=ok; coverage=9/9; persistence=ok; audio-soak=ok"
+    },
+    {
+      "name": "package",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/package_wscvn_game.py",
+        "catalog-after-midnight"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py catalog-after-midnight --no-write\nGame release report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/release-report.json\nGame release package: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/releases/20260727T023705Z-6d151cb382b3.zip\nGame release packaging passed"
+    },
+    {
+      "name": "verify",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+        "catalog-after-midnight"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/release-verify-report.json\nGame release verification passed"
+    }
+  ],
+  "facts": {
+    "slug": "catalog-after-midnight",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight",
+    "emulator_screenshot": null,
+    "swansong_dylib": null,
+    "reports": {
+      "build": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/build-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "readiness": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/game-readiness-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "smoke": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/emulator-smoke-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "audit": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/game-audit-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "swansong_playthrough": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/swansong-playthrough-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "release": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/release-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "release_verify": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/release-verify-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/releases/20260727T023705Z-6d151cb382b3.zip",
+    "release_zip_sha256": "f99e6773696bd608d6a2ac7036179096e406ffeea3b1bf87194e33426f3e09a2",
+    "actual_zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/releases/20260727T023705Z-6d151cb382b3.zip",
+      "exists": true,
+      "bytes": 1117896,
+      "sha256": "f99e6773696bd608d6a2ac7036179096e406ffeea3b1bf87194e33426f3e09a2"
+    },
+    "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/releases/20260727T023705Z-6d151cb382b3.zip",
+    "verified_zip_sha256": "f99e6773696bd608d6a2ac7036179096e406ffeea3b1bf87194e33426f3e09a2"
+  }
+}

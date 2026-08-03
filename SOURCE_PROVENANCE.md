@@ -67,6 +67,21 @@ file. Build, runtime, app-payload, archive-extraction, and release checks reject
 missing, modified, extra, linked, or identity-mismatched SDK payloads. The SDK
 license and notices remain inside the signed `Resources/SwanSongSDK` directory.
 
+## Story Forge
+
+The canonical Story Forge framework, novels, WonderSwan projects, ImageGen
+masters, runtime assets, music, documentation, and current evidence live under
+[`StoryForge/`](StoryForge). The migration provenance is recorded in
+[`StoryForge/MIGRATION.md`](StoryForge/MIGRATION.md).
+
+The signed app materializes only the fixed Story Forge command wrappers and the
+complete `forge-light-novels` framework skill. A generated
+`framework-manifest.json` binds every included file to this repository's Git
+commit, byte count, and SHA-256 digest. Build, app-payload, and release checks
+reject missing, changed, extra, linked, or incorrectly identified framework
+files. Games, ROMs, manuscripts, reader evidence, and release archives are not
+bundled into the app.
+
 ## Yokoi hardware support
 
 The signed app carries two separately executable GPL-3.0-or-later WonderSwan
@@ -91,12 +106,14 @@ only on the user's WonderSwan Color or SwanCrystal.
 
 The checked-in files under [`testroms/`](testroms/) are tracked open-source and
 clean-room fixtures. Their source, READMEs, and upstream license notices are
-kept together. The nine small `.ws`/`.wsc` files are reproducible emulator
+kept together. The small `.ws`/`.wsc` files are reproducible emulator
 tests, not commercial games or firmware:
 
 - five targeted `ws-test-suite` fixtures, with both suite and syslib notices;
 - the SJIS glyph-provenance fixture, including the Misaki font notice;
-- the Wonderful medium-SRAM probe, with its example and syslib notices; and
+- the Wonderful medium-SRAM probe, with its example and syslib notices;
+- the six-byte cartridge-SRAM data-producer provenance fixture, with its
+  syslib notice; and
 - two CC0 ABI 6 display-provenance fixtures covering horizontal planar and
   vertical packed pixels across both screen layers, sprites, palettes, and
   known CPU writers, with the linked syslib notice.

@@ -1,0 +1,1042 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:07:48.193686+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "one-sock-offensive",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/projects/one-sock-offensive.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/projects/one-sock-offensive.wscvn.json",
+      "exists": true,
+      "bytes": 183625,
+      "sha256": "6aa70a5872b6c217de1127256348feaa004e9885c6bc6e8b8c794977d183a51f"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 43,
+    "preview_node_ids": [
+      "sock_title",
+      "sock_01",
+      "sock_02",
+      "sock_03",
+      "sock_04",
+      "sock_05",
+      "sock_06",
+      "sock_07",
+      "sock_08",
+      "sock_09",
+      "sock_10",
+      "sock_method",
+      "sock_fold_1",
+      "sock_fold_2",
+      "sock_scan_1",
+      "sock_scan_2",
+      "sock_11",
+      "sock_12",
+      "sock_13",
+      "sock_14",
+      "sock_15",
+      "sock_16",
+      "sock_17",
+      "sock_18",
+      "sock_19",
+      "sock_20",
+      "sock_21",
+      "sock_22",
+      "sock_23",
+      "sock_24",
+      "sock_25",
+      "sock_26",
+      "sock_27",
+      "sock_28",
+      "sock_choice",
+      "sock_a1",
+      "sock_a2",
+      "sock_a3",
+      "sock_a4",
+      "sock_b1",
+      "sock_b2",
+      "sock_b3",
+      "sock_b4"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 303241,
+      "sha256": "2dbe777b516caa6b6b0253a1c9fd56efd5c08c6ae6bc9939c0b0ced0c1a364dd",
+      "size": [
+        712,
+        2560
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 101524,
+      "sha256": "9c4d286622b81e0b14f00c8fdfe0c9ca7d69cec9886203bb8fa926ab1743cc4c",
+      "size": [
+        488,
+        1064
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "sock_title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "d57c611e9f706d0cb2fd5520f0a6b3aebe3208ea0f8b856fbb72d53d509ccff2"
+      },
+      {
+        "index": 1,
+        "node_id": "sock_01",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "6b6c34c65c50b78abf9cfc08022a6bc77e49ab117531b52ef8348b2493767abd"
+      },
+      {
+        "index": 2,
+        "node_id": "sock_02",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "4ea29055d6d1db881bfd8847f311f6d1783cbeb6fc10e29477a9e0f908a6897b"
+      },
+      {
+        "index": 3,
+        "node_id": "sock_03",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "4b27d82cb6213a427e4b537dda5b4898914e4c62dd6486191e8f499597953f3c"
+      },
+      {
+        "index": 4,
+        "node_id": "sock_04",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "0af45d4bb2a96c15632a521631678a9719a832cb9b15af912b0287ea97cc5f77"
+      },
+      {
+        "index": 5,
+        "node_id": "sock_05",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "b1f4dfc74a7783616a705a5b19c591b3d2c490e1f32b9666c46425ee67d3f63d"
+      },
+      {
+        "index": 6,
+        "node_id": "sock_06",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "a55b29221dce62665c4c606ef3b425d637c11d6978894fae822035259e5fb1e6"
+      },
+      {
+        "index": 7,
+        "node_id": "sock_07",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "562c3c5cdbd1f46d61a991f66c1f793ebafd96eef037f2b909add7f0a538a00a"
+      },
+      {
+        "index": 8,
+        "node_id": "sock_08",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "104ed057f4770e432141b88289bda85e328100c2705e8b7f3b5c283248b121a2"
+      },
+      {
+        "index": 9,
+        "node_id": "sock_09",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "4415bd25f13d2cd8afbb8eef4720f85aeec6bd9f3247da88f8a956200152183a"
+      },
+      {
+        "index": 10,
+        "node_id": "sock_10",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "13fcc74787b7544f620518b5b6e750ec70ec1f0f39f6d72b9a04b00be99db9d1"
+      },
+      {
+        "index": 11,
+        "node_id": "sock_method",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "4b1ca9d08457f57dd2470568744967682f451ad777c7e2196b9a855fc304ff73"
+      },
+      {
+        "index": 12,
+        "node_id": "sock_fold_1",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "2344960df08f35e5ca25e2769bbe2b6cd78e172cf6b8a7813917e8cc5897803e"
+      },
+      {
+        "index": 13,
+        "node_id": "sock_fold_2",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "1c30b9c0a82db5a4466f4e72e3086b1511a66e2384e8637bdd9388369f75d9c0"
+      },
+      {
+        "index": 14,
+        "node_id": "sock_scan_1",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "e1180818607d82bf13ed61fa3e1b888715e7bacf68949e3e421a8fb4e7db5fa2"
+      },
+      {
+        "index": 15,
+        "node_id": "sock_scan_2",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "f36937134b303773d4c6c97b709940bba9c5d3a03b8a518a2d59a2bb2776f49a"
+      },
+      {
+        "index": 16,
+        "node_id": "sock_11",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "d1f9200153f066026b2701721b749d0fe8fa253c2593643125a49a4c63bd19e6"
+      },
+      {
+        "index": 17,
+        "node_id": "sock_12",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "bb930de32ada96aa8bebc3e2e34aca4fcfb1700924ea8adf2529fd5a17f1817f"
+      },
+      {
+        "index": 18,
+        "node_id": "sock_13",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "d24d081c8b6bc0133bb1a84bd34304ca69538feacd3054e93421e583b55d250f"
+      },
+      {
+        "index": 19,
+        "node_id": "sock_14",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "a6cf7be2715d66f0eda31e5fd62e7221e83aab883383fbcc9af7eb6643a1f036"
+      },
+      {
+        "index": 20,
+        "node_id": "sock_15",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "e9ae5ac98f31a9d2e3cec8eea68eea63eee3ed14bb4e48ee28005836ffd595f9"
+      },
+      {
+        "index": 21,
+        "node_id": "sock_16",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "dbf07ed7ce766b77809f54387b75682431e54f6f5af5029dea3fd9f77d651c28"
+      },
+      {
+        "index": 22,
+        "node_id": "sock_17",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "d320e536e73abb9d207bcf7d38068383369e4a1908cfb6d6ec8750296a042a95"
+      },
+      {
+        "index": 23,
+        "node_id": "sock_18",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "7a072547ff12ac462057879dc5e14faf57db25bf5d1a9434712577403c2286d7"
+      },
+      {
+        "index": 24,
+        "node_id": "sock_19",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "1345d70a42cf09106bf2ded0561f707ac76e8c846041a78cf79c145369ba3f66"
+      },
+      {
+        "index": 25,
+        "node_id": "sock_20",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "c189d7828f768bc755fdd7a3f9a9e840de034d35d94d4a4fafe1afa7101172c8"
+      },
+      {
+        "index": 26,
+        "node_id": "sock_21",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "45072c8cf3c4483251f9c8e026b9bd3e7fec4d773010a5f4e6583e9095c1a53e"
+      },
+      {
+        "index": 27,
+        "node_id": "sock_22",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "692354bc6be7b6af1093a570fefb1a2e5c879506e4cffe2aba4c17f3417347a6"
+      },
+      {
+        "index": 28,
+        "node_id": "sock_23",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "ccd20df35862001fd7b0cf68cd1081eba6bc7eb6a606aaac699d9cba4469e1b4"
+      },
+      {
+        "index": 29,
+        "node_id": "sock_24",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "2e0a09f9608ab37e13bb16d41ea6264304f49963160b0020a18430b9d33fd393"
+      },
+      {
+        "index": 30,
+        "node_id": "sock_25",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "30859c31fc47a0e847f3b0b7aa546522556faf8f43a92ca30d0e8461930ece45"
+      },
+      {
+        "index": 31,
+        "node_id": "sock_26",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "c98d2f731dfb82cdea388a46b89879e1d670a73f29f9a6389957837e87ec56b0"
+      },
+      {
+        "index": 32,
+        "node_id": "sock_27",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "9fba52f47d4fd1397010ac6758918b9fd5aef8645188bb0f174c53d6cc574c47"
+      },
+      {
+        "index": 33,
+        "node_id": "sock_28",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "f2355329813da07513ce2b9e42782811fb5ce7b8f06796864c105f1db75624aa"
+      },
+      {
+        "index": 34,
+        "node_id": "sock_choice",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "b7db9aeff020c919298b463994781bdcd60467162c73ea337c9f3f5538a5f8d5"
+      },
+      {
+        "index": 35,
+        "node_id": "sock_a1",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "c96ee10fcac23d90770f3c785a43770db196465a53b54115e51c2d394aeafbdf"
+      },
+      {
+        "index": 36,
+        "node_id": "sock_a2",
+        "rect": [
+          10,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "4ddef3f849402e94f02fb787bc401a3cd101b1044acbf5e9658c617869f00745"
+      },
+      {
+        "index": 37,
+        "node_id": "sock_a3",
+        "rect": [
+          244,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "81ffb162c8f7a0af538ebbaded6f398ad8f6f59e93241c26a11886905d81f3d7"
+      },
+      {
+        "index": 38,
+        "node_id": "sock_a4",
+        "rect": [
+          478,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "3742930e22cc619d83e7a9a6071cc89570d0b7a3dbdd72e31b8bb00e18241e21"
+      },
+      {
+        "index": 39,
+        "node_id": "sock_b1",
+        "rect": [
+          10,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "2143a85992e0a123e24ed0a778329f4e49b04bc0dc02ee395c0e4e593bdde0b7"
+      },
+      {
+        "index": 40,
+        "node_id": "sock_b2",
+        "rect": [
+          244,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "eff770c8f74d406ea03d4fcca98e3ceddc656321b27d2137503d86b5b76ba098"
+      },
+      {
+        "index": 41,
+        "node_id": "sock_b3",
+        "rect": [
+          478,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "46943907f3de0c777292016e3524d1f7ea7c5cbe35c6081b3fd041582d059459"
+      },
+      {
+        "index": 42,
+        "node_id": "sock_b4",
+        "rect": [
+          10,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "21aea50286c103b2b25dbcd60de24ce52bbef14d469181a74a5512310178994b"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "sock_title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "167370228e2f3ec43935ef30e86287013df373dd30cf7058d5d59e43ccf4368b"
+      },
+      {
+        "index": 1,
+        "node_id": "sock_01",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "6674e8fd8a52fc5b65a48fe44adaca97b7b60f764d1250d02df7d1b0f166070a"
+      },
+      {
+        "index": 2,
+        "node_id": "sock_02",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "689c20fdb798fdd1345903c8aafc86a26c18f2ec1fc0a380ba28983dc1ecfdf9"
+      },
+      {
+        "index": 3,
+        "node_id": "sock_03",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "9ad6832db2c42c0bd9e5d8d964b5ff7948e1629f8c3923f8b5c66553f8670ea6"
+      },
+      {
+        "index": 4,
+        "node_id": "sock_04",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "29c301369a4f209b9d87520b3e604958be39d6f9b31ceb31a776540b60448c65"
+      },
+      {
+        "index": 5,
+        "node_id": "sock_05",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "822ab5ec3fce0a5c9d0201f314f5292f3dcd1188d3bb0ca07eecc2d3a330a6c9"
+      },
+      {
+        "index": 6,
+        "node_id": "sock_06",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "2308bfaae46a089caf59c205c4ba29fd28f5de1586abeb95e8ae9758c83b76dc"
+      },
+      {
+        "index": 7,
+        "node_id": "sock_07",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "4eea498148835fe629c04505ac685ca5fab0830c03fe1097e14dd92a5ad507fc"
+      },
+      {
+        "index": 8,
+        "node_id": "sock_08",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "b79c94035d5d480b2a38a708cf05fb7e80b48403751e1aa18efdf91b5e0fe159"
+      },
+      {
+        "index": 9,
+        "node_id": "sock_09",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "c7670d3868aa75c2a25c399f1d559cfc3e1424f2eae74757305f61ab6d0ee265"
+      },
+      {
+        "index": 10,
+        "node_id": "sock_10",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "6b575bb96a82403ce46544982a88151062383f94c107741fd862258b98e72716"
+      },
+      {
+        "index": 11,
+        "node_id": "sock_method",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "2f4b67d5264e64b0b4067e92dd4ad4e73e5f6bee60ddcf5e852b22df8fd58523"
+      },
+      {
+        "index": 12,
+        "node_id": "sock_fold_1",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "4f963d8d57f7b1fa0c7495bbf9a8e8fb0b2324065a5417593c84623eca5d912c"
+      },
+      {
+        "index": 13,
+        "node_id": "sock_fold_2",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "e8bf31e6e7a44532e8f4040b5a47781bd5ab975a27b0414c1e8ef1432184f7c8"
+      },
+      {
+        "index": 14,
+        "node_id": "sock_scan_1",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "ef5b1fbe0fdaae800515c854f95f54b48d14752416371155ceed89be58bb7ec5"
+      },
+      {
+        "index": 15,
+        "node_id": "sock_scan_2",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "a630af0b9b80f0621b3b7c7c756f9454ffac7016eff9d54a1c5e9d6b4d96c5cb"
+      },
+      {
+        "index": 16,
+        "node_id": "sock_11",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "a2525acbf27a985545645ece5fc0b600b8c893b47a38111fd8b2695ac59b8d37"
+      },
+      {
+        "index": 17,
+        "node_id": "sock_12",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "4ad9ee1c2cc8dfa8bd7053e837b5c850fb6824f4923f93fc0007b2251bb0ebe6"
+      },
+      {
+        "index": 18,
+        "node_id": "sock_13",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "f6d348347ebabbede9cc841614b71aaf919622d76245aae10b87caa160c70c58"
+      },
+      {
+        "index": 19,
+        "node_id": "sock_14",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "70d9bb369e4a46fcd019b5ec77c8c017a91e981f1ce9f21ecfbcfa3a5f88980c"
+      },
+      {
+        "index": 20,
+        "node_id": "sock_15",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "13e49f892925383915a201a5de9c231aa4c86e51f2533e4c835b730a27d22818"
+      },
+      {
+        "index": 21,
+        "node_id": "sock_16",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "25de609279bd9fff008a9ff41fc8ea36d9bc2bfbb5c8cd5fbb883faef5645368"
+      },
+      {
+        "index": 22,
+        "node_id": "sock_17",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "93a839063f2cfac05b5c49a58648c0a8fb1a50dcf481917bd475d0efe79aaf05"
+      },
+      {
+        "index": 23,
+        "node_id": "sock_18",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "e8ef10be9d559789b29939898720876cbc9d58ff0e2056d85c481831672ac995"
+      },
+      {
+        "index": 24,
+        "node_id": "sock_19",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "23fc919e3c84009c1e7c48367ad6937fd29bc87570e047479e50c67fab57103b"
+      },
+      {
+        "index": 25,
+        "node_id": "sock_20",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "8692c8b309c4fea7834091d9d8bcd023d49530ae1ca5f4427a0914188c5d1dc8"
+      },
+      {
+        "index": 26,
+        "node_id": "sock_21",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "89a5311fdb6117bc1a86eafb750bc24fb9e42fa7d1b2d69e979d670d684005b0"
+      },
+      {
+        "index": 27,
+        "node_id": "sock_22",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "f36c6185c11ef5f0acb93b077f76fa3f9e7aa1c4a79b106e10a44e27f47e76cf"
+      },
+      {
+        "index": 28,
+        "node_id": "sock_23",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "d6a7a20fc2d1c3395b1b36fb332906d7081907ec1c537d6d346dac5ee36fb17e"
+      },
+      {
+        "index": 29,
+        "node_id": "sock_24",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "9e166ebcd78d9432dc1c7adcec9aa82ff21cdaa0adb6a12f987fa4349600d00f"
+      },
+      {
+        "index": 30,
+        "node_id": "sock_25",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "77719e523f885a00fd9f5d9bed70a471b36ce97b0d2c47959d6ebfe958d3052b"
+      },
+      {
+        "index": 31,
+        "node_id": "sock_26",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "81587209bbbbcb88def0694841d61691764c1f764b4faa6a38abb5bef217c6ae"
+      },
+      {
+        "index": 32,
+        "node_id": "sock_27",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "d7c26afad5af7300d545a43662037ea770477bca07b987bca0664b2a3d374fec"
+      },
+      {
+        "index": 33,
+        "node_id": "sock_28",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "b7a22e3281ede94cc2738a7aabca093a7fdde868f6185f7de5112a6214866ccb"
+      },
+      {
+        "index": 34,
+        "node_id": "sock_choice",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "10530880b6f4151221cea95e6d87988fda295e5250644d69660dd2323fdbc41b"
+      },
+      {
+        "index": 35,
+        "node_id": "sock_a1",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "407e440b8dda181e2c2ce749c190c5f65ec532b713697472f7540878f1ffcbed"
+      },
+      {
+        "index": 36,
+        "node_id": "sock_a2",
+        "rect": [
+          8,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "f13bb94e35142e038beae4c54512483c79b4597adff6b46449b3c1848124a5fb"
+      },
+      {
+        "index": 37,
+        "node_id": "sock_a3",
+        "rect": [
+          128,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "eeee6408a5decc41caeed587b99dc4d85edb3495626ea988554e69f9d8189f2c"
+      },
+      {
+        "index": 38,
+        "node_id": "sock_a4",
+        "rect": [
+          248,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "e3208ca44433f5948465b73a81302dcb14e86e8b93631bca215065758f693f8d"
+      },
+      {
+        "index": 39,
+        "node_id": "sock_b1",
+        "rect": [
+          368,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "614188a45eca10edc19193cc33810e68d9d1fe75c31273554d3d6a9943941063"
+      },
+      {
+        "index": 40,
+        "node_id": "sock_b2",
+        "rect": [
+          8,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "577029c1f490761960c8a016a0cd4eed1aa5719cd37288ae09988101c53fae17"
+      },
+      {
+        "index": 41,
+        "node_id": "sock_b3",
+        "rect": [
+          128,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "173deb2396ad2928196345598166e6a0167f22f2ae2b69aae1f850d1dec635c2"
+      },
+      {
+        "index": 42,
+        "node_id": "sock_b4",
+        "rect": [
+          248,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "b785910e28940c98cfc2eb5a981ef3684fba409c70389b3310ad31737b2a5d6d"
+      }
+    ]
+  }
+}

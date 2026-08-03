@@ -1,0 +1,145 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:49.014304+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "multi-page-text-measured-per-page",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "pages": [
+        [
+          "A complete three-line page",
+          "remains valid."
+        ],
+        [
+          "A second complete page is",
+          "measured separately."
+        ]
+      ]
+    },
+    {
+      "name": "compact-storyboard-size",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "actual_size": [
+        488,
+        1064
+      ],
+      "expected_size": [
+        488,
+        1064
+      ]
+    },
+    {
+      "name": "current-visual-contract",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_text": "",
+      "returncode": 0,
+      "output_tail": "Visual contract report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/visual-contract-report.json\nVisual contract passed"
+    },
+    {
+      "name": "valid-fixture",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_text": "",
+      "returncode": 0,
+      "output_tail": "Visual contract report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-visual-contract-6r1kmonw/valid-fixture/assets/visual-contract-report.json\nVisual contract passed"
+    },
+    {
+      "name": "missing-expression-mood",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "missing expression moods",
+      "returncode": 1,
+      "output_tail": "Visual contract report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-visual-contract-6r1kmonw/missing-expression-mood/assets/visual-contract-report.json\nErrors: 1\n  [x] mira: missing expression moods in scenes: smile"
+    },
+    {
+      "name": "centered-staging",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "centered character staging",
+      "returncode": 1,
+      "output_tail": "Visual contract report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-visual-contract-6r1kmonw/centered-staging/assets/visual-contract-report.json\nErrors: 2\n  [x] scene_1_mira_worried: centered character staging is not allowed by visual contract\n  [x] scene_1_mira_worried: charPos is 'center', expected one of ['left', 'right']"
+    },
+    {
+      "name": "one-sided-staging",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "side staging",
+      "returncode": 1,
+      "output_tail": "Visual contract report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-visual-contract-6r1kmonw/one-sided-staging/assets/visual-contract-report.json\nErrors: 2\n  [x] left-side staging share is 0.0%, minimum 25%\n  [x] right-side staging run is 6 scenes, max 5: scene_1_mira_worried, scene_2_mira_resolved, scene_3_mira_smile, scene_4_lune_alert, scene_5_lune_resolved, scene_6_lune_warm"
+    },
+    {
+      "name": "textbox-overflow",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "dialogue wraps",
+      "returncode": 1,
+      "output_tail": "Visual contract report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-visual-contract-6r1kmonw/textbox-overflow/assets/visual-contract-report.json\nErrors: 1\n  [x] scene_1_mira_worried: dialogue wraps to 12 lines, max 3"
+    },
+    {
+      "name": "stale-storyboard",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "older than the project JSON",
+      "returncode": 1,
+      "output_tail": "Visual contract report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-visual-contract-6r1kmonw/stale-storyboard/assets/visual-contract-report.json\nErrors: 1\n  [x] storyboard_sheet.png is older than the project JSON"
+    },
+    {
+      "name": "base-neutral-portrait",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "uses base neutral portrait",
+      "returncode": 1,
+      "output_tail": "Visual contract report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-visual-contract-6r1kmonw/base-neutral-portrait/assets/visual-contract-report.json\nErrors: 1\n  [x] scene_7_mira: uses base neutral portrait instead of an expression variant"
+    },
+    {
+      "name": "busy-sprite-lane",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "background detail under sprite is too high",
+      "returncode": 1,
+      "output_tail": "atrix bg_deck_night/char_lune_resolved_neutral/left: background detail under sprite is too high (127.5, max 62.0)\n  [x] lane matrix bg_deck_night/char_lune_resolved_neutral/right: background detail under sprite is too high (127.5, max 62.0)\n  [x] lane matrix bg_deck_night/char_lune_warm_neutral/left: background detail under sprite is too high (127.5, max 62.0)\n  [x] lane matrix bg_deck_night/char_lune_warm_neutral/right: background detail under sprite is too high (127.5, max 62.0)\n  [x] lane matrix bg_deck_night/char_mira_neutral/left: background detail under sprite is too high (127.5, max 62.0)\n  [x] lane matrix bg_deck_night/char_mira_neutral/right: background detail under sprite is too high (127.5, max 62.0)\n  [x] lane matrix bg_deck_night/char_mira_resolved_neutral/left: background detail under sprite is too high (127.5, max 62.0)\n  [x] lane matrix bg_deck_night/char_mira_resolved_neutral/right: background detail under sprite is too high (127.5, max 62.0)\n  [x] lane matrix bg_deck_night/char_mira_smile_neutral/left: background detail under sprite is too high (127.5, max 62.0)\n  [x] lane matrix bg_deck_night/char_mira_smile_neutral/right: background detail under sprite is too high (127.5, max 62.0)\n  [x] lane matrix bg_deck_night/char_mira_worried_neutral/left: background detail under sprite is too high (127.5, max 62.0)\n  [x] lane matrix bg_deck_night/char_mira_worried_neutral/right: background detail under sprite is too high (127.5, max 62.0)\n  [x] scene_1_mira_worried: background detail under sprite is too high (127.5, max 62.0)\n  [x] scene_2_mira_resolved: background detail under sprite is too high (127.5, max 62.0)\n  [x] scene_3_mira_smile: background detail under sprite is too high (127.5, max 62.0)\n  [x] scene_4_lune_alert: background detail under sprite is too high (127.5, max 62.0)\n  [x] scene_5_lune_resolved: background detail under sprite is too high (127.5, max 62.0)\n  [x] scene_6_lune_warm: background detail under sprite is too high (127.5, max 62.0)"
+    },
+    {
+      "name": "low-contrast-sprite",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "sprite/background contrast is too low",
+      "returncode": 1,
+      "output_tail": "Visual contract report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-visual-contract-6r1kmonw/low-contrast-sprite/assets/visual-contract-report.json\nErrors: 3\n  [x] lane matrix bg_deck_night/char_mira_worried_neutral/left: sprite/background contrast is too low (8.0, min 50.0)\n  [x] lane matrix bg_deck_night/char_mira_worried_neutral/right: sprite/background contrast is too low (8.0, min 50.0)\n  [x] scene_1_mira_worried: sprite/background contrast is too low (8.0, min 50.0)"
+    },
+    {
+      "name": "flat-expression-sprites",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "face acting delta",
+      "returncode": 1,
+      "output_tail": "Visual contract report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-visual-contract-6r1kmonw/flat-expression-sprites/assets/visual-contract-report.json\nErrors: 12\n  [x] lune_alert: face acting delta from base is 0, minimum 50\n  [x] lune_resolved: face acting delta from base is 0, minimum 50\n  [x] lune_warm: face acting delta from base is 0, minimum 50\n  [x] lune_alert_to_resolved: face acting delta is 0, minimum 28\n  [x] lune_alert_to_warm: face acting delta is 0, minimum 28\n  [x] lune_resolved_to_warm: face acting delta is 0, minimum 28\n  [x] mira_resolved: face acting delta from base is 0, minimum 50\n  [x] mira_smile: face acting delta from base is 0, minimum 50\n  [x] mira_worried: face acting delta from base is 0, minimum 50\n  [x] mira_resolved_to_smile: face acting delta is 0, minimum 28\n  [x] mira_resolved_to_worried: face acting delta is 0, minimum 28\n  [x] mira_smile_to_worried: face acting delta is 0, minimum 28"
+    },
+    {
+      "name": "long-choice-label",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "choice label",
+      "returncode": 1,
+      "output_tail": "Visual contract report: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-visual-contract-6r1kmonw/long-choice-label/assets/visual-contract-report.json\nErrors: 1\n  [x] choice_long_label: choice label 'Follow the impossibly elaborate signal' is 38 chars, max 22"
+    }
+  ]
+}

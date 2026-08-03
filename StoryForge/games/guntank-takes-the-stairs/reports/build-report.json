@@ -1,0 +1,228 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:45:37.182181+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "guntank-takes-the-stairs",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs",
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+      "bytes": 158712,
+      "sha256": "cf98d9b50fc27ea4ec33e8827acf9df26a0a95acd29c4439d86311a3893178f2"
+    },
+    "project_counts": {
+      "name": "Guntank Takes the Stairs",
+      "nodes": 37,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local",
+    "runtime_sync": {
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local",
+      "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local",
+      "copied": [
+        ".gitignore",
+        "Makefile",
+        "README.md",
+        "music/.gitkeep",
+        "src/font.h",
+        "src/game_types.h",
+        "src/main.c",
+        "third_party/README.md",
+        "tools/analyze_vnds.py",
+        "tools/convert_json.py",
+        "tools/convert_nscripter_proof.py",
+        "tools/convert_vnds_proof.py",
+        "tools/extract_nsa.py",
+        "tools/gen_ambient_sfx.py",
+        "tools/gen_cygnals_menu_fur.py",
+        "tools/saveload_bg.png",
+        "tools/selftest_choice_visuals.py",
+        "tools/wsc_image_prep.py",
+        "wfconfig.toml"
+      ],
+      "skipped": [
+        "build/signal-before-dawn-slice/signal-before-dawn-slice.elf",
+        "build/signal-before-dawn-slice/signal-before-dawn-slice_stage1.elf",
+        "build/signal-before-dawn-slice/src/game_data.d",
+        "build/signal-before-dawn-slice/src/game_data.o",
+        "build/signal-before-dawn-slice/src/main.d",
+        "build/signal-before-dawn-slice/src/main.o",
+        "signal-before-dawn-slice.wsc",
+        "src/game_data.c",
+        "src/game_data.h"
+      ],
+      "quarantined": [],
+      "quarantine_root": null
+    },
+    "runtime_source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local",
+    "asset_builder": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/build_guntank_takes_the_stairs.py",
+    "name": "guntank-takes-the-stairs",
+    "rom": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local/guntank-takes-the-stairs.wsc",
+      "bytes": 8388608,
+      "sha256": "9fdb793814fa3e8e73d69df4faeed2e4a7db7649222f913d2f556f021729a68b"
+    },
+    "smoke_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/emulator-smoke-report.json",
+      "bytes": 1211,
+      "sha256": "1e0582f36ec17cff504caf7abec2555d039bd82b21e23b5d31a332a4a8d1cf30"
+    },
+    "readiness_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/game-readiness-report.json",
+      "bytes": 20585,
+      "sha256": "e0080de3299f52716d9888238ca11f872ea840c47681d0064c633934b1ae3ec9"
+    },
+    "graphics_contract_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/graphics-contract-report.json",
+      "bytes": 34584,
+      "sha256": "3e9bc05c0d69636ad106b3028efb9c6cc4539458c7387923fb5d341212d959f4"
+    },
+    "experience_polish_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/experience-polish-report.json",
+      "exists": false
+    },
+    "audit_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/game-audit-report.json",
+      "bytes": 3280,
+      "sha256": "dffd97e702ab2b17a7b0f4a9220dd29611554b97a9140eb89b7ec52a7585d75b"
+    },
+    "commands": [
+      {
+        "name": "asset-builder",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/build_guntank_takes_the_stairs.py"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs",
+        "returncode": 0,
+        "output_tail": "Wrote project: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json\nWrote contact sheet: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/contact_sheet.png\nWrote QA report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/guntank-takes-the-stairs-qa-report.json"
+      },
+      {
+        "name": "review-sheets",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/make_wscvn_game_review_sheets.py",
+          "guntank-takes-the-stairs",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+          "--asset-root",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/review-sheets-report.json",
+          "--font",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs",
+        "returncode": 0,
+        "output_tail": "Scene preview sheet: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/scene_preview_sheet.png\nStoryboard sheet: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/storyboard_sheet.png\nReview sheets report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/review-sheets-report.json"
+      },
+      {
+        "name": "readiness",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py",
+          "guntank-takes-the-stairs",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+          "--asset-root",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/game-readiness-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs",
+        "returncode": 0,
+        "output_tail": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:219: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:220: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:222: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alpha_coverage = sum(1 for pixel in image.getdata() if pixel[3] > 0) / (image.width * image.height)\nGame readiness report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/game-readiness-report.json\n[i] Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.\nTechnical game readiness passed; aesthetic review remains separate"
+      },
+      {
+        "name": "graphics-contract",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_graphics_contract.py",
+          "--asset-root",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+          "--allow-missing-provenance",
+          "--out",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/graphics-contract-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs",
+        "returncode": 0,
+        "output_tail": "Graphics contract report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/graphics-contract-report.json\nGraphics contract passed"
+      },
+      {
+        "name": "convert",
+        "cmd": [
+          "make",
+          "convert",
+          "JSON=/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+          "PY=/opt/homebrew/opt/python@3.14/bin/python3.14"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local",
+        "returncode": 0,
+        "output_tail": "/opt/homebrew/opt/python@3.14/bin/python3.14 tools/convert_json.py \"/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json\" src/\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local/tools/convert_json.py:939: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  indexed = list(q.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local/tools/convert_json.py:517: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local/tools/convert_json.py:580: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(frame.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local/tools/convert_json.py:606: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local/tools/convert_json.py:627: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgb.getdata())\n[+] Loaded \"Guntank Takes the Stairs\" \u2014 37 nodes, 0 flags, 4 tracks, 4 backgrounds, 3 characters\n[+] Wrote src//game_data.h and src//game_data.c\n[+] Ready: run \"make\" from the project root."
+      },
+      {
+        "name": "clean",
+        "cmd": [
+          "make",
+          "clean",
+          "NAME=guntank-takes-the-stairs"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local",
+        "returncode": 0,
+        "output_tail": "rm -rf build/guntank-takes-the-stairs guntank-takes-the-stairs.wsc"
+      },
+      {
+        "name": "build",
+        "cmd": [
+          "make",
+          "NAME=guntank-takes-the-stairs"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local",
+        "returncode": 0,
+        "output_tail": "/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/guntank-takes-the-stairs/src/main.o src/main.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/guntank-takes-the-stairs/src/game_data.o src/game_data.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -r -o build/guntank-takes-the-stairs/guntank-takes-the-stairs_stage1.elf build/guntank-takes-the-stairs/src/main.o build/guntank-takes-the-stairs/src/game_data.o /opt/wonderful/target/wswan/medium/lib/crt0.o -T/opt/wonderful/target/wswan/medium/link.ld -L/opt/wonderful/target/wswan/medium/lib -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -u __wse_tiles_2bpp -u __wse_color_palette -L/opt/wonderful/toolchain/gcc-ia16-elf/lib/v30mz-segelf/medium -lwse -lwsx -lws -lgcc\n/opt/wonderful/bin/wf-wswantool build rom -c wfconfig.toml -o guntank-takes-the-stairs.wsc --output-elf build/guntank-takes-the-stairs/guntank-takes-the-stairs.elf build/guntank-takes-the-stairs/guntank-takes-the-stairs_stage1.elf\n=== BUILD COMPLETE ===\n-rw-r--r--@ 1 nick  staff   8.0M Jul 26 21:45 guntank-takes-the-stairs.wsc"
+      },
+      {
+        "name": "smoke",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/smoke_wscvn_rom.py",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local/guntank-takes-the-stairs.wsc",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/emulator-smoke-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs",
+        "returncode": 0,
+        "output_tail": "Emulator smoke report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/emulator-smoke-report.json\nBoot/checksum smoke passed (no pixels observed): wswan(WonderSwan) 8192KiB checksum 0x75b7\nVisual verification not performed; no emulator screenshot proof was bound"
+      },
+      {
+        "name": "audit",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+          "guntank-takes-the-stairs",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+          "--runtime",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local",
+          "--build-report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/build-report.json",
+          "--smoke-report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/emulator-smoke-report.json",
+          "--readiness-report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/game-readiness-report.json",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/game-audit-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs",
+        "returncode": 0,
+        "output_tail": "Game audit report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/game-audit-report.json\nGame audit passed"
+      }
+    ]
+  }
+}

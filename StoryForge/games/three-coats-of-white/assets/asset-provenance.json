@@ -1,0 +1,215 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "art_policy": "Every pictorial source master was generated with built-in ImageGen; scripts only post-process accepted masters.",
+  "outputs": {
+    "backgrounds/bg_title.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/background_title_imagegen_v1.png",
+      "source_sha256": "9c5f85e931787407bb1843622774770b192d2b03640b7e89911360884825b884",
+      "output_sha256": "fa8721b270c275ea55cdc0195808db3ff0fa9f503dd0f2db0c942dc68d80a01f",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 11,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 105.8
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_main.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/background_main_imagegen_v1.png",
+      "source_sha256": "4b6d941ac7617250f1ab17808e5c377e310816045fd278ead60a2e95797fbc9a",
+      "output_sha256": "51388ccb86a98c2223d6e48e6ed2f6173dc7e8de5b8bb0c9f1a5b07c1fed1f60",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 70.88
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_a.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/background_ending_a_imagegen_v1.png",
+      "source_sha256": "8aa0c6930c0937586312530800a329e5099e3e502594d29b4be601cbfdef4cc7",
+      "output_sha256": "72a18e2cb4e5aec2c534aead0a034c5af51658c92e60c0b9ea45ec291c4f5b84",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 195.29
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_b.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/background_ending_b_imagegen_v1.png",
+      "source_sha256": "b062d91395a0fd65945d11090d0e422e6719d3c2c7b028d0f11c5b4961575d57",
+      "output_sha256": "5386e1624ff2b41fe44b97e07ebcf860f1787417caf71ed897b58f90aac6b9a8",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 116.52
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "characters/mkii_neutral.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "41a8e0083f788e771bf1a44036d97bc83b2938f0309da32595574c35997aa7bb",
+      "output_sha256": "09de3423ab9b7487b0193c3a08201c0d39e2dda54878bff3514008b1ac8518ba",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          3,
+          18,
+          93,
+          127
+        ],
+        "alpha_coverage": 0.4823,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6793,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 86.47,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 91.64
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5927,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/mkii_talk.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "41a8e0083f788e771bf1a44036d97bc83b2938f0309da32595574c35997aa7bb",
+      "output_sha256": "cff08f9f0b7da15f7a6bf57d55772a1415fa2c6ec110bb46034db942b6c30bac",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          3,
+          18,
+          93,
+          127
+        ],
+        "alpha_coverage": 0.4823,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6793,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 86.31,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 90.95
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5927,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/mkii_blink.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "41a8e0083f788e771bf1a44036d97bc83b2938f0309da32595574c35997aa7bb",
+      "output_sha256": "fec781460e847af89e27266f8f871b1bc793a02ae3a79ec01ed93e9a10d5ea62",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          3,
+          18,
+          93,
+          127
+        ],
+        "alpha_coverage": 0.4823,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6793,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 86.84,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 93.14
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5927,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    }
+  }
+}

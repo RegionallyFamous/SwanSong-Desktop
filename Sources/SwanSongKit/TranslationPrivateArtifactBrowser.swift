@@ -357,7 +357,12 @@ public struct TranslationPrivateArtifactStore: Sendable {
             in: directory,
             project: project
         )
-        let detailsData = try read("details.json", in: directory, maximumBytes: 16_777_216, project: project)
+        let detailsData = try read(
+            "details.json",
+            in: directory,
+            maximumBytes: TranslationDisplayOwnerProbe.maximumPrivateDetailsBytes,
+            project: project
+        )
         let details = try decoder.decode(TranslationDisplayOwnerProbeDetails.self, from: detailsData)
         let isCurrent = details.schema == TranslationDisplayOwnerProbeDetails.currentSchema
         guard isCurrent || details.schema == TranslationDisplayOwnerProbeDetails.legacySchema else {
@@ -366,6 +371,7 @@ public struct TranslationPrivateArtifactStore: Sendable {
         try requireDigest(details.plan, file: "plan.json", in: directory, project: project)
         let expectedSamples = Int(details.rectangle.width) * Int(details.rectangle.height)
         guard expectedSamples > 0,
+              expectedSamples <= TranslationDisplayOwnerProbe.maximumRectanglePixels,
               expectedSamples == details.samples.count,
               details.samples.allSatisfy({ sample in
                   if isCurrent {

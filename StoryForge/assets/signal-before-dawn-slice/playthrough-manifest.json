@@ -1,0 +1,832 @@
+{
+  "schema_version": 1,
+  "name": "Signal Before Dawn ending and save/load Mesen playthrough manifest",
+  "purpose": "Replay five complete codas plus a one-process slot-1 save/load restoration smoke case.",
+  "rom": {
+    "path": "runtime-local/signal-before-dawn-slice.wsc",
+    "required_bytes": 8388608,
+    "required_sha256": "a5210df80536d70c1fc5c51af161eb697beccd9fa32623d17b32a223aea3d524"
+  },
+  "capture_runtime": {
+    "runner": "scripts/playtest_signal_before_dawn_routes.py",
+    "lua_script": {
+      "path": "scripts/mesen_capture_wscvn.lua",
+      "required_sha256": "677f1205ea07f77cedb6868692f7ec508ed3254ba3c4aa3ae7a41341ea158460"
+    },
+    "mesen": {
+      "path": "/Applications/Mesen.app/Contents/MacOS/Mesen",
+      "required_sha256": "ce4446a92096a024145e6ed2793cce8b489460bb3ac034cd9d1d77d96109fced",
+      "invocation": [
+        "--testRunner",
+        "scripts/mesen_capture_wscvn.lua",
+        "<temporary-copy-of-final-rom>",
+        "--debug.scriptWindow.allowIoOsAccess=true",
+        "--timeout=10"
+      ]
+    },
+    "environment_contract": {
+      "WSCVN_SCREENSHOT": "absolute per-route output path",
+      "WSCVN_CAPTURE_FRAME": "per-route capture.frame",
+      "WSCVN_PRESS_DURATION": "2",
+      "WSCVN_PRESS_A_FRAMES": "input_schedule.by_button.a joined with commas",
+      "WSCVN_PRESS_DOWN_FRAMES": "input_schedule.by_button.down joined with commas when present",
+      "WSCVN_PRESS_START_FRAMES": "input_schedule.by_button.start joined with commas when present"
+    }
+  },
+  "routes": [
+    {
+      "route_id": "signal",
+      "story_path": [
+        "title",
+        "opening_watch",
+        "deck_open",
+        "lune_enters",
+        "first_choice",
+        "radio_tune",
+        "second_choice",
+        "route_check",
+        "signal_combo_check",
+        "lighthouse_signal",
+        "final_choice",
+        "beacon_answer",
+        "ending_signal",
+        "signal_coda"
+      ],
+      "decisions": [
+        "Tune the receiver",
+        "Go with this",
+        "Follow the light"
+      ],
+      "expected_coda": {
+        "node_id": "signal_coda",
+        "speaker": "Mira",
+        "dialogue": "Mira pockets the last flash. Somewhere below, a door unlocks."
+      },
+      "capture": {
+        "frame": 2800,
+        "screenshot_path": "assets/signal-before-dawn-slice/emulator-ending-signal.png",
+        "approved_dimensions": [
+          237,
+          144
+        ],
+        "approved_sha256": "214b1aa1147a894da0bec479bd6d7d9e55985e185d7771306b824dd60bad4547"
+      },
+      "input_schedule": {
+        "press_duration_frames": 2,
+        "by_button": {
+          "a": [
+            60,
+            320,
+            620,
+            920,
+            1000,
+            1320,
+            1420,
+            1760,
+            1840,
+            2140,
+            2420
+          ],
+          "down": [
+            1360,
+            1380
+          ]
+        },
+        "events": [
+          {
+            "frame": 60,
+            "button": "A"
+          },
+          {
+            "frame": 320,
+            "button": "A"
+          },
+          {
+            "frame": 620,
+            "button": "A"
+          },
+          {
+            "frame": 920,
+            "button": "A"
+          },
+          {
+            "frame": 1000,
+            "button": "A"
+          },
+          {
+            "frame": 1320,
+            "button": "A"
+          },
+          {
+            "frame": 1360,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1380,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1420,
+            "button": "A"
+          },
+          {
+            "frame": 1760,
+            "button": "A"
+          },
+          {
+            "frame": 1840,
+            "button": "A"
+          },
+          {
+            "frame": 2140,
+            "button": "A"
+          },
+          {
+            "frame": 2420,
+            "button": "A"
+          }
+        ]
+      },
+      "manual_visual_review": {
+        "status": "pass",
+        "reviewed_on": "2026-07-16",
+        "method": "Human inspection of the exact PNG bound by approved_sha256.",
+        "observation": "Mira appears beside the lit lighthouse mechanism and the full Signal coda is visible.",
+        "visible_speaker": "Mira",
+        "visible_dialogue": "Mira pockets the last flash. Somewhere below, a door unlocks."
+      }
+    },
+    {
+      "route_id": "together",
+      "story_path": [
+        "title",
+        "opening_watch",
+        "deck_open",
+        "lune_enters",
+        "first_choice",
+        "radio_tune",
+        "second_choice",
+        "locker_second",
+        "third_choice",
+        "lune_third",
+        "route_check",
+        "signal_combo_check",
+        "signal_key_trust_check",
+        "all_clues",
+        "true_final_choice",
+        "together_answer",
+        "ending_together",
+        "together_coda"
+      ],
+      "decisions": [
+        "Tune the receiver",
+        "Try the brass key",
+        "Trust Lune",
+        "Answer together"
+      ],
+      "expected_coda": {
+        "node_id": "together_coda",
+        "speaker": "Lune",
+        "dialogue": "By sunrise, the ship has a new course and the sea remembers them."
+      },
+      "capture": {
+        "frame": 3300,
+        "screenshot_path": "assets/signal-before-dawn-slice/emulator-ending-together.png",
+        "approved_dimensions": [
+          237,
+          144
+        ],
+        "approved_sha256": "c49a5705871de630d456660bb9f67b3d2e6ea9021f74b92d1a516cdbeb82eb62"
+      },
+      "input_schedule": {
+        "press_duration_frames": 2,
+        "by_button": {
+          "a": [
+            60,
+            320,
+            620,
+            920,
+            1000,
+            1320,
+            1420,
+            1760,
+            1860,
+            2100,
+            2340,
+            2420,
+            2700,
+            2940
+          ]
+        },
+        "events": [
+          {
+            "frame": 60,
+            "button": "A"
+          },
+          {
+            "frame": 320,
+            "button": "A"
+          },
+          {
+            "frame": 620,
+            "button": "A"
+          },
+          {
+            "frame": 920,
+            "button": "A"
+          },
+          {
+            "frame": 1000,
+            "button": "A"
+          },
+          {
+            "frame": 1320,
+            "button": "A"
+          },
+          {
+            "frame": 1420,
+            "button": "A"
+          },
+          {
+            "frame": 1760,
+            "button": "A"
+          },
+          {
+            "frame": 1860,
+            "button": "A"
+          },
+          {
+            "frame": 2100,
+            "button": "A"
+          },
+          {
+            "frame": 2340,
+            "button": "A"
+          },
+          {
+            "frame": 2420,
+            "button": "A"
+          },
+          {
+            "frame": 2700,
+            "button": "A"
+          },
+          {
+            "frame": 2940,
+            "button": "A"
+          }
+        ]
+      },
+      "manual_visual_review": {
+        "status": "pass",
+        "reviewed_on": "2026-07-16",
+        "method": "Human inspection of the exact PNG bound by approved_sha256.",
+        "observation": "Lune appears on the sunrise deck and the full Together coda is visible.",
+        "visible_speaker": "Lune",
+        "visible_dialogue": "By sunrise, the ship has a new course and the sea remembers them."
+      }
+    },
+    {
+      "route_id": "hatch",
+      "story_path": [
+        "title",
+        "opening_watch",
+        "deck_open",
+        "lune_enters",
+        "first_choice",
+        "locker",
+        "second_choice",
+        "route_check",
+        "key_combo_check",
+        "under_hatch",
+        "final_choice",
+        "hatch_room_wakes",
+        "ending_hatch",
+        "hatch_coda"
+      ],
+      "decisions": [
+        "Open the brass locker",
+        "Go with this",
+        "Unlock the hatch"
+      ],
+      "expected_coda": {
+        "node_id": "hatch_coda",
+        "speaker": "Lune",
+        "dialogue": "Lune steps in first. The machine writes tomorrow across the wall."
+      },
+      "capture": {
+        "frame": 2800,
+        "screenshot_path": "assets/signal-before-dawn-slice/emulator-ending-hatch.png",
+        "approved_dimensions": [
+          237,
+          144
+        ],
+        "approved_sha256": "87647196448ae811807e4d2c25e1987b5681df94b004abbdf4a0ee8e2edf39f9"
+      },
+      "input_schedule": {
+        "press_duration_frames": 2,
+        "by_button": {
+          "a": [
+            60,
+            320,
+            620,
+            920,
+            1000,
+            1320,
+            1420,
+            1760,
+            1840,
+            2140,
+            2420
+          ],
+          "down": [
+            960,
+            1360,
+            1380
+          ]
+        },
+        "events": [
+          {
+            "frame": 60,
+            "button": "A"
+          },
+          {
+            "frame": 320,
+            "button": "A"
+          },
+          {
+            "frame": 620,
+            "button": "A"
+          },
+          {
+            "frame": 920,
+            "button": "A"
+          },
+          {
+            "frame": 960,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1000,
+            "button": "A"
+          },
+          {
+            "frame": 1320,
+            "button": "A"
+          },
+          {
+            "frame": 1360,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1380,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1420,
+            "button": "A"
+          },
+          {
+            "frame": 1760,
+            "button": "A"
+          },
+          {
+            "frame": 1840,
+            "button": "A"
+          },
+          {
+            "frame": 2140,
+            "button": "A"
+          },
+          {
+            "frame": 2420,
+            "button": "A"
+          }
+        ]
+      },
+      "manual_visual_review": {
+        "status": "pass",
+        "reviewed_on": "2026-07-16",
+        "method": "Human inspection of the exact PNG bound by approved_sha256.",
+        "observation": "Lune, the brass key, and the open hatch appear with the full Hatch coda.",
+        "visible_speaker": "Lune",
+        "visible_dialogue": "Lune steps in first. The machine writes tomorrow across the wall."
+      }
+    },
+    {
+      "route_id": "reply",
+      "story_path": [
+        "title",
+        "opening_watch",
+        "deck_open",
+        "lune_enters",
+        "first_choice",
+        "wake_lune",
+        "second_choice",
+        "route_check",
+        "shared_clue",
+        "final_choice",
+        "lune_reply",
+        "ending_lune",
+        "lune_coda"
+      ],
+      "decisions": [
+        "Wake Lune properly",
+        "Go with this",
+        "Let Lune answer"
+      ],
+      "expected_coda": {
+        "node_id": "lune_coda",
+        "speaker": "Lune",
+        "dialogue": "The answer repeats their names, softer each time, until dawn keeps it."
+      },
+      "capture": {
+        "frame": 2800,
+        "screenshot_path": "assets/signal-before-dawn-slice/emulator-ending-reply.png",
+        "approved_dimensions": [
+          237,
+          144
+        ],
+        "approved_sha256": "e710cccc76f2910a50177d34d36595e903f6e2b51f2602e696afcd11e86422e4"
+      },
+      "input_schedule": {
+        "press_duration_frames": 2,
+        "by_button": {
+          "a": [
+            60,
+            320,
+            620,
+            920,
+            1000,
+            1320,
+            1420,
+            1760,
+            1840,
+            2140,
+            2420
+          ],
+          "down": [
+            960,
+            980,
+            1360,
+            1380
+          ]
+        },
+        "events": [
+          {
+            "frame": 60,
+            "button": "A"
+          },
+          {
+            "frame": 320,
+            "button": "A"
+          },
+          {
+            "frame": 620,
+            "button": "A"
+          },
+          {
+            "frame": 920,
+            "button": "A"
+          },
+          {
+            "frame": 960,
+            "button": "DOWN"
+          },
+          {
+            "frame": 980,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1000,
+            "button": "A"
+          },
+          {
+            "frame": 1320,
+            "button": "A"
+          },
+          {
+            "frame": 1360,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1380,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1420,
+            "button": "A"
+          },
+          {
+            "frame": 1760,
+            "button": "A"
+          },
+          {
+            "frame": 1840,
+            "button": "A"
+          },
+          {
+            "frame": 2140,
+            "button": "A"
+          },
+          {
+            "frame": 2420,
+            "button": "A"
+          }
+        ]
+      },
+      "manual_visual_review": {
+        "status": "pass",
+        "reviewed_on": "2026-07-16",
+        "method": "Human inspection of the exact PNG bound by approved_sha256.",
+        "observation": "Lune appears at the sunrise rail and the full Reply coda is visible.",
+        "visible_speaker": "Lune",
+        "visible_dialogue": "The answer repeats their names, softer each time, until dawn keeps it."
+      }
+    },
+    {
+      "route_id": "sunrise",
+      "story_path": [
+        "title",
+        "opening_watch",
+        "deck_open",
+        "lune_enters",
+        "first_choice",
+        "quiet_deck",
+        "second_choice",
+        "route_check",
+        "sunrise_wait",
+        "ending_sunrise",
+        "sunrise_coda"
+      ],
+      "decisions": [
+        "Stay quiet and listen",
+        "Go with this"
+      ],
+      "expected_coda": {
+        "node_id": "sunrise_coda",
+        "speaker": "Mira",
+        "dialogue": "They leave the radio on. By noon, it will be quiet enough to miss."
+      },
+      "capture": {
+        "frame": 2600,
+        "screenshot_path": "assets/signal-before-dawn-slice/emulator-ending-sunrise.png",
+        "approved_dimensions": [
+          237,
+          144
+        ],
+        "approved_sha256": "e0b2d12c7400afcd0d91439b708c598d4b7c360195bac00ffddb3653125e9df3"
+      },
+      "input_schedule": {
+        "press_duration_frames": 2,
+        "by_button": {
+          "a": [
+            60,
+            320,
+            620,
+            920,
+            1020,
+            1320,
+            1420,
+            1760,
+            2140
+          ],
+          "down": [
+            960,
+            980,
+            1000,
+            1360,
+            1380,
+            1400
+          ]
+        },
+        "events": [
+          {
+            "frame": 60,
+            "button": "A"
+          },
+          {
+            "frame": 320,
+            "button": "A"
+          },
+          {
+            "frame": 620,
+            "button": "A"
+          },
+          {
+            "frame": 920,
+            "button": "A"
+          },
+          {
+            "frame": 960,
+            "button": "DOWN"
+          },
+          {
+            "frame": 980,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1000,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1020,
+            "button": "A"
+          },
+          {
+            "frame": 1320,
+            "button": "A"
+          },
+          {
+            "frame": 1360,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1380,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1400,
+            "button": "DOWN"
+          },
+          {
+            "frame": 1420,
+            "button": "A"
+          },
+          {
+            "frame": 1760,
+            "button": "A"
+          },
+          {
+            "frame": 2140,
+            "button": "A"
+          }
+        ]
+      },
+      "manual_visual_review": {
+        "status": "pass",
+        "reviewed_on": "2026-07-16",
+        "method": "Human inspection of the exact PNG bound by approved_sha256.",
+        "observation": "Mira appears on the sunrise deck and the full Sunrise coda is visible.",
+        "visible_speaker": "Mira",
+        "visible_dialogue": "They leave the radio on. By noon, it will be quiet enough to miss."
+      }
+    }
+  ],
+  "save_load_smoke": {
+    "case_id": "save-load-slot-1",
+    "required_status": "pass",
+    "session": {
+      "mesen_processes": 1,
+      "sram_scope": "one-process save then load",
+      "isolation": "Fresh random execution-ROM basename with no matching Mesen scratch save before launch."
+    },
+    "steps": [
+      {
+        "frame": 60,
+        "button": "A",
+        "action": "Begin a new game."
+      },
+      {
+        "frame": 320,
+        "button": "START",
+        "action": "Open the in-game menu on Final Watch."
+      },
+      {
+        "frame": 350,
+        "button": "A",
+        "action": "Choose Save Game, the default menu item."
+      },
+      {
+        "frame": 390,
+        "button": "A",
+        "action": "Write slot 1, the default save slot."
+      },
+      {
+        "frame": 550,
+        "button": "START",
+        "action": "Reopen the in-game menu after save confirmation."
+      },
+      {
+        "frame": 600,
+        "button": "DOWN",
+        "action": "Select Load Game."
+      },
+      {
+        "frame": 650,
+        "button": "A",
+        "action": "Open the load-slot overlay."
+      },
+      {
+        "frame": 720,
+        "button": "A",
+        "action": "Load slot 1 in the same Mesen process."
+      },
+      {
+        "frame": 1000,
+        "action": "Capture the restored Final Watch scene."
+      }
+    ],
+    "expected_saved_slot": {
+      "slot": 1,
+      "node_id": 1,
+      "node": "opening_watch",
+      "node_name": "Final Watch",
+      "save_magic": "0x5756",
+      "save_version": 5
+    },
+    "input_schedule": {
+      "press_duration_frames": 2,
+      "by_button": {
+        "a": [
+          60,
+          350,
+          390,
+          650,
+          720
+        ],
+        "down": [
+          600
+        ],
+        "start": [
+          320,
+          550
+        ]
+      },
+      "events": [
+        {
+          "frame": 60,
+          "button": "A"
+        },
+        {
+          "frame": 320,
+          "button": "START"
+        },
+        {
+          "frame": 350,
+          "button": "A"
+        },
+        {
+          "frame": 390,
+          "button": "A"
+        },
+        {
+          "frame": 550,
+          "button": "START"
+        },
+        {
+          "frame": 600,
+          "button": "DOWN"
+        },
+        {
+          "frame": 650,
+          "button": "A"
+        },
+        {
+          "frame": 720,
+          "button": "A"
+        }
+      ]
+    },
+    "capture": {
+      "frame": 1000,
+      "screenshot_path": "assets/signal-before-dawn-slice/emulator-save-load.png",
+      "approved_dimensions": [
+        237,
+        144
+      ],
+      "approved_sha256": "44e123b652ac58d00b5a18723457997ece84738e415119c4c3c59f78deb8a335"
+    },
+    "manual_visual_review": {
+      "status": "pass",
+      "reviewed_on": "2026-07-16",
+      "method": "Human inspection of the exact PNG bound by approved_sha256.",
+      "observation": "The restored Final Watch scene shows Mira on the moonlit deck with its full opening dialogue.",
+      "visible_speaker": "Mira",
+      "visible_dialogue": "Dawn ends Mira's final watch. If the signal is real, she has one hour."
+    },
+    "failure_policy": {
+      "status": "pending",
+      "rule": "If overlay automation, fresh SRAM, slot parsing, restoration, or visual binding fails, report pending and exit nonzero."
+    }
+  },
+  "acceptance": {
+    "all_processes_exit_zero": true,
+    "all_captures_match_manually_reviewed_sha256": true,
+    "all_captures_match_approved_dimensions": true,
+    "nonblank_thresholds": {
+      "minimum_unique_rgb_colors": 16,
+      "minimum_luma_span": 64,
+      "minimum_luma_standard_deviation": 5.0,
+      "maximum_dominant_color_share": 0.98
+    },
+    "all_file_sha256_values_unique": true,
+    "all_raw_rgb_sha256_values_unique": true,
+    "all_ten_pairs_have_differing_pixels": true,
+    "save_load_uses_one_mesen_process": true,
+    "save_load_starts_without_matching_sram": true,
+    "save_load_slot_1_has_valid_checksum_and_opening_watch_node": true,
+    "save_load_capture_matches_manual_review": true,
+    "save_load_scratch_files_removed_after_evidence_is_recorded": true
+  }
+}

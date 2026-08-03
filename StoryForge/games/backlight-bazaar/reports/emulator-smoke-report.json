@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mednafen_version": "1.32.1",
+    "module": "wswan(WonderSwan)",
+    "rom_size_reported": "8192KiB",
+    "rom_md5": "0xa82bec326d2e6e839285344a353e7f19",
+    "recorded_checksum": "0x780a",
+    "real_checksum": "0x780a"
+  },
+  "verification": {
+    "boot": {
+      "performed": true,
+      "passed": true,
+      "method": "headless-mednafen-startup-metadata",
+      "pixels_observed": false
+    },
+    "checksum": {
+      "performed": true,
+      "passed": true,
+      "method": "mednafen-recorded-vs-real-checksum"
+    },
+    "visual": {
+      "performed": false,
+      "passed": null,
+      "status": "not-performed",
+      "pixels_observed": false,
+      "proof_bound": false,
+      "screenshot": null
+    }
+  },
+  "result_scope": "boot-and-checksum",
+  "exit_mode": "metadata-timeout-terminated",
+  "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/runtime-local/backlight-bazaar.wsc",
+  "output_excerpt": "Starting Mednafen 1.32.1\n  Using module: wswan(WonderSwan)\n   ROM:       8192KiB\n   ROM MD5:   0xa82bec326d2e6e839285344a353e7f19\n   Recorded Checksum:  0x780a\n   Real Checksum:      0x780a"
+}

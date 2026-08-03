@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/contact_sheet.png",
+    "nodes": 37,
+    "flags": 0,
+    "tracks": [
+      {
+        "id": "tank_title",
+        "name": "Lobby Logistics",
+        "bpm": 104
+      },
+      {
+        "id": "tank_main",
+        "name": "Tread and Tiptoe",
+        "bpm": 112
+      },
+      {
+        "id": "tank_end_a",
+        "name": "Folding Table Ascent",
+        "bpm": 120
+      },
+      {
+        "id": "tank_end_b",
+        "name": "Lobby Encore",
+        "bpm": 128
+      }
+    ],
+    "imagegen_source_sha256": {
+      "background_title_imagegen_v1.png": "f6f2da1e73e8a743236e4024a2647d8a6dc589166ed1e4b18c8073c9a5df48f2",
+      "background_main_imagegen_v1.png": "2aab00db0566d18e2cd94a355515020c0b3f97b727f3c58bb497a8ce9594134b",
+      "background_ending_a_imagegen_v1.png": "3a0c300be7f7d365ef50fdcfcc6a32ba283d905c49a992961c0c724f5fdd050c",
+      "background_ending_b_imagegen_v1.png": "4c4702825ce8173d5aac4e9ab6b4c3620292eabc8969b0cf4f8b61f8eb93c17c",
+      "character_master_cutout_imagegen_v1.png": "12724cb42471a173e52bb7eb50fab3ef8fdce4339334b5f7e66a09d2b1eb06f8"
+    },
+    "source_master_count": 5,
+    "background_count": 4,
+    "character_frame_count": 3,
+    "art_policy": "ImageGen-first; no procedural pictorial fallback",
+    "story_proof_contract": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/sources/story-proof.json",
+    "story_proof_checkpoints": 8
+  }
+}

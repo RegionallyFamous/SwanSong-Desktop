@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:42:17.121674+00:00",
+  "errors": [],
+  "release_id": "20260727T024216Z-cdee2249ef9d",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/releases/20260727T024216Z-cdee2249ef9d",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/releases/20260727T024216Z-cdee2249ef9d.zip",
+    "bytes": 13036961,
+    "sha256": "d1d582778f790f030151a87664fee2dfe0d6b2ab4cc1b8b79e134ef1cdb7f73c"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/releases/20260727T024216Z-cdee2249ef9d/manifest.json",
+    "sha256": "2192df22bc30ab4073e17edb08260057d3cf5268b6de1225429089a9b5131224",
+    "files": 44
+  },
+  "rom_sha256": "cdee2249ef9db6e071cd051d29e1495edb268d4d1d126a8b4af14a7df333acbc",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "four-part-errand-run",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/reports/game-audit-report.json\nGame audit passed"
+  }
+}

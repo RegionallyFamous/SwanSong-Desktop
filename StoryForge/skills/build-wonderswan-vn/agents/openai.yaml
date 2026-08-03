@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build WonderSwan VN"
+  short_description: "Build ImageGen-first WonderSwan visual novels"
+  default_prompt: "Use $build-wonderswan-vn with $forge-light-novels to create or update a finished-length ImageGen-first WonderSwan Color visual novel. Preserve schema-v3 genre pleasures, scene delivery, continuity state, chemistry, signature moments, reader synthesis, rights lane, soundtrack motifs, and the approved art-set contract; losslessly paginate every route for the actual 26x4 textbox; derive compact eye/sensor blinks from one locked neutral master; prove smooth 15-level fades; then negotiate and record the installed SwanSong engine ABI and ship through exhaustive SwanSong route, input, audio, save-state, restart-persistence, pacing, capture, and Story Proof/Story Ribbon gates with a route-count-scaled whole-game deadline, a per-route stall watchdog, and complementary Mesen/Mednafen proof."

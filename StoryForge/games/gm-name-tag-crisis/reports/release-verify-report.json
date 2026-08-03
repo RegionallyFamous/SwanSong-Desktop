@@ -1,0 +1,710 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mode": "normal",
+    "zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/releases/20260727T024354Z-9c4a427a6d6a.zip",
+      "bytes": 12355740,
+      "sha256": "c0fc6990c2340f9fb9ce346f3c4a0d2f9e42234af883c64c26d2ac0e366ad98e"
+    },
+    "entries": 45,
+    "members": 45,
+    "duplicate_members": [],
+    "unsafe_members": [],
+    "manifest": {
+      "schema_version": 1,
+      "slug": "gm-name-tag-crisis",
+      "title": "The GM Name-Tag Crisis",
+      "files": 44,
+      "runtime_inputs": 6,
+      "emulator_screenshot": false
+    },
+    "package_sources": {
+      "readme": {
+        "member": "docs/README.md",
+        "exists": true,
+        "bytes": 1203,
+        "sha256": "1b8c956b612eacee0e9943bbb282a5ba032216d82ece0ec10297d44f30c7b3d7"
+      },
+      "asset_builder": {
+        "member": "source/build_gm_name_tag_crisis.py",
+        "exists": true,
+        "bytes": 23181,
+        "sha256": "8ac9a961f7a8bf3090f9d184bf59e7de6b203b654e0dc2962b1fb8e84c328d67"
+      },
+      "qa_report": {
+        "member": "reports/gm-name-tag-crisis-qa-report.json",
+        "exists": true,
+        "bytes": 1604,
+        "sha256": "6344811c8677333d4d45acdd7b85c7dbb7c94f3f11ba5e0616e2af879ca01524"
+      }
+    },
+    "runtime_inputs": {
+      "present": true,
+      "expected_count": 6,
+      "files": [
+        {
+          "member": "runtime/src/main.c",
+          "exists": true,
+          "bytes": 105606,
+          "sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a",
+          "manifest_bytes": 105606,
+          "manifest_sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a"
+        },
+        {
+          "member": "runtime/src/game_types.h",
+          "exists": true,
+          "bytes": 6650,
+          "sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec",
+          "manifest_bytes": 6650,
+          "manifest_sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec"
+        },
+        {
+          "member": "runtime/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+          "manifest_bytes": 5470,
+          "manifest_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        {
+          "member": "runtime/tools/convert_json.py",
+          "exists": true,
+          "bytes": 88977,
+          "sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387",
+          "manifest_bytes": 88977,
+          "manifest_sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387"
+        },
+        {
+          "member": "runtime/Makefile",
+          "exists": true,
+          "bytes": 3590,
+          "sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd",
+          "manifest_bytes": 3590,
+          "manifest_sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd"
+        },
+        {
+          "member": "runtime/wfconfig.toml",
+          "exists": true,
+          "bytes": 169,
+          "sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78",
+          "manifest_bytes": 169,
+          "manifest_sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78"
+        }
+      ],
+      "count": 6,
+      "missing": [],
+      "extra": [],
+      "duplicates": []
+    },
+    "current_workspace": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis",
+      "checked": 44,
+      "missing": [],
+      "mismatches": [],
+      "stable_report_diffs": [],
+      "unmapped": [],
+      "extra_current": []
+    },
+    "reports": {
+      "build": true,
+      "smoke": true,
+      "readiness": true,
+      "audit": true,
+      "swansong_playthrough": true,
+      "review_sheets": true
+    },
+    "smoke_verification": {
+      "result_scope": "boot-and-checksum",
+      "boot": {
+        "performed": true,
+        "passed": true,
+        "method": "headless-mednafen-startup-metadata",
+        "pixels_observed": false
+      },
+      "checksum": {
+        "performed": true,
+        "passed": true,
+        "method": "mednafen-recorded-vs-real-checksum"
+      },
+      "visual": {
+        "performed": false,
+        "passed": null,
+        "status": "not-performed",
+        "pixels_observed": false,
+        "proof_bound": false,
+        "screenshot": null
+      },
+      "proof_bound": false
+    },
+    "swansong_playthrough": {
+      "schema": "wscvn-swansong-playthrough-v2",
+      "app": {
+        "path": "/Applications/SwanSong.app",
+        "version": "0.9.0",
+        "build": "18",
+        "bundle_identifier": "com.regionallyfamous.swansong"
+      },
+      "route_count": 4,
+      "routes": [
+        {
+          "route_index": 0,
+          "member": "evidence/swansong-playthrough/route-1-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "gm_title",
+            "gm_01",
+            "gm_02",
+            "gm_03",
+            "gm_04",
+            "gm_05",
+            "gm_06",
+            "gm_07",
+            "gm_08",
+            "gm_09",
+            "gm_10",
+            "gm_choice_1",
+            "gm_a1",
+            "gm_a2",
+            "gm_a3",
+            "gm_a4",
+            "gm_11",
+            "gm_12",
+            "gm_13",
+            "gm_14",
+            "gm_15",
+            "gm_16",
+            "gm_17",
+            "gm_choice_2",
+            "gm_c1",
+            "gm_c2",
+            "gm_c3",
+            "gm_c4",
+            "end"
+          ],
+          "observed_nodes": [
+            "gm_title",
+            "gm_01",
+            "gm_02",
+            "gm_03",
+            "gm_04",
+            "gm_05",
+            "gm_06",
+            "gm_07",
+            "gm_08",
+            "gm_09",
+            "gm_10",
+            "gm_choice_1",
+            "gm_a1",
+            "gm_a2",
+            "gm_a3",
+            "gm_a4",
+            "gm_11",
+            "gm_12",
+            "gm_13",
+            "gm_14",
+            "gm_15",
+            "gm_16",
+            "gm_17",
+            "gm_choice_2",
+            "gm_c1",
+            "gm_c2",
+            "gm_c3",
+            "gm_c4",
+            "end"
+          ],
+          "bytes": 18652,
+          "sha256": "6fb92f856695319b2c9230c0030c5ccfde1f2d5d837be3dff7f08f44563c1f45",
+          "node_id": "gm_c4",
+          "audio_member": "evidence/swansong-playthrough/route-1-audio.wav"
+        },
+        {
+          "route_index": 1,
+          "member": "evidence/swansong-playthrough/route-2-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "gm_title",
+            "gm_01",
+            "gm_02",
+            "gm_03",
+            "gm_04",
+            "gm_05",
+            "gm_06",
+            "gm_07",
+            "gm_08",
+            "gm_09",
+            "gm_10",
+            "gm_choice_1",
+            "gm_a1",
+            "gm_a2",
+            "gm_a3",
+            "gm_a4",
+            "gm_11",
+            "gm_12",
+            "gm_13",
+            "gm_14",
+            "gm_15",
+            "gm_16",
+            "gm_17",
+            "gm_choice_2",
+            "gm_d1",
+            "gm_d2",
+            "gm_d3",
+            "gm_d4",
+            "end"
+          ],
+          "observed_nodes": [
+            "gm_title",
+            "gm_01",
+            "gm_02",
+            "gm_03",
+            "gm_04",
+            "gm_05",
+            "gm_06",
+            "gm_07",
+            "gm_08",
+            "gm_09",
+            "gm_10",
+            "gm_choice_1",
+            "gm_a1",
+            "gm_a2",
+            "gm_a3",
+            "gm_a4",
+            "gm_11",
+            "gm_12",
+            "gm_13",
+            "gm_14",
+            "gm_15",
+            "gm_16",
+            "gm_17",
+            "gm_choice_2",
+            "gm_d1",
+            "gm_d2",
+            "gm_d3",
+            "gm_d4",
+            "end"
+          ],
+          "bytes": 18888,
+          "sha256": "c7d6df89425abe02952f12b9a24d2480b10d5caba9fb4d4a56e66922697e7719",
+          "node_id": "gm_d4",
+          "audio_member": "evidence/swansong-playthrough/route-2-audio.wav"
+        },
+        {
+          "route_index": 2,
+          "member": "evidence/swansong-playthrough/route-3-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "gm_title",
+            "gm_01",
+            "gm_02",
+            "gm_03",
+            "gm_04",
+            "gm_05",
+            "gm_06",
+            "gm_07",
+            "gm_08",
+            "gm_09",
+            "gm_10",
+            "gm_choice_1",
+            "gm_b1",
+            "gm_b2",
+            "gm_b3",
+            "gm_b4",
+            "gm_11",
+            "gm_12",
+            "gm_13",
+            "gm_14",
+            "gm_15",
+            "gm_16",
+            "gm_17",
+            "gm_choice_2",
+            "gm_c1",
+            "gm_c2",
+            "gm_c3",
+            "gm_c4",
+            "end"
+          ],
+          "observed_nodes": [
+            "gm_title",
+            "gm_01",
+            "gm_02",
+            "gm_03",
+            "gm_04",
+            "gm_05",
+            "gm_06",
+            "gm_07",
+            "gm_08",
+            "gm_09",
+            "gm_10",
+            "gm_choice_1",
+            "gm_b1",
+            "gm_b2",
+            "gm_b3",
+            "gm_b4",
+            "gm_11",
+            "gm_12",
+            "gm_13",
+            "gm_14",
+            "gm_15",
+            "gm_16",
+            "gm_17",
+            "gm_choice_2",
+            "gm_c1",
+            "gm_c2",
+            "gm_c3",
+            "gm_c4",
+            "end"
+          ],
+          "bytes": 18652,
+          "sha256": "6fb92f856695319b2c9230c0030c5ccfde1f2d5d837be3dff7f08f44563c1f45",
+          "node_id": "gm_c4",
+          "audio_member": "evidence/swansong-playthrough/route-3-audio.wav"
+        },
+        {
+          "route_index": 3,
+          "member": "evidence/swansong-playthrough/route-4-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "gm_title",
+            "gm_01",
+            "gm_02",
+            "gm_03",
+            "gm_04",
+            "gm_05",
+            "gm_06",
+            "gm_07",
+            "gm_08",
+            "gm_09",
+            "gm_10",
+            "gm_choice_1",
+            "gm_b1",
+            "gm_b2",
+            "gm_b3",
+            "gm_b4",
+            "gm_11",
+            "gm_12",
+            "gm_13",
+            "gm_14",
+            "gm_15",
+            "gm_16",
+            "gm_17",
+            "gm_choice_2",
+            "gm_d1",
+            "gm_d2",
+            "gm_d3",
+            "gm_d4",
+            "end"
+          ],
+          "observed_nodes": [
+            "gm_title",
+            "gm_01",
+            "gm_02",
+            "gm_03",
+            "gm_04",
+            "gm_05",
+            "gm_06",
+            "gm_07",
+            "gm_08",
+            "gm_09",
+            "gm_10",
+            "gm_choice_1",
+            "gm_b1",
+            "gm_b2",
+            "gm_b3",
+            "gm_b4",
+            "gm_11",
+            "gm_12",
+            "gm_13",
+            "gm_14",
+            "gm_15",
+            "gm_16",
+            "gm_17",
+            "gm_choice_2",
+            "gm_d1",
+            "gm_d2",
+            "gm_d3",
+            "gm_d4",
+            "end"
+          ],
+          "bytes": 18888,
+          "sha256": "c7d6df89425abe02952f12b9a24d2480b10d5caba9fb4d4a56e66922697e7719",
+          "node_id": "gm_d4",
+          "audio_member": "evidence/swansong-playthrough/route-4-audio.wav"
+        }
+      ]
+    },
+    "readiness_assets": {
+      "contact_sheet": {
+        "member": "preview/contact_sheet.png",
+        "expected_sha256": "efcac4f12e89169955e137717569659ef5b720784861196ec2a2316d575113ea",
+        "exists": true,
+        "sha256": "efcac4f12e89169955e137717569659ef5b720784861196ec2a2316d575113ea"
+      },
+      "review_sheets": {
+        "scene_preview_sheet": {
+          "member": "preview/scene_preview_sheet.png",
+          "expected_sha256": "86e3bd9b5cad83f66d2198e4715b3acf54c554db5356c9343ee7923c2651e610",
+          "exists": true,
+          "sha256": "86e3bd9b5cad83f66d2198e4715b3acf54c554db5356c9343ee7923c2651e610"
+        },
+        "storyboard_sheet": {
+          "member": "preview/storyboard_sheet.png",
+          "expected_sha256": "fb771d79c12366b812d673355730d0478c4980ae187a3f9c8b2d937e769d7d97",
+          "exists": true,
+          "sha256": "fb771d79c12366b812d673355730d0478c4980ae187a3f9c8b2d937e769d7d97"
+        }
+      },
+      "sources": [
+        {
+          "member": "assets/sources/background_ending_a_imagegen_v1.png",
+          "expected_sha256": "b0647fe419bd741976f117702fc010a1156e551a62896a2f319488d1ca1955f7",
+          "exists": true,
+          "sha256": "b0647fe419bd741976f117702fc010a1156e551a62896a2f319488d1ca1955f7"
+        },
+        {
+          "member": "assets/sources/background_ending_b_imagegen_v1.png",
+          "expected_sha256": "d4556a83336659d90feaf290eb321faa7b54d749fabe4e25f8b28e4fbc65b3d9",
+          "exists": true,
+          "sha256": "d4556a83336659d90feaf290eb321faa7b54d749fabe4e25f8b28e4fbc65b3d9"
+        },
+        {
+          "member": "assets/sources/background_main_imagegen_v1.png",
+          "expected_sha256": "70b4dd2b3b895b8949a9f3014b03f075d3abf4f4214ad17b5cc5689d9f182f77",
+          "exists": true,
+          "sha256": "70b4dd2b3b895b8949a9f3014b03f075d3abf4f4214ad17b5cc5689d9f182f77"
+        },
+        {
+          "member": "assets/sources/background_title_imagegen_v1.png",
+          "expected_sha256": "b79d75ddfd15eafab1023f76faffd22f487686428bf5a68a6fafb0bc71199ef3",
+          "exists": true,
+          "sha256": "b79d75ddfd15eafab1023f76faffd22f487686428bf5a68a6fafb0bc71199ef3"
+        },
+        {
+          "member": "assets/sources/character_master_cutout_imagegen_v1.png",
+          "expected_sha256": "3f005fb58ce0e32c286a16737040ade063574c9ad66683d976803b533731acd1",
+          "exists": true,
+          "sha256": "3f005fb58ce0e32c286a16737040ade063574c9ad66683d976803b533731acd1"
+        },
+        {
+          "member": "assets/sources/character_master_imagegen_v1.png",
+          "expected_sha256": "aec9f685874d3c6f62ed74ea110d8a65762e2f3c42203edc5e5fb9481a492f45",
+          "exists": true,
+          "sha256": "aec9f685874d3c6f62ed74ea110d8a65762e2f3c42203edc5e5fb9481a492f45"
+        },
+        {
+          "member": "assets/sources/game_spec.json",
+          "expected_sha256": "368320c83a64b6ba44ecb6b8ab950745252d9ae35023a8acce4f8af889954a43",
+          "exists": true,
+          "sha256": "368320c83a64b6ba44ecb6b8ab950745252d9ae35023a8acce4f8af889954a43"
+        },
+        {
+          "member": "assets/sources/imagegen-prompts-v1.md",
+          "expected_sha256": "fbb48094749d544408cea540d5dc45f1ce627116d609619ff8d987201f27dc71",
+          "exists": true,
+          "sha256": "fbb48094749d544408cea540d5dc45f1ce627116d609619ff8d987201f27dc71"
+        }
+      ],
+      "extra_sources": [],
+      "review_sheets_report": {
+        "member": "reports/review-sheets-report.json",
+        "expected_sha256": "a82cfe5e94ac3bd7be65b65e473eab914c21111976cfa5eda831846f8494d60a",
+        "exists": true,
+        "sha256": "a82cfe5e94ac3bd7be65b65e473eab914c21111976cfa5eda831846f8494d60a"
+      },
+      "packaged_source_count": 8,
+      "backgrounds": {
+        "count": 4,
+        "files": [
+          {
+            "member": "assets/backgrounds/bg_title.png",
+            "expected_sha256": "abd7809c7516b2dd3473fdf6033d9ce09d823aa4928dd81f7adfb1e1ded9e5c7",
+            "exists": true,
+            "sha256": "abd7809c7516b2dd3473fdf6033d9ce09d823aa4928dd81f7adfb1e1ded9e5c7"
+          },
+          {
+            "member": "assets/backgrounds/bg_main.png",
+            "expected_sha256": "161732d9b4c5c92a351671c12c18f1d909ae89917b705a24c14d891730064a92",
+            "exists": true,
+            "sha256": "161732d9b4c5c92a351671c12c18f1d909ae89917b705a24c14d891730064a92"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_a.png",
+            "expected_sha256": "ae6d738232ad343bf36f6d975db56d58e6796c672d09f6bd376918b26f5c0a2c",
+            "exists": true,
+            "sha256": "ae6d738232ad343bf36f6d975db56d58e6796c672d09f6bd376918b26f5c0a2c"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_b.png",
+            "expected_sha256": "f3388132557ed0321f1e2943d1ec78c18a86f837aa4012cfed86f25388000404",
+            "exists": true,
+            "sha256": "f3388132557ed0321f1e2943d1ec78c18a86f837aa4012cfed86f25388000404"
+          }
+        ],
+        "packaged_count": 4,
+        "extra_members": []
+      },
+      "characters": {
+        "count": 3,
+        "files": [
+          {
+            "member": "assets/characters/gm_neutral.png",
+            "expected_sha256": "36f82f0377b16eda55604180b5d8ea8e6b1690cb0a664a6e6ad658ff75dc495f",
+            "exists": true,
+            "sha256": "36f82f0377b16eda55604180b5d8ea8e6b1690cb0a664a6e6ad658ff75dc495f"
+          },
+          {
+            "member": "assets/characters/gm_talk.png",
+            "expected_sha256": "4ad12a5c67b26146a4413e7b84d5aafd9914bfe3a9c69d312924b709f35bfd45",
+            "exists": true,
+            "sha256": "4ad12a5c67b26146a4413e7b84d5aafd9914bfe3a9c69d312924b709f35bfd45"
+          },
+          {
+            "member": "assets/characters/gm_blink.png",
+            "expected_sha256": "3c0f4da1154a60025c6f6941ad7027b116c4699f7bf2fc402510fc74b93c333e",
+            "exists": true,
+            "sha256": "3c0f4da1154a60025c6f6941ad7027b116c4699f7bf2fc402510fc74b93c333e"
+          }
+        ],
+        "packaged_count": 3,
+        "extra_members": []
+      },
+      "sfx": {
+        "count": 0,
+        "files": [],
+        "packaged_count": 0,
+        "extra_members": []
+      }
+    },
+    "project": {
+      "member": "project/gm-name-tag-crisis.wscvn.json",
+      "bytes": 169599,
+      "sha256": "d8f1dc4fe0853e08a1fc1439ee2324fed5e537055adb6e67f4885d054aea9bb1"
+    },
+    "rom": {
+      "member": "rom/gm-name-tag-crisis.wsc",
+      "bytes": 8388608,
+      "sha256": "9c4a427a6d6a77f9a5b3de6e185155dd26dfb47fd1f7ccf695323664b5407358",
+      "md5": "0x5762c4c3ddbd757242c5cb64fb894e4e"
+    },
+    "review_sheets_report": {
+      "present": true,
+      "member": "reports/review-sheets-report.json",
+      "project_file": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+        "bytes": 169599,
+        "sha256": "d8f1dc4fe0853e08a1fc1439ee2324fed5e537055adb6e67f4885d054aea9bb1"
+      },
+      "nodes_rendered": 36,
+      "preview_node_ids": [
+        "gm_title",
+        "gm_01",
+        "gm_02",
+        "gm_03",
+        "gm_04",
+        "gm_05",
+        "gm_06",
+        "gm_07",
+        "gm_08",
+        "gm_09",
+        "gm_10",
+        "gm_choice_1",
+        "gm_a1",
+        "gm_a2",
+        "gm_a3",
+        "gm_a4",
+        "gm_b1",
+        "gm_b2",
+        "gm_b3",
+        "gm_b4",
+        "gm_11",
+        "gm_12",
+        "gm_13",
+        "gm_14",
+        "gm_15",
+        "gm_16",
+        "gm_17",
+        "gm_choice_2",
+        "gm_c1",
+        "gm_c2",
+        "gm_c3",
+        "gm_c4",
+        "gm_d1",
+        "gm_d2",
+        "gm_d3",
+        "gm_d4"
+      ],
+      "font": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+        "bytes": 5470,
+        "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+        "member": "runtime/src/font.h",
+        "packaged_bytes": 5470,
+        "packaged_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+      },
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/scene_preview_sheet.png",
+        "bytes": 232288,
+        "sha256": "86e3bd9b5cad83f66d2198e4715b3acf54c554db5356c9343ee7923c2651e610",
+        "member": "preview/scene_preview_sheet.png",
+        "packaged_bytes": 232288,
+        "packaged_sha256": "86e3bd9b5cad83f66d2198e4715b3acf54c554db5356c9343ee7923c2651e610"
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/storyboard_sheet.png",
+        "bytes": 78780,
+        "sha256": "fb771d79c12366b812d673355730d0478c4980ae187a3f9c8b2d937e769d7d97",
+        "member": "preview/storyboard_sheet.png",
+        "packaged_bytes": 78780,
+        "packaged_sha256": "fb771d79c12366b812d673355730d0478c4980ae187a3f9c8b2d937e769d7d97"
+      }
+    },
+    "project_report_bindings": {
+      "readiness": {
+        "present": true,
+        "member": "project/gm-name-tag-crisis.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+        "bytes": 169599,
+        "sha256": "d8f1dc4fe0853e08a1fc1439ee2324fed5e537055adb6e67f4885d054aea9bb1"
+      },
+      "audit": {
+        "present": true,
+        "member": "project/gm-name-tag-crisis.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+        "bytes": 169599,
+        "sha256": "d8f1dc4fe0853e08a1fc1439ee2324fed5e537055adb6e67f4885d054aea9bb1"
+      }
+    },
+    "audit_rom_binding": {
+      "present": true,
+      "member": "rom/gm-name-tag-crisis.wsc",
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local/gm-name-tag-crisis.wsc",
+      "bytes": 8388608,
+      "sha256": "9c4a427a6d6a77f9a5b3de6e185155dd26dfb47fd1f7ccf695323664b5407358"
+    },
+    "manifest_artifacts": {
+      "project": {
+        "present": true,
+        "member": "project/gm-name-tag-crisis.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+        "bytes": 169599,
+        "sha256": "d8f1dc4fe0853e08a1fc1439ee2324fed5e537055adb6e67f4885d054aea9bb1"
+      },
+      "rom": {
+        "present": true,
+        "member": "rom/gm-name-tag-crisis.wsc",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/runtime-local/gm-name-tag-crisis.wsc",
+        "sha256": "9c4a427a6d6a77f9a5b3de6e185155dd26dfb47fd1f7ccf695323664b5407358",
+        "md5": "0x5762c4c3ddbd757242c5cb64fb894e4e",
+        "checksum": "0xba0b"
+      }
+    },
+    "release_summary": {
+      "lines": 46,
+      "expected_lines": 34,
+      "visual_evidence_lines": 8,
+      "has_visual_evidence": true,
+      "missing_expected_lines": []
+    }
+  }
+}

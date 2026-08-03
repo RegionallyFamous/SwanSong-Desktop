@@ -1,0 +1,228 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:33:18.786093+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "three-coats-of-white",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white",
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+      "bytes": 163302,
+      "sha256": "f48f51cfb115d271167aa23629b4a801ccd16c638c4ac4a59e8b4ea4dcc550d5"
+    },
+    "project_counts": {
+      "name": "Three Coats of White",
+      "nodes": 44,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local",
+    "runtime_sync": {
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local",
+      "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local",
+      "copied": [
+        ".gitignore",
+        "Makefile",
+        "README.md",
+        "music/.gitkeep",
+        "src/font.h",
+        "src/game_types.h",
+        "src/main.c",
+        "third_party/README.md",
+        "tools/analyze_vnds.py",
+        "tools/convert_json.py",
+        "tools/convert_nscripter_proof.py",
+        "tools/convert_vnds_proof.py",
+        "tools/extract_nsa.py",
+        "tools/gen_ambient_sfx.py",
+        "tools/gen_cygnals_menu_fur.py",
+        "tools/saveload_bg.png",
+        "tools/selftest_choice_visuals.py",
+        "tools/wsc_image_prep.py",
+        "wfconfig.toml"
+      ],
+      "skipped": [
+        "build/signal-before-dawn-slice/signal-before-dawn-slice.elf",
+        "build/signal-before-dawn-slice/signal-before-dawn-slice_stage1.elf",
+        "build/signal-before-dawn-slice/src/game_data.d",
+        "build/signal-before-dawn-slice/src/game_data.o",
+        "build/signal-before-dawn-slice/src/main.d",
+        "build/signal-before-dawn-slice/src/main.o",
+        "signal-before-dawn-slice.wsc",
+        "src/game_data.c",
+        "src/game_data.h"
+      ],
+      "quarantined": [],
+      "quarantine_root": null
+    },
+    "runtime_source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local",
+    "asset_builder": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/build_three_coats_of_white.py",
+    "name": "three-coats-of-white",
+    "rom": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local/three-coats-of-white.wsc",
+      "bytes": 8388608,
+      "sha256": "3208c3cc513ba9453483ee99d9db36f1198c2660d9bbc0b57c3fcac2e9a94109"
+    },
+    "smoke_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/emulator-smoke-report.json",
+      "bytes": 1203,
+      "sha256": "c31f96a336149a1b0eb3425d40d365e2b6de4ef96fc171633b4f4675c4ab99ba"
+    },
+    "readiness_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/game-readiness-report.json",
+      "bytes": 20245,
+      "sha256": "74964e44699d1a9391a5a388aef6a7d72fc0a2cbd22c06dfa985a02cf96c6e81"
+    },
+    "graphics_contract_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/graphics-contract-report.json",
+      "bytes": 38343,
+      "sha256": "ab0ebc3ecbaf3e15c599e289d58d57a0783b48fe04fb5acb0fa5c85f07167434"
+    },
+    "experience_polish_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/experience-polish-report.json",
+      "exists": false
+    },
+    "audit_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/game-audit-report.json",
+      "bytes": 3192,
+      "sha256": "01893ed88d8530169fe8eb5fb90d6064462dc8d9a8ec89bc13d387d20a6a24d0"
+    },
+    "commands": [
+      {
+        "name": "asset-builder",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/build_three_coats_of_white.py"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white",
+        "returncode": 0,
+        "output_tail": "Wrote project: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json\nWrote contact sheet: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/contact_sheet.png\nWrote QA report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/three-coats-of-white-qa-report.json"
+      },
+      {
+        "name": "review-sheets",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/make_wscvn_game_review_sheets.py",
+          "three-coats-of-white",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+          "--asset-root",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/review-sheets-report.json",
+          "--font",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white",
+        "returncode": 0,
+        "output_tail": "Scene preview sheet: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/scene_preview_sheet.png\nStoryboard sheet: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/storyboard_sheet.png\nReview sheets report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/review-sheets-report.json"
+      },
+      {
+        "name": "readiness",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py",
+          "three-coats-of-white",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+          "--asset-root",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/game-readiness-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white",
+        "returncode": 0,
+        "output_tail": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:219: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:220: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:222: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alpha_coverage = sum(1 for pixel in image.getdata() if pixel[3] > 0) / (image.width * image.height)\nGame readiness report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/game-readiness-report.json\n[i] Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.\nTechnical game readiness passed; aesthetic review remains separate"
+      },
+      {
+        "name": "graphics-contract",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_graphics_contract.py",
+          "--asset-root",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+          "--allow-missing-provenance",
+          "--out",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/graphics-contract-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white",
+        "returncode": 0,
+        "output_tail": "Graphics contract report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/graphics-contract-report.json\nGraphics contract passed"
+      },
+      {
+        "name": "convert",
+        "cmd": [
+          "make",
+          "convert",
+          "JSON=/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+          "PY=/opt/homebrew/opt/python@3.14/bin/python3.14"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local",
+        "returncode": 0,
+        "output_tail": "/opt/homebrew/opt/python@3.14/bin/python3.14 tools/convert_json.py \"/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json\" src/\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local/tools/convert_json.py:939: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  indexed = list(q.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local/tools/convert_json.py:517: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local/tools/convert_json.py:580: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(frame.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local/tools/convert_json.py:606: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local/tools/convert_json.py:627: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgb.getdata())\n[+] Loaded \"Three Coats of White\" \u2014 44 nodes, 0 flags, 4 tracks, 4 backgrounds, 3 characters\n[+] Wrote src//game_data.h and src//game_data.c\n[+] Ready: run \"make\" from the project root."
+      },
+      {
+        "name": "clean",
+        "cmd": [
+          "make",
+          "clean",
+          "NAME=three-coats-of-white"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local",
+        "returncode": 0,
+        "output_tail": "rm -rf build/three-coats-of-white three-coats-of-white.wsc"
+      },
+      {
+        "name": "build",
+        "cmd": [
+          "make",
+          "NAME=three-coats-of-white"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local",
+        "returncode": 0,
+        "output_tail": "/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/three-coats-of-white/src/main.o src/main.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/three-coats-of-white/src/game_data.o src/game_data.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -r -o build/three-coats-of-white/three-coats-of-white_stage1.elf build/three-coats-of-white/src/main.o build/three-coats-of-white/src/game_data.o /opt/wonderful/target/wswan/medium/lib/crt0.o -T/opt/wonderful/target/wswan/medium/link.ld -L/opt/wonderful/target/wswan/medium/lib -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -u __wse_tiles_2bpp -u __wse_color_palette -L/opt/wonderful/toolchain/gcc-ia16-elf/lib/v30mz-segelf/medium -lwse -lwsx -lws -lgcc\n/opt/wonderful/bin/wf-wswantool build rom -c wfconfig.toml -o three-coats-of-white.wsc --output-elf build/three-coats-of-white/three-coats-of-white.elf build/three-coats-of-white/three-coats-of-white_stage1.elf\n=== BUILD COMPLETE ===\n-rw-r--r--@ 1 nick  staff   8.0M Jul 26 22:33 three-coats-of-white.wsc"
+      },
+      {
+        "name": "smoke",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/smoke_wscvn_rom.py",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local/three-coats-of-white.wsc",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/emulator-smoke-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white",
+        "returncode": 0,
+        "output_tail": "Emulator smoke report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/emulator-smoke-report.json\nBoot/checksum smoke passed (no pixels observed): wswan(WonderSwan) 8192KiB checksum 0x6d37\nVisual verification not performed; no emulator screenshot proof was bound"
+      },
+      {
+        "name": "audit",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+          "three-coats-of-white",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+          "--runtime",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local",
+          "--build-report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/build-report.json",
+          "--smoke-report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/emulator-smoke-report.json",
+          "--readiness-report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/game-readiness-report.json",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/game-audit-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white",
+        "returncode": 0,
+        "output_tail": "Game audit report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/game-audit-report.json\nGame audit passed"
+      }
+    ]
+  }
+}

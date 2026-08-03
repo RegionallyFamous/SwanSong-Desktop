@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:31:06.626257+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/projects/backlight-bazaar.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/contact_sheet.png",
+    "nodes": 44,
+    "flags": 6,
+    "backgrounds": {
+      "bg_market_stall": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_rooftop_swap": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 12,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_tram_shelf": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 12,
+        "has_alpha": false,
+        "binary_alpha": true
+      }
+    },
+    "characters": {
+      "char_mina_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_mina_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_mina_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_ren_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_ren_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_ren_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      }
+    },
+    "text": {
+      "blocks": 226,
+      "max_pause_block_chars": 87
+    },
+    "art_direction": [
+      "Final backgrounds are 224x144, 16-color, and bottom-darkened for textbox readability.",
+      "Final character frames are 96x128 with stable alpha, localized talk/blink changes, and <=15 visible colors.",
+      "All game/cart names are fictional; no commercial ROM contents or assets are used."
+    ]
+  }
+}

@@ -1958,6 +1958,22 @@ index 8bd2d35d..599dc370 100644
  
    if(has.flash && (flash.idmode || flash.fastmode)) {
      n16 data = flash.read(offset >> 1, true);
+diff --git a/ares/ws/cartridge/memory.cpp b/ares/ws/cartridge/memory.cpp
+index 8bd2d35d..c85d3ee7 100644
+--- a/ares/ws/cartridge/memory.cpp
++++ b/ares/ws/cartridge/memory.cpp
+@@ -40,6 +40,11 @@ auto Cartridge::readRAM(n20 address) -> n8 {
+ }
+ 
+ auto Cartridge::writeRAM(n20 address, n8 data) -> void {
++  if(platform) {
++    platform->wonderSwanSourceWrite(
++      3, address, (((u32)cpu.PS << 4) + cpu.PC) & 0xfffff
++    );
++  }
+   openbus.byte(0) = data;
+ 
+   n32 offset = io.sramBank << 16 | (n16)address;
 diff --git a/ares/ws/cartridge/rtc.cpp b/ares/ws/cartridge/rtc.cpp
 index f4ca9df5..df0fbb59 100644
 --- a/ares/ws/cartridge/rtc.cpp
@@ -2014,7 +2030,7 @@ index 50e94ec5..1bf89070 100644
 +  case 0x0:
 +    return platform->wonderSwanDataRead(1, address & 0xffff);
 +  case 0x1:
-+    return platform->wonderSwanDataRead(0, address);
++    return platform->wonderSwanDataRead(3, address);
 +  default:
 +    if(cpu.io.cartridgeRomWidth != cartridge.has.wordWidth) {
 +      if(cartridge.has.wordWidth) address &= ~1;
@@ -6515,3 +6531,4 @@ zv<>koMoUb!N7WJr#@AL_T8db1)@m7mhZYhbkfhCK8t4OHtu_YQZ(0T)xFc|Y2YjWa
 z0FTOT5e6W9vZ;Pa^uCah0N=IDbbHhc!IzfOH1Go}1#~pJ(^?wggV%^2Y$uF=CmO#w
 cGJeDcB!^qIF_H1dqc({BZyr4OW^w-i174kF(*OVf
 
+# End of SwanSong's headless ares patch.

@@ -1,0 +1,616 @@
+{
+  "schema_version": 1,
+  "ok": true,
+  "ready_for_small_light_novel": true,
+  "generated_at_utc": "2026-07-27T03:54:57.039333+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/projects/signal-before-dawn-slice.wscvn.json",
+      "sha256": "12e91e46f011e49043a3e43bfc58674c37b7c66c6a6af76bb1baf653bf1d2480"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice",
+    "thresholds": {
+      "min_scene_count": 12,
+      "min_staged_scene_count": 8,
+      "min_background_assets": 2,
+      "min_backgrounds_used": 2,
+      "min_speakers": 1,
+      "min_speaking_characters": 1,
+      "min_expression_bodies_total": 2,
+      "min_expression_bodies_per_speaking_character": 2,
+      "min_animated_scene_share": 0.75,
+      "min_source_pngs": 4,
+      "min_audition_approvals": 1,
+      "min_end_nodes": 1,
+      "min_title_nodes": 1
+    },
+    "story": {
+      "node_count": 46,
+      "scene_count": 35,
+      "title_count": 1,
+      "choice_count": 5,
+      "choice_label_count": 20,
+      "branch_count": 4,
+      "end_count": 1,
+      "background_asset_count": 8,
+      "character_asset_count": 30,
+      "backgrounds_used": {
+        "bg_deck_night": 7,
+        "bg_radio_closeup": 5,
+        "bg_cabin_radio": 4,
+        "bg_lighthouse_dawn": 4,
+        "bg_beacon_lens": 6,
+        "bg_hatch_key": 4,
+        "bg_sunrise_deck": 5
+      },
+      "backgrounds_used_count": 7,
+      "speakers": {
+        "Mira": 16,
+        "Lune": 19
+      },
+      "speaker_count": 2,
+      "positions": {
+        "right": 19,
+        "left": 16
+      },
+      "staged_scene_count": 35,
+      "animated_scene_count": 35,
+      "animated_scene_share": 1.0,
+      "speaking_characters": [
+        "lune",
+        "mira"
+      ],
+      "speaking_character_count": 2,
+      "expression_bodies_by_character": {
+        "lune": [
+          "lune_alert",
+          "lune_radio",
+          "lune_resolved",
+          "lune_warm"
+        ],
+        "mira": [
+          "mira_action",
+          "mira_resolved",
+          "mira_smile",
+          "mira_worried"
+        ]
+      },
+      "expression_body_count_total": 8,
+      "moods_by_character": {
+        "lune": [
+          "alert",
+          "radio",
+          "resolved",
+          "warm"
+        ],
+        "mira": [
+          "action",
+          "resolved",
+          "smile",
+          "worried"
+        ]
+      },
+      "scene_ids_by_character": {
+        "lune": [
+          "lune_enters",
+          "locker",
+          "wake_lune",
+          "locker_second",
+          "lune_second",
+          "locker_third",
+          "lune_third",
+          "together_answer",
+          "signal_lune_clue",
+          "under_hatch",
+          "key_lune_clue",
+          "shared_clue",
+          "hatch_room_wakes",
+          "lune_reply",
+          "together_coda",
+          "ending_hatch",
+          "hatch_coda",
+          "ending_lune",
+          "lune_coda"
+        ],
+        "mira": [
+          "opening_watch",
+          "deck_open",
+          "radio_tune",
+          "quiet_deck",
+          "radio_second",
+          "radio_third",
+          "lighthouse_signal",
+          "signal_key_clue",
+          "all_clues",
+          "beacon_answer",
+          "sunrise_wait",
+          "ending_signal",
+          "signal_coda",
+          "ending_together",
+          "ending_sunrise",
+          "sunrise_coda"
+        ]
+      },
+      "start_node_id": "title",
+      "start_node_exists": true
+    },
+    "source_evidence": {
+      "source_png_count": 29,
+      "audition_approval_count": 6,
+      "source_pngs": [
+        "beacon_lens_source_v1.png",
+        "cabin_imagegen_source.png",
+        "cabin_imagegen_source_v2.png",
+        "cartridge_label_source_v1.png",
+        "cover_key_art_source_v1.png",
+        "deck_imagegen_source.png",
+        "deck_imagegen_source_v2.png",
+        "hatch_key_source_v1.png",
+        "latest_imagegen_contact.png",
+        "lighthouse_imagegen_source.png",
+        "lighthouse_imagegen_source_v2.png",
+        "lune_expression_sheet_source_v5.png",
+        "lune_imagegen_source.png",
+        "lune_radio_pose_source_v1.png",
+        "lune_sheet_source.png",
+        "lune_sheet_source_v2.png",
+        "lune_sheet_source_v3.png",
+        "lune_sheet_source_v4.png",
+        "mira_action_pose_source_v1.png",
+        "mira_expression_sheet_source_v5.png",
+        "mira_expression_sheet_source_v6.png",
+        "mira_imagegen_source.png",
+        "mira_sheet_source.png",
+        "mira_sheet_source_v2.png",
+        "mira_sheet_source_v3.png",
+        "mira_sheet_source_v4.png",
+        "radio_signal_source_v1.png",
+        "sunrise_deck_source_v1.png",
+        "title_signal_source_v3.png"
+      ],
+      "audition_approvals": [
+        "lune_base_approval.json",
+        "lune_expression_approval.json",
+        "lune_radio_pose_approval.json",
+        "mira_action_pose_approval.json",
+        "mira_base_approval.json",
+        "mira_expression_approval.json"
+      ]
+    },
+    "preview_images": {
+      "contact_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/contact_sheet.png",
+        "exists": true,
+        "size": [
+          1000,
+          2788
+        ],
+        "bytes": 260882,
+        "sha256": "865363f4c1eec8388dfbb462541ad7ee1592abc676907e9cab2e3df174850cde"
+      },
+      "expression_audition_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/expression_audition_sheet.png",
+        "exists": true,
+        "size": [
+          900,
+          1748
+        ],
+        "bytes": 110332,
+        "sha256": "f7c4da50fcdcb6c212061af36e2ca17875cd020a43d293af85ca77862a2bd344"
+      },
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/scene_preview_sheet.png",
+        "exists": true,
+        "size": [
+          472,
+          1920
+        ],
+        "bytes": 144921,
+        "sha256": "111da417dcf6dbc72222f0f0e099bdf6c663a335bc86bc5402f19f75664f3e32"
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/storyboard_sheet.png",
+        "exists": true,
+        "size": [
+          934,
+          5770
+        ],
+        "bytes": 816983,
+        "sha256": "cf31b10e63419b7b08396674516139fa20c02c15f5681048bf9b304a78581752"
+      },
+      "font_proof_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/font-proof-sheet.png",
+        "exists": true,
+        "size": [
+          732,
+          304
+        ],
+        "bytes": 23499,
+        "sha256": "bc5f9b6ca90acc63cb66977ec6fb0c4af519a6e7459a7e56fbe737a1882c0c30"
+      },
+      "text_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/text-preview-sheet.png",
+        "exists": true,
+        "size": [
+          930,
+          1910
+        ],
+        "bytes": 33988,
+        "sha256": "7aaa59d5378886beabc32d56e4a8813229acef0264dd9d06a0a4d16cc2ed4c31"
+      }
+    },
+    "visual_margins": {
+      "minimum_sprite_bg_luma_delta": 51.2,
+      "maximum_background_detail_under_sprite": 58.73,
+      "position_balance": {
+        "staged_scene_count": 35,
+        "counts": {
+          "right": 19,
+          "left": 16
+        },
+        "shares": {
+          "left": 0.457,
+          "right": 0.543
+        },
+        "longest_staging_streak": {
+          "position": "right",
+          "count": 5,
+          "scene_ids": [
+            "lighthouse_signal",
+            "signal_key_clue",
+            "all_clues",
+            "together_answer",
+            "signal_lune_clue"
+          ]
+        },
+        "staging_streaks": [
+          {
+            "position": "right",
+            "count": 2,
+            "scene_ids": [
+              "opening_watch",
+              "deck_open"
+            ]
+          },
+          {
+            "position": "left",
+            "count": 3,
+            "scene_ids": [
+              "lune_enters",
+              "radio_tune",
+              "locker"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 2,
+            "scene_ids": [
+              "wake_lune",
+              "quiet_deck"
+            ]
+          },
+          {
+            "position": "left",
+            "count": 1,
+            "scene_ids": [
+              "radio_second"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 1,
+            "scene_ids": [
+              "locker_second"
+            ]
+          },
+          {
+            "position": "left",
+            "count": 2,
+            "scene_ids": [
+              "lune_second",
+              "radio_third"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 1,
+            "scene_ids": [
+              "locker_third"
+            ]
+          },
+          {
+            "position": "left",
+            "count": 1,
+            "scene_ids": [
+              "lune_third"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 5,
+            "scene_ids": [
+              "lighthouse_signal",
+              "signal_key_clue",
+              "all_clues",
+              "together_answer",
+              "signal_lune_clue"
+            ]
+          },
+          {
+            "position": "left",
+            "count": 3,
+            "scene_ids": [
+              "under_hatch",
+              "key_lune_clue",
+              "shared_clue"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 1,
+            "scene_ids": [
+              "beacon_answer"
+            ]
+          },
+          {
+            "position": "left",
+            "count": 2,
+            "scene_ids": [
+              "hatch_room_wakes",
+              "lune_reply"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 4,
+            "scene_ids": [
+              "sunrise_wait",
+              "ending_signal",
+              "signal_coda",
+              "ending_together"
+            ]
+          },
+          {
+            "position": "left",
+            "count": 3,
+            "scene_ids": [
+              "together_coda",
+              "ending_hatch",
+              "hatch_coda"
+            ]
+          },
+          {
+            "position": "right",
+            "count": 3,
+            "scene_ids": [
+              "ending_lune",
+              "lune_coda",
+              "ending_sunrise"
+            ]
+          },
+          {
+            "position": "left",
+            "count": 1,
+            "scene_ids": [
+              "sunrise_coda"
+            ]
+          }
+        ]
+      },
+      "weakest_expression_deltas": [
+        {
+          "character": "lune",
+          "comparison": "mood_to_mood",
+          "mood": null,
+          "mood_a": "alert",
+          "mood_b": "warm",
+          "face_pixels_changed": 299,
+          "minimum": 28
+        },
+        {
+          "character": "mira",
+          "comparison": "mood_to_mood",
+          "mood": null,
+          "mood_a": "resolved",
+          "mood_b": "smile",
+          "face_pixels_changed": 365,
+          "minimum": 28
+        },
+        {
+          "character": "mira",
+          "comparison": "mood_to_mood",
+          "mood": null,
+          "mood_a": "resolved",
+          "mood_b": "worried",
+          "face_pixels_changed": 406,
+          "minimum": 28
+        },
+        {
+          "character": "mira",
+          "comparison": "mood_to_mood",
+          "mood": null,
+          "mood_a": "smile",
+          "mood_b": "worried",
+          "face_pixels_changed": 456,
+          "minimum": 28
+        },
+        {
+          "character": "lune",
+          "comparison": "mood_to_mood",
+          "mood": null,
+          "mood_a": "alert",
+          "mood_b": "resolved",
+          "face_pixels_changed": 489,
+          "minimum": 28
+        }
+      ],
+      "review_focus": {
+        "lowest_sprite_bg_contrast": [
+          {
+            "id": "lune_second",
+            "speaker": "Lune",
+            "background": "bg_deck_night",
+            "character": "char_lune_radio_neutral",
+            "position": "left",
+            "mood": "radio",
+            "sprite_bg_luma_delta": 51.2
+          },
+          {
+            "id": "lune_third",
+            "speaker": "Lune",
+            "background": "bg_deck_night",
+            "character": "char_lune_radio_neutral",
+            "position": "left",
+            "mood": "radio",
+            "sprite_bg_luma_delta": 51.2
+          },
+          {
+            "id": "lune_enters",
+            "speaker": "Lune",
+            "background": "bg_radio_closeup",
+            "character": "char_lune_radio_neutral",
+            "position": "left",
+            "mood": "radio",
+            "sprite_bg_luma_delta": 52.97
+          },
+          {
+            "id": "lune_reply",
+            "speaker": "Lune",
+            "background": "bg_radio_closeup",
+            "character": "char_lune_radio_neutral",
+            "position": "left",
+            "mood": "radio",
+            "sprite_bg_luma_delta": 52.97
+          },
+          {
+            "id": "shared_clue",
+            "speaker": "Lune",
+            "background": "bg_deck_night",
+            "character": "char_lune_warm_neutral",
+            "position": "left",
+            "mood": "warm",
+            "sprite_bg_luma_delta": 55.19
+          }
+        ],
+        "busiest_sprite_lanes": [
+          {
+            "id": "shared_clue",
+            "speaker": "Lune",
+            "background": "bg_deck_night",
+            "character": "char_lune_warm_neutral",
+            "position": "left",
+            "mood": "warm",
+            "background_detail_under_sprite": 58.73
+          },
+          {
+            "id": "lune_second",
+            "speaker": "Lune",
+            "background": "bg_deck_night",
+            "character": "char_lune_radio_neutral",
+            "position": "left",
+            "mood": "radio",
+            "background_detail_under_sprite": 57.33
+          },
+          {
+            "id": "lune_third",
+            "speaker": "Lune",
+            "background": "bg_deck_night",
+            "character": "char_lune_radio_neutral",
+            "position": "left",
+            "mood": "radio",
+            "background_detail_under_sprite": 57.33
+          },
+          {
+            "id": "together_coda",
+            "speaker": "Lune",
+            "background": "bg_sunrise_deck",
+            "character": "char_lune_warm_neutral",
+            "position": "left",
+            "mood": "warm",
+            "background_detail_under_sprite": 55.22
+          },
+          {
+            "id": "sunrise_coda",
+            "speaker": "Mira",
+            "background": "bg_sunrise_deck",
+            "character": "char_mira_smile_neutral",
+            "position": "left",
+            "mood": "smile",
+            "background_detail_under_sprite": 55.21
+          }
+        ],
+        "most_text_pressure": [
+          {
+            "id": "lighthouse_signal",
+            "speaker": "Mira",
+            "wrapped_lines": 3,
+            "longest_word": 11
+          },
+          {
+            "id": "ending_signal",
+            "speaker": "Mira",
+            "wrapped_lines": 3,
+            "longest_word": 10
+          },
+          {
+            "id": "key_lune_clue",
+            "speaker": "Lune",
+            "wrapped_lines": 3,
+            "longest_word": 10
+          },
+          {
+            "id": "locker_second",
+            "speaker": "Lune",
+            "wrapped_lines": 3,
+            "longest_word": 10
+          },
+          {
+            "id": "radio_second",
+            "speaker": "Mira",
+            "wrapped_lines": 3,
+            "longest_word": 10
+          }
+        ]
+      }
+    },
+    "input_reports": {
+      "qa": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/qa-report.json",
+        "ok": true,
+        "stable_sha256": "0f83c88600c263469ce134d69dd549ca27081d9754d453d14095a023cc926aae"
+      },
+      "graphics_contract": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/graphics-contract-report.json",
+        "ok": true,
+        "stable_sha256": "d4af99c569027d36239f48a857e0b7b33834cb8e05ad7c437e2d82e78f5ff26b"
+      },
+      "text_contract": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/text-contract-report.json",
+        "ok": true,
+        "stable_sha256": "f55d2d3adb395c1db6b995ea1d3c14f77eb7a646808fe7186436f07b75b11949"
+      },
+      "visual_contract": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/visual-contract-report.json",
+        "ok": true,
+        "stable_sha256": "17c8ea0071acfdde625c8ebac066f3d4766516eeb3feb2bf85fdee66359e362d"
+      },
+      "visual_review": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/visual-review-report.json",
+        "ok": true,
+        "stable_sha256": "e19976bb10ac383a2313a3fb0aea3e3079fc62f552c41f6fea46d0ad9e36017a"
+      },
+      "asset_provenance": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/asset-provenance.json",
+        "ok": true,
+        "stable_sha256": "84214f55d8e09d6b572a93dab21488df6312e9424d42503a73de656cb017989a"
+      }
+    },
+    "notes": [
+      "Ready means the current asset/story set is strong enough to start authoring a small light novel.",
+      "It is not a promise that the game has enough scenes for a full-length release.",
+      "Choices are present, so branching story checks should stay enabled in normal validation."
+    ]
+  }
+}

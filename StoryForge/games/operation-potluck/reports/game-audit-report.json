@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:09:24.236461+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "operation-potluck",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local/operation-potluck.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/operation-potluck-qa-report.json",
+    "project_counts": {
+      "name": "Operation Potluck",
+      "nodes": 44,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 5,
+      "characters": 3,
+      "sfx": 0
+    },
+    "header_counts": {
+      "NUM_NODES": 44,
+      "NUM_FLAGS": 0,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 4,
+      "NUM_SFX": 0,
+      "NUM_BG_ASSETS": 5,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 3
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+      "bytes": 165835,
+      "sha256": "183bd3832346d19820c2c3e51dd4ada09af3d036015015578f0662ab66806fe8"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local/operation-potluck.wsc",
+      "bytes": 8388608,
+      "sha256": "a14776ca911c24bf5f427a01d376203a3b5354069447a351a9cde7ea050d4fd2"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/emulator-smoke-report.json",
+      "bytes": 1197,
+      "sha256": "d1dbadcd4806fd6f977ec60a7f126de48927e908a6ba8987f1c7707e2285a108"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/game-readiness-report.json",
+      "bytes": 20704,
+      "sha256": "0eef41ff8a52d6249f3fef70f9a8bae1811ac6cf04265cba6d56ca068a9d4ced"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/operation-potluck-qa-report.json",
+      "bytes": 5272,
+      "sha256": "226c146754865f61200930bfbec3a28025dfdbcbf767cf23ea34f2fa2a8beaf2"
+    }
+  }
+}

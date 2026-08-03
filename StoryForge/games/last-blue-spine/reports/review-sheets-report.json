@@ -1,0 +1,835 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:47:05.154301+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "last-blue-spine",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/projects/last-blue-spine.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/projects/last-blue-spine.wscvn.json",
+      "exists": true,
+      "bytes": 163794,
+      "sha256": "37e0e3b11b1bbdef9d56c280cf9beaeef646c883cce357d71fc50e4cae84c13d"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 34,
+    "preview_node_ids": [
+      "title",
+      "lbs01",
+      "lbs02",
+      "lbs03",
+      "lbs04",
+      "lbs05",
+      "lbs06",
+      "lbs07",
+      "lbs08",
+      "lbs_choice_one",
+      "lbs_first_loose",
+      "lbs_first_box",
+      "lbs_first_manual",
+      "lbs09",
+      "lbs10",
+      "lbs11",
+      "lbs12",
+      "lbs13",
+      "lbs14",
+      "lbs15",
+      "lbs16",
+      "lbs17",
+      "lbs18",
+      "lbs19",
+      "lbs20",
+      "lbs21",
+      "lbs22",
+      "lbs_choice_two",
+      "lbs_boot",
+      "lbs_read",
+      "lbs_trade",
+      "lbs_end_boot",
+      "lbs_end_read",
+      "lbs_end_trade"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 343230,
+      "sha256": "8f907140b6466de45e31bffb0897e3e8c9f8c8c9a0c50d8d51e75c19914ee4e8",
+      "size": [
+        712,
+        2050
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 118162,
+      "sha256": "d3ac7fa126c26fb6d291675924f5b00695be5ecfc9795782ba6fcbb4bd6c7713",
+      "size": [
+        488,
+        872
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "3eee4b6e85a400b97e38cb339b5e0d8ffc956b1e471394c7f4cdf6d278403589"
+      },
+      {
+        "index": 1,
+        "node_id": "lbs01",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "07507e6af7f8275c4d02f0dca438723c2010b3a48aecf8a3fa70a2bddfbc9e18"
+      },
+      {
+        "index": 2,
+        "node_id": "lbs02",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "62674343bdeb662e52757f447930c3d9797d9bab9ae205c39f4890d838399dc5"
+      },
+      {
+        "index": 3,
+        "node_id": "lbs03",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "14601c4cdfd00bda9f2bc06e3503fcc82b13dd80da1cea71261901a485aaaa94"
+      },
+      {
+        "index": 4,
+        "node_id": "lbs04",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "eab68a7e29a46b4d9bef602c347651c037c1f3e3422b42785570ab11a46c4bae"
+      },
+      {
+        "index": 5,
+        "node_id": "lbs05",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "a490de1aad0e0571371e4414110b83b67cfa98ce7f9407d639d4a56b3cc6a7f9"
+      },
+      {
+        "index": 6,
+        "node_id": "lbs06",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "f1e405dd7e4c6bee2b8df63231930a2ab033ba1b1488c87ed65843cbd0e90d13"
+      },
+      {
+        "index": 7,
+        "node_id": "lbs07",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "9b7db8fc5665586a82615eeaf1811b9ccdfb66309392f197980041ce4776f824"
+      },
+      {
+        "index": 8,
+        "node_id": "lbs08",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "57ab5380526fa58c44b7230957e1a99def27049bee2ff7cb4091e2fc726f712e"
+      },
+      {
+        "index": 9,
+        "node_id": "lbs_choice_one",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "f87988e3b5cc710c08eb802d0567054aab1d37edaf68e25da8c379d110f8ea03"
+      },
+      {
+        "index": 10,
+        "node_id": "lbs_first_loose",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "30531ee44535530e0c5d22a3c4e833b97a9a4420e6fd8cceb547ce08fb07a77b"
+      },
+      {
+        "index": 11,
+        "node_id": "lbs_first_box",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "b737f7b04b5805712be90c5aad4234224a770dfd06ffd920c2c8392f78fc4387"
+      },
+      {
+        "index": 12,
+        "node_id": "lbs_first_manual",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "56b437f992d2fd410cb80ce15be07ef977e5e39204a18f7151f2fefc13dad5b9"
+      },
+      {
+        "index": 13,
+        "node_id": "lbs09",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "f391c19d47a93211231f0860ceae095733f458c569cb827dbdf7ba5e1e5ceec3"
+      },
+      {
+        "index": 14,
+        "node_id": "lbs10",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "67edbbafeec2eeacb04f8baf2fa34cbb61b9b09b6110bb36242a15441182aaf8"
+      },
+      {
+        "index": 15,
+        "node_id": "lbs11",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "3721d7607fa36f9602ed853a0e77706ac3d0d47b8e96221bb91bd58da0b6283b"
+      },
+      {
+        "index": 16,
+        "node_id": "lbs12",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "16891200c81bdf32814d25056a2354c9d55097dee2411f8151b54786c66e6d5c"
+      },
+      {
+        "index": 17,
+        "node_id": "lbs13",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "31ee5d5b883eb9871c4cd93afa290d66b9f525463d66aa5ed5c446957607131f"
+      },
+      {
+        "index": 18,
+        "node_id": "lbs14",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "90bf09ce36eadd02490457f6e89d63edac2b025dfe70611e77a23a84fd7fe44c"
+      },
+      {
+        "index": 19,
+        "node_id": "lbs15",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "6e72ac8bdce35f55e8ef0af8707422ed9a7a1eabfbcff6e2be1675775af5dba9"
+      },
+      {
+        "index": 20,
+        "node_id": "lbs16",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "112eb09f336960f9f91996c2b00b56e058e1503105e67590a7233da7df442ce6"
+      },
+      {
+        "index": 21,
+        "node_id": "lbs17",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "7726795ac8f348863aeb591da1a6a583261050a9b205326747d50725e3b6087c"
+      },
+      {
+        "index": 22,
+        "node_id": "lbs18",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "d2084bce88de31392fe3be78c11e5f4070f13c34b328c48ecc19b25855ab9a7f"
+      },
+      {
+        "index": 23,
+        "node_id": "lbs19",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "a96b63584496bfa62fc20e83a0ae7b095e4adc721aca90178930311f084cf461"
+      },
+      {
+        "index": 24,
+        "node_id": "lbs20",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "c1c8f0b4d65577479e75e99729d096d0fe5007841dbb4cf238ea5f7189cf1d67"
+      },
+      {
+        "index": 25,
+        "node_id": "lbs21",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "49b7dcfbe4e58f5bfbe5f2fcdc109838abeb91c8929d586a8e87a87c2fc9ee80"
+      },
+      {
+        "index": 26,
+        "node_id": "lbs22",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "f0e6ff9699501fa6942728ce5b9748055d88a21bbeb6d68039a18ef7cf7ef386"
+      },
+      {
+        "index": 27,
+        "node_id": "lbs_choice_two",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "14a551e1969a8b70bcc133e03ed84a7743c33056c1c4559447a459716dadbfe8"
+      },
+      {
+        "index": 28,
+        "node_id": "lbs_boot",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "6f0ca5a86a8e46b6bf189bc3fb4b2a59a9f26a5fcd25cfc08a4b3288ae968a91"
+      },
+      {
+        "index": 29,
+        "node_id": "lbs_read",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "45cd62e5154f29279303b891f4b0a862d4454feff249ae6eb8302736cd403d8d"
+      },
+      {
+        "index": 30,
+        "node_id": "lbs_trade",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "909507a7a4b223d6eb9536aabb29b15e7f5b4a696423b357c7c1a819abdd6a93"
+      },
+      {
+        "index": 31,
+        "node_id": "lbs_end_boot",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "ee48247915faaaf9fb0d46b6cc246cf201a6399ef72194e0771db47398a2c869"
+      },
+      {
+        "index": 32,
+        "node_id": "lbs_end_read",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "bfc87ceb5c3742f28b1d47107262418af5c4c1e317996aada5fed91f5d2abd9f"
+      },
+      {
+        "index": 33,
+        "node_id": "lbs_end_trade",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "ade3da2073f0bfbeabd7ede3fdae79123c234ae6739b3fdd55ff2fd46b9434a5"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "7189c197b1be30c7bfccd59607bc022912e12681e0f2223c2e649ce408fad69c"
+      },
+      {
+        "index": 1,
+        "node_id": "lbs01",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "16ba5f49e0d5f68386f4b2222c55fdf072587939faeb9443d1d1a8fcc8fbd608"
+      },
+      {
+        "index": 2,
+        "node_id": "lbs02",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "2b93af26a5cbe57ac13be65d11e10ec33ce7c4760ec2b2d03fd039dc90061425"
+      },
+      {
+        "index": 3,
+        "node_id": "lbs03",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "0a5b9322b3247738976b3c8e5e28969058901a2283c4ff9c98d302025809cf1b"
+      },
+      {
+        "index": 4,
+        "node_id": "lbs04",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "4692c26ce5160e2924640d15f39e04655abf7dd746684ac92a0cd0dc5455fe71"
+      },
+      {
+        "index": 5,
+        "node_id": "lbs05",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "dd07e017d36d69020f149a7689a218c54d75ae9683cf1e30ba875d04dde67d8a"
+      },
+      {
+        "index": 6,
+        "node_id": "lbs06",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "619b3dcd41cf1c2a4c2d68891e83851274734fe129942aaaad4f6f8c41e5a25f"
+      },
+      {
+        "index": 7,
+        "node_id": "lbs07",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "351726c1599be5df316554c0b3dd801f10da6614bc3e365afd0ca44611267a59"
+      },
+      {
+        "index": 8,
+        "node_id": "lbs08",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "3f79f2854c06506ff4e3d4f1857f7f8d7780ae149734fa75ee797f41ce6388c1"
+      },
+      {
+        "index": 9,
+        "node_id": "lbs_choice_one",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "3943b7f805dd28734b89a066ee04c2448c8ce45e670c9a6470053e6c2e3856b9"
+      },
+      {
+        "index": 10,
+        "node_id": "lbs_first_loose",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "62ebf8eee6ac51524ef7c43cd06064774ea8b75180aa04317ed0597780bfac84"
+      },
+      {
+        "index": 11,
+        "node_id": "lbs_first_box",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "60acae89f5a0ee368bdc7186b973302d2280da1dad8eac47ff0ddf9ca777db39"
+      },
+      {
+        "index": 12,
+        "node_id": "lbs_first_manual",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "308d7beffc39a48a86c8453cd9f06f0aeea9179bb5726f4b12e010510ec524a4"
+      },
+      {
+        "index": 13,
+        "node_id": "lbs09",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "2fb7003ef81c97892ea2f8ed62097b83ab20513185064d681401bd4a45e45bab"
+      },
+      {
+        "index": 14,
+        "node_id": "lbs10",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "2600eef933c9d3292610099444bb10fdbb4188ada23d846b7b476af74f103d48"
+      },
+      {
+        "index": 15,
+        "node_id": "lbs11",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "c4054d7e9b30271e43bc21a843e3a097cc4dec38e5b9f61ec1a4bc740035a400"
+      },
+      {
+        "index": 16,
+        "node_id": "lbs12",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "5fae138da2624f7d57199e7bfe62ca0b6f2079fa81dee94c87a5df1a4b005ac2"
+      },
+      {
+        "index": 17,
+        "node_id": "lbs13",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "d7c436900eb0c5337233e2e08721f8bf345662b172b25a41d35c2afdcaebe687"
+      },
+      {
+        "index": 18,
+        "node_id": "lbs14",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "07c79829420389073875dbb12244c0c4b5148dba3902380a3307aad08988e573"
+      },
+      {
+        "index": 19,
+        "node_id": "lbs15",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "9f777ffbad055e1e06e7d6cb404f2a1e7d35572e6727e9f3263fa0a82638b85e"
+      },
+      {
+        "index": 20,
+        "node_id": "lbs16",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "ea41d5eef3da73cbe93aade988f68220fb21d58ef175d58f7e3ed873d8c4a013"
+      },
+      {
+        "index": 21,
+        "node_id": "lbs17",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "ccd2a47062061ca043aef714134499448945d6896a114c84c0db0297c02a7295"
+      },
+      {
+        "index": 22,
+        "node_id": "lbs18",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "1b3b81e26f3bf28f10899178ad2adb1d80c9dbaa21d92b7a6b6231b165d6fb44"
+      },
+      {
+        "index": 23,
+        "node_id": "lbs19",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "14562521d2656177b68617326f2af44462d4d328472c51379d9f53c44b1ea8e1"
+      },
+      {
+        "index": 24,
+        "node_id": "lbs20",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "fe61eac58bd8b37d82ce348b971775d55210bbdcdfa53f53ae39ea19f51e50d9"
+      },
+      {
+        "index": 25,
+        "node_id": "lbs21",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "87209e8869d396cf60d7c3786f929616a0c06ced046fad5472047b521db8efd6"
+      },
+      {
+        "index": 26,
+        "node_id": "lbs22",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "d7d7e97a78383859621f48b4d1ea97657c0e658d7db2d74263c1863ca547fcb1"
+      },
+      {
+        "index": 27,
+        "node_id": "lbs_choice_two",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "7f0d4bd1c8042a6a5e17da8bc760113cb52ce4f70733744661b0fb65cb8311c8"
+      },
+      {
+        "index": 28,
+        "node_id": "lbs_boot",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "8509ec70db1e25658c7ec6b60ced53fc7dc5d0f9fdb2917cdf5880eb838a8552"
+      },
+      {
+        "index": 29,
+        "node_id": "lbs_read",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "f8e63777e3dc784a5c7ee8aa16e786af5d2154008bd0cf0a62adfb68922c6c1e"
+      },
+      {
+        "index": 30,
+        "node_id": "lbs_trade",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "b9351f25dd9732f3398c9e70afaff6e01166b96fcfdb1a65e38086c60dfeb8ca"
+      },
+      {
+        "index": 31,
+        "node_id": "lbs_end_boot",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "de182a877998f16cc3cb7d57242259b29c6b69d07e472f388a7a0fd51fb47db3"
+      },
+      {
+        "index": 32,
+        "node_id": "lbs_end_read",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "d191569cb16052a81f14080c2bc9a96ceb725457a4eb386fb3e26353a44728da"
+      },
+      {
+        "index": 33,
+        "node_id": "lbs_end_trade",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "ab8d419627e5a88705aed0e07a9d3755f53d0c6c3628f71219f43e5cea9d4b24"
+      }
+    ]
+  }
+}

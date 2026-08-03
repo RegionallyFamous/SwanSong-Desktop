@@ -1,0 +1,332 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-17T01:55:00+00:00",
+  "art_policy": "Pictorial masters are built-in ImageGen outputs; runtime frames are deterministic local derivatives.",
+  "outputs": {
+    "backgrounds/game_room.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/sources/backgrounds_imagegen_source.png",
+      "source_sha256": "9861681d9f81c74edcde6d3caace0e166ba6338ec4925c60b13a2cddb8828d8e",
+      "output_sha256": "7479212a4c19643aa268305c07a856d93de5353e8b7a86ef21a1d3d8354072b5",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 45.91
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/shop_counter.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/sources/backgrounds_imagegen_source.png",
+      "source_sha256": "9861681d9f81c74edcde6d3caace0e166ba6338ec4925c60b13a2cddb8828d8e",
+      "output_sha256": "92199e0eebb51880ace798c7445fb509eaa04bacbab860f3fcdde4bfedc07d86",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 32.91
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/swap_platform.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/sources/backgrounds_imagegen_source.png",
+      "source_sha256": "9861681d9f81c74edcde6d3caace0e166ba6338ec4925c60b13a2cddb8828d8e",
+      "output_sha256": "1b54328ef2b0a6979656fd9f2e35f1fb0b33de3f0b92e1302d447bf76f724ca4",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 41.73
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/mina_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "b6423ede1c88a4085adb53e3b14540cfd2a44c6c080b7c9b3d73de2c0ff19a6b",
+      "output_sha256": "40456b66271251f5ccba43f5c47bff1560ff55547494da67651521c9b072d72e",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          11,
+          6,
+          85,
+          125
+        ],
+        "alpha_coverage": 0.5096,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6204,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 63.42,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 82.0
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6262,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/mina_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "b6423ede1c88a4085adb53e3b14540cfd2a44c6c080b7c9b3d73de2c0ff19a6b",
+      "output_sha256": "c6fdb10122134fd02db17c5ff22a6b951276c77ed9d300c3ff2e1f9ab7aadd6f",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          11,
+          6,
+          85,
+          125
+        ],
+        "alpha_coverage": 0.5096,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6204,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 60.51,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 79.62
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6262,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/mina_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "b6423ede1c88a4085adb53e3b14540cfd2a44c6c080b7c9b3d73de2c0ff19a6b",
+      "output_sha256": "a1e792c3ea6cf69dd3c017d551a0241cbd3adb1c5fc748066ba9848024f1a15d",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          11,
+          6,
+          85,
+          125
+        ],
+        "alpha_coverage": 0.5096,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6204,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 59.96,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 80.24
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6262,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/niko_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "b6423ede1c88a4085adb53e3b14540cfd2a44c6c080b7c9b3d73de2c0ff19a6b",
+      "output_sha256": "78d9f9f3a32a7cc05654df4b954429ec252974b764181848b02b7d590b3e5a16",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          7,
+          10,
+          89,
+          126
+        ],
+        "alpha_coverage": 0.5495,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.581,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 50.18,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 66.84
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6752,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/niko_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "b6423ede1c88a4085adb53e3b14540cfd2a44c6c080b7c9b3d73de2c0ff19a6b",
+      "output_sha256": "82ef0562ea8edfecb32f48f15c5e04ef3d9f72a2d5ff5681c9a3223ce62c5015",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          7,
+          10,
+          89,
+          126
+        ],
+        "alpha_coverage": 0.5495,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.581,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 48.58,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 67.36
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6752,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/niko_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "b6423ede1c88a4085adb53e3b14540cfd2a44c6c080b7c9b3d73de2c0ff19a6b",
+      "output_sha256": "5d338ddebaafad5d1aab96482d125dab3672c0f776977af1c8ddc37fc17d89b1",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          7,
+          10,
+          89,
+          126
+        ],
+        "alpha_coverage": 0.5495,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.581,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 48.48,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 66.69
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6752,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    }
+  }
+}

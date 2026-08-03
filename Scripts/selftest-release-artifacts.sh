@@ -49,6 +49,10 @@ write_valid_fixture() {
   mkdir -p "$TEMP_ROOT/archive-payload/SwanSong.app/Contents"
   printf 'synthetic release payload\n' \
     >"$TEMP_ROOT/archive-payload/SwanSong.app/Contents/placeholder"
+  python3 "$SCRIPT_DIR/materialize-story-forge-framework.py" \
+    "$SCRIPT_DIR/../StoryForge" \
+    "$TEMP_ROOT/archive-payload/SwanSong.app/Contents/Resources/StoryForge" \
+    --source-commit "$SOURCE_COMMIT"
   sparkle_framework="$TEMP_ROOT/archive-payload/SwanSong.app/Contents/Frameworks/Sparkle.framework"
   mkdir -p \
     "$sparkle_framework/Versions/B/Headers" \
@@ -90,7 +94,12 @@ write_valid_fixture() {
   for source_path in \
     Dependencies/sparkle-source/LICENSE \
     Dependencies/sparkle-source/Package.swift \
-    Dependencies/sparkle-source/Sparkle/Sparkle.h; do
+    Dependencies/sparkle-source/Sparkle/Sparkle.h \
+    StoryForge/README.md \
+    StoryForge/scripts/forge.py \
+    StoryForge/scripts/forge_create_novel.py \
+    StoryForge/skills/forge-light-novels/SKILL.md \
+    StoryForge/skills/forge-light-novels/assets/starter/novel.json; do
     mkdir -p "$(dirname -- "$SOURCE_ROOT/$source_path")"
     printf 'synthetic corresponding source: %s\n' "$source_path" \
       >"$SOURCE_ROOT/$source_path"

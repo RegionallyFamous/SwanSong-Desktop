@@ -1,0 +1,296 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-23T02:34:54.307015+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json",
+      "bytes": 202272,
+      "sha256": "acd887a2e0af6946d5a96194e91cc7187be36e4b16978adf741b4bb0b50b4e8d"
+    },
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+      "char_start": 32,
+      "char_count": 96,
+      "font_slot_range": [
+        32,
+        127
+      ],
+      "printable_text_range": [
+        32,
+        126
+      ],
+      "cell_px": [
+        8,
+        8
+      ],
+      "source_1bpp_bytes": 768,
+      "runtime_tile_bytes": 3072,
+      "tile_range": [
+        0,
+        95
+      ],
+      "ink_pixels": {
+        "min": 0,
+        "max": 37,
+        "space": 0
+      }
+    },
+    "runtime": {
+      "main_c": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/runtime-local/src/main.c",
+      "main_c_bytes": 105459,
+      "main_c_sha256": "af4be383315c24d9fa4927fdb81ca32aae37b5ae210cba179c77aea7f41aa40b"
+    },
+    "wonder_swan_text_surface": {
+      "visible_screen_tiles": [
+        28,
+        18
+      ],
+      "visible_screen_px": [
+        224,
+        144
+      ],
+      "backing_tilemap_tiles": [
+        32,
+        32
+      ],
+      "textbox_tiles": [
+        0,
+        13,
+        28,
+        5
+      ],
+      "textbox_px": [
+        0,
+        104,
+        224,
+        40
+      ],
+      "text_cols": 26,
+      "quality_dialogue_lines": 3,
+      "choice_prompt_chars": 26,
+      "choice_label_chars": 22
+    },
+    "counts": {
+      "dialogue_blocks": 310,
+      "choice_nodes": 2,
+      "title_nodes": 1
+    },
+    "maxima": {
+      "dialogue_lines": 3,
+      "dialogue_block_chars": 78,
+      "dialogue_word_chars": 16,
+      "choice_prompt_chars": 22,
+      "choice_label_chars": 20
+    },
+    "highest_pressure": [
+      {
+        "kind": "dialogue",
+        "node_id": "whitebase_02",
+        "block": 1,
+        "speaker": "Docent Zaku",
+        "tbStyle": "ocean",
+        "visible_chars": 70,
+        "line_count": 3,
+        "max_word": 8,
+        "lines": [
+          "Char pretends to guide his",
+          "friend Garma, then feeds",
+          "him false tactical"
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "whitebase_02",
+        "block": 5,
+        "speaker": "Docent Zaku",
+        "tbStyle": "ocean",
+        "visible_chars": 74,
+        "line_count": 3,
+        "max_word": 11,
+        "lines": [
+          "Gihren Zabi turns Garma's",
+          "funeral into propaganda,",
+          "while veteran Ramba Ral"
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "whitebase_02",
+        "block": 7,
+        "speaker": "Docent Zaku",
+        "tbStyle": "ocean",
+        "visible_chars": 62,
+        "line_count": 3,
+        "max_word": 7,
+        "lines": [
+          "Private grief becomes",
+          "another weapon before",
+          "anyone has time to"
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "whitebase_01",
+        "block": 1,
+        "speaker": "Docent RX",
+        "tbStyle": "ocean",
+        "visible_chars": 70,
+        "line_count": 3,
+        "max_word": 9,
+        "lines": [
+          "Garma Zabi hunts White",
+          "Base across North America",
+          "while Amuro sometimes"
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "whitebase_01",
+        "block": 3,
+        "speaker": "Docent RX",
+        "tbStyle": "ocean",
+        "visible_chars": 70,
+        "line_count": 3,
+        "max_word": 11,
+        "lines": [
+          "Refugees attempt to leave",
+          "the ship, then discover",
+          "that the battlefield"
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "whitebase_01",
+        "block": 5,
+        "speaker": "Docent RX",
+        "tbStyle": "ocean",
+        "visible_chars": 64,
+        "line_count": 3,
+        "max_word": 11,
+        "lines": [
+          "The crew votes, argues,",
+          "improvises, and keeps one",
+          "another alive."
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "whitebase_01",
+        "block": 6,
+        "speaker": "Docent RX",
+        "tbStyle": "ocean",
+        "visible_chars": 71,
+        "line_count": 3,
+        "max_word": 9,
+        "lines": [
+          "Bright and Amuro are both",
+          "teenagers forced into",
+          "authority by adults who"
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "whitebase_01",
+        "block": 8,
+        "speaker": "Docent RX",
+        "tbStyle": "ocean",
+        "visible_chars": 60,
+        "line_count": 3,
+        "max_word": 10,
+        "lines": [
+          "Their conflict is not",
+          "discipline versus",
+          "cowardice; it is two"
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "whitebase_01",
+        "block": 9,
+        "speaker": "Docent RX",
+        "tbStyle": "ocean",
+        "visible_chars": 52,
+        "line_count": 3,
+        "max_word": 10,
+        "lines": [
+          "frightened people using",
+          "the only controls they",
+          "have."
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "warmap_02",
+        "block": 1,
+        "speaker": "Docent RX",
+        "tbStyle": "ocean",
+        "visible_chars": 67,
+        "line_count": 3,
+        "max_word": 8,
+        "lines": [
+          "Char's false guidance",
+          "leaves Garma exposed to",
+          "White Base, and Garma"
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "warmap_02",
+        "block": 3,
+        "speaker": "Docent RX",
+        "tbStyle": "ocean",
+        "visible_chars": 67,
+        "line_count": 3,
+        "max_word": 8,
+        "lines": [
+          "The betrayal advances",
+          "Char's hidden revenge",
+          "against the Zabi family"
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "warmap_02",
+        "block": 5,
+        "speaker": "Docent RX",
+        "tbStyle": "ocean",
+        "visible_chars": 54,
+        "line_count": 3,
+        "max_word": 11,
+        "lines": [
+          "Icelina's retaliation adds",
+          "another death to the",
+          "chain."
+        ],
+        "pressure": 1.0
+      }
+    ],
+    "titles": [
+      {
+        "node_id": "tour_title",
+        "titleMain": "THE ONE YEAR TOUR",
+        "titleSub": "43 Episodes Before Closing",
+        "titleMenu": [
+          "Begin",
+          "Load"
+        ]
+      }
+    ],
+    "images": {}
+  }
+}

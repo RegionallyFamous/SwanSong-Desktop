@@ -1,0 +1,1164 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:35.017950+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "current-tree",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "returncode": 0,
+      "output_tail": "Source tree report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/source-tree-report.json\nSource tree check passed"
+    },
+    {
+      "name": "valid-json",
+      "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/valid.json",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "bytes": 13,
+        "lines": 1,
+        "json": "ok"
+      }
+    },
+    {
+      "name": "missing-final-newline",
+      "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/missing-newline.json",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "does not end with a newline",
+      "errors": [
+        "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/missing-newline.json does not end with a newline"
+      ],
+      "warnings": [],
+      "info": {
+        "bytes": 12,
+        "lines": 1,
+        "json": "ok"
+      }
+    },
+    {
+      "name": "invalid-json",
+      "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/invalid.json",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "invalid JSON",
+      "errors": [
+        "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/invalid.json is invalid JSON: line 1 column 8"
+      ],
+      "warnings": [],
+      "info": {
+        "bytes": 9,
+        "lines": 1,
+        "json": "invalid"
+      }
+    },
+    {
+      "name": "risky-rmtree",
+      "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/risky_rmtree.py",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "risky delete operation",
+      "errors": [
+        "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/risky_rmtree.py:2 uses a risky delete operation: shutil.rmtree"
+      ],
+      "warnings": [],
+      "info": {
+        "bytes": 38,
+        "lines": 2,
+        "python_ast": "ok"
+      }
+    },
+    {
+      "name": "risky-unlink",
+      "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/risky_unlink.py",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "risky delete operation",
+      "errors": [
+        "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/risky_unlink.py:2 uses a risky delete operation: unlink"
+      ],
+      "warnings": [],
+      "info": {
+        "bytes": 52,
+        "lines": 2,
+        "python_ast": "ok"
+      }
+    },
+    {
+      "name": "risky-shell-delete",
+      "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/risky_shell.py",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "risky shell delete command",
+      "errors": [
+        "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/risky_shell.py:1 contains a risky shell delete command: cmd = \"rm -rf assets/signal-before-dawn-slice\""
+      ],
+      "warnings": [],
+      "info": {
+        "bytes": 47,
+        "lines": 1,
+        "python_ast": "ok"
+      }
+    },
+    {
+      "name": "missing-expected-v5-expression-source-art",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "sources/mira_expression_sheet_source_v5.png",
+      "errors": [
+        "Missing expected generated asset: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/fake-assets/sources/mira_expression_sheet_source_v5.png",
+        "Missing expected generated asset: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/fake-assets/sfx/beacon_pulse.wav",
+        "Missing expected generated asset: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/fake-assets/sfx/dialogue_blip.wav",
+        "Missing expected generated asset: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/fake-assets/sfx/gull_call.wav",
+        "Missing expected generated asset: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/fake-assets/sfx/hatch_click.wav",
+        "Missing expected generated asset: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/fake-assets/sfx/radio_chirp.wav",
+        "Missing expected generated asset: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/fake-assets/sfx/reply_tap.wav",
+        "Missing expected generated asset: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/fake-assets/sfx/room_hum.wav",
+        "Missing expected generated asset: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/fake-assets/sfx/wind_soft.wav"
+      ],
+      "facts": {
+        "asset-provenance.json": {
+          "exists": true,
+          "bytes": 7
+        },
+        "visual-contract.json": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/lune_base_approval.json": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/lune_base_audition.json": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/lune_base_audition.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/lune_expression_approval.json": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/lune_expression_audition.json": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/lune_expression_audition.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/lune_radio_pose_approval.json": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/lune_radio_pose_audition.json": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/lune_radio_pose_audition.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/mira_action_pose_approval.json": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/mira_action_pose_audition.json": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/mira_action_pose_audition.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/mira_base_approval.json": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/mira_base_audition.json": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/mira_base_audition.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/mira_expression_approval.json": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/mira_expression_audition.json": {
+          "exists": true,
+          "bytes": 7
+        },
+        "auditions/mira_expression_audition.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "backgrounds/beacon_lens.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "backgrounds/cabin_radio.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "backgrounds/deck_night.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "backgrounds/hatch_key.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "backgrounds/lighthouse_dawn.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "backgrounds/radio_closeup.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "backgrounds/sunrise_deck.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "backgrounds/title_night.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_alert_blink.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_alert_neutral.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_alert_talk.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_blink.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_neutral.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_radio_blink.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_radio_neutral.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_radio_talk.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_resolved_blink.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_resolved_neutral.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_resolved_talk.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_talk.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_warm_blink.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_warm_neutral.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/lune_warm_talk.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_blink.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_action_blink.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_action_neutral.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_action_talk.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_neutral.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_resolved_blink.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_resolved_neutral.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_resolved_talk.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_smile_blink.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_smile_neutral.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_smile_talk.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_talk.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_worried_blink.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_worried_neutral.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "characters/mira_worried_talk.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "contact_sheet.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "emulator-ending-hatch.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "emulator-ending-reply.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "emulator-ending-signal.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "emulator-ending-sunrise.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "emulator-ending-together.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "emulator-save-load.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "emulator-beacon-payoff-v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "emulator-hatch-payoff-v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "emulator-opening-scene-v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "emulator-radio-payoff-v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "emulator-sunrise-payoff-v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "emulator-title-screen-v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "emulator-title-screen-v2.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "expression_audition_sheet.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "font-proof-sheet.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "native-scene-review-sheet.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "release/cartridge-label-v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "release/cover-art-v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "release/release-art-preview.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "scene_preview_sheet.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "storyboard_sheet.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "text-preview-sheet.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/cabin_imagegen_source.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/cabin_imagegen_source_v2.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/cartridge_label_source_v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/cover_key_art_source_v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/beacon_lens_source_v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/deck_imagegen_source.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/deck_imagegen_source_v2.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/hatch_key_source_v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/latest_imagegen_contact.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/lighthouse_imagegen_source.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/lighthouse_imagegen_source_v2.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/lune_expression_sheet_source_v5.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/lune_imagegen_source.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/lune_radio_pose_source_v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/lune_sheet_source.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/lune_sheet_source_v2.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/lune_sheet_source_v3.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/lune_sheet_source_v4.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/mira_expression_sheet_source_v5.png": {
+          "exists": false,
+          "bytes": null
+        },
+        "sources/mira_expression_sheet_source_v6.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/mira_imagegen_source.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/mira_action_pose_source_v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/mira_sheet_source.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/mira_sheet_source_v2.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/mira_sheet_source_v3.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/mira_sheet_source_v4.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/radio_signal_source_v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/sunrise_deck_source_v1.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sources/title_signal_source_v3.png": {
+          "exists": true,
+          "bytes": 7
+        },
+        "sfx/beacon_pulse.wav": {
+          "exists": false,
+          "bytes": null
+        },
+        "sfx/dialogue_blip.wav": {
+          "exists": false,
+          "bytes": null
+        },
+        "sfx/gull_call.wav": {
+          "exists": false,
+          "bytes": null
+        },
+        "sfx/hatch_click.wav": {
+          "exists": false,
+          "bytes": null
+        },
+        "sfx/radio_chirp.wav": {
+          "exists": false,
+          "bytes": null
+        },
+        "sfx/reply_tap.wav": {
+          "exists": false,
+          "bytes": null
+        },
+        "sfx/room_hum.wav": {
+          "exists": false,
+          "bytes": null
+        },
+        "sfx/wind_soft.wav": {
+          "exists": false,
+          "bytes": null
+        }
+      }
+    },
+    {
+      "name": "game-source-wrapper-hygiene",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "risky delete operation",
+      "checked_paths": [
+        "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/games/sample-game/README.md",
+        "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-tree-guard-ko9eg_g1/games/sample-game/build_sample_game.py"
+      ],
+      "errors": [
+        "games/sample-game/build_sample_game.py:2 uses a risky delete operation: shutil.rmtree"
+      ],
+      "warnings": [],
+      "files": {
+        "games/sample-game/README.md": {
+          "bytes": 14,
+          "lines": 1
+        },
+        "games/sample-game/build_sample_game.py": {
+          "bytes": 38,
+          "lines": 2,
+          "python_ast": "ok"
+        }
+      }
+    },
+    {
+      "name": "build_good_timestamps",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": [],
+      "facts": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [
+          {
+            "line": 3,
+            "function": "project_timestamps"
+          }
+        ],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      }
+    },
+    {
+      "name": "build_bad_dynamic_timestamps",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "dynamic project timestamps",
+      "errors": [
+        "build_bad_dynamic_timestamps.py is missing project_timestamps() to preserve project metadata on rebuild",
+        "build_bad_dynamic_timestamps.py:3 creates dynamic project timestamps in make_project()",
+        "build_bad_dynamic_timestamps.py:4 should set project 'created' from preserved variable 'created'",
+        "build_bad_dynamic_timestamps.py:4 should set project 'modified' from preserved variable 'modified'"
+      ],
+      "facts": {
+        "checked": true,
+        "has_project_timestamps": false,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [
+          {
+            "line": 3,
+            "function": "make_project"
+          }
+        ],
+        "project_metadata_values": {
+          "created": "now",
+          "modified": "now"
+        }
+      }
+    },
+    {
+      "name": "expected-untracked-lab-file",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": [],
+      "warnings": [],
+      "facts": {
+        "cmd": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "--untracked-files=all",
+          "--ignored=matching",
+          "--",
+          "."
+        ],
+        "returncode": 0,
+        "allowed_untracked_files": 384,
+        "ignored_generated_paths": [
+          "**/__pycache__/",
+          ".DS_Store",
+          "assets/signal-before-dawn-slice/latest-build.log",
+          "assets/signal-before-dawn-slice/runtime-stale/",
+          "games/*/.DS_Store",
+          "games/*/assets/latest-build.log",
+          "games/*/releases/",
+          "games/*/reports/latest-build.log",
+          "games/*/reports/runtime-stale/",
+          "games/*/runtime-local/",
+          "releases/",
+          "runtime-local/",
+          "tools/catalog-signer/.build/"
+        ],
+        "repository_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+        "nested_import_pending": false,
+        "entries": [
+          {
+            "status": "??",
+            "path": "README.md"
+          }
+        ],
+        "unexpected_untracked": [],
+        "unignored_generated_junk": [],
+        "unexpected_ignored": []
+      }
+    },
+    {
+      "name": "expected-untracked-current-releases-index",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": [],
+      "warnings": [],
+      "facts": {
+        "cmd": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "--untracked-files=all",
+          "--ignored=matching",
+          "--",
+          "."
+        ],
+        "returncode": 0,
+        "allowed_untracked_files": 384,
+        "ignored_generated_paths": [
+          "**/__pycache__/",
+          ".DS_Store",
+          "assets/signal-before-dawn-slice/latest-build.log",
+          "assets/signal-before-dawn-slice/runtime-stale/",
+          "games/*/.DS_Store",
+          "games/*/assets/latest-build.log",
+          "games/*/releases/",
+          "games/*/reports/latest-build.log",
+          "games/*/reports/runtime-stale/",
+          "games/*/runtime-local/",
+          "releases/",
+          "runtime-local/",
+          "tools/catalog-signer/.build/"
+        ],
+        "repository_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+        "nested_import_pending": false,
+        "entries": [
+          {
+            "status": "??",
+            "path": "CURRENT_RELEASES.md"
+          }
+        ],
+        "unexpected_untracked": [],
+        "unignored_generated_junk": [],
+        "unexpected_ignored": []
+      }
+    },
+    {
+      "name": "expected-untracked-art-direction-doc",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": [],
+      "warnings": [],
+      "facts": {
+        "cmd": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "--untracked-files=all",
+          "--ignored=matching",
+          "--",
+          "."
+        ],
+        "returncode": 0,
+        "allowed_untracked_files": 384,
+        "ignored_generated_paths": [
+          "**/__pycache__/",
+          ".DS_Store",
+          "assets/signal-before-dawn-slice/latest-build.log",
+          "assets/signal-before-dawn-slice/runtime-stale/",
+          "games/*/.DS_Store",
+          "games/*/assets/latest-build.log",
+          "games/*/releases/",
+          "games/*/reports/latest-build.log",
+          "games/*/reports/runtime-stale/",
+          "games/*/runtime-local/",
+          "releases/",
+          "runtime-local/",
+          "tools/catalog-signer/.build/"
+        ],
+        "repository_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+        "nested_import_pending": false,
+        "entries": [
+          {
+            "status": "??",
+            "path": "docs/sprite-art-direction.md"
+          }
+        ],
+        "unexpected_untracked": [],
+        "unignored_generated_junk": [],
+        "unexpected_ignored": []
+      }
+    },
+    {
+      "name": "expected-untracked-game-source-wrapper",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": [],
+      "warnings": [],
+      "facts": {
+        "cmd": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "--untracked-files=all",
+          "--ignored=matching",
+          "--",
+          "."
+        ],
+        "returncode": 0,
+        "allowed_untracked_files": 384,
+        "ignored_generated_paths": [
+          "**/__pycache__/",
+          ".DS_Store",
+          "assets/signal-before-dawn-slice/latest-build.log",
+          "assets/signal-before-dawn-slice/runtime-stale/",
+          "games/*/.DS_Store",
+          "games/*/assets/latest-build.log",
+          "games/*/releases/",
+          "games/*/reports/latest-build.log",
+          "games/*/reports/runtime-stale/",
+          "games/*/runtime-local/",
+          "releases/",
+          "runtime-local/",
+          "tools/catalog-signer/.build/"
+        ],
+        "repository_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+        "nested_import_pending": false,
+        "entries": [
+          {
+            "status": "??",
+            "path": "games/sample-game/README.md"
+          },
+          {
+            "status": "??",
+            "path": "games/sample-game/build_sample_game.py"
+          }
+        ],
+        "unexpected_untracked": [],
+        "unignored_generated_junk": [],
+        "unexpected_ignored": []
+      }
+    },
+    {
+      "name": "expected-untracked-experience-candidate-evidence",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": [],
+      "warnings": [],
+      "facts": {
+        "cmd": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "--untracked-files=all",
+          "--ignored=matching",
+          "--",
+          "."
+        ],
+        "returncode": 0,
+        "allowed_untracked_files": 384,
+        "ignored_generated_paths": [
+          "**/__pycache__/",
+          ".DS_Store",
+          "assets/signal-before-dawn-slice/latest-build.log",
+          "assets/signal-before-dawn-slice/runtime-stale/",
+          "games/*/.DS_Store",
+          "games/*/assets/latest-build.log",
+          "games/*/releases/",
+          "games/*/reports/latest-build.log",
+          "games/*/reports/runtime-stale/",
+          "games/*/runtime-local/",
+          "releases/",
+          "runtime-local/",
+          "tools/catalog-signer/.build/"
+        ],
+        "repository_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+        "nested_import_pending": false,
+        "entries": [
+          {
+            "status": "??",
+            "path": "games/mobile-suit-gundam-summary/assets/sources/experience-contract.json"
+          },
+          {
+            "status": "??",
+            "path": "games/mobile-suit-gundam-summary/assets/swansong-playthrough/route-16-ending.png"
+          },
+          {
+            "status": "??",
+            "path": "games/mobile-suit-gundam-summary/reports/candidate-validation-report.json"
+          },
+          {
+            "status": "??",
+            "path": "novels/mobile-suit-gundam-summary/workbench/music-room/scores.json"
+          }
+        ],
+        "unexpected_untracked": [],
+        "unignored_generated_junk": [],
+        "unexpected_ignored": []
+      }
+    },
+    {
+      "name": "pending-nested-monorepo-import",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": [],
+      "warnings": [],
+      "facts": {
+        "cmd": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "--untracked-files=all",
+          "--ignored=matching",
+          "--",
+          "."
+        ],
+        "returncode": 0,
+        "allowed_untracked_files": 384,
+        "ignored_generated_paths": [
+          "**/__pycache__/",
+          ".DS_Store",
+          "assets/signal-before-dawn-slice/latest-build.log",
+          "assets/signal-before-dawn-slice/runtime-stale/",
+          "games/*/.DS_Store",
+          "games/*/assets/latest-build.log",
+          "games/*/releases/",
+          "games/*/reports/latest-build.log",
+          "games/*/reports/runtime-stale/",
+          "games/*/runtime-local/",
+          "releases/",
+          "runtime-local/",
+          "tools/catalog-signer/.build/"
+        ],
+        "repository_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop",
+        "nested_import_pending": true,
+        "entries": [
+          {
+            "status": "??",
+            "path": "README.md"
+          },
+          {
+            "status": "??",
+            "path": "games/new-game/build_new_game.py"
+          }
+        ],
+        "unexpected_untracked": [],
+        "unignored_generated_junk": [],
+        "unexpected_ignored": []
+      }
+    },
+    {
+      "name": "unignored-runtime-junk",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "Generated junk is unignored",
+      "errors": [
+        "Generated junk is unignored: runtime-local/tmp.o"
+      ],
+      "warnings": [],
+      "facts": {
+        "cmd": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "--untracked-files=all",
+          "--ignored=matching",
+          "--",
+          "."
+        ],
+        "returncode": 0,
+        "allowed_untracked_files": 384,
+        "ignored_generated_paths": [
+          "**/__pycache__/",
+          ".DS_Store",
+          "assets/signal-before-dawn-slice/latest-build.log",
+          "assets/signal-before-dawn-slice/runtime-stale/",
+          "games/*/.DS_Store",
+          "games/*/assets/latest-build.log",
+          "games/*/releases/",
+          "games/*/reports/latest-build.log",
+          "games/*/reports/runtime-stale/",
+          "games/*/runtime-local/",
+          "releases/",
+          "runtime-local/",
+          "tools/catalog-signer/.build/"
+        ],
+        "repository_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+        "nested_import_pending": false,
+        "entries": [
+          {
+            "status": "??",
+            "path": "runtime-local/tmp.o"
+          }
+        ],
+        "unexpected_untracked": [],
+        "unignored_generated_junk": [
+          "runtime-local/tmp.o"
+        ],
+        "unexpected_ignored": []
+      }
+    },
+    {
+      "name": "unexpected-untracked-file",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "Unexpected untracked Story Forge path",
+      "errors": [
+        "Unexpected untracked Story Forge path: assets/signal-before-dawn-slice/notes.txt"
+      ],
+      "warnings": [],
+      "facts": {
+        "cmd": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "--untracked-files=all",
+          "--ignored=matching",
+          "--",
+          "."
+        ],
+        "returncode": 0,
+        "allowed_untracked_files": 384,
+        "ignored_generated_paths": [
+          "**/__pycache__/",
+          ".DS_Store",
+          "assets/signal-before-dawn-slice/latest-build.log",
+          "assets/signal-before-dawn-slice/runtime-stale/",
+          "games/*/.DS_Store",
+          "games/*/assets/latest-build.log",
+          "games/*/releases/",
+          "games/*/reports/latest-build.log",
+          "games/*/reports/runtime-stale/",
+          "games/*/runtime-local/",
+          "releases/",
+          "runtime-local/",
+          "tools/catalog-signer/.build/"
+        ],
+        "repository_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+        "nested_import_pending": false,
+        "entries": [
+          {
+            "status": "??",
+            "path": "assets/signal-before-dawn-slice/notes.txt"
+          }
+        ],
+        "unexpected_untracked": [
+          "assets/signal-before-dawn-slice/notes.txt"
+        ],
+        "unignored_generated_junk": [],
+        "unexpected_ignored": []
+      }
+    },
+    {
+      "name": "expected-ignored-build-products",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": [],
+      "warnings": [],
+      "facts": {
+        "cmd": [
+          "git",
+          "status",
+          "--porcelain=v1",
+          "--untracked-files=all",
+          "--ignored=matching",
+          "--",
+          "."
+        ],
+        "returncode": 0,
+        "allowed_untracked_files": 384,
+        "ignored_generated_paths": [
+          "**/__pycache__/",
+          ".DS_Store",
+          "assets/signal-before-dawn-slice/latest-build.log",
+          "assets/signal-before-dawn-slice/runtime-stale/",
+          "games/*/.DS_Store",
+          "games/*/assets/latest-build.log",
+          "games/*/releases/",
+          "games/*/reports/latest-build.log",
+          "games/*/reports/runtime-stale/",
+          "games/*/runtime-local/",
+          "releases/",
+          "runtime-local/",
+          "tools/catalog-signer/.build/"
+        ],
+        "repository_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+        "nested_import_pending": false,
+        "entries": [
+          {
+            "status": "!!",
+            "path": "runtime-local/"
+          },
+          {
+            "status": "!!",
+            "path": "releases/"
+          },
+          {
+            "status": "!!",
+            "path": "assets/signal-before-dawn-slice/runtime-stale/"
+          },
+          {
+            "status": "!!",
+            "path": "games/sample-game/reports/runtime-stale/"
+          },
+          {
+            "status": "!!",
+            "path": "games/sample-game/runtime-local/"
+          },
+          {
+            "status": "!!",
+            "path": "scripts/__pycache__/"
+          }
+        ],
+        "unexpected_untracked": [],
+        "unignored_generated_junk": [],
+        "unexpected_ignored": []
+      }
+    }
+  ]
+}

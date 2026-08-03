@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "characters": {
+    "hero": {
+      "speaker_names": [
+        "Hero"
+      ],
+      "base_ids": [
+        "char_hero_neutral"
+      ],
+      "required_moods": [
+        "worried",
+        "resolved",
+        "smile"
+      ]
+    },
+    "partner": {
+      "speaker_names": [
+        "Partner"
+      ],
+      "base_ids": [
+        "char_partner_neutral"
+      ],
+      "required_moods": [
+        "alert",
+        "warm",
+        "resolved"
+      ]
+    }
+  },
+  "text": {
+    "cols": 26,
+    "quality_lines": 3
+  },
+  "staging": {
+    "allowed_positions": [
+      "left",
+      "right"
+    ],
+    "forbid_center": true
+  },
+  "thresholds": {
+    "max_choice_label_chars": 22,
+    "min_sprite_bg_luma_delta": 50.0,
+    "max_background_detail_under_sprite": 62.0,
+    "min_mood_base_face_delta": 50,
+    "min_mood_pair_face_delta": 28,
+    "min_side_position_share": 0.25,
+    "max_same_side_staging_run": 5
+  },
+  "review_assets": {
+    "storyboard": {
+      "path": "storyboard_sheet.png",
+      "cols": 2,
+      "scale": 2,
+      "label_height": 18,
+      "gap": 14,
+      "margin": 12
+    },
+    "expression_audition": {
+      "path": "expression_audition_sheet.png",
+      "size": [
+        900,
+        1408
+      ]
+    }
+  }
+}

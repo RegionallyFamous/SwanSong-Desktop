@@ -1,0 +1,332 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-17T01:55:00+00:00",
+  "art_policy": "Pictorial masters are built-in ImageGen outputs; runtime frames are deterministic local derivatives.",
+  "outputs": {
+    "backgrounds/glass_case.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/sources/backgrounds_source.png",
+      "source_sha256": "fa07e2ddcdc30d1b0814065da25eaf04df8b18620c2b27b43c912c0ec14d351d",
+      "output_sha256": "aba48a22d6b161fbf46d49e54113ee69f8b8448f59414b2406f4cac6716677a1",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 21.65
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/market_aisle.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/sources/backgrounds_source.png",
+      "source_sha256": "fa07e2ddcdc30d1b0814065da25eaf04df8b18620c2b27b43c912c0ec14d351d",
+      "output_sha256": "32011ae73dc5323b14a97a4d12883fe56cba96ad7e17ebe72553df2137d1d4f5",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 16.37
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/platform_trade.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/sources/backgrounds_source.png",
+      "source_sha256": "fa07e2ddcdc30d1b0814065da25eaf04df8b18620c2b27b43c912c0ec14d351d",
+      "output_sha256": "20aab921e3c923c8f85673df47bc3aec56da740ac98a20d5e5c9284b3406eea1",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 11,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 9.66
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/jun_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/sources/characters_source.png",
+      "source_sha256": "d2636e1c096d94dad89d222b5a1b0c54b4edced39fd437100012aa5e7c54c35a",
+      "output_sha256": "8712f7140c593d6eb3bb9efd5cf0ddbe4e42ab3fc06cdc0313ad5183c8818386",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          9,
+          20,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4777,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5366,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 74.3,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 9,
+          "luma_stddev": 69.43
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5870,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/jun_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/sources/characters_source.png",
+      "source_sha256": "d2636e1c096d94dad89d222b5a1b0c54b4edced39fd437100012aa5e7c54c35a",
+      "output_sha256": "3b6fed40e724873e1e16f11a771317372c1124e370f9930c0d14ff13f0fb2bc3",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          9,
+          20,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4777,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5366,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 74.14,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 9,
+          "luma_stddev": 72.04
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5870,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/jun_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/sources/characters_source.png",
+      "source_sha256": "d2636e1c096d94dad89d222b5a1b0c54b4edced39fd437100012aa5e7c54c35a",
+      "output_sha256": "8039af674288b8482785804cf9928e2788680a1faa10a047a7623cf2abcee9ca",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          9,
+          20,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4777,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5366,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 73.93,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 9,
+          "luma_stddev": 72.6
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5870,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/sora_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/sources/characters_source.png",
+      "source_sha256": "d2636e1c096d94dad89d222b5a1b0c54b4edced39fd437100012aa5e7c54c35a",
+      "output_sha256": "d0f354f16f0f367074fa079d7391c98df983127be3652223e1510781b100c041",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          21,
+          89,
+          127
+        ],
+        "alpha_coverage": 0.5037,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5457,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 68.43,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 10,
+          "luma_stddev": 69.01
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6190,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/sora_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/sources/characters_source.png",
+      "source_sha256": "d2636e1c096d94dad89d222b5a1b0c54b4edced39fd437100012aa5e7c54c35a",
+      "output_sha256": "eabeeafa51ed5182cdfd838a532ab2686aae6de59a8713bd1dda9df026cd3543",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          21,
+          89,
+          127
+        ],
+        "alpha_coverage": 0.5037,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5457,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 68.33,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 10,
+          "luma_stddev": 71.86
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6190,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/sora_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/sources/characters_source.png",
+      "source_sha256": "d2636e1c096d94dad89d222b5a1b0c54b4edced39fd437100012aa5e7c54c35a",
+      "output_sha256": "fbfa976508e244f8ba77530d237d6cf4b32e016a7ff99ed13d522a2085ff3fef",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          21,
+          89,
+          127
+        ],
+        "alpha_coverage": 0.5037,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5457,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 67.98,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 11,
+          "luma_stddev": 72.06
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6190,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    }
+  }
+}

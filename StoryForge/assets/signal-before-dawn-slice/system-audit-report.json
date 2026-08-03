@@ -1,0 +1,159 @@
+{
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": {
+      "bytes": 474460,
+      "sha256": "12e91e46f011e49043a3e43bfc58674c37b7c66c6a6af76bb1baf653bf1d2480"
+    },
+    "build_mode": "full",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local",
+    "rom": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/signal-before-dawn-slice.wsc",
+      "size_bytes": 8388608,
+      "sha256": "a5210df80536d70c1fc5c51af161eb697beccd9fa32623d17b32a223aea3d524"
+    },
+    "generated_header_counts": {
+      "NUM_NODES": 46,
+      "NUM_FLAGS": 3,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 8,
+      "NUM_SFX": 8,
+      "NUM_BG_ASSETS": 8,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 30
+    },
+    "toolchain": {
+      "wonderful_toolchain": "/opt/wonderful",
+      "python_version": "3.14.6",
+      "pillow_version": "12.3.0"
+    },
+    "emulator_smoke": {
+      "mednafen_version": "1.32.1",
+      "module": "wswan(WonderSwan)",
+      "rom_size_reported": "8192KiB",
+      "rom_md5": "0x00e7bf06126932b002254edd94d43f53",
+      "recorded_checksum": "0x0c8d",
+      "real_checksum": "0x0c8d"
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/contact_sheet.png",
+      "width": 1000,
+      "height": 2788,
+      "sha256": "865363f4c1eec8388dfbb462541ad7ee1592abc676907e9cab2e3df174850cde"
+    },
+    "expression_audition_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/expression_audition_sheet.png",
+      "width": 900,
+      "height": 1748,
+      "sha256": "f7c4da50fcdcb6c212061af36e2ca17875cd020a43d293af85ca77862a2bd344"
+    },
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/scene_preview_sheet.png",
+      "width": 472,
+      "height": 1920,
+      "sha256": "111da417dcf6dbc72222f0f0e099bdf6c663a335bc86bc5402f19f75664f3e32"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/storyboard_sheet.png",
+      "width": 934,
+      "height": 5770,
+      "sha256": "cf31b10e63419b7b08396674516139fa20c02c15f5681048bf9b304a78581752"
+    },
+    "font_proof_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/font-proof-sheet.png",
+      "width": 732,
+      "height": 304,
+      "sha256": "bc5f9b6ca90acc63cb66977ec6fb0c4af519a6e7459a7e56fbe737a1882c0c30"
+    },
+    "text_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/text-preview-sheet.png",
+      "width": 930,
+      "height": 1910,
+      "sha256": "7aaa59d5378886beabc32d56e4a8813229acef0264dd9d06a0a4d16cc2ed4c31"
+    },
+    "text_contract_images": {
+      "font_proof_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/font-proof-sheet.png",
+        "width": 732,
+        "height": 304,
+        "sha256": "bc5f9b6ca90acc63cb66977ec6fb0c4af519a6e7459a7e56fbe737a1882c0c30"
+      },
+      "text_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/text-preview-sheet.png",
+        "width": 930,
+        "height": 1910,
+        "sha256": "7aaa59d5378886beabc32d56e4a8813229acef0264dd9d06a0a4d16cc2ed4c31"
+      }
+    },
+    "visual_contract_source": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/visual-contract.json",
+      "sha256": "ad6cd0e54887d1f12ee431f913c4ef970d90f80e22fed8f08ef666e9a80c3eea",
+      "schema_version": 1
+    },
+    "polish": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/polish-report.json",
+      "sha256": "e565538acc62811aafa180b6947f50d1b4e954e25b08e3e516d89fc1c7f45249",
+      "backgrounds": 8,
+      "characters": 30,
+      "constraints": {
+        "screen": [
+          224,
+          144
+        ],
+        "color_channel_step": 17,
+        "background_visible_colors_max": 16,
+        "character_visible_colors_max": 15,
+        "runtime_textbox_px": [
+          0,
+          104,
+          224,
+          40
+        ],
+        "runtime_speaker_y_px": 96,
+        "sprite_outline": [
+          0,
+          0,
+          17
+        ]
+      }
+    },
+    "runtime_visual_layout": {
+      "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local",
+      "main_c": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/main.c",
+      "defines": {
+        "SCREEN_W": 28,
+        "SCREEN_H": 18,
+        "TBOX_Y": 13,
+        "TBOX_H": 5
+      },
+      "tile_px": 8,
+      "screen_px": [
+        224,
+        144
+      ],
+      "textbox_px": [
+        0,
+        104,
+        224,
+        40
+      ],
+      "speaker_y_px": 96,
+      "preview_scale": 2,
+      "preview_scene_count": 6,
+      "preview_sheet_px": [
+        472,
+        1920
+      ],
+      "storyboard_cols": 2,
+      "storyboard_scene_count": 35,
+      "storyboard_sheet_px": [
+        934,
+        5770
+      ]
+    }
+  }
+}

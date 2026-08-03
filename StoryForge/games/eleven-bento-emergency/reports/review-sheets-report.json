@@ -1,0 +1,881 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:38:45.074556+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "eleven-bento-emergency",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+      "exists": true,
+      "bytes": 201064,
+      "sha256": "c788d1ee469021dc33367ff5f10c65a26e083b9892957be0ba22c72653570592"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 36,
+    "preview_node_ids": [
+      "bento_title",
+      "bento_01",
+      "bento_02",
+      "bento_03",
+      "bento_04",
+      "bento_05",
+      "bento_06",
+      "bento_07",
+      "bento_08",
+      "bento_09",
+      "bento_10",
+      "bento_choice_1",
+      "bento_a1",
+      "bento_a2",
+      "bento_a3",
+      "bento_a4",
+      "bento_b1",
+      "bento_b2",
+      "bento_b3",
+      "bento_b4",
+      "bento_11",
+      "bento_12",
+      "bento_13",
+      "bento_14",
+      "bento_15",
+      "bento_16",
+      "bento_17",
+      "bento_choice_2",
+      "bento_c1",
+      "bento_c2",
+      "bento_c3",
+      "bento_c4",
+      "bento_d1",
+      "bento_d2",
+      "bento_d3",
+      "bento_d4"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 316095,
+      "sha256": "f3fb4ad6447d126f28979910b49c7b1853f30bbe0dd799da50f04336f917100e",
+      "size": [
+        712,
+        2050
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 98734,
+      "sha256": "c4087b68368c3d8cbf169f03eadb459e4547c29fe4b5dbfce9791816e43a19b2",
+      "size": [
+        488,
+        872
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "bento_title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "573eaeb3e19de594571e21aa18bfe7d5504dd99c6f217ad893c950c52f08ad12"
+      },
+      {
+        "index": 1,
+        "node_id": "bento_01",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "7150795e8aeae0a8ab22c7236b7fbad1154a653540a2d4a60907b854c790a1c2"
+      },
+      {
+        "index": 2,
+        "node_id": "bento_02",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "57bdb1bf8a3cb91b0797ccb9e6c1303714f6dd0b79055e1f230ca80955248e1d"
+      },
+      {
+        "index": 3,
+        "node_id": "bento_03",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "046ef4f74104020a2206ae949d4e14308f366ffd009d5abbed26d59dc1a93102"
+      },
+      {
+        "index": 4,
+        "node_id": "bento_04",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "f2d0964c0dc33c25b1b97208d3cf4a9aa816e4ea2ce09d613a485318be746ca3"
+      },
+      {
+        "index": 5,
+        "node_id": "bento_05",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "18447e0d35c2196f5425b5a6bdac9bed79f5727f1468777d64505b9a4061ba1f"
+      },
+      {
+        "index": 6,
+        "node_id": "bento_06",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "da293b604e1bda7bad1d9cc8aa8491f5eb788b05e0bf13f5a9c052cab305212a"
+      },
+      {
+        "index": 7,
+        "node_id": "bento_07",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "5d38af00e624e1294a48262df1837e37b84dcaf9a68c3035fd5de7ec51080111"
+      },
+      {
+        "index": 8,
+        "node_id": "bento_08",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "e59a03f8ec8f2a89c70d5cf09abea738843a6a893c1a0631c7a183e839c9db24"
+      },
+      {
+        "index": 9,
+        "node_id": "bento_09",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "f0b5aae18a22b11f6480d02ffbdc2c770221b77c8442a517301b78495f038263"
+      },
+      {
+        "index": 10,
+        "node_id": "bento_10",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "722dd88ce3e06b828dcb153bfdfd4f2a480fba345a104d71cfca59306a3bc11e"
+      },
+      {
+        "index": 11,
+        "node_id": "bento_choice_1",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "fa7e2d35b3d8b42adbf584ac64a3e1c38b4789d666fcc3a9e851596fda921f84"
+      },
+      {
+        "index": 12,
+        "node_id": "bento_a1",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "329c6d9ff7ea6cd6dfcff1f7755e7c2d87c9ac2c4968a06e56b1665535cefc60"
+      },
+      {
+        "index": 13,
+        "node_id": "bento_a2",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "71b67b62f5befe1229a44ae7ede46ff92abb59489b032cdb2638253c309d541f"
+      },
+      {
+        "index": 14,
+        "node_id": "bento_a3",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "c921082c138323e67323a3e33e3c9cd2ef93e2f06e7b079c32423fbeaacc572c"
+      },
+      {
+        "index": 15,
+        "node_id": "bento_a4",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "fed784888dbafa842a0cb3d1147796256f7b471942a082ddd9247d1b19cc8a06"
+      },
+      {
+        "index": 16,
+        "node_id": "bento_b1",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "7722b5af3cd21855b557dcffd35c17c5f1d931f8337a639a424cd99daa856379"
+      },
+      {
+        "index": 17,
+        "node_id": "bento_b2",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "70e6b6ff080858a7cf3a5b9766e02e03b881c93e6dc7c65cbf32e5dee1e8fe81"
+      },
+      {
+        "index": 18,
+        "node_id": "bento_b3",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "45127711b94730fc387e6dcb9034cba78b44a4bd336adca2bd00d9e2907ea8e2"
+      },
+      {
+        "index": 19,
+        "node_id": "bento_b4",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "6e72d8e26f8e90b74d2e2ea88c50ba5663daec06a8fe095e3c2e3e047b55eb01"
+      },
+      {
+        "index": 20,
+        "node_id": "bento_11",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "40d882553ffdfe2d42754b6f02525bf510f9529a87ee8070eb2ba19f4bc2eb9c"
+      },
+      {
+        "index": 21,
+        "node_id": "bento_12",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "a5f4c47073893063419d62ce5aaa101e3b8e86c134c72a5962d0af39f3cf0cd6"
+      },
+      {
+        "index": 22,
+        "node_id": "bento_13",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "e64f02d584ded0d6a9f692f66c4c644767b2637b5722b5f0728a0f0c20aed720"
+      },
+      {
+        "index": 23,
+        "node_id": "bento_14",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "a0831ef5fd156fe498e9e12c02e7bd0948b548d406da0227a88b14031c2e2498"
+      },
+      {
+        "index": 24,
+        "node_id": "bento_15",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "1c7b63b4304edd6387f330ecaa732a98bc437ad01acb5c0d30953800f62d79f8"
+      },
+      {
+        "index": 25,
+        "node_id": "bento_16",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "0dcb88daece71472cd49207a86294a06636149608169b4a996acb28db7d713a2"
+      },
+      {
+        "index": 26,
+        "node_id": "bento_17",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "153b2858b94a219e9025e36399ffb3c4544e7fe0c6f3128cb2c6af338e8f0f5d"
+      },
+      {
+        "index": 27,
+        "node_id": "bento_choice_2",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "9f053f33cb66be3a985a169073a62dc1aa5e5bcf37cb4b0fafcf4bbffadef237"
+      },
+      {
+        "index": 28,
+        "node_id": "bento_c1",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "759542bf7fdf2594f41df44cb8d978e8e33923a9109bc32a6a98b26db725f353"
+      },
+      {
+        "index": 29,
+        "node_id": "bento_c2",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "ea682ee8a570cc46e9ca64e8f27efe8dceda10c937aebb1eb9c85c190be73622"
+      },
+      {
+        "index": 30,
+        "node_id": "bento_c3",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "2332b25d5f6e20483f82661a15938dbfa00805cf29d0fd2f2f987bef6c39edb0"
+      },
+      {
+        "index": 31,
+        "node_id": "bento_c4",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "af6b0afc9a657ac5c35afbc1694379619952649bf4e64fa4eb0d740caff32cbd"
+      },
+      {
+        "index": 32,
+        "node_id": "bento_d1",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "090f2411c11bef5d11f12aa8a3b1dabcc01ede6eb03c6f70a914d01ae0adeb88"
+      },
+      {
+        "index": 33,
+        "node_id": "bento_d2",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "93f7cbf9bc8433888d5c27265a25d2c526748ff811bd55682b854f0732d5341c"
+      },
+      {
+        "index": 34,
+        "node_id": "bento_d3",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "e04505dee3f39e71cab950e8c03b97c852dbe98460a4417bd514d69472cb0f6d"
+      },
+      {
+        "index": 35,
+        "node_id": "bento_d4",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "8dc49d2a011f91649adb842b839fab29107e3f014f2efb4a00497b4716fd0f98"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "bento_title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "c7765d873a6bf0b9ea83038b07518cd738f921f6cabad827078158eca24eb19c"
+      },
+      {
+        "index": 1,
+        "node_id": "bento_01",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "73bc9e72f5c08549f314bc3bfb79ea741f1e79be18e17fd9f258b65a2179ac99"
+      },
+      {
+        "index": 2,
+        "node_id": "bento_02",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "081a3e704062ded3500c33003f180960fdf85c0d47076cb52f95b0f83644bbf4"
+      },
+      {
+        "index": 3,
+        "node_id": "bento_03",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "46ec41776dff3b1ce75bf1b54759bc34309f4cf6db061961c039b9ea1c87ae3f"
+      },
+      {
+        "index": 4,
+        "node_id": "bento_04",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "f513c8fd97c1586bd3d5601dfb18c6bd2abd7fccbafa94fd05069b77f83518b4"
+      },
+      {
+        "index": 5,
+        "node_id": "bento_05",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "d3cda7fb973d83c9248f9b7089d677f7649e67e80c9bf64d1e8a57427db9a0bc"
+      },
+      {
+        "index": 6,
+        "node_id": "bento_06",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "38a015677b280dbe4262a3c8aea35859f736e3faee60360cb96c8793e5c8c10a"
+      },
+      {
+        "index": 7,
+        "node_id": "bento_07",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "ecfb1414fbf6eb79dc2293c7871be1b838b06b06122880dc9a579cdb9f8266f3"
+      },
+      {
+        "index": 8,
+        "node_id": "bento_08",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "972755af41fca500eb78231a3e0820dcc5e0bdce123480c1a8cc755b20e224d1"
+      },
+      {
+        "index": 9,
+        "node_id": "bento_09",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "e26c188c6b4e58bf061c4c038f7682be91556157aabf68f46fa616e4558c231f"
+      },
+      {
+        "index": 10,
+        "node_id": "bento_10",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "876a6e0d36a413248fedf6439cc4eeb30ca0e2264af8b20e27adeb88953b6e78"
+      },
+      {
+        "index": 11,
+        "node_id": "bento_choice_1",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "533d6a99adbefe3311878c75b4e94d92fbf6640c2987263aec0239238e6b884b"
+      },
+      {
+        "index": 12,
+        "node_id": "bento_a1",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "b82aa524fd66cbd7586fac61ffaf966a00b1081e7331a9f9bcc36f38049a0a8f"
+      },
+      {
+        "index": 13,
+        "node_id": "bento_a2",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "b6169401ad9ccc16627dd9a6db39f69ae79aa40b22a2c4aa21a27105eb98a0b4"
+      },
+      {
+        "index": 14,
+        "node_id": "bento_a3",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "22081a065ae4f0110b48c8de420926b1fce431429985ca8f32d899a95f5485a3"
+      },
+      {
+        "index": 15,
+        "node_id": "bento_a4",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "4ee2c3098f3a322695ca7a8e149805d956b234e3a9da44c5bafb2e9ec959859b"
+      },
+      {
+        "index": 16,
+        "node_id": "bento_b1",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "35e344a3803eae53ef8a7e868fffcb0f67f7e58ddee0e331cf10fa0c07545a10"
+      },
+      {
+        "index": 17,
+        "node_id": "bento_b2",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "6af28294dcfada4abbb0cce735ea2cbef6e6b0b76ebeb09f154231b9a7561ce1"
+      },
+      {
+        "index": 18,
+        "node_id": "bento_b3",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "ae7d0fdab0a2672d13d70b693d01536c448b75d4e2676abd3a96b9fbb8181c84"
+      },
+      {
+        "index": 19,
+        "node_id": "bento_b4",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "a580ce38144147943f87aa817638e5068ee63c429b1336d0b023b01b6bb85963"
+      },
+      {
+        "index": 20,
+        "node_id": "bento_11",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "7c3a5e578882f4e615a7c55a985b6b52fbf054e644d521506ed06a3c849e1b8f"
+      },
+      {
+        "index": 21,
+        "node_id": "bento_12",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "593f1aff17b787932fd86ab786480fa76a15fe99ea99d10725496dcc19155157"
+      },
+      {
+        "index": 22,
+        "node_id": "bento_13",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "cda3efd1572834775d0d36a36cd98b07d9321997c40a222b671ee6e26dc217e0"
+      },
+      {
+        "index": 23,
+        "node_id": "bento_14",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "c6de9e986a06872a4c1828eeb7680e8cfa0b3483c776fec2c17a20f4c7dccd08"
+      },
+      {
+        "index": 24,
+        "node_id": "bento_15",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "cf57802346e1f1b2c5cc3503bb6e2fd0556cf81d9d7e4bfb838010296bc93915"
+      },
+      {
+        "index": 25,
+        "node_id": "bento_16",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "e56d7a280600df4e436001393870b901fda876e8fd49be27b9f0082d9e448a25"
+      },
+      {
+        "index": 26,
+        "node_id": "bento_17",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "6d3d997eadc452ea31d04af2377c3e348db97d586e58e683401a66b12986504e"
+      },
+      {
+        "index": 27,
+        "node_id": "bento_choice_2",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "830d12ee8a21794094f3afa212f754b20bee33f15cd26dbc0a182af783f63e64"
+      },
+      {
+        "index": 28,
+        "node_id": "bento_c1",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "664ae82ec266f333891c5fccf02cb57fc80f15b2fed3e644689d6a6f1c6bdfdb"
+      },
+      {
+        "index": 29,
+        "node_id": "bento_c2",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "1c0469a95bac7a79c1cd6413dca91263d0ac7ca11768f634f05bf6a93b6e8919"
+      },
+      {
+        "index": 30,
+        "node_id": "bento_c3",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "877feb8bf7c44a77f52251845652e5e9e52adf93ee768d0c1cf51da7d819864a"
+      },
+      {
+        "index": 31,
+        "node_id": "bento_c4",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "ee960047bc0df6dd4273aacb2985e7070deb00730f739ec5bd11ad8bf5222d1b"
+      },
+      {
+        "index": 32,
+        "node_id": "bento_d1",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "fe7a9b3121d9637e35c7d7e55d9cef5c33ca9a683e4adf0d96c6361eeeedbb57"
+      },
+      {
+        "index": 33,
+        "node_id": "bento_d2",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "6745e19151b3e6533924bc0a497480e8f8184285afb1dfe0218f485a8d2bbd83"
+      },
+      {
+        "index": 34,
+        "node_id": "bento_d3",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "ed2b8ad95e457704711e9c26f5d5f2cd153335b7c23a2aced0aacd56c8ae0918"
+      },
+      {
+        "index": 35,
+        "node_id": "bento_d4",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "2a403fcd527d881999cfbe63891969997fa4b1d4c8481dc0e9a3ceb519f34528"
+      }
+    ]
+  }
+}

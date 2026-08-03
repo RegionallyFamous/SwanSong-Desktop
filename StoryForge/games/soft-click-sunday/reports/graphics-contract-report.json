@@ -1,0 +1,1923 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:20:19.524176+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets",
+    "thresholds": {
+      "screen": [
+        224,
+        144
+      ],
+      "character_max": [
+        96,
+        128
+      ],
+      "background_visible_colors_max": 16,
+      "character_visible_colors_max": 15,
+      "character_visible_colors_min": 6,
+      "character_tiles_max": 192,
+      "background_tiles_max": 511,
+      "alpha_coverage": [
+        0.2,
+        0.75
+      ],
+      "visible_above_textbox": [
+        0.52,
+        0.92
+      ],
+      "character_luma_stddev_min": 24.0,
+      "face_detail_box": [
+        28,
+        36,
+        68,
+        72
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "face_visible_colors_min": 4,
+      "face_luma_stddev_min": 18.0,
+      "animation_frames": [
+        "neutral",
+        "talk",
+        "blink"
+      ],
+      "hardware_char_anims": [
+        "blink",
+        "talking",
+        "talk-blink"
+      ],
+      "min_talk_frame_pixel_delta": 18,
+      "min_blink_frame_pixel_delta": 8,
+      "min_talk_face_pixel_delta": 18,
+      "min_blink_face_pixel_delta": 8,
+      "max_animation_alpha_changed": 0,
+      "max_animation_bbox_area": 1200,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_frame_center_drift": 0.04,
+      "max_frame_scale_drift": 0.08,
+      "min_scene_sprite_bg_luma_delta": 50.0,
+      "max_scene_bg_detail_under_sprite": 62.0
+    },
+    "backgrounds": {
+      "backgrounds/game_room.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 45.91,
+        "sha256": "7479212a4c19643aa268305c07a856d93de5353e8b7a86ef21a1d3d8354072b5"
+      },
+      "backgrounds/shop_counter.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 32.91,
+        "sha256": "92199e0eebb51880ace798c7445fb509eaa04bacbab860f3fcdde4bfedc07d86"
+      },
+      "backgrounds/swap_platform.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 41.73,
+        "sha256": "1b54328ef2b0a6979656fd9f2e35f1fb0b33de3f0b92e1302d447bf76f724ca4"
+      }
+    },
+    "characters": {
+      "characters/mina_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          11,
+          6,
+          85,
+          125
+        ],
+        "alpha_coverage": 0.5096,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6204,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 63.42,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 82.0
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6262,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "40456b66271251f5ccba43f5c47bff1560ff55547494da67651521c9b072d72e"
+      },
+      "characters/mina_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          11,
+          6,
+          85,
+          125
+        ],
+        "alpha_coverage": 0.5096,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6204,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 60.51,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 79.62
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6262,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "c6fdb10122134fd02db17c5ff22a6b951276c77ed9d300c3ff2e1f9ab7aadd6f"
+      },
+      "characters/mina_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          11,
+          6,
+          85,
+          125
+        ],
+        "alpha_coverage": 0.5096,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6204,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 59.96,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 80.24
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6262,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "a1e792c3ea6cf69dd3c017d551a0241cbd3adb1c5fc748066ba9848024f1a15d"
+      },
+      "characters/niko_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          7,
+          10,
+          89,
+          126
+        ],
+        "alpha_coverage": 0.5495,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.581,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 50.18,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 66.84
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6752,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "78d9f9f3a32a7cc05654df4b954429ec252974b764181848b02b7d590b3e5a16"
+      },
+      "characters/niko_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          7,
+          10,
+          89,
+          126
+        ],
+        "alpha_coverage": 0.5495,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.581,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 48.58,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 67.36
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6752,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "82ef0562ea8edfecb32f48f15c5e04ef3d9f72a2d5ff5681c9a3223ce62c5015"
+      },
+      "characters/niko_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          7,
+          10,
+          89,
+          126
+        ],
+        "alpha_coverage": 0.5495,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.581,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 48.48,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 66.69
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6752,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "5d338ddebaafad5d1aab96482d125dab3672c0f776977af1c8ddc37fc17d89b1"
+      }
+    },
+    "sprite_families": {
+      "mina": {
+        "body": "mina",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/characters/mina_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                11,
+                6,
+                85,
+                125
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5117
+              ],
+              "bbox_size_norm": [
+                0.7708,
+                0.9297
+              ],
+              "bbox_area_ratio": 0.7166
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/characters/mina_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                11,
+                6,
+                85,
+                125
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5117
+              ],
+              "bbox_size_norm": [
+                0.7708,
+                0.9297
+              ],
+              "bbox_area_ratio": 0.7166
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 292,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                38,
+                56,
+                59,
+                72
+              ],
+              "changed_bbox_area": 336
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 292,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                10,
+                20,
+                31,
+                36
+              ],
+              "changed_bbox_area": 336
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/characters/mina_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                11,
+                6,
+                85,
+                125
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5117
+              ],
+              "bbox_size_norm": [
+                0.7708,
+                0.9297
+              ],
+              "bbox_area_ratio": 0.7166
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 165,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                29,
+                32,
+                62,
+                44
+              ],
+              "changed_bbox_area": 396
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 165,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                5,
+                12,
+                38,
+                24
+              ],
+              "changed_bbox_area": 396
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      },
+      "niko": {
+        "body": "niko",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/characters/niko_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                7,
+                10,
+                89,
+                126
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5312
+              ],
+              "bbox_size_norm": [
+                0.8542,
+                0.9062
+              ],
+              "bbox_area_ratio": 0.7741
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/characters/niko_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                7,
+                10,
+                89,
+                126
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5312
+              ],
+              "bbox_size_norm": [
+                0.8542,
+                0.9062
+              ],
+              "bbox_area_ratio": 0.7741
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 281,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                38,
+                56,
+                59,
+                72
+              ],
+              "changed_bbox_area": 336
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 281,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                10,
+                20,
+                31,
+                36
+              ],
+              "changed_bbox_area": 336
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/characters/niko_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                7,
+                10,
+                89,
+                126
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5312
+              ],
+              "bbox_size_norm": [
+                0.8542,
+                0.9062
+              ],
+              "bbox_area_ratio": 0.7741
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 158,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                32,
+                35,
+                65,
+                46
+              ],
+              "changed_bbox_area": 363
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 158,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                8,
+                15,
+                41,
+                26
+              ],
+              "changed_bbox_area": 363
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      }
+    },
+    "sprite_approvals": {
+      "audition_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/auditions",
+      "approval_count": 1,
+      "covered_output_count": 6,
+      "covered_outputs": {
+        "characters/mina_blink.png": {
+          "approval": "games/soft-click-sunday/assets/auditions/soft-click-sunday-runtime_approval.json",
+          "sha256": "40456b66271251f5ccba43f5c47bff1560ff55547494da67651521c9b072d72e"
+        },
+        "characters/mina_neutral.png": {
+          "approval": "games/soft-click-sunday/assets/auditions/soft-click-sunday-runtime_approval.json",
+          "sha256": "c6fdb10122134fd02db17c5ff22a6b951276c77ed9d300c3ff2e1f9ab7aadd6f"
+        },
+        "characters/mina_talk.png": {
+          "approval": "games/soft-click-sunday/assets/auditions/soft-click-sunday-runtime_approval.json",
+          "sha256": "a1e792c3ea6cf69dd3c017d551a0241cbd3adb1c5fc748066ba9848024f1a15d"
+        },
+        "characters/niko_blink.png": {
+          "approval": "games/soft-click-sunday/assets/auditions/soft-click-sunday-runtime_approval.json",
+          "sha256": "78d9f9f3a32a7cc05654df4b954429ec252974b764181848b02b7d590b3e5a16"
+        },
+        "characters/niko_neutral.png": {
+          "approval": "games/soft-click-sunday/assets/auditions/soft-click-sunday-runtime_approval.json",
+          "sha256": "82ef0562ea8edfecb32f48f15c5e04ef3d9f72a2d5ff5681c9a3223ce62c5015"
+        },
+        "characters/niko_talk.png": {
+          "approval": "games/soft-click-sunday/assets/auditions/soft-click-sunday-runtime_approval.json",
+          "sha256": "5d338ddebaafad5d1aab96482d125dab3672c0f776977af1c8ddc37fc17d89b1"
+        }
+      },
+      "missing_outputs": [],
+      "skipped": false
+    },
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/projects/soft-click-sunday.wscvn.json",
+      "ok": true,
+      "assets": {
+        "background_asset_count": 3,
+        "character_asset_count": 6,
+        "backgrounds": {
+          "bg_game_room": {
+            "origName": "game_room.png",
+            "rel_path": "backgrounds/game_room.png",
+            "exists": true
+          },
+          "bg_shop_counter": {
+            "origName": "shop_counter.png",
+            "rel_path": "backgrounds/shop_counter.png",
+            "exists": true
+          },
+          "bg_swap_platform": {
+            "origName": "swap_platform.png",
+            "rel_path": "backgrounds/swap_platform.png",
+            "exists": true
+          }
+        },
+        "characters": {
+          "char_mina_blink": {
+            "origName": "mina_blink.png",
+            "rel_path": "characters/mina_blink.png",
+            "exists": true
+          },
+          "char_mina_neutral": {
+            "origName": "mina_neutral.png",
+            "rel_path": "characters/mina_neutral.png",
+            "exists": true
+          },
+          "char_mina_talk": {
+            "origName": "mina_talk.png",
+            "rel_path": "characters/mina_talk.png",
+            "exists": true
+          },
+          "char_niko_blink": {
+            "origName": "niko_blink.png",
+            "rel_path": "characters/niko_blink.png",
+            "exists": true
+          },
+          "char_niko_neutral": {
+            "origName": "niko_neutral.png",
+            "rel_path": "characters/niko_neutral.png",
+            "exists": true
+          },
+          "char_niko_talk": {
+            "origName": "niko_talk.png",
+            "rel_path": "characters/niko_talk.png",
+            "exists": true
+          }
+        }
+      },
+      "scene_wiring": {
+        "scene_count": 68,
+        "animated_scene_count": 68,
+        "character_reference_count": 204,
+        "background_reference_count": 68,
+        "scene_visual_count": 68,
+        "scenes": [
+          {
+            "id": "shop_open",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.87,
+            "background_detail_under_sprite": 37.22
+          },
+          {
+            "id": "shop_open__beat2",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.87,
+            "background_detail_under_sprite": 37.22
+          },
+          {
+            "id": "shop_open__beat3",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.87,
+            "background_detail_under_sprite": 37.22
+          },
+          {
+            "id": "shop_open__beat4",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.87,
+            "background_detail_under_sprite": 37.22
+          },
+          {
+            "id": "loose_bin",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "loose_bin__beat2",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "loose_bin__beat3",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "loose_bin__beat4",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "paper_list",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.87,
+            "background_detail_under_sprite": 37.22
+          },
+          {
+            "id": "paper_list__beat2",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.87,
+            "background_detail_under_sprite": 37.22
+          },
+          {
+            "id": "paper_list__beat3",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.87,
+            "background_detail_under_sprite": 37.22
+          },
+          {
+            "id": "paper_list__beat4",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.87,
+            "background_detail_under_sprite": 37.22
+          },
+          {
+            "id": "glass_case",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "glass_case__beat2",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "glass_case__beat3",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "glass_case__beat4",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "buy_moonmilk",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "buy_moonmilk__beat2",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "buy_moonmilk__beat3",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "buy_moonmilk__beat4",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "buy_petal",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.87,
+            "background_detail_under_sprite": 37.22
+          },
+          {
+            "id": "buy_petal__beat2",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.87,
+            "background_detail_under_sprite": 37.22
+          },
+          {
+            "id": "buy_petal__beat3",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.87,
+            "background_detail_under_sprite": 37.22
+          },
+          {
+            "id": "buy_petal__beat4",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.87,
+            "background_detail_under_sprite": 37.22
+          },
+          {
+            "id": "test_starpantry",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "test_starpantry__beat2",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "test_starpantry__beat3",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "test_starpantry__beat4",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "rain_walk",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 51.59,
+            "background_detail_under_sprite": 41.43
+          },
+          {
+            "id": "rain_walk__beat2",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 51.59,
+            "background_detail_under_sprite": 41.43
+          },
+          {
+            "id": "rain_walk__beat3",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 51.59,
+            "background_detail_under_sprite": 41.43
+          },
+          {
+            "id": "rain_walk__beat4",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 51.59,
+            "background_detail_under_sprite": 41.43
+          },
+          {
+            "id": "play_cart",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 64.38,
+            "background_detail_under_sprite": 34.77
+          },
+          {
+            "id": "play_cart__beat2",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 64.38,
+            "background_detail_under_sprite": 34.77
+          },
+          {
+            "id": "play_cart__beat3",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 64.38,
+            "background_detail_under_sprite": 34.77
+          },
+          {
+            "id": "play_cart__beat4",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 64.38,
+            "background_detail_under_sprite": 34.77
+          },
+          {
+            "id": "clean_cart",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 51.59,
+            "background_detail_under_sprite": 41.43
+          },
+          {
+            "id": "clean_cart__beat2",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 51.59,
+            "background_detail_under_sprite": 41.43
+          },
+          {
+            "id": "clean_cart__beat3",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 51.59,
+            "background_detail_under_sprite": 41.43
+          },
+          {
+            "id": "clean_cart__beat4",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 51.59,
+            "background_detail_under_sprite": 41.43
+          },
+          {
+            "id": "note_story",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 64.38,
+            "background_detail_under_sprite": 34.77
+          },
+          {
+            "id": "note_story__beat2",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 64.38,
+            "background_detail_under_sprite": 34.77
+          },
+          {
+            "id": "note_story__beat3",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 64.38,
+            "background_detail_under_sprite": 34.77
+          },
+          {
+            "id": "note_story__beat4",
+            "bgImageId": "bg_swap_platform",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 64.38,
+            "background_detail_under_sprite": 34.77
+          },
+          {
+            "id": "shelf_home",
+            "bgImageId": "bg_game_room",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 59.77,
+            "background_detail_under_sprite": 32.69
+          },
+          {
+            "id": "shelf_home__beat2",
+            "bgImageId": "bg_game_room",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 59.77,
+            "background_detail_under_sprite": 32.69
+          },
+          {
+            "id": "shelf_home__beat3",
+            "bgImageId": "bg_game_room",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 59.77,
+            "background_detail_under_sprite": 32.69
+          },
+          {
+            "id": "shelf_home__beat4",
+            "bgImageId": "bg_game_room",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 59.77,
+            "background_detail_under_sprite": 32.69
+          },
+          {
+            "id": "end_archive",
+            "bgImageId": "bg_game_room",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 59.77,
+            "background_detail_under_sprite": 32.69
+          },
+          {
+            "id": "end_archive__beat2",
+            "bgImageId": "bg_game_room",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 59.77,
+            "background_detail_under_sprite": 32.69
+          },
+          {
+            "id": "end_archive__beat3",
+            "bgImageId": "bg_game_room",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 59.77,
+            "background_detail_under_sprite": 32.69
+          },
+          {
+            "id": "end_archive__beat4",
+            "bgImageId": "bg_game_room",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 59.77,
+            "background_detail_under_sprite": 32.69
+          },
+          {
+            "id": "end_shelf_song",
+            "bgImageId": "bg_game_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.47,
+            "background_detail_under_sprite": 33.78
+          },
+          {
+            "id": "end_shelf_song__beat2",
+            "bgImageId": "bg_game_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.47,
+            "background_detail_under_sprite": 33.78
+          },
+          {
+            "id": "end_shelf_song__beat3",
+            "bgImageId": "bg_game_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.47,
+            "background_detail_under_sprite": 33.78
+          },
+          {
+            "id": "end_shelf_song__beat4",
+            "bgImageId": "bg_game_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.47,
+            "background_detail_under_sprite": 33.78
+          },
+          {
+            "id": "end_caretaker",
+            "bgImageId": "bg_game_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.47,
+            "background_detail_under_sprite": 33.78
+          },
+          {
+            "id": "end_caretaker__beat2",
+            "bgImageId": "bg_game_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.47,
+            "background_detail_under_sprite": 33.78
+          },
+          {
+            "id": "end_caretaker__beat3",
+            "bgImageId": "bg_game_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.47,
+            "background_detail_under_sprite": 33.78
+          },
+          {
+            "id": "end_caretaker__beat4",
+            "bgImageId": "bg_game_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.47,
+            "background_detail_under_sprite": 33.78
+          },
+          {
+            "id": "end_next_rain",
+            "bgImageId": "bg_game_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.47,
+            "background_detail_under_sprite": 33.78
+          },
+          {
+            "id": "end_next_rain__beat2",
+            "bgImageId": "bg_game_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.47,
+            "background_detail_under_sprite": 33.78
+          },
+          {
+            "id": "end_next_rain__beat3",
+            "bgImageId": "bg_game_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.47,
+            "background_detail_under_sprite": 33.78
+          },
+          {
+            "id": "end_next_rain__beat4",
+            "bgImageId": "bg_game_room",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3885,
+            "sprite_bg_luma_delta": 57.47,
+            "background_detail_under_sprite": 33.78
+          },
+          {
+            "id": "take_breath",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "take_breath__beat2",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "take_breath__beat3",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          },
+          {
+            "id": "take_breath__beat4",
+            "bgImageId": "bg_shop_counter",
+            "charId": "char_niko_neutral",
+            "char2Id": "char_niko_talk",
+            "char3Id": "char_niko_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "niko",
+            "expected_char2Id": "char_niko_talk",
+            "expected_char3Id": "char_niko_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3923,
+            "sprite_bg_luma_delta": 60.22,
+            "background_detail_under_sprite": 41.16
+          }
+        ],
+        "lowest_sprite_bg_contrast": [
+          {
+            "id": "clean_cart",
+            "background": "bg_swap_platform",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 51.59
+          },
+          {
+            "id": "clean_cart__beat2",
+            "background": "bg_swap_platform",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 51.59
+          },
+          {
+            "id": "clean_cart__beat3",
+            "background": "bg_swap_platform",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 51.59
+          },
+          {
+            "id": "clean_cart__beat4",
+            "background": "bg_swap_platform",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 51.59
+          },
+          {
+            "id": "rain_walk",
+            "background": "bg_swap_platform",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 51.59
+          }
+        ],
+        "busiest_sprite_lanes": [
+          {
+            "id": "clean_cart",
+            "background": "bg_swap_platform",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "background_detail_under_sprite": 41.43
+          },
+          {
+            "id": "clean_cart__beat2",
+            "background": "bg_swap_platform",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "background_detail_under_sprite": 41.43
+          },
+          {
+            "id": "clean_cart__beat3",
+            "background": "bg_swap_platform",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "background_detail_under_sprite": 41.43
+          },
+          {
+            "id": "clean_cart__beat4",
+            "background": "bg_swap_platform",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "background_detail_under_sprite": 41.43
+          },
+          {
+            "id": "rain_walk",
+            "background": "bg_swap_platform",
+            "character": "char_mina_neutral",
+            "position": "left",
+            "background_detail_under_sprite": 41.43
+          }
+        ]
+      }
+    },
+    "counts": {
+      "backgrounds": 3,
+      "characters": 6,
+      "sprite_families": 2,
+      "sprite_approval_outputs": 6,
+      "provenance_outputs": 9
+    }
+  }
+}

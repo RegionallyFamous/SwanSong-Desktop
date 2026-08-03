@@ -1,0 +1,548 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:55:10.971709+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "current-audit",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "returncode": 0,
+      "output_tail": "System audit report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/system-audit-report.json\nSystem audit passed"
+    },
+    {
+      "name": "valid-contract",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": [],
+      "warnings": [],
+      "facts": {
+        "polish": {
+          "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/valid-contract/polish-report.json",
+          "sha256": "5488df7487799e1db30a543d68f45df336c070a83d15f0239748c24c62c9a584",
+          "backgrounds": 0,
+          "characters": 1,
+          "constraints": {
+            "screen": [
+              224,
+              144
+            ],
+            "runtime_textbox_px": [
+              0,
+              104,
+              224,
+              40
+            ],
+            "runtime_speaker_y_px": 96
+          }
+        },
+        "runtime_visual_layout": {
+          "runtime": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/valid-contract/runtime",
+          "main_c": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/valid-contract/runtime/src/main.c",
+          "defines": {
+            "SCREEN_W": 28,
+            "SCREEN_H": 18,
+            "TBOX_Y": 13,
+            "TBOX_H": 5
+          },
+          "tile_px": 8,
+          "screen_px": [
+            224,
+            144
+          ],
+          "textbox_px": [
+            0,
+            104,
+            224,
+            40
+          ],
+          "speaker_y_px": 96,
+          "preview_scale": 2,
+          "preview_scene_count": 6,
+          "preview_sheet_px": [
+            472,
+            1920
+          ],
+          "storyboard_cols": 2,
+          "storyboard_scene_count": 4,
+          "storyboard_sheet_px": [
+            934,
+            650
+          ]
+        }
+      }
+    },
+    {
+      "name": "valid-text-runtime-binding",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": []
+    },
+    {
+      "name": "valid-text-image-binding",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": []
+    },
+    {
+      "name": "stale-text-preview-image-hash",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "text_preview_sheet sha256",
+      "errors": [
+        "Text contract report text_preview_sheet sha256 does not match current image"
+      ]
+    },
+    {
+      "name": "stale-font-proof-dimensions",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "font_proof_sheet width",
+      "errors": [
+        "Text contract report font_proof_sheet width does not match current image"
+      ]
+    },
+    {
+      "name": "valid-visual-contract-binding",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_error_text": "",
+      "errors": []
+    },
+    {
+      "name": "stale-visual-contract-hash",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "visual-contract.json",
+      "errors": [
+        "Visual contract report sha256 does not match current visual-contract.json"
+      ]
+    },
+    {
+      "name": "wrong-visual-contract-path",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "path does not match",
+      "errors": [
+        "Visual contract report path does not match current visual-contract.json",
+        "Visual contract report sha256 does not match current visual-contract.json"
+      ]
+    },
+    {
+      "name": "stale-visual-contract-schema",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "schema_version",
+      "errors": [
+        "Visual contract report schema_version does not match current visual-contract.json"
+      ]
+    },
+    {
+      "name": "wrong-text-font-path",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "font path does not match",
+      "errors": [
+        "Text contract font path does not match the build runtime",
+        "Text contract font sha256 does not match the build runtime font"
+      ]
+    },
+    {
+      "name": "stale-text-font-hash",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "font sha256",
+      "errors": [
+        "Text contract font sha256 does not match the build runtime font"
+      ]
+    },
+    {
+      "name": "wrong-text-main-path",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "main.c path does not match",
+      "errors": [
+        "Text contract main.c path does not match the build runtime",
+        "Text contract main.c sha256 does not match the build runtime main.c"
+      ]
+    },
+    {
+      "name": "textbox-drift",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "Polish textbox constraint",
+      "errors": [
+        "Polish textbox constraint mismatch: got [0, 96, 224, 40], expected [0, 104, 224, 40]"
+      ],
+      "warnings": [],
+      "facts": {
+        "polish": {
+          "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/textbox-drift/polish-report.json",
+          "sha256": "429155e29b647de05d87512501c79c8e0ec99697c1e987e35a293485fa033868",
+          "backgrounds": 0,
+          "characters": 1,
+          "constraints": {
+            "screen": [
+              224,
+              144
+            ],
+            "runtime_textbox_px": [
+              0,
+              96,
+              224,
+              40
+            ],
+            "runtime_speaker_y_px": 96
+          }
+        },
+        "runtime_visual_layout": {
+          "runtime": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/textbox-drift/runtime",
+          "main_c": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/textbox-drift/runtime/src/main.c",
+          "defines": {
+            "SCREEN_W": 28,
+            "SCREEN_H": 18,
+            "TBOX_Y": 13,
+            "TBOX_H": 5
+          },
+          "tile_px": 8,
+          "screen_px": [
+            224,
+            144
+          ],
+          "textbox_px": [
+            0,
+            104,
+            224,
+            40
+          ],
+          "speaker_y_px": 96,
+          "preview_scale": 2,
+          "preview_scene_count": 6,
+          "preview_sheet_px": [
+            472,
+            1920
+          ],
+          "storyboard_cols": 2,
+          "storyboard_scene_count": 4,
+          "storyboard_sheet_px": [
+            934,
+            650
+          ]
+        }
+      }
+    },
+    {
+      "name": "speaker-y-drift",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "Polish speaker y constraint",
+      "errors": [
+        "Polish speaker y constraint mismatch: got 88, expected 96"
+      ],
+      "warnings": [],
+      "facts": {
+        "polish": {
+          "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/speaker-y-drift/polish-report.json",
+          "sha256": "39cba1c7ed1e68407292e5845120734003a528b0c5fa905b8d0f1fc0b1bf398e",
+          "backgrounds": 0,
+          "characters": 1,
+          "constraints": {
+            "screen": [
+              224,
+              144
+            ],
+            "runtime_textbox_px": [
+              0,
+              104,
+              224,
+              40
+            ],
+            "runtime_speaker_y_px": 88
+          }
+        },
+        "runtime_visual_layout": {
+          "runtime": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/speaker-y-drift/runtime",
+          "main_c": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/speaker-y-drift/runtime/src/main.c",
+          "defines": {
+            "SCREEN_W": 28,
+            "SCREEN_H": 18,
+            "TBOX_Y": 13,
+            "TBOX_H": 5
+          },
+          "tile_px": 8,
+          "screen_px": [
+            224,
+            144
+          ],
+          "textbox_px": [
+            0,
+            104,
+            224,
+            40
+          ],
+          "speaker_y_px": 96,
+          "preview_scale": 2,
+          "preview_scene_count": 6,
+          "preview_sheet_px": [
+            472,
+            1920
+          ],
+          "storyboard_cols": 2,
+          "storyboard_scene_count": 4,
+          "storyboard_sheet_px": [
+            934,
+            650
+          ]
+        }
+      }
+    },
+    {
+      "name": "preview-size-drift",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "Scene preview sheet size",
+      "errors": [
+        "Scene preview sheet size mismatch: got [470, 1920], expected [472, 1920]"
+      ],
+      "warnings": [],
+      "facts": {
+        "polish": {
+          "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/preview-size-drift/polish-report.json",
+          "sha256": "5488df7487799e1db30a543d68f45df336c070a83d15f0239748c24c62c9a584",
+          "backgrounds": 0,
+          "characters": 1,
+          "constraints": {
+            "screen": [
+              224,
+              144
+            ],
+            "runtime_textbox_px": [
+              0,
+              104,
+              224,
+              40
+            ],
+            "runtime_speaker_y_px": 96
+          }
+        },
+        "runtime_visual_layout": {
+          "runtime": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/preview-size-drift/runtime",
+          "main_c": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/preview-size-drift/runtime/src/main.c",
+          "defines": {
+            "SCREEN_W": 28,
+            "SCREEN_H": 18,
+            "TBOX_Y": 13,
+            "TBOX_H": 5
+          },
+          "tile_px": 8,
+          "screen_px": [
+            224,
+            144
+          ],
+          "textbox_px": [
+            0,
+            104,
+            224,
+            40
+          ],
+          "speaker_y_px": 96,
+          "preview_scale": 2,
+          "preview_scene_count": 6,
+          "preview_sheet_px": [
+            472,
+            1920
+          ],
+          "storyboard_cols": 2,
+          "storyboard_scene_count": 4,
+          "storyboard_sheet_px": [
+            934,
+            650
+          ]
+        }
+      }
+    },
+    {
+      "name": "storyboard-size-drift",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "Storyboard sheet size",
+      "errors": [
+        "Storyboard sheet size mismatch: got [934, 649], expected [934, 650]"
+      ],
+      "warnings": [],
+      "facts": {
+        "polish": {
+          "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/storyboard-size-drift/polish-report.json",
+          "sha256": "5488df7487799e1db30a543d68f45df336c070a83d15f0239748c24c62c9a584",
+          "backgrounds": 0,
+          "characters": 1,
+          "constraints": {
+            "screen": [
+              224,
+              144
+            ],
+            "runtime_textbox_px": [
+              0,
+              104,
+              224,
+              40
+            ],
+            "runtime_speaker_y_px": 96
+          }
+        },
+        "runtime_visual_layout": {
+          "runtime": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/storyboard-size-drift/runtime",
+          "main_c": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/storyboard-size-drift/runtime/src/main.c",
+          "defines": {
+            "SCREEN_W": 28,
+            "SCREEN_H": 18,
+            "TBOX_Y": 13,
+            "TBOX_H": 5
+          },
+          "tile_px": 8,
+          "screen_px": [
+            224,
+            144
+          ],
+          "textbox_px": [
+            0,
+            104,
+            224,
+            40
+          ],
+          "speaker_y_px": 96,
+          "preview_scale": 2,
+          "preview_scene_count": 6,
+          "preview_sheet_px": [
+            472,
+            1920
+          ],
+          "storyboard_cols": 2,
+          "storyboard_scene_count": 4,
+          "storyboard_sheet_px": [
+            934,
+            650
+          ]
+        }
+      }
+    },
+    {
+      "name": "missing-runtime-define",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "missing #define TBOX_H",
+      "errors": [
+        "Runtime visual contract missing #define TBOX_H in /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/missing-runtime-define/runtime/src/main.c"
+      ],
+      "warnings": [],
+      "facts": {
+        "polish": {
+          "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/missing-runtime-define/polish-report.json",
+          "sha256": "5488df7487799e1db30a543d68f45df336c070a83d15f0239748c24c62c9a584",
+          "backgrounds": 0,
+          "characters": 1,
+          "constraints": {
+            "screen": [
+              224,
+              144
+            ],
+            "runtime_textbox_px": [
+              0,
+              104,
+              224,
+              40
+            ],
+            "runtime_speaker_y_px": 96
+          }
+        }
+      }
+    },
+    {
+      "name": "portrait-framing-drift",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_error_text": "portrait remains above runtime textbox",
+      "errors": [
+        "mira_neutral.png: 90.00% of portrait remains above runtime textbox"
+      ],
+      "warnings": [],
+      "facts": {
+        "polish": {
+          "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/portrait-framing-drift/polish-report.json",
+          "sha256": "7dff2aa29712ac8367e73f173dc9412cd91761347cc20649eff2b1e463e53f1d",
+          "backgrounds": 0,
+          "characters": 1,
+          "constraints": {
+            "screen": [
+              224,
+              144
+            ],
+            "runtime_textbox_px": [
+              0,
+              104,
+              224,
+              40
+            ],
+            "runtime_speaker_y_px": 96
+          }
+        },
+        "runtime_visual_layout": {
+          "runtime": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/portrait-framing-drift/runtime",
+          "main_c": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-audit-guard-be9_hu21/portrait-framing-drift/runtime/src/main.c",
+          "defines": {
+            "SCREEN_W": 28,
+            "SCREEN_H": 18,
+            "TBOX_Y": 13,
+            "TBOX_H": 5
+          },
+          "tile_px": 8,
+          "screen_px": [
+            224,
+            144
+          ],
+          "textbox_px": [
+            0,
+            104,
+            224,
+            40
+          ],
+          "speaker_y_px": 96,
+          "preview_scale": 2,
+          "preview_scene_count": 6,
+          "preview_sheet_px": [
+            472,
+            1920
+          ],
+          "storyboard_cols": 2,
+          "storyboard_scene_count": 4,
+          "storyboard_sheet_px": [
+            934,
+            650
+          ]
+        }
+      }
+    }
+  ]
+}

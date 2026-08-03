@@ -1,0 +1,630 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:34:40.514056+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "virtue-at-the-coat-check",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json",
+      "bytes": 172513,
+      "sha256": "f340b0307c3c34057a4db790a5a0e5a8dbd671d00f402a6d6c87ded19564e938"
+    },
+    "project_counts": {
+      "name": "Virtue at the Coat Check",
+      "nodes": 44,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 44,
+      "scene_nodes": 40,
+      "staged_scenes": 36,
+      "animated_staged_scenes": 36,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Attendant",
+        "Nadleeh",
+        "Narrator",
+        "SYSTEM",
+        "Virtue"
+      ],
+      "backgrounds_used": [
+        "bg_end_a",
+        "bg_end_b",
+        "bg_main",
+        "bg_title"
+      ],
+      "ending_scenes": [
+        "virtue_a4",
+        "virtue_b4"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 44,
+      "start_node": "virtue_title"
+    },
+    "routes": {
+      "initial_flags": {},
+      "states_explored": 44,
+      "truncated": false,
+      "route_reachable_nodes": 44,
+      "route_reachable_ending_scenes": [
+        "virtue_a4",
+        "virtue_b4"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "virtue_a1",
+        "virtue_b1",
+        "virtue_map_1",
+        "virtue_ticket_1"
+      ],
+      "selectable_choice_targets": [
+        "virtue_a1",
+        "virtue_b1",
+        "virtue_map_1",
+        "virtue_ticket_1"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": []
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Use strict ticket order / Build a snack bench",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1941,
+          "estimated_minutes_at_140_wpm": 13.86
+        },
+        {
+          "route_id": "route-2",
+          "label": "Use strict ticket order / Use cords as coat rack",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1944,
+          "estimated_minutes_at_140_wpm": 13.89
+        },
+        {
+          "route_id": "route-3",
+          "label": "Build a body map / Build a snack bench",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1942,
+          "estimated_minutes_at_140_wpm": 13.87
+        },
+        {
+          "route_id": "route-4",
+          "label": "Build a body map / Use cords as coat rack",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1945,
+          "estimated_minutes_at_140_wpm": 13.89
+        }
+      ]
+    },
+    "text": {
+      "blocks": 170,
+      "max_pause_block_chars": 95,
+      "choice_labels": 4,
+      "max_choice_label_chars": 23,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 16,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 24,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_title",
+        "orig_name": "bg_title.png",
+        "embedded_sha256": "7f04e2685e997fec2aba43f31cd0d5a8d6adbcc6d6b5c8f725f3203d101993a7",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/backgrounds/bg_title.png",
+        "local_sha256": "7f04e2685e997fec2aba43f31cd0d5a8d6adbcc6d6b5c8f725f3203d101993a7"
+      },
+      {
+        "id": "bg_main",
+        "orig_name": "bg_main.png",
+        "embedded_sha256": "e4f18c722268fe0e1b4f6e7fb4f70a2fd17c37f200e603838690c09bd8fdb32d",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/backgrounds/bg_main.png",
+        "local_sha256": "e4f18c722268fe0e1b4f6e7fb4f70a2fd17c37f200e603838690c09bd8fdb32d"
+      },
+      {
+        "id": "bg_end_a",
+        "orig_name": "bg_end_a.png",
+        "embedded_sha256": "a193831f10e84c190af22b33e88f2402539517b795b4c46197087fbbbc7ddb4c",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/backgrounds/bg_end_a.png",
+        "local_sha256": "a193831f10e84c190af22b33e88f2402539517b795b4c46197087fbbbc7ddb4c"
+      },
+      {
+        "id": "bg_end_b",
+        "orig_name": "bg_end_b.png",
+        "embedded_sha256": "3f099d4959034e70a5c121f560bef9f6b10b44ca669ce057ba91337028144639",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/backgrounds/bg_end_b.png",
+        "local_sha256": "3f099d4959034e70a5c121f560bef9f6b10b44ca669ce057ba91337028144639"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_virtue_neutral",
+        "orig_name": "virtue_neutral.png",
+        "embedded_sha256": "b16564ddb94403482195f6ec5e34f7fbac854d571918e8b7d06e7128106204b9",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4753,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/characters/virtue_neutral.png",
+        "local_sha256": "b16564ddb94403482195f6ec5e34f7fbac854d571918e8b7d06e7128106204b9"
+      },
+      {
+        "id": "char_virtue_talk",
+        "orig_name": "virtue_talk.png",
+        "embedded_sha256": "ef05e56e68df978f4905253031350ef0a794f31ed6bb6ee72c16faaab259f8e0",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4753,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/characters/virtue_talk.png",
+        "local_sha256": "ef05e56e68df978f4905253031350ef0a794f31ed6bb6ee72c16faaab259f8e0"
+      },
+      {
+        "id": "char_virtue_blink",
+        "orig_name": "virtue_blink.png",
+        "embedded_sha256": "7ffd086e330fec2f6a87360a4c3618349c8237ffc175e95ec7d4a894d635ba5e",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4753,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/characters/virtue_blink.png",
+        "local_sha256": "7ffd086e330fec2f6a87360a4c3618349c8237ffc175e95ec7d4a894d635ba5e"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_title",
+          "textbox_mean_luma": 129.973,
+          "textbox_luma_stddev": 72.224,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_main",
+          "textbox_mean_luma": 128.816,
+          "textbox_luma_stddev": 73.822,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_a",
+          "textbox_mean_luma": 25.628,
+          "textbox_luma_stddev": 12.868,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_b",
+          "textbox_mean_luma": 155.488,
+          "textbox_luma_stddev": 64.099,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 36,
+      "families": [
+        {
+          "neutral": "char_virtue_neutral",
+          "talk": "char_virtue_talk",
+          "blink": "char_virtue_blink",
+          "talk_face_delta": 1.757,
+          "blink_face_delta": 0.551,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 28,
+            "changed_bbox": [
+              39,
+              54,
+              51,
+              67
+            ],
+            "changed_bbox_area": 156,
+            "changed_region_share": 0.012695,
+            "global_changed_share": 0.002279,
+            "face_changed_pixels": 28,
+            "face_changed_share": 0.013258,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 18,
+            "changed_bbox": [
+              39,
+              54,
+              55,
+              58
+            ],
+            "changed_bbox_area": 64,
+            "changed_region_share": 0.005208,
+            "global_changed_share": 0.001465,
+            "face_changed_pixels": 18,
+            "face_changed_share": 0.008523,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources",
+      "count": 6,
+      "packaged_file_count": 8,
+      "background_source_count": 4,
+      "character_source_count": 2,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/background_ending_a_imagegen_v1.png",
+          "bytes": 1922427,
+          "sha256": "55b921320c77ff476d21251ffdb98e668e78a6901d13f3db92f44578c51e8fa3",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1567,
+            1004
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/background_ending_b_imagegen_v1.png",
+          "bytes": 2305149,
+          "sha256": "74aa61b6a8c49ee62fa61b7dbfd550366c9a788b1a2aedc89b0138fb37bf6700",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/background_main_imagegen_v1.png",
+          "bytes": 1978391,
+          "sha256": "cdd5c0db676a24db42200e35a8dd326961118f3076f82e33862d43443a1e6162",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1567,
+            1004
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/background_title_imagegen_v1.png",
+          "bytes": 2415611,
+          "sha256": "b3114a2812cafac533e70557cba568251203e1af4aada4d543e7ae7085526a6d",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1571,
+            1001
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/character_master_cutout_imagegen_v1.png",
+          "bytes": 1196464,
+          "sha256": "99c37da247cc0cd512e55f96c57602defbe4772a220c3e13d62a5d9b02aed2cc",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1086,
+            1448
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/character_master_imagegen_v1.png",
+          "bytes": 1585174,
+          "sha256": "e1bcef86fa1428ce7974cd353d20ae8b994129c209d064621c004034287fc0e2",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1086,
+            1448
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/game_spec.json",
+          "bytes": 21633,
+          "sha256": "9e5a3460901f8e35bad4efc8d4d38c7cbfb33d2dd76c20d50eed6699bd9280e6",
+          "categories": []
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/imagegen-prompts-v1.md",
+          "bytes": 10829,
+          "sha256": "a3b80dc175cd4f53fb4c0dd4e1923b9a1dd84461791e7ef48168e0381863d5ea",
+          "categories": []
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 60507,
+      "sha256": "88f14c6b5daca91d85e224b1de91c0b313a80f58624e96ef6dd51a140c6cdcb0",
+      "size": [
+        478,
+        510
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 293563,
+        "sha256": "50941d647f21c80aa6c4b6d0815698b0724b1d955cd3570f91d39ff5afe788b5",
+        "size": [
+          712,
+          2560
+        ],
+        "mode": "RGB",
+        "unique_colors": 277,
+        "luma_stddev": 61.991
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 96403,
+        "sha256": "454d7ce4f845ca932406880fd41ec6aaa84322eec0165e63cc18ed1522ba847f",
+        "size": [
+          488,
+          1064
+        ],
+        "mode": "RGB",
+        "unique_colors": 277,
+        "luma_stddev": 57.377
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 24118,
+        "sha256": "e18a74367cc50a721f2ba2c6902e8ded49dd3f311f8d031f8aaa36dceef6a3a7",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json",
+          "exists": true,
+          "bytes": 172513,
+          "sha256": "f340b0307c3c34057a4db790a5a0e5a8dbd671d00f402a6d6c87ded19564e938"
+        },
+        "nodes_rendered": 43,
+        "preview_node_ids": [
+          "virtue_title",
+          "virtue_01",
+          "virtue_02",
+          "virtue_03",
+          "virtue_04",
+          "virtue_05",
+          "virtue_06",
+          "virtue_07",
+          "virtue_08",
+          "virtue_09",
+          "virtue_10",
+          "virtue_method",
+          "virtue_ticket_1",
+          "virtue_ticket_2",
+          "virtue_map_1",
+          "virtue_map_2",
+          "virtue_11",
+          "virtue_12",
+          "virtue_13",
+          "virtue_14",
+          "virtue_15",
+          "virtue_16",
+          "virtue_17",
+          "virtue_18",
+          "virtue_19",
+          "virtue_20",
+          "virtue_21",
+          "virtue_22",
+          "virtue_23",
+          "virtue_24",
+          "virtue_25",
+          "virtue_26",
+          "virtue_27",
+          "virtue_28",
+          "virtue_choice",
+          "virtue_a1",
+          "virtue_a2",
+          "virtue_a3",
+          "virtue_a4",
+          "virtue_b1",
+          "virtue_b2",
+          "virtue_b3",
+          "virtue_b4"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 43,
+            "expected": 43
+          },
+          "storyboard_cells": {
+            "reported": 43,
+            "expected": 43
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/reports/virtue-at-the-coat-check-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

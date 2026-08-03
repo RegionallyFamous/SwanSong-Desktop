@@ -10,9 +10,10 @@ The signed public release is **SwanSong 0.9.3 (21)**.
 
 ## What this release is testing
 
-- **Story Forge on the Mac:** select a compatible schema-v3 framework, create
-  and reopen a novel, move through Concept, Outline, Draft, Revision, and
-  Release, and confirm the native workspace preserves the selected project.
+- **Story Forge on the Mac:** verify the included schema-v3 framework resolves
+  without a separate checkout, create and reopen a novel, move through Concept,
+  Outline, Draft, Revision, and Release, and confirm the native workspace
+  preserves the selected project.
 - **Editorial without fake approval:** run every editorial, continuity, reader,
   rights, art, music, catalog, lock, EPUB, and PDF contract. Missing, stale, or
   rejected evidence must remain blocking, and SwanSong must never invent a
@@ -131,7 +132,9 @@ The signed public release is **SwanSong 0.9.3 (21)**.
 
 ## Story Forge guardrails
 
-- The framework, catalog, and novel folders must be explicitly selected.
+- The included framework must pass its content-manifest check. Catalog and
+  novel folders must still be explicitly selected; an alternate framework is
+  a development override.
 - Commands are a fixed typed allowlist; SwanSong must not run arbitrary project
   commands or silently approve editorial, reader, rights, or art review.
 - ImageGen briefs and review packets do not turn procedural placeholders into
@@ -178,11 +181,12 @@ The signed public release is **SwanSong 0.9.3 (21)**.
 
 ## Expected boundaries
 
-SwanSong 0.9.3 embeds SDK 0.5.0 but not Python or Wonderful. Install those
+SwanSong 0.9.4 embeds SDK 0.5.0 and the fixed Story Forge framework, but not
+Python or Wonderful. Install those
 external dependencies before running Studio Doctor or a build. Studio should
 find Python 3.11+ in standard Homebrew, python.org, MacPorts, and system
-locations even when SwanSong opens from Finder. Story Forge also requires a
-compatible local framework checkout.
+locations even when SwanSong opens from Finder. Story Forge no longer requires
+a separate framework checkout.
 
 The Homebrew Catalog stays network-silent until the tester explicitly chooses
 Browse Games, Refresh, or a listed download. The Analogue Pocket workflow stays

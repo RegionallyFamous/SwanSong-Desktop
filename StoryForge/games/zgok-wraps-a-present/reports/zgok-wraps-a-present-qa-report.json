@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/contact_sheet.png",
+    "nodes": 44,
+    "flags": 0,
+    "tracks": [
+      {
+        "id": "zgok_title",
+        "name": "Claw and Ribbon",
+        "bpm": 110
+      },
+      {
+        "id": "zgok_main",
+        "name": "Tape Trouble",
+        "bpm": 118
+      },
+      {
+        "id": "zgok_end_a",
+        "name": "Mitten Protocol",
+        "bpm": 86
+      },
+      {
+        "id": "zgok_end_b",
+        "name": "Ribbon Cyclone",
+        "bpm": 144
+      }
+    ],
+    "imagegen_source_sha256": {
+      "background_title_imagegen_v1.png": "2ebce1bcbb665c58a1ee8c38a2fc08dcc7429de4ba25aaf217d1066826068e0a",
+      "background_main_imagegen_v1.png": "d0d07cdcfe5dbf61f648624b6253c48c2cb1f064ed00a56ba7b18fe91c105a9d",
+      "background_ending_a_imagegen_v1.png": "f02294c8933b956cba0ec01ea4547ff48e64cb786bedc5a517c24c2d6d89602a",
+      "background_ending_b_imagegen_v1.png": "faa26ba3a451b61e6abb5c468b6614c4a4269dd1c0b4575c555f19e38e94c420",
+      "character_master_cutout_imagegen_v1.png": "c2ec3cdc742de3ca2a8636b0934fca93f9a2c2198cd6c8fb905ae1e64c5f089f"
+    },
+    "source_master_count": 5,
+    "background_count": 4,
+    "character_frame_count": 3,
+    "art_policy": "ImageGen-first; no procedural pictorial fallback"
+  }
+}

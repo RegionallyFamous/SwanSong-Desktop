@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/contact_sheet.png",
+    "nodes": 44,
+    "flags": 0,
+    "tracks": [
+      {
+        "id": "coat_title",
+        "name": "Primer Parade",
+        "bpm": 116
+      },
+      {
+        "id": "coat_main",
+        "name": "Ventilation Situation",
+        "bpm": 148
+      },
+      {
+        "id": "coat_end_a",
+        "name": "Perfect Finish",
+        "bpm": 104
+      },
+      {
+        "id": "coat_end_b",
+        "name": "Accidental Masterpiece",
+        "bpm": 132
+      }
+    ],
+    "imagegen_source_sha256": {
+      "background_title_imagegen_v1.png": "9c5f85e931787407bb1843622774770b192d2b03640b7e89911360884825b884",
+      "background_main_imagegen_v1.png": "4b6d941ac7617250f1ab17808e5c377e310816045fd278ead60a2e95797fbc9a",
+      "background_ending_a_imagegen_v1.png": "8aa0c6930c0937586312530800a329e5099e3e502594d29b4be601cbfdef4cc7",
+      "background_ending_b_imagegen_v1.png": "b062d91395a0fd65945d11090d0e422e6719d3c2c7b028d0f11c5b4961575d57",
+      "character_master_cutout_imagegen_v1.png": "41a8e0083f788e771bf1a44036d97bc83b2938f0309da32595574c35997aa7bb"
+    },
+    "source_master_count": 5,
+    "background_count": 4,
+    "character_frame_count": 3,
+    "art_policy": "ImageGen-first; no procedural pictorial fallback"
+  }
+}

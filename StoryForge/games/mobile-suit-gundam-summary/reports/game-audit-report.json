@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:50:12.372640+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "mobile-suit-gundam-summary",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/runtime-local/mobile-suit-gundam-summary.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/mobile-suit-gundam-summary-qa-report.json",
+    "project_counts": {
+      "name": "Mobile Suit Gundam: The One Year Tour",
+      "nodes": 55,
+      "flags": 0,
+      "tracks": 7,
+      "backgrounds": 14,
+      "characters": 8,
+      "sfx": 8
+    },
+    "header_counts": {
+      "NUM_NODES": 55,
+      "NUM_FLAGS": 0,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 7,
+      "NUM_SFX": 8,
+      "NUM_BG_ASSETS": 14,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 8
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json",
+      "bytes": 469485,
+      "sha256": "f13b4bdd92cfa422127cbd83d9f03c0f23720edd36c674b6fccef99ac83691ef"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/runtime-local/mobile-suit-gundam-summary.wsc",
+      "bytes": 8388608,
+      "sha256": "ebfdd1a57e1fa35e476b87ddf8ce97e9bed332f8efdf1ca629bb05397ae007ac"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/emulator-smoke-report.json",
+      "bytes": 1215,
+      "sha256": "bd562282c6b393ff08986bab039b8d7eafe62705e69099f05c570dbb85923b07"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/game-readiness-report.json",
+      "bytes": 54510,
+      "sha256": "5c6860cc77d4445a28bfab34917b0469cc1ea1ef7ff02c4385d80ea66d15383e"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/mobile-suit-gundam-summary-qa-report.json",
+      "bytes": 5220,
+      "sha256": "d598c49d63f7c34919b10bae7af1660a26d436d1864fa24885989aea8b4ec926"
+    }
+  }
+}

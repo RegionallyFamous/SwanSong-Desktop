@@ -1,0 +1,332 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-17T01:55:00+00:00",
+  "art_policy": "Pictorial masters are built-in ImageGen outputs; runtime frames are deterministic local derivatives.",
+  "outputs": {
+    "backgrounds/shelf_room.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/sources/backgrounds_imagegen_source.png",
+      "source_sha256": "059ca95839b30b8b836956e7fe30868255be4664c5180afb7510e77e591bd511",
+      "output_sha256": "4a4bff8055d094da4ddc85c18fef02a1b1f11d1c0e32ccb5df7d842b67fb4638",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 35.57
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/station_swap.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/sources/backgrounds_imagegen_source.png",
+      "source_sha256": "059ca95839b30b8b836956e7fe30868255be4664c5180afb7510e77e591bd511",
+      "output_sha256": "823e97c51ad7df1297650b21d075077a4282f7e5462ef33d165745abac8894d8",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 24.87
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/test_counter.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/sources/backgrounds_imagegen_source.png",
+      "source_sha256": "059ca95839b30b8b836956e7fe30868255be4664c5180afb7510e77e591bd511",
+      "output_sha256": "10c1cf64d4f480886bf0496ea9b334ed1bed55e31bdd496226a1d0d55645b600",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 22.5
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/aya_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "985091bf98e7f6331ebf07164f1f10f410be29a5314cf659f3f47806e7d9b4d6",
+      "output_sha256": "e3c4563daba8c8eafd5c6eae7714efaac49723e56e6513807f15c045c84db24c",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          7,
+          88,
+          128
+        ],
+        "alpha_coverage": 0.5688,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.616,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 68.1,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 84.65
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 4,
+          "largest_component_pixels": 6946,
+          "largest_component_share": 0.9937,
+          "tiny_component_count": 2
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/aya_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "985091bf98e7f6331ebf07164f1f10f410be29a5314cf659f3f47806e7d9b4d6",
+      "output_sha256": "45c5ff2e9e6ac1514eb12e09408b7e78970a29bb0bcb398979fa82f96dd5d6bc",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          7,
+          88,
+          128
+        ],
+        "alpha_coverage": 0.5688,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.616,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 67.03,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 83.12
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 4,
+          "largest_component_pixels": 6946,
+          "largest_component_share": 0.9937,
+          "tiny_component_count": 2
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/aya_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "985091bf98e7f6331ebf07164f1f10f410be29a5314cf659f3f47806e7d9b4d6",
+      "output_sha256": "4041586d2a1d83e4f164024e539be867b8bd05911b5e52d384341653b40c645e",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          7,
+          88,
+          128
+        ],
+        "alpha_coverage": 0.5688,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.616,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 66.46,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 83.21
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 4,
+          "largest_component_pixels": 6946,
+          "largest_component_share": 0.9937,
+          "tiny_component_count": 2
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/ren_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "985091bf98e7f6331ebf07164f1f10f410be29a5314cf659f3f47806e7d9b4d6",
+      "output_sha256": "e3794852a19812e0e41db6f44951dcf9160e21ebfc91f662285524ff724e5919",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          7,
+          6,
+          89,
+          125
+        ],
+        "alpha_coverage": 0.5888,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6289,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 63.56,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 57.55
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7235,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/ren_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "985091bf98e7f6331ebf07164f1f10f410be29a5314cf659f3f47806e7d9b4d6",
+      "output_sha256": "72d3787fee90caabf5a9d15dc71101e2cf0ad7131522a78c3dc2b9879c11d987",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          7,
+          6,
+          89,
+          125
+        ],
+        "alpha_coverage": 0.5888,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6289,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 63.25,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 57.15
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7235,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/ren_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "985091bf98e7f6331ebf07164f1f10f410be29a5314cf659f3f47806e7d9b4d6",
+      "output_sha256": "4ce1e91e31b79da21e319bc71c0dae2dc78c68f343306fe783a4855f7ceaeaae",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          7,
+          6,
+          89,
+          125
+        ],
+        "alpha_coverage": 0.5888,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6289,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 63.46,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 58.07
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7235,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    }
+  }
+}

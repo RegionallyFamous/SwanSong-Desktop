@@ -1,0 +1,228 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:09:24.240984+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "operation-potluck",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck",
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+      "bytes": 165835,
+      "sha256": "183bd3832346d19820c2c3e51dd4ada09af3d036015015578f0662ab66806fe8"
+    },
+    "project_counts": {
+      "name": "Operation Potluck",
+      "nodes": 44,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 5,
+      "characters": 3,
+      "sfx": 0
+    },
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local",
+    "runtime_sync": {
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local",
+      "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local",
+      "copied": [
+        ".gitignore",
+        "Makefile",
+        "README.md",
+        "music/.gitkeep",
+        "src/font.h",
+        "src/game_types.h",
+        "src/main.c",
+        "third_party/README.md",
+        "tools/analyze_vnds.py",
+        "tools/convert_json.py",
+        "tools/convert_nscripter_proof.py",
+        "tools/convert_vnds_proof.py",
+        "tools/extract_nsa.py",
+        "tools/gen_ambient_sfx.py",
+        "tools/gen_cygnals_menu_fur.py",
+        "tools/saveload_bg.png",
+        "tools/selftest_choice_visuals.py",
+        "tools/wsc_image_prep.py",
+        "wfconfig.toml"
+      ],
+      "skipped": [
+        "build/signal-before-dawn-slice/signal-before-dawn-slice.elf",
+        "build/signal-before-dawn-slice/signal-before-dawn-slice_stage1.elf",
+        "build/signal-before-dawn-slice/src/game_data.d",
+        "build/signal-before-dawn-slice/src/game_data.o",
+        "build/signal-before-dawn-slice/src/main.d",
+        "build/signal-before-dawn-slice/src/main.o",
+        "signal-before-dawn-slice.wsc",
+        "src/game_data.c",
+        "src/game_data.h"
+      ],
+      "quarantined": [],
+      "quarantine_root": null
+    },
+    "runtime_source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local",
+    "asset_builder": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/build_operation_potluck.py",
+    "name": "operation-potluck",
+    "rom": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local/operation-potluck.wsc",
+      "bytes": 8388608,
+      "sha256": "a14776ca911c24bf5f427a01d376203a3b5354069447a351a9cde7ea050d4fd2"
+    },
+    "smoke_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/emulator-smoke-report.json",
+      "bytes": 1197,
+      "sha256": "d1dbadcd4806fd6f977ec60a7f126de48927e908a6ba8987f1c7707e2285a108"
+    },
+    "readiness_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/game-readiness-report.json",
+      "bytes": 20704,
+      "sha256": "0eef41ff8a52d6249f3fef70f9a8bae1811ac6cf04265cba6d56ca068a9d4ced"
+    },
+    "graphics_contract_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/graphics-contract-report.json",
+      "bytes": 36374,
+      "sha256": "780f1816c59cb81b837d4e35ac5b5d5ca399d32ca58f749f8beb03c671f1313d"
+    },
+    "experience_polish_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/experience-polish-report.json",
+      "exists": false
+    },
+    "audit_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/game-audit-report.json",
+      "bytes": 3126,
+      "sha256": "62d3fe71f89666bc1e1dfe376181643ec2b4606ca50da947c8d042511b9b6155"
+    },
+    "commands": [
+      {
+        "name": "asset-builder",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/build_operation_potluck.py"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck",
+        "returncode": 0,
+        "output_tail": "Wrote project: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json\nWrote contact sheet: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/contact_sheet.png\nWrote QA report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/operation-potluck-qa-report.json"
+      },
+      {
+        "name": "review-sheets",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/make_wscvn_game_review_sheets.py",
+          "operation-potluck",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+          "--asset-root",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/review-sheets-report.json",
+          "--font",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck",
+        "returncode": 0,
+        "output_tail": "Scene preview sheet: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/scene_preview_sheet.png\nStoryboard sheet: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/storyboard_sheet.png\nReview sheets report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/review-sheets-report.json"
+      },
+      {
+        "name": "readiness",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py",
+          "operation-potluck",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+          "--asset-root",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/game-readiness-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck",
+        "returncode": 0,
+        "output_tail": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:219: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:220: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:222: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alpha_coverage = sum(1 for pixel in image.getdata() if pixel[3] > 0) / (image.width * image.height)\nGame readiness report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/game-readiness-report.json\n[i] Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.\nTechnical game readiness passed; aesthetic review remains separate"
+      },
+      {
+        "name": "graphics-contract",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_graphics_contract.py",
+          "--asset-root",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+          "--allow-missing-provenance",
+          "--out",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/graphics-contract-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck",
+        "returncode": 0,
+        "output_tail": "Graphics contract report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/graphics-contract-report.json\nGraphics contract passed"
+      },
+      {
+        "name": "convert",
+        "cmd": [
+          "make",
+          "convert",
+          "JSON=/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+          "PY=/opt/homebrew/opt/python@3.14/bin/python3.14"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local",
+        "returncode": 0,
+        "output_tail": "/opt/homebrew/opt/python@3.14/bin/python3.14 tools/convert_json.py \"/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json\" src/\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local/tools/convert_json.py:939: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  indexed = list(q.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local/tools/convert_json.py:517: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local/tools/convert_json.py:580: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(frame.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local/tools/convert_json.py:606: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local/tools/convert_json.py:627: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgb.getdata())\n[+] Loaded \"Operation Potluck\" \u2014 44 nodes, 0 flags, 4 tracks, 5 backgrounds, 3 characters\n[+] Wrote src//game_data.h and src//game_data.c\n[+] Ready: run \"make\" from the project root."
+      },
+      {
+        "name": "clean",
+        "cmd": [
+          "make",
+          "clean",
+          "NAME=operation-potluck"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local",
+        "returncode": 0,
+        "output_tail": "rm -rf build/operation-potluck operation-potluck.wsc"
+      },
+      {
+        "name": "build",
+        "cmd": [
+          "make",
+          "NAME=operation-potluck"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local",
+        "returncode": 0,
+        "output_tail": "/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/operation-potluck/src/main.o src/main.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/operation-potluck/src/game_data.o src/game_data.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -r -o build/operation-potluck/operation-potluck_stage1.elf build/operation-potluck/src/main.o build/operation-potluck/src/game_data.o /opt/wonderful/target/wswan/medium/lib/crt0.o -T/opt/wonderful/target/wswan/medium/link.ld -L/opt/wonderful/target/wswan/medium/lib -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -u __wse_tiles_2bpp -u __wse_color_palette -L/opt/wonderful/toolchain/gcc-ia16-elf/lib/v30mz-segelf/medium -lwse -lwsx -lws -lgcc\n/opt/wonderful/bin/wf-wswantool build rom -c wfconfig.toml -o operation-potluck.wsc --output-elf build/operation-potluck/operation-potluck.elf build/operation-potluck/operation-potluck_stage1.elf\n=== BUILD COMPLETE ===\n-rw-r--r--@ 1 nick  staff   8.0M Jul 26 22:09 operation-potluck.wsc"
+      },
+      {
+        "name": "smoke",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/smoke_wscvn_rom.py",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local/operation-potluck.wsc",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/emulator-smoke-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck",
+        "returncode": 0,
+        "output_tail": "Emulator smoke report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/emulator-smoke-report.json\nBoot/checksum smoke passed (no pixels observed): wswan(WonderSwan) 8192KiB checksum 0xfd72\nVisual verification not performed; no emulator screenshot proof was bound"
+      },
+      {
+        "name": "audit",
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+          "operation-potluck",
+          "--project",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+          "--runtime",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local",
+          "--build-report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/build-report.json",
+          "--smoke-report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/emulator-smoke-report.json",
+          "--readiness-report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/game-readiness-report.json",
+          "--report",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/game-audit-report.json"
+        ],
+        "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck",
+        "returncode": 0,
+        "output_tail": "Game audit report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/game-audit-report.json\nGame audit passed"
+      }
+    ]
+  }
+}

@@ -1,0 +1,519 @@
+{
+  "schema_version": 1,
+  "character": "mira",
+  "sheet_kind": "expression",
+  "runtime_ready": false,
+  "sprite_offset": [
+    0,
+    0
+  ],
+  "labels": [
+    "worried",
+    "resolved",
+    "smile"
+  ],
+  "scale": 4,
+  "out": "assets/signal-before-dawn-slice/auditions/mira_expression_audition.png",
+  "tool_provenance": [
+    {
+      "path": "scripts/audition_wscvn_sprite_sheet.py",
+      "sha256": "3c3ff7d0eff71df59c58e51d6d1f7990516778f64749e3dad207ab05b2069338"
+    },
+    {
+      "path": "scripts/make_signal_before_dawn_slice.py",
+      "sha256": "c48f872b41a2bbe0310229ffd35ed4786096e7d886595f950605efcf622afc90"
+    },
+    {
+      "path": "scripts/wscvn_sprite_family.py",
+      "sha256": "3ebf274e1f493bd10bc06be29936eda8c43d6e85e0d7cd5d4ddcd980d1bbc1aa"
+    }
+  ],
+  "quality": {
+    "status": "pass",
+    "error_count": 0,
+    "warning_count": 0,
+    "info_count": 1,
+    "thresholds": {
+      "max_visible_colors": 15,
+      "min_talk_face_delta": 18,
+      "min_blink_face_delta": 18,
+      "min_alpha_coverage": 0.2,
+      "max_alpha_coverage": 0.75,
+      "max_animation_alpha_changed": 0,
+      "min_visible_above_textbox": 0.52,
+      "max_visible_above_textbox": 0.92,
+      "max_animation_bbox_area": 1200,
+      "max_source_center_drift": 0.09,
+      "max_source_scale_drift": 0.18,
+      "max_sprite_center_drift": 0.04,
+      "max_sprite_scale_drift": 0.08,
+      "max_tiny_color_pixels": 10,
+      "max_green_fringe_pixels": 0,
+      "max_alpha_components": 8,
+      "min_largest_alpha_component_share": 0.96
+    }
+  },
+  "sources": [
+    {
+      "label": "expression",
+      "path": "assets/signal-before-dawn-slice/sources/mira_expression_sheet_source_v6.png",
+      "sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570"
+    }
+  ],
+  "frames": [
+    {
+      "source_label": "expression",
+      "source_path": "assets/signal-before-dawn-slice/sources/mira_expression_sheet_source_v6.png",
+      "source_sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+      "source_size": [
+        2126,
+        740
+      ],
+      "source_cell_box": [
+        0,
+        0,
+        709,
+        740
+      ],
+      "source_cell": {
+        "size": [
+          709,
+          740
+        ],
+        "non_key_ratio": 0.5072408798078756,
+        "bbox": [
+          167,
+          29,
+          695,
+          702
+        ],
+        "bbox_center_norm": [
+          0.6079,
+          0.4939
+        ],
+        "bbox_size_norm": [
+          0.7447,
+          0.9095
+        ],
+        "bbox_area_ratio": 0.6773
+      },
+      "frame_label": "worried",
+      "frame_index": 0,
+      "sprite_size": [
+        96,
+        128
+      ],
+      "sprite_alpha_bbox": {
+        "bbox": [
+          8,
+          7,
+          87,
+          101
+        ],
+        "bbox_center_norm": [
+          0.4948,
+          0.4219
+        ],
+        "bbox_size_norm": [
+          0.8229,
+          0.7344
+        ],
+        "bbox_area_ratio": 0.6043
+      },
+      "visible_colors": 14,
+      "alpha_coverage": 0.4674479166666667,
+      "visible_above_textbox": 0.8342618384401114,
+      "occupied_tiles": 111,
+      "wsc_12bit_snapped": true,
+      "binary_alpha": true,
+      "tiny_color_pixels": 0,
+      "green_fringe_pixels": 0,
+      "alpha_components": {
+        "component_count": 1,
+        "largest_component_pixels": 5744,
+        "largest_component_share": 1.0,
+        "tiny_component_count": 0
+      },
+      "delta": {
+        "talk": {
+          "full": {
+            "changed_pixels": 23,
+            "changed_pixel_ratio": 0.0018717447916666667,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 23,
+            "changed_visible_ratio": 0.004004178272980502,
+            "changed_bbox": [
+              37,
+              58,
+              44,
+              63
+            ],
+            "changed_bbox_area": 35,
+            "mean_abs_rgba_delta": 0.14422607421875
+          },
+          "face": {
+            "changed_pixels": 23,
+            "changed_pixel_ratio": 0.01597222222222222,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 23,
+            "changed_visible_ratio": 0.01597222222222222,
+            "changed_bbox": [
+              9,
+              22,
+              16,
+              27
+            ],
+            "changed_bbox_area": 35,
+            "mean_abs_rgba_delta": 1.2307291666666667
+          }
+        },
+        "blink": {
+          "full": {
+            "changed_pixels": 52,
+            "changed_pixel_ratio": 0.004231770833333333,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 52,
+            "changed_visible_ratio": 0.009052924791086351,
+            "changed_bbox": [
+              37,
+              45,
+              64,
+              51
+            ],
+            "changed_bbox_area": 162,
+            "mean_abs_rgba_delta": 0.50323486328125
+          },
+          "face": {
+            "changed_pixels": 52,
+            "changed_pixel_ratio": 0.03611111111111111,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 52,
+            "changed_visible_ratio": 0.03611111111111111,
+            "changed_bbox": [
+              9,
+              9,
+              36,
+              15
+            ],
+            "changed_bbox_area": 162,
+            "mean_abs_rgba_delta": 4.294270833333333
+          }
+        }
+      },
+      "quality": {
+        "status": "pass",
+        "issues": []
+      }
+    },
+    {
+      "source_label": "expression",
+      "source_path": "assets/signal-before-dawn-slice/sources/mira_expression_sheet_source_v6.png",
+      "source_sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+      "source_size": [
+        2126,
+        740
+      ],
+      "source_cell_box": [
+        709,
+        0,
+        1417,
+        740
+      ],
+      "source_cell": {
+        "size": [
+          708,
+          740
+        ],
+        "non_key_ratio": 0.5090796304779356,
+        "bbox": [
+          123,
+          29,
+          653,
+          702
+        ],
+        "bbox_center_norm": [
+          0.548,
+          0.4939
+        ],
+        "bbox_size_norm": [
+          0.7486,
+          0.9095
+        ],
+        "bbox_area_ratio": 0.6808
+      },
+      "frame_label": "resolved",
+      "frame_index": 1,
+      "sprite_size": [
+        96,
+        128
+      ],
+      "sprite_alpha_bbox": {
+        "bbox": [
+          8,
+          8,
+          87,
+          101
+        ],
+        "bbox_center_norm": [
+          0.4948,
+          0.4258
+        ],
+        "bbox_size_norm": [
+          0.8229,
+          0.7266
+        ],
+        "bbox_area_ratio": 0.5979
+      },
+      "visible_colors": 14,
+      "alpha_coverage": 0.4619954427083333,
+      "visible_above_textbox": 0.8324819446890963,
+      "occupied_tiles": 108,
+      "wsc_12bit_snapped": true,
+      "binary_alpha": true,
+      "tiny_color_pixels": 0,
+      "green_fringe_pixels": 0,
+      "alpha_components": {
+        "component_count": 1,
+        "largest_component_pixels": 5677,
+        "largest_component_share": 1.0,
+        "tiny_component_count": 0
+      },
+      "delta": {
+        "talk": {
+          "full": {
+            "changed_pixels": 19,
+            "changed_pixel_ratio": 0.0015462239583333333,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 19,
+            "changed_visible_ratio": 0.0033468381187246785,
+            "changed_bbox": [
+              37,
+              58,
+              44,
+              63
+            ],
+            "changed_bbox_area": 35,
+            "mean_abs_rgba_delta": 0.08819580078125
+          },
+          "face": {
+            "changed_pixels": 19,
+            "changed_pixel_ratio": 0.013194444444444444,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 19,
+            "changed_visible_ratio": 0.013194444444444444,
+            "changed_bbox": [
+              9,
+              22,
+              16,
+              27
+            ],
+            "changed_bbox_area": 35,
+            "mean_abs_rgba_delta": 0.7526041666666666
+          }
+        },
+        "blink": {
+          "full": {
+            "changed_pixels": 53,
+            "changed_pixel_ratio": 0.004313151041666667,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 53,
+            "changed_visible_ratio": 0.009335916857495156,
+            "changed_bbox": [
+              37,
+              45,
+              64,
+              51
+            ],
+            "changed_bbox_area": 162,
+            "mean_abs_rgba_delta": 0.5149943033854166
+          },
+          "face": {
+            "changed_pixels": 53,
+            "changed_pixel_ratio": 0.03680555555555556,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 53,
+            "changed_visible_ratio": 0.03680555555555556,
+            "changed_bbox": [
+              9,
+              9,
+              36,
+              15
+            ],
+            "changed_bbox_area": 162,
+            "mean_abs_rgba_delta": 4.394618055555555
+          }
+        }
+      },
+      "quality": {
+        "status": "pass",
+        "issues": []
+      },
+      "source_alignment": {
+        "center_drift_from_frame_1": 0.0599,
+        "scale_drift_from_frame_1": 0.0052
+      },
+      "sprite_alignment": {
+        "center_drift_from_frame_1": 0.0039,
+        "scale_drift_from_frame_1": 0.0106
+      }
+    },
+    {
+      "source_label": "expression",
+      "source_path": "assets/signal-before-dawn-slice/sources/mira_expression_sheet_source_v6.png",
+      "source_sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+      "source_size": [
+        2126,
+        740
+      ],
+      "source_cell_box": [
+        1417,
+        0,
+        2126,
+        740
+      ],
+      "source_cell": {
+        "size": [
+          709,
+          740
+        ],
+        "non_key_ratio": 0.5074295734380361,
+        "bbox": [
+          73,
+          29,
+          603,
+          702
+        ],
+        "bbox_center_norm": [
+          0.4767,
+          0.4939
+        ],
+        "bbox_size_norm": [
+          0.7475,
+          0.9095
+        ],
+        "bbox_area_ratio": 0.6798
+      },
+      "frame_label": "smile",
+      "frame_index": 2,
+      "sprite_size": [
+        96,
+        128
+      ],
+      "sprite_alpha_bbox": {
+        "bbox": [
+          8,
+          8,
+          87,
+          101
+        ],
+        "bbox_center_norm": [
+          0.4948,
+          0.4258
+        ],
+        "bbox_size_norm": [
+          0.8229,
+          0.7266
+        ],
+        "bbox_area_ratio": 0.5979
+      },
+      "visible_colors": 14,
+      "alpha_coverage": 0.461181640625,
+      "visible_above_textbox": 0.8323628021881065,
+      "occupied_tiles": 108,
+      "wsc_12bit_snapped": true,
+      "binary_alpha": true,
+      "tiny_color_pixels": 0,
+      "green_fringe_pixels": 0,
+      "alpha_components": {
+        "component_count": 1,
+        "largest_component_pixels": 5667,
+        "largest_component_share": 1.0,
+        "tiny_component_count": 0
+      },
+      "delta": {
+        "talk": {
+          "full": {
+            "changed_pixels": 19,
+            "changed_pixel_ratio": 0.0015462239583333333,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 19,
+            "changed_visible_ratio": 0.0033527439562378684,
+            "changed_bbox": [
+              37,
+              58,
+              44,
+              63
+            ],
+            "changed_bbox_area": 35,
+            "mean_abs_rgba_delta": 0.09788004557291667
+          },
+          "face": {
+            "changed_pixels": 19,
+            "changed_pixel_ratio": 0.013194444444444444,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 19,
+            "changed_visible_ratio": 0.013194444444444444,
+            "changed_bbox": [
+              9,
+              22,
+              16,
+              27
+            ],
+            "changed_bbox_area": 35,
+            "mean_abs_rgba_delta": 0.8352430555555556
+          }
+        },
+        "blink": {
+          "full": {
+            "changed_pixels": 52,
+            "changed_pixel_ratio": 0.004231770833333333,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 52,
+            "changed_visible_ratio": 0.009175930827598376,
+            "changed_bbox": [
+              37,
+              45,
+              64,
+              51
+            ],
+            "changed_bbox_area": 162,
+            "mean_abs_rgba_delta": 0.5025431315104166
+          },
+          "face": {
+            "changed_pixels": 52,
+            "changed_pixel_ratio": 0.03611111111111111,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 52,
+            "changed_visible_ratio": 0.03611111111111111,
+            "changed_bbox": [
+              9,
+              9,
+              36,
+              15
+            ],
+            "changed_bbox_area": 162,
+            "mean_abs_rgba_delta": 4.288368055555556
+          }
+        }
+      },
+      "quality": {
+        "status": "warn",
+        "issues": [
+          {
+            "level": "info",
+            "code": "source_center_drift",
+            "message": "source subject center drift from frame 1 is 0.131; advisory max 0.090. Converted sprite geometry remains the blocking gate."
+          }
+        ]
+      },
+      "source_alignment": {
+        "center_drift_from_frame_1": 0.1312,
+        "scale_drift_from_frame_1": 0.0038
+      },
+      "sprite_alignment": {
+        "center_drift_from_frame_1": 0.0039,
+        "scale_drift_from_frame_1": 0.0106
+      }
+    }
+  ]
+}

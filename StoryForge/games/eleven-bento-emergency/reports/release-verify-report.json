@@ -1,0 +1,710 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mode": "normal",
+    "zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/releases/20260727T024031Z-991341d1481d.zip",
+      "bytes": 14030563,
+      "sha256": "64ab27e7fd4d190c6565eb4cb48ec8284a696c27739de46d25886571a3c1d74c"
+    },
+    "entries": 45,
+    "members": 45,
+    "duplicate_members": [],
+    "unsafe_members": [],
+    "manifest": {
+      "schema_version": 1,
+      "slug": "eleven-bento-emergency",
+      "title": "Eleven Bento Emergency",
+      "files": 44,
+      "runtime_inputs": 6,
+      "emulator_screenshot": false
+    },
+    "package_sources": {
+      "readme": {
+        "member": "docs/README.md",
+        "exists": true,
+        "bytes": 1211,
+        "sha256": "36e620cf481cdb241eb8037201fe9901bf0eda144a4024b795538e9e7ebb1cb3"
+      },
+      "asset_builder": {
+        "member": "source/build_eleven_bento_emergency.py",
+        "exists": true,
+        "bytes": 23181,
+        "sha256": "8ac9a961f7a8bf3090f9d184bf59e7de6b203b654e0dc2962b1fb8e84c328d67"
+      },
+      "qa_report": {
+        "member": "reports/eleven-bento-emergency-qa-report.json",
+        "exists": true,
+        "bytes": 1617,
+        "sha256": "4c2eb03d2afb4b5ad2ad074afdbfc007fa5c53f67ccef8976b372fcadf2145a1"
+      }
+    },
+    "runtime_inputs": {
+      "present": true,
+      "expected_count": 6,
+      "files": [
+        {
+          "member": "runtime/src/main.c",
+          "exists": true,
+          "bytes": 105606,
+          "sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a",
+          "manifest_bytes": 105606,
+          "manifest_sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a"
+        },
+        {
+          "member": "runtime/src/game_types.h",
+          "exists": true,
+          "bytes": 6650,
+          "sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec",
+          "manifest_bytes": 6650,
+          "manifest_sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec"
+        },
+        {
+          "member": "runtime/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+          "manifest_bytes": 5470,
+          "manifest_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        {
+          "member": "runtime/tools/convert_json.py",
+          "exists": true,
+          "bytes": 88977,
+          "sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387",
+          "manifest_bytes": 88977,
+          "manifest_sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387"
+        },
+        {
+          "member": "runtime/Makefile",
+          "exists": true,
+          "bytes": 3590,
+          "sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd",
+          "manifest_bytes": 3590,
+          "manifest_sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd"
+        },
+        {
+          "member": "runtime/wfconfig.toml",
+          "exists": true,
+          "bytes": 169,
+          "sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78",
+          "manifest_bytes": 169,
+          "manifest_sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78"
+        }
+      ],
+      "count": 6,
+      "missing": [],
+      "extra": [],
+      "duplicates": []
+    },
+    "current_workspace": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency",
+      "checked": 44,
+      "missing": [],
+      "mismatches": [],
+      "stable_report_diffs": [],
+      "unmapped": [],
+      "extra_current": []
+    },
+    "reports": {
+      "build": true,
+      "smoke": true,
+      "readiness": true,
+      "audit": true,
+      "swansong_playthrough": true,
+      "review_sheets": true
+    },
+    "smoke_verification": {
+      "result_scope": "boot-and-checksum",
+      "boot": {
+        "performed": true,
+        "passed": true,
+        "method": "headless-mednafen-startup-metadata",
+        "pixels_observed": false
+      },
+      "checksum": {
+        "performed": true,
+        "passed": true,
+        "method": "mednafen-recorded-vs-real-checksum"
+      },
+      "visual": {
+        "performed": false,
+        "passed": null,
+        "status": "not-performed",
+        "pixels_observed": false,
+        "proof_bound": false,
+        "screenshot": null
+      },
+      "proof_bound": false
+    },
+    "swansong_playthrough": {
+      "schema": "wscvn-swansong-playthrough-v2",
+      "app": {
+        "path": "/Applications/SwanSong.app",
+        "version": "0.9.0",
+        "build": "18",
+        "bundle_identifier": "com.regionallyfamous.swansong"
+      },
+      "route_count": 4,
+      "routes": [
+        {
+          "route_index": 0,
+          "member": "evidence/swansong-playthrough/route-1-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "bento_title",
+            "bento_01",
+            "bento_02",
+            "bento_03",
+            "bento_04",
+            "bento_05",
+            "bento_06",
+            "bento_07",
+            "bento_08",
+            "bento_09",
+            "bento_10",
+            "bento_choice_1",
+            "bento_a1",
+            "bento_a2",
+            "bento_a3",
+            "bento_a4",
+            "bento_11",
+            "bento_12",
+            "bento_13",
+            "bento_14",
+            "bento_15",
+            "bento_16",
+            "bento_17",
+            "bento_choice_2",
+            "bento_c1",
+            "bento_c2",
+            "bento_c3",
+            "bento_c4",
+            "end"
+          ],
+          "observed_nodes": [
+            "bento_title",
+            "bento_01",
+            "bento_02",
+            "bento_03",
+            "bento_04",
+            "bento_05",
+            "bento_06",
+            "bento_07",
+            "bento_08",
+            "bento_09",
+            "bento_10",
+            "bento_choice_1",
+            "bento_a1",
+            "bento_a2",
+            "bento_a3",
+            "bento_a4",
+            "bento_11",
+            "bento_12",
+            "bento_13",
+            "bento_14",
+            "bento_15",
+            "bento_16",
+            "bento_17",
+            "bento_choice_2",
+            "bento_c1",
+            "bento_c2",
+            "bento_c3",
+            "bento_c4",
+            "end"
+          ],
+          "bytes": 23315,
+          "sha256": "dd10b2614879324e65786cd9443efabcc254761decf55ebbafe40aebb50ba6c7",
+          "node_id": "bento_c4",
+          "audio_member": "evidence/swansong-playthrough/route-1-audio.wav"
+        },
+        {
+          "route_index": 1,
+          "member": "evidence/swansong-playthrough/route-2-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "bento_title",
+            "bento_01",
+            "bento_02",
+            "bento_03",
+            "bento_04",
+            "bento_05",
+            "bento_06",
+            "bento_07",
+            "bento_08",
+            "bento_09",
+            "bento_10",
+            "bento_choice_1",
+            "bento_a1",
+            "bento_a2",
+            "bento_a3",
+            "bento_a4",
+            "bento_11",
+            "bento_12",
+            "bento_13",
+            "bento_14",
+            "bento_15",
+            "bento_16",
+            "bento_17",
+            "bento_choice_2",
+            "bento_d1",
+            "bento_d2",
+            "bento_d3",
+            "bento_d4",
+            "end"
+          ],
+          "observed_nodes": [
+            "bento_title",
+            "bento_01",
+            "bento_02",
+            "bento_03",
+            "bento_04",
+            "bento_05",
+            "bento_06",
+            "bento_07",
+            "bento_08",
+            "bento_09",
+            "bento_10",
+            "bento_choice_1",
+            "bento_a1",
+            "bento_a2",
+            "bento_a3",
+            "bento_a4",
+            "bento_11",
+            "bento_12",
+            "bento_13",
+            "bento_14",
+            "bento_15",
+            "bento_16",
+            "bento_17",
+            "bento_choice_2",
+            "bento_d1",
+            "bento_d2",
+            "bento_d3",
+            "bento_d4",
+            "end"
+          ],
+          "bytes": 22582,
+          "sha256": "570e0deaaf554343cf6f8f5f422c4194be09efeda8ba72402ded121b133fcd6c",
+          "node_id": "bento_d4",
+          "audio_member": "evidence/swansong-playthrough/route-2-audio.wav"
+        },
+        {
+          "route_index": 2,
+          "member": "evidence/swansong-playthrough/route-3-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "bento_title",
+            "bento_01",
+            "bento_02",
+            "bento_03",
+            "bento_04",
+            "bento_05",
+            "bento_06",
+            "bento_07",
+            "bento_08",
+            "bento_09",
+            "bento_10",
+            "bento_choice_1",
+            "bento_b1",
+            "bento_b2",
+            "bento_b3",
+            "bento_b4",
+            "bento_11",
+            "bento_12",
+            "bento_13",
+            "bento_14",
+            "bento_15",
+            "bento_16",
+            "bento_17",
+            "bento_choice_2",
+            "bento_c1",
+            "bento_c2",
+            "bento_c3",
+            "bento_c4",
+            "end"
+          ],
+          "observed_nodes": [
+            "bento_title",
+            "bento_01",
+            "bento_02",
+            "bento_03",
+            "bento_04",
+            "bento_05",
+            "bento_06",
+            "bento_07",
+            "bento_08",
+            "bento_09",
+            "bento_10",
+            "bento_choice_1",
+            "bento_b1",
+            "bento_b2",
+            "bento_b3",
+            "bento_b4",
+            "bento_11",
+            "bento_12",
+            "bento_13",
+            "bento_14",
+            "bento_15",
+            "bento_16",
+            "bento_17",
+            "bento_choice_2",
+            "bento_c1",
+            "bento_c2",
+            "bento_c3",
+            "bento_c4",
+            "end"
+          ],
+          "bytes": 23315,
+          "sha256": "dd10b2614879324e65786cd9443efabcc254761decf55ebbafe40aebb50ba6c7",
+          "node_id": "bento_c4",
+          "audio_member": "evidence/swansong-playthrough/route-3-audio.wav"
+        },
+        {
+          "route_index": 3,
+          "member": "evidence/swansong-playthrough/route-4-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "bento_title",
+            "bento_01",
+            "bento_02",
+            "bento_03",
+            "bento_04",
+            "bento_05",
+            "bento_06",
+            "bento_07",
+            "bento_08",
+            "bento_09",
+            "bento_10",
+            "bento_choice_1",
+            "bento_b1",
+            "bento_b2",
+            "bento_b3",
+            "bento_b4",
+            "bento_11",
+            "bento_12",
+            "bento_13",
+            "bento_14",
+            "bento_15",
+            "bento_16",
+            "bento_17",
+            "bento_choice_2",
+            "bento_d1",
+            "bento_d2",
+            "bento_d3",
+            "bento_d4",
+            "end"
+          ],
+          "observed_nodes": [
+            "bento_title",
+            "bento_01",
+            "bento_02",
+            "bento_03",
+            "bento_04",
+            "bento_05",
+            "bento_06",
+            "bento_07",
+            "bento_08",
+            "bento_09",
+            "bento_10",
+            "bento_choice_1",
+            "bento_b1",
+            "bento_b2",
+            "bento_b3",
+            "bento_b4",
+            "bento_11",
+            "bento_12",
+            "bento_13",
+            "bento_14",
+            "bento_15",
+            "bento_16",
+            "bento_17",
+            "bento_choice_2",
+            "bento_d1",
+            "bento_d2",
+            "bento_d3",
+            "bento_d4",
+            "end"
+          ],
+          "bytes": 22582,
+          "sha256": "570e0deaaf554343cf6f8f5f422c4194be09efeda8ba72402ded121b133fcd6c",
+          "node_id": "bento_d4",
+          "audio_member": "evidence/swansong-playthrough/route-4-audio.wav"
+        }
+      ]
+    },
+    "readiness_assets": {
+      "contact_sheet": {
+        "member": "preview/contact_sheet.png",
+        "expected_sha256": "133858633ea875cbc5cff60cbc5cfdd81248ccd8efedc738047d9bc065ad758a",
+        "exists": true,
+        "sha256": "133858633ea875cbc5cff60cbc5cfdd81248ccd8efedc738047d9bc065ad758a"
+      },
+      "review_sheets": {
+        "scene_preview_sheet": {
+          "member": "preview/scene_preview_sheet.png",
+          "expected_sha256": "f3fb4ad6447d126f28979910b49c7b1853f30bbe0dd799da50f04336f917100e",
+          "exists": true,
+          "sha256": "f3fb4ad6447d126f28979910b49c7b1853f30bbe0dd799da50f04336f917100e"
+        },
+        "storyboard_sheet": {
+          "member": "preview/storyboard_sheet.png",
+          "expected_sha256": "c4087b68368c3d8cbf169f03eadb459e4547c29fe4b5dbfce9791816e43a19b2",
+          "exists": true,
+          "sha256": "c4087b68368c3d8cbf169f03eadb459e4547c29fe4b5dbfce9791816e43a19b2"
+        }
+      },
+      "sources": [
+        {
+          "member": "assets/sources/background_ending_a_imagegen_v1.png",
+          "expected_sha256": "37c8e617f8357a3141c07f99c3a34c27ad0e9a79340cb5ea21ffea9dbb32e204",
+          "exists": true,
+          "sha256": "37c8e617f8357a3141c07f99c3a34c27ad0e9a79340cb5ea21ffea9dbb32e204"
+        },
+        {
+          "member": "assets/sources/background_ending_b_imagegen_v1.png",
+          "expected_sha256": "10eeeead0f6e757ccebca93ac269f332649aad20fcfd5b8badb0fcd6781882a0",
+          "exists": true,
+          "sha256": "10eeeead0f6e757ccebca93ac269f332649aad20fcfd5b8badb0fcd6781882a0"
+        },
+        {
+          "member": "assets/sources/background_main_imagegen_v1.png",
+          "expected_sha256": "7bad9fe04512463e68f957bf2da6b7e3007276dffe84e79d25745ad65f25cae5",
+          "exists": true,
+          "sha256": "7bad9fe04512463e68f957bf2da6b7e3007276dffe84e79d25745ad65f25cae5"
+        },
+        {
+          "member": "assets/sources/background_title_imagegen_v1.png",
+          "expected_sha256": "9b40c009f84055c2aca55a87535766e9f064922d721b99285eaa540c0784dace",
+          "exists": true,
+          "sha256": "9b40c009f84055c2aca55a87535766e9f064922d721b99285eaa540c0784dace"
+        },
+        {
+          "member": "assets/sources/character_master_cutout_imagegen_v1.png",
+          "expected_sha256": "2d5d1eba94a629a3a75e969d0571926210b6c5fe7f0fc79f06a50788b72b96f1",
+          "exists": true,
+          "sha256": "2d5d1eba94a629a3a75e969d0571926210b6c5fe7f0fc79f06a50788b72b96f1"
+        },
+        {
+          "member": "assets/sources/character_master_imagegen_v1.png",
+          "expected_sha256": "2a24e3ee45294a7ede911b586e26946978a2b1bd07e1ddb1905a56260fa00cbb",
+          "exists": true,
+          "sha256": "2a24e3ee45294a7ede911b586e26946978a2b1bd07e1ddb1905a56260fa00cbb"
+        },
+        {
+          "member": "assets/sources/game_spec.json",
+          "expected_sha256": "e7dfc7c22682e45f21cb965003bfb58f3879933b0e15cc048f58a4c590e78bbe",
+          "exists": true,
+          "sha256": "e7dfc7c22682e45f21cb965003bfb58f3879933b0e15cc048f58a4c590e78bbe"
+        },
+        {
+          "member": "assets/sources/imagegen-prompts-v1.md",
+          "expected_sha256": "b726a03a99b6d436847490cf5444d684997eb3fa7fe9568082489902285bffe9",
+          "exists": true,
+          "sha256": "b726a03a99b6d436847490cf5444d684997eb3fa7fe9568082489902285bffe9"
+        }
+      ],
+      "extra_sources": [],
+      "review_sheets_report": {
+        "member": "reports/review-sheets-report.json",
+        "expected_sha256": "a395414c6eaebdb460078596eb05c40b5789fdcbbd66de29d5f4247494e2fc25",
+        "exists": true,
+        "sha256": "a395414c6eaebdb460078596eb05c40b5789fdcbbd66de29d5f4247494e2fc25"
+      },
+      "packaged_source_count": 8,
+      "backgrounds": {
+        "count": 4,
+        "files": [
+          {
+            "member": "assets/backgrounds/bg_title.png",
+            "expected_sha256": "93e366ecd3373d6042a700476e0ba7ba43273347693819531c47e122ae30e405",
+            "exists": true,
+            "sha256": "93e366ecd3373d6042a700476e0ba7ba43273347693819531c47e122ae30e405"
+          },
+          {
+            "member": "assets/backgrounds/bg_main.png",
+            "expected_sha256": "e31338e1216f8686e26d1f6dd9489b20c99966c371a152289c96b6d132645b7d",
+            "exists": true,
+            "sha256": "e31338e1216f8686e26d1f6dd9489b20c99966c371a152289c96b6d132645b7d"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_a.png",
+            "expected_sha256": "18d2e3131233fb3bcb773573fce4d69a4010a3f10b995b576ad3ce53d668c474",
+            "exists": true,
+            "sha256": "18d2e3131233fb3bcb773573fce4d69a4010a3f10b995b576ad3ce53d668c474"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_b.png",
+            "expected_sha256": "b635f4d569eaa512ece1537541cb6070c0122b05e207150f9dd6c565cd2e8502",
+            "exists": true,
+            "sha256": "b635f4d569eaa512ece1537541cb6070c0122b05e207150f9dd6c565cd2e8502"
+          }
+        ],
+        "packaged_count": 4,
+        "extra_members": []
+      },
+      "characters": {
+        "count": 3,
+        "files": [
+          {
+            "member": "assets/characters/aerial_neutral.png",
+            "expected_sha256": "4cf017b85b86c6ce59d95fec3b884a882da7394978bd7aac35d4f390f81db832",
+            "exists": true,
+            "sha256": "4cf017b85b86c6ce59d95fec3b884a882da7394978bd7aac35d4f390f81db832"
+          },
+          {
+            "member": "assets/characters/aerial_talk.png",
+            "expected_sha256": "73654df0e874565409003f692b79d8174780f4b0f31b2f648fc8cd6a07e44f27",
+            "exists": true,
+            "sha256": "73654df0e874565409003f692b79d8174780f4b0f31b2f648fc8cd6a07e44f27"
+          },
+          {
+            "member": "assets/characters/aerial_blink.png",
+            "expected_sha256": "df1d28cfa92da556de93154db4d16725f75eda1a5275a69fa60e48561be673e5",
+            "exists": true,
+            "sha256": "df1d28cfa92da556de93154db4d16725f75eda1a5275a69fa60e48561be673e5"
+          }
+        ],
+        "packaged_count": 3,
+        "extra_members": []
+      },
+      "sfx": {
+        "count": 0,
+        "files": [],
+        "packaged_count": 0,
+        "extra_members": []
+      }
+    },
+    "project": {
+      "member": "project/eleven-bento-emergency.wscvn.json",
+      "bytes": 201064,
+      "sha256": "c788d1ee469021dc33367ff5f10c65a26e083b9892957be0ba22c72653570592"
+    },
+    "rom": {
+      "member": "rom/eleven-bento-emergency.wsc",
+      "bytes": 8388608,
+      "sha256": "991341d1481d69d4322d671848507da5f197f4c2b5c71ecfb3db8eadcace0805",
+      "md5": "0x7ea9035bcb0a20526e7c1dfb342bf880"
+    },
+    "review_sheets_report": {
+      "present": true,
+      "member": "reports/review-sheets-report.json",
+      "project_file": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+        "bytes": 201064,
+        "sha256": "c788d1ee469021dc33367ff5f10c65a26e083b9892957be0ba22c72653570592"
+      },
+      "nodes_rendered": 36,
+      "preview_node_ids": [
+        "bento_title",
+        "bento_01",
+        "bento_02",
+        "bento_03",
+        "bento_04",
+        "bento_05",
+        "bento_06",
+        "bento_07",
+        "bento_08",
+        "bento_09",
+        "bento_10",
+        "bento_choice_1",
+        "bento_a1",
+        "bento_a2",
+        "bento_a3",
+        "bento_a4",
+        "bento_b1",
+        "bento_b2",
+        "bento_b3",
+        "bento_b4",
+        "bento_11",
+        "bento_12",
+        "bento_13",
+        "bento_14",
+        "bento_15",
+        "bento_16",
+        "bento_17",
+        "bento_choice_2",
+        "bento_c1",
+        "bento_c2",
+        "bento_c3",
+        "bento_c4",
+        "bento_d1",
+        "bento_d2",
+        "bento_d3",
+        "bento_d4"
+      ],
+      "font": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+        "bytes": 5470,
+        "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+        "member": "runtime/src/font.h",
+        "packaged_bytes": 5470,
+        "packaged_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+      },
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/scene_preview_sheet.png",
+        "bytes": 316095,
+        "sha256": "f3fb4ad6447d126f28979910b49c7b1853f30bbe0dd799da50f04336f917100e",
+        "member": "preview/scene_preview_sheet.png",
+        "packaged_bytes": 316095,
+        "packaged_sha256": "f3fb4ad6447d126f28979910b49c7b1853f30bbe0dd799da50f04336f917100e"
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/storyboard_sheet.png",
+        "bytes": 98734,
+        "sha256": "c4087b68368c3d8cbf169f03eadb459e4547c29fe4b5dbfce9791816e43a19b2",
+        "member": "preview/storyboard_sheet.png",
+        "packaged_bytes": 98734,
+        "packaged_sha256": "c4087b68368c3d8cbf169f03eadb459e4547c29fe4b5dbfce9791816e43a19b2"
+      }
+    },
+    "project_report_bindings": {
+      "readiness": {
+        "present": true,
+        "member": "project/eleven-bento-emergency.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+        "bytes": 201064,
+        "sha256": "c788d1ee469021dc33367ff5f10c65a26e083b9892957be0ba22c72653570592"
+      },
+      "audit": {
+        "present": true,
+        "member": "project/eleven-bento-emergency.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+        "bytes": 201064,
+        "sha256": "c788d1ee469021dc33367ff5f10c65a26e083b9892957be0ba22c72653570592"
+      }
+    },
+    "audit_rom_binding": {
+      "present": true,
+      "member": "rom/eleven-bento-emergency.wsc",
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/runtime-local/eleven-bento-emergency.wsc",
+      "bytes": 8388608,
+      "sha256": "991341d1481d69d4322d671848507da5f197f4c2b5c71ecfb3db8eadcace0805"
+    },
+    "manifest_artifacts": {
+      "project": {
+        "present": true,
+        "member": "project/eleven-bento-emergency.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+        "bytes": 201064,
+        "sha256": "c788d1ee469021dc33367ff5f10c65a26e083b9892957be0ba22c72653570592"
+      },
+      "rom": {
+        "present": true,
+        "member": "rom/eleven-bento-emergency.wsc",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/runtime-local/eleven-bento-emergency.wsc",
+        "sha256": "991341d1481d69d4322d671848507da5f197f4c2b5c71ecfb3db8eadcace0805",
+        "md5": "0x7ea9035bcb0a20526e7c1dfb342bf880",
+        "checksum": "0x1aac"
+      }
+    },
+    "release_summary": {
+      "lines": 46,
+      "expected_lines": 34,
+      "visual_evidence_lines": 8,
+      "has_visual_evidence": true,
+      "missing_expected_lines": []
+    }
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:10:41.037822+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/contact_sheet.png",
+    "nodes": 63,
+    "flags": 9,
+    "backgrounds": {
+      "bg_rain_counter": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 14,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_shelf_room": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_swap_table": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true
+      }
+    },
+    "characters": {
+      "char_mina_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_mina_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_mina_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_ren_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_ren_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_ren_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      }
+    },
+    "text": {
+      "blocks": 300,
+      "max_pause_block_chars": 95
+    },
+    "art_direction": [
+      "All game names and collecting details are fictional; no commercial ROM contents are used.",
+      "Final backgrounds are 224x144, 16-color, RGB444-snapped, with dark textbox-safe lower thirds.",
+      "Final character frames are 96x128, transparent, RGB444-snapped, and capped at 15 visible colors.",
+      "The story is a compact WonderSwan collecting light novel about care, trade, and memory."
+    ]
+  }
+}

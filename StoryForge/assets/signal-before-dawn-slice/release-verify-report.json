@@ -1,0 +1,319 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/releases/signal-before-dawn-slice/20260727T034713Z-a5210df80536.zip",
+      "bytes": 52831120,
+      "sha256": "4d6a7db4edaac451c4119b5f094ba4041cfeb1434d1f19a00c82e55d770f3820"
+    },
+    "entries": 201,
+    "members": 201,
+    "duplicate_members": [],
+    "unsafe_members": [],
+    "manifest": {
+      "schema_version": 1,
+      "title": "Signal Before Dawn: Vertical Slice",
+      "build_mode": "full",
+      "files": 200,
+      "duplicate_paths": []
+    },
+    "current_workspace": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "checked": 200,
+      "missing": [],
+      "mismatches": [],
+      "stable_report_diffs": [
+        "reports/audit-guard-report.json",
+        "reports/graphics-contract-guard-report.json",
+        "reports/graphics-contract-report.json",
+        "reports/light-novel-readiness-guard-report.json",
+        "reports/light-novel-readiness-report.json",
+        "reports/signal-ship-gate-guard-report.json",
+        "reports/skill-mirror-guard-report.json",
+        "reports/skill-mirror-report.json",
+        "reports/source-tree-guard-report.json",
+        "reports/source-tree-report.json",
+        "reports/sprite-approval-guard-report.json",
+        "reports/text-contract-guard-report.json",
+        "reports/text-contract-report.json",
+        "reports/visual-contract-guard-report.json",
+        "reports/visual-contract-report.json",
+        "reports/visual-review-guard-report.json",
+        "reports/visual-review-report.json"
+      ],
+      "unmapped": []
+    },
+    "asset_provenance": {
+      "member": "reports/asset-provenance.json",
+      "runtime_assets": 38,
+      "source_assets": 29,
+      "output_hashes_verified": 38,
+      "source_hash_references_verified": 62,
+      "outputs": 38,
+      "referenced_sources": [
+        "assets/sources/beacon_lens_source_v1.png",
+        "assets/sources/cabin_imagegen_source_v2.png",
+        "assets/sources/deck_imagegen_source_v2.png",
+        "assets/sources/hatch_key_source_v1.png",
+        "assets/sources/lighthouse_imagegen_source_v2.png",
+        "assets/sources/lune_expression_sheet_source_v5.png",
+        "assets/sources/lune_radio_pose_source_v1.png",
+        "assets/sources/lune_sheet_source_v4.png",
+        "assets/sources/mira_action_pose_source_v1.png",
+        "assets/sources/mira_expression_sheet_source_v6.png",
+        "assets/sources/mira_sheet_source_v4.png",
+        "assets/sources/radio_signal_source_v1.png",
+        "assets/sources/sunrise_deck_source_v1.png",
+        "assets/sources/title_signal_source_v3.png"
+      ],
+      "unreferenced_sources": [
+        "assets/sources/cabin_imagegen_source.png",
+        "assets/sources/cartridge_label_source_v1.png",
+        "assets/sources/cover_key_art_source_v1.png",
+        "assets/sources/deck_imagegen_source.png",
+        "assets/sources/latest_imagegen_contact.png",
+        "assets/sources/lighthouse_imagegen_source.png",
+        "assets/sources/lune_imagegen_source.png",
+        "assets/sources/lune_sheet_source.png",
+        "assets/sources/lune_sheet_source_v2.png",
+        "assets/sources/lune_sheet_source_v3.png",
+        "assets/sources/mira_expression_sheet_source_v5.png",
+        "assets/sources/mira_imagegen_source.png",
+        "assets/sources/mira_sheet_source.png",
+        "assets/sources/mira_sheet_source_v2.png",
+        "assets/sources/mira_sheet_source_v3.png"
+      ]
+    },
+    "release_materials": {
+      "release_art": {
+        "report": "reports/release-art-report.json",
+        "physical_print_status": "pending-real-cartridge-measurement",
+        "outputs": {
+          "cover": {
+            "member": "release-art/cover-art-v1.png",
+            "exists": true,
+            "bytes": 1797287,
+            "sha256": "2fea73300c5fe5299f47a32842f9f426cc628cb4edc43a33dea210bd8e701d59",
+            "size": [
+              1024,
+              1536
+            ]
+          },
+          "cartridge_label": {
+            "member": "release-art/cartridge-label-v1.png",
+            "exists": true,
+            "bytes": 1682380,
+            "sha256": "7cf728447789db3a40b2f17f3ac45f9be0f8fadd5a41a8353a378859cccaea58",
+            "size": [
+              1500,
+              900
+            ]
+          },
+          "preview": {
+            "member": "release-art/release-art-preview.png",
+            "exists": true,
+            "bytes": 1025895,
+            "sha256": "eb661f767edc3f204f89d06bcf5e39f42688329d931068c63238787706627c71",
+            "size": [
+              1500,
+              980
+            ]
+          }
+        },
+        "sources": {
+          "cover": {
+            "member": "assets/sources/cover_key_art_source_v1.png",
+            "exists": true,
+            "bytes": 2087829,
+            "sha256": "b4bc15e9cd048f8ecf80ca1fef89736d530dd21cf3ff003a318ef2d9de9c4f2c",
+            "size": [
+              1024,
+              1536
+            ]
+          },
+          "cartridge_label": {
+            "member": "assets/sources/cartridge_label_source_v1.png",
+            "exists": true,
+            "bytes": 2109580,
+            "sha256": "be172247766e0ed5d289414b99e6549c09d8f1c4228c2fba1247f7defd5dfd4c",
+            "size": [
+              1536,
+              1024
+            ]
+          }
+        },
+        "font_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+      },
+      "native_scene_review": {
+        "report": "reports/native-scene-review-report.json",
+        "status": "pass",
+        "verification_passed": true,
+        "sheet": {
+          "member": "preview/native-scene-review-sheet.png",
+          "exists": true,
+          "bytes": 567310,
+          "sha256": "af464f915f78ba930e2abee05953b73a012bd33ab7ace35d2b8447dc08bf5478",
+          "size": [
+            1212,
+            1254
+          ]
+        },
+        "project": {
+          "member": "project/signal-before-dawn-slice.wscvn.json",
+          "exists": true,
+          "bytes": 474460,
+          "sha256": "12e91e46f011e49043a3e43bfc58674c37b7c66c6a6af76bb1baf653bf1d2480"
+        },
+        "storyboard": {
+          "member": "preview/storyboard_sheet.png",
+          "exists": true,
+          "bytes": 816983,
+          "sha256": "cf31b10e63419b7b08396674516139fa20c02c15f5681048bf9b304a78581752",
+          "size": [
+            934,
+            5770
+          ]
+        }
+      },
+      "playthrough": {
+        "manifest": "reports/playthrough-manifest.json",
+        "report": "reports/playthrough-report.json",
+        "routes": {
+          "signal": {
+            "member": "preview/emulator-ending-signal.png",
+            "exists": true,
+            "bytes": 9460,
+            "sha256": "214b1aa1147a894da0bec479bd6d7d9e55985e185d7771306b824dd60bad4547",
+            "size": [
+              237,
+              144
+            ]
+          },
+          "together": {
+            "member": "preview/emulator-ending-together.png",
+            "exists": true,
+            "bytes": 8331,
+            "sha256": "c49a5705871de630d456660bb9f67b3d2e6ea9021f74b92d1a516cdbeb82eb62",
+            "size": [
+              237,
+              144
+            ]
+          },
+          "hatch": {
+            "member": "preview/emulator-ending-hatch.png",
+            "exists": true,
+            "bytes": 13089,
+            "sha256": "87647196448ae811807e4d2c25e1987b5681df94b004abbdf4a0ee8e2edf39f9",
+            "size": [
+              237,
+              144
+            ]
+          },
+          "reply": {
+            "member": "preview/emulator-ending-reply.png",
+            "exists": true,
+            "bytes": 9475,
+            "sha256": "e710cccc76f2910a50177d34d36595e903f6e2b51f2602e696afcd11e86422e4",
+            "size": [
+              237,
+              144
+            ]
+          },
+          "sunrise": {
+            "member": "preview/emulator-ending-sunrise.png",
+            "exists": true,
+            "bytes": 7873,
+            "sha256": "e0b2d12c7400afcd0d91439b708c598d4b7c360195bac00ffddb3653125e9df3",
+            "size": [
+              237,
+              144
+            ]
+          }
+        },
+        "checks": {
+          "preflight_inputs_match_manifest": true,
+          "all_five_routes_executed": true,
+          "all_five_route_processes_exited_zero": true,
+          "all_five_route_screenshots_freshly_written": true,
+          "all_five_route_screenshots_nonblank": true,
+          "all_screenshot_file_hashes_distinct": true,
+          "all_screenshot_pixel_hashes_distinct": true,
+          "all_ten_screenshot_pairs_have_differing_pixels": true,
+          "all_five_route_visual_reviews_bound_by_exact_hash": true,
+          "save_load_status_pass": true,
+          "save_load_one_mesen_process": true,
+          "save_load_process_exited_zero": true,
+          "save_load_started_without_matching_sram": true,
+          "save_load_slot_1_checksum_and_node_valid": true,
+          "save_load_screenshot_freshly_written": true,
+          "save_load_screenshot_nonblank": true,
+          "save_load_visual_review_bound_by_exact_hash": true,
+          "save_load_scratch_cleanup_passed": true
+        },
+        "manifest_file": {
+          "member": "reports/playthrough-manifest.json",
+          "exists": true,
+          "bytes": 20499,
+          "sha256": "5eb371007a93a92fa1085d53550ca5d6cba55eeaad84b22c701d7534a9052e28"
+        },
+        "rom": {
+          "member": "rom/signal-before-dawn-slice.wsc",
+          "exists": true,
+          "bytes": 8388608,
+          "sha256": "a5210df80536d70c1fc5c51af161eb697beccd9fa32623d17b32a223aea3d524"
+        },
+        "save_load": {
+          "member": "preview/emulator-save-load.png",
+          "exists": true,
+          "bytes": 11601,
+          "sha256": "44e123b652ac58d00b5a18723457997ece84738e415119c4c3c59f78deb8a335",
+          "size": [
+            237,
+            144
+          ]
+        }
+      },
+      "hardware_test": {
+        "member": "docs/hardware-test-report.json",
+        "status": "pending",
+        "tested": false,
+        "rom_sha256": "a5210df80536d70c1fc5c51af161eb697beccd9fa32623d17b32a223aea3d524"
+      }
+    },
+    "rom": {
+      "bytes": 8388608,
+      "sha256": "a5210df80536d70c1fc5c51af161eb697beccd9fa32623d17b32a223aea3d524",
+      "md5": "0x00e7bf06126932b002254edd94d43f53"
+    },
+    "project": {
+      "bytes": 474460,
+      "sha256": "12e91e46f011e49043a3e43bfc58674c37b7c66c6a6af76bb1baf653bf1d2480"
+    },
+    "text_contract_images": {
+      "font_proof_sheet": {
+        "member": "preview/font-proof-sheet.png",
+        "bytes": 23499,
+        "sha256": "bc5f9b6ca90acc63cb66977ec6fb0c4af519a6e7459a7e56fbe737a1882c0c30",
+        "size": [
+          732,
+          304
+        ]
+      },
+      "text_preview_sheet": {
+        "member": "preview/text-preview-sheet.png",
+        "bytes": 33988,
+        "sha256": "7aaa59d5378886beabc32d56e4a8813229acef0264dd9d06a0a4d16cc2ed4c31",
+        "size": [
+          930,
+          1910
+        ]
+      }
+    },
+    "visual_contract": {
+      "bytes": 1347,
+      "sha256": "ad6cd0e54887d1f12ee431f913c4ef970d90f80e22fed8f08ef666e9a80c3eea"
+    },
+    "archive_only": false
+  }
+}

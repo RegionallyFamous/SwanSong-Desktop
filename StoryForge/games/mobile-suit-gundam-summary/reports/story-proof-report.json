@@ -1,0 +1,4955 @@
+{
+  "schema": "wscvn-story-proof-report-v1",
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "bindings": {
+    "contract": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/assets/sources/story-proof.json",
+      "sha256": "be4d1a25ad43f83fb7d69342167ab4824b660e293993965e9f66c65025ab72ac"
+    },
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json",
+      "sha256": "f13b4bdd92cfa422127cbd83d9f03c0f23720edd36c674b6fccef99ac83691ef"
+    },
+    "playthrough": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/reports/swansong-playthrough-report.json",
+      "sha256": "5032d8656b5820ded530946053886e1a36c154fe472494d6839adb697a10fab8"
+    },
+    "rom": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/runtime-local/mobile-suit-gundam-summary.wsc",
+      "bytes": 8388608,
+      "sha256": "ebfdd1a57e1fa35e476b87ddf8ce97e9bed332f8efdf1ca629bb05397ae007ac",
+      "stored_checksum": "0x25c4",
+      "computed_checksum": "0x25c4",
+      "checksum_valid": true,
+      "footer_valid": true
+    },
+    "swansong_engine": {
+      "dylib": "/Applications/SwanSong.app/Contents/Frameworks/libSwanAresEngine.dylib",
+      "dylib_bytes": 2685168,
+      "dylib_sha256": "8949c7cffc2044016eda7005a6d2d70a2ab1e65d9443cfa81af49dc9bbf2f33f",
+      "backend": "ares",
+      "build_id": "ares-752f747f816f725232ba462468d3d7f4ca6142e5-swan-abi10",
+      "abi_version": 10,
+      "abi_probe_attempts": [
+        7,
+        8,
+        6,
+        9,
+        5,
+        10
+      ],
+      "internal_ram_bytes": 65536
+    }
+  },
+  "coverage": {
+    "checkpoints_proven": 8,
+    "checkpoints_declared": 8,
+    "routes_proven": 16,
+    "routes_executed": 16,
+    "complete": true
+  },
+  "checkpoints": [
+    {
+      "id": "proof-tour-contract",
+      "label": "The museum promises complete causal coverage",
+      "story": {
+        "turn": "The docents accept a twenty-minute closing deadline without reducing the war to trophy labels.",
+        "consequence": "Every omission must be justified rather than hidden.",
+        "setup_ids": [
+          "closing-clock",
+          "tour-ticket"
+        ],
+        "payoff_ids": []
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tour_01",
+          "routes": [
+            "route-1",
+            "route-2",
+            "route-3",
+            "route-4",
+            "route-5",
+            "route-6",
+            "route-7",
+            "route-8",
+            "route-9",
+            "route-10",
+            "route-11",
+            "route-12",
+            "route-13",
+            "route-14",
+            "route-15",
+            "route-16"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-2",
+                "route-3",
+                "route-4",
+                "route-5",
+                "route-6",
+                "route-7",
+                "route-8",
+                "route-9",
+                "route-10",
+                "route-11",
+                "route-12",
+                "route-13",
+                "route-14",
+                "route-15",
+                "route-16"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_main",
+              "actual": "bg_main"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_rx78_neutral",
+              "actual": "char_rx78_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "blink",
+              "actual": "blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "tour_02"
+              ],
+              "actual": [
+                "tour_02"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169846
+              }
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-5:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-5:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.170346
+              }
+            },
+            {
+              "name": "route-6:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-6:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-7:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-7:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-8:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-8:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-9:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-9:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-10:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-10:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-11:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-11:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-12:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-12:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-13:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-13:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.174772
+              }
+            },
+            {
+              "name": "route-14:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-14:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-15:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-15:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-16:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:runtime-node",
+              "ok": true,
+              "expected": "tour_01",
+              "actual": "tour_01"
+            },
+            {
+              "name": "route-16:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            }
+          ]
+        }
+      ],
+      "interaction_proof": null
+    },
+    {
+      "id": "proof-side-seven",
+      "label": "The war becomes a refugee story",
+      "story": {
+        "turn": "An unauthorized attack forces Amuro into Gundam.",
+        "consequence": "White Base is crewed by whoever survived.",
+        "setup_ids": [],
+        "payoff_ids": []
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tour_04",
+          "routes": [
+            "route-1",
+            "route-2",
+            "route-3",
+            "route-4",
+            "route-5",
+            "route-6",
+            "route-7",
+            "route-8",
+            "route-9",
+            "route-10",
+            "route-11",
+            "route-12",
+            "route-13",
+            "route-14",
+            "route-15",
+            "route-16"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-2",
+                "route-3",
+                "route-4",
+                "route-5",
+                "route-6",
+                "route-7",
+                "route-8",
+                "route-9",
+                "route-10",
+                "route-11",
+                "route-12",
+                "route-13",
+                "route-14",
+                "route-15",
+                "route-16"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_side7",
+              "actual": "bg_side7"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_rx78_neutral",
+              "actual": "char_rx78_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "blink",
+              "actual": "blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "tour_05"
+              ],
+              "actual": [
+                "tour_05"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169846
+              }
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-5:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-5:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.170346
+              }
+            },
+            {
+              "name": "route-6:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-6:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-7:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-7:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-8:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-8:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-9:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-9:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-10:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-10:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-11:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-11:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-12:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-12:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-13:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-13:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.174772
+              }
+            },
+            {
+              "name": "route-14:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-14:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-15:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-15:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-16:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:runtime-node",
+              "ok": true,
+              "expected": "tour_04",
+              "actual": "tour_04"
+            },
+            {
+              "name": "route-16:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            }
+          ]
+        }
+      ],
+      "interaction_proof": null
+    },
+    {
+      "id": "proof-first-lens",
+      "label": "The player chooses emphasis without rewriting canon",
+      "story": {
+        "turn": "The same Earth campaign can be read through crew or strategy.",
+        "consequence": "Both paths preserve Garma's fall and the full chronology.",
+        "interaction": {
+          "kind": "canon-safe lens choice",
+          "failure_progresses": true
+        },
+        "setup_ids": [],
+        "payoff_ids": []
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "lens_choice",
+          "routes": [
+            "route-1",
+            "route-2",
+            "route-3",
+            "route-4",
+            "route-5",
+            "route-6",
+            "route-7",
+            "route-8",
+            "route-9",
+            "route-10",
+            "route-11",
+            "route-12",
+            "route-13",
+            "route-14",
+            "route-15",
+            "route-16"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-2",
+                "route-3",
+                "route-4",
+                "route-5",
+                "route-6",
+                "route-7",
+                "route-8",
+                "route-9",
+                "route-10",
+                "route-11",
+                "route-12",
+                "route-13",
+                "route-14",
+                "route-15",
+                "route-16"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_main",
+              "actual": "bg_main"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_rx78_neutral",
+              "actual": "char_rx78_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "blink",
+              "actual": "blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "warmap_01",
+                "whitebase_01"
+              ],
+              "actual": [
+                "warmap_01",
+                "whitebase_01"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-5:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-6:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-7:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-8:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-9:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-10:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-11:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-12:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-13:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-14:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-15:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:runtime-node",
+              "ok": true,
+              "expected": "lens_choice",
+              "actual": "lens_choice"
+            },
+            {
+              "name": "route-16:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            }
+          ]
+        }
+      ],
+      "interaction_proof": {
+        "kind": "canon-safe lens choice",
+        "failure_progresses_declared": true,
+        "choice_targets": [
+          "warmap_01",
+          "whitebase_01"
+        ],
+        "targets_reaching_completed_routes": [
+          "warmap_01",
+          "whitebase_01"
+        ],
+        "ok": true
+      }
+    },
+    {
+      "id": "proof-earth-cost",
+      "label": "Victory accumulates human cost",
+      "story": {
+        "turn": "Ryu and Matilda die as White Base becomes strategically important.",
+        "consequence": "Amuro experiences Odessa as bereavement, not triumph.",
+        "setup_ids": [],
+        "payoff_ids": [
+          "names-on-glass"
+        ]
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "earth_04",
+          "routes": [
+            "route-1",
+            "route-2",
+            "route-3",
+            "route-4",
+            "route-5",
+            "route-6",
+            "route-7",
+            "route-8",
+            "route-9",
+            "route-10",
+            "route-11",
+            "route-12",
+            "route-13",
+            "route-14",
+            "route-15",
+            "route-16"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-2",
+                "route-3",
+                "route-4",
+                "route-5",
+                "route-6",
+                "route-7",
+                "route-8",
+                "route-9",
+                "route-10",
+                "route-11",
+                "route-12",
+                "route-13",
+                "route-14",
+                "route-15",
+                "route-16"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_odessa",
+              "actual": "bg_odessa"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_rx78_neutral",
+              "actual": "char_rx78_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "blink",
+              "actual": "blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "odessa_memorial_01"
+              ],
+              "actual": [
+                "odessa_memorial_01"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169846
+              }
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-5:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-5:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.170346
+              }
+            },
+            {
+              "name": "route-6:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-6:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-7:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-7:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-8:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-8:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-9:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-9:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-10:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-10:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-11:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-11:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-12:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-12:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-13:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-13:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.174772
+              }
+            },
+            {
+              "name": "route-14:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-14:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-15:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-15:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-16:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:runtime-node",
+              "ok": true,
+              "expected": "earth_04",
+              "actual": "earth_04"
+            },
+            {
+              "name": "route-16:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            }
+          ]
+        }
+      ],
+      "interaction_proof": null
+    },
+    {
+      "id": "proof-final-lens",
+      "label": "The player chooses the ending's interpretive lens",
+      "story": {
+        "turn": "People and power lenses diverge in presentation, not facts.",
+        "consequence": "All routes still cover Solomon through Escape.",
+        "interaction": {
+          "kind": "theme-bearing lens choice",
+          "failure_progresses": true
+        },
+        "setup_ids": [],
+        "payoff_ids": []
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "meaning_choice",
+          "routes": [
+            "route-1",
+            "route-2",
+            "route-3",
+            "route-4",
+            "route-5",
+            "route-6",
+            "route-7",
+            "route-8",
+            "route-9",
+            "route-10",
+            "route-11",
+            "route-12",
+            "route-13",
+            "route-14",
+            "route-15",
+            "route-16"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-2",
+                "route-3",
+                "route-4",
+                "route-5",
+                "route-6",
+                "route-7",
+                "route-8",
+                "route-9",
+                "route-10",
+                "route-11",
+                "route-12",
+                "route-13",
+                "route-14",
+                "route-15",
+                "route-16"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_main",
+              "actual": "bg_main"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_rx78_neutral",
+              "actual": "char_rx78_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "blink",
+              "actual": "blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "people_01",
+                "power_01"
+              ],
+              "actual": [
+                "people_01",
+                "power_01"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-5:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-6:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-7:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-8:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-9:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-10:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-11:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-12:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-13:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-14:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-15:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:runtime-node",
+              "ok": true,
+              "expected": "meaning_choice",
+              "actual": "meaning_choice"
+            },
+            {
+              "name": "route-16:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            }
+          ]
+        }
+      ],
+      "interaction_proof": {
+        "kind": "theme-bearing lens choice",
+        "failure_progresses_declared": true,
+        "choice_targets": [
+          "people_01",
+          "power_01"
+        ],
+        "targets_reaching_completed_routes": [
+          "people_01",
+          "power_01"
+        ],
+        "ok": true
+      }
+    },
+    {
+      "id": "proof-newtype-tragedy",
+      "label": "Understanding is converted into warfare",
+      "story": {
+        "turn": "Amuro and Lalah understand one another, but Lalah dies protecting Char.",
+        "consequence": "Connection becomes renewed rivalry.",
+        "setup_ids": [
+          "newtype-connection"
+        ],
+        "payoff_ids": [
+          "names-on-glass"
+        ]
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "people-lens",
+          "node_id": "people_03",
+          "routes": [
+            "route-1",
+            "route-3",
+            "route-5",
+            "route-7",
+            "route-9",
+            "route-11",
+            "route-13",
+            "route-15"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "people_03",
+              "actual": "people_03"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-3",
+                "route-5",
+                "route-7",
+                "route-9",
+                "route-11",
+                "route-13",
+                "route-15"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_side6",
+              "actual": "bg_side6"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_rx78_neutral",
+              "actual": "char_rx78_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "blink",
+              "actual": "blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "people_03b"
+              ],
+              "actual": [
+                "people_03b"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "people_03",
+              "actual": "people_03"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "people_03",
+              "actual": "people_03"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169846
+              }
+            },
+            {
+              "name": "route-5:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:runtime-node",
+              "ok": true,
+              "expected": "people_03",
+              "actual": "people_03"
+            },
+            {
+              "name": "route-5:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.170346
+              }
+            },
+            {
+              "name": "route-7:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:runtime-node",
+              "ok": true,
+              "expected": "people_03",
+              "actual": "people_03"
+            },
+            {
+              "name": "route-7:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-9:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:runtime-node",
+              "ok": true,
+              "expected": "people_03",
+              "actual": "people_03"
+            },
+            {
+              "name": "route-9:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-11:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:runtime-node",
+              "ok": true,
+              "expected": "people_03",
+              "actual": "people_03"
+            },
+            {
+              "name": "route-11:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-13:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:runtime-node",
+              "ok": true,
+              "expected": "people_03",
+              "actual": "people_03"
+            },
+            {
+              "name": "route-13:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.174772
+              }
+            },
+            {
+              "name": "route-15:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:runtime-node",
+              "ok": true,
+              "expected": "people_03",
+              "actual": "people_03"
+            },
+            {
+              "name": "route-15:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            }
+          ]
+        },
+        {
+          "id": "power-lens",
+          "node_id": "power_03",
+          "routes": [
+            "route-2",
+            "route-4",
+            "route-6",
+            "route-8",
+            "route-10",
+            "route-12",
+            "route-14",
+            "route-16"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "power_03",
+              "actual": "power_03"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-2",
+                "route-4",
+                "route-6",
+                "route-8",
+                "route-10",
+                "route-12",
+                "route-14",
+                "route-16"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_side6",
+              "actual": "bg_side6"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_zaku_neutral",
+              "actual": "char_zaku_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "blink",
+              "actual": "blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "power_03b"
+              ],
+              "actual": [
+                "power_03b"
+              ]
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "power_03",
+              "actual": "power_03"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "power_03",
+              "actual": "power_03"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-6:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:runtime-node",
+              "ok": true,
+              "expected": "power_03",
+              "actual": "power_03"
+            },
+            {
+              "name": "route-6:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-8:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:runtime-node",
+              "ok": true,
+              "expected": "power_03",
+              "actual": "power_03"
+            },
+            {
+              "name": "route-8:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-10:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:runtime-node",
+              "ok": true,
+              "expected": "power_03",
+              "actual": "power_03"
+            },
+            {
+              "name": "route-10:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-12:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:runtime-node",
+              "ok": true,
+              "expected": "power_03",
+              "actual": "power_03"
+            },
+            {
+              "name": "route-12:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-14:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:runtime-node",
+              "ok": true,
+              "expected": "power_03",
+              "actual": "power_03"
+            },
+            {
+              "name": "route-14:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-16:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:runtime-node",
+              "ok": true,
+              "expected": "power_03",
+              "actual": "power_03"
+            },
+            {
+              "name": "route-16:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            }
+          ]
+        }
+      ],
+      "interaction_proof": null
+    },
+    {
+      "id": "proof-zabi-collapse",
+      "label": "Zeon's leadership destroys itself",
+      "story": {
+        "turn": "Solar Ray and the Zabi assassinations consume Zeon's command.",
+        "consequence": "A Baoa Qu begins with the regime already collapsing.",
+        "setup_ids": [
+          "zabi-board"
+        ],
+        "payoff_ids": [
+          "zabi-board"
+        ]
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "people-lens",
+          "node_id": "people_04",
+          "routes": [
+            "route-1",
+            "route-3",
+            "route-5",
+            "route-7",
+            "route-9",
+            "route-11",
+            "route-13",
+            "route-15"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "people_04",
+              "actual": "people_04"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-3",
+                "route-5",
+                "route-7",
+                "route-9",
+                "route-11",
+                "route-13",
+                "route-15"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_solar_ray",
+              "actual": "bg_solar_ray"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_zaku_pointer_neutral",
+              "actual": "char_zaku_pointer_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "blink",
+              "actual": "blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "people_05"
+              ],
+              "actual": [
+                "people_05"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "people_04",
+              "actual": "people_04"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "people_04",
+              "actual": "people_04"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169846
+              }
+            },
+            {
+              "name": "route-5:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:runtime-node",
+              "ok": true,
+              "expected": "people_04",
+              "actual": "people_04"
+            },
+            {
+              "name": "route-5:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.170346
+              }
+            },
+            {
+              "name": "route-7:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:runtime-node",
+              "ok": true,
+              "expected": "people_04",
+              "actual": "people_04"
+            },
+            {
+              "name": "route-7:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-9:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:runtime-node",
+              "ok": true,
+              "expected": "people_04",
+              "actual": "people_04"
+            },
+            {
+              "name": "route-9:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-11:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:runtime-node",
+              "ok": true,
+              "expected": "people_04",
+              "actual": "people_04"
+            },
+            {
+              "name": "route-11:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-13:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:runtime-node",
+              "ok": true,
+              "expected": "people_04",
+              "actual": "people_04"
+            },
+            {
+              "name": "route-13:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.174772
+              }
+            },
+            {
+              "name": "route-15:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:runtime-node",
+              "ok": true,
+              "expected": "people_04",
+              "actual": "people_04"
+            },
+            {
+              "name": "route-15:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            }
+          ]
+        },
+        {
+          "id": "power-lens",
+          "node_id": "power_04",
+          "routes": [
+            "route-2",
+            "route-4",
+            "route-6",
+            "route-8",
+            "route-10",
+            "route-12",
+            "route-14",
+            "route-16"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "power_04",
+              "actual": "power_04"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-2",
+                "route-4",
+                "route-6",
+                "route-8",
+                "route-10",
+                "route-12",
+                "route-14",
+                "route-16"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_solar_ray",
+              "actual": "bg_solar_ray"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_rx78_ticket_neutral",
+              "actual": "char_rx78_ticket_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "blink",
+              "actual": "blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "power_05"
+              ],
+              "actual": [
+                "power_05"
+              ]
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "power_04",
+              "actual": "power_04"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "power_04",
+              "actual": "power_04"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-6:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:runtime-node",
+              "ok": true,
+              "expected": "power_04",
+              "actual": "power_04"
+            },
+            {
+              "name": "route-6:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-8:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:runtime-node",
+              "ok": true,
+              "expected": "power_04",
+              "actual": "power_04"
+            },
+            {
+              "name": "route-8:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-10:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:runtime-node",
+              "ok": true,
+              "expected": "power_04",
+              "actual": "power_04"
+            },
+            {
+              "name": "route-10:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-12:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:runtime-node",
+              "ok": true,
+              "expected": "power_04",
+              "actual": "power_04"
+            },
+            {
+              "name": "route-12:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-14:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:runtime-node",
+              "ok": true,
+              "expected": "power_04",
+              "actual": "power_04"
+            },
+            {
+              "name": "route-14:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-16:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:runtime-node",
+              "ok": true,
+              "expected": "power_04",
+              "actual": "power_04"
+            },
+            {
+              "name": "route-16:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            }
+          ]
+        }
+      ],
+      "interaction_proof": null
+    },
+    {
+      "id": "proof-home",
+      "label": "The machines end and the relationships survive",
+      "story": {
+        "turn": "Amuro and the White Base crew guide one another out.",
+        "consequence": "HERO and VILLAIN are replaced by WITNESS; the ticket ends at HOME.",
+        "setup_ids": [
+          "closing-clock",
+          "tour-ticket",
+          "exit-path"
+        ],
+        "payoff_ids": [
+          "closing-clock",
+          "tour-ticket",
+          "exit-path"
+        ]
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "people-ending",
+          "node_id": "people_coda",
+          "routes": [
+            "route-1",
+            "route-3",
+            "route-5",
+            "route-7",
+            "route-9",
+            "route-11",
+            "route-13",
+            "route-15"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-3",
+                "route-5",
+                "route-7",
+                "route-9",
+                "route-11",
+                "route-13",
+                "route-15"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_home_people",
+              "actual": "bg_home_people"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": null,
+              "actual": null
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "none",
+              "actual": "none"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "end"
+              ],
+              "actual": [
+                "end"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-1:ending-capture",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169846
+              }
+            },
+            {
+              "name": "route-3:ending-capture",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-5:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:runtime-node",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-5:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-5:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.170346
+              }
+            },
+            {
+              "name": "route-5:ending-capture",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-7:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:runtime-node",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-7:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-7:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-7:ending-capture",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-9:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:runtime-node",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-9:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-9:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-9:ending-capture",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-11:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:runtime-node",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-11:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-11:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-11:ending-capture",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-13:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:runtime-node",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-13:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-13:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.174772
+              }
+            },
+            {
+              "name": "route-13:ending-capture",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-15:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:runtime-node",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            },
+            {
+              "name": "route-15:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-15:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-15:ending-capture",
+              "ok": true,
+              "expected": "people_coda",
+              "actual": "people_coda"
+            }
+          ]
+        },
+        {
+          "id": "power-ending",
+          "node_id": "power_coda",
+          "routes": [
+            "route-2",
+            "route-4",
+            "route-6",
+            "route-8",
+            "route-10",
+            "route-12",
+            "route-14",
+            "route-16"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-2",
+                "route-4",
+                "route-6",
+                "route-8",
+                "route-10",
+                "route-12",
+                "route-14",
+                "route-16"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_home_power",
+              "actual": "bg_home_power"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": null,
+              "actual": null
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "none",
+              "actual": "none"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "end"
+              ],
+              "actual": [
+                "end"
+              ]
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-2:ending-capture",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-4:ending-capture",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-6:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:runtime-node",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-6:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-6:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-6:ending-capture",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-8:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:runtime-node",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-8:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-8:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-8:ending-capture",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-10:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:runtime-node",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-10:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-10:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-10:ending-capture",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-12:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:runtime-node",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-12:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-12:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-12:ending-capture",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-14:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:runtime-node",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-14:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-14:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-14:ending-capture",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-16:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:runtime-node",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            },
+            {
+              "name": "route-16:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-16:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.169588
+              }
+            },
+            {
+              "name": "route-16:ending-capture",
+              "ok": true,
+              "expected": "power_coda",
+              "actual": "power_coda"
+            }
+          ]
+        }
+      ],
+      "interaction_proof": null
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:34:12.826315+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "catalog-after-midnight",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/runtime-local/catalog-after-midnight.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/catalog-after-midnight-qa-report.json",
+    "project_counts": {
+      "name": "Catalog After Midnight",
+      "nodes": 47,
+      "flags": 6,
+      "tracks": 1,
+      "backgrounds": 3,
+      "characters": 6,
+      "sfx": 0
+    },
+    "header_counts": {
+      "NUM_NODES": 47,
+      "NUM_FLAGS": 6,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 1,
+      "NUM_SFX": 0,
+      "NUM_BG_ASSETS": 3,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 6
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json",
+      "bytes": 105266,
+      "sha256": "7f5ebccfbfcc413e61bf2b5d82c55b9e1195256c7be9b56f6dadbdc3f00bf342"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/runtime-local/catalog-after-midnight.wsc",
+      "bytes": 8388608,
+      "sha256": "6d151cb382b3e542ef51b0f8e859bdb36636e57329f325677382674913901958"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/emulator-smoke-report.json",
+      "bytes": 1207,
+      "sha256": "64cf92d610a61235fc91c65db4299d34e8b6f2a5bfc34b081996727bbc0e477f"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/game-readiness-report.json",
+      "bytes": 22949,
+      "sha256": "65e53063d9792335f585eaec141175c66266f96d2cef6bb1cac4bf349c3a2ed3"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/catalog-after-midnight-qa-report.json",
+      "bytes": 2921,
+      "sha256": "0392dc589267f4c87da9769f50fe1231f8d85c0eef73ad54ed3227530cfb1935"
+    }
+  }
+}

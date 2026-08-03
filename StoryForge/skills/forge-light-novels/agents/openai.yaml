@@ -1,0 +1,4 @@
+interface:
+  display_name: "Forge Light Novels"
+  short_description: "Run a proposal-first room for exceptional light novels"
+  default_prompt: "Use $forge-light-novels and its Story Room workbench to develop a distinctive light novel through genre pleasure, scene delivery, causal Story Pulse review, continuity, chemistry, live Reader Lab bookmarks, reader synthesis, rights, fun motif-led music, ImageGen-only production art, full-set illustration review, adaptation drift, SwanSong-backed Story Proof, and release gates. Preserve surprise, keep the human lead writer in control of merges and approvals, never average taste into a formula, and never substitute procedural production art for ImageGen."

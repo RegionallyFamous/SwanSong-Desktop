@@ -257,9 +257,9 @@ All six route/capture commands require `--enable-debug-tools` and
 the project. Two additional guarded commands, `probe-rectangle-source` and
 `export-static-analysis-seed`, keep bounded cartridge lineage and analyzer
 anchors private while returning only source-free receipts. All eight are exposed
-by the opt-in local MCP server with an explicit `confirmProjectWrites`
-argument. Full schemas, commands, privacy
-boundaries, and failure behavior are in [[Local MCP and Automation]].
+by the opt-in local MCP server with persistent project-write access and no
+per-call confirmation argument. Full schemas, commands, privacy boundaries,
+and failure behavior are in [[Local MCP and Automation]].
 
 The MCP server also supports one retained observed-play session for long
 tactical sequences. A single step or a bounded multi-event sequence atomically

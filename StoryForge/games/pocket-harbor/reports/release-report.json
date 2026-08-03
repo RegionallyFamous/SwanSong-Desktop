@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:20:17.654147+00:00",
+  "errors": [],
+  "release_id": "20260727T032017Z-518e84ed00b5",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/releases/20260727T032017Z-518e84ed00b5",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/releases/20260727T032017Z-518e84ed00b5.zip",
+    "bytes": 7070187,
+    "sha256": "8d56c3d898bf7f4cbdc9bfd3427fadfff565d59aa40a2a977f0173d556aa64f1"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/releases/20260727T032017Z-518e84ed00b5/manifest.json",
+    "sha256": "23c596c7b7b7ebddeaf10fb08872ca598edceeca689e1b2ac8e317bb16a4c6a2",
+    "files": 86
+  },
+  "rom_sha256": "518e84ed00b535ab249acbe39a49a217bc7280cbac6e245e49abbab271c2441e",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "pocket-harbor",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/game-audit-report.json\nGame audit passed"
+  }
+}

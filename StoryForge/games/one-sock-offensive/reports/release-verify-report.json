@@ -1,0 +1,789 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mode": "normal",
+    "zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/releases/20260727T030916Z-dfdd0a8bcdeb.zip",
+      "bytes": 12763467,
+      "sha256": "fda81cd6aca254372220cc03ff7305c3efe889b9995c1872d7845a9ef68b61a6"
+    },
+    "entries": 45,
+    "members": 45,
+    "duplicate_members": [],
+    "unsafe_members": [],
+    "manifest": {
+      "schema_version": 1,
+      "slug": "one-sock-offensive",
+      "title": "The One-Sock Offensive",
+      "files": 44,
+      "runtime_inputs": 6,
+      "emulator_screenshot": false
+    },
+    "package_sources": {
+      "readme": {
+        "member": "docs/README.md",
+        "exists": true,
+        "bytes": 1554,
+        "sha256": "ba16ef9db8162588b2704029bd1bdc36a04cd20dfaecb47cf0b6b740dda94c57"
+      },
+      "asset_builder": {
+        "member": "source/build_one_sock_offensive.py",
+        "exists": true,
+        "bytes": 23181,
+        "sha256": "8ac9a961f7a8bf3090f9d184bf59e7de6b203b654e0dc2962b1fb8e84c328d67"
+      },
+      "qa_report": {
+        "member": "reports/one-sock-offensive-qa-report.json",
+        "exists": true,
+        "bytes": 1595,
+        "sha256": "1b45cba02e2cf234b1873d294bb62a3ecd43d8502a0b1b362f851ae34558b940"
+      }
+    },
+    "runtime_inputs": {
+      "present": true,
+      "expected_count": 6,
+      "files": [
+        {
+          "member": "runtime/src/main.c",
+          "exists": true,
+          "bytes": 105606,
+          "sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a",
+          "manifest_bytes": 105606,
+          "manifest_sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a"
+        },
+        {
+          "member": "runtime/src/game_types.h",
+          "exists": true,
+          "bytes": 6650,
+          "sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec",
+          "manifest_bytes": 6650,
+          "manifest_sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec"
+        },
+        {
+          "member": "runtime/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+          "manifest_bytes": 5470,
+          "manifest_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        {
+          "member": "runtime/tools/convert_json.py",
+          "exists": true,
+          "bytes": 88977,
+          "sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387",
+          "manifest_bytes": 88977,
+          "manifest_sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387"
+        },
+        {
+          "member": "runtime/Makefile",
+          "exists": true,
+          "bytes": 3590,
+          "sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd",
+          "manifest_bytes": 3590,
+          "manifest_sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd"
+        },
+        {
+          "member": "runtime/wfconfig.toml",
+          "exists": true,
+          "bytes": 169,
+          "sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78",
+          "manifest_bytes": 169,
+          "manifest_sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78"
+        }
+      ],
+      "count": 6,
+      "missing": [],
+      "extra": [],
+      "duplicates": []
+    },
+    "current_workspace": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive",
+      "checked": 44,
+      "missing": [],
+      "mismatches": [],
+      "stable_report_diffs": [],
+      "unmapped": [],
+      "extra_current": []
+    },
+    "reports": {
+      "build": true,
+      "smoke": true,
+      "readiness": true,
+      "audit": true,
+      "swansong_playthrough": true,
+      "review_sheets": true
+    },
+    "smoke_verification": {
+      "result_scope": "boot-and-checksum",
+      "boot": {
+        "performed": true,
+        "passed": true,
+        "method": "headless-mednafen-startup-metadata",
+        "pixels_observed": false
+      },
+      "checksum": {
+        "performed": true,
+        "passed": true,
+        "method": "mednafen-recorded-vs-real-checksum"
+      },
+      "visual": {
+        "performed": false,
+        "passed": null,
+        "status": "not-performed",
+        "pixels_observed": false,
+        "proof_bound": false,
+        "screenshot": null
+      },
+      "proof_bound": false
+    },
+    "swansong_playthrough": {
+      "schema": "wscvn-swansong-playthrough-v2",
+      "app": {
+        "path": "/Applications/SwanSong.app",
+        "version": "0.9.0",
+        "build": "18",
+        "bundle_identifier": "com.regionallyfamous.swansong"
+      },
+      "route_count": 4,
+      "routes": [
+        {
+          "route_index": 0,
+          "member": "evidence/swansong-playthrough/route-1-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "sock_title",
+            "sock_01",
+            "sock_02",
+            "sock_03",
+            "sock_04",
+            "sock_05",
+            "sock_06",
+            "sock_07",
+            "sock_08",
+            "sock_09",
+            "sock_10",
+            "sock_method",
+            "sock_fold_1",
+            "sock_fold_2",
+            "sock_11",
+            "sock_12",
+            "sock_13",
+            "sock_14",
+            "sock_15",
+            "sock_16",
+            "sock_17",
+            "sock_18",
+            "sock_19",
+            "sock_20",
+            "sock_21",
+            "sock_22",
+            "sock_23",
+            "sock_24",
+            "sock_25",
+            "sock_26",
+            "sock_27",
+            "sock_28",
+            "sock_choice",
+            "sock_a1",
+            "sock_a2",
+            "sock_a3",
+            "sock_a4",
+            "end"
+          ],
+          "observed_nodes": [
+            "sock_title",
+            "sock_01",
+            "sock_02",
+            "sock_03",
+            "sock_04",
+            "sock_05",
+            "sock_06",
+            "sock_07",
+            "sock_08",
+            "sock_09",
+            "sock_10",
+            "sock_method",
+            "sock_fold_1",
+            "sock_fold_2",
+            "sock_11",
+            "sock_12",
+            "sock_13",
+            "sock_14",
+            "sock_15",
+            "sock_16",
+            "sock_17",
+            "sock_18",
+            "sock_19",
+            "sock_20",
+            "sock_21",
+            "sock_22",
+            "sock_23",
+            "sock_24",
+            "sock_25",
+            "sock_26",
+            "sock_27",
+            "sock_28",
+            "sock_choice",
+            "sock_a1",
+            "sock_a2",
+            "sock_a3",
+            "sock_a4",
+            "end"
+          ],
+          "bytes": 17500,
+          "sha256": "7411402730471cee4459c47b219502a28204dad0cb5e6477d53c6f2326088e46",
+          "node_id": "sock_a4",
+          "audio_member": "evidence/swansong-playthrough/route-1-audio.wav"
+        },
+        {
+          "route_index": 1,
+          "member": "evidence/swansong-playthrough/route-2-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "sock_title",
+            "sock_01",
+            "sock_02",
+            "sock_03",
+            "sock_04",
+            "sock_05",
+            "sock_06",
+            "sock_07",
+            "sock_08",
+            "sock_09",
+            "sock_10",
+            "sock_method",
+            "sock_fold_1",
+            "sock_fold_2",
+            "sock_11",
+            "sock_12",
+            "sock_13",
+            "sock_14",
+            "sock_15",
+            "sock_16",
+            "sock_17",
+            "sock_18",
+            "sock_19",
+            "sock_20",
+            "sock_21",
+            "sock_22",
+            "sock_23",
+            "sock_24",
+            "sock_25",
+            "sock_26",
+            "sock_27",
+            "sock_28",
+            "sock_choice",
+            "sock_b1",
+            "sock_b2",
+            "sock_b3",
+            "sock_b4",
+            "end"
+          ],
+          "observed_nodes": [
+            "sock_title",
+            "sock_01",
+            "sock_02",
+            "sock_03",
+            "sock_04",
+            "sock_05",
+            "sock_06",
+            "sock_07",
+            "sock_08",
+            "sock_09",
+            "sock_10",
+            "sock_method",
+            "sock_fold_1",
+            "sock_fold_2",
+            "sock_11",
+            "sock_12",
+            "sock_13",
+            "sock_14",
+            "sock_15",
+            "sock_16",
+            "sock_17",
+            "sock_18",
+            "sock_19",
+            "sock_20",
+            "sock_21",
+            "sock_22",
+            "sock_23",
+            "sock_24",
+            "sock_25",
+            "sock_26",
+            "sock_27",
+            "sock_28",
+            "sock_choice",
+            "sock_b1",
+            "sock_b2",
+            "sock_b3",
+            "sock_b4",
+            "end"
+          ],
+          "bytes": 16592,
+          "sha256": "9c876f812edf6a3b10073c738af8afaab61c7b3c592798531d8ec15de1833575",
+          "node_id": "sock_b4",
+          "audio_member": "evidence/swansong-playthrough/route-2-audio.wav"
+        },
+        {
+          "route_index": 2,
+          "member": "evidence/swansong-playthrough/route-3-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "sock_title",
+            "sock_01",
+            "sock_02",
+            "sock_03",
+            "sock_04",
+            "sock_05",
+            "sock_06",
+            "sock_07",
+            "sock_08",
+            "sock_09",
+            "sock_10",
+            "sock_method",
+            "sock_scan_1",
+            "sock_scan_2",
+            "sock_11",
+            "sock_12",
+            "sock_13",
+            "sock_14",
+            "sock_15",
+            "sock_16",
+            "sock_17",
+            "sock_18",
+            "sock_19",
+            "sock_20",
+            "sock_21",
+            "sock_22",
+            "sock_23",
+            "sock_24",
+            "sock_25",
+            "sock_26",
+            "sock_27",
+            "sock_28",
+            "sock_choice",
+            "sock_a1",
+            "sock_a2",
+            "sock_a3",
+            "sock_a4",
+            "end"
+          ],
+          "observed_nodes": [
+            "sock_title",
+            "sock_01",
+            "sock_02",
+            "sock_03",
+            "sock_04",
+            "sock_05",
+            "sock_06",
+            "sock_07",
+            "sock_08",
+            "sock_09",
+            "sock_10",
+            "sock_method",
+            "sock_scan_1",
+            "sock_scan_2",
+            "sock_11",
+            "sock_12",
+            "sock_13",
+            "sock_14",
+            "sock_15",
+            "sock_16",
+            "sock_17",
+            "sock_18",
+            "sock_19",
+            "sock_20",
+            "sock_21",
+            "sock_22",
+            "sock_23",
+            "sock_24",
+            "sock_25",
+            "sock_26",
+            "sock_27",
+            "sock_28",
+            "sock_choice",
+            "sock_a1",
+            "sock_a2",
+            "sock_a3",
+            "sock_a4",
+            "end"
+          ],
+          "bytes": 17500,
+          "sha256": "7411402730471cee4459c47b219502a28204dad0cb5e6477d53c6f2326088e46",
+          "node_id": "sock_a4",
+          "audio_member": "evidence/swansong-playthrough/route-3-audio.wav"
+        },
+        {
+          "route_index": 3,
+          "member": "evidence/swansong-playthrough/route-4-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "sock_title",
+            "sock_01",
+            "sock_02",
+            "sock_03",
+            "sock_04",
+            "sock_05",
+            "sock_06",
+            "sock_07",
+            "sock_08",
+            "sock_09",
+            "sock_10",
+            "sock_method",
+            "sock_scan_1",
+            "sock_scan_2",
+            "sock_11",
+            "sock_12",
+            "sock_13",
+            "sock_14",
+            "sock_15",
+            "sock_16",
+            "sock_17",
+            "sock_18",
+            "sock_19",
+            "sock_20",
+            "sock_21",
+            "sock_22",
+            "sock_23",
+            "sock_24",
+            "sock_25",
+            "sock_26",
+            "sock_27",
+            "sock_28",
+            "sock_choice",
+            "sock_b1",
+            "sock_b2",
+            "sock_b3",
+            "sock_b4",
+            "end"
+          ],
+          "observed_nodes": [
+            "sock_title",
+            "sock_01",
+            "sock_02",
+            "sock_03",
+            "sock_04",
+            "sock_05",
+            "sock_06",
+            "sock_07",
+            "sock_08",
+            "sock_09",
+            "sock_10",
+            "sock_method",
+            "sock_scan_1",
+            "sock_scan_2",
+            "sock_11",
+            "sock_12",
+            "sock_13",
+            "sock_14",
+            "sock_15",
+            "sock_16",
+            "sock_17",
+            "sock_18",
+            "sock_19",
+            "sock_20",
+            "sock_21",
+            "sock_22",
+            "sock_23",
+            "sock_24",
+            "sock_25",
+            "sock_26",
+            "sock_27",
+            "sock_28",
+            "sock_choice",
+            "sock_b1",
+            "sock_b2",
+            "sock_b3",
+            "sock_b4",
+            "end"
+          ],
+          "bytes": 16592,
+          "sha256": "9c876f812edf6a3b10073c738af8afaab61c7b3c592798531d8ec15de1833575",
+          "node_id": "sock_b4",
+          "audio_member": "evidence/swansong-playthrough/route-4-audio.wav"
+        }
+      ]
+    },
+    "readiness_assets": {
+      "contact_sheet": {
+        "member": "preview/contact_sheet.png",
+        "expected_sha256": "98af173976909fe8c7b9c8a7715384302384a27a873c4cb625979ba9368260b2",
+        "exists": true,
+        "sha256": "98af173976909fe8c7b9c8a7715384302384a27a873c4cb625979ba9368260b2"
+      },
+      "review_sheets": {
+        "scene_preview_sheet": {
+          "member": "preview/scene_preview_sheet.png",
+          "expected_sha256": "2dbe777b516caa6b6b0253a1c9fd56efd5c08c6ae6bc9939c0b0ced0c1a364dd",
+          "exists": true,
+          "sha256": "2dbe777b516caa6b6b0253a1c9fd56efd5c08c6ae6bc9939c0b0ced0c1a364dd"
+        },
+        "storyboard_sheet": {
+          "member": "preview/storyboard_sheet.png",
+          "expected_sha256": "9c4d286622b81e0b14f00c8fdfe0c9ca7d69cec9886203bb8fa926ab1743cc4c",
+          "exists": true,
+          "sha256": "9c4d286622b81e0b14f00c8fdfe0c9ca7d69cec9886203bb8fa926ab1743cc4c"
+        }
+      },
+      "sources": [
+        {
+          "member": "assets/sources/background_ending_a_imagegen_v1.png",
+          "expected_sha256": "815a84618cfa0d599242c0877fad94a87bbe892cada866801fc6f6cafbfd2756",
+          "exists": true,
+          "sha256": "815a84618cfa0d599242c0877fad94a87bbe892cada866801fc6f6cafbfd2756"
+        },
+        {
+          "member": "assets/sources/background_ending_b_imagegen_v1.png",
+          "expected_sha256": "93fba732efee44554b5a8eb2c9e6f5d5d455b1d21b649d9b690a65506cfe01a0",
+          "exists": true,
+          "sha256": "93fba732efee44554b5a8eb2c9e6f5d5d455b1d21b649d9b690a65506cfe01a0"
+        },
+        {
+          "member": "assets/sources/background_main_imagegen_v1.png",
+          "expected_sha256": "39b0fa4402ddfb72c8d12ad6ffc530b70518022736e053b3f25665b09c94efa8",
+          "exists": true,
+          "sha256": "39b0fa4402ddfb72c8d12ad6ffc530b70518022736e053b3f25665b09c94efa8"
+        },
+        {
+          "member": "assets/sources/background_title_imagegen_v1.png",
+          "expected_sha256": "6ed92386fb36d7f20327de1304dca6ba4750aed2a1e16802a9e991e361b6f051",
+          "exists": true,
+          "sha256": "6ed92386fb36d7f20327de1304dca6ba4750aed2a1e16802a9e991e361b6f051"
+        },
+        {
+          "member": "assets/sources/character_master_cutout_imagegen_v1.png",
+          "expected_sha256": "0586a82fa724ef298adbdfb68c59eaa077ab4bc39956854b91edd9d9cb129105",
+          "exists": true,
+          "sha256": "0586a82fa724ef298adbdfb68c59eaa077ab4bc39956854b91edd9d9cb129105"
+        },
+        {
+          "member": "assets/sources/character_master_imagegen_v1.png",
+          "expected_sha256": "95d1ccf77a93cc8c7d81cf49429af265670edd2dd6c9b57dd88735a250e60950",
+          "exists": true,
+          "sha256": "95d1ccf77a93cc8c7d81cf49429af265670edd2dd6c9b57dd88735a250e60950"
+        },
+        {
+          "member": "assets/sources/game_spec.json",
+          "expected_sha256": "6f9d66ae9f0630a4d32f52b58d1c6d64de238909d38f2cc6ae1481c647d98ab9",
+          "exists": true,
+          "sha256": "6f9d66ae9f0630a4d32f52b58d1c6d64de238909d38f2cc6ae1481c647d98ab9"
+        },
+        {
+          "member": "assets/sources/imagegen-prompts-v1.md",
+          "expected_sha256": "857c9ffd38af9050dea7143a36904da8dba81ad66bab62ef4ffde4d64754f31c",
+          "exists": true,
+          "sha256": "857c9ffd38af9050dea7143a36904da8dba81ad66bab62ef4ffde4d64754f31c"
+        }
+      ],
+      "extra_sources": [],
+      "review_sheets_report": {
+        "member": "reports/review-sheets-report.json",
+        "expected_sha256": "4f5a481f3563a58fe9094ec83b2ef0b362afd16db3dedfc6502123d99169d3be",
+        "exists": true,
+        "sha256": "4f5a481f3563a58fe9094ec83b2ef0b362afd16db3dedfc6502123d99169d3be"
+      },
+      "packaged_source_count": 8,
+      "backgrounds": {
+        "count": 4,
+        "files": [
+          {
+            "member": "assets/backgrounds/bg_title.png",
+            "expected_sha256": "4adf4020748d152d51953854c9ac4eec108bfec3b6f05d10b43319bc3042111a",
+            "exists": true,
+            "sha256": "4adf4020748d152d51953854c9ac4eec108bfec3b6f05d10b43319bc3042111a"
+          },
+          {
+            "member": "assets/backgrounds/bg_main.png",
+            "expected_sha256": "d3832381e0fe42e06c4c07b6e5db9087ebc017c1674536ceb4809b221aedd212",
+            "exists": true,
+            "sha256": "d3832381e0fe42e06c4c07b6e5db9087ebc017c1674536ceb4809b221aedd212"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_a.png",
+            "expected_sha256": "c1ee8998c48869f4980e5f2cb0994dbb70a06cf8aeb0921401430ee29b445571",
+            "exists": true,
+            "sha256": "c1ee8998c48869f4980e5f2cb0994dbb70a06cf8aeb0921401430ee29b445571"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_b.png",
+            "expected_sha256": "4b7fb98fa5bc50bcab280eb8e5c54a5e02fe0caea9ab6eec3d1a75b6905f093b",
+            "exists": true,
+            "sha256": "4b7fb98fa5bc50bcab280eb8e5c54a5e02fe0caea9ab6eec3d1a75b6905f093b"
+          }
+        ],
+        "packaged_count": 4,
+        "extra_members": []
+      },
+      "characters": {
+        "count": 3,
+        "files": [
+          {
+            "member": "assets/characters/zaku_neutral.png",
+            "expected_sha256": "65817ad9838d018d8b89daeccce9891155fd8e1d9eba78109c61a9aed8fee0f9",
+            "exists": true,
+            "sha256": "65817ad9838d018d8b89daeccce9891155fd8e1d9eba78109c61a9aed8fee0f9"
+          },
+          {
+            "member": "assets/characters/zaku_talk.png",
+            "expected_sha256": "3a3453df532c14a34ba0558d7c9b592045c55a210007fc19ac46f67e4158b2f6",
+            "exists": true,
+            "sha256": "3a3453df532c14a34ba0558d7c9b592045c55a210007fc19ac46f67e4158b2f6"
+          },
+          {
+            "member": "assets/characters/zaku_blink.png",
+            "expected_sha256": "443789e3c22d277af14552295107cf23d54e2523a287b4fef64ae551e4803866",
+            "exists": true,
+            "sha256": "443789e3c22d277af14552295107cf23d54e2523a287b4fef64ae551e4803866"
+          }
+        ],
+        "packaged_count": 3,
+        "extra_members": []
+      },
+      "sfx": {
+        "count": 0,
+        "files": [],
+        "packaged_count": 0,
+        "extra_members": []
+      }
+    },
+    "project": {
+      "member": "project/one-sock-offensive.wscvn.json",
+      "bytes": 183625,
+      "sha256": "6aa70a5872b6c217de1127256348feaa004e9885c6bc6e8b8c794977d183a51f"
+    },
+    "rom": {
+      "member": "rom/one-sock-offensive.wsc",
+      "bytes": 8388608,
+      "sha256": "dfdd0a8bcdeb858f3668146a0e00ca8eac2fcfb17299d1ed822d9883d69d6103",
+      "md5": "0xbc80ae685201cb2c64554952bebfe70e"
+    },
+    "review_sheets_report": {
+      "present": true,
+      "member": "reports/review-sheets-report.json",
+      "project_file": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/projects/one-sock-offensive.wscvn.json",
+        "bytes": 183625,
+        "sha256": "6aa70a5872b6c217de1127256348feaa004e9885c6bc6e8b8c794977d183a51f"
+      },
+      "nodes_rendered": 43,
+      "preview_node_ids": [
+        "sock_title",
+        "sock_01",
+        "sock_02",
+        "sock_03",
+        "sock_04",
+        "sock_05",
+        "sock_06",
+        "sock_07",
+        "sock_08",
+        "sock_09",
+        "sock_10",
+        "sock_method",
+        "sock_fold_1",
+        "sock_fold_2",
+        "sock_scan_1",
+        "sock_scan_2",
+        "sock_11",
+        "sock_12",
+        "sock_13",
+        "sock_14",
+        "sock_15",
+        "sock_16",
+        "sock_17",
+        "sock_18",
+        "sock_19",
+        "sock_20",
+        "sock_21",
+        "sock_22",
+        "sock_23",
+        "sock_24",
+        "sock_25",
+        "sock_26",
+        "sock_27",
+        "sock_28",
+        "sock_choice",
+        "sock_a1",
+        "sock_a2",
+        "sock_a3",
+        "sock_a4",
+        "sock_b1",
+        "sock_b2",
+        "sock_b3",
+        "sock_b4"
+      ],
+      "font": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+        "bytes": 5470,
+        "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+        "member": "runtime/src/font.h",
+        "packaged_bytes": 5470,
+        "packaged_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+      },
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/scene_preview_sheet.png",
+        "bytes": 303241,
+        "sha256": "2dbe777b516caa6b6b0253a1c9fd56efd5c08c6ae6bc9939c0b0ced0c1a364dd",
+        "member": "preview/scene_preview_sheet.png",
+        "packaged_bytes": 303241,
+        "packaged_sha256": "2dbe777b516caa6b6b0253a1c9fd56efd5c08c6ae6bc9939c0b0ced0c1a364dd"
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/storyboard_sheet.png",
+        "bytes": 101524,
+        "sha256": "9c4d286622b81e0b14f00c8fdfe0c9ca7d69cec9886203bb8fa926ab1743cc4c",
+        "member": "preview/storyboard_sheet.png",
+        "packaged_bytes": 101524,
+        "packaged_sha256": "9c4d286622b81e0b14f00c8fdfe0c9ca7d69cec9886203bb8fa926ab1743cc4c"
+      }
+    },
+    "project_report_bindings": {
+      "readiness": {
+        "present": true,
+        "member": "project/one-sock-offensive.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/projects/one-sock-offensive.wscvn.json",
+        "bytes": 183625,
+        "sha256": "6aa70a5872b6c217de1127256348feaa004e9885c6bc6e8b8c794977d183a51f"
+      },
+      "audit": {
+        "present": true,
+        "member": "project/one-sock-offensive.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/projects/one-sock-offensive.wscvn.json",
+        "bytes": 183625,
+        "sha256": "6aa70a5872b6c217de1127256348feaa004e9885c6bc6e8b8c794977d183a51f"
+      }
+    },
+    "audit_rom_binding": {
+      "present": true,
+      "member": "rom/one-sock-offensive.wsc",
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/runtime-local/one-sock-offensive.wsc",
+      "bytes": 8388608,
+      "sha256": "dfdd0a8bcdeb858f3668146a0e00ca8eac2fcfb17299d1ed822d9883d69d6103"
+    },
+    "manifest_artifacts": {
+      "project": {
+        "present": true,
+        "member": "project/one-sock-offensive.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/projects/one-sock-offensive.wscvn.json",
+        "bytes": 183625,
+        "sha256": "6aa70a5872b6c217de1127256348feaa004e9885c6bc6e8b8c794977d183a51f"
+      },
+      "rom": {
+        "present": true,
+        "member": "rom/one-sock-offensive.wsc",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/runtime-local/one-sock-offensive.wsc",
+        "sha256": "dfdd0a8bcdeb858f3668146a0e00ca8eac2fcfb17299d1ed822d9883d69d6103",
+        "md5": "0xbc80ae685201cb2c64554952bebfe70e",
+        "checksum": "0x2f48"
+      }
+    },
+    "release_summary": {
+      "lines": 46,
+      "expected_lines": 34,
+      "visual_evidence_lines": 8,
+      "has_visual_evidence": true,
+      "missing_expected_lines": []
+    }
+  }
+}

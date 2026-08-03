@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:09:17.165932+00:00",
+  "errors": [],
+  "release_id": "20260727T030916Z-dfdd0a8bcdeb",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/releases/20260727T030916Z-dfdd0a8bcdeb",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/releases/20260727T030916Z-dfdd0a8bcdeb.zip",
+    "bytes": 12763467,
+    "sha256": "fda81cd6aca254372220cc03ff7305c3efe889b9995c1872d7845a9ef68b61a6"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/releases/20260727T030916Z-dfdd0a8bcdeb/manifest.json",
+    "sha256": "7b36cd34c6969106bd96d68656b12b2ea3d09ca7a3ca749e7fbf69b809a8e231",
+    "files": 44
+  },
+  "rom_sha256": "dfdd0a8bcdeb858f3668146a0e00ca8eac2fcfb17299d1ed822d9883d69d6103",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "one-sock-offensive",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/reports/game-audit-report.json\nGame audit passed"
+  }
+}

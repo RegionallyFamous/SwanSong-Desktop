@@ -1,0 +1,608 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:27.219850+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "slug-validation",
+      "passed": true,
+      "rejected": [
+        "SoftClick",
+        "../bad",
+        "bad/path",
+        "-bad",
+        "bad_",
+        ""
+      ]
+    },
+    {
+      "name": "default-rom-name-strips-wscvn-json",
+      "passed": true,
+      "actual": {
+        "soft-click-sunday.wscvn.json": "soft-click-sunday",
+        "plain.json": "plain",
+        "already-clean": "already-clean"
+      }
+    },
+    {
+      "name": "wonderful-env-suppresses-python-cache",
+      "passed": true,
+      "pythondontwritebytecode": "1",
+      "wonderful_toolchain": "/opt/wonderful"
+    },
+    {
+      "name": "default-project-prefers-slug",
+      "passed": true,
+      "chosen": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/games/sample-game/projects/sample-game.wscvn.json"
+    },
+    {
+      "name": "default-project-requires-canonical-slug",
+      "passed": true,
+      "builder_error": "Expected canonical project wrong-project.wscvn.json for /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/games/wrong-project; found wrong-name.wscvn.json. Rename the project or pass --project for explicit debugging.",
+      "review_error": "Expected canonical project wrong-project.wscvn.json for /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/games/wrong-project; found wrong-name.wscvn.json. Rename the project or pass --project for explicit debugging."
+    },
+    {
+      "name": "runtime-copy-is-clean-mirror",
+      "passed": true,
+      "facts": {
+        "source": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/runtime-source",
+        "runtime": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/runtime-local",
+        "copied": [
+          "Makefile",
+          "src/font.h",
+          "src/main.c",
+          "tools/convert_json.py"
+        ],
+        "skipped": [
+          "build/object.o",
+          "old.wsc",
+          "src/game_data.c",
+          "src/game_data.h"
+        ],
+        "quarantined": [
+          {
+            "path": "third_party/old.c",
+            "quarantine_path": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/reports/runtime-stale/20260727T035405588987Z/third_party/old.c",
+            "kind": "file"
+          },
+          {
+            "path": "src/stale_bonus.c",
+            "quarantine_path": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/reports/runtime-stale/20260727T035405588987Z/src/stale_bonus.c",
+            "kind": "file"
+          },
+          {
+            "path": "src/old.h",
+            "quarantine_path": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/reports/runtime-stale/20260727T035405588987Z/src/old.h",
+            "kind": "file"
+          },
+          {
+            "path": "old.wsc",
+            "quarantine_path": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/reports/runtime-stale/20260727T035405588987Z/old.wsc",
+            "kind": "file"
+          },
+          {
+            "path": "music/old.fur",
+            "quarantine_path": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/reports/runtime-stale/20260727T035405588987Z/music/old.fur",
+            "kind": "file"
+          },
+          {
+            "path": "build/old.o",
+            "quarantine_path": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/reports/runtime-stale/20260727T035405588987Z/build/old.o",
+            "kind": "file"
+          }
+        ],
+        "quarantine_root": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/reports/runtime-stale/20260727T035405588987Z"
+      }
+    },
+    {
+      "name": "asset-builder-bootstraps-missing-project",
+      "passed": true,
+      "returncode": 0,
+      "commands": [
+        "asset-builder",
+        "graphics-contract",
+        "convert",
+        "clean",
+        "build"
+      ],
+      "project_exists": true,
+      "report_ok": true
+    },
+    {
+      "name": "review-sheets-use-selected-runtime-source-font",
+      "passed": true,
+      "returncode": 0,
+      "commands": [
+        "review-sheets",
+        "graphics-contract",
+        "convert",
+        "clean",
+        "build"
+      ],
+      "review_cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/make_wscvn_game_review_sheets.py",
+        "font-game",
+        "--project",
+        "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/font-lab/games/font-game/projects/font-game.wscvn.json",
+        "--asset-root",
+        "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/font-lab/games/font-game/assets",
+        "--report",
+        "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/font-lab/games/font-game/reports/review-sheets-report.json",
+        "--font",
+        "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/font-runtime-source/src/font.h"
+      ],
+      "expected_font": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/font-runtime-source/src/font.h"
+    },
+    {
+      "name": "strict-graphics-contract-blocks-compile",
+      "passed": true,
+      "returncode": 1,
+      "commands": [
+        "graphics-contract"
+      ],
+      "graphics_cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_graphics_contract.py",
+        "--asset-root",
+        "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/graphics-lab/games/graphics-game/assets",
+        "--project",
+        "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/graphics-lab/games/graphics-game/projects/graphics-game.wscvn.json",
+        "--allow-missing-provenance",
+        "--out",
+        "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/graphics-lab/games/graphics-game/reports/graphics-contract-report.json"
+      ],
+      "build_errors": [
+        "strict graphics contract failed"
+      ]
+    },
+    {
+      "name": "all-real-asset-builders-project-and-png-determinism",
+      "passed": true,
+      "games_checked": [
+        "backlight-bazaar",
+        "catalog-after-midnight",
+        "doms-soup-route",
+        "eleven-bento-emergency",
+        "four-part-errand-run",
+        "gm-name-tag-crisis",
+        "gouf-strings-attached",
+        "guntank-takes-the-stairs",
+        "last-blue-spine",
+        "mobile-suit-gundam-summary",
+        "mono-cart-morning",
+        "one-sock-offensive",
+        "operation-potluck",
+        "pocket-harbor",
+        "soft-click-sunday",
+        "swan-case-club",
+        "swanlight-ledger",
+        "three-coats-of-white",
+        "virtue-at-the-coat-check",
+        "zgok-wraps-a-present"
+      ],
+      "results": [
+        {
+          "slug": "backlight-bazaar",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": " be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  for pixel in rgba.getdata():\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/backlight-bazaar/build_backlight_bazaar.py:1017: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/backlight-bazaar/build_backlight_bazaar.py:1018: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/backlight-bazaar/projects/backlight-bazaar.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/backlight-bazaar/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/backlight-bazaar/reports/backlight-bazaar-qa-report.json",
+              "artifact_count": 13
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": " be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  for pixel in rgba.getdata():\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/backlight-bazaar/build_backlight_bazaar.py:1017: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/backlight-bazaar/build_backlight_bazaar.py:1018: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/backlight-bazaar/projects/backlight-bazaar.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/backlight-bazaar/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/backlight-bazaar/reports/backlight-bazaar-qa-report.json",
+              "artifact_count": 13
+            }
+          ],
+          "artifact_count": 13,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "catalog-after-midnight",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "r pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/catalog-after-midnight/build_catalog_after_midnight.py:160: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote source art: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/catalog-after-midnight/assets/sources/backgrounds_imagegen_source.png\nWrote source art: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/catalog-after-midnight/assets/sources/characters_imagegen_source.png\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/catalog-after-midnight/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/catalog-after-midnight/reports/catalog-after-midnight-qa-report.json",
+              "artifact_count": 13
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "r pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/catalog-after-midnight/build_catalog_after_midnight.py:160: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote source art: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/catalog-after-midnight/assets/sources/backgrounds_imagegen_source.png\nWrote source art: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/catalog-after-midnight/assets/sources/characters_imagegen_source.png\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/catalog-after-midnight/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/catalog-after-midnight/reports/catalog-after-midnight-qa-report.json",
+              "artifact_count": 13
+            }
+          ],
+          "artifact_count": 13,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "doms-soup-route",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/doms-soup-route/projects/doms-soup-route.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/doms-soup-route/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/doms-soup-route/reports/doms-soup-route-qa-report.json",
+              "artifact_count": 15
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/doms-soup-route/projects/doms-soup-route.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/doms-soup-route/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/doms-soup-route/reports/doms-soup-route-qa-report.json",
+              "artifact_count": 15
+            }
+          ],
+          "artifact_count": 15,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "eleven-bento-emergency",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/eleven-bento-emergency/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/eleven-bento-emergency/reports/eleven-bento-emergency-qa-report.json",
+              "artifact_count": 15
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/eleven-bento-emergency/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/eleven-bento-emergency/reports/eleven-bento-emergency-qa-report.json",
+              "artifact_count": 15
+            }
+          ],
+          "artifact_count": 15,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "four-part-errand-run",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/four-part-errand-run/projects/four-part-errand-run.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/four-part-errand-run/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/four-part-errand-run/reports/four-part-errand-run-qa-report.json",
+              "artifact_count": 15
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/four-part-errand-run/projects/four-part-errand-run.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/four-part-errand-run/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/four-part-errand-run/reports/four-part-errand-run-qa-report.json",
+              "artifact_count": 15
+            }
+          ],
+          "artifact_count": 15,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "gm-name-tag-crisis",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/gm-name-tag-crisis/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/gm-name-tag-crisis/reports/gm-name-tag-crisis-qa-report.json",
+              "artifact_count": 15
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/gm-name-tag-crisis/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/gm-name-tag-crisis/reports/gm-name-tag-crisis-qa-report.json",
+              "artifact_count": 15
+            }
+          ],
+          "artifact_count": 15,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "gouf-strings-attached",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/gouf-strings-attached/projects/gouf-strings-attached.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/gouf-strings-attached/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/gouf-strings-attached/reports/gouf-strings-attached-qa-report.json",
+              "artifact_count": 15
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/gouf-strings-attached/projects/gouf-strings-attached.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/gouf-strings-attached/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/gouf-strings-attached/reports/gouf-strings-attached-qa-report.json",
+              "artifact_count": 15
+            }
+          ],
+          "artifact_count": 15,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "guntank-takes-the-stairs",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/guntank-takes-the-stairs/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/guntank-takes-the-stairs/reports/guntank-takes-the-stairs-qa-report.json",
+              "artifact_count": 15
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/guntank-takes-the-stairs/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/guntank-takes-the-stairs/reports/guntank-takes-the-stairs-qa-report.json",
+              "artifact_count": 15
+            }
+          ],
+          "artifact_count": 15,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "last-blue-spine",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "ed and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  for pixel in rgba.getdata():\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/last-blue-spine/build_last_blue_spine.py:700: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/last-blue-spine/build_last_blue_spine.py:701: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/last-blue-spine/projects/last-blue-spine.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/last-blue-spine/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/last-blue-spine/reports/last-blue-spine-qa-report.json",
+              "artifact_count": 13
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "ed and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  for pixel in rgba.getdata():\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/last-blue-spine/build_last_blue_spine.py:700: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/last-blue-spine/build_last_blue_spine.py:701: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/last-blue-spine/projects/last-blue-spine.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/last-blue-spine/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/last-blue-spine/reports/last-blue-spine-qa-report.json",
+              "artifact_count": 13
+            }
+          ],
+          "artifact_count": 13,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "mobile-suit-gundam-summary",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mobile-suit-gundam-summary/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mobile-suit-gundam-summary/reports/mobile-suit-gundam-summary-qa-report.json",
+              "artifact_count": 46
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mobile-suit-gundam-summary/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mobile-suit-gundam-summary/reports/mobile-suit-gundam-summary-qa-report.json",
+              "artifact_count": 46
+            }
+          ],
+          "artifact_count": 46,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "mono-cart-morning",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mono-cart-morning/build_mono_cart_morning.py:162: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote source art: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mono-cart-morning/assets/sources/backgrounds_source.png\nWrote source art: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mono-cart-morning/assets/sources/characters_source.png\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mono-cart-morning/projects/mono-cart-morning.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mono-cart-morning/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mono-cart-morning/reports/mono-cart-morning-qa-report.json",
+              "artifact_count": 13
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mono-cart-morning/build_mono_cart_morning.py:162: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote source art: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mono-cart-morning/assets/sources/backgrounds_source.png\nWrote source art: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mono-cart-morning/assets/sources/characters_source.png\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mono-cart-morning/projects/mono-cart-morning.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mono-cart-morning/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/mono-cart-morning/reports/mono-cart-morning-qa-report.json",
+              "artifact_count": 13
+            }
+          ],
+          "artifact_count": 13,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "one-sock-offensive",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/one-sock-offensive/projects/one-sock-offensive.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/one-sock-offensive/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/one-sock-offensive/reports/one-sock-offensive-qa-report.json",
+              "artifact_count": 15
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/one-sock-offensive/projects/one-sock-offensive.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/one-sock-offensive/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/one-sock-offensive/reports/one-sock-offensive-qa-report.json",
+              "artifact_count": 15
+            }
+          ],
+          "artifact_count": 15,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "operation-potluck",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/operation-potluck/projects/operation-potluck.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/operation-potluck/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/operation-potluck/reports/operation-potluck-qa-report.json",
+              "artifact_count": 17
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/operation-potluck/projects/operation-potluck.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/operation-potluck/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/operation-potluck/reports/operation-potluck-qa-report.json",
+              "artifact_count": 17
+            }
+          ],
+          "artifact_count": 17,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "pocket-harbor",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "etdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  for pixel in rgba.getdata():\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/pocket-harbor/build_pocket_harbor.py:763: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/pocket-harbor/build_pocket_harbor.py:764: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/pocket-harbor/projects/pocket-harbor.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/pocket-harbor/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/pocket-harbor/reports/pocket-harbor-qa-report.json",
+              "artifact_count": 13
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "etdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  for pixel in rgba.getdata():\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/pocket-harbor/build_pocket_harbor.py:763: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/pocket-harbor/build_pocket_harbor.py:764: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/pocket-harbor/projects/pocket-harbor.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/pocket-harbor/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/pocket-harbor/reports/pocket-harbor-qa-report.json",
+              "artifact_count": 13
+            }
+          ],
+          "artifact_count": 13,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "soft-click-sunday",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "oved in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  for pixel in rgba.getdata():\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/soft-click-sunday/build_soft_click_sunday.py:764: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/soft-click-sunday/build_soft_click_sunday.py:765: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/soft-click-sunday/projects/soft-click-sunday.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/soft-click-sunday/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/soft-click-sunday/reports/soft-click-sunday-qa-report.json",
+              "artifact_count": 13
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "oved in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  for pixel in rgba.getdata():\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/soft-click-sunday/build_soft_click_sunday.py:764: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/soft-click-sunday/build_soft_click_sunday.py:765: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/soft-click-sunday/projects/soft-click-sunday.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/soft-click-sunday/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/soft-click-sunday/reports/soft-click-sunday-qa-report.json",
+              "artifact_count": 13
+            }
+          ],
+          "artifact_count": 13,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "swan-case-club",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": " deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  for pixel in rgba.getdata():\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swan-case-club/build_swan_case_club.py:957: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swan-case-club/build_swan_case_club.py:958: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swan-case-club/projects/swan-case-club.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swan-case-club/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swan-case-club/reports/swan-case-club-qa-report.json",
+              "artifact_count": 13
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": " deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  for pixel in rgba.getdata():\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swan-case-club/build_swan_case_club.py:957: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swan-case-club/build_swan_case_club.py:958: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swan-case-club/projects/swan-case-club.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swan-case-club/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swan-case-club/reports/swan-case-club-qa-report.json",
+              "artifact_count": 13
+            }
+          ],
+          "artifact_count": 13,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "swanlight-ledger",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "d_data instead.\n  return sorted({pixel[:3] for pixel in image.convert(\"RGBA\").getdata() if pixel[3]})\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swanlight-ledger/build_swanlight_ledger.py:1352: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swanlight-ledger/build_swanlight_ledger.py:1353: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swanlight-ledger/projects/swanlight-ledger.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swanlight-ledger/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swanlight-ledger/reports/swanlight-ledger-qa-report.json",
+              "artifact_count": 53
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "d_data instead.\n  return sorted({pixel[:3] for pixel in image.convert(\"RGBA\").getdata() if pixel[3]})\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swanlight-ledger/build_swanlight_ledger.py:1352: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swanlight-ledger/build_swanlight_ledger.py:1353: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\nWrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swanlight-ledger/projects/swanlight-ledger.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swanlight-ledger/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/swanlight-ledger/reports/swanlight-ledger-qa-report.json",
+              "artifact_count": 53
+            }
+          ],
+          "artifact_count": 53,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "three-coats-of-white",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/three-coats-of-white/projects/three-coats-of-white.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/three-coats-of-white/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/three-coats-of-white/reports/three-coats-of-white-qa-report.json",
+              "artifact_count": 15
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/three-coats-of-white/projects/three-coats-of-white.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/three-coats-of-white/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/three-coats-of-white/reports/three-coats-of-white-qa-report.json",
+              "artifact_count": 15
+            }
+          ],
+          "artifact_count": 15,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "virtue-at-the-coat-check",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/virtue-at-the-coat-check/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/virtue-at-the-coat-check/reports/virtue-at-the-coat-check-qa-report.json",
+              "artifact_count": 15
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/virtue-at-the-coat-check/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/virtue-at-the-coat-check/reports/virtue-at-the-coat-check-qa-report.json",
+              "artifact_count": 15
+            }
+          ],
+          "artifact_count": 15,
+          "changed": [],
+          "project_present": true
+        },
+        {
+          "slug": "zgok-wraps-a-present",
+          "passed": true,
+          "runs": [
+            {
+              "index": 1,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/zgok-wraps-a-present/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/zgok-wraps-a-present/reports/zgok-wraps-a-present-qa-report.json",
+              "artifact_count": 15
+            },
+            {
+              "index": 2,
+              "returncode": 0,
+              "output_tail": "Wrote project: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json\nWrote contact sheet: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/zgok-wraps-a-present/assets/contact_sheet.png\nWrote QA report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-builder-ffnqxcrw/zgok-wraps-a-present/reports/zgok-wraps-a-present-qa-report.json",
+              "artifact_count": 15
+            }
+          ],
+          "artifact_count": 15,
+          "changed": [],
+          "project_present": true
+        }
+      ]
+    }
+  ]
+}

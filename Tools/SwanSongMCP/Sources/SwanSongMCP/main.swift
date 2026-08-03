@@ -157,7 +157,7 @@ private enum SwanSongMCPServer {
     private static let protocolVersion = "2025-11-25"
     private static let liveApp = LiveAppClient()
     private static let observedPlay = ObservedPlayRegistry()
-    private static let instructions = "Controls a running SwanSong app through its opt-in local bridge, runs guarded Translation Lab evidence workflows, and can execute bounded deterministic homebrew playtest plans through SwanSong's own engine. Studio tools expose only one already-open project slot without its name or path, and invoke only a fixed SDK 0.5 allowlist after confirmProjectWrites=true: doctor, assets, build, test, play, play-all, profile, optimize preview, fuzz, lab, one-shot dev, migration preview, and hardware capacity. Playtest and observed-step tools return a rendered game frame and audio window only when confirmShareCapture=true. A single playtest may also return the SDK's bounded, structurally validated semantic trace when captureSDKTrace=true and confirmShareSDKTrace=true. The server must never expose ROM, save, state, persistence, raw RAM, tile, palette, map-cell, sprite/OAM attribute, CPU-writer, conservative-origin, cartridge-range, address, or mapper values. Translation tools only accept project-contained files and require confirmProjectWrites=true. Persisted translation captures privately retain both native frames, the exact plan, deterministic context hashes, and pixel-diff evidence inside the selected project. Display-owner probes and static-analysis seeds retain detailed source evidence privately and return only hashes and aggregate counts. Observed play holds a private ownership lease, atomically saves its cumulative from-boot plan after every step, marks crash-abandoned sessions interrupted, recovers only by clean-boot plan replay, and creates final evidence only by another clean-boot replay. A successful execution is observation evidence, not proof that a game mechanic passed; inspect the frame, listen to relevant audio, and exercise the declared game contract."
+    private static let instructions = "Controls a running SwanSong app through its opt-in local bridge, runs guarded Translation Lab evidence workflows, and can execute bounded deterministic homebrew playtest plans through SwanSong's own engine. The trusted local MCP has persistent access to write inside the selected translation project without a per-call project-write confirmation. Studio tools expose only one already-open project slot without its name or path, and invoke only a fixed SDK 0.5 allowlist: doctor, assets, build, test, play, play-all, profile, optimize preview, fuzz, lab, one-shot dev, migration preview, and hardware capacity. Playtest and observed-step tools return a rendered game frame and audio window only when confirmShareCapture=true. A single playtest may also return the SDK's bounded, structurally validated semantic trace when captureSDKTrace=true and confirmShareSDKTrace=true. The server must never expose ROM, save, state, persistence, raw RAM, tile, palette, map-cell, sprite/OAM attribute, CPU-writer, conservative-origin, cartridge-range, address, or mapper values. Translation tools only accept project-contained files. Persisted translation captures privately retain both native frames, the exact plan, deterministic context hashes, and pixel-diff evidence inside the selected project. Display-owner probes and static-analysis seeds retain detailed source evidence privately and return only hashes and aggregate counts. Observed play holds a private ownership lease, atomically saves its cumulative from-boot plan after every step, marks crash-abandoned sessions interrupted, recovers only by clean-boot plan replay, and creates final evidence only by another clean-boot replay. A successful execution is observation evidence, not proof that a game mechanic passed; inspect the frame, listen to relevant audio, and exercise the declared game contract."
 
     static func main() {
         if Array(CommandLine.arguments.dropFirst()) == [
@@ -170,6 +170,23 @@ private enum SwanSongMCPServer {
             } catch {
                 FileHandle.standardError.write(
                     Data("SwanSongMCP: signed release context control failed\n".utf8)
+                )
+                exit(1)
+            }
+            return
+        }
+        if Array(CommandLine.arguments.dropFirst()) == [
+            "--original-frame-stage-categories-kat"
+        ] {
+            do {
+                let result = try TranslationOriginalFrameAuthenticationStage
+                    .signedReleaseSourceFreeStageKAT()
+                FileHandle.standardOutput.write(Data("\(result)\n".utf8))
+            } catch {
+                FileHandle.standardError.write(
+                    Data(
+                        "SwanSongMCP: Original-frame stage control failed\n".utf8
+                    )
                 )
                 exit(1)
             }
@@ -322,12 +339,8 @@ private enum SwanSongMCPServer {
                             ],
                             description: "Existing Studio action to invoke."
                         ),
-                        "confirmProjectWrites": [
-                            "type": "boolean",
-                            "description": "Must be true to permit the selected SDK action in the already-open project.",
-                        ],
                     ],
-                    required: ["action", "confirmProjectWrites"]
+                    required: ["action"]
                 ),
                 readOnly: false,
                 destructive: false,
@@ -442,14 +455,33 @@ private enum SwanSongMCPServer {
                 idempotent: false
             ),
             tool(
+                name: "swansong_translation_seal_original_frame",
+                title: "Seal Read-Only Original Frame",
+                description: "Replay one authority-bound Original frame from deterministic clean boot without provenance queries or project/ROM writes, then privately write only its immutable source-probe frame seal and closure. Patched, comparison, mutation, and release modes are rejected.",
+                inputSchema: originalFrameSealSchema(),
+                readOnly: true,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
                 name: "swansong_translation_probe_rectangle_source",
                 title: "Trace Display Rectangle to Cartridge Sources",
                 description: "Ask SwanSong's signed, capture-authorized runner to replay an authenticated Original frame from clean power-on, privately retain exact cartridge lineage and every outside display consumer, and return only the authorized source-free public report.",
                 inputSchema: displayOwnerProbeSchema(
                     includeComponents: true,
-                    requireAuthorizedSourceEnvelope: true
+                    requireAuthorizedSourceEnvelope: true,
+                    allowAtomicRegions: true
                 ),
                 readOnly: false,
+                destructive: false,
+                idempotent: false
+            ),
+            tool(
+                name: "swansong_translation_trace_original_data_producer",
+                title: "Trace Original Data Producer",
+                description: "Replay one nonce-authorized Original plan from clean power-on, watch only one 1-64 byte cartridge-SRAM descriptor, privately retain its final CPU writer and cartridge lineage without returning RAM bytes, and fail closed unless the expected source has one exact producer.",
+                inputSchema: originalDataProducerProbeSchema(),
+                readOnly: true,
                 destructive: false,
                 idempotent: false
             ),
@@ -527,20 +559,12 @@ private enum SwanSongMCPServer {
             case "swansong_studio_projects":
                 return try liveResult(method: "studio-projects")
             case "swansong_studio_action":
-                guard arguments["confirmProjectWrites"] as? Bool == true else {
-                    throw SwanSongMCPError(
-                        message: "Set confirmProjectWrites to true after confirming the current Studio project may be built or updated."
-                    )
-                }
                 guard let action = arguments["action"] as? String else {
                     throw SwanSongMCPError(message: "action is required")
                 }
                 return try liveResult(
                     method: "studio-action",
-                    arguments: [
-                        "action": action,
-                        "confirmProjectWrites": true,
-                    ]
+                    arguments: ["action": action]
                 )
             case "swansong_playtest_plan":
                 return try playtest(arguments: arguments)
@@ -566,8 +590,12 @@ private enum SwanSongMCPServer {
                 return try capturePersistenceConsumer(arguments: arguments)
             case "swansong_translation_probe_rectangle":
                 return try probeRectangle(arguments: arguments)
+            case "swansong_translation_seal_original_frame":
+                return try sealOriginalFrame(arguments: arguments)
             case "swansong_translation_probe_rectangle_source":
                 return try probeRectangleSource(arguments: arguments)
+            case "swansong_translation_trace_original_data_producer":
+                return try traceOriginalDataProducer(arguments: arguments)
             case "swansong_translation_export_static_analysis_seed":
                 return try exportStaticAnalysisSeed(arguments: arguments)
             case "swansong_translation_record_route":
@@ -681,7 +709,10 @@ private enum SwanSongMCPServer {
     private static func probeRectangleSource(
         arguments: JSONDictionary
     ) throws -> JSONDictionary {
-        let input = try rectangleProbeArguments(arguments)
+        let input = try rectangleProbeArguments(
+            arguments,
+            allowAtomicRegions: true
+        )
         let componentValues = arguments["components"] as? [String]
             ?? EngineDisplaySourceComponent.allCases.map(\.rawValue)
         let components = componentValues.compactMap(EngineDisplaySourceComponent.init(rawValue:))
@@ -725,7 +756,7 @@ private enum SwanSongMCPServer {
         let selectedComponents = components.sorted { $0.rawValue < $1.rawValue }
         let process = Process()
         process.executableURL = runner
-        process.arguments = [
+        var processArguments = [
             "probe-rectangle-source",
             "--enable-debug-tools",
             "--allow-project-writes",
@@ -733,12 +764,6 @@ private enum SwanSongMCPServer {
             "--plan", input.planURL.path,
             "--role", input.role.rawValue,
             "--frame", String(input.frameIndex),
-            "--rect", [
-                input.rectangle.x,
-                input.rectangle.y,
-                input.rectangle.width,
-                input.rectangle.height,
-            ].map(String.init).joined(separator: ","),
             "--components", selectedComponents.map(\.rawValue).joined(separator: ","),
             "--output", reportPath,
             "--commercial-authorized-source-probe",
@@ -751,6 +776,23 @@ private enum SwanSongMCPServer {
             "--capture-frame-seal", captureFrameSealPath,
             "--run-directory", runDirectoryPath,
         ]
+        let serializedRegions = input.rectangles.map { rectangle in
+            [
+                rectangle.x,
+                rectangle.y,
+                rectangle.width,
+                rectangle.height,
+            ].map(String.init).joined(separator: ",")
+        }
+        if serializedRegions.count == 1 {
+            processArguments.append(contentsOf: ["--rect", serializedRegions[0]])
+        } else {
+            processArguments.append(contentsOf: [
+                "--source-regions",
+                serializedRegions.joined(separator: ";"),
+            ])
+        }
+        process.arguments = processArguments
         process.currentDirectoryURL = runner.deletingLastPathComponent()
         process.environment = [
             "LANG": "C",
@@ -778,6 +820,385 @@ private enum SwanSongMCPServer {
             runDirectory: URL(fileURLWithPath: runDirectoryPath, isDirectory: true),
             closureSummary: closureSummary
         )
+    }
+
+    private static func sealOriginalFrame(
+        arguments: JSONDictionary
+    ) throws -> JSONDictionary {
+        let input = try rectangleProbeArguments(
+            arguments,
+            allowAtomicRegions: true
+        )
+        guard input.role == .original else {
+            throw SwanSongMCPError(
+                message: "The read-only frame seal accepts only the Original role."
+            )
+        }
+        let componentValues = arguments["components"] as? [String]
+            ?? ["raster"]
+        let components = componentValues.compactMap(
+            EngineDisplaySourceComponent.init(rawValue:)
+        )
+        guard !componentValues.isEmpty,
+              components.count == componentValues.count,
+              Set(components).count == components.count else {
+            throw SwanSongMCPError(
+                message: "components must be a nonempty unique source-component array"
+            )
+        }
+        let authorizationPath = try requiredAbsolutePath(
+            arguments,
+            key: "authorizationPath"
+        )
+        let capabilityReceiptPath = try requiredAbsolutePath(
+            arguments,
+            key: "capabilityReceiptPath"
+        )
+        let methodCapabilityReceiptPath = try requiredAbsolutePath(
+            arguments,
+            key: "methodCapabilityReceiptPath"
+        )
+        let qualifiedMethodCapabilityReceiptPath = try requiredAbsolutePath(
+            arguments,
+            key: "qualifiedMethodCapabilityReceiptPath"
+        )
+        let methodNativeMarkerPath = try requiredAbsolutePath(
+            arguments,
+            key: "methodNativeMarkerPath"
+        )
+        let runDirectoryPath = try requiredAbsolutePath(
+            arguments,
+            key: "runDirectoryPath"
+        )
+        let sealPath = try requiredAbsolutePath(arguments, key: "sealPath")
+        let runner = try bundledRouteRunnerURL()
+        var processArguments = [
+            "probe-rectangle-source",
+            "--enable-debug-tools",
+            "--allow-project-writes",
+            "--project", input.project.rootURL.path,
+            "--plan", input.planURL.path,
+            "--role", "original",
+            "--frame", String(input.frameIndex),
+            "--components",
+            components.sorted { $0.rawValue < $1.rawValue }
+                .map(\.rawValue).joined(separator: ","),
+            "--output", sealPath,
+            "--commercial-authorized-original-frame-seal",
+            "--authorization", authorizationPath,
+            "--capability-receipt", capabilityReceiptPath,
+            "--method-capability-receipt", methodCapabilityReceiptPath,
+            "--qualified-method-capability-receipt",
+            qualifiedMethodCapabilityReceiptPath,
+            "--method-native-marker", methodNativeMarkerPath,
+            "--run-directory", runDirectoryPath,
+        ]
+        let serializedRegions = input.rectangles.map { rectangle in
+            [
+                rectangle.x, rectangle.y,
+                rectangle.width, rectangle.height,
+            ].map(String.init).joined(separator: ",")
+        }
+        if serializedRegions.count == 1 {
+            processArguments.append(contentsOf: ["--rect", serializedRegions[0]])
+        } else {
+            processArguments.append(contentsOf: [
+                "--source-regions",
+                serializedRegions.joined(separator: ";"),
+            ])
+        }
+        let process = Process()
+        process.executableURL = runner
+        process.arguments = processArguments
+        process.currentDirectoryURL = runner.deletingLastPathComponent()
+        process.environment = [
+            "LANG": "C", "LC_ALL": "C",
+            "PATH": "/usr/bin:/bin", "TZ": "UTC",
+        ]
+        let retainedOutput = Pipe()
+        process.standardOutput = retainedOutput.fileHandleForWriting
+        process.standardError = retainedOutput.fileHandleForWriting
+        try process.run()
+        try retainedOutput.fileHandleForWriting.close()
+        let output = retainedOutput.fileHandleForReading.readDataToEndOfFile()
+        try retainedOutput.fileHandleForReading.close()
+        process.waitUntilExit()
+        guard process.terminationReason == .exit,
+              process.terminationStatus == 0 else {
+            let runnerOutput = String(decoding: output, as: UTF8.self)
+            let category = TranslationOriginalFrameAuthenticationStage
+                .sourceFreeCategory(in: runnerOutput)?.rawValue
+                ?? "unclassified"
+            throw SwanSongMCPError(
+                message: "The signed SwanSong runner refused the read-only "
+                    + "Original-frame seal. Source-free stage: \(category)."
+            )
+        }
+        return try authorizedOriginalFrameSealResult(
+            output,
+            sealURL: URL(fileURLWithPath: sealPath),
+            runDirectory: URL(
+                fileURLWithPath: runDirectoryPath,
+                isDirectory: true
+            )
+        )
+    }
+
+    private static func traceOriginalDataProducer(
+        arguments: JSONDictionary
+    ) throws -> JSONDictionary {
+        let method = "trace-original-data-producer"
+        guard Set(arguments.keys) == Set([
+            "projectPath", "authorizationPath", "authorizationSHA256",
+        ]),
+        let projectPath = arguments["projectPath"] as? String,
+        let authorizationPath = arguments["authorizationPath"] as? String,
+        let expectedAuthorizationSHA256 =
+            arguments["authorizationSHA256"] as? String,
+        isLowercaseSHA256(expectedAuthorizationSHA256) else {
+            throw SwanSongMCPError(
+                message: "The Original data-producer request must contain only its exact project and authorization binding."
+            )
+        }
+        let project = try TranslationProject(
+            projectDirectory: URL(
+                fileURLWithPath: projectPath, isDirectory: true
+            )
+        )
+        let authorizationURL = URL(fileURLWithPath: authorizationPath)
+            .standardizedFileURL
+        let authorizationData = try privateRegularFileData(
+            at: authorizationURL,
+            project: project,
+            maximumBytes: 128 * 1_024
+        )
+        guard sha256(authorizationData) == expectedAuthorizationSHA256,
+              let authorization = try JSONSerialization.jsonObject(
+                with: authorizationData
+              ) as? JSONDictionary else {
+            throw SwanSongMCPError(
+                message: "The Original data-producer authorization is unavailable or drifted."
+            )
+        }
+        let exactKeys = Set([
+            "schema", "method", "nonce", "invocationOrdinal", "retryCount",
+            "invocationMaximum", "projectPath", "planPath",
+            "runDirectoryPath", "planSHA256", "originalSHA256",
+            "planFrameIndex", "expectedNativeFrameNumber",
+            "expectedNativeFrameSHA256", "targetAddress", "targetByteCount",
+            "expectedCartridgeSourceOffset",
+            "expectedCartridgeSourceByteCount", "appExecutableSHA256",
+            "mcpHelperSHA256", "routeRunnerSHA256", "engineDylibSHA256",
+            "projectWritesAllowedOnlyForTraceArtifacts", "romWritesAllowed",
+            "patchedRoleAllowed", "comparisonAllowed", "patchAuthorityAllowed",
+        ])
+        guard Set(authorization.keys) == exactKeys,
+              authorization["schema"] as? String
+                == "swan-song-original-data-producer-probe-authorization-v1",
+              authorization["method"] as? String == method,
+              let nonce = authorization["nonce"] as? String,
+              isLowercaseSHA256(nonce),
+              exactPositiveInteger(authorization["invocationOrdinal"]) == 1,
+              exactNonnegativeInteger(authorization["retryCount"]) == 0,
+              exactPositiveInteger(authorization["invocationMaximum"]) == 1,
+              authorization["projectPath"] as? String
+                == project.rootURL.standardizedFileURL.path,
+              authorization["projectPath"] as? String == projectPath,
+              let planPath = authorization["planPath"] as? String,
+              let runDirectoryPath = authorization["runDirectoryPath"] as? String,
+              let planSHA256 = authorization["planSHA256"] as? String,
+              let originalSHA256 = authorization["originalSHA256"] as? String,
+              let expectedNativeFrameSHA256 =
+                authorization["expectedNativeFrameSHA256"] as? String,
+              let appExecutableSHA256 =
+                authorization["appExecutableSHA256"] as? String,
+              let mcpHelperSHA256 = authorization["mcpHelperSHA256"] as? String,
+              let routeRunnerSHA256 =
+                authorization["routeRunnerSHA256"] as? String,
+              let engineDylibSHA256 =
+                authorization["engineDylibSHA256"] as? String,
+              [planSHA256, originalSHA256, expectedNativeFrameSHA256,
+               appExecutableSHA256, mcpHelperSHA256, routeRunnerSHA256,
+               engineDylibSHA256].allSatisfy(isLowercaseSHA256),
+              authorization["projectWritesAllowedOnlyForTraceArtifacts"]
+                as? Bool == true,
+              authorization["romWritesAllowed"] as? Bool == false,
+              authorization["patchedRoleAllowed"] as? Bool == false,
+              authorization["comparisonAllowed"] as? Bool == false,
+              authorization["patchAuthorityAllowed"] as? Bool == false else {
+            throw SwanSongMCPError(
+                message: "The Original data-producer authorization is malformed or overbroad."
+            )
+        }
+        let planFrameIndex = try exactUInt64(
+            authorization["planFrameIndex"], label: "planFrameIndex"
+        )
+        let expectedNativeFrameNumber = try exactUInt64(
+            authorization["expectedNativeFrameNumber"],
+            label: "expectedNativeFrameNumber"
+        )
+        let targetAddress = try exactUInt32(
+            authorization["targetAddress"], label: "targetAddress"
+        )
+        let targetByteCount = try exactUInt32(
+            authorization["targetByteCount"], label: "targetByteCount"
+        )
+        let expectedSourceOffset = try exactUInt32(
+            authorization["expectedCartridgeSourceOffset"],
+            label: "expectedCartridgeSourceOffset"
+        )
+        let expectedSourceByteCount = try exactUInt32(
+            authorization["expectedCartridgeSourceByteCount"],
+            label: "expectedCartridgeSourceByteCount"
+        )
+        let planURL = URL(fileURLWithPath: planPath).standardizedFileURL
+        let runDirectory = URL(
+            fileURLWithPath: runDirectoryPath, isDirectory: true
+        ).standardizedFileURL
+        guard authorizationURL
+                == runDirectory.appendingPathComponent("authorization.json"),
+              project.contains(planURL), project.contains(runDirectory),
+              runDirectory.resolvingSymlinksInPath().standardizedFileURL
+                == runDirectory,
+              try privateDirectoryIsExact(runDirectory),
+              try FileManager.default.contentsOfDirectory(
+                atPath: runDirectory.path
+              ).sorted() == ["authorization.json"] else {
+            throw SwanSongMCPError(
+                message: "The authorized producer-trace run graph is not fresh and private."
+            )
+        }
+        let planData = try privateRegularFileData(
+            at: planURL, project: project, maximumBytes: 1_048_576
+        )
+        let originalURL = try project.romURL(for: .original)
+        let originalData = try privateRegularFileData(
+            at: originalURL, project: project,
+            maximumBytes: 16 * 1_024 * 1_024
+        )
+        guard sha256(planData) == planSHA256,
+              sha256(originalData) == originalSHA256 else {
+            throw SwanSongMCPError(
+                message: "The exact Original or plan changed after authorization."
+            )
+        }
+        let toolchain = try installedToolchainFiles()
+        guard sha256(toolchain.app.data) == appExecutableSHA256,
+              sha256(toolchain.helper.data) == mcpHelperSHA256,
+              sha256(toolchain.runner.data) == routeRunnerSHA256,
+              sha256(toolchain.engine.data) == engineDylibSHA256 else {
+            throw SwanSongMCPError(
+                message: "The installed SwanSong toolchain changed after authorization."
+            )
+        }
+        let claim: JSONDictionary = [
+            "schema": "swan-song-original-data-producer-probe-nonce-claim-v1",
+            "method": method,
+            "nonce": nonce,
+            "authorizationSHA256": expectedAuthorizationSHA256,
+            "runDirectoryPathSHA256": sha256(Data(runDirectory.path.utf8)),
+        ]
+        let claimData = try canonicalJSONData(claim)
+        let claimURL = runDirectory.appendingPathComponent("nonce-claim.json")
+        do {
+            try claimData.write(to: claimURL, options: [.withoutOverwriting])
+            try FileManager.default.setAttributes(
+                [.posixPermissions: 0o600], ofItemAtPath: claimURL.path
+            )
+        } catch {
+            throw SwanSongMCPError(
+                message: "The Original producer-trace nonce was already used or could not be claimed."
+            )
+        }
+        let plan = try JSONDecoder().decode(
+            TranslationFrameInputPlan.self, from: planData
+        )
+        let request = TranslationDataProducerProbeRequest(
+            planFrameIndex: planFrameIndex,
+            expectedNativeFrameNumber: expectedNativeFrameNumber,
+            expectedNativeFrameSHA256: expectedNativeFrameSHA256,
+            targetAddress: targetAddress,
+            targetByteCount: targetByteCount,
+            expectedCartridgeSourceOffset: expectedSourceOffset,
+            expectedCartridgeSourceByteCount: expectedSourceByteCount
+        )
+        let result = try TranslationDataProducerProbe.runOriginal(
+            project: project,
+            plan: plan,
+            request: request,
+            authorizationData: authorizationData,
+            runDirectory: runDirectory
+        )
+        let reportData = try privateRegularFileData(
+            at: result.reportURL, project: project,
+            maximumBytes: 4 * 1_024 * 1_024
+        )
+        let detailsData = try privateRegularFileData(
+            at: result.detailsURL, project: project,
+            maximumBytes: 4 * 1_024 * 1_024
+        )
+        let privatePlanData = try privateRegularFileData(
+            at: result.planURL, project: project,
+            maximumBytes: 1_048_576
+        )
+        guard sha256(reportData) == sha256(try encodedData(result.report)),
+              sha256(detailsData) == result.report.privateDetailsSHA256,
+              sha256(privatePlanData) == planSHA256,
+              result.report.authorizationSHA256
+                == expectedAuthorizationSHA256,
+              result.report.rawMemoryBytesReturned == 0,
+              result.report.projectROMWrites == false,
+              result.report.patchedRoleAccepted == false,
+              result.report.comparisonPerformed == false,
+              result.report.patchAuthorityGranted == false else {
+            throw SwanSongMCPError(
+                message: "The private producer trace failed its source-free output checks."
+            )
+        }
+        let closure: JSONDictionary = [
+            "schema": "swan-song-original-data-producer-probe-closure-v1",
+            "method": method,
+            "status": result.report.status,
+            "sourceFree": true,
+            "role": "original",
+            "nonce": nonce,
+            "authorizationSHA256": expectedAuthorizationSHA256,
+            "reportSHA256": sha256(reportData),
+            "privateDetailsSHA256": sha256(detailsData),
+            "privatePlanSHA256": sha256(privatePlanData),
+            "mcpHelperSHA256": sha256(toolchain.helper.data),
+            "engineDylibSHA256": sha256(toolchain.engine.data),
+            "rawMemoryBytesReturned": 0,
+            "romWritesPerformed": false,
+            "patchedRoleAccepted": false,
+            "comparisonPerformed": false,
+            "patchAuthorityGranted": false,
+            "writtenLast": true,
+        ]
+        let closureData = try canonicalJSONData(closure)
+        let closureURL = runDirectory.appendingPathComponent("closure.json")
+        try closureData.write(to: closureURL, options: [.withoutOverwriting])
+        try FileManager.default.setAttributes(
+            [.posixPermissions: 0o600], ofItemAtPath: closureURL.path
+        )
+        guard var summary = try JSONSerialization.jsonObject(
+            with: reportData
+        ) as? JSONDictionary else {
+            throw SwanSongMCPError(
+                message: "The producer-trace public report was not a JSON object."
+            )
+        }
+        summary["closureSHA256"] = sha256(closureData)
+        summary["nonceClaimSHA256"] = sha256(claimData)
+        let summaryData = try canonicalJSONData(summary)
+        return [
+            "content": [[
+                "type": "text",
+                "text": String(decoding: summaryData, as: UTF8.self),
+            ]],
+            "structuredContent": summary,
+            "isError": result.report.status != "complete",
+        ]
     }
 
     private static func requiredAbsolutePath(
@@ -949,6 +1370,119 @@ private enum SwanSongMCPServer {
         ]
     }
 
+    private static func authorizedOriginalFrameSealResult(
+        _ summaryData: Data,
+        sealURL: URL,
+        runDirectory: URL
+    ) throws -> JSONDictionary {
+        guard summaryData.count > 0,
+              summaryData.count <= 64 * 1_024,
+              let summary = try JSONSerialization.jsonObject(
+                with: summaryData
+              ) as? JSONDictionary,
+              summary["schema"] as? String
+                == "swan-song-authorized-original-read-only-frame-seal-summary-v1",
+              summary["status"] as? String == "complete",
+              summary["sourceFree"] as? Bool == true,
+              summary["role"] as? String == "original",
+              summary["readOnlyMethodAuthorization"] as? Bool == true,
+              summary["projectWritesPerformed"] as? Bool == false,
+              summary["romWritesPerformed"] as? Bool == false,
+              summary["provenanceQueriesPerformed"] as? NSNumber == 0,
+              summary["patchedRoleAccepted"] as? Bool == false,
+              summary["comparisonPerformed"] as? Bool == false,
+              summary["releaseWorkflowAuthorized"] as? Bool == false,
+              summary["promotionEligible"] as? Bool == false,
+              let sealIdentity = summary["captureFrameSeal"]
+                as? JSONDictionary,
+              let closureIdentity = summary["closure"] as? JSONDictionary else {
+            throw SwanSongMCPError(
+                message: "The signed runner returned an invalid read-only frame-seal summary."
+            )
+        }
+        let canonicalRun = runDirectory.standardizedFileURL
+            .resolvingSymlinksInPath().standardizedFileURL
+        guard canonicalRun == runDirectory.standardizedFileURL,
+              sealURL.standardizedFileURL
+                == canonicalRun.appendingPathComponent(
+                    "capture-frame-seal.json"
+                ) else {
+            throw SwanSongMCPError(
+                message: "The read-only frame-seal output graph drifted."
+            )
+        }
+        let sealData = try boundedRegularFileData(
+            at: sealURL,
+            maximumBytes: 4 * 1_024 * 1_024
+        )
+        let closureURL = canonicalRun.appendingPathComponent("closure.json")
+        let closureData = try boundedRegularFileData(
+            at: closureURL,
+            maximumBytes: 4 * 1_024 * 1_024
+        )
+        guard identityMatches(sealIdentity, data: sealData),
+              identityMatches(closureIdentity, data: closureData),
+              let seal = try JSONSerialization.jsonObject(with: sealData)
+                as? JSONDictionary,
+              let closure = try JSONSerialization.jsonObject(with: closureData)
+                as? JSONDictionary,
+              seal["schema"] as? String
+                == "wstrans-swansong-original-read-only-frame-seal-v1",
+              seal["role"] as? String == "original",
+              seal["sourceFree"] as? Bool == true,
+              seal["readOnlyMethodAuthorization"] as? Bool == true,
+              seal["projectWritesPerformed"] as? Bool == false,
+              seal["romWritesPerformed"] as? Bool == false,
+              seal["provenanceQueriesPerformed"] as? NSNumber == 0,
+              seal["patchedRoleAccepted"] as? Bool == false,
+              seal["comparisonPerformed"] as? Bool == false,
+              seal["releaseWorkflowAuthorized"] as? Bool == false,
+              seal["promotionEligible"] as? Bool == false,
+              closure["schema"] as? String
+                == "swan-song-authorized-original-read-only-frame-seal-closure-v1",
+              closure["status"] as? String == "complete",
+              closure["writtenLast"] as? Bool == true,
+              closure["captureFrameSeal"] as? NSDictionary
+                == sealIdentity as NSDictionary,
+              closure["mcpHelper"] as? NSDictionary
+                == artifactIdentity(
+                    try boundedRegularFileData(
+                        at: Bundle.main.executableURL!,
+                        maximumBytes: 128 * 1_024 * 1_024
+                    )
+                ) as NSDictionary,
+              closure["projectTreeBeforeSHA256"] as? String
+                == closure["projectTreeAfterSHA256"] as? String else {
+            throw SwanSongMCPError(
+                message: "The read-only Original-frame seal or closure is unsafe."
+            )
+        }
+        return [
+            "content": [[
+                "type": "text",
+                "text": String(decoding: summaryData, as: UTF8.self),
+            ]],
+            "structuredContent": summary,
+            "isError": false,
+        ]
+    }
+
+    private static func identityMatches(
+        _ value: JSONDictionary,
+        data: Data
+    ) -> Bool {
+        guard let byteCount = exactPositiveInteger(value["byteCount"]),
+              let digest = value["sha256"] as? String,
+              Set(value.keys) == Set(["byteCount", "sha256"]) else {
+            return false
+        }
+        return byteCount == data.count && digest == sha256(data)
+    }
+
+    private static func artifactIdentity(_ data: Data) -> JSONDictionary {
+        ["byteCount": data.count, "sha256": sha256(data)]
+    }
+
     private static func boundedRegularFileData(
         at url: URL,
         maximumBytes: Int
@@ -1005,6 +1539,134 @@ private enum SwanSongMCPServer {
         return Int(value)
     }
 
+    private static func exactNonnegativeInteger(_ raw: Any?) -> Int? {
+        guard let number = raw as? NSNumber,
+              String(cString: number.objCType) != "c" else { return nil }
+        let value = number.int64Value
+        guard value >= 0,
+              value <= Int64(Int.max),
+              number.doubleValue == Double(value) else { return nil }
+        return Int(value)
+    }
+
+    private static func exactUInt64(
+        _ raw: Any?, label: String
+    ) throws -> UInt64 {
+        guard let number = raw as? NSNumber,
+              String(cString: number.objCType) != "c",
+              let value = UInt64(number.stringValue) else {
+            throw SwanSongMCPError(message: "\(label) must be an exact nonnegative integer.")
+        }
+        return value
+    }
+
+    private static func exactUInt32(
+        _ raw: Any?, label: String
+    ) throws -> UInt32 {
+        let value = try exactUInt64(raw, label: label)
+        guard value <= UInt64(UInt32.max) else {
+            throw SwanSongMCPError(message: "\(label) is outside its fixed bound.")
+        }
+        return UInt32(value)
+    }
+
+    private static func isLowercaseSHA256(_ value: String) -> Bool {
+        value.range(of: "^[0-9a-f]{64}$", options: .regularExpression) != nil
+    }
+
+    private static func canonicalJSONData(_ value: Any) throws -> Data {
+        try JSONSerialization.data(
+            withJSONObject: value,
+            options: [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+        )
+    }
+
+    private static func encodedData<T: Encodable>(_ value: T) throws -> Data {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [
+            .prettyPrinted, .sortedKeys, .withoutEscapingSlashes,
+        ]
+        encoder.dateEncodingStrategy = .iso8601
+        return try encoder.encode(value)
+    }
+
+    private static func privateDirectoryIsExact(_ url: URL) throws -> Bool {
+        let values = try url.resourceValues(forKeys: [
+            .isDirectoryKey, .isSymbolicLinkKey,
+        ])
+        let attributes = try FileManager.default.attributesOfItem(
+            atPath: url.path
+        )
+        return values.isDirectory == true
+            && values.isSymbolicLink != true
+            && (attributes[.posixPermissions] as? NSNumber)?.intValue == 0o700
+    }
+
+    private static func privateRegularFileData(
+        at url: URL,
+        project: TranslationProject,
+        maximumBytes: Int
+    ) throws -> Data {
+        let canonical = url.standardizedFileURL
+        let attributes = try FileManager.default.attributesOfItem(
+            atPath: canonical.path
+        )
+        guard project.contains(canonical),
+              canonical.resolvingSymlinksInPath().standardizedFileURL
+                == canonical,
+              (attributes[.type] as? FileAttributeType) == .typeRegular,
+              (attributes[.posixPermissions] as? NSNumber)?.intValue == 0o600,
+              (attributes[.referenceCount] as? NSNumber)?.intValue == 1 else {
+            throw SwanSongMCPError(
+                message: "A producer-trace private input is unsafe."
+            )
+        }
+        return try boundedRegularFileData(
+            at: canonical, maximumBytes: maximumBytes
+        )
+    }
+
+    private struct InstalledToolchainFile {
+        let data: Data
+    }
+
+    private struct InstalledToolchainFiles {
+        let app: InstalledToolchainFile
+        let helper: InstalledToolchainFile
+        let runner: InstalledToolchainFile
+        let engine: InstalledToolchainFile
+    }
+
+    private static func installedToolchainFiles() throws
+        -> InstalledToolchainFiles {
+        guard let helperURL = Bundle.main.executableURL?.standardizedFileURL,
+              helperURL.deletingLastPathComponent().lastPathComponent
+                == "Helpers" else {
+            throw SwanSongMCPError(
+                message: "The producer trace is available only from the installed SwanSong helper."
+            )
+        }
+        let contents = helperURL.deletingLastPathComponent()
+            .deletingLastPathComponent()
+        let urls = [
+            contents.appendingPathComponent("MacOS/SwanSong"),
+            helperURL,
+            contents.appendingPathComponent("Helpers/SwanSongRouteRunner"),
+            contents.appendingPathComponent("Frameworks/libSwanAresEngine.dylib"),
+        ]
+        let files = try urls.map { url -> InstalledToolchainFile in
+            let data = try boundedRegularFileData(
+                at: url.standardizedFileURL,
+                maximumBytes: 512 * 1_024 * 1_024
+            )
+            return InstalledToolchainFile(data: data)
+        }
+        return InstalledToolchainFiles(
+            app: files[0], helper: files[1],
+            runner: files[2], engine: files[3]
+        )
+    }
+
     private static func sha256(_ data: Data) -> String {
         SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
     }
@@ -1034,11 +1696,6 @@ private enum SwanSongMCPServer {
     private static func exportStaticAnalysisSeed(
         arguments: JSONDictionary
     ) throws -> JSONDictionary {
-        guard arguments["confirmProjectWrites"] as? Bool == true else {
-            throw SwanSongMCPError(
-                message: "Set confirmProjectWrites to true after confirming the selected project may receive a private static-analysis seed."
-            )
-        }
         do {
             let (project, sourceProbeDetailsURL) = try projectWriteArguments(
                 arguments,
@@ -1062,10 +1719,12 @@ private enum SwanSongMCPServer {
         let plan: TranslationFrameInputPlan
         let frameIndex: UInt64
         let rectangle: EngineDisplayRectangle
+        let rectangles: [EngineDisplayRectangle]
     }
 
     private static func rectangleProbeArguments(
-        _ arguments: JSONDictionary
+        _ arguments: JSONDictionary,
+        allowAtomicRegions: Bool = false
     ) throws -> RectangleProbeInput {
         let (project, fileURL) = try projectWriteArguments(
             arguments,
@@ -1073,20 +1732,58 @@ private enum SwanSongMCPServer {
         )
         guard let roleValue = arguments["role"] as? String,
               let role = TranslationROMRole(rawValue: roleValue),
-              let frameNumber = arguments["frameIndex"] as? NSNumber,
-              let rectangle = arguments["rectangle"] as? JSONDictionary,
-              let x = rectangle["x"] as? NSNumber,
-              let y = rectangle["y"] as? NSNumber,
-              let width = rectangle["width"] as? NSNumber,
-              let height = rectangle["height"] as? NSNumber else {
+              let frameNumber = arguments["frameIndex"] as? NSNumber else {
             throw SwanSongMCPError(
-                message: "role, frameIndex, and a complete rectangle are required"
+                message: "role and frameIndex are required"
             )
         }
-        let integers = [frameNumber, x, y, width, height].map(\.int64Value)
-        guard integers.allSatisfy({ $0 >= 0 }),
-              integers[1...].allSatisfy({ $0 <= Int64(UInt16.max) }) else {
-            throw SwanSongMCPError(message: "Probe coordinates and frameIndex are out of range.")
+        let rawRectangle = arguments["rectangle"] as? JSONDictionary
+        let rawRectangles = allowAtomicRegions
+            ? arguments["rectangles"] as? [JSONDictionary] : nil
+        guard (rawRectangle == nil) != (rawRectangles == nil) else {
+            throw SwanSongMCPError(
+                message: "Provide exactly one rectangle or one bounded rectangles array."
+            )
+        }
+        let rawSelection = rawRectangles ?? rawRectangle.map { [$0] } ?? []
+        let rectangles = try rawSelection.map { rectangle in
+            guard let x = rectangle["x"] as? NSNumber,
+                  let y = rectangle["y"] as? NSNumber,
+                  let width = rectangle["width"] as? NSNumber,
+                  let height = rectangle["height"] as? NSNumber else {
+                throw SwanSongMCPError(
+                    message: "Every source-context rectangle must be complete."
+                )
+            }
+            let integers = [x, y, width, height].map(\.int64Value)
+            guard integers.allSatisfy({ $0 >= 0 && $0 <= Int64(UInt16.max) }) else {
+                throw SwanSongMCPError(
+                    message: "Probe coordinates are out of range."
+                )
+            }
+            return EngineDisplayRectangle(
+                x: UInt16(integers[0]),
+                y: UInt16(integers[1]),
+                width: UInt16(integers[2]),
+                height: UInt16(integers[3])
+            )
+        }
+        guard frameNumber.int64Value >= 0 else {
+            throw SwanSongMCPError(message: "frameIndex is out of range.")
+        }
+        let rectangle: EngineDisplayRectangle
+        if allowAtomicRegions {
+            do {
+                rectangle = try TranslationDisplaySourceProbe
+                    .atomicBoundingRectangle(rectangles: rectangles)
+            } catch {
+                throw SwanSongMCPError(message: error.localizedDescription)
+            }
+        } else {
+            guard let single = rectangles.first else {
+                throw SwanSongMCPError(message: "A complete rectangle is required.")
+            }
+            rectangle = single
         }
         let planData = try readProjectFile(
             fileURL,
@@ -1099,13 +1796,9 @@ private enum SwanSongMCPServer {
             planURL: fileURL,
             role: role,
             plan: plan,
-            frameIndex: UInt64(integers[0]),
-            rectangle: EngineDisplayRectangle(
-                x: UInt16(integers[1]),
-                y: UInt16(integers[2]),
-                width: UInt16(integers[3]),
-                height: UInt16(integers[4])
-            )
+            frameIndex: UInt64(frameNumber.int64Value),
+            rectangle: rectangle,
+            rectangles: rectangles
         )
     }
 
@@ -1190,11 +1883,6 @@ private enum SwanSongMCPServer {
     private static func observedPlayStart(
         arguments: JSONDictionary
     ) throws -> JSONDictionary {
-        guard arguments["confirmProjectWrites"] as? Bool == true else {
-            throw SwanSongMCPError(
-                message: "Set confirmProjectWrites to true after confirming the selected project may receive a private observed-play session."
-            )
-        }
         guard let projectPath = arguments["projectPath"] as? String,
               let roleValue = arguments["role"] as? String,
               let role = TranslationROMRole(rawValue: roleValue) else {
@@ -1311,11 +1999,6 @@ private enum SwanSongMCPServer {
     private static func observedPlayBranch(
         arguments: JSONDictionary
     ) throws -> JSONDictionary {
-        guard arguments["confirmProjectWrites"] as? Bool == true else {
-            throw SwanSongMCPError(
-                message: "Set confirmProjectWrites to true before creating a clean-boot branch and closing the source session."
-            )
-        }
         guard let sessionID = arguments["sessionID"] as? String,
               let frameNumber = arguments["throughFrame"] as? NSNumber,
               frameNumber.int64Value >= 3 else {
@@ -1334,11 +2017,6 @@ private enum SwanSongMCPServer {
     private static func observedPlayResume(
         arguments: JSONDictionary
     ) throws -> JSONDictionary {
-        guard arguments["confirmProjectWrites"] as? Bool == true else {
-            throw SwanSongMCPError(
-                message: "Set confirmProjectWrites to true before recovering and updating the private session."
-            )
-        }
         guard let projectPath = arguments["projectPath"] as? String,
               let sessionID = arguments["sessionID"] as? String else {
             throw SwanSongMCPError(message: "projectPath and sessionID are required")
@@ -1354,11 +2032,6 @@ private enum SwanSongMCPServer {
     private static func observedPlayFinish(
         arguments: JSONDictionary
     ) throws -> JSONDictionary {
-        guard arguments["confirmProjectWrites"] as? Bool == true else {
-            throw SwanSongMCPError(
-                message: "Set confirmProjectWrites to true before creating final paired evidence."
-            )
-        }
         guard let sessionID = arguments["sessionID"] as? String else {
             throw SwanSongMCPError(message: "sessionID is required")
         }
@@ -1368,11 +2041,6 @@ private enum SwanSongMCPServer {
     private static func observedPlayCancel(
         arguments: JSONDictionary
     ) throws -> JSONDictionary {
-        guard arguments["confirmProjectWrites"] as? Bool == true else {
-            throw SwanSongMCPError(
-                message: "Set confirmProjectWrites to true before closing the private session."
-            )
-        }
         guard let sessionID = arguments["sessionID"] as? String else {
             throw SwanSongMCPError(message: "sessionID is required")
         }
@@ -1401,11 +2069,6 @@ private enum SwanSongMCPServer {
         _ arguments: JSONDictionary,
         fileKey: String
     ) throws -> (TranslationProject, URL) {
-        guard arguments["confirmProjectWrites"] as? Bool == true else {
-            throw SwanSongMCPError(
-                message: "Set confirmProjectWrites to true after confirming the selected project may receive new immutable artifacts."
-            )
-        }
         guard let projectPath = arguments["projectPath"] as? String,
               let filePath = arguments[fileKey] as? String else {
             throw SwanSongMCPError(message: "projectPath and \(fileKey) are required")
@@ -1512,18 +2175,15 @@ private enum SwanSongMCPServer {
                     "type": "string",
                     "description": "Absolute path to the existing project-contained input file.",
                 ],
-                "confirmProjectWrites": [
-                    "type": "boolean",
-                    "description": "Must be true to permit new immutable artifacts inside this project.",
-                ],
             ],
-            required: ["projectPath", fileKey, "confirmProjectWrites"]
+            required: ["projectPath", fileKey]
         )
     }
 
     private static func displayOwnerProbeSchema(
         includeComponents: Bool = false,
-        requireAuthorizedSourceEnvelope: Bool = false
+        requireAuthorizedSourceEnvelope: Bool = false,
+        allowAtomicRegions: Bool = false
     ) -> JSONDictionary {
         var properties: JSONDictionary = [
             "projectPath": [
@@ -1547,6 +2207,9 @@ private enum SwanSongMCPServer {
             "rectangle": [
                 "type": "object",
                 "additionalProperties": false,
+                "description": allowAtomicRegions
+                    ? "One upstream source region; each region is capped at \(TranslationDisplaySourceProbe.maximumRectanglePixels) pixels."
+                    : "One display-owner region capped at \(TranslationDisplayOwnerProbe.maximumRectanglePixels) native pixels.",
                 "properties": [
                     "x": ["type": "integer", "minimum": 0, "maximum": 223],
                     "y": ["type": "integer", "minimum": 0, "maximum": 223],
@@ -1555,11 +2218,16 @@ private enum SwanSongMCPServer {
                 ],
                 "required": ["x", "y", "width", "height"],
             ],
-            "confirmProjectWrites": [
-                "type": "boolean",
-                "description": "Must be true to permit private provenance artifacts inside this project.",
-            ],
         ]
+        if allowAtomicRegions {
+            properties["rectangles"] = [
+                "type": "array",
+                "minItems": 1,
+                "maxItems": TranslationDisplaySourceProbe.maximumAtomicRegionCount,
+                "items": properties["rectangle"]!,
+                "description": "Non-overlapping regions that exactly tile one source context; each is capped at 4096 pixels and the atomic total at 8192.",
+            ]
+        }
         if includeComponents {
             properties["components"] = [
                 "type": "array",
@@ -1592,9 +2260,10 @@ private enum SwanSongMCPServer {
             "planPath",
             "role",
             "frameIndex",
-            "rectangle",
-            "confirmProjectWrites",
         ]
+        if !allowAtomicRegions {
+            required.append("rectangle")
+        }
         if requireAuthorizedSourceEnvelope {
             required.append(contentsOf: [
                 "authorizationPath",
@@ -1607,9 +2276,69 @@ private enum SwanSongMCPServer {
                 "reportPath",
             ])
         }
-        return objectSchema(
+        var schema = objectSchema(
             properties: properties,
             required: required
+        )
+        if allowAtomicRegions {
+            schema["oneOf"] = [
+                ["required": ["rectangle"]],
+                ["required": ["rectangles"]],
+            ]
+        }
+        return schema
+    }
+
+    private static func originalFrameSealSchema() -> JSONDictionary {
+        var schema = displayOwnerProbeSchema(
+            includeComponents: true,
+            requireAuthorizedSourceEnvelope: false,
+            allowAtomicRegions: true
+        )
+        guard var properties = schema["properties"] as? JSONDictionary,
+              var required = schema["required"] as? [String] else {
+            return schema
+        }
+        for (name, description) in [
+            ("authorizationPath", "Absolute path to the fresh Original-frame seal authorization."),
+            ("capabilityReceiptPath", "Absolute path to source capability C."),
+            ("methodCapabilityReceiptPath", "Absolute path to source method M."),
+            ("qualifiedMethodCapabilityReceiptPath", "Absolute path to qualified source method M2."),
+            ("methodNativeMarkerPath", "Absolute path to the source method-native marker."),
+            ("runDirectoryPath", "Absolute path to the fresh private seal run directory."),
+            ("sealPath", "Absolute path to RUN/capture-frame-seal.json."),
+        ] {
+            properties[name] = [
+                "type": "string",
+                "description": description,
+            ]
+            required.append(name)
+        }
+        schema["properties"] = properties
+        schema["required"] = required
+        return schema
+    }
+
+    private static func originalDataProducerProbeSchema() -> JSONDictionary {
+        objectSchema(
+            properties: [
+                "projectPath": [
+                    "type": "string",
+                    "description": "Absolute path to the exact private Translation Lab project.",
+                ],
+                "authorizationPath": [
+                    "type": "string",
+                    "description": "Absolute path to the fresh project-contained Original-only producer-trace authorization.",
+                ],
+                "authorizationSHA256": [
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$",
+                    "description": "Exact SHA-256 of the one-use authorization file.",
+                ],
+            ],
+            required: [
+                "projectPath", "authorizationPath", "authorizationSHA256",
+            ]
         )
     }
 
@@ -1624,12 +2353,8 @@ private enum SwanSongMCPServer {
                     TranslationROMRole.allCases.map(\.rawValue),
                     description: "Project ROM role visible during the retained session."
                 ),
-                "confirmProjectWrites": [
-                    "type": "boolean",
-                    "description": "Must be true to create and continuously update the private session plan.",
-                ],
             ],
-            required: ["projectPath", "role", "confirmProjectWrites"]
+            required: ["projectPath", "role"]
         )
     }
 
@@ -1723,12 +2448,8 @@ private enum SwanSongMCPServer {
                     "maximum": Int(TranslationFrameInputPlan.maximumFrames),
                     "description": "Exact cumulative prefix length replayed from clean boot into the new active branch.",
                 ],
-                "confirmProjectWrites": [
-                    "type": "boolean",
-                    "description": "Must be true to create the new private branch and close the source session.",
-                ],
             ],
-            required: ["sessionID", "throughFrame", "confirmProjectWrites"]
+            required: ["sessionID", "throughFrame"]
         )
     }
 
@@ -1743,12 +2464,8 @@ private enum SwanSongMCPServer {
                     "type": "string",
                     "description": "Identifier of a project-contained interrupted observed-play session.",
                 ],
-                "confirmProjectWrites": [
-                    "type": "boolean",
-                    "description": "Must be true to mark abandonment, replay the saved plan, and reactivate the private session.",
-                ],
             ],
-            required: ["projectPath", "sessionID", "confirmProjectWrites"]
+            required: ["projectPath", "sessionID"]
         )
     }
 
@@ -1759,12 +2476,8 @@ private enum SwanSongMCPServer {
                     "type": "string",
                     "description": "Identifier returned by observed-play start.",
                 ],
-                "confirmProjectWrites": [
-                    "type": "boolean",
-                    "description": "Must be true to update the private session and, when finishing, emit paired evidence.",
-                ],
             ],
-            required: ["sessionID", "confirmProjectWrites"]
+            required: ["sessionID"]
         )
     }
 
