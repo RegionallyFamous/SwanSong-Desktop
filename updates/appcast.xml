@@ -6,6 +6,27 @@
     <description>Developer ID signed and notarized SwanSong updates from GitHub Releases.</description>
     <language>en</language>
     <item>
+      <title>SwanSong 0.9.4</title>
+      <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.9.4</link>
+      <description sparkle:format="html">&lt;h2&gt;The Forge comes home.&lt;/h2&gt;
+&lt;p&gt;SwanSong 0.9.4 carries Story Forge's trusted writing framework inside the signed Mac app.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Start writing without a second checkout.&lt;/strong&gt; Create, reopen, revise, and hand a story into Studio with the included hash-verified framework.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep private work private.&lt;/strong&gt; Games, manuscripts, art libraries, reader notes, ROMs, and release archives are not bundled into the app.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep approval honest.&lt;/strong&gt; Human, rights, music, and physical-hardware gates remain blocking until real evidence exists.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Strengthen source proof.&lt;/strong&gt; Advanced Translation Lab tools authenticate the Original frame and return source-safe receipts without game material or private paths.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Keep updates current.&lt;/strong&gt; Includes Sparkle 2.9.5 and its latest delta-update security hardening.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;SwanSong 0.9.4 is the current stable release.&lt;/strong&gt; It is offered on the default update channel.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Everyday play and the calm Start Here experience remain unchanged.&lt;/em&gt; &lt;a href="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.9.4"&gt;Read the full release notes.&lt;/a&gt;&lt;/p&gt;</description>
+      <pubDate>Mon, 3 Aug 2026 12:47:47 -0500</pubDate>
+      <sparkle:version>22</sparkle:version>
+      <sparkle:shortVersionString>0.9.4</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:phasedRolloutInterval>86400</sparkle:phasedRolloutInterval>
+      <enclosure url="https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/v0.9.4/SwanSong-0.9.4-macOS-universal.zip" length="40261459" type="application/octet-stream" sparkle:edSignature="KyaiU3jL4NAHbHMxdsTCY7LawqhDO7v0Qft898PcvHdqd3L/EJKkgtkNsnxFib7/0You6YNBqe+ev5h4FN9HDg==" />
+    </item>
+    <item>
       <title>SwanSong 0.9.3</title>
       <link>https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/v0.9.3</link>
       <description sparkle:format="html">&lt;h2&gt;Keep long translation proof moving.&lt;/h2&gt;
@@ -363,6 +384,6 @@
   </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: /cDPBgDBYacHhOuEeO8Bj6COu2fbGwKWlVOnpb5F1GWSTslEdCgS96bsXUoKsIB1fHbtk5D/hL/lZPeYtIDnCg==
-length: 38279
+edSignature: 9MsP1KHm+yV3TMeE+bUit/UN0Ws/E/xqWuBijFBHqvtsnORpF4M7VOdcvKym/qAW1Qtbw3XikYBck4jr0MxTDQ==
+length: 40549
 -->
