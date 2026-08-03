@@ -444,7 +444,7 @@ expect_failure "an oversized compressed archive" \
 write_valid_fixture
 old_archive_hash=$(shasum -a 256 "$ARCHIVE" | awk '{ print $1 }')
 file_index=0
-while [ "$file_index" -lt 1025 ]; do
+while [ "$file_index" -lt 2049 ]; do
   : >"$TEMP_ROOT/archive-payload/SwanSong.app/Contents/entry-$file_index"
   file_index=$((file_index + 1))
 done
