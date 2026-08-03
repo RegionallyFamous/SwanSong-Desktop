@@ -650,7 +650,8 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
            SWAN_CAPABILITY_DISPLAY_SOURCE_COMPONENT_SELECTION |
            SWAN_CAPABILITY_EXECUTED_SOURCE_READ_CONTEXT |
            SWAN_CAPABILITY_DISPLAY_SPRITE_ATTRIBUTE_PROVENANCE |
-           SWAN_CAPABILITY_CONSUMED_PREFETCH_PROVENANCE;
+           SWAN_CAPABILITY_CONSUMED_PREFETCH_PROVENANCE |
+           SWAN_CAPABILITY_DATA_PRODUCER_PROVENANCE;
   }
 
   swan_result_t load(std::span<const uint8_t> rom,
@@ -1378,6 +1379,139 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     return SWAN_RESULT_OK;
   }
 
+  swan_result_t begin_data_producer_probe(
+      const swan_data_producer_probe_options_t& options,
+      std::string& error) override {
+    if (!loaded_) return SWAN_RESULT_NOT_LOADED;
+    if (options.address < 0x10000u || options.address >= 0x20000u ||
+        options.byte_count == 0 || options.byte_count > kMaximumDataProbeBytes ||
+        options.byte_count > 0x20000u - options.address) {
+      error = "the data-producer watch must be 1 through 64 bytes inside the cartridge-RAM window";
+      return SWAN_RESULT_INVALID_ARGUMENT;
+    }
+    {
+      std::lock_guard lock(video_mutex_);
+      if (frame_number_ != 0) {
+        error = "data-producer provenance must be armed before the first emulated frame";
+        return SWAN_RESULT_UNSUPPORTED;
+      }
+    }
+    data_probe_address_ = options.address;
+    data_probe_byte_count_ = options.byte_count;
+    data_probe_writers_.fill({});
+    data_probe_sources_.fill({});
+    for (auto& record : data_probe_writers_) {
+      record.program_counter = 0xffffffffu;
+    }
+    data_probe_active_ = true;
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
+  swan_result_t data_producer_probe(
+      const swan_data_producer_probe_options_t& options,
+      std::span<swan_data_producer_trace_t> traces,
+      size_t& count,
+      std::string& error) const override {
+    count = 0;
+    if (!loaded_) return SWAN_RESULT_NOT_LOADED;
+    if (!data_probe_active_ ||
+        options.address != data_probe_address_ ||
+        options.byte_count != data_probe_byte_count_) {
+      error = "the requested data-producer range was not armed before replay";
+      return SWAN_RESULT_UNSUPPORTED;
+    }
+    if (!writers_valid_ || !source_tracking_valid_) {
+      error = "data-producer provenance requires replay from clean power-on";
+      return SWAN_RESULT_UNSUPPORTED;
+    }
+
+    std::vector<swan_data_producer_trace_t> collected;
+    collected.reserve(static_cast<size_t>(data_probe_byte_count_) *
+                      SourceSet::capacity);
+    for (uint32_t index = 0; index < data_probe_byte_count_; ++index) {
+      const auto& writer = data_probe_writers_[index];
+      const auto& sources = data_probe_sources_[index];
+      const auto append = [&](const SourceRange* range) {
+        swan_data_producer_trace_t trace{};
+        trace.struct_size = sizeof(trace);
+        trace.target_address = data_probe_address_ + index;
+        trace.target_byte_count = 1;
+        trace.writer_pc = writer.sequence == 0
+            ? 0xffffffffu : writer.program_counter;
+        trace.minimum_instruction_hops = sources.minimum_hops;
+        trace.maximum_instruction_hops = sources.maximum_hops;
+        if (writer.sequence != 0) {
+          trace.flags |= SWAN_DATA_PRODUCER_FLAG_WRITER_PRESENT;
+        }
+        if (sources.unknown) {
+          trace.flags |= SWAN_DISPLAY_SOURCE_FLAG_UNKNOWN_DEPENDENCY;
+        }
+        if (sources.overflow) {
+          trace.flags |= SWAN_DISPLAY_SOURCE_FLAG_RANGE_OVERFLOW;
+        }
+        if (sources.conservative_reason !=
+            SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE) {
+          trace.flags |= SWAN_DISPLAY_SOURCE_FLAG_CONSERVATIVE_DATAFLOW;
+        }
+        if (sources.maximum_hops != 0) {
+          trace.flags |= SWAN_DISPLAY_SOURCE_FLAG_TRANSFORMED;
+        }
+        if (!range) {
+          trace.flags |= SWAN_DATA_PRODUCER_FLAG_NO_CARTRIDGE_SOURCE;
+        } else {
+          trace.cartridge_offset = range->lower;
+          trace.cartridge_length = range->upper - range->lower;
+          if (!sources.unknown && !sources.overflow &&
+              sources.conservative_reason ==
+                  SWAN_DISPLAY_SOURCE_CONSERVATIVE_NONE) {
+            trace.flags |= SWAN_DISPLAY_SOURCE_FLAG_EXACT;
+          }
+          const auto& read = range->read_context;
+          trace.read_context_initiator = read.initiator;
+          trace.read_context_flags = read.executed
+              ? SWAN_DISPLAY_SOURCE_READ_CONTEXT_EXECUTED : 0;
+          trace.immediate_caller_or_general_dma_source_operand =
+              read.initiator == SWAN_DISPLAY_SOURCE_READ_INITIATOR_GENERAL_DMA
+                  ? read.general_dma_source_operand : read.immediate_caller;
+          trace.caller_segment = read.caller_segment;
+          trace.caller_offset = read.caller_offset;
+          trace.operand_segment = read.operand_segment;
+          trace.operand_offset = read.operand_offset;
+          trace.mapper_window = read.mapper_window;
+          trace.mapper_bank = read.mapper_bank;
+          trace.resolved_cartridge_operand = read.resolved_cartridge_operand;
+        }
+        trace.conservative_reason = sources.conservative_reason;
+        trace.conservative_origin = sources.conservative_origin;
+        trace.conservative_origin_segment =
+            sources.conservative_origin_segment;
+        trace.conservative_origin_offset = sources.conservative_origin_offset;
+        collected.push_back(trace);
+      };
+      if (sources.count == 0) {
+        append(nullptr);
+      } else {
+        for (size_t source = 0; source < sources.count; ++source) {
+          append(&sources.ranges[source]);
+        }
+      }
+    }
+
+    count = collected.size();
+    if (traces.empty()) {
+      error.clear();
+      return SWAN_RESULT_OK;
+    }
+    if (traces.size() < collected.size()) {
+      error = "data-producer output buffer is too small";
+      return SWAN_RESULT_INVALID_ARGUMENT;
+    }
+    std::copy(collected.begin(), collected.end(), traces.begin());
+    error.clear();
+    return SWAN_RESULT_OK;
+  }
+
  private:
   void initialize_frontend_presentation() {
     if (!root_) return;
@@ -1745,6 +1879,10 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       record = &iram_writers_[address];
     } else if (kind == 2 && address < io_writers_.size()) {
       record = &io_writers_[address];
+    } else if (kind == 3 && data_probe_active_ &&
+               address >= data_probe_address_ &&
+               address - data_probe_address_ < data_probe_byte_count_) {
+      record = &data_probe_writers_[address - data_probe_address_];
     }
     if (!record) return;
     record->sequence = ++writer_sequence_;
@@ -1755,6 +1893,10 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       sources = &iram_sources_[address];
     } else if (kind == 2 && address < io_sources_.size()) {
       sources = &io_sources_[address];
+    } else if (kind == 3 && data_probe_active_ &&
+               address >= data_probe_address_ &&
+               address - data_probe_address_ < data_probe_byte_count_) {
+      sources = &data_probe_sources_[address - data_probe_address_];
     }
     if (sources) {
       *sources = general_dma_active_
@@ -1878,12 +2020,11 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
       activeSources->merge(io_sources_[address]);
       return;
     }
-    if (kind == 3 && rom_aperture_size_ != 0) {
-      const uint32_t mapped = address & (rom_aperture_size_ - 1u);
-      if (mapped >= rom_leading_padding_ &&
-          mapped - rom_leading_padding_ < rom_file_size_) {
-        activeSources->add(
-            mapped - rom_leading_padding_, mapped - rom_leading_padding_ + 1u);
+    if (kind == 3) {
+      if (data_probe_active_ && address >= data_probe_address_ &&
+          address - data_probe_address_ < data_probe_byte_count_) {
+        activeSources->merge(
+            data_probe_sources_[address - data_probe_address_]);
       } else {
         activeSources->unknown = true;
       }
@@ -2371,6 +2512,11 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
     io_writers_.fill({});
     iram_sources_.fill({});
     io_sources_.fill({});
+    data_probe_writers_.fill({});
+    data_probe_sources_.fill({});
+    data_probe_active_ = false;
+    data_probe_address_ = 0;
+    data_probe_byte_count_ = 0;
     register_sources_.fill({});
     instruction_sources_ = {};
     general_dma_sources_ = {};
@@ -2438,10 +2584,16 @@ class AresBackend final : public SwanEngineBackend, private ares::Platform {
   bool loaded_ = false;
   bool initial_vertical_ = false;
   uint64_t writer_sequence_ = 0;
+  static constexpr uint32_t kMaximumDataProbeBytes = 64;
   std::array<WriterRecord, 65'536> iram_writers_{};
   std::array<WriterRecord, 256> io_writers_{};
   std::array<SourceSet, 65'536> iram_sources_{};
   std::array<SourceSet, 256> io_sources_{};
+  std::array<WriterRecord, kMaximumDataProbeBytes> data_probe_writers_{};
+  std::array<SourceSet, kMaximumDataProbeBytes> data_probe_sources_{};
+  uint32_t data_probe_address_ = 0;
+  uint32_t data_probe_byte_count_ = 0;
+  bool data_probe_active_ = false;
   // AW/CW/DW/BW/SP/BP/IX/IY are retained as independent low/high bytes.
   std::array<SourceSet, 16> register_sources_{};
   SourceSet instruction_sources_{};

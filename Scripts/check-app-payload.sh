@@ -35,6 +35,7 @@ unexpected_file=$(find "$APP/Contents" -type f \
   ! -path "$APP/Contents/Resources/SPARKLE_LICENSE" \
   ! -path "$APP/Contents/Resources/ares.lock.json" \
   ! -path "$APP/Contents/Resources/sparkle.lock.json" \
+  ! -path "$APP/Contents/Resources/StoryForge/*" \
   ! -path "$APP/Contents/Resources/SwanSongSDK/*" \
   ! -path "$APP/Contents/Resources/YokoiHardware/*" \
   ! -path "$APP/Contents/_CodeSignature/CodeResources" \
@@ -57,6 +58,8 @@ plutil -lint "$PRIVACY_MANIFEST" >/dev/null
 
 "$SCRIPT_DIR/check-swansong-sdk-payload.sh" \
   "$APP/Contents/Resources/SwanSongSDK" >/dev/null
+python3 "$SCRIPT_DIR/check-story-forge-framework.py" \
+  "$APP/Contents/Resources/StoryForge" >/dev/null
 python3 "$SCRIPT_DIR/check-yokoi-hardware-payload.py" \
   "$APP/Contents/Resources/YokoiHardware" >/dev/null
 

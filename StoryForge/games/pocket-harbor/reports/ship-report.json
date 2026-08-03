@@ -1,0 +1,121 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-27T03:20:17.945262+00:00",
+  "errors": [],
+  "commands": [
+    {
+      "name": "build",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/build_wscvn_game.py",
+        "pocket-harbor"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "ck/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py pocket-harbor --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json --asset-root /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/game-readiness-report.json\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:219: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:220: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:222: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alpha_coverage = sum(1 for pixel in image.getdata() if pixel[3] > 0) / (image.width * image.height)\nGame readiness report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/game-readiness-report.json\n[i] Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.\nTechnical game readiness passed; aesthetic review remains separate\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_graphics_contract.py --asset-root /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json --allow-missing-provenance --out /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/graphics-contract-report.json\nGraphics contract report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/graphics-contract-report.json\nGraphics contract passed\n+ make convert JSON=/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json PY=/opt/homebrew/opt/python@3.14/bin/python3.14\n/opt/homebrew/opt/python@3.14/bin/python3.14 tools/convert_json.py \"/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json\" src/\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/runtime-local/tools/convert_json.py:939: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  indexed = list(q.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/runtime-local/tools/convert_json.py:517: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/runtime-local/tools/convert_json.py:580: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(frame.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/runtime-local/tools/convert_json.py:606: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/runtime-local/tools/convert_json.py:627: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgb.getdata())\n[+] Loaded \"Pocket Harbor\" \u2014 63 nodes, 9 flags, 1 tracks, 3 backgrounds, 6 characters\n[+] Wrote src//game_data.h and src//game_data.c\n[+] Ready: run \"make\" from the project root.\n+ make clean NAME=pocket-harbor\nrm -rf build/pocket-harbor pocket-harbor.wsc\n+ make NAME=pocket-harbor\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/pocket-harbor/src/main.o src/main.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/pocket-harbor/src/game_data.o src/game_data.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -r -o build/pocket-harbor/pocket-harbor_stage1.elf build/pocket-harbor/src/main.o build/pocket-harbor/src/game_data.o /opt/wonderful/target/wswan/medium/lib/crt0.o -T/opt/wonderful/target/wswan/medium/link.ld -L/opt/wonderful/target/wswan/medium/lib -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -u __wse_tiles_2bpp -u __wse_color_palette -L/opt/wonderful/toolchain/gcc-ia16-elf/lib/v30mz-segelf/medium -lwse -lwsx -lws -lgcc\n/opt/wonderful/bin/wf-wswantool build rom -c wfconfig.toml -o pocket-harbor.wsc --output-elf build/pocket-harbor/pocket-harbor.elf build/pocket-harbor/pocket-harbor_stage1.elf\n=== BUILD COMPLETE ===\n-rw-r--r--@ 1 nick  staff   8.0M Jul 26 22:10 pocket-harbor.wsc\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/smoke_wscvn_rom.py /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/runtime-local/pocket-harbor.wsc --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/emulator-smoke-report.json\nEmulator smoke report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/emulator-smoke-report.json\nBoot/checksum smoke passed (no pixels observed): wswan(WonderSwan) 8192KiB checksum 0x0048\nVisual verification not performed; no emulator screenshot proof was bound\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py pocket-harbor --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json --runtime /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/runtime-local --build-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/build-report.json --smoke-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/emulator-smoke-report.json --readiness-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/game-readiness-report.json --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/game-audit-report.json\nGame audit report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/game-audit-report.json\nGame audit passed\nGame build report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/build-report.json\nGame build passed: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/runtime-local/pocket-harbor.wsc"
+    },
+    {
+      "name": "swansong-playthrough",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/playtest_wscvn_swansong.py",
+        "pocket-harbor",
+        "--route",
+        "all"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "pocket-harbor: running route-1 (1/27) \u2014 Inspect pins / Trade duplicate / Boot it now\npocket-harbor: route-1 passed in 21.749s\npocket-harbor: running route-2 (2/27) \u2014 Inspect pins / Trade duplicate / Write its card\npocket-harbor: route-2 passed in 20.537s\npocket-harbor: running route-3 (3/27) \u2014 Inspect pins / Trade duplicate / Sleeve at home\npocket-harbor: route-3 passed in 20.711s\npocket-harbor: running route-4 (4/27) \u2014 Inspect pins / Keep first cart / Boot it now\npocket-harbor: route-4 passed in 20.652s\npocket-harbor: running route-5 (5/27) \u2014 Inspect pins / Keep first cart / Write its card\npocket-harbor: route-5 passed in 20.537s\npocket-harbor: running route-6 (6/27) \u2014 Inspect pins / Keep first cart / Sleeve at home\npocket-harbor: route-6 passed in 20.654s\npocket-harbor: running route-7 (7/27) \u2014 Inspect pins / Help another buyer / Boot it now\npocket-harbor: route-7 passed in 20.672s\npocket-harbor: running route-8 (8/27) \u2014 Inspect pins / Help another buyer / Write its card\npocket-harbor: route-8 passed in 20.575s\npocket-harbor: running route-9 (9/27) \u2014 Inspect pins / Help another buyer / Sleeve at home\npocket-harbor: route-9 passed in 20.682s\npocket-harbor: running route-10 (10/27) \u2014 Ask price / Trade duplicate / Boot it now\npocket-harbor: route-10 passed in 20.900s\npocket-harbor: running route-11 (11/27) \u2014 Ask price / Trade duplicate / Write its card\npocket-harbor: route-11 passed in 20.893s\npocket-harbor: running route-12 (12/27) \u2014 Ask price / Trade duplicate / Sleeve at home\npocket-harbor: route-12 passed in 21.092s\npocket-harbor: running route-13 (13/27) \u2014 Ask price / Keep first cart / Boot it now\npocket-harbor: route-13 passed in 21.059s\npocket-harbor: running route-14 (14/27) \u2014 Ask price / Keep first cart / Write its card\npocket-harbor: route-14 passed in 20.712s\npocket-harbor: running route-15 (15/27) \u2014 Ask price / Keep first cart / Sleeve at home\npocket-harbor: route-15 passed in 20.823s\npocket-harbor: running route-16 (16/27) \u2014 Ask price / Help another buyer / Boot it now\npocket-harbor: route-16 passed in 20.834s\npocket-harbor: running route-17 (17/27) \u2014 Ask price / Help another buyer / Write its card\npocket-harbor: route-17 passed in 20.803s\npocket-harbor: running route-18 (18/27) \u2014 Ask price / Help another buyer / Sleeve at home\npocket-harbor: route-18 passed in 20.869s\npocket-harbor: running route-19 (19/27) \u2014 Read manual / Trade duplicate / Boot it now\npocket-harbor: route-19 passed in 20.770s\npocket-harbor: running route-20 (20/27) \u2014 Read manual / Trade duplicate / Write its card\npocket-harbor: route-20 passed in 20.606s\npocket-harbor: running route-21 (21/27) \u2014 Read manual / Trade duplicate / Sleeve at home\npocket-harbor: route-21 passed in 20.770s\npocket-harbor: running route-22 (22/27) \u2014 Read manual / Keep first cart / Boot it now\npocket-harbor: route-22 passed in 20.663s\npocket-harbor: running route-23 (23/27) \u2014 Read manual / Keep first cart / Write its card\npocket-harbor: route-23 passed in 20.618s\npocket-harbor: running route-24 (24/27) \u2014 Read manual / Keep first cart / Sleeve at home\npocket-harbor: route-24 passed in 20.857s\npocket-harbor: running route-25 (25/27) \u2014 Read manual / Help another buyer / Boot it now\npocket-harbor: route-25 passed in 20.854s\npocket-harbor: running route-26 (26/27) \u2014 Read manual / Help another buyer / Write its card\npocket-harbor: route-26 passed in 20.588s\npocket-harbor: running route-27 (27/27) \u2014 Read manual / Help another buyer / Sleeve at home\npocket-harbor: route-27 passed in 20.791s\npocket-harbor: route 1=ok, route 2=ok, route 3=ok, route 4=ok, route 5=ok, route 6=ok, route 7=ok, route 8=ok, route 9=ok, route 10=ok, route 11=ok, route 12=ok, route 13=ok, route 14=ok, route 15=ok, route 16=ok, route 17=ok, route 18=ok, route 19=ok, route 20=ok, route 21=ok, route 22=ok, route 23=ok, route 24=ok, route 25=ok, route 26=ok, route 27=ok; coverage=27/27; persistence=ok; audio-soak=ok"
+    },
+    {
+      "name": "package",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/package_wscvn_game.py",
+        "pocket-harbor"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py pocket-harbor --no-write\nGame release report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/release-report.json\nGame release package: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/releases/20260727T032017Z-518e84ed00b5.zip\nGame release packaging passed"
+    },
+    {
+      "name": "verify",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+        "pocket-harbor"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/release-verify-report.json\nGame release verification passed"
+    }
+  ],
+  "facts": {
+    "slug": "pocket-harbor",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor",
+    "emulator_screenshot": null,
+    "swansong_dylib": null,
+    "reports": {
+      "build": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/build-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "readiness": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/game-readiness-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "smoke": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/emulator-smoke-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "audit": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/game-audit-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "swansong_playthrough": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/swansong-playthrough-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "release": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/release-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "release_verify": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/release-verify-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/releases/20260727T032017Z-518e84ed00b5.zip",
+    "release_zip_sha256": "8d56c3d898bf7f4cbdc9bfd3427fadfff565d59aa40a2a977f0173d556aa64f1",
+    "actual_zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/releases/20260727T032017Z-518e84ed00b5.zip",
+      "exists": true,
+      "bytes": 7070187,
+      "sha256": "8d56c3d898bf7f4cbdc9bfd3427fadfff565d59aa40a2a977f0173d556aa64f1"
+    },
+    "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/releases/20260727T032017Z-518e84ed00b5.zip",
+    "verified_zip_sha256": "8d56c3d898bf7f4cbdc9bfd3427fadfff565d59aa40a2a977f0173d556aa64f1"
+  }
+}

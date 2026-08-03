@@ -1,0 +1,121 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-27T03:07:47.229860+00:00",
+  "errors": [],
+  "commands": [
+    {
+      "name": "build",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/build_wscvn_game.py",
+        "mono-cart-morning"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "t-morning.wscvn.json --asset-root /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/game-readiness-report.json\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:219: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  visible = {pixel[:3] for pixel in image.getdata() if pixel[3] > 0}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:220: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alphas = {pixel[3] for pixel in image.getdata()}\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_readiness.py:222: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  alpha_coverage = sum(1 for pixel in image.getdata() if pixel[3] > 0) / (image.width * image.height)\nGame readiness report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/game-readiness-report.json\n[i] Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.\nTechnical game readiness passed; aesthetic review remains separate\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_graphics_contract.py --asset-root /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/projects/mono-cart-morning.wscvn.json --allow-missing-provenance --out /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/graphics-contract-report.json\nGraphics contract report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/graphics-contract-report.json\nGraphics contract passed\n+ make convert JSON=/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/projects/mono-cart-morning.wscvn.json PY=/opt/homebrew/opt/python@3.14/bin/python3.14\n/opt/homebrew/opt/python@3.14/bin/python3.14 tools/convert_json.py \"/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/projects/mono-cart-morning.wscvn.json\" src/\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/runtime-local/tools/convert_json.py:939: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  indexed = list(q.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/runtime-local/tools/convert_json.py:517: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/runtime-local/tools/convert_json.py:580: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(frame.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/runtime-local/tools/convert_json.py:606: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgba.getdata())\n/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/runtime-local/tools/convert_json.py:627: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  pix = list(rgb.getdata())\n[+] Loaded \"Mono Cart Morning\" \u2014 63 nodes, 9 flags, 1 tracks, 3 backgrounds, 6 characters\n[+] Wrote src//game_data.h and src//game_data.c\n[+] Ready: run \"make\" from the project root.\n+ make clean NAME=mono-cart-morning\nrm -rf build/mono-cart-morning mono-cart-morning.wsc\n+ make NAME=mono-cart-morning\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/mono-cart-morning/src/main.o src/main.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -std=gnu11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-type-limits -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -march=v30mz -mtune=v30mz -mregparmcall -ffreestanding -mcmodel=medium -msegelf -mcs-jump-tables -Isrc -isystem /opt/wonderful/target/wswan/medium/include -ffunction-sections -fdata-sections -fno-common -Os -MMD -MP  -c -o build/mono-cart-morning/src/game_data.o src/game_data.c\n/opt/wonderful/toolchain/gcc-ia16-elf/bin/ia16-elf-gcc -r -o build/mono-cart-morning/mono-cart-morning_stage1.elf build/mono-cart-morning/src/main.o build/mono-cart-morning/src/game_data.o /opt/wonderful/target/wswan/medium/lib/crt0.o -T/opt/wonderful/target/wswan/medium/link.ld -L/opt/wonderful/target/wswan/medium/lib -D__WONDERFUL__ -D__WONDERFUL_WSWAN__ -u __wse_tiles_2bpp -u __wse_color_palette -L/opt/wonderful/toolchain/gcc-ia16-elf/lib/v30mz-segelf/medium -lwse -lwsx -lws -lgcc\n/opt/wonderful/bin/wf-wswantool build rom -c wfconfig.toml -o mono-cart-morning.wsc --output-elf build/mono-cart-morning/mono-cart-morning.elf build/mono-cart-morning/mono-cart-morning_stage1.elf\n=== BUILD COMPLETE ===\n-rw-r--r--@ 1 nick  staff   8.0M Jul 26 21:56 mono-cart-morning.wsc\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/smoke_wscvn_rom.py /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/runtime-local/mono-cart-morning.wsc --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/emulator-smoke-report.json\nEmulator smoke report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/emulator-smoke-report.json\nBoot/checksum smoke passed (no pixels observed): wswan(WonderSwan) 8192KiB checksum 0xc36e\nVisual verification not performed; no emulator screenshot proof was bound\n+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py mono-cart-morning --project /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/projects/mono-cart-morning.wscvn.json --runtime /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/runtime-local --build-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/build-report.json --smoke-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/emulator-smoke-report.json --readiness-report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/game-readiness-report.json --report /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/game-audit-report.json\nGame audit report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/game-audit-report.json\nGame audit passed\nGame build report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/build-report.json\nGame build passed: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/runtime-local/mono-cart-morning.wsc"
+    },
+    {
+      "name": "swansong-playthrough",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/playtest_wscvn_swansong.py",
+        "mono-cart-morning",
+        "--route",
+        "all"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "mono-cart-morning: running route-1 (1/27) \u2014 Check shells / Boxed unit / Museum shelf\nmono-cart-morning: route-1 passed in 24.998s\nmono-cart-morning: running route-2 (2/27) \u2014 Check shells / Boxed unit / Play log\nmono-cart-morning: route-2 passed in 23.894s\nmono-cart-morning: running route-3 (3/27) \u2014 Check shells / Boxed unit / Lending case\nmono-cart-morning: route-3 passed in 23.829s\nmono-cart-morning: running route-4 (4/27) \u2014 Check shells / Loose cart lot / Museum shelf\nmono-cart-morning: route-4 passed in 23.602s\nmono-cart-morning: running route-5 (5/27) \u2014 Check shells / Loose cart lot / Play log\nmono-cart-morning: route-5 passed in 23.679s\nmono-cart-morning: running route-6 (6/27) \u2014 Check shells / Loose cart lot / Lending case\nmono-cart-morning: route-6 passed in 23.787s\nmono-cart-morning: running route-7 (7/27) \u2014 Check shells / Save for trade / Museum shelf\nmono-cart-morning: route-7 passed in 24.812s\nmono-cart-morning: running route-8 (8/27) \u2014 Check shells / Save for trade / Play log\nmono-cart-morning: route-8 passed in 24.552s\nmono-cart-morning: running route-9 (9/27) \u2014 Check shells / Save for trade / Lending case\nmono-cart-morning: route-9 passed in 24.545s\nmono-cart-morning: running route-10 (10/27) \u2014 Boot them / Boxed unit / Museum shelf\nmono-cart-morning: route-10 passed in 24.453s\nmono-cart-morning: running route-11 (11/27) \u2014 Boot them / Boxed unit / Play log\nmono-cart-morning: route-11 passed in 24.642s\nmono-cart-morning: running route-12 (12/27) \u2014 Boot them / Boxed unit / Lending case\nmono-cart-morning: route-12 passed in 24.266s\nmono-cart-morning: running route-13 (13/27) \u2014 Boot them / Loose cart lot / Museum shelf\nmono-cart-morning: route-13 passed in 24.187s\nmono-cart-morning: running route-14 (14/27) \u2014 Boot them / Loose cart lot / Play log\nmono-cart-morning: route-14 passed in 24.187s\nmono-cart-morning: running route-15 (15/27) \u2014 Boot them / Loose cart lot / Lending case\nmono-cart-morning: route-15 passed in 23.974s\nmono-cart-morning: running route-16 (16/27) \u2014 Boot them / Save for trade / Museum shelf\nmono-cart-morning: route-16 passed in 24.236s\nmono-cart-morning: running route-17 (17/27) \u2014 Boot them / Save for trade / Play log\nmono-cart-morning: route-17 passed in 24.370s\nmono-cart-morning: running route-18 (18/27) \u2014 Boot them / Save for trade / Lending case\nmono-cart-morning: route-18 passed in 24.424s\nmono-cart-morning: running route-19 (19/27) \u2014 Ask stories / Boxed unit / Museum shelf\nmono-cart-morning: route-19 passed in 24.263s\nmono-cart-morning: running route-20 (20/27) \u2014 Ask stories / Boxed unit / Play log\nmono-cart-morning: route-20 passed in 24.375s\nmono-cart-morning: running route-21 (21/27) \u2014 Ask stories / Boxed unit / Lending case\nmono-cart-morning: route-21 passed in 24.246s\nmono-cart-morning: running route-22 (22/27) \u2014 Ask stories / Loose cart lot / Museum shelf\nmono-cart-morning: route-22 passed in 24.063s\nmono-cart-morning: running route-23 (23/27) \u2014 Ask stories / Loose cart lot / Play log\nmono-cart-morning: route-23 passed in 24.216s\nmono-cart-morning: running route-24 (24/27) \u2014 Ask stories / Loose cart lot / Lending case\nmono-cart-morning: route-24 passed in 24.870s\nmono-cart-morning: running route-25 (25/27) \u2014 Ask stories / Save for trade / Museum shelf\nmono-cart-morning: route-25 passed in 24.400s\nmono-cart-morning: running route-26 (26/27) \u2014 Ask stories / Save for trade / Play log\nmono-cart-morning: route-26 passed in 24.530s\nmono-cart-morning: running route-27 (27/27) \u2014 Ask stories / Save for trade / Lending case\nmono-cart-morning: route-27 passed in 24.841s\nmono-cart-morning: route 1=ok, route 2=ok, route 3=ok, route 4=ok, route 5=ok, route 6=ok, route 7=ok, route 8=ok, route 9=ok, route 10=ok, route 11=ok, route 12=ok, route 13=ok, route 14=ok, route 15=ok, route 16=ok, route 17=ok, route 18=ok, route 19=ok, route 20=ok, route 21=ok, route 22=ok, route 23=ok, route 24=ok, route 25=ok, route 26=ok, route 27=ok; coverage=27/27; persistence=ok; audio-soak=ok"
+    },
+    {
+      "name": "package",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/package_wscvn_game.py",
+        "mono-cart-morning"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "+ /opt/homebrew/opt/python@3.14/bin/python3.14 /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py mono-cart-morning --no-write\nGame release report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/release-report.json\nGame release package: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/releases/20260727T030746Z-a0144833608f.zip\nGame release packaging passed"
+    },
+    {
+      "name": "verify",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_wscvn_game_release.py",
+        "mono-cart-morning"
+      ],
+      "cwd": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge",
+      "returncode": 0,
+      "output_tail": "Game release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/release-verify-report.json\nGame release verification passed"
+    }
+  ],
+  "facts": {
+    "slug": "mono-cart-morning",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning",
+    "emulator_screenshot": null,
+    "swansong_dylib": null,
+    "reports": {
+      "build": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/build-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "readiness": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/game-readiness-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "smoke": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/emulator-smoke-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "audit": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/game-audit-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "swansong_playthrough": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/swansong-playthrough-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "release": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/release-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "release_verify": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/release-verify-report.json",
+        "exists": true,
+        "ok": true,
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/releases/20260727T030746Z-a0144833608f.zip",
+    "release_zip_sha256": "eefd4e4ed7f1947e18a0022dc6a7270e6362e2d594c58cc939779afebe5c7641",
+    "actual_zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/releases/20260727T030746Z-a0144833608f.zip",
+      "exists": true,
+      "bytes": 3303372,
+      "sha256": "eefd4e4ed7f1947e18a0022dc6a7270e6362e2d594c58cc939779afebe5c7641"
+    },
+    "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/releases/20260727T030746Z-a0144833608f.zip",
+    "verified_zip_sha256": "eefd4e4ed7f1947e18a0022dc6a7270e6362e2d594c58cc939779afebe5c7641"
+  }
+}

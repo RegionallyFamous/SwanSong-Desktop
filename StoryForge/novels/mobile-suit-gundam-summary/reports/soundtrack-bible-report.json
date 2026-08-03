@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "tool": "soundtrack-bible",
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/novels/mobile-suit-gundam-summary/novel.json",
+    "sha256": "4fc4fe66853ecd449e4b654d3fbd15d7d6f289bff204c0e8fc096dd5cedd4bbd"
+  },
+  "manuscript_sha256": "60a2ad5aba1fea87df82a0699c83973e9a493d86d19e9579abed76394c67f9fe",
+  "slug": "mobile-suit-gundam-summary",
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "enabled": true,
+    "release_mode": "wonderswan-adaptation",
+    "motifs": [
+      "archive-call"
+    ],
+    "cues": [
+      {
+        "id": "last-tour",
+        "bpm": 58,
+        "meter": "4/4",
+        "loop_bars": 12,
+        "asset_sha256": null,
+        "approval_status": "technical-preview"
+      },
+      {
+        "id": "war-map",
+        "bpm": 84,
+        "meter": "4/4",
+        "loop_bars": 12,
+        "asset_sha256": null,
+        "approval_status": "technical-preview"
+      },
+      {
+        "id": "white-base",
+        "bpm": 72,
+        "meter": "4/4",
+        "loop_bars": 12,
+        "asset_sha256": null,
+        "approval_status": "technical-preview"
+      },
+      {
+        "id": "archive-threshold",
+        "bpm": 64,
+        "meter": "4/4",
+        "loop_bars": 12,
+        "asset_sha256": null,
+        "approval_status": "technical-preview"
+      },
+      {
+        "id": "memorial",
+        "bpm": 52,
+        "meter": "4/4",
+        "loop_bars": 12,
+        "asset_sha256": null,
+        "approval_status": "technical-preview"
+      },
+      {
+        "id": "names-carried",
+        "bpm": 58,
+        "meter": "4/4",
+        "loop_bars": 12,
+        "asset_sha256": null,
+        "approval_status": "technical-preview"
+      },
+      {
+        "id": "power-reckoning",
+        "bpm": 68,
+        "meter": "4/4",
+        "loop_bars": 12,
+        "asset_sha256": null,
+        "approval_status": "technical-preview"
+      }
+    ]
+  },
+  "automation_limit": "This validates arrangement intent and evidence. Listening tests are still required for musical fun, loop feel, and emotional fit."
+}

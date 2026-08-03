@@ -39,8 +39,8 @@ root_resolution = json.loads(pathlib.Path(sys.argv[4]).read_text())
 root = config.parent.parent
 if not binary.is_file():
     raise SystemExit("SwanSong MCP product was not linked")
-if "default_tools_approval_mode = \"prompt\"" not in config.read_text():
-    raise SystemExit("project MCP config lost its write-tool approval guard")
+if "default_tools_approval_mode = \"auto\"" not in config.read_text():
+    raise SystemExit("project MCP config lost its persistent full-access policy")
 pins = {pin.get("identity"): pin for pin in resolution.get("pins", [])}
 root_pins = {pin.get("identity"): pin for pin in root_resolution.get("pins", [])}
 if set(pins) != {"sparkle"} or pins["sparkle"].get("state") != root_pins.get("sparkle", {}).get("state"):
@@ -121,14 +121,20 @@ expected = {
     "swansong_translation_seal_persistence_handoff",
     "swansong_translation_capture_persistence_consumer",
     "swansong_translation_probe_rectangle",
+    "swansong_translation_seal_original_frame",
     "swansong_translation_probe_rectangle_source",
+    "swansong_translation_trace_original_data_producer",
     "swansong_translation_export_static_analysis_seed",
     "swansong_translation_record_route",
     "swansong_translation_verify_pair",
 }
 if set(by_name) != expected:
     raise SystemExit(f"unexpected SwanSong MCP tool set: {set(by_name)!r}")
-read_only = {"swansong_status", "swansong_studio_projects"}
+read_only = {
+    "swansong_status", "swansong_studio_projects",
+    "swansong_translation_seal_original_frame",
+    "swansong_translation_trace_original_data_producer",
+}
 for name in read_only:
     if by_name[name]["annotations"].get("readOnlyHint") is not True:
         raise SystemExit(f"read-only MCP tool was not annotated: {name}")
@@ -144,32 +150,45 @@ if not {"captureSDKTrace", "confirmShareSDKTrace"} <= set(playtest_properties):
 playtest_total_frames = playtest_properties["plan"]["properties"]["totalFrames"]
 if playtest_total_frames.get("maximum") != 24_000:
     raise SystemExit("SwanSong playtest MCP frame ceiling changed")
-for name in (
-    "swansong_observed_play_start",
-    "swansong_observed_play_resume",
-    "swansong_observed_play_branch",
-    "swansong_observed_play_finish",
-    "swansong_observed_play_cancel",
-    "swansong_translation_capture_plan",
-    "swansong_translation_seal_persistence_handoff",
-    "swansong_translation_capture_persistence_consumer",
-    "swansong_translation_probe_rectangle",
-    "swansong_translation_probe_rectangle_source",
-    "swansong_translation_export_static_analysis_seed",
-    "swansong_translation_record_route",
-    "swansong_translation_verify_pair",
-):
+project_write_required = {
+    "swansong_observed_play_start": {"projectPath", "role"},
+    "swansong_observed_play_resume": {"projectPath", "sessionID"},
+    "swansong_observed_play_branch": {"sessionID", "throughFrame"},
+    "swansong_observed_play_finish": {"sessionID"},
+    "swansong_observed_play_cancel": {"sessionID"},
+    "swansong_translation_capture_plan": {"projectPath", "planPath"},
+    "swansong_translation_seal_persistence_handoff": {
+        "projectPath", "requestPath",
+    },
+    "swansong_translation_capture_persistence_consumer": {
+        "projectPath", "requestPath",
+    },
+    "swansong_translation_probe_rectangle": {
+        "projectPath", "planPath", "role", "frameIndex", "rectangle",
+    },
+    "swansong_translation_probe_rectangle_source": {
+        "projectPath", "planPath", "role", "frameIndex",
+        "authorizationPath", "capabilityReceiptPath",
+        "methodCapabilityReceiptPath", "qualifiedMethodCapabilityReceiptPath",
+        "methodNativeMarkerPath", "captureFrameSealPath", "runDirectoryPath",
+        "reportPath",
+    },
+    "swansong_translation_trace_original_data_producer": {
+        "projectPath", "authorizationPath", "authorizationSHA256",
+    },
+    "swansong_translation_export_static_analysis_seed": {
+        "projectPath", "sourceProbeDetailsPath",
+    },
+    "swansong_translation_record_route": {"projectPath", "planPath"},
+    "swansong_translation_verify_pair": {"projectPath", "routePath"},
+}
+for name, expected_required in project_write_required.items():
     required = set(by_name[name]["inputSchema"].get("required", []))
-    if "confirmProjectWrites" not in required:
-        raise SystemExit(f"Translation MCP tool lost its explicit write confirmation: {name}")
-
-for name in (
-    "swansong_translation_seal_persistence_handoff",
-    "swansong_translation_capture_persistence_consumer",
-):
-    required = set(by_name[name]["inputSchema"].get("required", []))
-    if required != {"projectPath", "requestPath", "confirmProjectWrites"}:
-        raise SystemExit(f"Persistence MCP tool lost its exact request-file contract: {name}")
+    properties = set(by_name[name]["inputSchema"].get("properties", {}))
+    if required != expected_required:
+        raise SystemExit(f"Translation MCP tool changed its project input contract: {name}")
+    if "confirmProjectWrites" in properties:
+        raise SystemExit(f"Translation MCP tool regained per-call write confirmation: {name}")
 
 observed_step_required = set(
     by_name["swansong_observed_play_step"]["inputSchema"].get("required", [])
@@ -193,14 +212,14 @@ if observed_sequence_segment["properties"]["frames"].get("maximum") != 600:
 observed_branch_required = set(
     by_name["swansong_observed_play_branch"]["inputSchema"].get("required", [])
 )
-if observed_branch_required != {"sessionID", "throughFrame", "confirmProjectWrites"}:
-    raise SystemExit("observed-play branch lost its explicit project-write contract")
+if observed_branch_required != {"sessionID", "throughFrame"}:
+    raise SystemExit("observed-play branch changed its project-write contract")
 
 source_schema = by_name["swansong_translation_probe_rectangle_source"]["inputSchema"]
 source_required = set(source_schema.get("required", []))
 if source_required != {
-    "projectPath", "planPath", "role", "frameIndex", "rectangle",
-    "confirmProjectWrites", "authorizationPath", "capabilityReceiptPath",
+    "projectPath", "planPath", "role", "frameIndex",
+    "authorizationPath", "capabilityReceiptPath",
     "methodCapabilityReceiptPath", "qualifiedMethodCapabilityReceiptPath",
     "methodNativeMarkerPath", "captureFrameSealPath", "runDirectoryPath",
     "reportPath",
@@ -220,20 +239,30 @@ owner_properties = by_name["swansong_translation_probe_rectangle"]["inputSchema"
 )
 if "components" in owner_properties:
     raise SystemExit("final-writer owner probe incorrectly advertises source selection")
+producer_schema = by_name[
+    "swansong_translation_trace_original_data_producer"
+]["inputSchema"]
+if set(producer_schema.get("required", [])) != {
+    "projectPath", "authorizationPath", "authorizationSHA256"
+}:
+    raise SystemExit("Original data-producer probe lost its exact authorization binding")
+if producer_schema.get("additionalProperties") is not False:
+    raise SystemExit("Original data-producer probe accepts unbound arguments")
 seed_required = set(
     by_name["swansong_translation_export_static_analysis_seed"]["inputSchema"].get(
         "required", []
     )
 )
-if seed_required != {
-    "projectPath", "sourceProbeDetailsPath", "confirmProjectWrites"
-}:
-    raise SystemExit("static-analysis seed export lost its exact guarded input contract")
+if seed_required != {"projectPath", "sourceProbeDetailsPath"}:
+    raise SystemExit("static-analysis seed export changed its exact project input contract")
 studio_required = set(
     by_name["swansong_studio_action"]["inputSchema"].get("required", [])
 )
-if studio_required != {"action", "confirmProjectWrites"}:
-    raise SystemExit("Studio action lost its exact guarded input contract")
+studio_properties = set(
+    by_name["swansong_studio_action"]["inputSchema"].get("properties", {})
+)
+if studio_required != {"action"} or "confirmProjectWrites" in studio_properties:
+    raise SystemExit("Studio action regained per-call project-write confirmation")
 studio_actions = set(
     by_name["swansong_studio_action"]["inputSchema"]
     .get("properties", {}).get("action", {}).get("enum", [])
@@ -334,7 +363,9 @@ for request_id, name in enumerate(
         "swansong_translation_seal_persistence_handoff",
         "swansong_translation_capture_persistence_consumer",
         "swansong_translation_probe_rectangle",
+        "swansong_translation_seal_original_frame",
         "swansong_translation_probe_rectangle_source",
+        "swansong_translation_trace_original_data_producer",
         "swansong_translation_export_static_analysis_seed",
         "swansong_translation_record_route",
         "swansong_translation_verify_pair",
@@ -348,8 +379,10 @@ for request_id, name in enumerate(
         "params": {"name": name, "arguments": {}},
     })
     guard = receive(request_id)["result"]
-    if guard.get("isError") is not True or "confirmProjectWrites" not in json.dumps(guard):
-        raise SystemExit(f"Translation MCP runtime lost its write guard: {name}")
+    if guard.get("isError") is not True:
+        raise SystemExit(f"Translation MCP accepted incomplete project arguments: {name}")
+    if "confirmProjectWrites" in json.dumps(guard):
+        raise SystemExit(f"Translation MCP runtime regained per-call write confirmation: {name}")
 
 send({
     "jsonrpc": "2.0",
@@ -378,8 +411,10 @@ send({
     "params": {"name": "swansong_studio_action", "arguments": {}},
 })
 studio_guard = receive(22)["result"]
-if studio_guard.get("isError") is not True or "confirmProjectWrites" not in json.dumps(studio_guard):
-    raise SystemExit("Studio MCP runtime lost its project-write guard")
+if studio_guard.get("isError") is not True or "action is required" not in json.dumps(studio_guard):
+    raise SystemExit("Studio MCP runtime lost its required action guard")
+if "confirmProjectWrites" in json.dumps(studio_guard):
+    raise SystemExit("Studio MCP runtime regained per-call project-write confirmation")
 
 process.stdin.close()
 process.wait(timeout=5)
@@ -388,4 +423,4 @@ if process.returncode != 0:
     raise SystemExit(f"MCP server exited {process.returncode}: {stderr}")
 PY
 
-echo "PASS SwanSong MCP initializes with nineteen scoped, correctly annotated tools"
+echo "PASS SwanSong MCP initializes with twenty-one scoped, correctly annotated tools"

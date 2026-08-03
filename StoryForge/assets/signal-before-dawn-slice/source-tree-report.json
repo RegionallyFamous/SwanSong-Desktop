@@ -1,0 +1,2333 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-08-03T15:57:27.972409+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "checked_files": 236,
+    "checked_game_source_wrappers": [
+      "games/backlight-bazaar/README.md",
+      "games/backlight-bazaar/build_backlight_bazaar.py",
+      "games/catalog-after-midnight/README.md",
+      "games/catalog-after-midnight/build_catalog_after_midnight.py",
+      "games/doms-soup-route/README.md",
+      "games/doms-soup-route/build_doms_soup_route.py",
+      "games/eleven-bento-emergency/README.md",
+      "games/eleven-bento-emergency/build_eleven_bento_emergency.py",
+      "games/four-part-errand-run/README.md",
+      "games/four-part-errand-run/build_four_part_errand_run.py",
+      "games/gm-name-tag-crisis/README.md",
+      "games/gm-name-tag-crisis/build_gm_name_tag_crisis.py",
+      "games/gouf-strings-attached/README.md",
+      "games/gouf-strings-attached/build_gouf_strings_attached.py",
+      "games/guntank-takes-the-stairs/README.md",
+      "games/guntank-takes-the-stairs/build_guntank_takes_the_stairs.py",
+      "games/last-blue-spine/README.md",
+      "games/last-blue-spine/build_last_blue_spine.py",
+      "games/mobile-suit-gundam-summary/README.md",
+      "games/mobile-suit-gundam-summary/build_mobile_suit_gundam_summary.py",
+      "games/mono-cart-morning/README.md",
+      "games/mono-cart-morning/build_mono_cart_morning.py",
+      "games/one-sock-offensive/README.md",
+      "games/one-sock-offensive/build_one_sock_offensive.py",
+      "games/operation-potluck/README.md",
+      "games/operation-potluck/build_operation_potluck.py",
+      "games/pocket-harbor/README.md",
+      "games/pocket-harbor/build_pocket_harbor.py",
+      "games/soft-click-sunday/README.md",
+      "games/soft-click-sunday/build_soft_click_sunday.py",
+      "games/swan-case-club/README.md",
+      "games/swan-case-club/build_swan_case_club.py",
+      "games/swanlight-ledger/README.md",
+      "games/swanlight-ledger/build_swanlight_ledger.py",
+      "games/three-coats-of-white/README.md",
+      "games/three-coats-of-white/build_three_coats_of_white.py",
+      "games/virtue-at-the-coat-check/README.md",
+      "games/virtue-at-the-coat-check/build_virtue_at_the_coat_check.py",
+      "games/zgok-wraps-a-present/README.md",
+      "games/zgok-wraps-a-present/build_zgok_wraps_a_present.py"
+    ],
+    "files": {
+      ".gitignore": {
+        "bytes": 603,
+        "lines": 21
+      },
+      "AGENTS.md": {
+        "bytes": 13848,
+        "lines": 204
+      },
+      "CURRENT_RELEASES.md": {
+        "bytes": 20737,
+        "lines": 340
+      },
+      "MIGRATION.md": {
+        "bytes": 2566,
+        "lines": 50
+      },
+      "README.md": {
+        "bytes": 7190,
+        "lines": 166
+      },
+      "agents/series-summary-story-forge.md": {
+        "bytes": 4575,
+        "lines": 75
+      },
+      "audio/signal-before-dawn-slice/README.md": {
+        "bytes": 1062,
+        "lines": 21
+      },
+      "distribution/README.md": {
+        "bytes": 7541,
+        "lines": 158
+      },
+      "distribution/catalog-signing-key.example.json": {
+        "bytes": 153,
+        "lines": 6,
+        "json": "ok"
+      },
+      "distribution/catalog-signing-key.schema.json": {
+        "bytes": 654,
+        "lines": 20,
+        "json": "ok"
+      },
+      "distribution/catalog-v1.example.json": {
+        "bytes": 1758,
+        "lines": 35,
+        "json": "ok"
+      },
+      "distribution/catalog-v1.json": {
+        "bytes": 232,
+        "lines": 8,
+        "json": "ok"
+      },
+      "distribution/catalog-v1.schema.json": {
+        "bytes": 6410,
+        "lines": 255,
+        "json": "ok"
+      },
+      "distribution/catalog-v1.sig.example.json": {
+        "bytes": 357,
+        "lines": 12,
+        "json": "ok"
+      },
+      "distribution/catalog-v1.sig.schema.json": {
+        "bytes": 1228,
+        "lines": 42,
+        "json": "ok"
+      },
+      "distribution/catalog-v1.source.example.json": {
+        "bytes": 1746,
+        "lines": 34,
+        "json": "ok"
+      },
+      "distribution/catalog-v1.source.json": {
+        "bytes": 232,
+        "lines": 8,
+        "json": "ok"
+      },
+      "docs/cross-console-text-tooling-research.md": {
+        "bytes": 4941,
+        "lines": 106
+      },
+      "docs/finished-story-pacing.md": {
+        "bytes": 1625,
+        "lines": 29
+      },
+      "docs/light-novel-framework.md": {
+        "bytes": 12134,
+        "lines": 262
+      },
+      "docs/reusable-wonderswan-sprite-workflow.md": {
+        "bytes": 18815,
+        "lines": 400
+      },
+      "docs/runtime-audio-timing.md": {
+        "bytes": 1189,
+        "lines": 28
+      },
+      "docs/runtime-visual-transitions.md": {
+        "bytes": 2285,
+        "lines": 46
+      },
+      "docs/series-summary-visual-novels.md": {
+        "bytes": 5775,
+        "lines": 97
+      },
+      "docs/sprite-art-direction.md": {
+        "bytes": 8828,
+        "lines": 174
+      },
+      "docs/story-quality-research.md": {
+        "bytes": 10966,
+        "lines": 146
+      },
+      "examples/reference-novel/README.md": {
+        "bytes": 1210,
+        "lines": 25
+      },
+      "examples/reference-novel/build_reference.py": {
+        "bytes": 21745,
+        "lines": 220,
+        "python_ast": "ok"
+      },
+      "examples/reference-novel/manuscript/chapter-01.md": {
+        "bytes": 3465,
+        "lines": 51
+      },
+      "examples/reference-novel/manuscript/chapter-02.md": {
+        "bytes": 3452,
+        "lines": 57
+      },
+      "examples/reference-novel/manuscript/chapter-03.md": {
+        "bytes": 3765,
+        "lines": 65
+      },
+      "games/backlight-bazaar/README.md": {
+        "bytes": 1555,
+        "lines": 42
+      },
+      "games/backlight-bazaar/build_backlight_bazaar.py": {
+        "bytes": 56158,
+        "lines": 1153,
+        "python_ast": "ok"
+      },
+      "games/catalog-after-midnight/README.md": {
+        "bytes": 1862,
+        "lines": 46
+      },
+      "games/catalog-after-midnight/build_catalog_after_midnight.py": {
+        "bytes": 59762,
+        "lines": 1276,
+        "python_ast": "ok"
+      },
+      "games/doms-soup-route/README.md": {
+        "bytes": 1197,
+        "lines": 31
+      },
+      "games/doms-soup-route/build_doms_soup_route.py": {
+        "bytes": 23181,
+        "lines": 629,
+        "python_ast": "ok"
+      },
+      "games/eleven-bento-emergency/README.md": {
+        "bytes": 1211,
+        "lines": 31
+      },
+      "games/eleven-bento-emergency/build_eleven_bento_emergency.py": {
+        "bytes": 23181,
+        "lines": 629,
+        "python_ast": "ok"
+      },
+      "games/four-part-errand-run/README.md": {
+        "bytes": 1207,
+        "lines": 31
+      },
+      "games/four-part-errand-run/build_four_part_errand_run.py": {
+        "bytes": 23181,
+        "lines": 629,
+        "python_ast": "ok"
+      },
+      "games/gm-name-tag-crisis/README.md": {
+        "bytes": 1203,
+        "lines": 31
+      },
+      "games/gm-name-tag-crisis/build_gm_name_tag_crisis.py": {
+        "bytes": 23181,
+        "lines": 629,
+        "python_ast": "ok"
+      },
+      "games/gouf-strings-attached/README.md": {
+        "bytes": 1242,
+        "lines": 32
+      },
+      "games/gouf-strings-attached/build_gouf_strings_attached.py": {
+        "bytes": 23181,
+        "lines": 629,
+        "python_ast": "ok"
+      },
+      "games/guntank-takes-the-stairs/README.md": {
+        "bytes": 2160,
+        "lines": 49
+      },
+      "games/guntank-takes-the-stairs/build_guntank_takes_the_stairs.py": {
+        "bytes": 23762,
+        "lines": 637,
+        "python_ast": "ok"
+      },
+      "games/last-blue-spine/README.md": {
+        "bytes": 1713,
+        "lines": 46
+      },
+      "games/last-blue-spine/build_last_blue_spine.py": {
+        "bytes": 38128,
+        "lines": 840,
+        "python_ast": "ok"
+      },
+      "games/mobile-suit-gundam-summary/README.md": {
+        "bytes": 3900,
+        "lines": 74
+      },
+      "games/mobile-suit-gundam-summary/build_mobile_suit_gundam_summary.py": {
+        "bytes": 34844,
+        "lines": 877,
+        "python_ast": "ok"
+      },
+      "games/mono-cart-morning/README.md": {
+        "bytes": 1833,
+        "lines": 47
+      },
+      "games/mono-cart-morning/build_mono_cart_morning.py": {
+        "bytes": 47948,
+        "lines": 1198,
+        "python_ast": "ok"
+      },
+      "games/one-sock-offensive/README.md": {
+        "bytes": 1554,
+        "lines": 37
+      },
+      "games/one-sock-offensive/build_one_sock_offensive.py": {
+        "bytes": 23181,
+        "lines": 629,
+        "python_ast": "ok"
+      },
+      "games/operation-potluck/README.md": {
+        "bytes": 1244,
+        "lines": 39
+      },
+      "games/operation-potluck/build_operation_potluck.py": {
+        "bytes": 56622,
+        "lines": 1267,
+        "python_ast": "ok"
+      },
+      "games/pocket-harbor/README.md": {
+        "bytes": 665,
+        "lines": 27
+      },
+      "games/pocket-harbor/build_pocket_harbor.py": {
+        "bytes": 33405,
+        "lines": 903,
+        "python_ast": "ok"
+      },
+      "games/soft-click-sunday/README.md": {
+        "bytes": 1828,
+        "lines": 49
+      },
+      "games/soft-click-sunday/build_soft_click_sunday.py": {
+        "bytes": 33851,
+        "lines": 898,
+        "python_ast": "ok"
+      },
+      "games/swan-case-club/README.md": {
+        "bytes": 1758,
+        "lines": 47
+      },
+      "games/swan-case-club/build_swan_case_club.py": {
+        "bytes": 43372,
+        "lines": 1093,
+        "python_ast": "ok"
+      },
+      "games/swanlight-ledger/README.md": {
+        "bytes": 2457,
+        "lines": 77
+      },
+      "games/swanlight-ledger/build_swanlight_ledger.py": {
+        "bytes": 63561,
+        "lines": 1567,
+        "python_ast": "ok"
+      },
+      "games/three-coats-of-white/README.md": {
+        "bytes": 1416,
+        "lines": 35
+      },
+      "games/three-coats-of-white/build_three_coats_of_white.py": {
+        "bytes": 23181,
+        "lines": 629,
+        "python_ast": "ok"
+      },
+      "games/virtue-at-the-coat-check/README.md": {
+        "bytes": 1424,
+        "lines": 35
+      },
+      "games/virtue-at-the-coat-check/build_virtue_at_the_coat_check.py": {
+        "bytes": 23181,
+        "lines": 629,
+        "python_ast": "ok"
+      },
+      "games/zgok-wraps-a-present/README.md": {
+        "bytes": 1416,
+        "lines": 35
+      },
+      "games/zgok-wraps-a-present/build_zgok_wraps_a_present.py": {
+        "bytes": 23181,
+        "lines": 629,
+        "python_ast": "ok"
+      },
+      "novels/mobile-suit-gundam-summary/build_narrative.py": {
+        "bytes": 56679,
+        "lines": 621,
+        "python_ast": "ok"
+      },
+      "novels/mobile-suit-gundam-summary/manuscript/chapter-01.md": {
+        "bytes": 18767,
+        "lines": 179
+      },
+      "novels/mobile-suit-gundam-summary/novel.json": {
+        "bytes": 62310,
+        "lines": 1571,
+        "json": "ok"
+      },
+      "novels/mobile-suit-gundam-summary/novel.lock.json": {
+        "bytes": 2051,
+        "lines": 78,
+        "json": "ok"
+      },
+      "novels/mobile-suit-gundam-summary/reports/light-novel-quality-report.json": {
+        "bytes": 3839,
+        "lines": 132,
+        "json": "ok"
+      },
+      "novels/mobile-suit-gundam-summary/reports/soundtrack-bible-report.json": {
+        "bytes": 2095,
+        "lines": 79,
+        "json": "ok"
+      },
+      "novels/mobile-suit-gundam-summary/workbench/genre-specialist.json": {
+        "bytes": 1410,
+        "lines": 44,
+        "json": "ok"
+      },
+      "novels/mobile-suit-gundam-summary/workbench/music-room/scores.json": {
+        "bytes": 99018,
+        "lines": 5745,
+        "json": "ok"
+      },
+      "novels/mobile-suit-gundam-summary/workbench/next.json": {
+        "bytes": 1122,
+        "lines": 31,
+        "json": "ok"
+      },
+      "novels/mobile-suit-gundam-summary/workbench/research-notebook.json": {
+        "bytes": 4368,
+        "lines": 78,
+        "json": "ok"
+      },
+      "novels/mobile-suit-gundam-summary/workbench/research-report.json": {
+        "bytes": 792,
+        "lines": 22,
+        "json": "ok"
+      },
+      "novels/mobile-suit-gundam-summary/workbench/story-map.json": {
+        "bytes": 15066,
+        "lines": 406,
+        "json": "ok"
+      },
+      "novels/mobile-suit-gundam-summary/workbench/story-pulse.json": {
+        "bytes": 6753,
+        "lines": 233,
+        "json": "ok"
+      },
+      "novels/mobile-suit-gundam-summary/workbench/story-room.json": {
+        "bytes": 61780,
+        "lines": 1367,
+        "json": "ok"
+      },
+      "novels/mobile-suit-gundam-summary/workbench/story-room.md": {
+        "bytes": 3259,
+        "lines": 103
+      },
+      "projects/signal-before-dawn-slice.wscvn.json": {
+        "bytes": 474460,
+        "lines": 4679,
+        "json": "ok"
+      },
+      "projects/signal-before-dawn.wscvn.json": {
+        "bytes": 18407,
+        "lines": 737,
+        "json": "ok"
+      },
+      "release-materials/signal-before-dawn/CREDITS.md": {
+        "bytes": 1557,
+        "lines": 31
+      },
+      "release-materials/signal-before-dawn/HARDWARE-TEST.md": {
+        "bytes": 1890,
+        "lines": 42
+      },
+      "release-materials/signal-before-dawn/LICENSES.md": {
+        "bytes": 4705,
+        "lines": 102
+      },
+      "release-materials/signal-before-dawn/README.md": {
+        "bytes": 2215,
+        "lines": 50
+      },
+      "release-materials/signal-before-dawn/hardware-test-report.json": {
+        "bytes": 2131,
+        "lines": 83,
+        "json": "ok"
+      },
+      "scripts/approve_wscvn_sprite_audition.py": {
+        "bytes": 7831,
+        "lines": 208,
+        "python_ast": "ok"
+      },
+      "scripts/audit_novel_catalog.py": {
+        "bytes": 263,
+        "lines": 6,
+        "python_ast": "ok"
+      },
+      "scripts/audit_signal_before_dawn_slice.py": {
+        "bytes": 27349,
+        "lines": 605,
+        "python_ast": "ok"
+      },
+      "scripts/audit_wscvn_releases.py": {
+        "bytes": 35016,
+        "lines": 755,
+        "python_ast": "ok"
+      },
+      "scripts/audit_wscvn_story_prose.py": {
+        "bytes": 270,
+        "lines": 9,
+        "python_ast": "ok"
+      },
+      "scripts/audition_wscvn_sprite_sheet.py": {
+        "bytes": 43049,
+        "lines": 1113,
+        "python_ast": "ok"
+      },
+      "scripts/build_novel_release.py": {
+        "bytes": 266,
+        "lines": 9,
+        "python_ast": "ok"
+      },
+      "scripts/build_public_catalog.py": {
+        "bytes": 28348,
+        "lines": 727,
+        "python_ast": "ok"
+      },
+      "scripts/build_series_bible.py": {
+        "bytes": 265,
+        "lines": 9,
+        "python_ast": "ok"
+      },
+      "scripts/build_signal_before_dawn_slice.py": {
+        "bytes": 12065,
+        "lines": 335,
+        "python_ast": "ok"
+      },
+      "scripts/build_wscvn_game.py": {
+        "bytes": 21904,
+        "lines": 519,
+        "python_ast": "ok"
+      },
+      "scripts/check_build_wonderswan_vn_skill.py": {
+        "bytes": 14703,
+        "lines": 410,
+        "python_ast": "ok"
+      },
+      "scripts/check_forge_light_novels_skill.py": {
+        "bytes": 9443,
+        "lines": 248,
+        "python_ast": "ok"
+      },
+      "scripts/check_light_novel_project.py": {
+        "bytes": 272,
+        "lines": 9,
+        "python_ast": "ok"
+      },
+      "scripts/check_signal_before_dawn_tree.py": {
+        "bytes": 41274,
+        "lines": 998,
+        "python_ast": "ok"
+      },
+      "scripts/check_wscvn_audio_proof.py": {
+        "bytes": 9537,
+        "lines": 236,
+        "python_ast": "ok"
+      },
+      "scripts/check_wscvn_experience_polish.py": {
+        "bytes": 10945,
+        "lines": 256,
+        "python_ast": "ok"
+      },
+      "scripts/check_wscvn_game_project.py": {
+        "bytes": 15828,
+        "lines": 365,
+        "python_ast": "ok"
+      },
+      "scripts/check_wscvn_game_readiness.py": {
+        "bytes": 70801,
+        "lines": 1697,
+        "python_ast": "ok"
+      },
+      "scripts/check_wscvn_graphics_contract.py": {
+        "bytes": 49105,
+        "lines": 1162,
+        "python_ast": "ok"
+      },
+      "scripts/check_wscvn_light_novel_readiness.py": {
+        "bytes": 19705,
+        "lines": 464,
+        "python_ast": "ok"
+      },
+      "scripts/check_wscvn_story_proof.py": {
+        "bytes": 2042,
+        "lines": 46,
+        "python_ast": "ok"
+      },
+      "scripts/check_wscvn_text_contract.py": {
+        "bytes": 22111,
+        "lines": 541,
+        "python_ast": "ok"
+      },
+      "scripts/check_wscvn_visual_contract.py": {
+        "bytes": 32184,
+        "lines": 758,
+        "python_ast": "ok"
+      },
+      "scripts/create_light_novel_project.py": {
+        "bytes": 273,
+        "lines": 9,
+        "python_ast": "ok"
+      },
+      "scripts/doctor_signal_before_dawn_slice.py": {
+        "bytes": 16143,
+        "lines": 344,
+        "python_ast": "ok"
+      },
+      "scripts/doctor_story_forge.py": {
+        "bytes": 32587,
+        "lines": 781,
+        "python_ast": "ok"
+      },
+      "scripts/forge.py": {
+        "bytes": 252,
+        "lines": 9,
+        "python_ast": "ok"
+      },
+      "scripts/lock_light_novel_project.py": {
+        "bytes": 268,
+        "lines": 6,
+        "python_ast": "ok"
+      },
+      "scripts/make_imagegen_illustration_briefs.py": {
+        "bytes": 280,
+        "lines": 9,
+        "python_ast": "ok"
+      },
+      "scripts/make_signal_before_dawn_native_review.py": {
+        "bytes": 18662,
+        "lines": 440,
+        "python_ast": "ok"
+      },
+      "scripts/make_signal_before_dawn_release_art.py": {
+        "bytes": 6668,
+        "lines": 164,
+        "python_ast": "ok"
+      },
+      "scripts/make_signal_before_dawn_slice.py": {
+        "bytes": 120620,
+        "lines": 3164,
+        "python_ast": "ok"
+      },
+      "scripts/make_wscvn_game_review_sheets.py": {
+        "bytes": 24350,
+        "lines": 674,
+        "python_ast": "ok"
+      },
+      "scripts/migrate_light_novel_project.py": {
+        "bytes": 271,
+        "lines": 6,
+        "python_ast": "ok"
+      },
+      "scripts/migrate_wscvn_audition_report_paths.py": {
+        "bytes": 9410,
+        "lines": 239,
+        "python_ast": "ok"
+      },
+      "scripts/package_signal_before_dawn_slice.py": {
+        "bytes": 33284,
+        "lines": 728,
+        "python_ast": "ok"
+      },
+      "scripts/package_wscvn_game.py": {
+        "bytes": 31909,
+        "lines": 687,
+        "python_ast": "ok"
+      },
+      "scripts/playtest_signal_before_dawn_routes.py": {
+        "bytes": 48043,
+        "lines": 1182,
+        "python_ast": "ok"
+      },
+      "scripts/playtest_wscvn_swansong.py": {
+        "bytes": 80514,
+        "lines": 2066,
+        "python_ast": "ok"
+      },
+      "scripts/refresh_signal_before_dawn_hardware_test.py": {
+        "bytes": 3052,
+        "lines": 82,
+        "python_ast": "ok"
+      },
+      "scripts/refresh_wscvn_asset_provenance.py": {
+        "bytes": 4398,
+        "lines": 117,
+        "python_ast": "ok"
+      },
+      "scripts/refresh_wscvn_candidate_summary.py": {
+        "bytes": 1805,
+        "lines": 52,
+        "python_ast": "ok"
+      },
+      "scripts/refresh_wscvn_sprite_auditions.py": {
+        "bytes": 4974,
+        "lines": 136,
+        "python_ast": "ok"
+      },
+      "scripts/render_wscvn_music_preview.py": {
+        "bytes": 11597,
+        "lines": 295,
+        "python_ast": "ok"
+      },
+      "scripts/report_chapter_momentum.py": {
+        "bytes": 270,
+        "lines": 9,
+        "python_ast": "ok"
+      },
+      "scripts/report_character_voice.py": {
+        "bytes": 269,
+        "lines": 9,
+        "python_ast": "ok"
+      },
+      "scripts/report_novel_continuity.py": {
+        "bytes": 267,
+        "lines": 6,
+        "python_ast": "ok"
+      },
+      "scripts/report_prose_polish.py": {
+        "bytes": 266,
+        "lines": 9,
+        "python_ast": "ok"
+      },
+      "scripts/report_rights_release_lane.py": {
+        "bytes": 270,
+        "lines": 6,
+        "python_ast": "ok"
+      },
+      "scripts/report_scene_delivery.py": {
+        "bytes": 265,
+        "lines": 6,
+        "python_ast": "ok"
+      },
+      "scripts/report_soundtrack_bible.py": {
+        "bytes": 267,
+        "lines": 6,
+        "python_ast": "ok"
+      },
+      "scripts/repro_signal_before_dawn_slice.py": {
+        "bytes": 6702,
+        "lines": 183,
+        "python_ast": "ok"
+      },
+      "scripts/review_novel_illustrations.py": {
+        "bytes": 270,
+        "lines": 6,
+        "python_ast": "ok"
+      },
+      "scripts/review_signal_before_dawn_visuals.py": {
+        "bytes": 30855,
+        "lines": 707,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_build_wonderswan_vn_skill.py": {
+        "bytes": 10065,
+        "lines": 281,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_catalog_signer.py": {
+        "bytes": 3667,
+        "lines": 133,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_forge_workbench.py": {
+        "bytes": 10440,
+        "lines": 167,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_light_novel_framework.py": {
+        "bytes": 44909,
+        "lines": 843,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_public_catalog.py": {
+        "bytes": 18620,
+        "lines": 516,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_signal_before_dawn_audit_guards.py": {
+        "bytes": 18790,
+        "lines": 541,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_signal_before_dawn_guards.py": {
+        "bytes": 34577,
+        "lines": 718,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_signal_before_dawn_tree_guards.py": {
+        "bytes": 15648,
+        "lines": 438,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_signal_before_dawn_visual_review_guards.py": {
+        "bytes": 21631,
+        "lines": 525,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_signal_ship_gate.py": {
+        "bytes": 14533,
+        "lines": 362,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_story_forge_doctor_timeout.py": {
+        "bytes": 3427,
+        "lines": 88,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_story_forge_status.py": {
+        "bytes": 45410,
+        "lines": 1010,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_audio_proof_timing.py": {
+        "bytes": 633,
+        "lines": 21,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_experience_polish.py": {
+        "bytes": 3993,
+        "lines": 111,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_game_audit.py": {
+        "bytes": 10462,
+        "lines": 310,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_game_builder.py": {
+        "bytes": 21663,
+        "lines": 568,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_game_readiness.py": {
+        "bytes": 38568,
+        "lines": 913,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_game_release.py": {
+        "bytes": 64278,
+        "lines": 1446,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_game_review_sheets_runtime.py": {
+        "bytes": 7276,
+        "lines": 187,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_game_ship.py": {
+        "bytes": 9478,
+        "lines": 260,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_graphics_contract.py": {
+        "bytes": 23537,
+        "lines": 535,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_light_novel_readiness.py": {
+        "bytes": 12707,
+        "lines": 329,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_release_inventory.py": {
+        "bytes": 33434,
+        "lines": 823,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_rom_smoke.py": {
+        "bytes": 7137,
+        "lines": 197,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_sprite_approval.py": {
+        "bytes": 5844,
+        "lines": 145,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_sprite_approval_guards.py": {
+        "bytes": 11569,
+        "lines": 329,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_sprite_audition.py": {
+        "bytes": 6079,
+        "lines": 162,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_sprite_family.py": {
+        "bytes": 8161,
+        "lines": 181,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_swansong_node_order.py": {
+        "bytes": 1639,
+        "lines": 44,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_swansong_stale_evidence.py": {
+        "bytes": 1513,
+        "lines": 45,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_text_contract.py": {
+        "bytes": 6650,
+        "lines": 194,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_text_layout.py": {
+        "bytes": 2355,
+        "lines": 60,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_transition_continuity.py": {
+        "bytes": 4473,
+        "lines": 101,
+        "python_ast": "ok"
+      },
+      "scripts/selftest_wscvn_visual_contract.py": {
+        "bytes": 13616,
+        "lines": 343,
+        "python_ast": "ok"
+      },
+      "scripts/ship_signal_before_dawn_slice.py": {
+        "bytes": 25522,
+        "lines": 609,
+        "python_ast": "ok"
+      },
+      "scripts/ship_wscvn_game.py": {
+        "bytes": 11320,
+        "lines": 302,
+        "python_ast": "ok"
+      },
+      "scripts/sign_public_catalog.py": {
+        "bytes": 2237,
+        "lines": 68,
+        "python_ast": "ok"
+      },
+      "scripts/smoke_signal_before_dawn_rom.py": {
+        "bytes": 666,
+        "lines": 22,
+        "python_ast": "ok"
+      },
+      "scripts/smoke_wscvn_rom.py": {
+        "bytes": 8907,
+        "lines": 263,
+        "python_ast": "ok"
+      },
+      "scripts/status_novel_catalog.py": {
+        "bytes": 264,
+        "lines": 6,
+        "python_ast": "ok"
+      },
+      "scripts/status_story_forge.py": {
+        "bytes": 64192,
+        "lines": 1383,
+        "python_ast": "ok"
+      },
+      "scripts/synthesize_reader_feedback.py": {
+        "bytes": 270,
+        "lines": 6,
+        "python_ast": "ok"
+      },
+      "scripts/validate_signal_before_dawn_slice.py": {
+        "bytes": 54441,
+        "lines": 1209,
+        "python_ast": "ok"
+      },
+      "scripts/validate_wscvn_candidate.py": {
+        "bytes": 3654,
+        "lines": 115,
+        "python_ast": "ok"
+      },
+      "scripts/verify_release_signal_before_dawn_slice.py": {
+        "bytes": 56866,
+        "lines": 1237,
+        "python_ast": "ok"
+      },
+      "scripts/verify_wscvn_game_release.py": {
+        "bytes": 63922,
+        "lines": 1454,
+        "python_ast": "ok"
+      },
+      "scripts/wscvn_release_evidence.py": {
+        "bytes": 8045,
+        "lines": 197,
+        "python_ast": "ok"
+      },
+      "scripts/wscvn_route_plans.py": {
+        "bytes": 13617,
+        "lines": 373,
+        "python_ast": "ok"
+      },
+      "scripts/wscvn_sprite_family.py": {
+        "bytes": 15644,
+        "lines": 405,
+        "python_ast": "ok"
+      },
+      "scripts/wscvn_text_layout.py": {
+        "bytes": 5669,
+        "lines": 129,
+        "python_ast": "ok"
+      },
+      "skills/build-wonderswan-vn/SKILL.md": {
+        "bytes": 29865,
+        "lines": 446
+      },
+      "skills/build-wonderswan-vn/references/audio-quality.md": {
+        "bytes": 7587,
+        "lines": 169
+      },
+      "skills/build-wonderswan-vn/references/graphics-quality.md": {
+        "bytes": 16556,
+        "lines": 283
+      },
+      "skills/build-wonderswan-vn/references/local-workflow.md": {
+        "bytes": 56545,
+        "lines": 1036
+      },
+      "skills/build-wonderswan-vn/references/visual-contract-template.json": {
+        "bytes": 1257,
+        "lines": 68,
+        "json": "ok"
+      },
+      "skills/forge-light-novels/SKILL.md": {
+        "bytes": 18293,
+        "lines": 320
+      },
+      "skills/forge-light-novels/references/catalog-continuity-and-rights.md": {
+        "bytes": 5694,
+        "lines": 129
+      },
+      "skills/forge-light-novels/references/delight-and-genre.md": {
+        "bytes": 3719,
+        "lines": 86
+      },
+      "skills/forge-light-novels/references/editorial-passes.md": {
+        "bytes": 5260,
+        "lines": 126
+      },
+      "skills/forge-light-novels/references/genre-specialists.md": {
+        "bytes": 1735,
+        "lines": 43
+      },
+      "skills/forge-light-novels/references/project-format.md": {
+        "bytes": 9069,
+        "lines": 196
+      },
+      "skills/forge-light-novels/references/publication-and-illustration.md": {
+        "bytes": 3735,
+        "lines": 82
+      },
+      "skills/forge-light-novels/references/quality-standard.md": {
+        "bytes": 7779,
+        "lines": 190
+      },
+      "skills/forge-light-novels/references/story-room-and-workbench.md": {
+        "bytes": 6497,
+        "lines": 147
+      },
+      "skills/forge-light-novels/scripts/audit_novel_catalog.py": {
+        "bytes": 7325,
+        "lines": 148,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/audit_wscvn_story_prose.py": {
+        "bytes": 4120,
+        "lines": 111,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/build_novel_release.py": {
+        "bytes": 27563,
+        "lines": 590,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/build_series_bible.py": {
+        "bytes": 5330,
+        "lines": 134,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/check_light_novel_project.py": {
+        "bytes": 85973,
+        "lines": 1707,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/create_light_novel_project.py": {
+        "bytes": 6436,
+        "lines": 148,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/forge.py": {
+        "bytes": 10821,
+        "lines": 211,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/forge_workbench.py": {
+        "bytes": 64409,
+        "lines": 1175,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/lock_light_novel_project.py": {
+        "bytes": 5208,
+        "lines": 118,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/make_imagegen_illustration_briefs.py": {
+        "bytes": 5452,
+        "lines": 129,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/migrate_light_novel_project.py": {
+        "bytes": 7598,
+        "lines": 194,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/novel_tools.py": {
+        "bytes": 6644,
+        "lines": 171,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/report_chapter_momentum.py": {
+        "bytes": 5271,
+        "lines": 120,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/report_character_voice.py": {
+        "bytes": 5310,
+        "lines": 117,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/report_novel_continuity.py": {
+        "bytes": 5379,
+        "lines": 111,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/report_prose_polish.py": {
+        "bytes": 4957,
+        "lines": 116,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/report_rights_release_lane.py": {
+        "bytes": 3841,
+        "lines": 80,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/report_scene_delivery.py": {
+        "bytes": 5069,
+        "lines": 118,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/report_soundtrack_bible.py": {
+        "bytes": 6375,
+        "lines": 126,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/review_novel_illustrations.py": {
+        "bytes": 8717,
+        "lines": 173,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/status_novel_catalog.py": {
+        "bytes": 5356,
+        "lines": 114,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/synthesize_reader_feedback.py": {
+        "bytes": 3835,
+        "lines": 97,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/wscvn_adaptation.py": {
+        "bytes": 13505,
+        "lines": 283,
+        "python_ast": "ok"
+      },
+      "skills/forge-light-novels/scripts/wscvn_story_proof.py": {
+        "bytes": 15854,
+        "lines": 313,
+        "python_ast": "ok"
+      }
+    },
+    "gitignore": {
+      "exists": true,
+      "required_rules_present": true,
+      "forbidden_rules_absent": true
+    },
+    "game_source_wrappers": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop-release-0.9.4/StoryForge/games",
+      "games": {
+        "backlight-bazaar": {
+          "readme": {
+            "path": "games/backlight-bazaar/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/backlight-bazaar/build_backlight_bazaar.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "catalog-after-midnight": {
+          "readme": {
+            "path": "games/catalog-after-midnight/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/catalog-after-midnight/build_catalog_after_midnight.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "doms-soup-route": {
+          "readme": {
+            "path": "games/doms-soup-route/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/doms-soup-route/build_doms_soup_route.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "eleven-bento-emergency": {
+          "readme": {
+            "path": "games/eleven-bento-emergency/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/eleven-bento-emergency/build_eleven_bento_emergency.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "four-part-errand-run": {
+          "readme": {
+            "path": "games/four-part-errand-run/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/four-part-errand-run/build_four_part_errand_run.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "gm-name-tag-crisis": {
+          "readme": {
+            "path": "games/gm-name-tag-crisis/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/gm-name-tag-crisis/build_gm_name_tag_crisis.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "gouf-strings-attached": {
+          "readme": {
+            "path": "games/gouf-strings-attached/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/gouf-strings-attached/build_gouf_strings_attached.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "guntank-takes-the-stairs": {
+          "readme": {
+            "path": "games/guntank-takes-the-stairs/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/guntank-takes-the-stairs/build_guntank_takes_the_stairs.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "last-blue-spine": {
+          "readme": {
+            "path": "games/last-blue-spine/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/last-blue-spine/build_last_blue_spine.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "mobile-suit-gundam-summary": {
+          "readme": {
+            "path": "games/mobile-suit-gundam-summary/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/mobile-suit-gundam-summary/build_mobile_suit_gundam_summary.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "mono-cart-morning": {
+          "readme": {
+            "path": "games/mono-cart-morning/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/mono-cart-morning/build_mono_cart_morning.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "one-sock-offensive": {
+          "readme": {
+            "path": "games/one-sock-offensive/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/one-sock-offensive/build_one_sock_offensive.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "operation-potluck": {
+          "readme": {
+            "path": "games/operation-potluck/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/operation-potluck/build_operation_potluck.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "pocket-harbor": {
+          "readme": {
+            "path": "games/pocket-harbor/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/pocket-harbor/build_pocket_harbor.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "soft-click-sunday": {
+          "readme": {
+            "path": "games/soft-click-sunday/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/soft-click-sunday/build_soft_click_sunday.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "swan-case-club": {
+          "readme": {
+            "path": "games/swan-case-club/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/swan-case-club/build_swan_case_club.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "swanlight-ledger": {
+          "readme": {
+            "path": "games/swanlight-ledger/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/swanlight-ledger/build_swanlight_ledger.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "three-coats-of-white": {
+          "readme": {
+            "path": "games/three-coats-of-white/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/three-coats-of-white/build_three_coats_of_white.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "virtue-at-the-coat-check": {
+          "readme": {
+            "path": "games/virtue-at-the-coat-check/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/virtue-at-the-coat-check/build_virtue_at_the_coat_check.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        },
+        "zgok-wraps-a-present": {
+          "readme": {
+            "path": "games/zgok-wraps-a-present/README.md",
+            "exists": true
+          },
+          "builders": [
+            {
+              "path": "games/zgok-wraps-a-present/build_zgok_wraps_a_present.py",
+              "exists": true
+            }
+          ],
+          "ignored": []
+        }
+      }
+    },
+    "game_builder_determinism": {
+      "games/backlight-bazaar/build_backlight_bazaar.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [
+          {
+            "line": 89,
+            "function": "project_timestamps"
+          },
+          {
+            "line": 1113,
+            "function": "write_report"
+          }
+        ],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/catalog-after-midnight/build_catalog_after_midnight.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [
+          {
+            "line": 87,
+            "function": "project_timestamps"
+          },
+          {
+            "line": 1232,
+            "function": "write_report"
+          }
+        ],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/doms-soup-route/build_doms_soup_route.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/eleven-bento-emergency/build_eleven_bento_emergency.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/four-part-errand-run/build_four_part_errand_run.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/gm-name-tag-crisis/build_gm_name_tag_crisis.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/gouf-strings-attached/build_gouf_strings_attached.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/guntank-takes-the-stairs/build_guntank_takes_the_stairs.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/last-blue-spine/build_last_blue_spine.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [
+          {
+            "line": 59,
+            "function": "project_timestamps"
+          },
+          {
+            "line": 798,
+            "function": "write_report"
+          }
+        ],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/mobile-suit-gundam-summary/build_mobile_suit_gundam_summary.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/mono-cart-morning/build_mono_cart_morning.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [
+          {
+            "line": 89,
+            "function": "project_timestamps"
+          },
+          {
+            "line": 1154,
+            "function": "write_report"
+          }
+        ],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/one-sock-offensive/build_one_sock_offensive.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/operation-potluck/build_operation_potluck.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [
+          {
+            "line": 92,
+            "function": "project_timestamps"
+          },
+          {
+            "line": 1212,
+            "function": "write_report"
+          }
+        ],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/pocket-harbor/build_pocket_harbor.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [
+          {
+            "line": 59,
+            "function": "project_timestamps"
+          },
+          {
+            "line": 861,
+            "function": "write_report"
+          }
+        ],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/soft-click-sunday/build_soft_click_sunday.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [
+          {
+            "line": 60,
+            "function": "project_timestamps"
+          },
+          {
+            "line": 857,
+            "function": "write_report"
+          }
+        ],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/swan-case-club/build_swan_case_club.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [
+          {
+            "line": 89,
+            "function": "project_timestamps"
+          },
+          {
+            "line": 1053,
+            "function": "write_report"
+          }
+        ],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/swanlight-ledger/build_swanlight_ledger.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [
+          {
+            "line": 165,
+            "function": "project_timestamps"
+          },
+          {
+            "line": 1524,
+            "function": "write_report"
+          }
+        ],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/three-coats-of-white/build_three_coats_of_white.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/virtue-at-the-coat-check/build_virtue_at_the_coat_check.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      },
+      "games/zgok-wraps-a-present/build_zgok_wraps_a_present.py": {
+        "checked": true,
+        "has_project_timestamps": true,
+        "has_make_project": true,
+        "dynamic_timestamp_calls": [],
+        "project_metadata_values": {
+          "created": "created",
+          "modified": "modified"
+        }
+      }
+    },
+    "expected_visual_assets": {
+      "asset-provenance.json": {
+        "exists": true,
+        "bytes": 100112
+      },
+      "visual-contract.json": {
+        "exists": true,
+        "bytes": 1347
+      },
+      "auditions/lune_base_approval.json": {
+        "exists": true,
+        "bytes": 2800
+      },
+      "auditions/lune_base_audition.json": {
+        "exists": true,
+        "bytes": 5414
+      },
+      "auditions/lune_base_audition.png": {
+        "exists": true,
+        "bytes": 27857
+      },
+      "auditions/lune_expression_approval.json": {
+        "exists": true,
+        "bytes": 3918
+      },
+      "auditions/lune_expression_audition.json": {
+        "exists": true,
+        "bytes": 13626
+      },
+      "auditions/lune_expression_audition.png": {
+        "exists": true,
+        "bytes": 77715
+      },
+      "auditions/lune_radio_pose_approval.json": {
+        "exists": true,
+        "bytes": 2805
+      },
+      "auditions/lune_radio_pose_audition.json": {
+        "exists": true,
+        "bytes": 5440
+      },
+      "auditions/lune_radio_pose_audition.png": {
+        "exists": true,
+        "bytes": 28415
+      },
+      "auditions/mira_action_pose_approval.json": {
+        "exists": true,
+        "bytes": 2814
+      },
+      "auditions/mira_action_pose_audition.json": {
+        "exists": true,
+        "bytes": 5418
+      },
+      "auditions/mira_action_pose_audition.png": {
+        "exists": true,
+        "bytes": 27237
+      },
+      "auditions/mira_base_approval.json": {
+        "exists": true,
+        "bytes": 2800
+      },
+      "auditions/mira_base_audition.json": {
+        "exists": true,
+        "bytes": 5460
+      },
+      "auditions/mira_base_audition.png": {
+        "exists": true,
+        "bytes": 26804
+      },
+      "auditions/mira_expression_approval.json": {
+        "exists": true,
+        "bytes": 3930
+      },
+      "auditions/mira_expression_audition.json": {
+        "exists": true,
+        "bytes": 13649
+      },
+      "auditions/mira_expression_audition.png": {
+        "exists": true,
+        "bytes": 74763
+      },
+      "backgrounds/beacon_lens.png": {
+        "exists": true,
+        "bytes": 12887
+      },
+      "backgrounds/cabin_radio.png": {
+        "exists": true,
+        "bytes": 13696
+      },
+      "backgrounds/deck_night.png": {
+        "exists": true,
+        "bytes": 18288
+      },
+      "backgrounds/hatch_key.png": {
+        "exists": true,
+        "bytes": 21389
+      },
+      "backgrounds/lighthouse_dawn.png": {
+        "exists": true,
+        "bytes": 13494
+      },
+      "backgrounds/radio_closeup.png": {
+        "exists": true,
+        "bytes": 16740
+      },
+      "backgrounds/sunrise_deck.png": {
+        "exists": true,
+        "bytes": 14833
+      },
+      "backgrounds/title_night.png": {
+        "exists": true,
+        "bytes": 17093
+      },
+      "characters/lune_alert_blink.png": {
+        "exists": true,
+        "bytes": 3452
+      },
+      "characters/lune_alert_neutral.png": {
+        "exists": true,
+        "bytes": 3443
+      },
+      "characters/lune_alert_talk.png": {
+        "exists": true,
+        "bytes": 3474
+      },
+      "characters/lune_blink.png": {
+        "exists": true,
+        "bytes": 3188
+      },
+      "characters/lune_neutral.png": {
+        "exists": true,
+        "bytes": 3251
+      },
+      "characters/lune_radio_blink.png": {
+        "exists": true,
+        "bytes": 3503
+      },
+      "characters/lune_radio_neutral.png": {
+        "exists": true,
+        "bytes": 3543
+      },
+      "characters/lune_radio_talk.png": {
+        "exists": true,
+        "bytes": 3543
+      },
+      "characters/lune_resolved_blink.png": {
+        "exists": true,
+        "bytes": 3600
+      },
+      "characters/lune_resolved_neutral.png": {
+        "exists": true,
+        "bytes": 3561
+      },
+      "characters/lune_resolved_talk.png": {
+        "exists": true,
+        "bytes": 3596
+      },
+      "characters/lune_talk.png": {
+        "exists": true,
+        "bytes": 3269
+      },
+      "characters/lune_warm_blink.png": {
+        "exists": true,
+        "bytes": 3429
+      },
+      "characters/lune_warm_neutral.png": {
+        "exists": true,
+        "bytes": 3440
+      },
+      "characters/lune_warm_talk.png": {
+        "exists": true,
+        "bytes": 3447
+      },
+      "characters/mira_blink.png": {
+        "exists": true,
+        "bytes": 2953
+      },
+      "characters/mira_action_blink.png": {
+        "exists": true,
+        "bytes": 3122
+      },
+      "characters/mira_action_neutral.png": {
+        "exists": true,
+        "bytes": 3140
+      },
+      "characters/mira_action_talk.png": {
+        "exists": true,
+        "bytes": 3140
+      },
+      "characters/mira_neutral.png": {
+        "exists": true,
+        "bytes": 2952
+      },
+      "characters/mira_resolved_blink.png": {
+        "exists": true,
+        "bytes": 3219
+      },
+      "characters/mira_resolved_neutral.png": {
+        "exists": true,
+        "bytes": 3212
+      },
+      "characters/mira_resolved_talk.png": {
+        "exists": true,
+        "bytes": 3230
+      },
+      "characters/mira_smile_blink.png": {
+        "exists": true,
+        "bytes": 3163
+      },
+      "characters/mira_smile_neutral.png": {
+        "exists": true,
+        "bytes": 3153
+      },
+      "characters/mira_smile_talk.png": {
+        "exists": true,
+        "bytes": 3171
+      },
+      "characters/mira_talk.png": {
+        "exists": true,
+        "bytes": 2986
+      },
+      "characters/mira_worried_blink.png": {
+        "exists": true,
+        "bytes": 3222
+      },
+      "characters/mira_worried_neutral.png": {
+        "exists": true,
+        "bytes": 3210
+      },
+      "characters/mira_worried_talk.png": {
+        "exists": true,
+        "bytes": 3213
+      },
+      "contact_sheet.png": {
+        "exists": true,
+        "bytes": 260882
+      },
+      "emulator-ending-hatch.png": {
+        "exists": true,
+        "bytes": 13089
+      },
+      "emulator-ending-reply.png": {
+        "exists": true,
+        "bytes": 9475
+      },
+      "emulator-ending-signal.png": {
+        "exists": true,
+        "bytes": 9460
+      },
+      "emulator-ending-sunrise.png": {
+        "exists": true,
+        "bytes": 7873
+      },
+      "emulator-ending-together.png": {
+        "exists": true,
+        "bytes": 8331
+      },
+      "emulator-save-load.png": {
+        "exists": true,
+        "bytes": 11601
+      },
+      "emulator-beacon-payoff-v1.png": {
+        "exists": true,
+        "bytes": 9483
+      },
+      "emulator-hatch-payoff-v1.png": {
+        "exists": true,
+        "bytes": 13061
+      },
+      "emulator-opening-scene-v1.png": {
+        "exists": true,
+        "bytes": 11352
+      },
+      "emulator-radio-payoff-v1.png": {
+        "exists": true,
+        "bytes": 12080
+      },
+      "emulator-sunrise-payoff-v1.png": {
+        "exists": true,
+        "bytes": 9192
+      },
+      "emulator-title-screen-v1.png": {
+        "exists": true,
+        "bytes": 10948
+      },
+      "emulator-title-screen-v2.png": {
+        "exists": true,
+        "bytes": 12463
+      },
+      "expression_audition_sheet.png": {
+        "exists": true,
+        "bytes": 110332
+      },
+      "font-proof-sheet.png": {
+        "exists": true,
+        "bytes": 23499
+      },
+      "native-scene-review-sheet.png": {
+        "exists": true,
+        "bytes": 567310
+      },
+      "release/cartridge-label-v1.png": {
+        "exists": true,
+        "bytes": 1682380
+      },
+      "release/cover-art-v1.png": {
+        "exists": true,
+        "bytes": 1797287
+      },
+      "release/release-art-preview.png": {
+        "exists": true,
+        "bytes": 1025895
+      },
+      "scene_preview_sheet.png": {
+        "exists": true,
+        "bytes": 144921
+      },
+      "storyboard_sheet.png": {
+        "exists": true,
+        "bytes": 816983
+      },
+      "text-preview-sheet.png": {
+        "exists": true,
+        "bytes": 33988
+      },
+      "sources/cabin_imagegen_source.png": {
+        "exists": true,
+        "bytes": 1686668
+      },
+      "sources/cabin_imagegen_source_v2.png": {
+        "exists": true,
+        "bytes": 1487375
+      },
+      "sources/cartridge_label_source_v1.png": {
+        "exists": true,
+        "bytes": 2109580
+      },
+      "sources/cover_key_art_source_v1.png": {
+        "exists": true,
+        "bytes": 2087829
+      },
+      "sources/beacon_lens_source_v1.png": {
+        "exists": true,
+        "bytes": 1865862
+      },
+      "sources/deck_imagegen_source.png": {
+        "exists": true,
+        "bytes": 1319259
+      },
+      "sources/deck_imagegen_source_v2.png": {
+        "exists": true,
+        "bytes": 1483063
+      },
+      "sources/hatch_key_source_v1.png": {
+        "exists": true,
+        "bytes": 1581590
+      },
+      "sources/latest_imagegen_contact.png": {
+        "exists": true,
+        "bytes": 496099
+      },
+      "sources/lighthouse_imagegen_source.png": {
+        "exists": true,
+        "bytes": 1804016
+      },
+      "sources/lighthouse_imagegen_source_v2.png": {
+        "exists": true,
+        "bytes": 1471201
+      },
+      "sources/lune_expression_sheet_source_v5.png": {
+        "exists": true,
+        "bytes": 1517205
+      },
+      "sources/lune_imagegen_source.png": {
+        "exists": true,
+        "bytes": 1501347
+      },
+      "sources/lune_radio_pose_source_v1.png": {
+        "exists": true,
+        "bytes": 1430812
+      },
+      "sources/lune_sheet_source.png": {
+        "exists": true,
+        "bytes": 1437854
+      },
+      "sources/lune_sheet_source_v2.png": {
+        "exists": true,
+        "bytes": 1363994
+      },
+      "sources/lune_sheet_source_v3.png": {
+        "exists": true,
+        "bytes": 1470819
+      },
+      "sources/lune_sheet_source_v4.png": {
+        "exists": true,
+        "bytes": 1390384
+      },
+      "sources/mira_expression_sheet_source_v5.png": {
+        "exists": true,
+        "bytes": 1472626
+      },
+      "sources/mira_expression_sheet_source_v6.png": {
+        "exists": true,
+        "bytes": 1345009
+      },
+      "sources/mira_imagegen_source.png": {
+        "exists": true,
+        "bytes": 1301459
+      },
+      "sources/mira_action_pose_source_v1.png": {
+        "exists": true,
+        "bytes": 1307785
+      },
+      "sources/mira_sheet_source.png": {
+        "exists": true,
+        "bytes": 1402555
+      },
+      "sources/mira_sheet_source_v2.png": {
+        "exists": true,
+        "bytes": 1293448
+      },
+      "sources/mira_sheet_source_v3.png": {
+        "exists": true,
+        "bytes": 1342664
+      },
+      "sources/mira_sheet_source_v4.png": {
+        "exists": true,
+        "bytes": 1306974
+      },
+      "sources/radio_signal_source_v1.png": {
+        "exists": true,
+        "bytes": 1624501
+      },
+      "sources/sunrise_deck_source_v1.png": {
+        "exists": true,
+        "bytes": 2047238
+      },
+      "sources/title_signal_source_v3.png": {
+        "exists": true,
+        "bytes": 1574457
+      },
+      "sfx/beacon_pulse.wav": {
+        "exists": true,
+        "bytes": 5444
+      },
+      "sfx/dialogue_blip.wav": {
+        "exists": true,
+        "bytes": 224
+      },
+      "sfx/gull_call.wav": {
+        "exists": true,
+        "bytes": 4644
+      },
+      "sfx/hatch_click.wav": {
+        "exists": true,
+        "bytes": 3044
+      },
+      "sfx/radio_chirp.wav": {
+        "exists": true,
+        "bytes": 4444
+      },
+      "sfx/reply_tap.wav": {
+        "exists": true,
+        "bytes": 5044
+      },
+      "sfx/room_hum.wav": {
+        "exists": true,
+        "bytes": 6444
+      },
+      "sfx/wind_soft.wav": {
+        "exists": true,
+        "bytes": 16044
+      }
+    },
+    "expected_public_release_files": {
+      "assets/signal-before-dawn-slice/emulator-ending-hatch.png": {
+        "exists": true,
+        "bytes": 13089
+      },
+      "assets/signal-before-dawn-slice/emulator-ending-reply.png": {
+        "exists": true,
+        "bytes": 9475
+      },
+      "assets/signal-before-dawn-slice/emulator-ending-signal.png": {
+        "exists": true,
+        "bytes": 9460
+      },
+      "assets/signal-before-dawn-slice/emulator-ending-sunrise.png": {
+        "exists": true,
+        "bytes": 7873
+      },
+      "assets/signal-before-dawn-slice/emulator-ending-together.png": {
+        "exists": true,
+        "bytes": 8331
+      },
+      "assets/signal-before-dawn-slice/emulator-save-load.png": {
+        "exists": true,
+        "bytes": 11601
+      },
+      "assets/signal-before-dawn-slice/native-scene-review-report.json": {
+        "exists": true,
+        "bytes": 54020
+      },
+      "assets/signal-before-dawn-slice/native-scene-review-sheet.png": {
+        "exists": true,
+        "bytes": 567310
+      },
+      "assets/signal-before-dawn-slice/playthrough-manifest.json": {
+        "exists": true,
+        "bytes": 20499
+      },
+      "assets/signal-before-dawn-slice/playthrough-report.json": {
+        "exists": true,
+        "bytes": 41900
+      },
+      "assets/signal-before-dawn-slice/release/cartridge-label-v1.png": {
+        "exists": true,
+        "bytes": 1682380
+      },
+      "assets/signal-before-dawn-slice/release/cover-art-v1.png": {
+        "exists": true,
+        "bytes": 1797287
+      },
+      "assets/signal-before-dawn-slice/release/release-art-preview.png": {
+        "exists": true,
+        "bytes": 1025895
+      },
+      "assets/signal-before-dawn-slice/release/release-art-report.json": {
+        "exists": true,
+        "bytes": 2131
+      },
+      "assets/signal-before-dawn-slice/sources/cartridge_label_source_v1.png": {
+        "exists": true,
+        "bytes": 2109580
+      },
+      "assets/signal-before-dawn-slice/sources/cover_key_art_source_v1.png": {
+        "exists": true,
+        "bytes": 2087829
+      },
+      "release-materials/signal-before-dawn/CREDITS.md": {
+        "exists": true,
+        "bytes": 1557
+      },
+      "release-materials/signal-before-dawn/HARDWARE-TEST.md": {
+        "exists": true,
+        "bytes": 1890
+      },
+      "release-materials/signal-before-dawn/LICENSES.md": {
+        "exists": true,
+        "bytes": 4705
+      },
+      "release-materials/signal-before-dawn/README.md": {
+        "exists": true,
+        "bytes": 2215
+      },
+      "release-materials/signal-before-dawn/hardware-test-report.json": {
+        "exists": true,
+        "bytes": 2131
+      },
+      "scripts/make_signal_before_dawn_native_review.py": {
+        "exists": true,
+        "bytes": 18662
+      },
+      "scripts/make_signal_before_dawn_release_art.py": {
+        "exists": true,
+        "bytes": 6668
+      },
+      "scripts/playtest_signal_before_dawn_routes.py": {
+        "exists": true,
+        "bytes": 48043
+      }
+    },
+    "git_pollution": {
+      "cmd": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all",
+        "--ignored=matching",
+        "--",
+        "."
+      ],
+      "returncode": 0,
+      "allowed_untracked_files": 384,
+      "ignored_generated_paths": [
+        "**/__pycache__/",
+        ".DS_Store",
+        "assets/signal-before-dawn-slice/latest-build.log",
+        "assets/signal-before-dawn-slice/runtime-stale/",
+        "games/*/.DS_Store",
+        "games/*/assets/latest-build.log",
+        "games/*/releases/",
+        "games/*/reports/latest-build.log",
+        "games/*/reports/runtime-stale/",
+        "games/*/runtime-local/",
+        "releases/",
+        "runtime-local/",
+        "tools/catalog-signer/.build/"
+      ],
+      "repository_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop-release-0.9.4",
+      "nested_import_pending": false,
+      "entries": [],
+      "unexpected_untracked": [],
+      "unignored_generated_junk": [],
+      "unexpected_ignored": []
+    },
+    "delete_policy": "Only __pycache__ cleanup and the catalog writer's exact atomic temporary-file cleanup are allowed; generated images are preserved."
+  }
+}

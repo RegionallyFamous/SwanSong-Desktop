@@ -1,0 +1,1429 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:30:10.639571+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "swanlight-ledger",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+      "bytes": 399756,
+      "sha256": "cad2417a61471855a397098cfdb700864a6d4dc75d39155d4bd33c2b08342875"
+    },
+    "project_counts": {
+      "name": "Swanlight Ledger",
+      "nodes": 46,
+      "flags": 0,
+      "tracks": 7,
+      "backgrounds": 13,
+      "characters": 12,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 46,
+      "scene_nodes": 42,
+      "staged_scenes": 26,
+      "animated_staged_scenes": 26,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Emi",
+        "Kai"
+      ],
+      "backgrounds_used": [
+        "bg_book_cart",
+        "bg_end_archive",
+        "bg_end_play",
+        "bg_end_share",
+        "bg_found_map",
+        "bg_home_shelf",
+        "bg_library_sale",
+        "bg_library_sort",
+        "bg_lost_box",
+        "bg_staff_desk",
+        "bg_test_blue",
+        "bg_test_table",
+        "bg_title"
+      ],
+      "ending_scenes": [
+        "end_archive__afterbeat",
+        "end_play__afterbeat",
+        "end_share__afterbeat"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 46,
+      "start_node": "title"
+    },
+    "routes": {
+      "initial_flags": {},
+      "states_explored": 46,
+      "truncated": false,
+      "route_reachable_nodes": 46,
+      "route_reachable_ending_scenes": [
+        "end_archive__afterbeat",
+        "end_play__afterbeat",
+        "end_share__afterbeat"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "play_first",
+        "preserve_page",
+        "search_book_cart",
+        "search_lost_box",
+        "search_staff_desk",
+        "share_note"
+      ],
+      "selectable_choice_targets": [
+        "play_first",
+        "preserve_page",
+        "search_book_cart",
+        "search_lost_box",
+        "search_staff_desk",
+        "share_note"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": []
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Book cart / Sleeve it",
+          "ending_node": "end",
+          "scene_beats": 26,
+          "words": 2207,
+          "estimated_minutes_at_140_wpm": 15.76
+        },
+        {
+          "route_id": "route-2",
+          "label": "Book cart / Play it",
+          "ending_node": "end",
+          "scene_beats": 26,
+          "words": 2212,
+          "estimated_minutes_at_140_wpm": 15.8
+        },
+        {
+          "route_id": "route-3",
+          "label": "Book cart / Share it",
+          "ending_node": "end",
+          "scene_beats": 26,
+          "words": 2216,
+          "estimated_minutes_at_140_wpm": 15.83
+        },
+        {
+          "route_id": "route-4",
+          "label": "Lost box / Sleeve it",
+          "ending_node": "end",
+          "scene_beats": 26,
+          "words": 2204,
+          "estimated_minutes_at_140_wpm": 15.74
+        },
+        {
+          "route_id": "route-5",
+          "label": "Lost box / Play it",
+          "ending_node": "end",
+          "scene_beats": 26,
+          "words": 2209,
+          "estimated_minutes_at_140_wpm": 15.78
+        },
+        {
+          "route_id": "route-6",
+          "label": "Lost box / Share it",
+          "ending_node": "end",
+          "scene_beats": 26,
+          "words": 2213,
+          "estimated_minutes_at_140_wpm": 15.81
+        },
+        {
+          "route_id": "route-7",
+          "label": "Staff desk / Sleeve it",
+          "ending_node": "end",
+          "scene_beats": 26,
+          "words": 2206,
+          "estimated_minutes_at_140_wpm": 15.76
+        },
+        {
+          "route_id": "route-8",
+          "label": "Staff desk / Play it",
+          "ending_node": "end",
+          "scene_beats": 26,
+          "words": 2211,
+          "estimated_minutes_at_140_wpm": 15.79
+        },
+        {
+          "route_id": "route-9",
+          "label": "Staff desk / Share it",
+          "ending_node": "end",
+          "scene_beats": 26,
+          "words": 2215,
+          "estimated_minutes_at_140_wpm": 15.82
+        }
+      ]
+    },
+    "text": {
+      "blocks": 338,
+      "max_pause_block_chars": 99,
+      "choice_labels": 6,
+      "max_choice_label_chars": 10,
+      "max_choice_prompt_chars": 21,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 13,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 16,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_book_cart",
+        "orig_name": "book_cart.png",
+        "embedded_sha256": "8b2f8c224cfb96f5e86932b9acd288d6ad964149b4221abc9d5851997c51c7ce",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/backgrounds/book_cart.png",
+        "local_sha256": "8b2f8c224cfb96f5e86932b9acd288d6ad964149b4221abc9d5851997c51c7ce"
+      },
+      {
+        "id": "bg_end_archive",
+        "orig_name": "end_archive.png",
+        "embedded_sha256": "2012b856f7a2b1d73827ed473494c14a2074b8f016a89ea01b01b7b7dce8c9c3",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/backgrounds/end_archive.png",
+        "local_sha256": "2012b856f7a2b1d73827ed473494c14a2074b8f016a89ea01b01b7b7dce8c9c3"
+      },
+      {
+        "id": "bg_end_play",
+        "orig_name": "end_play.png",
+        "embedded_sha256": "a2c49713613787ee1738e05e427e7336b8f4f301f2ee851a2f4b425fb1c6d668",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/backgrounds/end_play.png",
+        "local_sha256": "a2c49713613787ee1738e05e427e7336b8f4f301f2ee851a2f4b425fb1c6d668"
+      },
+      {
+        "id": "bg_end_share",
+        "orig_name": "end_share.png",
+        "embedded_sha256": "00900bb0cd052f8a11b712add1c914cecc99a37fe6276922019c429c65580149",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/backgrounds/end_share.png",
+        "local_sha256": "00900bb0cd052f8a11b712add1c914cecc99a37fe6276922019c429c65580149"
+      },
+      {
+        "id": "bg_found_map",
+        "orig_name": "found_map.png",
+        "embedded_sha256": "83eaba95ac6f6ac13b08c8ffe1ac119a547899e09fde5f9e028cf6523f3bda19",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/backgrounds/found_map.png",
+        "local_sha256": "83eaba95ac6f6ac13b08c8ffe1ac119a547899e09fde5f9e028cf6523f3bda19"
+      },
+      {
+        "id": "bg_home_shelf",
+        "orig_name": "home_shelf.png",
+        "embedded_sha256": "7bf129dad9086738530f621c8063561693bcd8df00137ce6357a9012f8fb9e4f",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/backgrounds/home_shelf.png",
+        "local_sha256": "7bf129dad9086738530f621c8063561693bcd8df00137ce6357a9012f8fb9e4f"
+      },
+      {
+        "id": "bg_library_sale",
+        "orig_name": "library_sale.png",
+        "embedded_sha256": "84162c0fe9c08850fc08f6d077448c00fea7bdcb7da2dd60b4fd7a6f4192ef99",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/backgrounds/library_sale.png",
+        "local_sha256": "84162c0fe9c08850fc08f6d077448c00fea7bdcb7da2dd60b4fd7a6f4192ef99"
+      },
+      {
+        "id": "bg_library_sort",
+        "orig_name": "library_sort.png",
+        "embedded_sha256": "ff4567b6e2f1d21945c3314154a0771b8012b286849306b447d6361eb606ccc4",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 12,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/backgrounds/library_sort.png",
+        "local_sha256": "ff4567b6e2f1d21945c3314154a0771b8012b286849306b447d6361eb606ccc4"
+      },
+      {
+        "id": "bg_lost_box",
+        "orig_name": "lost_box.png",
+        "embedded_sha256": "5e48a16b305114344bca75e0ff058deace601a5c1fe5fae6263d07505efc0019",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/backgrounds/lost_box.png",
+        "local_sha256": "5e48a16b305114344bca75e0ff058deace601a5c1fe5fae6263d07505efc0019"
+      },
+      {
+        "id": "bg_staff_desk",
+        "orig_name": "staff_desk.png",
+        "embedded_sha256": "85e36b86d0e3aa79d1322650ef073385f8f40eaa579f30a5e07f9691491ff3f5",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/backgrounds/staff_desk.png",
+        "local_sha256": "85e36b86d0e3aa79d1322650ef073385f8f40eaa579f30a5e07f9691491ff3f5"
+      },
+      {
+        "id": "bg_test_blue",
+        "orig_name": "test_blue.png",
+        "embedded_sha256": "af773ebf24f682840b3255d1d4ec62aeb509dfb003f2d5e01e19884ed9486787",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/backgrounds/test_blue.png",
+        "local_sha256": "af773ebf24f682840b3255d1d4ec62aeb509dfb003f2d5e01e19884ed9486787"
+      },
+      {
+        "id": "bg_test_table",
+        "orig_name": "test_table.png",
+        "embedded_sha256": "274d31fb48f2c60f8bcb8af3dea528b0f2e1092f593185a33160cd8855a3f489",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/backgrounds/test_table.png",
+        "local_sha256": "274d31fb48f2c60f8bcb8af3dea528b0f2e1092f593185a33160cd8855a3f489"
+      },
+      {
+        "id": "bg_title",
+        "orig_name": "title.png",
+        "embedded_sha256": "4ed714b9dfbb0ded38eb1b30ca6e1abe1dd032ad185e7214c05c2f0ec50bb284",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 8,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/backgrounds/title.png",
+        "local_sha256": "4ed714b9dfbb0ded38eb1b30ca6e1abe1dd032ad185e7214c05c2f0ec50bb284"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_emi_blink",
+        "orig_name": "emi_blink.png",
+        "embedded_sha256": "c8fb533b72914ac257d71f465de380763ad84bcd643e8b90ad97a83147c13045",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6845,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/characters/emi_blink.png",
+        "local_sha256": "c8fb533b72914ac257d71f465de380763ad84bcd643e8b90ad97a83147c13045"
+      },
+      {
+        "id": "char_emi_hope_blink",
+        "orig_name": "emi_hope_blink.png",
+        "embedded_sha256": "6cb680fc6d1e2e421d561c257b7fde2a8963aedebc31e01d84be8470d6cac1ab",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6712,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/characters/emi_hope_blink.png",
+        "local_sha256": "6cb680fc6d1e2e421d561c257b7fde2a8963aedebc31e01d84be8470d6cac1ab"
+      },
+      {
+        "id": "char_emi_hope_neutral",
+        "orig_name": "emi_hope_neutral.png",
+        "embedded_sha256": "c56a945bc9c6472f41b74cbfbaa57d96b9807c5f0beb9c8ff5ec09ba06604798",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6712,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/characters/emi_hope_neutral.png",
+        "local_sha256": "c56a945bc9c6472f41b74cbfbaa57d96b9807c5f0beb9c8ff5ec09ba06604798"
+      },
+      {
+        "id": "char_emi_hope_talk",
+        "orig_name": "emi_hope_talk.png",
+        "embedded_sha256": "76129975973acf4e60a92101028657c5dd6eb49705560e2953af981df9ae46b4",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6712,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/characters/emi_hope_talk.png",
+        "local_sha256": "76129975973acf4e60a92101028657c5dd6eb49705560e2953af981df9ae46b4"
+      },
+      {
+        "id": "char_emi_neutral",
+        "orig_name": "emi_neutral.png",
+        "embedded_sha256": "3b7a0e2f50dac7c0d1fbfc7ea1eb5aff990e278b59f73f67f66b8a8cea487750",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6845,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/characters/emi_neutral.png",
+        "local_sha256": "3b7a0e2f50dac7c0d1fbfc7ea1eb5aff990e278b59f73f67f66b8a8cea487750"
+      },
+      {
+        "id": "char_emi_talk",
+        "orig_name": "emi_talk.png",
+        "embedded_sha256": "f741c4f28fdea2899552b86824bce7ea47bba79f3392034df76c6f5288037f79",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6845,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/characters/emi_talk.png",
+        "local_sha256": "f741c4f28fdea2899552b86824bce7ea47bba79f3392034df76c6f5288037f79"
+      },
+      {
+        "id": "char_kai_blink",
+        "orig_name": "kai_blink.png",
+        "embedded_sha256": "5477a96b50a04eb418d35322cf7c7eb484dac6fbf4d39b11f8930c6a0ef227af",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6982,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/characters/kai_blink.png",
+        "local_sha256": "5477a96b50a04eb418d35322cf7c7eb484dac6fbf4d39b11f8930c6a0ef227af"
+      },
+      {
+        "id": "char_kai_neutral",
+        "orig_name": "kai_neutral.png",
+        "embedded_sha256": "1219a11df059c41492c4a681586207af32526e947637e2c13bf85aa89cd4e252",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6982,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/characters/kai_neutral.png",
+        "local_sha256": "1219a11df059c41492c4a681586207af32526e947637e2c13bf85aa89cd4e252"
+      },
+      {
+        "id": "char_kai_talk",
+        "orig_name": "kai_talk.png",
+        "embedded_sha256": "542fe04bba8bcc98ebf087ec7b0983b806608bf5553135f859331a89db91fbf4",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6982,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/characters/kai_talk.png",
+        "local_sha256": "542fe04bba8bcc98ebf087ec7b0983b806608bf5553135f859331a89db91fbf4"
+      },
+      {
+        "id": "char_kai_warm_blink",
+        "orig_name": "kai_warm_blink.png",
+        "embedded_sha256": "647184f486b872f1829473718760e9bc87fc7c31cdc77058957840b3d9578536",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6593,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/characters/kai_warm_blink.png",
+        "local_sha256": "647184f486b872f1829473718760e9bc87fc7c31cdc77058957840b3d9578536"
+      },
+      {
+        "id": "char_kai_warm_neutral",
+        "orig_name": "kai_warm_neutral.png",
+        "embedded_sha256": "10f8336f437590279c8921e9ee5f760ef771a2d88e248482f893bbf11534037f",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6593,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/characters/kai_warm_neutral.png",
+        "local_sha256": "10f8336f437590279c8921e9ee5f760ef771a2d88e248482f893bbf11534037f"
+      },
+      {
+        "id": "char_kai_warm_talk",
+        "orig_name": "kai_warm_talk.png",
+        "embedded_sha256": "c07a9cd5dafdd30177a7ee6187c63a76a96e2ac373ad64f7b5dbbab2b3cff371",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6593,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/characters/kai_warm_talk.png",
+        "local_sha256": "c07a9cd5dafdd30177a7ee6187c63a76a96e2ac373ad64f7b5dbbab2b3cff371"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_book_cart",
+          "textbox_mean_luma": 37.142,
+          "textbox_luma_stddev": 16.263,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_archive",
+          "textbox_mean_luma": 62.969,
+          "textbox_luma_stddev": 17.647,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_play",
+          "textbox_mean_luma": 65.698,
+          "textbox_luma_stddev": 20.666,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_share",
+          "textbox_mean_luma": 65.314,
+          "textbox_luma_stddev": 25.588,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_found_map",
+          "textbox_mean_luma": 109.449,
+          "textbox_luma_stddev": 57.884,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_home_shelf",
+          "textbox_mean_luma": 89.517,
+          "textbox_luma_stddev": 59.212,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_library_sale",
+          "textbox_mean_luma": 57.733,
+          "textbox_luma_stddev": 24.497,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_library_sort",
+          "textbox_mean_luma": 47.655,
+          "textbox_luma_stddev": 34.684,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_lost_box",
+          "textbox_mean_luma": 57.648,
+          "textbox_luma_stddev": 28.772,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_staff_desk",
+          "textbox_mean_luma": 39.497,
+          "textbox_luma_stddev": 36.05,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_test_blue",
+          "textbox_mean_luma": 105.4,
+          "textbox_luma_stddev": 49.339,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_test_table",
+          "textbox_mean_luma": 103.981,
+          "textbox_luma_stddev": 50.956,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_title",
+          "textbox_mean_luma": 33.549,
+          "textbox_luma_stddev": 20.981,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 26,
+      "families": [
+        {
+          "neutral": "char_emi_hope_neutral",
+          "talk": "char_emi_hope_talk",
+          "blink": "char_emi_hope_blink",
+          "talk_face_delta": 1.979,
+          "blink_face_delta": 7.071,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 37,
+            "changed_bbox": [
+              39,
+              50,
+              51,
+              56
+            ],
+            "changed_bbox_area": 72,
+            "changed_region_share": 0.005859,
+            "global_changed_share": 0.003011,
+            "face_changed_pixels": 37,
+            "face_changed_share": 0.017519,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 130,
+            "changed_bbox": [
+              31,
+              35,
+              62,
+              44
+            ],
+            "changed_bbox_area": 279,
+            "changed_region_share": 0.022705,
+            "global_changed_share": 0.010579,
+            "face_changed_pixels": 130,
+            "face_changed_share": 0.061553,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        },
+        {
+          "neutral": "char_emi_neutral",
+          "talk": "char_emi_talk",
+          "blink": "char_emi_blink",
+          "talk_face_delta": 4.973,
+          "blink_face_delta": 5.945,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 56,
+            "changed_bbox": [
+              41,
+              59,
+              53,
+              65
+            ],
+            "changed_bbox_area": 72,
+            "changed_region_share": 0.005859,
+            "global_changed_share": 0.004557,
+            "face_changed_pixels": 56,
+            "face_changed_share": 0.026515,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 99,
+            "changed_bbox": [
+              31,
+              43,
+              63,
+              50
+            ],
+            "changed_bbox_area": 224,
+            "changed_region_share": 0.018229,
+            "global_changed_share": 0.008057,
+            "face_changed_pixels": 99,
+            "face_changed_share": 0.046875,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        },
+        {
+          "neutral": "char_kai_neutral",
+          "talk": "char_kai_talk",
+          "blink": "char_kai_blink",
+          "talk_face_delta": 4.806,
+          "blink_face_delta": 5.95,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 57,
+            "changed_bbox": [
+              42,
+              65,
+              54,
+              71
+            ],
+            "changed_bbox_area": 72,
+            "changed_region_share": 0.005859,
+            "global_changed_share": 0.004639,
+            "face_changed_pixels": 57,
+            "face_changed_share": 0.026989,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 90,
+            "changed_bbox": [
+              30,
+              47,
+              63,
+              56
+            ],
+            "changed_bbox_area": 297,
+            "changed_region_share": 0.02417,
+            "global_changed_share": 0.007324,
+            "face_changed_pixels": 90,
+            "face_changed_share": 0.042614,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        },
+        {
+          "neutral": "char_kai_warm_neutral",
+          "talk": "char_kai_warm_talk",
+          "blink": "char_kai_warm_blink",
+          "talk_face_delta": 1.978,
+          "blink_face_delta": 6.072,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 50,
+            "changed_bbox": [
+              41,
+              50,
+              58,
+              57
+            ],
+            "changed_bbox_area": 119,
+            "changed_region_share": 0.009684,
+            "global_changed_share": 0.004069,
+            "face_changed_pixels": 50,
+            "face_changed_share": 0.023674,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 113,
+            "changed_bbox": [
+              30,
+              35,
+              65,
+              44
+            ],
+            "changed_bbox_area": 315,
+            "changed_region_share": 0.025635,
+            "global_changed_share": 0.009196,
+            "face_changed_pixels": 113,
+            "face_changed_share": 0.053504,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources",
+      "count": 27,
+      "packaged_file_count": 27,
+      "background_source_count": 18,
+      "character_source_count": 2,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/backgrounds_concept_v1.png",
+          "bytes": 1753504,
+          "sha256": "6e984d9328ae24d829909d08727c8e75f181009bcfbf7de9db0b18ce3b2d84df",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1536,
+            1024
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/backgrounds_source.png",
+          "bytes": 650349,
+          "sha256": "073549064ebfd0642cb0379310f7cc84f8ad99bb2baf49bfbbd0e1ef81678937",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            672,
+            720
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_book_cart_source_v3.png",
+          "bytes": 1847976,
+          "sha256": "3edf55523bf06a845cfd4ab3143316b24c3dda45c6733ceb1ee62a4150ef137a",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1563,
+            1006
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_end_archive_source_v2.png",
+          "bytes": 1723549,
+          "sha256": "7534be2a4797061964bd8425342216ad36fc0fa31ee0f3a673c6b29479fe9a34",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1561,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_end_archive_source_v3.png",
+          "bytes": 1745803,
+          "sha256": "d92fa5919a06bc01aa25229a810523f6a96a8a21d1d914fef63afb69a52cb760",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1565,
+            1005
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_end_play_source_v2.png",
+          "bytes": 2024973,
+          "sha256": "0870b69191666dd0841fa579ceff790b6183ec2f2157b661d2c6ff9f00b6435f",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_end_play_source_v3.png",
+          "bytes": 2087324,
+          "sha256": "d57571ea1ac16375a1cab806296ed455db6bf26bb8369715549dcd4cdb81930d",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_end_share_source_v2.png",
+          "bytes": 1800609,
+          "sha256": "4979ff4409ef2110206d82c0e85f5445e1c44c1f411389431fc892a5aea99252",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_end_share_source_v3.png",
+          "bytes": 2019522,
+          "sha256": "e54a689d763d9b4f416a4dd513354a20d9eede3ed6cb86860775fd990258a039",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_found_map_source_v2.png",
+          "bytes": 1867350,
+          "sha256": "08df9136d2d0152a81edfaaca522a35b2f84891129b817e2b326d21814126f17",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_home_shelf_source_v2.png",
+          "bytes": 1600490,
+          "sha256": "1418cbd8c27f6b063c28617aed609940acee73ccbf310e33ed76bc93b6340447",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1561,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_library_sale_source_v2.png",
+          "bytes": 1825241,
+          "sha256": "82c1a171ef002299c7022f10e878fb6e6c0f87da71f17611594af2e6f29c4209",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1559,
+            1009
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_library_sort_source_v3.png",
+          "bytes": 2036637,
+          "sha256": "530349855e9b0127b5fb9ffbdb38bf5cb3a452f9748f51d7f790892a1bf3cb6b",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1566,
+            1005
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_lost_box_source_v3.png",
+          "bytes": 1946675,
+          "sha256": "e81b57b05ab6f9feb99ec9c337a6280b8093e63cd512cebaefc70a31e6432ec5",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1566,
+            1005
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_staff_desk_source_v3.png",
+          "bytes": 1884632,
+          "sha256": "0d22eed9c4a8efb1e6b10e46071bf6b6fa4785f25baff2e3b39b4b61913eb3c0",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1564,
+            1006
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_test_blue_source_v2.png",
+          "bytes": 1870716,
+          "sha256": "2dbe583473621ca6dac80c29734c23fce22d953d0ddc9490d25fc384691c24a3",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_test_table_source_v2.png",
+          "bytes": 1759943,
+          "sha256": "a74c8ae001d8d9874afa9cd7224965535584395b3c0ae9553dbc7ca496a29a28",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_title_source_v2.png",
+          "bytes": 1559498,
+          "sha256": "03065108d448fadfde1bf4ef2c786a47408f712c9fc31230f19d595b69825934",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/characters_concept_v1.png",
+          "bytes": 1864316,
+          "sha256": "1e77b54f8943607d3aea20f31eb43fc1be0f2068fcc9aba76886cab65047dcc4",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1536,
+            1024
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/characters_source.png",
+          "bytes": 23128,
+          "sha256": "e42456a3de6d8e369fb31fe0cf9168366879c94364fa4f5e23a247cb18a76606",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            384,
+            128
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/emi_base_master_source_v2.png",
+          "bytes": 231799,
+          "sha256": "2ed1e3d3007d1ccdcb44461a15395a0c55bebb6259a53703dd713fde9d641217",
+          "categories": [],
+          "size": [
+            512,
+            512
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/emi_hope_master_keyed_source_v2.png",
+          "bytes": 1169491,
+          "sha256": "13e0a10e7841a0f268cd5bd4e41dc278c7da46792953ee7b8d7070c180f0b4d4",
+          "categories": [],
+          "size": [
+            1086,
+            1448
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/emi_hope_master_source_v2.png",
+          "bytes": 1567015,
+          "sha256": "fb3d136fca347338369e1a5c0b5289663a197696b217937930ea4e39116a658a",
+          "categories": [],
+          "size": [
+            1086,
+            1448
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/kai_base_master_source_v2.png",
+          "bytes": 263510,
+          "sha256": "fc88ce288eee2e71a744c03c7ca774d5db3af8a451a171f6e3360150f7a42446",
+          "categories": [],
+          "size": [
+            512,
+            512
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/kai_warm_master_keyed_source_v2.png",
+          "bytes": 1460716,
+          "sha256": "df5b563afd8d40c01e276c2039fd4ad04cedb43a3ad51c2c0cea7812d0625bd7",
+          "categories": [],
+          "size": [
+            1086,
+            1448
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/kai_warm_master_source_v2.png",
+          "bytes": 1748604,
+          "sha256": "ee2094852113f6dd26955117c4329e0bd37a7546d5a5e641e9cf598ec8f1e3db",
+          "categories": [],
+          "size": [
+            1086,
+            1448
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/references/wonderswan-color-blue-reference-public-domain.jpg",
+          "bytes": 120559,
+          "sha256": "67897be58c4b16c7317c277eaebf348d4bdbab0b1c3a015caee8d6bb15d741bc",
+          "categories": [],
+          "size": [
+            960,
+            674
+          ],
+          "mode": "RGB"
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 196379,
+      "sha256": "83e34412e4d7976e13764a363cd1b298018578ab0bf77ba0952ad2e02a0af8bd",
+      "size": [
+        712,
+        1182
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 391022,
+        "sha256": "f7f6c593021f2956657fb66496d0cdc528e9a21fe512b7b54a5446bff7e113f6",
+        "size": [
+          712,
+          2560
+        ],
+        "mode": "RGB",
+        "unique_colors": 340,
+        "luma_stddev": 53.879
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 146670,
+        "sha256": "467a540d5ef34f05566335808345933085db11052bca7e50324ca70212e844ad",
+        "size": [
+          488,
+          1160
+        ],
+        "mode": "RGB",
+        "unique_colors": 340,
+        "luma_stddev": 50.052
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 26090,
+        "sha256": "5609f7c2cd49fea9f4ad662368e64e883c3c2f7ef23f9528bf4f97d1030aba4f",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+          "exists": true,
+          "bytes": 399756,
+          "sha256": "cad2417a61471855a397098cfdb700864a6d4dc75d39155d4bd33c2b08342875"
+        },
+        "nodes_rendered": 45,
+        "preview_node_ids": [
+          "title",
+          "sale_opens",
+          "sale_opens__afterbeat",
+          "book_bin",
+          "book_bin__afterbeat",
+          "first_sort",
+          "first_sort__afterbeat",
+          "manual_shadow",
+          "manual_shadow__afterbeat",
+          "handwritten_list",
+          "handwritten_list__afterbeat",
+          "test_table",
+          "test_table__afterbeat",
+          "blue_boot",
+          "blue_boot__afterbeat",
+          "choice_search",
+          "search_book_cart",
+          "search_book_cart__afterbeat",
+          "found_page_books",
+          "found_page_books__afterbeat",
+          "search_lost_box",
+          "search_lost_box__afterbeat",
+          "found_page_lost",
+          "found_page_lost__afterbeat",
+          "search_staff_desk",
+          "search_staff_desk__afterbeat",
+          "found_page_clerk",
+          "found_page_clerk__afterbeat",
+          "paper_save",
+          "paper_save__afterbeat",
+          "home_arrival",
+          "home_arrival__afterbeat",
+          "choice_care",
+          "preserve_page",
+          "preserve_page__afterbeat",
+          "play_first",
+          "play_first__afterbeat",
+          "share_note",
+          "share_note__afterbeat",
+          "end_archive",
+          "end_archive__afterbeat",
+          "end_play",
+          "end_play__afterbeat",
+          "end_share",
+          "end_share__afterbeat"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 45,
+            "expected": 45
+          },
+          "storyboard_cells": {
+            "reported": 45,
+            "expected": 45
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/swanlight-ledger-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

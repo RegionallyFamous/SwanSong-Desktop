@@ -1,0 +1,358 @@
+{
+  "schema_version": 1,
+  "character": "generic",
+  "sheet_kind": "animation",
+  "runtime_ready": true,
+  "sprite_offset": [
+    0,
+    0
+  ],
+  "labels": [
+    "neutral",
+    "talk",
+    "blink"
+  ],
+  "scale": 4,
+  "out": "games/swan-case-club/assets/auditions/swan-case-club-runtime-audition.png",
+  "tool_provenance": [
+    {
+      "path": "scripts/audition_wscvn_sprite_sheet.py",
+      "sha256": "3c3ff7d0eff71df59c58e51d6d1f7990516778f64749e3dad207ab05b2069338"
+    },
+    {
+      "path": "scripts/make_signal_before_dawn_slice.py",
+      "sha256": "c48f872b41a2bbe0310229ffd35ed4786096e7d886595f950605efcf622afc90"
+    },
+    {
+      "path": "scripts/wscvn_sprite_family.py",
+      "sha256": "3ebf274e1f493bd10bc06be29936eda8c43d6e85e0d7cd5d4ddcd980d1bbc1aa"
+    }
+  ],
+  "quality": {
+    "status": "pass",
+    "error_count": 0,
+    "warning_count": 0,
+    "info_count": 0,
+    "thresholds": {
+      "max_visible_colors": 15,
+      "min_talk_face_delta": 18,
+      "min_blink_face_delta": 0,
+      "min_alpha_coverage": 0.2,
+      "max_alpha_coverage": 0.75,
+      "max_animation_alpha_changed": 0,
+      "min_visible_above_textbox": 0.52,
+      "max_visible_above_textbox": 0.92,
+      "max_animation_bbox_area": 1200,
+      "max_source_center_drift": 0.09,
+      "max_source_scale_drift": 0.18,
+      "max_sprite_center_drift": 0.04,
+      "max_sprite_scale_drift": 0.08,
+      "max_tiny_color_pixels": 10,
+      "max_green_fringe_pixels": 0,
+      "max_alpha_components": 8,
+      "min_largest_alpha_component_share": 0.96
+    }
+  },
+  "sources": [
+    {
+      "label": "mina",
+      "path": "games/swan-case-club/assets/auditions/mina-runtime-animation.png",
+      "sha256": "5de60503c2d851fac40e57d6c7842e44e5e42ad5199557ff4322ea9184afd1ba"
+    },
+    {
+      "label": "ren",
+      "path": "games/swan-case-club/assets/auditions/ren-runtime-animation.png",
+      "sha256": "836225528db009b818714e2829a7c3aaeb1fda9bb542ae4e9146cc8c8ebad677"
+    }
+  ],
+  "frames": [
+    {
+      "source_label": "mina",
+      "source_path": "games/swan-case-club/assets/auditions/mina-runtime-animation.png",
+      "source_sha256": "5de60503c2d851fac40e57d6c7842e44e5e42ad5199557ff4322ea9184afd1ba",
+      "source_size": [
+        288,
+        128
+      ],
+      "source_cell_box": [
+        0,
+        0,
+        288,
+        128
+      ],
+      "source_cell": {
+        "size": [
+          96,
+          128
+        ],
+        "non_key_ratio": 0.58837890625,
+        "bbox": [
+          5,
+          9,
+          91,
+          127
+        ],
+        "bbox_center_norm": [
+          0.5,
+          0.5312
+        ],
+        "bbox_size_norm": [
+          0.8958,
+          0.9219
+        ],
+        "bbox_area_ratio": 0.8258
+      },
+      "frame_label": "neutral/talk/blink",
+      "frame_index": 0,
+      "sprite_size": [
+        96,
+        128
+      ],
+      "sprite_alpha_bbox": {
+        "bbox": [
+          5,
+          9,
+          91,
+          127
+        ],
+        "bbox_center_norm": [
+          0.5,
+          0.5312
+        ],
+        "bbox_size_norm": [
+          0.8958,
+          0.9219
+        ],
+        "bbox_area_ratio": 0.8258
+      },
+      "visible_colors": 12,
+      "alpha_coverage": 0.58837890625,
+      "visible_above_textbox": 0.5809128630705395,
+      "occupied_tiles": 133,
+      "wsc_12bit_snapped": true,
+      "binary_alpha": true,
+      "tiny_color_pixels": 0,
+      "green_fringe_pixels": 0,
+      "alpha_components": {
+        "component_count": 1,
+        "largest_component_pixels": 7230,
+        "largest_component_share": 1.0,
+        "tiny_component_count": 0
+      },
+      "delta": {
+        "talk": {
+          "full": {
+            "changed_pixels": 142,
+            "changed_pixel_ratio": 0.011555989583333334,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 142,
+            "changed_visible_ratio": 0.019640387275242047,
+            "changed_bbox": [
+              41,
+              58,
+              56,
+              70
+            ],
+            "changed_bbox_area": 180,
+            "mean_abs_rgba_delta": 1.1268310546875
+          },
+          "face": {
+            "changed_pixels": 142,
+            "changed_pixel_ratio": 0.09861111111111111,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 142,
+            "changed_visible_ratio": 0.09861111111111111,
+            "changed_bbox": [
+              13,
+              22,
+              28,
+              34
+            ],
+            "changed_bbox_area": 180,
+            "mean_abs_rgba_delta": 9.615625
+          }
+        },
+        "blink": {
+          "full": {
+            "changed_pixels": 186,
+            "changed_pixel_ratio": 0.01513671875,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 186,
+            "changed_visible_ratio": 0.025726141078838173,
+            "changed_bbox": [
+              30,
+              39,
+              66,
+              49
+            ],
+            "changed_bbox_area": 360,
+            "mean_abs_rgba_delta": 1.1143798828125
+          },
+          "face": {
+            "changed_pixels": 186,
+            "changed_pixel_ratio": 0.12916666666666668,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 186,
+            "changed_visible_ratio": 0.12916666666666668,
+            "changed_bbox": [
+              2,
+              3,
+              38,
+              13
+            ],
+            "changed_bbox_area": 360,
+            "mean_abs_rgba_delta": 9.509375
+          }
+        }
+      },
+      "quality": {
+        "status": "pass",
+        "issues": []
+      }
+    },
+    {
+      "source_label": "ren",
+      "source_path": "games/swan-case-club/assets/auditions/ren-runtime-animation.png",
+      "source_sha256": "836225528db009b818714e2829a7c3aaeb1fda9bb542ae4e9146cc8c8ebad677",
+      "source_size": [
+        288,
+        128
+      ],
+      "source_cell_box": [
+        0,
+        0,
+        288,
+        128
+      ],
+      "source_cell": {
+        "size": [
+          96,
+          128
+        ],
+        "non_key_ratio": 0.575439453125,
+        "bbox": [
+          6,
+          12,
+          91,
+          127
+        ],
+        "bbox_center_norm": [
+          0.5052,
+          0.543
+        ],
+        "bbox_size_norm": [
+          0.8854,
+          0.8984
+        ],
+        "bbox_area_ratio": 0.7955
+      },
+      "frame_label": "neutral/talk/blink",
+      "frame_index": 0,
+      "sprite_size": [
+        96,
+        128
+      ],
+      "sprite_alpha_bbox": {
+        "bbox": [
+          6,
+          12,
+          91,
+          127
+        ],
+        "bbox_center_norm": [
+          0.5052,
+          0.543
+        ],
+        "bbox_size_norm": [
+          0.8854,
+          0.8984
+        ],
+        "bbox_area_ratio": 0.7955
+      },
+      "visible_colors": 14,
+      "alpha_coverage": 0.575439453125,
+      "visible_above_textbox": 0.5710649130250318,
+      "occupied_tiles": 128,
+      "wsc_12bit_snapped": true,
+      "binary_alpha": true,
+      "tiny_color_pixels": 0,
+      "green_fringe_pixels": 0,
+      "alpha_components": {
+        "component_count": 1,
+        "largest_component_pixels": 7071,
+        "largest_component_share": 1.0,
+        "tiny_component_count": 0
+      },
+      "delta": {
+        "talk": {
+          "full": {
+            "changed_pixels": 142,
+            "changed_pixel_ratio": 0.011555989583333334,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 142,
+            "changed_visible_ratio": 0.020082025173242823,
+            "changed_bbox": [
+              41,
+              58,
+              56,
+              70
+            ],
+            "changed_bbox_area": 180,
+            "mean_abs_rgba_delta": 1.1268310546875
+          },
+          "face": {
+            "changed_pixels": 142,
+            "changed_pixel_ratio": 0.09861111111111111,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 142,
+            "changed_visible_ratio": 0.09861111111111111,
+            "changed_bbox": [
+              13,
+              22,
+              28,
+              34
+            ],
+            "changed_bbox_area": 180,
+            "mean_abs_rgba_delta": 9.615625
+          }
+        },
+        "blink": {
+          "full": {
+            "changed_pixels": 194,
+            "changed_pixel_ratio": 0.015787760416666668,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 194,
+            "changed_visible_ratio": 0.02743600622259935,
+            "changed_bbox": [
+              30,
+              39,
+              66,
+              49
+            ],
+            "changed_bbox_area": 360,
+            "mean_abs_rgba_delta": 1.1890869140625
+          },
+          "face": {
+            "changed_pixels": 194,
+            "changed_pixel_ratio": 0.13472222222222222,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 194,
+            "changed_visible_ratio": 0.13472222222222222,
+            "changed_bbox": [
+              2,
+              3,
+              38,
+              13
+            ],
+            "changed_bbox_area": 360,
+            "mean_abs_rgba_delta": 10.146875
+          }
+        }
+      },
+      "quality": {
+        "status": "pass",
+        "issues": []
+      }
+    }
+  ]
+}

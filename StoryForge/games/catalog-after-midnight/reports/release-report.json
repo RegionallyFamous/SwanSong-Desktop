@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:37:05.848152+00:00",
+  "errors": [],
+  "release_id": "20260727T023705Z-6d151cb382b3",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/releases/20260727T023705Z-6d151cb382b3",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/releases/20260727T023705Z-6d151cb382b3.zip",
+    "bytes": 1117896,
+    "sha256": "f99e6773696bd608d6a2ac7036179096e406ffeea3b1bf87194e33426f3e09a2"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/releases/20260727T023705Z-6d151cb382b3/manifest.json",
+    "sha256": "58cba8d7733802715e5ab5558526d56c88d38fae6cc5458f0ecc3023e067e744",
+    "files": 50
+  },
+  "rom_sha256": "6d151cb382b3e542ef51b0f8e859bdb36636e57329f325677382674913901958",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "catalog-after-midnight",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/reports/game-audit-report.json\nGame audit passed"
+  }
+}

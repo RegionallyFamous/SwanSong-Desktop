@@ -1,0 +1,881 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:42:18.245239+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "gm-name-tag-crisis",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+      "exists": true,
+      "bytes": 169599,
+      "sha256": "d8f1dc4fe0853e08a1fc1439ee2324fed5e537055adb6e67f4885d054aea9bb1"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 36,
+    "preview_node_ids": [
+      "gm_title",
+      "gm_01",
+      "gm_02",
+      "gm_03",
+      "gm_04",
+      "gm_05",
+      "gm_06",
+      "gm_07",
+      "gm_08",
+      "gm_09",
+      "gm_10",
+      "gm_choice_1",
+      "gm_a1",
+      "gm_a2",
+      "gm_a3",
+      "gm_a4",
+      "gm_b1",
+      "gm_b2",
+      "gm_b3",
+      "gm_b4",
+      "gm_11",
+      "gm_12",
+      "gm_13",
+      "gm_14",
+      "gm_15",
+      "gm_16",
+      "gm_17",
+      "gm_choice_2",
+      "gm_c1",
+      "gm_c2",
+      "gm_c3",
+      "gm_c4",
+      "gm_d1",
+      "gm_d2",
+      "gm_d3",
+      "gm_d4"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 232288,
+      "sha256": "86e3bd9b5cad83f66d2198e4715b3acf54c554db5356c9343ee7923c2651e610",
+      "size": [
+        712,
+        2050
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 78780,
+      "sha256": "fb771d79c12366b812d673355730d0478c4980ae187a3f9c8b2d937e769d7d97",
+      "size": [
+        488,
+        872
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "gm_title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "0cab1e4e15c5aacba24c35c680b5100859cd1a34752c3494d50eec841d9b1e72"
+      },
+      {
+        "index": 1,
+        "node_id": "gm_01",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "225f58fccee34644a129d675a0b63f59a562cc489657822062117666200b3f39"
+      },
+      {
+        "index": 2,
+        "node_id": "gm_02",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "7fad83b13838d7de7448e177a125076c1082dd10de96939a82d6d020de050ecf"
+      },
+      {
+        "index": 3,
+        "node_id": "gm_03",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "e2b94c4ba920901bb9c78af953c5bc06afdd0e5923c55ffd8c2b8a72b530132a"
+      },
+      {
+        "index": 4,
+        "node_id": "gm_04",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "760740027f93a94905c4bb3ad419087c49f7a8870b4745b1080803d395f499b6"
+      },
+      {
+        "index": 5,
+        "node_id": "gm_05",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "c64bb81da29940e968926e2c33e8e6f005e99bdb8872518871ae9105ca76643c"
+      },
+      {
+        "index": 6,
+        "node_id": "gm_06",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "b5d631551ee7c4fe305ab0cd6e9644ebd417b06f2db4c8977f842bb9de82beac"
+      },
+      {
+        "index": 7,
+        "node_id": "gm_07",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "90699081311dc88e4ef0df3f35c62d02c301249aceebe74ac22bda97a7d118ed"
+      },
+      {
+        "index": 8,
+        "node_id": "gm_08",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "e203279804075c9f79bee4ba3edf4dec43887d07bfd2d1b669116d21fe689b53"
+      },
+      {
+        "index": 9,
+        "node_id": "gm_09",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "4e28c0b8334cd5becb5120a9960660446de5255af2d72bc92e3ee6912f8cd034"
+      },
+      {
+        "index": 10,
+        "node_id": "gm_10",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "1a45d608b94236f465d731bd7b0c83d5a59d9f1377a8bbf5156e7204162ce6ff"
+      },
+      {
+        "index": 11,
+        "node_id": "gm_choice_1",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "a1ea2f9bed9e171a5c2b1a45aa3ebd6da2570de978edba858a539878592511f6"
+      },
+      {
+        "index": 12,
+        "node_id": "gm_a1",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "8930e74acf7020e8459fdbddfdba2e7b6184865cca4ad33fdce7ed74d455ae17"
+      },
+      {
+        "index": 13,
+        "node_id": "gm_a2",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "f73ce9c20576414b60b7df172f927d0987797fd79781b1bb85e0267486c727e9"
+      },
+      {
+        "index": 14,
+        "node_id": "gm_a3",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "c82bf50fffaa49f64d6e3b592006cbb3408e10bec60efde5b25cf4aa77832688"
+      },
+      {
+        "index": 15,
+        "node_id": "gm_a4",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "948bb34d3b8fdc02cfd5291cc0c5b6e8e56e7d039037007321fbb5c734502393"
+      },
+      {
+        "index": 16,
+        "node_id": "gm_b1",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "53d864f0e2371cb1d3c6b7e5fa2f5dc527c2c674dcec71b06a73d78bc77c882a"
+      },
+      {
+        "index": 17,
+        "node_id": "gm_b2",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "8511ad87b61137ea7d4a4c56dd52e53391dace75c7d09dc039f956ce635bd0c6"
+      },
+      {
+        "index": 18,
+        "node_id": "gm_b3",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "b68689cef06a8db385326ed159e6387695234a4f6659cfe03efce92552a57f20"
+      },
+      {
+        "index": 19,
+        "node_id": "gm_b4",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "fac8ce67a9b87ca6d49ce44667f4a3021c055a958970e2a38bac16c3a611f7d0"
+      },
+      {
+        "index": 20,
+        "node_id": "gm_11",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "055b4f7c435595bacc87dd6bc939f3ff944675b0a82a9cc20a0f2c1327335d12"
+      },
+      {
+        "index": 21,
+        "node_id": "gm_12",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "d410542e491f07bc6c5378db558acfeb707d7a469868f45863659a54143702e9"
+      },
+      {
+        "index": 22,
+        "node_id": "gm_13",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "4b2d42b69a3b77f1f7099bb6c1ec83929f64d15b2f540693cdcd9c5976e6f852"
+      },
+      {
+        "index": 23,
+        "node_id": "gm_14",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "b3f205f9063ec6392bf23639eb1184c5d2a86e37919fe6becf8aeb41c238d71b"
+      },
+      {
+        "index": 24,
+        "node_id": "gm_15",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "6e185cdab82dde2dd7285d0051b893d4b2ce91e98544b1370bd005ead03e74e5"
+      },
+      {
+        "index": 25,
+        "node_id": "gm_16",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "6eaba3748f0d7e86fda5e00abf7511fd557e6d0e6957bd6731158cd348118924"
+      },
+      {
+        "index": 26,
+        "node_id": "gm_17",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "399a6e4bcc67ffe4c5b4ade19520fd62afbbfc7a7f5d8a0a16cb7ba021a49150"
+      },
+      {
+        "index": 27,
+        "node_id": "gm_choice_2",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "4af133b975e48cf43dfaa8e5bd98bb9631c2e3d6bedaee953e84a702f9584036"
+      },
+      {
+        "index": 28,
+        "node_id": "gm_c1",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "f58d98f9d02fc8900eadb3b9abd36dca227d5981ce257cdeda7267a930c7a165"
+      },
+      {
+        "index": 29,
+        "node_id": "gm_c2",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "85c6be35fcdd817cc66fe6332fe9252c32360978abb1ed4b074a637ed94783fa"
+      },
+      {
+        "index": 30,
+        "node_id": "gm_c3",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "409d9302af532dace1bec914244a6e359dd473b3cfe26493a352b12122762e87"
+      },
+      {
+        "index": 31,
+        "node_id": "gm_c4",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "432519e0e55132722e25f2df1bda880ca920c4b27735707b01cab1424244a1f4"
+      },
+      {
+        "index": 32,
+        "node_id": "gm_d1",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "f09b1ff6269675dfed839c2e9679648b78d5a87d11682e5ec51834d230862740"
+      },
+      {
+        "index": 33,
+        "node_id": "gm_d2",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "224f796c5fe62b4351328ae972bdf08813f3fd8823babf43f1d10eb443eeae91"
+      },
+      {
+        "index": 34,
+        "node_id": "gm_d3",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "b85d483a1d0817a898edc89a2243594db7fc5b5a65aadd4c658e56a241aa3c22"
+      },
+      {
+        "index": 35,
+        "node_id": "gm_d4",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "0c1ac049aba2e8ddec27d45ef30e470a1eae8bd08589c6273f630c55f9bb4788"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "gm_title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "31b84e11e9764e686a30cb912152fe86e426abe8363df40d814597b02bc56739"
+      },
+      {
+        "index": 1,
+        "node_id": "gm_01",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "2da7ffb5080be6cd7b421f962fc3bcd0b8c8e4b11f1b7e0903bce682165671f3"
+      },
+      {
+        "index": 2,
+        "node_id": "gm_02",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "083b94d412c1cdc909f16ce4438d3fca03f407ca65d91e9db9ef21204910700a"
+      },
+      {
+        "index": 3,
+        "node_id": "gm_03",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "2a45e53a98938b46ce21dd8256bd3af2556fda329d1c40b7038f6c2f071bbcfd"
+      },
+      {
+        "index": 4,
+        "node_id": "gm_04",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "320f9040f7b72aa17f8aa8b3629af34d920d5ad3d990ab4b1021c265f2bb10c4"
+      },
+      {
+        "index": 5,
+        "node_id": "gm_05",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "ada921ca321d204529a8bd8b09b6c4a86b7a7d7e2357783dd92394d6e4dc06bc"
+      },
+      {
+        "index": 6,
+        "node_id": "gm_06",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "1cf4035b4e11bea0dff6f96cbc11fc94c57957acecbb985ce6ac4aff6be59856"
+      },
+      {
+        "index": 7,
+        "node_id": "gm_07",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "02ef1dae8d6c68a99553dc5842da18050fd0c34dd2a7bb34045f1aedc84f1bc7"
+      },
+      {
+        "index": 8,
+        "node_id": "gm_08",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "ae579416773368a05d3c520767c5069b151e1f052ec3370894f190efd9f80e43"
+      },
+      {
+        "index": 9,
+        "node_id": "gm_09",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "98279e0445fb95d9b168ef2dea01588ab60af692c67e9f228d72c31ef70e7caa"
+      },
+      {
+        "index": 10,
+        "node_id": "gm_10",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "b99f42228ebe975597ed15cb18218d37da455fd3989da6ca48086ea77478c3a4"
+      },
+      {
+        "index": 11,
+        "node_id": "gm_choice_1",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "5fbb3cc1e9d6975bb750358dd4bb2c0cbd17f5829ea8114d0b7d2253d4322790"
+      },
+      {
+        "index": 12,
+        "node_id": "gm_a1",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "62290e3f45d01b7876bb453634194fd6427d4d5e982bcc5d1547fe8b2c14e97f"
+      },
+      {
+        "index": 13,
+        "node_id": "gm_a2",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "4a4f318c6e02591a9e3c8be7adac34b49cf8e185d894a4fa002ae6e020216ab3"
+      },
+      {
+        "index": 14,
+        "node_id": "gm_a3",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "fa7aa888f6f8d72469c13509b42268a1a4e25be1b4012b55d47dd1ac73ce083c"
+      },
+      {
+        "index": 15,
+        "node_id": "gm_a4",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "48223ebf014c15d7b26351cf33af5d6af90f11c9af78d346082aa4f22939953e"
+      },
+      {
+        "index": 16,
+        "node_id": "gm_b1",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "f67818a47ec5cd52b5568266ecebacab8716d91859e599bd1394b780d43a73de"
+      },
+      {
+        "index": 17,
+        "node_id": "gm_b2",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "575fd9e1175c40d1a4887e20c3dc09ad31e8cdb516434c81074bd293a012b977"
+      },
+      {
+        "index": 18,
+        "node_id": "gm_b3",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "ab0a985bca756da6d2c1127f6a2d957245a4c5156567837564f9e6a2adf529e4"
+      },
+      {
+        "index": 19,
+        "node_id": "gm_b4",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "b599d2e6da8d923418af63566c0122fd018e265e3fe9d57dba766af56306d5f2"
+      },
+      {
+        "index": 20,
+        "node_id": "gm_11",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "0c80d4d7e64360d58bf52458063b5289fd5c5637acee52645ac626deb13e3e62"
+      },
+      {
+        "index": 21,
+        "node_id": "gm_12",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "57e384f165c8897a72efc4be8cabc75251cd98cd87bd2a5dce232db66174319e"
+      },
+      {
+        "index": 22,
+        "node_id": "gm_13",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "560106c775d88156a371e90f81bcd99b1c0a24abb63443534555c83340c5622b"
+      },
+      {
+        "index": 23,
+        "node_id": "gm_14",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "7a02c059a996d894459dcff3743f42e13dcfaf02bbea4f4249d113b6bb592f6b"
+      },
+      {
+        "index": 24,
+        "node_id": "gm_15",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "4139f49a6f9f59a50d09794462cf8139cb5f92dcb518ab6f636c8f07cbd4c72e"
+      },
+      {
+        "index": 25,
+        "node_id": "gm_16",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "7986d02f90647e48f5182d99c5d41d45b4bd6a1b92ff63abda4c3d9b3f1756ee"
+      },
+      {
+        "index": 26,
+        "node_id": "gm_17",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "048899a388c4f4ef82c748eb0d915d8aff3db29eb7a1868d802548a3da399a69"
+      },
+      {
+        "index": 27,
+        "node_id": "gm_choice_2",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "cc6a03935445b63d4e5f2625b5193dc93cb87f2e9bd44b52a207e9ce26d4d574"
+      },
+      {
+        "index": 28,
+        "node_id": "gm_c1",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "bedc79d6883c9d9d77c01eb217592f0e10d798356ba8c266fc0c570a2a5f5c05"
+      },
+      {
+        "index": 29,
+        "node_id": "gm_c2",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "3d02c0c3d67de5dff670650152b0a1efd904be83dcd02303e1be2e0bedf2148c"
+      },
+      {
+        "index": 30,
+        "node_id": "gm_c3",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "470d1129ac468288b3aae4a64fe0f5637995259862bcfeb8aea18fc24394c430"
+      },
+      {
+        "index": 31,
+        "node_id": "gm_c4",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "037b52bed89df6b5ae0f9d99490b0aea57d78f2cb9b4a10c7b7be5939c5af0ec"
+      },
+      {
+        "index": 32,
+        "node_id": "gm_d1",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "252070741071a1ce1fff1e8018b65c40861d0019c0831e3bd8dadd5fdc98bb03"
+      },
+      {
+        "index": 33,
+        "node_id": "gm_d2",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "fad56e1b6011c607df68d1083adbb6cf4615ee2f42e9c87516de3322cc85f741"
+      },
+      {
+        "index": 34,
+        "node_id": "gm_d3",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "ee31f1a300bdc4a4a0cc01a6f5c342984a351b9bf0f6192d10fa4f9c4d288b93"
+      },
+      {
+        "index": 35,
+        "node_id": "gm_d4",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "7e7a8db73a375e51be93125d23d0524bb81e785989662f9240c2faf47eb75c89"
+      }
+    ]
+  }
+}

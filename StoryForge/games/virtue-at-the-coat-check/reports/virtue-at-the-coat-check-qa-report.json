@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/contact_sheet.png",
+    "nodes": 44,
+    "flags": 0,
+    "tracks": [
+      {
+        "id": "virtue_title",
+        "name": "Layered Liability",
+        "bpm": 108
+      },
+      {
+        "id": "virtue_main",
+        "name": "Claim Ticket 47",
+        "bpm": 140
+      },
+      {
+        "id": "virtue_end_a",
+        "name": "Snack Bench",
+        "bpm": 112
+      },
+      {
+        "id": "virtue_end_b",
+        "name": "Bow Protocol",
+        "bpm": 96
+      }
+    ],
+    "imagegen_source_sha256": {
+      "background_title_imagegen_v1.png": "b3114a2812cafac533e70557cba568251203e1af4aada4d543e7ae7085526a6d",
+      "background_main_imagegen_v1.png": "cdd5c0db676a24db42200e35a8dd326961118f3076f82e33862d43443a1e6162",
+      "background_ending_a_imagegen_v1.png": "55b921320c77ff476d21251ffdb98e668e78a6901d13f3db92f44578c51e8fa3",
+      "background_ending_b_imagegen_v1.png": "74aa61b6a8c49ee62fa61b7dbfd550366c9a788b1a2aedc89b0138fb37bf6700",
+      "character_master_cutout_imagegen_v1.png": "99c37da247cc0cd512e55f96c57602defbe4772a220c3e13d62a5d9b02aed2cc"
+    },
+    "source_master_count": 5,
+    "background_count": 4,
+    "character_frame_count": 3,
+    "art_policy": "ImageGen-first; no procedural pictorial fallback"
+  }
+}

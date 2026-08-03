@@ -1,0 +1,609 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:29.078931+00:00",
+  "errors": [],
+  "warnings": [],
+  "cases": [
+    {
+      "name": "current-release-with-old-archives",
+      "passed": [
+        "1 older archive(s) exceed the soft keep count; no files were deleted."
+      ],
+      "ok": true,
+      "errors": [],
+      "target": {
+        "name": "signal-before-dawn-slice",
+        "kind": "signal-slice",
+        "release_root": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/ok/releases/signal-before-dawn-slice",
+        "archive_count": 2,
+        "archive_bytes": 10,
+        "soft_keep": 1,
+        "older_than_soft_keep": 1,
+        "oldest_zip": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/ok/releases/signal-before-dawn-slice/20260101T000000Z-old.zip",
+        "latest_zip_by_name": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/ok/releases/signal-before-dawn-slice/20260103T000000Z-current.zip",
+        "release_report": {
+          "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/ok/assets/signal-before-dawn-slice/release-report.json",
+          "exists": true,
+          "bytes": 293,
+          "sha256": "22f57803ccd71b8066a3abc0f69f9ef2ea4bf26a34327fd4ca7589591035bc5e"
+        },
+        "verify_report": {
+          "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/ok/assets/signal-before-dawn-slice/release-verify-report.json",
+          "exists": true,
+          "bytes": 318,
+          "sha256": "e0b0c0e3932a5ae8fa18082282348c435ea9a8cb384447006b78ab43901256f9"
+        },
+        "release_state": "current-release",
+        "superseded_by_candidate": false,
+        "pending_required_approvals": [],
+        "notes": [
+          "1 older archive(s) exceed the soft keep count; no files were deleted."
+        ],
+        "current_zip": {
+          "path": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/ok/releases/signal-before-dawn-slice/20260103T000000Z-current.zip",
+          "exists": true,
+          "bytes": 7,
+          "sha256": "97b0560280ed60a5a1eaa1bc45492543c8a986ad5a25b468c427eb83c3e88191"
+        },
+        "current_zip_is_latest_by_name": true,
+        "verified_zip": {
+          "path": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/ok/releases/signal-before-dawn-slice/20260103T000000Z-current.zip",
+          "sha256": "97b0560280ed60a5a1eaa1bc45492543c8a986ad5a25b468c427eb83c3e88191"
+        },
+        "ship_evidence": {
+          "report": {
+            "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/ok/assets/signal-before-dawn-slice/ship-report.json",
+            "exists": true,
+            "bytes": 895,
+            "sha256": "e3d458538836293af7df5adb2469ea53953b92a5d278583a49e471a3bb51a907"
+          },
+          "pending_allowed": false,
+          "release_zip": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/ok/releases/signal-before-dawn-slice/20260103T000000Z-current.zip",
+          "release_zip_sha256": "97b0560280ed60a5a1eaa1bc45492543c8a986ad5a25b468c427eb83c3e88191",
+          "actual_zip": {
+            "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/ok/releases/signal-before-dawn-slice/20260103T000000Z-current.zip",
+            "exists": true,
+            "bytes": 7,
+            "sha256": "97b0560280ed60a5a1eaa1bc45492543c8a986ad5a25b468c427eb83c3e88191"
+          },
+          "verified_zip": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/ok/releases/signal-before-dawn-slice/20260103T000000Z-current.zip",
+          "verified_zip_sha256": "97b0560280ed60a5a1eaa1bc45492543c8a986ad5a25b468c427eb83c3e88191"
+        }
+      }
+    },
+    {
+      "name": "stale-release-report-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "signal-before-dawn-slice: release report does not point at the latest zip by name"
+      ]
+    },
+    {
+      "name": "current-workspace-mismatch-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "signal-before-dawn-slice: current workspace check has mismatches"
+      ]
+    },
+    {
+      "name": "stale-signal-ship-report-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "signal-before-dawn-slice: ship report release zip sha256 does not match release report"
+      ]
+    },
+    {
+      "name": "pending-signal-ship-transaction-allows-status-only-drift",
+      "passed": true,
+      "strict_errors": [
+        "signal-before-dawn-slice: ship report is not ok",
+        "signal-before-dawn-slice: ship report has errors"
+      ],
+      "transaction_errors": []
+    },
+    {
+      "name": "missing-signal-ship-actual-zip-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "signal-before-dawn-slice: ship report is missing actual release zip evidence"
+      ]
+    },
+    {
+      "name": "stale-signal-ship-actual-zip-bytes-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "signal-before-dawn-slice: ship report actual zip byte size does not match release report"
+      ]
+    },
+    {
+      "name": "current-game-release-evidence-passes",
+      "passed": true,
+      "ok": true,
+      "errors": [],
+      "game": {
+        "name": "sample-game",
+        "kind": "game",
+        "release_root": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/releases",
+        "archive_count": 1,
+        "archive_bytes": 12,
+        "soft_keep": 10,
+        "older_than_soft_keep": 0,
+        "oldest_zip": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/releases/20260103T000000Z-game.zip",
+        "latest_zip_by_name": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/releases/20260103T000000Z-game.zip",
+        "release_report": {
+          "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/reports/release-report.json",
+          "exists": true,
+          "bytes": 315,
+          "sha256": "760c0593b39622ea36ebfca65d64e1f7b2f06758cee7f9121bd0bc16c170465a"
+        },
+        "verify_report": {
+          "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/reports/release-verify-report.json",
+          "exists": true,
+          "bytes": 5445,
+          "sha256": "36168e42b4f5bdd0bdfe3ce8b09bb157b07fe4e4de5823955d82aa24e2ad9446"
+        },
+        "release_state": "current-release",
+        "superseded_by_candidate": false,
+        "pending_required_approvals": [],
+        "notes": [],
+        "current_zip": {
+          "path": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/releases/20260103T000000Z-game.zip",
+          "exists": true,
+          "bytes": 12,
+          "sha256": "b9c4dd27aae871dd1cef8092b1cf4247ceb5129336000e0d52651171c6cd188c"
+        },
+        "current_zip_is_latest_by_name": true,
+        "verified_zip": {
+          "path": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/releases/20260103T000000Z-game.zip",
+          "sha256": "b9c4dd27aae871dd1cef8092b1cf4247ceb5129336000e0d52651171c6cd188c"
+        },
+        "current_workspace": {
+          "checked": 6,
+          "missing": [],
+          "mismatches": [],
+          "unmapped": []
+        },
+        "game_verify_evidence": {
+          "has_readiness_assets": true,
+          "has_release_summary_visual_evidence": true,
+          "has_review_sheets_report": true,
+          "source_count": 2,
+          "background_asset_count": 1,
+          "character_asset_count": 1,
+          "sfx_asset_count": 0,
+          "expected_source_count": 2,
+          "expected_background_asset_count": 1,
+          "expected_character_asset_count": 1,
+          "expected_sfx_asset_count": 0,
+          "has_contact_sheet": true,
+          "extra_source_count": 0,
+          "live_readiness_assets": {
+            "present": true,
+            "checked": 8,
+            "mismatches": 0,
+            "missing": 0,
+            "unmapped": 0,
+            "extra_current": [],
+            "items": [
+              {
+                "label": "contact sheet",
+                "member": "preview/contact_sheet.png",
+                "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/assets/contact_sheet.png",
+                "exists": true,
+                "reported_sha256": "92d66c9b838d94b80882a479fec6d27ce598f6d99ef69c5c4773c8f50840e44a",
+                "current_sha256": "92d66c9b838d94b80882a479fec6d27ce598f6d99ef69c5c4773c8f50840e44a",
+                "matches": true,
+                "bytes": 13
+              },
+              {
+                "label": "review-sheets report",
+                "member": "reports/review-sheets-report.json",
+                "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/reports/review-sheets-report.json",
+                "exists": true,
+                "reported_sha256": "55f66c2c5aeb275ff5b1ae26b321d5c0b8ceda8c034b19c2643e046d024919f3",
+                "current_sha256": "55f66c2c5aeb275ff5b1ae26b321d5c0b8ceda8c034b19c2643e046d024919f3",
+                "matches": true,
+                "bytes": 13
+              },
+              {
+                "label": "scene preview sheet",
+                "member": "preview/scene_preview_sheet.png",
+                "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/assets/scene_preview_sheet.png",
+                "exists": true,
+                "reported_sha256": "a0a7c059765425666672655ecb367d6ac6a8d8f1a7bea139562f8e3945a55e48",
+                "current_sha256": "a0a7c059765425666672655ecb367d6ac6a8d8f1a7bea139562f8e3945a55e48",
+                "matches": true,
+                "bytes": 13
+              },
+              {
+                "label": "storyboard sheet",
+                "member": "preview/storyboard_sheet.png",
+                "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/assets/storyboard_sheet.png",
+                "exists": true,
+                "reported_sha256": "f364d46aa757c8c553ba8b9e7ac5f261cdddc265f56a370824ce789a33ff5886",
+                "current_sha256": "f364d46aa757c8c553ba8b9e7ac5f261cdddc265f56a370824ce789a33ff5886",
+                "matches": true,
+                "bytes": 10
+              },
+              {
+                "label": "source asset 1",
+                "member": "assets/sources/backgrounds_imagegen_source.png",
+                "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/assets/sources/backgrounds_imagegen_source.png",
+                "exists": true,
+                "reported_sha256": "cd30c3b08e9b6492706d5854c79bd4376503700ea38524eb0829c35daa5007a1",
+                "current_sha256": "cd30c3b08e9b6492706d5854c79bd4376503700ea38524eb0829c35daa5007a1",
+                "matches": true,
+                "bytes": 17
+              },
+              {
+                "label": "source asset 2",
+                "member": "assets/sources/characters_imagegen_source.png",
+                "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/assets/sources/characters_imagegen_source.png",
+                "exists": true,
+                "reported_sha256": "2650c8cfcef852a9bc77dfd5fba96c3f3e0f017ba1477de7162f1ef6816c0c19",
+                "current_sha256": "2650c8cfcef852a9bc77dfd5fba96c3f3e0f017ba1477de7162f1ef6816c0c19",
+                "matches": true,
+                "bytes": 16
+              },
+              {
+                "label": "background asset 1",
+                "member": "assets/backgrounds/room.png",
+                "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/assets/backgrounds/room.png",
+                "exists": true,
+                "reported_sha256": "aec8ac89e3df79191dd56f9875ad6f4a3577f42793aa7713b7f7df813383a389",
+                "current_sha256": "aec8ac89e3df79191dd56f9875ad6f4a3577f42793aa7713b7f7df813383a389",
+                "matches": true,
+                "bytes": 18
+              },
+              {
+                "label": "character asset 1",
+                "member": "assets/characters/hero_neutral.png",
+                "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/assets/characters/hero_neutral.png",
+                "exists": true,
+                "reported_sha256": "354920c3a0349216fdf9dac98c69c764ce5adf2852b169f1c94c10ac97dada1c",
+                "current_sha256": "354920c3a0349216fdf9dac98c69c764ce5adf2852b169f1c94c10ac97dada1c",
+                "matches": true,
+                "bytes": 17
+              }
+            ]
+          },
+          "release_summary": {
+            "lines": 37,
+            "expected_lines": 28,
+            "visual_evidence_lines": 4,
+            "has_visual_evidence": true,
+            "missing_expected_lines": 0
+          }
+        },
+        "game_binding_evidence": {
+          "has_reports": true,
+          "has_project": true,
+          "has_rom": true,
+          "has_manifest": true,
+          "has_manifest_artifacts": true,
+          "has_package_sources": true,
+          "has_workspace": true,
+          "reports": {
+            "build": true,
+            "smoke": true,
+            "readiness": true,
+            "audit": true
+          },
+          "project_sha256": "c54cedaa5ed84cd7e6504163a2ef25991e2ada2d59ce90ec3c1557b0c74c0ed8",
+          "rom_sha256": "rom-sha",
+          "rom_md5": "0x1234567890abcdef",
+          "has_audit_rom_binding": true,
+          "audit_rom_sha256": "rom-sha",
+          "manifest_files": 6,
+          "manifest_project_sha256": "c54cedaa5ed84cd7e6504163a2ef25991e2ada2d59ce90ec3c1557b0c74c0ed8",
+          "manifest_rom_checksum": "0x1234",
+          "package_sources": {
+            "readme": {
+              "exists": true,
+              "sha256": "readme-sha",
+              "member": "docs/README.md"
+            },
+            "asset_builder": {
+              "exists": true,
+              "sha256": "builder-sha",
+              "member": "source/build_sample_game.py"
+            },
+            "qa_report": {
+              "exists": true,
+              "sha256": "qa-sha",
+              "member": "reports/sample-game-qa-report.json"
+            }
+          },
+          "has_review_sheets_report": true,
+          "workspace_checked": 6
+        },
+        "ship_evidence": {
+          "report": {
+            "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/reports/ship-report.json",
+            "exists": true,
+            "bytes": 881,
+            "sha256": "165a320b152517ce24798651363b79ffe29c3f37176890ba6c48c9595a8d996a"
+          },
+          "pending_allowed": false,
+          "release_zip": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/releases/20260103T000000Z-game.zip",
+          "release_zip_sha256": "b9c4dd27aae871dd1cef8092b1cf4247ceb5129336000e0d52651171c6cd188c",
+          "actual_zip": {
+            "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/releases/20260103T000000Z-game.zip",
+            "exists": true,
+            "bytes": 12,
+            "sha256": "b9c4dd27aae871dd1cef8092b1cf4247ceb5129336000e0d52651171c6cd188c"
+          },
+          "verified_zip": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-ok/games/sample-game/releases/20260103T000000Z-game.zip",
+          "verified_zip_sha256": "b9c4dd27aae871dd1cef8092b1cf4247ceb5129336000e0d52651171c6cd188c"
+        }
+      }
+    },
+    {
+      "name": "pending-candidate-preserves-previous-release",
+      "passed": true,
+      "ok": true,
+      "errors": [],
+      "game": {
+        "name": "sample-game",
+        "kind": "game",
+        "release_root": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-pending-candidate/games/sample-game/releases",
+        "archive_count": 1,
+        "archive_bytes": 12,
+        "soft_keep": 10,
+        "older_than_soft_keep": 0,
+        "oldest_zip": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-pending-candidate/games/sample-game/releases/20260103T000000Z-game.zip",
+        "latest_zip_by_name": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-pending-candidate/games/sample-game/releases/20260103T000000Z-game.zip",
+        "release_report": {
+          "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-pending-candidate/games/sample-game/reports/release-report.json",
+          "exists": true,
+          "bytes": 330,
+          "sha256": "fa25e1070597af9d6a784e98701f1fbe5116208730ac2fac482df0c341d561b0"
+        },
+        "verify_report": {
+          "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-pending-candidate/games/sample-game/reports/release-verify-report.json",
+          "exists": true,
+          "bytes": 5460,
+          "sha256": "083fd1a0617bbec96d31f4bedbb32e13765bf023b002b0f34a297032179fe681"
+        },
+        "release_state": "previous-release",
+        "superseded_by_candidate": true,
+        "pending_required_approvals": [
+          "human-reader-playtest"
+        ],
+        "notes": [
+          "The recorded archive is the previous release; the current candidate is validated separately and remains blocked by required human approvals."
+        ],
+        "current_zip": {
+          "path": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-pending-candidate/games/sample-game/releases/20260103T000000Z-game.zip",
+          "exists": true,
+          "bytes": 12,
+          "sha256": "b9c4dd27aae871dd1cef8092b1cf4247ceb5129336000e0d52651171c6cd188c"
+        },
+        "current_zip_is_latest_by_name": true,
+        "verified_zip": {
+          "path": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-pending-candidate/games/sample-game/releases/20260103T000000Z-game.zip",
+          "sha256": "b9c4dd27aae871dd1cef8092b1cf4247ceb5129336000e0d52651171c6cd188c"
+        },
+        "current_workspace": {
+          "checked": 6,
+          "missing": [],
+          "mismatches": [],
+          "unmapped": []
+        },
+        "game_verify_evidence": {
+          "has_readiness_assets": true,
+          "has_release_summary_visual_evidence": true,
+          "has_review_sheets_report": true,
+          "source_count": 2,
+          "background_asset_count": 1,
+          "character_asset_count": 1,
+          "sfx_asset_count": 0,
+          "expected_source_count": null,
+          "expected_background_asset_count": null,
+          "expected_character_asset_count": null,
+          "expected_sfx_asset_count": null,
+          "has_contact_sheet": true,
+          "extra_source_count": 0,
+          "release_summary": {
+            "lines": 37,
+            "expected_lines": 28,
+            "visual_evidence_lines": 4,
+            "has_visual_evidence": true,
+            "missing_expected_lines": 0
+          }
+        },
+        "game_binding_evidence": {
+          "has_reports": true,
+          "has_project": true,
+          "has_rom": true,
+          "has_manifest": true,
+          "has_manifest_artifacts": true,
+          "has_package_sources": true,
+          "has_workspace": true,
+          "reports": {
+            "build": true,
+            "smoke": true,
+            "readiness": true,
+            "audit": true
+          },
+          "project_sha256": "c54cedaa5ed84cd7e6504163a2ef25991e2ada2d59ce90ec3c1557b0c74c0ed8",
+          "rom_sha256": "rom-sha",
+          "rom_md5": "0x1234567890abcdef",
+          "has_audit_rom_binding": true,
+          "audit_rom_sha256": "rom-sha",
+          "manifest_files": 6,
+          "manifest_project_sha256": "c54cedaa5ed84cd7e6504163a2ef25991e2ada2d59ce90ec3c1557b0c74c0ed8",
+          "manifest_rom_checksum": "0x1234",
+          "package_sources": {
+            "readme": {
+              "exists": true,
+              "sha256": "readme-sha",
+              "member": "docs/README.md"
+            },
+            "asset_builder": {
+              "exists": true,
+              "sha256": "builder-sha",
+              "member": "source/build_sample_game.py"
+            },
+            "qa_report": {
+              "exists": true,
+              "sha256": "qa-sha",
+              "member": "reports/sample-game-qa-report.json"
+            }
+          },
+          "has_review_sheets_report": true,
+          "workspace_checked": 6
+        },
+        "ship_evidence": {
+          "report": {
+            "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-pending-candidate/games/sample-game/reports/ship-report.json",
+            "exists": true,
+            "bytes": 926,
+            "sha256": "2d90462f5862e25ac66aa63299a5248a31513ca16f2c1605a4b56f3b96e3d07f"
+          },
+          "pending_allowed": false,
+          "release_zip": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-pending-candidate/games/sample-game/releases/20260103T000000Z-game.zip",
+          "release_zip_sha256": "b9c4dd27aae871dd1cef8092b1cf4247ceb5129336000e0d52651171c6cd188c",
+          "actual_zip": {
+            "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-pending-candidate/games/sample-game/releases/20260103T000000Z-game.zip",
+            "exists": true,
+            "bytes": 12,
+            "sha256": "b9c4dd27aae871dd1cef8092b1cf4247ceb5129336000e0d52651171c6cd188c"
+          },
+          "verified_zip": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/game-pending-candidate/games/sample-game/releases/20260103T000000Z-game.zip",
+          "verified_zip_sha256": "b9c4dd27aae871dd1cef8092b1cf4247ceb5129336000e0d52651171c6cd188c"
+        }
+      }
+    },
+    {
+      "name": "stale-game-ship-report-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "sample-game: ship report release zip sha256 does not match release report"
+      ]
+    },
+    {
+      "name": "missing-game-ship-actual-zip-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "sample-game: ship report is missing actual release zip evidence"
+      ]
+    },
+    {
+      "name": "stale-game-release-summary-evidence-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "sample-game: game release-summary evidence does not prove contact/source visual evidence",
+        "sample-game: game release-summary evidence is too old to prove the visual evidence contract"
+      ]
+    },
+    {
+      "name": "missing-game-readiness-assets-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "sample-game: game release verify report is missing readiness asset evidence"
+      ]
+    },
+    {
+      "name": "missing-game-runtime-asset-evidence-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "sample-game: game release verify report has 0 background asset entries, expected at least 1",
+        "sample-game: current workspace has packageable visual files missing from release verification: assets/backgrounds/room.png"
+      ]
+    },
+    {
+      "name": "post-verify-game-runtime-asset-drift-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "sample-game: current workspace background asset 1 sha256 does not match release verification: assets/backgrounds/room.png"
+      ]
+    },
+    {
+      "name": "extra-live-game-asset-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "sample-game: current workspace has packageable visual files missing from release verification: assets/backgrounds/new_bg.png, assets/sources/new_source.png"
+      ]
+    },
+    {
+      "name": "missing-game-binding-evidence-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "sample-game: game release verify report is missing packaged project hash evidence",
+        "sample-game: game release release verifier is missing current project sha256 evidence"
+      ]
+    },
+    {
+      "name": "missing-game-manifest-artifact-binding-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "sample-game: game release verify report is missing manifest artifact binding evidence",
+        "sample-game: game release manifest project is missing current project sha256 evidence"
+      ]
+    },
+    {
+      "name": "incomplete-game-workspace-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "sample-game: game release verify checked 2 files but manifest has 6"
+      ]
+    },
+    {
+      "name": "same-count-project-drift-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "sample-game: game release build report project sha256 does not match current project",
+        "sample-game: game release readiness report project sha256 does not match current project",
+        "sample-game: game release audit report project sha256 does not match current project",
+        "sample-game: game release release verifier project sha256 does not match current project",
+        "sample-game: game release manifest project project sha256 does not match current project"
+      ]
+    },
+    {
+      "name": "nongame-folder-is-ignored",
+      "passed": true,
+      "ok": true,
+      "errors": [],
+      "game_names": [
+        "sample-game"
+      ]
+    },
+    {
+      "name": "mismatched-game-project-name-fails",
+      "passed": true,
+      "ok": false,
+      "errors": [
+        "sample-game: game project filename mismatch; expected sample-game.wscvn.json, found wrong-name.wscvn.json"
+      ],
+      "malformed": [
+        {
+          "name": "sample-game",
+          "kind": "malformed-game",
+          "root": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/mismatched-game-project/games/sample-game",
+          "expected_project": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/mismatched-game-project/games/sample-game/projects/sample-game.wscvn.json",
+          "projects": [
+            "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-release-inventory-zhxpbxdf/mismatched-game-project/games/sample-game/projects/wrong-name.wscvn.json"
+          ],
+          "source_wrappers": []
+        }
+      ]
+    }
+  ]
+}

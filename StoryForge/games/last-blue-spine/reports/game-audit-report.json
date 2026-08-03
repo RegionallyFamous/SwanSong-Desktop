@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:47:11.438290+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "last-blue-spine",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/projects/last-blue-spine.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/runtime-local/last-blue-spine.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/last-blue-spine-qa-report.json",
+    "project_counts": {
+      "name": "The Last Blue Spine",
+      "nodes": 35,
+      "flags": 6,
+      "tracks": 1,
+      "backgrounds": 3,
+      "characters": 6,
+      "sfx": 0
+    },
+    "header_counts": {
+      "NUM_NODES": 35,
+      "NUM_FLAGS": 6,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 1,
+      "NUM_SFX": 0,
+      "NUM_BG_ASSETS": 3,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 6
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/projects/last-blue-spine.wscvn.json",
+      "bytes": 163794,
+      "sha256": "37e0e3b11b1bbdef9d56c280cf9beaeef646c883cce357d71fc50e4cae84c13d"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/runtime-local/last-blue-spine.wsc",
+      "bytes": 8388608,
+      "sha256": "c0e909da86e295f6180b34e5d12edc720a7cda646bb76e54c040b2557a39c14d"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/emulator-smoke-report.json",
+      "bytes": 1193,
+      "sha256": "ad9716314d7f4052517ec580f74a31451c899d6eae81e6aa65baa3539f9307a4"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/game-readiness-report.json",
+      "bytes": 21684,
+      "sha256": "24342c6bca32662241c2a6b8bf340b9e29ba9b3d63e38754ee13f81e27549744"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/last-blue-spine-qa-report.json",
+      "bytes": 2553,
+      "sha256": "9070d65755d2c52bb806cd5db104f366c6a9aa1504536b20b6fd9fd92f51f2f3"
+    }
+  }
+}

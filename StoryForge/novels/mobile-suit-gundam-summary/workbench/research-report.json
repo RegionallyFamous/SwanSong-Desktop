@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "tool": "research-report",
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/novels/mobile-suit-gundam-summary/novel.json",
+    "sha256": "475f58a254e36a67858f94199c9caee2425683d23efa98fbe95127c6b54140db"
+  },
+  "manuscript_sha256": "9734b4fd229ad70951047015af6157b802081afa6cd6ca9522d9edd8dca22d0b",
+  "slug": "mobile-suit-gundam-summary",
+  "workbench_schema_version": 1,
+  "generated_at": "2026-07-23T02:28:00.821006+00:00",
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "notebook": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/novels/mobile-suit-gundam-summary/workbench/research-notebook.json",
+    "sources": 4,
+    "claims": 4,
+    "verified_claims": 4,
+    "authenticity_reviews": 0
+  }
+}

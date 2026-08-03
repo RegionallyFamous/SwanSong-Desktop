@@ -1,0 +1,42 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mednafen_version": "1.32.1",
+    "module": "wswan(WonderSwan)",
+    "rom_size_reported": "8192KiB",
+    "rom_md5": "0x00e7bf06126932b002254edd94d43f53",
+    "recorded_checksum": "0x0c8d",
+    "real_checksum": "0x0c8d"
+  },
+  "verification": {
+    "boot": {
+      "performed": true,
+      "passed": true,
+      "method": "headless-mednafen-startup-metadata",
+      "pixels_observed": false
+    },
+    "checksum": {
+      "performed": true,
+      "passed": true,
+      "method": "mednafen-recorded-vs-real-checksum"
+    },
+    "visual": {
+      "performed": false,
+      "passed": null,
+      "status": "screenshot-proof-bound",
+      "pixels_observed": false,
+      "proof_bound": true,
+      "screenshot": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-title-screen-v2.png",
+        "bytes": 12463,
+        "sha256": "a33df23f802fa1ae6de4a5ab6199f85d7f8753f733d59298789c1c60fac16eda",
+        "media_type": "image/png"
+      }
+    }
+  },
+  "result_scope": "boot-and-checksum",
+  "exit_mode": "metadata-timeout-terminated",
+  "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/signal-before-dawn-slice.wsc",
+  "output_excerpt": "Starting Mednafen 1.32.1\n  Using module: wswan(WonderSwan)\n   ROM:       8192KiB\n   ROM MD5:   0x00e7bf06126932b002254edd94d43f53\n   Recorded Checksum:  0x0c8d\n   Real Checksum:      0x0c8d"
+}

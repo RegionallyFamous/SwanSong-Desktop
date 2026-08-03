@@ -49,6 +49,10 @@ write_valid_fixture() {
   mkdir -p "$TEMP_ROOT/archive-payload/SwanSong.app/Contents"
   printf 'synthetic release payload\n' \
     >"$TEMP_ROOT/archive-payload/SwanSong.app/Contents/placeholder"
+  python3 "$SCRIPT_DIR/materialize-story-forge-framework.py" \
+    "$SCRIPT_DIR/../StoryForge" \
+    "$TEMP_ROOT/archive-payload/SwanSong.app/Contents/Resources/StoryForge" \
+    --source-commit "$SOURCE_COMMIT"
   sparkle_framework="$TEMP_ROOT/archive-payload/SwanSong.app/Contents/Frameworks/Sparkle.framework"
   mkdir -p \
     "$sparkle_framework/Versions/B/Headers" \
@@ -90,7 +94,12 @@ write_valid_fixture() {
   for source_path in \
     Dependencies/sparkle-source/LICENSE \
     Dependencies/sparkle-source/Package.swift \
-    Dependencies/sparkle-source/Sparkle/Sparkle.h; do
+    Dependencies/sparkle-source/Sparkle/Sparkle.h \
+    StoryForge/README.md \
+    StoryForge/scripts/forge.py \
+    StoryForge/scripts/forge_create_novel.py \
+    StoryForge/skills/forge-light-novels/SKILL.md \
+    StoryForge/skills/forge-light-novels/assets/starter/novel.json; do
     mkdir -p "$(dirname -- "$SOURCE_ROOT/$source_path")"
     printf 'synthetic corresponding source: %s\n' "$source_path" \
       >"$SOURCE_ROOT/$source_path"
@@ -100,9 +109,9 @@ write_valid_fixture() {
   printf 'synthetic Sparkle license\n' \
     >"$SOURCE_ROOT/Dependencies/sparkle-source/LICENSE"
   cat >"$SOURCE_ROOT/Dependencies/sparkle-source/Package.swift" <<'EOF'
-let version = "2.9.4"
-let tag = "2.9.4"
-let checksum = "cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"
+let version = "2.9.5"
+let tag = "2.9.5"
+let checksum = "34b9b2071f3de0012eca3faa3a9290bb94e62131e9a74f6dc91514a000097a6c"
 let url = "Sparkle-for-Swift-Package-Manager.zip"
 EOF
   cat >"$SOURCE_ROOT/Package.resolved" <<EOF
@@ -111,7 +120,7 @@ EOF
     "identity": "sparkle",
     "kind": "remoteSourceControl",
     "location": "https://github.com/sparkle-project/Sparkle.git",
-    "state": {"revision": "$SPARKLE_COMMIT", "version": "2.9.4"}
+    "state": {"revision": "$SPARKLE_COMMIT", "version": "2.9.5"}
   }]
 }
 EOF
@@ -128,9 +137,9 @@ EOF
   cat >"$SOURCE_ROOT/Dependencies/sparkle.lock.json" <<EOF
 {
   "repository": "https://github.com/sparkle-project/Sparkle.git",
-  "version": "2.9.4",
+  "version": "2.9.5",
   "commit": "$SPARKLE_COMMIT",
-  "swiftPackageArtifactSHA256": "cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"
+  "swiftPackageArtifactSHA256": "34b9b2071f3de0012eca3faa3a9290bb94e62131e9a74f6dc91514a000097a6c"
 }
 EOF
   COPYFILE_DISABLE=1 tar -cJf "$SOURCE_ARCHIVE" \
@@ -175,7 +184,7 @@ EOF
   "engineServiceSHA256": "$ENGINE_SERVICE_HASH",
   "engineSHA256": "$ENGINE_HASH",
   "privacyManifestSHA256": "$PRIVACY_MANIFEST_HASH",
-  "sparkleVersion": "2.9.4",
+  "sparkleVersion": "2.9.5",
   "sparkleFrameworkExecutableSHA256": "$SPARKLE_FRAMEWORK_HASH",
   "sparkleAutoupdateSHA256": "$SPARKLE_AUTOUPDATE_HASH",
   "sparkleUpdaterSHA256": "$SPARKLE_UPDATER_HASH",

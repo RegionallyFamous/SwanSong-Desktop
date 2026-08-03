@@ -1,0 +1,1736 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:56:35.802400+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets",
+    "thresholds": {
+      "screen": [
+        224,
+        144
+      ],
+      "character_max": [
+        96,
+        128
+      ],
+      "background_visible_colors_max": 16,
+      "character_visible_colors_max": 15,
+      "character_visible_colors_min": 6,
+      "character_tiles_max": 192,
+      "background_tiles_max": 511,
+      "alpha_coverage": [
+        0.2,
+        0.75
+      ],
+      "visible_above_textbox": [
+        0.52,
+        0.92
+      ],
+      "character_luma_stddev_min": 24.0,
+      "face_detail_box": [
+        28,
+        36,
+        68,
+        72
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "face_visible_colors_min": 4,
+      "face_luma_stddev_min": 18.0,
+      "animation_frames": [
+        "neutral",
+        "talk",
+        "blink"
+      ],
+      "hardware_char_anims": [
+        "blink",
+        "talking",
+        "talk-blink"
+      ],
+      "min_talk_frame_pixel_delta": 18,
+      "min_blink_frame_pixel_delta": 8,
+      "min_talk_face_pixel_delta": 18,
+      "min_blink_face_pixel_delta": 8,
+      "max_animation_alpha_changed": 0,
+      "max_animation_bbox_area": 1200,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_frame_center_drift": 0.04,
+      "max_frame_scale_drift": 0.08,
+      "min_scene_sprite_bg_luma_delta": 50.0,
+      "max_scene_bg_detail_under_sprite": 62.0
+    },
+    "backgrounds": {
+      "backgrounds/glass_case.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 21.65,
+        "sha256": "aba48a22d6b161fbf46d49e54113ee69f8b8448f59414b2406f4cac6716677a1"
+      },
+      "backgrounds/market_aisle.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 16.37,
+        "sha256": "32011ae73dc5323b14a97a4d12883fe56cba96ad7e17ebe72553df2137d1d4f5"
+      },
+      "backgrounds/platform_trade.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 11,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 9.66,
+        "sha256": "20aab921e3c923c8f85673df47bc3aec56da740ac98a20d5e5c9284b3406eea1"
+      }
+    },
+    "characters": {
+      "characters/jun_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          9,
+          20,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4777,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5366,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 74.3,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 9,
+          "luma_stddev": 69.43
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5870,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "8712f7140c593d6eb3bb9efd5cf0ddbe4e42ab3fc06cdc0313ad5183c8818386"
+      },
+      "characters/jun_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          9,
+          20,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4777,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5366,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 74.14,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 9,
+          "luma_stddev": 72.04
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5870,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "3b6fed40e724873e1e16f11a771317372c1124e370f9930c0d14ff13f0fb2bc3"
+      },
+      "characters/jun_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          9,
+          20,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4777,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5366,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 73.93,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 9,
+          "luma_stddev": 72.6
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5870,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "8039af674288b8482785804cf9928e2788680a1faa10a047a7623cf2abcee9ca"
+      },
+      "characters/sora_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          21,
+          89,
+          127
+        ],
+        "alpha_coverage": 0.5037,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5457,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 68.43,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 10,
+          "luma_stddev": 69.01
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6190,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "d0f354f16f0f367074fa079d7391c98df983127be3652223e1510781b100c041"
+      },
+      "characters/sora_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          21,
+          89,
+          127
+        ],
+        "alpha_coverage": 0.5037,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5457,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 68.33,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 10,
+          "luma_stddev": 71.86
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6190,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "eabeeafa51ed5182cdfd838a532ab2686aae6de59a8713bd1dda9df026cd3543"
+      },
+      "characters/sora_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          21,
+          89,
+          127
+        ],
+        "alpha_coverage": 0.5037,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5457,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 67.98,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 11,
+          "luma_stddev": 72.06
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6190,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "fbfa976508e244f8ba77530d237d6cf4b32e016a7ff99ed13d522a2085ff3fef"
+      }
+    },
+    "sprite_families": {
+      "jun": {
+        "body": "jun",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/characters/jun_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                9,
+                20,
+                88,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.5742
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.8359
+              ],
+              "bbox_area_ratio": 0.6879
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/characters/jun_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                9,
+                20,
+                88,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.5742
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.8359
+              ],
+              "bbox_area_ratio": 0.6879
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 104,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                42,
+                64,
+                56,
+                72
+              ],
+              "changed_bbox_area": 112
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 104,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                14,
+                28,
+                28,
+                36
+              ],
+              "changed_bbox_area": 112
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/characters/jun_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                9,
+                20,
+                88,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.5742
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.8359
+              ],
+              "bbox_area_ratio": 0.6879
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 203,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                30,
+                39,
+                66,
+                49
+              ],
+              "changed_bbox_area": 360
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 203,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                6,
+                19,
+                42,
+                29
+              ],
+              "changed_bbox_area": 360
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      },
+      "sora": {
+        "body": "sora",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/characters/sora_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                21,
+                89,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.5781
+              ],
+              "bbox_size_norm": [
+                0.8438,
+                0.8281
+              ],
+              "bbox_area_ratio": 0.6987
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/characters/sora_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                21,
+                89,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.5781
+              ],
+              "bbox_size_norm": [
+                0.8438,
+                0.8281
+              ],
+              "bbox_area_ratio": 0.6987
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 111,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                38,
+                56,
+                59,
+                72
+              ],
+              "changed_bbox_area": 336
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 111,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                10,
+                20,
+                31,
+                36
+              ],
+              "changed_bbox_area": 336
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/characters/sora_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                21,
+                89,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.5781
+              ],
+              "bbox_size_norm": [
+                0.8438,
+                0.8281
+              ],
+              "bbox_area_ratio": 0.6987
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 204,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                30,
+                39,
+                66,
+                49
+              ],
+              "changed_bbox_area": 360
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 204,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                6,
+                19,
+                42,
+                29
+              ],
+              "changed_bbox_area": 360
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      }
+    },
+    "sprite_approvals": {
+      "audition_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/assets/auditions",
+      "approval_count": 1,
+      "covered_output_count": 6,
+      "covered_outputs": {
+        "characters/jun_blink.png": {
+          "approval": "games/mono-cart-morning/assets/auditions/mono-cart-morning-runtime_approval.json",
+          "sha256": "8712f7140c593d6eb3bb9efd5cf0ddbe4e42ab3fc06cdc0313ad5183c8818386"
+        },
+        "characters/jun_neutral.png": {
+          "approval": "games/mono-cart-morning/assets/auditions/mono-cart-morning-runtime_approval.json",
+          "sha256": "3b6fed40e724873e1e16f11a771317372c1124e370f9930c0d14ff13f0fb2bc3"
+        },
+        "characters/jun_talk.png": {
+          "approval": "games/mono-cart-morning/assets/auditions/mono-cart-morning-runtime_approval.json",
+          "sha256": "8039af674288b8482785804cf9928e2788680a1faa10a047a7623cf2abcee9ca"
+        },
+        "characters/sora_blink.png": {
+          "approval": "games/mono-cart-morning/assets/auditions/mono-cart-morning-runtime_approval.json",
+          "sha256": "d0f354f16f0f367074fa079d7391c98df983127be3652223e1510781b100c041"
+        },
+        "characters/sora_neutral.png": {
+          "approval": "games/mono-cart-morning/assets/auditions/mono-cart-morning-runtime_approval.json",
+          "sha256": "eabeeafa51ed5182cdfd838a532ab2686aae6de59a8713bd1dda9df026cd3543"
+        },
+        "characters/sora_talk.png": {
+          "approval": "games/mono-cart-morning/assets/auditions/mono-cart-morning-runtime_approval.json",
+          "sha256": "fbfa976508e244f8ba77530d237d6cf4b32e016a7ff99ed13d522a2085ff3fef"
+        }
+      },
+      "missing_outputs": [],
+      "skipped": false
+    },
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/projects/mono-cart-morning.wscvn.json",
+      "ok": true,
+      "assets": {
+        "background_asset_count": 3,
+        "character_asset_count": 6,
+        "backgrounds": {
+          "bg_glass_case": {
+            "origName": "glass_case.png",
+            "rel_path": "backgrounds/glass_case.png",
+            "exists": true
+          },
+          "bg_market_aisle": {
+            "origName": "market_aisle.png",
+            "rel_path": "backgrounds/market_aisle.png",
+            "exists": true
+          },
+          "bg_platform_trade": {
+            "origName": "platform_trade.png",
+            "rel_path": "backgrounds/platform_trade.png",
+            "exists": true
+          }
+        },
+        "characters": {
+          "char_jun_blink": {
+            "origName": "jun_blink.png",
+            "rel_path": "characters/jun_blink.png",
+            "exists": true
+          },
+          "char_jun_neutral": {
+            "origName": "jun_neutral.png",
+            "rel_path": "characters/jun_neutral.png",
+            "exists": true
+          },
+          "char_jun_talk": {
+            "origName": "jun_talk.png",
+            "rel_path": "characters/jun_talk.png",
+            "exists": true
+          },
+          "char_sora_blink": {
+            "origName": "sora_blink.png",
+            "rel_path": "characters/sora_blink.png",
+            "exists": true
+          },
+          "char_sora_neutral": {
+            "origName": "sora_neutral.png",
+            "rel_path": "characters/sora_neutral.png",
+            "exists": true
+          },
+          "char_sora_talk": {
+            "origName": "sora_talk.png",
+            "rel_path": "characters/sora_talk.png",
+            "exists": true
+          }
+        }
+      },
+      "scene_wiring": {
+        "scene_count": 57,
+        "animated_scene_count": 57,
+        "character_reference_count": 171,
+        "background_reference_count": 57,
+        "scene_visual_count": 57,
+        "scenes": [
+          {
+            "id": "aisle_open",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          },
+          {
+            "id": "aisle_open__beat2",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          },
+          {
+            "id": "aisle_open__beat3",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          },
+          {
+            "id": "battery_test",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 62.09,
+            "background_detail_under_sprite": 52.75
+          },
+          {
+            "id": "battery_test__beat2",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 62.09,
+            "background_detail_under_sprite": 52.75
+          },
+          {
+            "id": "battery_test__beat3",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 62.09,
+            "background_detail_under_sprite": 52.75
+          },
+          {
+            "id": "check_shells",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          },
+          {
+            "id": "check_shells__beat2",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          },
+          {
+            "id": "check_shells__beat3",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          },
+          {
+            "id": "boot_them",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 62.09,
+            "background_detail_under_sprite": 52.75
+          },
+          {
+            "id": "boot_them__beat2",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 62.09,
+            "background_detail_under_sprite": 52.75
+          },
+          {
+            "id": "boot_them__beat3",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 62.09,
+            "background_detail_under_sprite": 52.75
+          },
+          {
+            "id": "ask_stories",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          },
+          {
+            "id": "ask_stories__beat2",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          },
+          {
+            "id": "ask_stories__beat3",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          },
+          {
+            "id": "glass_signal",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 69.68,
+            "background_detail_under_sprite": 48.01
+          },
+          {
+            "id": "glass_signal__beat2",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 69.68,
+            "background_detail_under_sprite": 48.01
+          },
+          {
+            "id": "glass_signal__beat3",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 69.68,
+            "background_detail_under_sprite": 48.01
+          },
+          {
+            "id": "case_look",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 73.65,
+            "background_detail_under_sprite": 50.94
+          },
+          {
+            "id": "case_look__beat2",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 73.65,
+            "background_detail_under_sprite": 50.94
+          },
+          {
+            "id": "case_look__beat3",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 73.65,
+            "background_detail_under_sprite": 50.94
+          },
+          {
+            "id": "boxed_unit",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 73.65,
+            "background_detail_under_sprite": 50.94
+          },
+          {
+            "id": "boxed_unit__beat2",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 73.65,
+            "background_detail_under_sprite": 50.94
+          },
+          {
+            "id": "boxed_unit__beat3",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 73.65,
+            "background_detail_under_sprite": 50.94
+          },
+          {
+            "id": "loose_lot",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 62.09,
+            "background_detail_under_sprite": 52.75
+          },
+          {
+            "id": "loose_lot__beat2",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 62.09,
+            "background_detail_under_sprite": 52.75
+          },
+          {
+            "id": "loose_lot__beat3",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 62.09,
+            "background_detail_under_sprite": 52.75
+          },
+          {
+            "id": "save_trade",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          },
+          {
+            "id": "save_trade__beat2",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          },
+          {
+            "id": "save_trade__beat3",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          },
+          {
+            "id": "list_inside",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 69.68,
+            "background_detail_under_sprite": 48.01
+          },
+          {
+            "id": "list_inside__beat2",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 69.68,
+            "background_detail_under_sprite": 48.01
+          },
+          {
+            "id": "list_inside__beat3",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 69.68,
+            "background_detail_under_sprite": 48.01
+          },
+          {
+            "id": "train_signal",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 57.24,
+            "background_detail_under_sprite": 38.1
+          },
+          {
+            "id": "train_signal__beat2",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 57.24,
+            "background_detail_under_sprite": 38.1
+          },
+          {
+            "id": "train_signal__beat3",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 57.24,
+            "background_detail_under_sprite": 38.1
+          },
+          {
+            "id": "platform_meet",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 61.54,
+            "background_detail_under_sprite": 40.43
+          },
+          {
+            "id": "platform_meet__beat2",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 61.54,
+            "background_detail_under_sprite": 40.43
+          },
+          {
+            "id": "platform_meet__beat3",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 61.54,
+            "background_detail_under_sprite": 40.43
+          },
+          {
+            "id": "make_shelf",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 73.65,
+            "background_detail_under_sprite": 50.94
+          },
+          {
+            "id": "make_shelf__beat2",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 73.65,
+            "background_detail_under_sprite": 50.94
+          },
+          {
+            "id": "make_shelf__beat3",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 73.65,
+            "background_detail_under_sprite": 50.94
+          },
+          {
+            "id": "make_log",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 61.54,
+            "background_detail_under_sprite": 40.43
+          },
+          {
+            "id": "make_log__beat2",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 61.54,
+            "background_detail_under_sprite": 40.43
+          },
+          {
+            "id": "make_log__beat3",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 61.54,
+            "background_detail_under_sprite": 40.43
+          },
+          {
+            "id": "make_lending",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 57.24,
+            "background_detail_under_sprite": 38.1
+          },
+          {
+            "id": "make_lending__beat2",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 57.24,
+            "background_detail_under_sprite": 38.1
+          },
+          {
+            "id": "make_lending__beat3",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 57.24,
+            "background_detail_under_sprite": 38.1
+          },
+          {
+            "id": "end_shelf",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 73.65,
+            "background_detail_under_sprite": 50.94
+          },
+          {
+            "id": "end_shelf__beat2",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 73.65,
+            "background_detail_under_sprite": 50.94
+          },
+          {
+            "id": "end_shelf__beat3",
+            "bgImageId": "bg_glass_case",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 73.65,
+            "background_detail_under_sprite": 50.94
+          },
+          {
+            "id": "end_log",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 61.54,
+            "background_detail_under_sprite": 40.43
+          },
+          {
+            "id": "end_log__beat2",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 61.54,
+            "background_detail_under_sprite": 40.43
+          },
+          {
+            "id": "end_log__beat3",
+            "bgImageId": "bg_platform_trade",
+            "charId": "char_sora_neutral",
+            "char2Id": "char_sora_talk",
+            "char3Id": "char_sora_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "sora",
+            "expected_char2Id": "char_sora_talk",
+            "expected_char3Id": "char_sora_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3378,
+            "sprite_bg_luma_delta": 61.54,
+            "background_detail_under_sprite": 40.43
+          },
+          {
+            "id": "end_lending",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          },
+          {
+            "id": "end_lending__beat2",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          },
+          {
+            "id": "end_lending__beat3",
+            "bgImageId": "bg_market_aisle",
+            "charId": "char_jun_neutral",
+            "char2Id": "char_jun_talk",
+            "char3Id": "char_jun_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "jun",
+            "expected_char2Id": "char_jun_talk",
+            "expected_char3Id": "char_jun_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3150,
+            "sprite_bg_luma_delta": 54.24,
+            "background_detail_under_sprite": 49.58
+          }
+        ],
+        "lowest_sprite_bg_contrast": [
+          {
+            "id": "aisle_open",
+            "background": "bg_market_aisle",
+            "character": "char_jun_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 54.24
+          },
+          {
+            "id": "aisle_open__beat2",
+            "background": "bg_market_aisle",
+            "character": "char_jun_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 54.24
+          },
+          {
+            "id": "aisle_open__beat3",
+            "background": "bg_market_aisle",
+            "character": "char_jun_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 54.24
+          },
+          {
+            "id": "ask_stories",
+            "background": "bg_market_aisle",
+            "character": "char_jun_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 54.24
+          },
+          {
+            "id": "ask_stories__beat2",
+            "background": "bg_market_aisle",
+            "character": "char_jun_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 54.24
+          }
+        ],
+        "busiest_sprite_lanes": [
+          {
+            "id": "battery_test",
+            "background": "bg_market_aisle",
+            "character": "char_sora_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 52.75
+          },
+          {
+            "id": "battery_test__beat2",
+            "background": "bg_market_aisle",
+            "character": "char_sora_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 52.75
+          },
+          {
+            "id": "battery_test__beat3",
+            "background": "bg_market_aisle",
+            "character": "char_sora_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 52.75
+          },
+          {
+            "id": "boot_them",
+            "background": "bg_market_aisle",
+            "character": "char_sora_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 52.75
+          },
+          {
+            "id": "boot_them__beat2",
+            "background": "bg_market_aisle",
+            "character": "char_sora_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 52.75
+          }
+        ]
+      }
+    },
+    "counts": {
+      "backgrounds": 3,
+      "characters": 6,
+      "sprite_families": 2,
+      "sprite_approval_outputs": 6,
+      "provenance_outputs": 9
+    }
+  }
+}

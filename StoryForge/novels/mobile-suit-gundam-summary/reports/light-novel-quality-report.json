@@ -1,0 +1,132 @@
+{
+  "schema_version": 3,
+  "ok": true,
+  "requested_stage": "draft",
+  "manifest_stage": "draft",
+  "generated_at_utc": "2026-07-23T21:56:34.671692+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "manifest": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/novels/mobile-suit-gundam-summary/novel.json",
+      "sha256": "0641681e9a0eceeb7d17ccc084abd5b33d2b817504fadf0c1c85888e8add8c85"
+    },
+    "quality_settings": {
+      "minimum_premise_candidates": 5,
+      "minimum_scenes": 6,
+      "minimum_setups": 8,
+      "minimum_motifs": 2,
+      "minimum_scene_words": 200,
+      "maximum_scene_words": 800,
+      "minimum_draft_completion_ratio": 1.0,
+      "repeated_ngram_words": 8,
+      "maximum_repeated_ngram_uses": 2,
+      "maximum_repeated_sentence_uses": 1,
+      "minimum_scorecard_score": 4,
+      "minimum_reader_tests": 2,
+      "minimum_general_reader_tests": 1,
+      "minimum_target_reader_tests": 1,
+      "minimum_genre_reader_tests": 0,
+      "minimum_revision_ledger_entries": 3,
+      "minimum_signature_moments_per_chapter": 3,
+      "maximum_flat_rhythm_run": 2,
+      "minimum_voice_samples_per_character": 2,
+      "minimum_illustration_moments": 14,
+      "banned_phrases": [],
+      "waivers": [],
+      "validated_waiver_keys": []
+    },
+    "framework_and_rights": {
+      "profile_version": "3.0.0",
+      "mode": "fan-work",
+      "release_scope": "private",
+      "commercial_clearance": "not-applicable"
+    },
+    "concept": {
+      "cast_ids": [
+        "protagonist",
+        "foil"
+      ],
+      "target_words": 2664,
+      "premise_candidates": 5,
+      "selected_premise_id": "candidate-01",
+      "genre_module": "science-fiction",
+      "genre_required_checks": [
+        "emotional-payoff",
+        "speculative-constraint",
+        "systemic-consequence"
+      ],
+      "series_id": "series-summary-visual-novels",
+      "volume_number": 1,
+      "canon_entries": 1
+    },
+    "outline": {
+      "scene_ids": [
+        "scene-01",
+        "scene-02",
+        "scene-03",
+        "scene-04",
+        "scene-05",
+        "scene-06"
+      ],
+      "scene_index": {
+        "scene-01": 0,
+        "scene-02": 1,
+        "scene-03": 2,
+        "scene-04": 3,
+        "scene-05": 4,
+        "scene-06": 5
+      },
+      "scene_count": 6,
+      "genre_checks": 3,
+      "signature_moments": 3,
+      "illustration_moments": 14
+    },
+    "continuity_and_soundtrack": {
+      "continuity_entities": 3,
+      "continuity_events": 3,
+      "soundtrack_enabled": true
+    },
+    "draft": {
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/novels/mobile-suit-gundam-summary/manuscript/chapter-01.md",
+          "sha256": "991c08688e5692903e91c31cfa43d7e27b3420f3d904a9ef528f49768d815712",
+          "bytes": 18767
+        }
+      ],
+      "manuscript_sha256": "cbc8c5ab6befbf04a0af1faae763b5de5faa67db732e8575b7d01375b2e20afc",
+      "scene_order": [
+        "scene-01",
+        "scene-02",
+        "scene-03",
+        "scene-04",
+        "scene-05",
+        "scene-06"
+      ],
+      "scene_words": {
+        "scene-01": 462,
+        "scene-02": 592,
+        "scene-03": 395,
+        "scene-04": 532,
+        "scene-05": 543,
+        "scene-06": 301
+      },
+      "total_words": 2825,
+      "target_words": 2664,
+      "minimum_words_for_stage": 2664,
+      "repetition": {
+        "repeated_sentences": [],
+        "repeated_sentence_count": 0,
+        "repeated_paragraphs": [],
+        "repeated_paragraph_count": 0,
+        "repeated_ngrams": [],
+        "repeated_ngram_count": 0,
+        "stock_filler_uses": {}
+      }
+    },
+    "revision": {},
+    "release": {},
+    "automation_limit": "Passing proves required evidence and objective checks are present; it does not independently prove artistry."
+  }
+}

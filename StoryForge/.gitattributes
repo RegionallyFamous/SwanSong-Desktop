@@ -1,0 +1,7 @@
+# These are cryptographic byte artifacts. Never rewrite their line endings.
+distribution/catalog-v1.json -text
+distribution/catalog-v1.sig.json -text
+
+# Unified-diff context uses a single space for blank context lines. Do not
+# report that required marker as source-code trailing whitespace.
+*.patch whitespace=-blank-at-eol

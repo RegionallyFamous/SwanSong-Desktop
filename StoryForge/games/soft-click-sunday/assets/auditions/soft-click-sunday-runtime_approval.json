@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "approval_type": "wscvn_sprite_audition_approval",
+  "approved_at": "2026-07-17T02:40:36+00:00",
+  "reviewer": "codex",
+  "notes": "Runtime-ready neutral/talk/blink families visually inspected.",
+  "character": "generic",
+  "sheet_kind": "animation",
+  "runtime_ready": true,
+  "labels": [
+    "neutral",
+    "talk",
+    "blink"
+  ],
+  "tool_provenance": [
+    {
+      "path": "scripts/audition_wscvn_sprite_sheet.py",
+      "sha256": "3c3ff7d0eff71df59c58e51d6d1f7990516778f64749e3dad207ab05b2069338"
+    },
+    {
+      "path": "scripts/make_signal_before_dawn_slice.py",
+      "sha256": "c48f872b41a2bbe0310229ffd35ed4786096e7d886595f950605efcf622afc90"
+    },
+    {
+      "path": "scripts/wscvn_sprite_family.py",
+      "sha256": "3ebf274e1f493bd10bc06be29936eda8c43d6e85e0d7cd5d4ddcd980d1bbc1aa"
+    }
+  ],
+  "quality": {
+    "status": "pass",
+    "error_count": 0,
+    "warning_count": 0,
+    "info_count": 0,
+    "thresholds": {
+      "max_visible_colors": 15,
+      "min_talk_face_delta": 18,
+      "min_blink_face_delta": 0,
+      "min_alpha_coverage": 0.2,
+      "max_alpha_coverage": 0.75,
+      "max_animation_alpha_changed": 0,
+      "min_visible_above_textbox": 0.52,
+      "max_visible_above_textbox": 0.92,
+      "max_animation_bbox_area": 1200,
+      "max_source_center_drift": 0.09,
+      "max_source_scale_drift": 0.18,
+      "max_sprite_center_drift": 0.04,
+      "max_sprite_scale_drift": 0.08,
+      "max_tiny_color_pixels": 10,
+      "max_green_fringe_pixels": 0,
+      "max_alpha_components": 8,
+      "min_largest_alpha_component_share": 0.96
+    }
+  },
+  "audition_report": {
+    "path": "games/soft-click-sunday/assets/auditions/soft-click-sunday-runtime-audition.json",
+    "sha256": "327618be7f818540f353c7b3d3014ac82e142edce71de517b46eeec7d6d2f35d"
+  },
+  "audition_png": {
+    "path": "games/soft-click-sunday/assets/auditions/soft-click-sunday-runtime-audition.png",
+    "sha256": "300114bdf5ec1856de9c7c86b9b6d197f6743fecaf31a03c4ad79eec3c71c07e"
+  },
+  "sources": [
+    {
+      "label": "mina",
+      "path": "games/soft-click-sunday/assets/auditions/mina-runtime-animation.png",
+      "sha256": "26d4984920bd41b861c23ca5372b150ab3d9bf0489f90741c8c50a34ac5e7836"
+    },
+    {
+      "label": "niko",
+      "path": "games/soft-click-sunday/assets/auditions/niko-runtime-animation.png",
+      "sha256": "d18303f79d534f31e702c3e9eb4cbd63191231662cefed004f197438c2b11356"
+    }
+  ],
+  "covered_outputs": [
+    {
+      "path": "games/soft-click-sunday/assets/characters/mina_neutral.png",
+      "sha256": "c6fdb10122134fd02db17c5ff22a6b951276c77ed9d300c3ff2e1f9ab7aadd6f"
+    },
+    {
+      "path": "games/soft-click-sunday/assets/characters/mina_talk.png",
+      "sha256": "a1e792c3ea6cf69dd3c017d551a0241cbd3adb1c5fc748066ba9848024f1a15d"
+    },
+    {
+      "path": "games/soft-click-sunday/assets/characters/mina_blink.png",
+      "sha256": "40456b66271251f5ccba43f5c47bff1560ff55547494da67651521c9b072d72e"
+    },
+    {
+      "path": "games/soft-click-sunday/assets/characters/niko_neutral.png",
+      "sha256": "82ef0562ea8edfecb32f48f15c5e04ef3d9f72a2d5ff5681c9a3223ce62c5015"
+    },
+    {
+      "path": "games/soft-click-sunday/assets/characters/niko_talk.png",
+      "sha256": "5d338ddebaafad5d1aab96482d125dab3672c0f776977af1c8ddc37fc17d89b1"
+    },
+    {
+      "path": "games/soft-click-sunday/assets/characters/niko_blink.png",
+      "sha256": "78d9f9f3a32a7cc05654df4b954429ec252974b764181848b02b7d590b3e5a16"
+    }
+  ]
+}

@@ -1,0 +1,3799 @@
+{
+  "ok": true,
+  "generated_at": "2026-07-26T22:39:30.935421",
+  "active_background_sources": {
+    "beacon_lens.png": "beacon_lens_source_v1.png",
+    "cabin_radio.png": "cabin_imagegen_source_v2.png",
+    "deck_night.png": "deck_imagegen_source_v2.png",
+    "hatch_key.png": "hatch_key_source_v1.png",
+    "lighthouse_dawn.png": "lighthouse_imagegen_source_v2.png",
+    "radio_closeup.png": "radio_signal_source_v1.png",
+    "sunrise_deck.png": "sunrise_deck_source_v1.png",
+    "title_night.png": "title_signal_source_v3.png"
+  },
+  "active_character_sources": {
+    "lune": "lune_sheet_source_v4.png",
+    "mira": "mira_sheet_source_v4.png"
+  },
+  "active_expression_sources": {
+    "lune": "lune_expression_sheet_source_v5.png",
+    "mira": "mira_expression_sheet_source_v6.png"
+  },
+  "active_pose_sources": {
+    "lune_radio": "lune_radio_pose_source_v1.png",
+    "mira_action": "mira_action_pose_source_v1.png"
+  },
+  "outputs": {
+    "backgrounds/beacon_lens.png": {
+      "derived_from": "sources/beacon_lens_source_v1.png",
+      "source_sha256": "4f9d25f36eb85064346b99423460a297d76125690b7d29bf91e564196d4c2e9a",
+      "output_sha256": "2194669d61c0235f274ba009d2b6d8b33335153998873a1080a00844a2b9f88c",
+      "source_metrics": {
+        "kind": "background",
+        "size": [
+          1562,
+          1007
+        ],
+        "sha256": "4f9d25f36eb85064346b99423460a297d76125690b7d29bf91e564196d4c2e9a",
+        "aspect": 1.5511
+      },
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 8.52
+      }
+    },
+    "backgrounds/cabin_radio.png": {
+      "derived_from": "sources/cabin_imagegen_source_v2.png",
+      "source_sha256": "25a6be8f728ed4f6a5760c58ec9d22cde37d3f2214bfe8d6c6a707093bbee526",
+      "output_sha256": "afe51325e327624fbdd2843509a4a827ec78e88cd55672b659e7993b2ee93ef9",
+      "source_metrics": {
+        "kind": "background",
+        "size": [
+          1672,
+          941
+        ],
+        "sha256": "25a6be8f728ed4f6a5760c58ec9d22cde37d3f2214bfe8d6c6a707093bbee526",
+        "aspect": 1.7768
+      },
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 18.61
+      }
+    },
+    "backgrounds/deck_night.png": {
+      "derived_from": "sources/deck_imagegen_source_v2.png",
+      "source_sha256": "afb25a40787f22bb31fe193877227914ad4d584288e9a95da9971fbdb2cb9684",
+      "output_sha256": "008130ec1ef022d47416f91cab7b77b1a1b23c50db8c1232d7a69ff42e6bd316",
+      "source_metrics": {
+        "kind": "background",
+        "size": [
+          1672,
+          940
+        ],
+        "sha256": "afb25a40787f22bb31fe193877227914ad4d584288e9a95da9971fbdb2cb9684",
+        "aspect": 1.7787
+      },
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 34.45
+      }
+    },
+    "backgrounds/hatch_key.png": {
+      "derived_from": "sources/hatch_key_source_v1.png",
+      "source_sha256": "9bb415aa455fdafbe566ff4573ccd3664af7b654c5c24116f2a4df52b787dcc8",
+      "output_sha256": "803976b2eaddcfbada1b265106263349d2e0a96fb4d58582fba27e5d31158014",
+      "source_metrics": {
+        "kind": "background",
+        "size": [
+          1672,
+          941
+        ],
+        "sha256": "9bb415aa455fdafbe566ff4573ccd3664af7b654c5c24116f2a4df52b787dcc8",
+        "aspect": 1.7768
+      },
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 34.14
+      }
+    },
+    "backgrounds/lighthouse_dawn.png": {
+      "derived_from": "sources/lighthouse_imagegen_source_v2.png",
+      "source_sha256": "8001686f25aa696ba637296a74a35932bab817e1ac5b83bdfbf0e84fa48be62d",
+      "output_sha256": "11bf7f890965f407936ae4ab0ebb948e9014116112c98bc41c23f92046ecb54c",
+      "source_metrics": {
+        "kind": "background",
+        "size": [
+          1628,
+          966
+        ],
+        "sha256": "8001686f25aa696ba637296a74a35932bab817e1ac5b83bdfbf0e84fa48be62d",
+        "aspect": 1.6853
+      },
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 33.67
+      }
+    },
+    "backgrounds/radio_closeup.png": {
+      "derived_from": "sources/radio_signal_source_v1.png",
+      "source_sha256": "9290a6259fbd4547572c1989afe185f35554634830bec521e2c2678e607aae90",
+      "output_sha256": "de59feeb66280259fc0405503d1064e97ad3ddcb9e9e903d4399fe7da0da608a",
+      "source_metrics": {
+        "kind": "background",
+        "size": [
+          1563,
+          1006
+        ],
+        "sha256": "9290a6259fbd4547572c1989afe185f35554634830bec521e2c2678e607aae90",
+        "aspect": 1.5537
+      },
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 17.81
+      }
+    },
+    "backgrounds/sunrise_deck.png": {
+      "derived_from": "sources/sunrise_deck_source_v1.png",
+      "source_sha256": "acbf2ff6d4586fc75d05c901cac8f095dd25860373b4a61bb4ec6b0e1698fa88",
+      "output_sha256": "3837f05bcd7fc7ba2262c5fff6ee86e0ac09d12b7f54216e0db95c0c6189c00e",
+      "source_metrics": {
+        "kind": "background",
+        "size": [
+          1566,
+          1005
+        ],
+        "sha256": "acbf2ff6d4586fc75d05c901cac8f095dd25860373b4a61bb4ec6b0e1698fa88",
+        "aspect": 1.5582
+      },
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 35.47
+      }
+    },
+    "backgrounds/title_night.png": {
+      "derived_from": "sources/title_signal_source_v3.png",
+      "source_sha256": "4e6e3f3c8d1c453e5f3adfc49919be853b72da2e63d165566df670268246e2a8",
+      "output_sha256": "5a87520acb0017328aded07ae89d1ffb53b7fa317f0784a6222d8122acbebe3f",
+      "source_metrics": {
+        "kind": "background",
+        "size": [
+          1563,
+          1006
+        ],
+        "sha256": "4e6e3f3c8d1c453e5f3adfc49919be853b72da2e63d165566df670268246e2a8",
+        "aspect": 1.5537
+      },
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 23.37
+      },
+      "derivation": "dedicated_title_composition_with_palette_locked_signal_accents"
+    },
+    "characters/lune_neutral.png": {
+      "derived_from": "sources/lune_sheet_source_v4.png",
+      "source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "8b8bc6bc1d4383da379a01bf5a7d6007f589e2f5ec7dd47008f294ff82ad06aa",
+      "source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          14,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4325,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8101,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 53.41,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 77.58
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5314,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/lune_talk.png": {
+      "derived_from": "sources/lune_sheet_source_v4.png",
+      "source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "af4337d299954138ef55025a1039104bd46c4e4d9c3b65b4fec71226999fad1c",
+      "source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          14,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4325,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8101,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 52.99,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 77.0
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5314,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/lune_blink.png": {
+      "derived_from": "sources/lune_sheet_source_v4.png",
+      "source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "a235e5d3824a7cc8e330536fa8efa3a9b42b3af3db2a0255f23905f2dd8089c2",
+      "source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          14,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4325,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8101,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 55.39,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 80.38
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5314,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_neutral.png": {
+      "derived_from": "sources/mira_sheet_source_v4.png",
+      "source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "72c0d4efee5fb56a006cd5d1cbdec17105a9a582586f0987a5f58136a3ff27c2",
+      "source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          13,
+          86,
+          101
+        ],
+        "alpha_coverage": 0.4318,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.827,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 61.16,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 86.2
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5306,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_talk.png": {
+      "derived_from": "sources/mira_sheet_source_v4.png",
+      "source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "b19662ede5f591d637e10cff01c476dcd4d637de154b435e4d706b644eb8063e",
+      "source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          13,
+          86,
+          101
+        ],
+        "alpha_coverage": 0.4318,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.827,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 60.78,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 85.69
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5306,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_blink.png": {
+      "derived_from": "sources/mira_sheet_source_v4.png",
+      "source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "094c4afade39d2d55d58aa93aac41c182cc6615abd1f76ad7d1c67e5d34f777b",
+      "source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          13,
+          86,
+          101
+        ],
+        "alpha_coverage": 0.4318,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.827,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 62.52,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 87.38
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5306,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/lune_radio_neutral.png": {
+      "derived_from": "sources/lune_radio_pose_source_v1.png",
+      "pose_strategy": "single_pose_master_with_local_talk_blink_overlays",
+      "base_character_source": "sources/lune_sheet_source_v4.png",
+      "source_sha256": "8ac4d7f699fd4b7bdf8c226e626284f9e2ed44a168abcec1d8a8a7a106679472",
+      "base_character_source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "c017146d77cc7ce7e293434829bbc4dd90b420ffdbeef8df3452a1f603ac7982",
+      "source_metrics": {
+        "kind": "character_master",
+        "size": [
+          1536,
+          1024
+        ],
+        "sha256": "8ac4d7f699fd4b7bdf8c226e626284f9e2ed44a168abcec1d8a8a7a106679472",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.3554,
+            "subject_bbox": [
+              372,
+              29,
+              1177,
+              992
+            ],
+            "subject_bbox_area": 0.4929
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          12,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4272,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8072,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 53.53,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 79.43
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5250,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/lune_radio_talk.png": {
+      "derived_from": "sources/lune_radio_pose_source_v1.png",
+      "pose_strategy": "single_pose_master_with_local_talk_blink_overlays",
+      "base_character_source": "sources/lune_sheet_source_v4.png",
+      "source_sha256": "8ac4d7f699fd4b7bdf8c226e626284f9e2ed44a168abcec1d8a8a7a106679472",
+      "base_character_source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "e3bd1f6141c1ce54f07f43f16e98aba763349b1141938ad779a3b434f4681ef1",
+      "source_metrics": {
+        "kind": "character_master",
+        "size": [
+          1536,
+          1024
+        ],
+        "sha256": "8ac4d7f699fd4b7bdf8c226e626284f9e2ed44a168abcec1d8a8a7a106679472",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.3554,
+            "subject_bbox": [
+              372,
+              29,
+              1177,
+              992
+            ],
+            "subject_bbox_area": 0.4929
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          12,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4272,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8072,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 53.58,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 79.67
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5250,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/lune_radio_blink.png": {
+      "derived_from": "sources/lune_radio_pose_source_v1.png",
+      "pose_strategy": "single_pose_master_with_local_talk_blink_overlays",
+      "base_character_source": "sources/lune_sheet_source_v4.png",
+      "source_sha256": "8ac4d7f699fd4b7bdf8c226e626284f9e2ed44a168abcec1d8a8a7a106679472",
+      "base_character_source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "5e51f708700e5762f6a4ffa975fe1262bb1de5f6581b974e06bfa9912be1eb20",
+      "source_metrics": {
+        "kind": "character_master",
+        "size": [
+          1536,
+          1024
+        ],
+        "sha256": "8ac4d7f699fd4b7bdf8c226e626284f9e2ed44a168abcec1d8a8a7a106679472",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.3554,
+            "subject_bbox": [
+              372,
+              29,
+              1177,
+              992
+            ],
+            "subject_bbox_area": 0.4929
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          12,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4272,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8072,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 55.4,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 81.86
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5250,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_action_neutral.png": {
+      "derived_from": "sources/mira_action_pose_source_v1.png",
+      "pose_strategy": "single_pose_master_with_local_talk_blink_overlays",
+      "base_character_source": "sources/mira_sheet_source_v4.png",
+      "source_sha256": "4876c1e883bed3da1451cafd4ee5d2897666d7cee2db22363db9e5e9fa444b90",
+      "base_character_source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "9e65911aa8a771b64885244b6edc1dbaae6c9a72ac39c7acd4c783f7b8750a66",
+      "source_metrics": {
+        "kind": "character_master",
+        "size": [
+          1086,
+          1448
+        ],
+        "sha256": "4876c1e883bed3da1451cafd4ee5d2897666d7cee2db22363db9e5e9fa444b90",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5569,
+            "subject_bbox": [
+              46,
+              48,
+              1046,
+              1398
+            ],
+            "subject_bbox_area": 0.8585
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          14,
+          13,
+          93,
+          111
+        ],
+        "alpha_coverage": 0.4282,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.729,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 53.71,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 73.38
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5262,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_action_talk.png": {
+      "derived_from": "sources/mira_action_pose_source_v1.png",
+      "pose_strategy": "single_pose_master_with_local_talk_blink_overlays",
+      "base_character_source": "sources/mira_sheet_source_v4.png",
+      "source_sha256": "4876c1e883bed3da1451cafd4ee5d2897666d7cee2db22363db9e5e9fa444b90",
+      "base_character_source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "c3435ffe8aee3ade0ad5ded510b20fb4dc6e648bfcb9ef78999b36c0ff9cbd52",
+      "source_metrics": {
+        "kind": "character_master",
+        "size": [
+          1086,
+          1448
+        ],
+        "sha256": "4876c1e883bed3da1451cafd4ee5d2897666d7cee2db22363db9e5e9fa444b90",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5569,
+            "subject_bbox": [
+              46,
+              48,
+              1046,
+              1398
+            ],
+            "subject_bbox_area": 0.8585
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          14,
+          13,
+          93,
+          111
+        ],
+        "alpha_coverage": 0.4282,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.729,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 53.24,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 72.69
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5262,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_action_blink.png": {
+      "derived_from": "sources/mira_action_pose_source_v1.png",
+      "pose_strategy": "single_pose_master_with_local_talk_blink_overlays",
+      "base_character_source": "sources/mira_sheet_source_v4.png",
+      "source_sha256": "4876c1e883bed3da1451cafd4ee5d2897666d7cee2db22363db9e5e9fa444b90",
+      "base_character_source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "ac424da267704f6fc40cf5f28ede0f75d4d08b793afa41231829f10db16054d5",
+      "source_metrics": {
+        "kind": "character_master",
+        "size": [
+          1086,
+          1448
+        ],
+        "sha256": "4876c1e883bed3da1451cafd4ee5d2897666d7cee2db22363db9e5e9fa444b90",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5569,
+            "subject_bbox": [
+              46,
+              48,
+              1046,
+              1398
+            ],
+            "subject_bbox_area": 0.8585
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          14,
+          13,
+          93,
+          111
+        ],
+        "alpha_coverage": 0.4282,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.729,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 54.42,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 74.73
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5262,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/lune_alert_neutral.png": {
+      "derived_from": "sources/lune_expression_sheet_source_v5.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/lune_sheet_source_v4.png",
+      "reference_source_frame": 0,
+      "source_sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+      "base_character_source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "622644adedf6dd50eeaec5cf9b2f1f5ae3e88ec73c3acf7010d0ce744b769aa3",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2103,
+          748
+        ],
+        "sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5776,
+            "subject_bbox": [
+              112,
+              25,
+              701,
+              717
+            ],
+            "subject_bbox_area": 0.7773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5769,
+            "subject_bbox": [
+              0,
+              26,
+              657,
+              717
+            ],
+            "subject_bbox_area": 0.8658
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5764,
+            "subject_bbox": [
+              13,
+              26,
+              602,
+              717
+            ],
+            "subject_bbox_area": 0.7762
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          15,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4194,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8077,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 55.27,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 79.64
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5153,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/lune_alert_talk.png": {
+      "derived_from": "sources/lune_expression_sheet_source_v5.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/lune_sheet_source_v4.png",
+      "reference_source_frame": 0,
+      "source_sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+      "base_character_source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "239c5945051316290e9daee7ccf0b6826339db5bb64ce6ec6151fd654085abcc",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2103,
+          748
+        ],
+        "sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5776,
+            "subject_bbox": [
+              112,
+              25,
+              701,
+              717
+            ],
+            "subject_bbox_area": 0.7773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5769,
+            "subject_bbox": [
+              0,
+              26,
+              657,
+              717
+            ],
+            "subject_bbox_area": 0.8658
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5764,
+            "subject_bbox": [
+              13,
+              26,
+              602,
+              717
+            ],
+            "subject_bbox_area": 0.7762
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          15,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4194,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8077,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 54.87,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 79.07
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5153,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/lune_alert_blink.png": {
+      "derived_from": "sources/lune_expression_sheet_source_v5.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/lune_sheet_source_v4.png",
+      "reference_source_frame": 0,
+      "source_sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+      "base_character_source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "1184747db1d996aa20e835e108ccdc4cbd7aee90020501425bbf11188c23c7a8",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2103,
+          748
+        ],
+        "sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5776,
+            "subject_bbox": [
+              112,
+              25,
+              701,
+              717
+            ],
+            "subject_bbox_area": 0.7773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5769,
+            "subject_bbox": [
+              0,
+              26,
+              657,
+              717
+            ],
+            "subject_bbox_area": 0.8658
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5764,
+            "subject_bbox": [
+              13,
+              26,
+              602,
+              717
+            ],
+            "subject_bbox_area": 0.7762
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          15,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4194,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8077,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 57.12,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 81.92
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5153,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/lune_resolved_neutral.png": {
+      "derived_from": "sources/lune_expression_sheet_source_v5.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/lune_sheet_source_v4.png",
+      "reference_source_frame": 2,
+      "source_sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+      "base_character_source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "2a971ae5c8bf012b00bed383afdf959eb53cb53e528aeb1003140af63211fbec",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2103,
+          748
+        ],
+        "sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5776,
+            "subject_bbox": [
+              112,
+              25,
+              701,
+              717
+            ],
+            "subject_bbox_area": 0.7773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5769,
+            "subject_bbox": [
+              0,
+              26,
+              657,
+              717
+            ],
+            "subject_bbox_area": 0.8658
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5764,
+            "subject_bbox": [
+              13,
+              26,
+              602,
+              717
+            ],
+            "subject_bbox_area": 0.7762
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          14,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4301,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8108,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 55.21,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 80.49
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5285,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/lune_resolved_talk.png": {
+      "derived_from": "sources/lune_expression_sheet_source_v5.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/lune_sheet_source_v4.png",
+      "reference_source_frame": 2,
+      "source_sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+      "base_character_source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "4dedd6bf1d05ba1cabf4b83239ba4b5334b2475b869846beff680d4052eaeb36",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2103,
+          748
+        ],
+        "sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5776,
+            "subject_bbox": [
+              112,
+              25,
+              701,
+              717
+            ],
+            "subject_bbox_area": 0.7773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5769,
+            "subject_bbox": [
+              0,
+              26,
+              657,
+              717
+            ],
+            "subject_bbox_area": 0.8658
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5764,
+            "subject_bbox": [
+              13,
+              26,
+              602,
+              717
+            ],
+            "subject_bbox_area": 0.7762
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          14,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4301,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8108,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 54.75,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 79.92
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5285,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/lune_resolved_blink.png": {
+      "derived_from": "sources/lune_expression_sheet_source_v5.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/lune_sheet_source_v4.png",
+      "reference_source_frame": 2,
+      "source_sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+      "base_character_source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "38c3556ee5eec67ba65fb4f1fc75f0cd1bdde343873ccfa4e0124f13db89bae3",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2103,
+          748
+        ],
+        "sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5776,
+            "subject_bbox": [
+              112,
+              25,
+              701,
+              717
+            ],
+            "subject_bbox_area": 0.7773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5769,
+            "subject_bbox": [
+              0,
+              26,
+              657,
+              717
+            ],
+            "subject_bbox_area": 0.8658
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5764,
+            "subject_bbox": [
+              13,
+              26,
+              602,
+              717
+            ],
+            "subject_bbox_area": 0.7762
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          14,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4301,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8108,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 57.07,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 82.92
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5285,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/lune_warm_neutral.png": {
+      "derived_from": "sources/lune_expression_sheet_source_v5.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/lune_sheet_source_v4.png",
+      "reference_source_frame": 1,
+      "source_sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+      "base_character_source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "61dffc4f8cadc549d625350abfe00a43c79d4f911efd38f3fff0a8d43de53319",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2103,
+          748
+        ],
+        "sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5776,
+            "subject_bbox": [
+              112,
+              25,
+              701,
+              717
+            ],
+            "subject_bbox_area": 0.7773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5769,
+            "subject_bbox": [
+              0,
+              26,
+              657,
+              717
+            ],
+            "subject_bbox_area": 0.8658
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5764,
+            "subject_bbox": [
+              13,
+              26,
+              602,
+              717
+            ],
+            "subject_bbox_area": 0.7762
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          15,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.42,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8084,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 55.85,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 79.62
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5161,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/lune_warm_talk.png": {
+      "derived_from": "sources/lune_expression_sheet_source_v5.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/lune_sheet_source_v4.png",
+      "reference_source_frame": 1,
+      "source_sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+      "base_character_source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "e1b4a94e4a41f241b1bbbc53e1f6e78a0c9d94c0f1ee9fc772f5e9235f4b7093",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2103,
+          748
+        ],
+        "sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5776,
+            "subject_bbox": [
+              112,
+              25,
+              701,
+              717
+            ],
+            "subject_bbox_area": 0.7773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5769,
+            "subject_bbox": [
+              0,
+              26,
+              657,
+              717
+            ],
+            "subject_bbox_area": 0.8658
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5764,
+            "subject_bbox": [
+              13,
+              26,
+              602,
+              717
+            ],
+            "subject_bbox_area": 0.7762
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          15,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.42,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8084,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 55.46,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 79.18
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5161,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/lune_warm_blink.png": {
+      "derived_from": "sources/lune_expression_sheet_source_v5.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/lune_sheet_source_v4.png",
+      "reference_source_frame": 1,
+      "source_sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+      "base_character_source_sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+      "output_sha256": "515973125c581ed8a8ca3a1f7bc74fdc5fe2f057ac45fc20aaab28bb42b8d661",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2103,
+          748
+        ],
+        "sha256": "ddd7ccb679da1ca55ad5eb32a43fdd108c8fa53b2bae0d5b1adfa7e805532466",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5776,
+            "subject_bbox": [
+              112,
+              25,
+              701,
+              717
+            ],
+            "subject_bbox_area": 0.7773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5769,
+            "subject_bbox": [
+              0,
+              26,
+              657,
+              717
+            ],
+            "subject_bbox_area": 0.8658
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5764,
+            "subject_bbox": [
+              13,
+              26,
+              602,
+              717
+            ],
+            "subject_bbox_area": 0.7762
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2172,
+          724
+        ],
+        "sha256": "3d1e63bcc286e8f6093c0e089549daae349698cba3f7e79250f08826d78885ab",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5462,
+            "subject_bbox": [
+              125,
+              34,
+              703,
+              703
+            ],
+            "subject_bbox_area": 0.7377
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5446,
+            "subject_bbox": [
+              116,
+              34,
+              692,
+              703
+            ],
+            "subject_bbox_area": 0.7351
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5418,
+            "subject_bbox": [
+              96,
+              36,
+              670,
+              703
+            ],
+            "subject_bbox_area": 0.7304
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          15,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.42,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8084,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 57.72,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 81.85
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5161,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_resolved_neutral.png": {
+      "derived_from": "sources/mira_expression_sheet_source_v6.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/mira_sheet_source_v4.png",
+      "reference_source_frame": 1,
+      "source_sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+      "base_character_source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "926845e15c8d02d826dbbc3d79afd50a2fefbbfe0b278eac541db71605140103",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2126,
+          740
+        ],
+        "sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5072,
+            "subject_bbox": [
+              167,
+              29,
+              695,
+              702
+            ],
+            "subject_bbox_area": 0.6773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5091,
+            "subject_bbox": [
+              123,
+              29,
+              653,
+              702
+            ],
+            "subject_bbox_area": 0.6808
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5074,
+            "subject_bbox": [
+              73,
+              29,
+              603,
+              702
+            ],
+            "subject_bbox_area": 0.6798
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          8,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.462,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8325,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 61.71,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 86.76
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5677,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_resolved_talk.png": {
+      "derived_from": "sources/mira_expression_sheet_source_v6.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/mira_sheet_source_v4.png",
+      "reference_source_frame": 1,
+      "source_sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+      "base_character_source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "f05bbe62aeefd1c082cd9e744e6d8a3e3a94eda011d450c2651ce7ac46c566e6",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2126,
+          740
+        ],
+        "sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5072,
+            "subject_bbox": [
+              167,
+              29,
+              695,
+              702
+            ],
+            "subject_bbox_area": 0.6773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5091,
+            "subject_bbox": [
+              123,
+              29,
+              653,
+              702
+            ],
+            "subject_bbox_area": 0.6808
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5074,
+            "subject_bbox": [
+              73,
+              29,
+              603,
+              702
+            ],
+            "subject_bbox_area": 0.6798
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          8,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.462,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8325,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 61.41,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 86.37
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5677,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_resolved_blink.png": {
+      "derived_from": "sources/mira_expression_sheet_source_v6.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/mira_sheet_source_v4.png",
+      "reference_source_frame": 1,
+      "source_sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+      "base_character_source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "91d2c01824f94d15e4f1d01d493c47f9b7a5e96e51a7c14660a0178f4a0d0a35",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2126,
+          740
+        ],
+        "sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5072,
+            "subject_bbox": [
+              167,
+              29,
+              695,
+              702
+            ],
+            "subject_bbox_area": 0.6773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5091,
+            "subject_bbox": [
+              123,
+              29,
+              653,
+              702
+            ],
+            "subject_bbox_area": 0.6808
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5074,
+            "subject_bbox": [
+              73,
+              29,
+              603,
+              702
+            ],
+            "subject_bbox_area": 0.6798
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          8,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.462,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8325,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 62.9,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 87.75
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5677,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_smile_neutral.png": {
+      "derived_from": "sources/mira_expression_sheet_source_v6.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/mira_sheet_source_v4.png",
+      "reference_source_frame": 2,
+      "source_sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+      "base_character_source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "f8a90ab0dfb9ddebc58a95ff3833d1c59562d9808c32e10b123ce573f580a1b2",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2126,
+          740
+        ],
+        "sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5072,
+            "subject_bbox": [
+              167,
+              29,
+              695,
+              702
+            ],
+            "subject_bbox_area": 0.6773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5091,
+            "subject_bbox": [
+              123,
+              29,
+              653,
+              702
+            ],
+            "subject_bbox_area": 0.6808
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5074,
+            "subject_bbox": [
+              73,
+              29,
+              603,
+              702
+            ],
+            "subject_bbox_area": 0.6798
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          8,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4612,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8324,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 60.78,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 85.97
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5667,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_smile_talk.png": {
+      "derived_from": "sources/mira_expression_sheet_source_v6.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/mira_sheet_source_v4.png",
+      "reference_source_frame": 2,
+      "source_sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+      "base_character_source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "d7d5ce9eb94a91eee691b47d04419a7862191fcf0b8693d7e52f5bccf303023f",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2126,
+          740
+        ],
+        "sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5072,
+            "subject_bbox": [
+              167,
+              29,
+              695,
+              702
+            ],
+            "subject_bbox_area": 0.6773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5091,
+            "subject_bbox": [
+              123,
+              29,
+              653,
+              702
+            ],
+            "subject_bbox_area": 0.6808
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5074,
+            "subject_bbox": [
+              73,
+              29,
+              603,
+              702
+            ],
+            "subject_bbox_area": 0.6798
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          8,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4612,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8324,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 60.52,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 85.65
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5667,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_smile_blink.png": {
+      "derived_from": "sources/mira_expression_sheet_source_v6.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/mira_sheet_source_v4.png",
+      "reference_source_frame": 2,
+      "source_sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+      "base_character_source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "d887a748a020ecb8fbbb44598d8d8617cd1979bffc926df20d40959ba1084b14",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2126,
+          740
+        ],
+        "sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5072,
+            "subject_bbox": [
+              167,
+              29,
+              695,
+              702
+            ],
+            "subject_bbox_area": 0.6773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5091,
+            "subject_bbox": [
+              123,
+              29,
+              653,
+              702
+            ],
+            "subject_bbox_area": 0.6808
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5074,
+            "subject_bbox": [
+              73,
+              29,
+              603,
+              702
+            ],
+            "subject_bbox_area": 0.6798
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          8,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4612,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8324,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 61.96,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 87.04
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5667,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_worried_neutral.png": {
+      "derived_from": "sources/mira_expression_sheet_source_v6.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/mira_sheet_source_v4.png",
+      "reference_source_frame": 0,
+      "source_sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+      "base_character_source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "5f34ff83a3da73e7a74bd59760f0c0f2ed2131d6a79d5d67f377bb303e0b1ede",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2126,
+          740
+        ],
+        "sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5072,
+            "subject_bbox": [
+              167,
+              29,
+              695,
+              702
+            ],
+            "subject_bbox_area": 0.6773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5091,
+            "subject_bbox": [
+              123,
+              29,
+              653,
+              702
+            ],
+            "subject_bbox_area": 0.6808
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5074,
+            "subject_bbox": [
+              73,
+              29,
+              603,
+              702
+            ],
+            "subject_bbox_area": 0.6798
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          7,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4674,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8343,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 60.69,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 85.4
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5744,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_worried_talk.png": {
+      "derived_from": "sources/mira_expression_sheet_source_v6.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/mira_sheet_source_v4.png",
+      "reference_source_frame": 0,
+      "source_sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+      "base_character_source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "e96fbf98f6fda4955d4b06f7938d9eb3b5c5845201c0c20bc8023f7af402bc04",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2126,
+          740
+        ],
+        "sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5072,
+            "subject_bbox": [
+              167,
+              29,
+              695,
+              702
+            ],
+            "subject_bbox_area": 0.6773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5091,
+            "subject_bbox": [
+              123,
+              29,
+              653,
+              702
+            ],
+            "subject_bbox_area": 0.6808
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5074,
+            "subject_bbox": [
+              73,
+              29,
+              603,
+              702
+            ],
+            "subject_bbox_area": 0.6798
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          7,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4674,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8343,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 60.82,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 85.53
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5744,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    },
+    "characters/mira_worried_blink.png": {
+      "derived_from": "sources/mira_expression_sheet_source_v6.png",
+      "expression_strategy": "source_expression_frame_with_local_talk_blink_overlays",
+      "base_character_source": "sources/mira_sheet_source_v4.png",
+      "reference_source_frame": 0,
+      "source_sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+      "base_character_source_sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+      "output_sha256": "6bb816b5f4a2bee6c2cce0cb0808fe7b9be8104b09738752d70e0e8dceb16c2b",
+      "source_metrics": {
+        "kind": "expression_sheet",
+        "size": [
+          2126,
+          740
+        ],
+        "sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5072,
+            "subject_bbox": [
+              167,
+              29,
+              695,
+              702
+            ],
+            "subject_bbox_area": 0.6773
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5091,
+            "subject_bbox": [
+              123,
+              29,
+              653,
+              702
+            ],
+            "subject_bbox_area": 0.6808
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5074,
+            "subject_bbox": [
+              73,
+              29,
+              603,
+              702
+            ],
+            "subject_bbox_area": 0.6798
+          }
+        ]
+      },
+      "base_character_source_metrics": {
+        "kind": "character_sheet",
+        "size": [
+          2138,
+          736
+        ],
+        "sha256": "db00d7c580b65b2c90c1dc324bc321b6d5739f2da8bdeb4fabe05a816d768ec6",
+        "frames": [
+          {
+            "index": 0,
+            "non_key_ratio": 0.5466,
+            "subject_bbox": [
+              122,
+              25,
+              692,
+              706
+            ],
+            "subject_bbox_area": 0.7397
+          },
+          {
+            "index": 1,
+            "non_key_ratio": 0.5476,
+            "subject_bbox": [
+              121,
+              25,
+              691,
+              706
+            ],
+            "subject_bbox_area": 0.7407
+          },
+          {
+            "index": 2,
+            "non_key_ratio": 0.5472,
+            "subject_bbox": [
+              118,
+              25,
+              689,
+              706
+            ],
+            "subject_bbox_area": 0.741
+          }
+        ]
+      },
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          7,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4674,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8343,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 61.81,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 86.47
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5744,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      }
+    }
+  }
+}

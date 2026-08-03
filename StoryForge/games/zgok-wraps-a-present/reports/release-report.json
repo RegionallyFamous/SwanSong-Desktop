@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:37:41.236896+00:00",
+  "errors": [],
+  "release_id": "20260727T033740Z-4c7c92b8b0e7",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/releases/20260727T033740Z-4c7c92b8b0e7",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/releases/20260727T033740Z-4c7c92b8b0e7.zip",
+    "bytes": 12302756,
+    "sha256": "bedc08fbae5b4e58ea0cbfecda17ef64fb24211ce98b759df8c0206e7b514d9a"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/releases/20260727T033740Z-4c7c92b8b0e7/manifest.json",
+    "sha256": "8b0afeb0323bcc4cec3ef8bfc86b70fda504d26ff2cbb6b95ffded5225b5c612",
+    "files": 44
+  },
+  "rom_sha256": "4c7c92b8b0e73d6a78351b240cc15d88f7e9bb68c2ac2b7b04b91d6ecfac4fd8",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "zgok-wraps-a-present",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/game-audit-report.json\nGame audit passed"
+  }
+}

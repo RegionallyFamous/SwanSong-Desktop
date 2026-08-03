@@ -1,0 +1,50 @@
+{
+  "schema": "wscvn-experience-polish-v1",
+  "title": "Mobile Suit Gundam: The One Year Tour",
+  "routes": {
+    "reading_wpm": 140,
+    "minimum_words": 2500,
+    "maximum_words": 3100,
+    "minimum_minutes": 17.8,
+    "maximum_minutes": 23.0,
+    "minimum_scene_beats": 36,
+    "minimum_distinct_backgrounds": 12,
+    "maximum_consecutive_same_background": 4,
+    "maximum_routes": 256,
+    "maximum_states": 5000
+  },
+  "endings": {
+    "terminal_scenes": [
+      "people_coda",
+      "power_coda"
+    ],
+    "minimum_terminal_words": 15,
+    "require_distinct_backgrounds": true
+  },
+  "approvals": [
+    {
+      "id": "human-reader-playtest",
+      "status": "pending",
+      "required_for_release": true,
+      "packet": "player-experience-approval.md",
+      "reviewer": "",
+      "evidence": ""
+    },
+    {
+      "id": "human-music-listening",
+      "status": "pending",
+      "required_for_release": true,
+      "packet": "audio-listening-approval.md",
+      "reviewer": "",
+      "evidence": ""
+    },
+    {
+      "id": "physical-wonderswan-hardware",
+      "status": "pending",
+      "required_for_release": true,
+      "packet": "physical-hardware-approval.md",
+      "reviewer": "",
+      "evidence": ""
+    }
+  ]
+}

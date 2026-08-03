@@ -1,0 +1,423 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-27T03:53:48.044581+00:00",
+  "errors": [],
+  "commands": [
+    {
+      "name": "source-tree-check",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_signal_before_dawn_tree.py"
+      ],
+      "returncode": 0,
+      "output_tail": "Source tree report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/source-tree-report.json\nSource tree check passed"
+    },
+    {
+      "name": "skill-mirror-check",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_build_wonderswan_vn_skill.py"
+      ],
+      "returncode": 0,
+      "output_tail": "Skill mirror report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/skill-mirror-report.json\nSkill mirror check passed"
+    },
+    {
+      "name": "light-novel-skill-mirror-check",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_forge_light_novels_skill.py",
+        "--require-installed-match"
+      ],
+      "returncode": 0,
+      "output_tail": "Forge light novels skill check passed"
+    },
+    {
+      "name": "verify-release",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/verify_release_signal_before_dawn_slice.py"
+      ],
+      "returncode": 0,
+      "output_tail": "Release verify report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/release-verify-report.json\nRelease verification passed"
+    },
+    {
+      "name": "release-inventory",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/audit_wscvn_releases.py",
+        "--allow-pending-signal-ship"
+      ],
+      "returncode": 0,
+      "output_tail": "Release inventory report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/release-inventory-report.json\nRelease inventory passed"
+    },
+    {
+      "name": "doctor-release",
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/doctor_signal_before_dawn_slice.py"
+      ],
+      "returncode": 0,
+      "output_tail": "Doctor report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/doctor-report.json\nDoctor passed"
+    },
+    {
+      "name": "git-diff-check",
+      "cmd": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "output_tail": ""
+    }
+  ],
+  "reports": {
+    "qa-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "emulator-smoke-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-smoke-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "emulator-audio-proof-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/emulator-audio-proof-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "soundtrack-preview-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/soundtrack-preview-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "build-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/build-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": "full"
+    },
+    "game-audit-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/game-audit-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "game-builder-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/game-builder-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "game-readiness-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/game-readiness-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "game-release-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/game-release-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "game-ship-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/game-ship-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "system-audit-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/system-audit-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": "full"
+    },
+    "audit-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/audit-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "graphics-contract-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/graphics-contract-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "graphics-contract-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/graphics-contract-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "visual-contract-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/visual-contract-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "visual-contract-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/visual-contract-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "text-contract-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/text-contract-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "text-contract-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/text-contract-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "visual-review-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/visual-review-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "visual-review-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/visual-review-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "light-novel-readiness-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/light-novel-readiness-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "light-novel-readiness-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/light-novel-readiness-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "polish-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/polish-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "asset-provenance.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/asset-provenance.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "source-tree-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/source-tree-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "source-tree-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/source-tree-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "sprite-approval-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/sprite-approval-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "sprite-family-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/sprite-family-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "skill-mirror-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/skill-mirror-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "skill-mirror-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/skill-mirror-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "repro-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/repro-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "doctor-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/doctor-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "release-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/release-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "release-inventory-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/release-inventory-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "release-inventory-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/release-inventory-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "release-verify-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/release-verify-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "rom-smoke-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/rom-smoke-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "signal-ship-gate-guard-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/signal-ship-gate-guard-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "guard-selftest-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/guard-selftest-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    },
+    "story-forge-doctor-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/story-forge-doctor-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 1,
+      "build_mode": null
+    },
+    "swansong-playthrough-report.json": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/swansong-playthrough-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0,
+      "build_mode": null
+    }
+  },
+  "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local",
+  "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/releases/signal-before-dawn-slice/20260727T034713Z-a5210df80536.zip",
+  "facts": {
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local",
+    "build_mode": "full",
+    "release_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/releases/signal-before-dawn-slice/20260727T034713Z-a5210df80536.zip",
+    "release_zip_sha256": "4d6a7db4edaac451c4119b5f094ba4041cfeb1434d1f19a00c82e55d770f3820",
+    "actual_zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/releases/signal-before-dawn-slice/20260727T034713Z-a5210df80536.zip",
+      "exists": true,
+      "bytes": 52831120,
+      "sha256": "4d6a7db4edaac451c4119b5f094ba4041cfeb1434d1f19a00c82e55d770f3820"
+    },
+    "verified_zip": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/releases/signal-before-dawn-slice/20260727T034713Z-a5210df80536.zip",
+    "verified_zip_sha256": "4d6a7db4edaac451c4119b5f094ba4041cfeb1434d1f19a00c82e55d770f3820",
+    "fleet_validation": "read-only-current-releases",
+    "build_games": false,
+    "game_count": 20
+  }
+}

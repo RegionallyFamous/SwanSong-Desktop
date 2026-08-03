@@ -39,8 +39,8 @@ final class AppModelHomebrewTransactionTests: XCTestCase {
         XCTAssertEqual(
             AppModelHomebrewURLProtocol.requestURLs,
             [
-                URL(string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-story-forge/main/distribution/catalog-v1.json")!,
-                URL(string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-story-forge/main/distribution/catalog-v1.json.sig")!,
+                URL(string: "https://raw.githubusercontent.com/RegionallyFamous/SwanSong-Desktop/main/StoryForge/distribution/catalog-v1.json")!,
+                URL(string: "https://raw.githubusercontent.com/RegionallyFamous/SwanSong-Desktop/main/StoryForge/distribution/catalog-v1.json.sig")!,
             ]
         )
         XCTAssertEqual(fixture.model.homebrewCatalog, catalog)
@@ -558,7 +558,7 @@ final class AppModelHomebrewTransactionTests: XCTestCase {
         configuration.protocolClasses = [AppModelHomebrewURLProtocol.self]
         return HomebrewCatalogClient(
             testSourceURL: URL(
-                string: "https://raw.githubusercontent.com/RegionallyFamous/swansong-story-forge/main/distribution/catalog-v1.json"
+                string: "https://raw.githubusercontent.com/RegionallyFamous/SwanSong-Desktop/main/StoryForge/distribution/catalog-v1.json"
             )!,
             sessionConfiguration: configuration,
             trustsSource: { url in
@@ -590,14 +590,14 @@ final class AppModelHomebrewTransactionTests: XCTestCase {
             summary: "A deterministic WonderSwan Color transaction fixture.",
             description: "A local test game used to prove the complete catalog download and managed-library transaction.",
             sourceURL: URL(
-                string: "https://github.com/RegionallyFamous/swansong-story-forge/tree/\(commit)/games/\(id)"
+                string: "https://github.com/RegionallyFamous/SwanSong-Desktop/tree/\(commit)/StoryForge/games/\(id)"
             )!,
             provenanceURL: URL(
-                string: "https://github.com/RegionallyFamous/swansong-story-forge/blob/\(commit)/games/\(id)/reports/release-report.json"
+                string: "https://github.com/RegionallyFamous/SwanSong-Desktop/blob/\(commit)/StoryForge/games/\(id)/reports/release-report.json"
             )!,
             licenseName: "MIT License",
             licenseURL: URL(
-                string: "https://github.com/RegionallyFamous/swansong-story-forge/blob/\(commit)/LICENSE"
+                string: "https://github.com/RegionallyFamous/SwanSong-Desktop/blob/\(commit)/LICENSE"
             )!,
             releases: [
                 HomebrewCatalogRelease(
@@ -605,11 +605,11 @@ final class AppModelHomebrewTransactionTests: XCTestCase {
                     saveCompatibilityID: "transaction-fixture-save-v1",
                     releasedAt: releasedAt,
                     releaseURL: URL(
-                        string: "https://github.com/RegionallyFamous/swansong-story-forge/releases/tag/\(tag)"
+                        string: "https://github.com/RegionallyFamous/SwanSong-Desktop/releases/tag/\(tag)"
                     )!,
                     asset: HomebrewCatalogAsset(
                         url: URL(
-                            string: "https://github.com/RegionallyFamous/swansong-story-forge/releases/download/\(tag)/\(id).wsc"
+                            string: "https://github.com/RegionallyFamous/SwanSong-Desktop/releases/download/\(tag)/\(id).wsc"
                         )!,
                         byteCount: assetData.count,
                         sha256: ManagedGameStore.sha256(assetData),

@@ -1,0 +1,338 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:35.054813+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "unique-command-names",
+      "passed": true,
+      "errors": [],
+      "facts": {
+        "command_count": 41,
+        "duplicate_names": []
+      }
+    },
+    {
+      "name": "required-scripts-in-py-syntax-list",
+      "passed": true,
+      "errors": [],
+      "facts": {
+        "missing_scripts": []
+      }
+    },
+    {
+      "name": "script-names-match-source-tree-contract",
+      "passed": true,
+      "errors": [],
+      "facts": {
+        "missing_source_tree_scripts": [],
+        "extra_ship_scripts": [],
+        "source_tree_script_count": 89,
+        "ship_script_count": 89
+      }
+    },
+    {
+      "name": "required-reports-in-evidence-list",
+      "passed": true,
+      "errors": [],
+      "facts": {
+        "missing_reports": []
+      }
+    },
+    {
+      "name": "critical-ship-gate-order",
+      "passed": true,
+      "errors": [],
+      "facts": {
+        "critical_order": [
+          "signal-ship-gate-guard",
+          "doctor-prepackage",
+          "source-tree-check",
+          "source-tree-guard",
+          "package",
+          "verify-release",
+          "guard-selftest",
+          "doctor-release",
+          "story-forge-doctor",
+          "release-inventory",
+          "forge-status",
+          "py-syntax",
+          "git-diff-check"
+        ],
+        "positions": {
+          "signal-ship-gate-guard": 28,
+          "doctor-prepackage": 29,
+          "source-tree-check": 30,
+          "source-tree-guard": 31,
+          "package": 32,
+          "verify-release": 33,
+          "guard-selftest": 34,
+          "doctor-release": 35,
+          "story-forge-doctor": 36,
+          "release-inventory": 37,
+          "forge-status": 38,
+          "py-syntax": 39,
+          "git-diff-check": 40
+        }
+      }
+    },
+    {
+      "name": "fresh-release-evidence-before-package",
+      "passed": true,
+      "errors": [],
+      "facts": {
+        "required_order": [
+          "repro",
+          "soundtrack-preview",
+          "audio-proof-bind",
+          "native-scene-review",
+          "pending-hardware-bind",
+          "swansong-playthrough",
+          "mesen-visual-playthrough",
+          "doctor-prepackage",
+          "package"
+        ],
+        "positions": {
+          "repro": 6,
+          "soundtrack-preview": 7,
+          "audio-proof-bind": 8,
+          "native-scene-review": 9,
+          "pending-hardware-bind": 10,
+          "swansong-playthrough": 11,
+          "mesen-visual-playthrough": 12,
+          "doctor-prepackage": 29,
+          "package": 32
+        }
+      }
+    },
+    {
+      "name": "signal-doctor-release-mode",
+      "passed": true,
+      "errors": [],
+      "facts": {
+        "doctor_prepackage": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/doctor_signal_before_dawn_slice.py",
+          "--skip-release"
+        ],
+        "doctor_release": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/doctor_signal_before_dawn_slice.py"
+        ]
+      }
+    },
+    {
+      "name": "lab-current-release-command-shape",
+      "passed": true,
+      "errors": [],
+      "facts": {
+        "lab_doctor": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/doctor_story_forge.py",
+          "--skip-signal"
+        ]
+      }
+    },
+    {
+      "name": "signal-uses-current-read-only-fleet-evidence",
+      "passed": true,
+      "errors": [],
+      "facts": {}
+    },
+    {
+      "name": "pending-candidate-is-valid-read-only-fleet-state",
+      "passed": true,
+      "errors": [],
+      "facts": {}
+    },
+    {
+      "name": "release-zip-facts-bind-report-verifier-and-actual-zip",
+      "passed": true,
+      "errors": [],
+      "facts": {
+        "zip_facts": {
+          "release_zip": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/signal-ship-zip-facts-zjao2r6c/20260710T000000Z-signal.zip",
+          "release_zip_sha256": "50663569e21dbc2db2c6e43492358049b14fcda9048e022052b39cae09b66efc",
+          "actual_zip": {
+            "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/signal-ship-zip-facts-zjao2r6c/20260710T000000Z-signal.zip",
+            "exists": true,
+            "bytes": 14,
+            "sha256": "50663569e21dbc2db2c6e43492358049b14fcda9048e022052b39cae09b66efc"
+          },
+          "verified_zip": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/signal-ship-zip-facts-zjao2r6c/20260710T000000Z-signal.zip",
+          "verified_zip_sha256": "50663569e21dbc2db2c6e43492358049b14fcda9048e022052b39cae09b66efc"
+        },
+        "stale_errors": [
+          "release verify zip sha256 does not match actual zip",
+          "release verify zip sha256 does not match release report"
+        ]
+      }
+    },
+    {
+      "name": "release-verified-bridge-report-is-status-readable",
+      "passed": true,
+      "errors": [],
+      "facts": {
+        "bridge_facts": {
+          "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local",
+          "build_mode": "full",
+          "release_zip": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/signal-ship-bridge-04ghind7/20260710T000000Z-signal.zip",
+          "release_zip_sha256": "50663569e21dbc2db2c6e43492358049b14fcda9048e022052b39cae09b66efc",
+          "actual_zip": {
+            "path": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/signal-ship-bridge-04ghind7/20260710T000000Z-signal.zip",
+            "exists": true,
+            "bytes": 14,
+            "sha256": "50663569e21dbc2db2c6e43492358049b14fcda9048e022052b39cae09b66efc"
+          },
+          "verified_zip": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/signal-ship-bridge-04ghind7/20260710T000000Z-signal.zip",
+          "verified_zip_sha256": "50663569e21dbc2db2c6e43492358049b14fcda9048e022052b39cae09b66efc"
+        }
+      }
+    },
+    {
+      "name": "py-syntax-covers-source-tree-scripts",
+      "passed": true,
+      "errors": [],
+      "facts": {
+        "checked_scripts": [
+          "approve_wscvn_sprite_audition.py",
+          "audit_novel_catalog.py",
+          "audit_signal_before_dawn_slice.py",
+          "audit_wscvn_releases.py",
+          "audit_wscvn_story_prose.py",
+          "audition_wscvn_sprite_sheet.py",
+          "build_novel_release.py",
+          "build_series_bible.py",
+          "build_signal_before_dawn_slice.py",
+          "build_wscvn_game.py",
+          "check_build_wonderswan_vn_skill.py",
+          "check_forge_light_novels_skill.py",
+          "check_light_novel_project.py",
+          "check_signal_before_dawn_tree.py",
+          "check_wscvn_audio_proof.py",
+          "check_wscvn_experience_polish.py",
+          "check_wscvn_game_project.py",
+          "check_wscvn_game_readiness.py",
+          "check_wscvn_graphics_contract.py",
+          "check_wscvn_light_novel_readiness.py",
+          "check_wscvn_text_contract.py",
+          "check_wscvn_visual_contract.py",
+          "create_light_novel_project.py",
+          "doctor_signal_before_dawn_slice.py",
+          "doctor_story_forge.py",
+          "lock_light_novel_project.py",
+          "make_imagegen_illustration_briefs.py",
+          "make_signal_before_dawn_native_review.py",
+          "make_signal_before_dawn_release_art.py",
+          "make_signal_before_dawn_slice.py",
+          "make_wscvn_game_review_sheets.py",
+          "migrate_light_novel_project.py",
+          "migrate_wscvn_audition_report_paths.py",
+          "package_signal_before_dawn_slice.py",
+          "package_wscvn_game.py",
+          "playtest_signal_before_dawn_routes.py",
+          "playtest_wscvn_swansong.py",
+          "refresh_signal_before_dawn_hardware_test.py",
+          "refresh_wscvn_candidate_summary.py",
+          "render_wscvn_music_preview.py",
+          "report_chapter_momentum.py",
+          "report_character_voice.py",
+          "report_novel_continuity.py",
+          "report_prose_polish.py",
+          "report_rights_release_lane.py",
+          "report_scene_delivery.py",
+          "report_soundtrack_bible.py",
+          "repro_signal_before_dawn_slice.py",
+          "review_novel_illustrations.py",
+          "review_signal_before_dawn_visuals.py",
+          "selftest_build_wonderswan_vn_skill.py",
+          "selftest_light_novel_framework.py",
+          "selftest_signal_before_dawn_audit_guards.py",
+          "selftest_signal_before_dawn_guards.py",
+          "selftest_signal_before_dawn_tree_guards.py",
+          "selftest_signal_before_dawn_visual_review_guards.py",
+          "selftest_signal_ship_gate.py",
+          "selftest_story_forge_status.py",
+          "selftest_wscvn_audio_proof_timing.py",
+          "selftest_wscvn_experience_polish.py",
+          "selftest_wscvn_game_audit.py",
+          "selftest_wscvn_game_builder.py",
+          "selftest_wscvn_game_readiness.py",
+          "selftest_wscvn_game_release.py",
+          "selftest_wscvn_game_ship.py",
+          "selftest_wscvn_graphics_contract.py",
+          "selftest_wscvn_light_novel_readiness.py",
+          "selftest_wscvn_release_inventory.py",
+          "selftest_wscvn_rom_smoke.py",
+          "selftest_wscvn_sprite_approval.py",
+          "selftest_wscvn_sprite_approval_guards.py",
+          "selftest_wscvn_sprite_audition.py",
+          "selftest_wscvn_sprite_family.py",
+          "selftest_wscvn_text_contract.py",
+          "selftest_wscvn_visual_contract.py",
+          "ship_signal_before_dawn_slice.py",
+          "ship_wscvn_game.py",
+          "smoke_signal_before_dawn_rom.py",
+          "smoke_wscvn_rom.py",
+          "status_novel_catalog.py",
+          "status_story_forge.py",
+          "synthesize_reader_feedback.py",
+          "validate_signal_before_dawn_slice.py",
+          "validate_wscvn_candidate.py",
+          "verify_release_signal_before_dawn_slice.py",
+          "verify_wscvn_game_release.py",
+          "wscvn_release_evidence.py",
+          "wscvn_route_plans.py",
+          "wscvn_sprite_family.py"
+        ]
+      }
+    }
+  ],
+  "facts": {
+    "ship_script": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/ship_signal_before_dawn_slice.py",
+    "command_names": [
+      "pre-source-tree-check",
+      "skill-mirror-check",
+      "light-novel-skill-mirror-check",
+      "skill-mirror-guard",
+      "light-novel-framework-guard",
+      "full-build",
+      "repro",
+      "soundtrack-preview",
+      "audio-proof-bind",
+      "native-scene-review",
+      "pending-hardware-bind",
+      "swansong-playthrough",
+      "mesen-visual-playthrough",
+      "audit-guard",
+      "graphics-contract-guard",
+      "text-contract-guard",
+      "visual-contract-guard",
+      "light-novel-readiness-guard",
+      "sprite-approval-guard",
+      "sprite-family-guard",
+      "rom-smoke-guard",
+      "game-builder-guard",
+      "game-readiness-guard",
+      "game-release-guard",
+      "game-ship-guard",
+      "release-inventory-guard",
+      "game-audit-guard",
+      "forge-status-guard",
+      "signal-ship-gate-guard",
+      "doctor-prepackage",
+      "source-tree-check",
+      "source-tree-guard",
+      "package",
+      "verify-release",
+      "guard-selftest",
+      "doctor-release",
+      "story-forge-doctor",
+      "release-inventory",
+      "forge-status",
+      "py-syntax",
+      "git-diff-check"
+    ],
+    "command_count": 41
+  }
+}

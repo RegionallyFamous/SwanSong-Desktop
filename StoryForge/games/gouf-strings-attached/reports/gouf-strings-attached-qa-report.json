@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/projects/gouf-strings-attached.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gouf-strings-attached/assets/contact_sheet.png",
+    "nodes": 37,
+    "flags": 0,
+    "tracks": [
+      {
+        "id": "gouf_title",
+        "name": "Cable at Dusk",
+        "bpm": 96
+      },
+      {
+        "id": "gouf_main",
+        "name": "Courtyard Tangle",
+        "bpm": 112
+      },
+      {
+        "id": "gouf_end_a",
+        "name": "Sky Spiral",
+        "bpm": 136
+      },
+      {
+        "id": "gouf_end_b",
+        "name": "Dependable Glow",
+        "bpm": 84
+      }
+    ],
+    "imagegen_source_sha256": {
+      "background_title_imagegen_v1.png": "ed1f1e9823914ee54e2d2c52fa981dcafb29b7453a8c73b2a6f6e8e6b00d180f",
+      "background_main_imagegen_v1.png": "a66f0536366507457045048364827214533ffe18312d5f3f4fab20a28ca12d6a",
+      "background_ending_a_imagegen_v1.png": "8c7b165f78a8df4e2582d7b3c1b5d5db2edd65e2709689d38dfc5282c559279e",
+      "background_ending_b_imagegen_v1.png": "9733c5ade04a079de308c981677d0d0b579e561438aa47f25ce6aac1217a16b0",
+      "character_master_cutout_imagegen_v1.png": "4673991f0e453467e4b7207faf66ca70fc6a25077498a5208c21b4483c7d442c"
+    },
+    "source_master_count": 5,
+    "background_count": 4,
+    "character_frame_count": 3,
+    "art_policy": "ImageGen-first; no procedural pictorial fallback"
+  }
+}

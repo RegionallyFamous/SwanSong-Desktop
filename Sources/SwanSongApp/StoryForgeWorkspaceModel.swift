@@ -92,7 +92,8 @@ final class StoryForgeWorkspaceModel {
             SwanSongTaskNotificationCenter.shared.deliver($0)
         },
         defaults: UserDefaults = .standard,
-        environment: [String: String] = ProcessInfo.processInfo.environment
+        environment: [String: String] = ProcessInfo.processInfo.environment,
+        includedFrameworkRoot: URL? = StoryForgeCLIResolution.includedRoot()
     ) {
         self.runner = runner
         self.completionNotifier = completionNotifier
@@ -104,11 +105,17 @@ final class StoryForgeWorkspaceModel {
         let remembered = defaults.string(forKey: Self.frameworkDefaultsKey).map {
             URL(fileURLWithPath: $0, isDirectory: true)
         }
-        if let root = configured ?? remembered {
+        let selectedRoot = configured ?? includedFrameworkRoot ?? remembered
+        if let root = selectedRoot {
             do {
-                try configureFramework(at: root, remember: configured == nil)
+                try configureFramework(
+                    at: root,
+                    remember: configured == nil && includedFrameworkRoot == nil
+                )
             } catch {
-                if configured == nil { defaults.removeObject(forKey: Self.frameworkDefaultsKey) }
+                if configured == nil && includedFrameworkRoot == nil {
+                    defaults.removeObject(forKey: Self.frameworkDefaultsKey)
+                }
                 issue = error.localizedDescription
             }
         }
@@ -134,6 +141,9 @@ final class StoryForgeWorkspaceModel {
 
     var frameworkDescription: String {
         guard let frameworkRoot else { return "No Story Forge selected" }
+        if frameworkRoot == StoryForgeCLIResolution.includedRoot() {
+            return "Included Story Forge · schema v3 · workbench v1"
+        }
         return "Story Forge schema v3 · workbench v1 · \(frameworkRoot.path)"
     }
 
@@ -628,7 +638,7 @@ final class StoryForgeWorkspaceModel {
         onComplete: @escaping @MainActor (SwanSDKCommandResult) throws -> Void
     ) {
         guard let cli else {
-            issue = "Choose the Story Forge repository first."
+            issue = "Story Forge is unavailable. Choose a framework folder first."
             return
         }
         guard !isRunning else {
@@ -685,7 +695,10 @@ final class StoryForgeWorkspaceModel {
         _ commands: [(StoryForgeReportKind, StoryForgeCommand)],
         title: String
     ) {
-        guard let cli else { issue = "Choose the Story Forge repository first."; return }
+        guard let cli else {
+            issue = "Story Forge is unavailable. Choose a framework folder first."
+            return
+        }
         guard !isRunning else { issue = "Another Story Forge task is still running."; return }
         issue = nil
         lastReport = nil

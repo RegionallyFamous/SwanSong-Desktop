@@ -1,0 +1,630 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:07:48.494915+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "one-sock-offensive",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/projects/one-sock-offensive.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/projects/one-sock-offensive.wscvn.json",
+      "bytes": 183625,
+      "sha256": "6aa70a5872b6c217de1127256348feaa004e9885c6bc6e8b8c794977d183a51f"
+    },
+    "project_counts": {
+      "name": "The One-Sock Offensive",
+      "nodes": 44,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 44,
+      "scene_nodes": 40,
+      "staged_scenes": 36,
+      "animated_staged_scenes": 36,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Char",
+        "Commander",
+        "Line Zaku",
+        "Narrator",
+        "Old GM"
+      ],
+      "backgrounds_used": [
+        "bg_end_a",
+        "bg_end_b",
+        "bg_main",
+        "bg_title"
+      ],
+      "ending_scenes": [
+        "sock_a4",
+        "sock_b4"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 44,
+      "start_node": "sock_title"
+    },
+    "routes": {
+      "initial_flags": {},
+      "states_explored": 44,
+      "truncated": false,
+      "route_reachable_nodes": 44,
+      "route_reachable_ending_scenes": [
+        "sock_a4",
+        "sock_b4"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "sock_a1",
+        "sock_b1",
+        "sock_fold_1",
+        "sock_scan_1"
+      ],
+      "selectable_choice_targets": [
+        "sock_a1",
+        "sock_b1",
+        "sock_fold_1",
+        "sock_scan_1"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": []
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Sort every single item / Run sorting protocol",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1912,
+          "estimated_minutes_at_140_wpm": 13.66
+        },
+        {
+          "route_id": "route-2",
+          "label": "Sort every single item / Trust the red washer",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1914,
+          "estimated_minutes_at_140_wpm": 13.67
+        },
+        {
+          "route_id": "route-3",
+          "label": "Scan the machines / Run sorting protocol",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1909,
+          "estimated_minutes_at_140_wpm": 13.64
+        },
+        {
+          "route_id": "route-4",
+          "label": "Scan the machines / Trust the red washer",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1911,
+          "estimated_minutes_at_140_wpm": 13.65
+        }
+      ]
+    },
+    "text": {
+      "blocks": 171,
+      "max_pause_block_chars": 95,
+      "choice_labels": 4,
+      "max_choice_label_chars": 22,
+      "max_choice_prompt_chars": 20,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 16,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 22,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_title",
+        "orig_name": "bg_title.png",
+        "embedded_sha256": "4adf4020748d152d51953854c9ac4eec108bfec3b6f05d10b43319bc3042111a",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/backgrounds/bg_title.png",
+        "local_sha256": "4adf4020748d152d51953854c9ac4eec108bfec3b6f05d10b43319bc3042111a"
+      },
+      {
+        "id": "bg_main",
+        "orig_name": "bg_main.png",
+        "embedded_sha256": "d3832381e0fe42e06c4c07b6e5db9087ebc017c1674536ceb4809b221aedd212",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 12,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/backgrounds/bg_main.png",
+        "local_sha256": "d3832381e0fe42e06c4c07b6e5db9087ebc017c1674536ceb4809b221aedd212"
+      },
+      {
+        "id": "bg_end_a",
+        "orig_name": "bg_end_a.png",
+        "embedded_sha256": "c1ee8998c48869f4980e5f2cb0994dbb70a06cf8aeb0921401430ee29b445571",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/backgrounds/bg_end_a.png",
+        "local_sha256": "c1ee8998c48869f4980e5f2cb0994dbb70a06cf8aeb0921401430ee29b445571"
+      },
+      {
+        "id": "bg_end_b",
+        "orig_name": "bg_end_b.png",
+        "embedded_sha256": "4b7fb98fa5bc50bcab280eb8e5c54a5e02fe0caea9ab6eec3d1a75b6905f093b",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/backgrounds/bg_end_b.png",
+        "local_sha256": "4b7fb98fa5bc50bcab280eb8e5c54a5e02fe0caea9ab6eec3d1a75b6905f093b"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_zaku_neutral",
+        "orig_name": "zaku_neutral.png",
+        "embedded_sha256": "65817ad9838d018d8b89daeccce9891155fd8e1d9eba78109c61a9aed8fee0f9",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5186,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/characters/zaku_neutral.png",
+        "local_sha256": "65817ad9838d018d8b89daeccce9891155fd8e1d9eba78109c61a9aed8fee0f9"
+      },
+      {
+        "id": "char_zaku_talk",
+        "orig_name": "zaku_talk.png",
+        "embedded_sha256": "3a3453df532c14a34ba0558d7c9b592045c55a210007fc19ac46f67e4158b2f6",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5186,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/characters/zaku_talk.png",
+        "local_sha256": "3a3453df532c14a34ba0558d7c9b592045c55a210007fc19ac46f67e4158b2f6"
+      },
+      {
+        "id": "char_zaku_blink",
+        "orig_name": "zaku_blink.png",
+        "embedded_sha256": "443789e3c22d277af14552295107cf23d54e2523a287b4fef64ae551e4803866",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5186,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/characters/zaku_blink.png",
+        "local_sha256": "443789e3c22d277af14552295107cf23d54e2523a287b4fef64ae551e4803866"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_title",
+          "textbox_mean_luma": 118.913,
+          "textbox_luma_stddev": 54.789,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_main",
+          "textbox_mean_luma": 226.769,
+          "textbox_luma_stddev": 31.945,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_a",
+          "textbox_mean_luma": 141.91,
+          "textbox_luma_stddev": 58.223,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_b",
+          "textbox_mean_luma": 138.545,
+          "textbox_luma_stddev": 63.276,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 36,
+      "families": [
+        {
+          "neutral": "char_zaku_neutral",
+          "talk": "char_zaku_talk",
+          "blink": "char_zaku_blink",
+          "talk_face_delta": 1.703,
+          "blink_face_delta": 1.92,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 43,
+            "changed_bbox": [
+              50,
+              40,
+              62,
+              47
+            ],
+            "changed_bbox_area": 84,
+            "changed_region_share": 0.006836,
+            "global_changed_share": 0.003499,
+            "face_changed_pixels": 43,
+            "face_changed_share": 0.02036,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 28,
+            "changed_bbox": [
+              50,
+              40,
+              57,
+              46
+            ],
+            "changed_bbox_area": 42,
+            "changed_region_share": 0.003418,
+            "global_changed_share": 0.002279,
+            "face_changed_pixels": 28,
+            "face_changed_share": 0.013258,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources",
+      "count": 6,
+      "packaged_file_count": 8,
+      "background_source_count": 4,
+      "character_source_count": 2,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/background_ending_a_imagegen_v1.png",
+          "bytes": 2122014,
+          "sha256": "815a84618cfa0d599242c0877fad94a87bbe892cada866801fc6f6cafbfd2756",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/background_ending_b_imagegen_v1.png",
+          "bytes": 2291398,
+          "sha256": "93fba732efee44554b5a8eb2c9e6f5d5d455b1d21b649d9b690a65506cfe01a0",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/background_main_imagegen_v1.png",
+          "bytes": 2125356,
+          "sha256": "39b0fa4402ddfb72c8d12ad6ffc530b70518022736e053b3f25665b09c94efa8",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/background_title_imagegen_v1.png",
+          "bytes": 2101098,
+          "sha256": "6ed92386fb36d7f20327de1304dca6ba4750aed2a1e16802a9e991e361b6f051",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            940
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/character_master_cutout_imagegen_v1.png",
+          "bytes": 1104239,
+          "sha256": "0586a82fa724ef298adbdfb68c59eaa077ab4bc39956854b91edd9d9cb129105",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1024,
+            1536
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/character_master_imagegen_v1.png",
+          "bytes": 1694465,
+          "sha256": "95d1ccf77a93cc8c7d81cf49429af265670edd2dd6c9b57dd88735a250e60950",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1024,
+            1536
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/game_spec.json",
+          "bytes": 21533,
+          "sha256": "6f9d66ae9f0630a4d32f52b58d1c6d64de238909d38f2cc6ae1481c647d98ab9",
+          "categories": []
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/imagegen-prompts-v1.md",
+          "bytes": 10239,
+          "sha256": "857c9ffd38af9050dea7143a36904da8dba81ad66bab62ef4ffde4d64754f31c",
+          "categories": []
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 67316,
+      "sha256": "98af173976909fe8c7b9c8a7715384302384a27a873c4cb625979ba9368260b2",
+      "size": [
+        478,
+        510
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 303241,
+        "sha256": "2dbe777b516caa6b6b0253a1c9fd56efd5c08c6ae6bc9939c0b0ced0c1a364dd",
+        "size": [
+          712,
+          2560
+        ],
+        "mode": "RGB",
+        "unique_colors": 278,
+        "luma_stddev": 85.0
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 101524,
+        "sha256": "9c4d286622b81e0b14f00c8fdfe0c9ca7d69cec9886203bb8fa926ab1743cc4c",
+        "size": [
+          488,
+          1064
+        ],
+        "mode": "RGB",
+        "unique_colors": 278,
+        "luma_stddev": 83.077
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 23807,
+        "sha256": "4f5a481f3563a58fe9094ec83b2ef0b362afd16db3dedfc6502123d99169d3be",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/projects/one-sock-offensive.wscvn.json",
+          "exists": true,
+          "bytes": 183625,
+          "sha256": "6aa70a5872b6c217de1127256348feaa004e9885c6bc6e8b8c794977d183a51f"
+        },
+        "nodes_rendered": 43,
+        "preview_node_ids": [
+          "sock_title",
+          "sock_01",
+          "sock_02",
+          "sock_03",
+          "sock_04",
+          "sock_05",
+          "sock_06",
+          "sock_07",
+          "sock_08",
+          "sock_09",
+          "sock_10",
+          "sock_method",
+          "sock_fold_1",
+          "sock_fold_2",
+          "sock_scan_1",
+          "sock_scan_2",
+          "sock_11",
+          "sock_12",
+          "sock_13",
+          "sock_14",
+          "sock_15",
+          "sock_16",
+          "sock_17",
+          "sock_18",
+          "sock_19",
+          "sock_20",
+          "sock_21",
+          "sock_22",
+          "sock_23",
+          "sock_24",
+          "sock_25",
+          "sock_26",
+          "sock_27",
+          "sock_28",
+          "sock_choice",
+          "sock_a1",
+          "sock_a2",
+          "sock_a3",
+          "sock_a4",
+          "sock_b1",
+          "sock_b2",
+          "sock_b3",
+          "sock_b4"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 43,
+            "expected": 43
+          },
+          "storyboard_cells": {
+            "reported": 43,
+            "expected": 43
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/reports/one-sock-offensive-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

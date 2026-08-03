@@ -1,0 +1,684 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:47:05.382841+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "last-blue-spine",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/projects/last-blue-spine.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/projects/last-blue-spine.wscvn.json",
+      "bytes": 163794,
+      "sha256": "37e0e3b11b1bbdef9d56c280cf9beaeef646c883cce357d71fc50e4cae84c13d"
+    },
+    "project_counts": {
+      "name": "The Last Blue Spine",
+      "nodes": 35,
+      "flags": 6,
+      "tracks": 1,
+      "backgrounds": 3,
+      "characters": 6,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 35,
+      "scene_nodes": 31,
+      "staged_scenes": 31,
+      "animated_staged_scenes": 31,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Aya",
+        "Ren"
+      ],
+      "backgrounds_used": [
+        "bg_shelf_room",
+        "bg_station_swap",
+        "bg_test_counter"
+      ],
+      "ending_scenes": [
+        "lbs_end_boot",
+        "lbs_end_read",
+        "lbs_end_trade"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 35,
+      "start_node": "title"
+    },
+    "routes": {
+      "initial_flags": {
+        "ending_boot": 0,
+        "ending_read": 0,
+        "ending_trade": 0,
+        "first_box": 0,
+        "first_loose": 0,
+        "first_manual": 0
+      },
+      "states_explored": 85,
+      "truncated": false,
+      "route_reachable_nodes": 35,
+      "route_reachable_ending_scenes": [
+        "lbs_end_boot",
+        "lbs_end_read",
+        "lbs_end_trade"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "lbs_boot",
+        "lbs_first_box",
+        "lbs_first_loose",
+        "lbs_first_manual",
+        "lbs_read",
+        "lbs_trade"
+      ],
+      "selectable_choice_targets": [
+        "lbs_boot",
+        "lbs_first_box",
+        "lbs_first_loose",
+        "lbs_first_manual",
+        "lbs_read",
+        "lbs_trade"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": []
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Faded loose cart / Boot it now",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1946,
+          "estimated_minutes_at_140_wpm": 13.9
+        },
+        {
+          "route_id": "route-2",
+          "label": "Faded loose cart / Read the save",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1951,
+          "estimated_minutes_at_140_wpm": 13.94
+        },
+        {
+          "route_id": "route-3",
+          "label": "Faded loose cart / Offer the trade",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1950,
+          "estimated_minutes_at_140_wpm": 13.93
+        },
+        {
+          "route_id": "route-4",
+          "label": "Near-mint box / Boot it now",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1952,
+          "estimated_minutes_at_140_wpm": 13.94
+        },
+        {
+          "route_id": "route-5",
+          "label": "Near-mint box / Read the save",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1957,
+          "estimated_minutes_at_140_wpm": 13.98
+        },
+        {
+          "route_id": "route-6",
+          "label": "Near-mint box / Offer the trade",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1956,
+          "estimated_minutes_at_140_wpm": 13.97
+        },
+        {
+          "route_id": "route-7",
+          "label": "Manual pouch / Boot it now",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1949,
+          "estimated_minutes_at_140_wpm": 13.92
+        },
+        {
+          "route_id": "route-8",
+          "label": "Manual pouch / Read the save",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1954,
+          "estimated_minutes_at_140_wpm": 13.96
+        },
+        {
+          "route_id": "route-9",
+          "label": "Manual pouch / Offer the trade",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1953,
+          "estimated_minutes_at_140_wpm": 13.95
+        }
+      ]
+    },
+    "text": {
+      "blocks": 183,
+      "max_pause_block_chars": 99,
+      "choice_labels": 6,
+      "max_choice_label_chars": 16,
+      "max_choice_prompt_chars": 22,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 13,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 23,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_shelf_room",
+        "orig_name": "shelf_room.png",
+        "embedded_sha256": "4a4bff8055d094da4ddc85c18fef02a1b1f11d1c0e32ccb5df7d842b67fb4638",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/backgrounds/shelf_room.png",
+        "local_sha256": "4a4bff8055d094da4ddc85c18fef02a1b1f11d1c0e32ccb5df7d842b67fb4638"
+      },
+      {
+        "id": "bg_station_swap",
+        "orig_name": "station_swap.png",
+        "embedded_sha256": "823e97c51ad7df1297650b21d075077a4282f7e5462ef33d165745abac8894d8",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 14,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/backgrounds/station_swap.png",
+        "local_sha256": "823e97c51ad7df1297650b21d075077a4282f7e5462ef33d165745abac8894d8"
+      },
+      {
+        "id": "bg_test_counter",
+        "orig_name": "test_counter.png",
+        "embedded_sha256": "10c1cf64d4f480886bf0496ea9b334ed1bed55e31bdd496226a1d0d55645b600",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/backgrounds/test_counter.png",
+        "local_sha256": "10c1cf64d4f480886bf0496ea9b334ed1bed55e31bdd496226a1d0d55645b600"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_aya_blink",
+        "orig_name": "aya_blink.png",
+        "embedded_sha256": "e3c4563daba8c8eafd5c6eae7714efaac49723e56e6513807f15c045c84db24c",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5688,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/characters/aya_blink.png",
+        "local_sha256": "e3c4563daba8c8eafd5c6eae7714efaac49723e56e6513807f15c045c84db24c"
+      },
+      {
+        "id": "char_aya_neutral",
+        "orig_name": "aya_neutral.png",
+        "embedded_sha256": "45c5ff2e9e6ac1514eb12e09408b7e78970a29bb0bcb398979fa82f96dd5d6bc",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5688,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/characters/aya_neutral.png",
+        "local_sha256": "45c5ff2e9e6ac1514eb12e09408b7e78970a29bb0bcb398979fa82f96dd5d6bc"
+      },
+      {
+        "id": "char_aya_talk",
+        "orig_name": "aya_talk.png",
+        "embedded_sha256": "4041586d2a1d83e4f164024e539be867b8bd05911b5e52d384341653b40c645e",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 13,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5688,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/characters/aya_talk.png",
+        "local_sha256": "4041586d2a1d83e4f164024e539be867b8bd05911b5e52d384341653b40c645e"
+      },
+      {
+        "id": "char_ren_blink",
+        "orig_name": "ren_blink.png",
+        "embedded_sha256": "e3794852a19812e0e41db6f44951dcf9160e21ebfc91f662285524ff724e5919",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5888,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/characters/ren_blink.png",
+        "local_sha256": "e3794852a19812e0e41db6f44951dcf9160e21ebfc91f662285524ff724e5919"
+      },
+      {
+        "id": "char_ren_neutral",
+        "orig_name": "ren_neutral.png",
+        "embedded_sha256": "72d3787fee90caabf5a9d15dc71101e2cf0ad7131522a78c3dc2b9879c11d987",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5888,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/characters/ren_neutral.png",
+        "local_sha256": "72d3787fee90caabf5a9d15dc71101e2cf0ad7131522a78c3dc2b9879c11d987"
+      },
+      {
+        "id": "char_ren_talk",
+        "orig_name": "ren_talk.png",
+        "embedded_sha256": "4ce1e91e31b79da21e319bc71c0dae2dc78c68f343306fe783a4855f7ceaeaae",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5888,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/characters/ren_talk.png",
+        "local_sha256": "4ce1e91e31b79da21e319bc71c0dae2dc78c68f343306fe783a4855f7ceaeaae"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_shelf_room",
+          "textbox_mean_luma": 35.29,
+          "textbox_luma_stddev": 24.106,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_station_swap",
+          "textbox_mean_luma": 22.811,
+          "textbox_luma_stddev": 14.523,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_test_counter",
+          "textbox_mean_luma": 18.801,
+          "textbox_luma_stddev": 24.048,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 31,
+      "families": [
+        {
+          "neutral": "char_aya_neutral",
+          "talk": "char_aya_talk",
+          "blink": "char_aya_blink",
+          "talk_face_delta": 13.848,
+          "blink_face_delta": 5.854,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 308,
+            "changed_bbox": [
+              38,
+              56,
+              59,
+              72
+            ],
+            "changed_bbox_area": 336,
+            "changed_region_share": 0.027344,
+            "global_changed_share": 0.025065,
+            "face_changed_pixels": 308,
+            "face_changed_share": 0.145833,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 104,
+            "changed_bbox": [
+              35,
+              38,
+              62,
+              47
+            ],
+            "changed_bbox_area": 243,
+            "changed_region_share": 0.019775,
+            "global_changed_share": 0.008464,
+            "face_changed_pixels": 104,
+            "face_changed_share": 0.049242,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        },
+        {
+          "neutral": "char_ren_neutral",
+          "talk": "char_ren_talk",
+          "blink": "char_ren_blink",
+          "talk_face_delta": 4.336,
+          "blink_face_delta": 3.77,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 216,
+            "changed_bbox": [
+              38,
+              56,
+              59,
+              72
+            ],
+            "changed_bbox_area": 336,
+            "changed_region_share": 0.027344,
+            "global_changed_share": 0.017578,
+            "face_changed_pixels": 216,
+            "face_changed_share": 0.102273,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 101,
+            "changed_bbox": [
+              38,
+              29,
+              66,
+              38
+            ],
+            "changed_bbox_area": 252,
+            "changed_region_share": 0.020508,
+            "global_changed_share": 0.008219,
+            "face_changed_pixels": 71,
+            "face_changed_share": 0.033617,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 30,
+            "outside_face_changed_share": 0.002948
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/sources",
+      "count": 2,
+      "packaged_file_count": 2,
+      "background_source_count": 1,
+      "character_source_count": 1,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/sources/backgrounds_imagegen_source.png",
+          "bytes": 2135695,
+          "sha256": "059ca95839b30b8b836956e7fe30868255be4664c5180afb7510e77e591bd511",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1536,
+            1024
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/sources/characters_imagegen_source.png",
+          "bytes": 2004935,
+          "sha256": "985091bf98e7f6331ebf07164f1f10f410be29a5314cf659f3f47806e7d9b4d6",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1536,
+            1024
+          ],
+          "mode": "RGB"
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 62444,
+      "sha256": "eaf9600bcbff9512ea8941a98aa456e166fad67540e84915c669e16d54d6dc65",
+      "size": [
+        712,
+        486
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 343230,
+        "sha256": "8f907140b6466de45e31bffb0897e3e8c9f8c8c9a0c50d8d51e75c19914ee4e8",
+        "size": [
+          712,
+          2050
+        ],
+        "mode": "RGB",
+        "unique_colors": 280,
+        "luma_stddev": 58.013
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 118162,
+        "sha256": "d3ac7fa126c26fb6d291675924f5b00695be5ecfc9795782ba6fcbb4bd6c7713",
+        "size": [
+          488,
+          872
+        ],
+        "mode": "RGB",
+        "unique_colors": 280,
+        "luma_stddev": 53.271
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 19142,
+        "sha256": "0c5ac34dca5c6da36a0f927295044058e79991e0c3b50f81cd979c42c1f6686c",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/projects/last-blue-spine.wscvn.json",
+          "exists": true,
+          "bytes": 163794,
+          "sha256": "37e0e3b11b1bbdef9d56c280cf9beaeef646c883cce357d71fc50e4cae84c13d"
+        },
+        "nodes_rendered": 34,
+        "preview_node_ids": [
+          "title",
+          "lbs01",
+          "lbs02",
+          "lbs03",
+          "lbs04",
+          "lbs05",
+          "lbs06",
+          "lbs07",
+          "lbs08",
+          "lbs_choice_one",
+          "lbs_first_loose",
+          "lbs_first_box",
+          "lbs_first_manual",
+          "lbs09",
+          "lbs10",
+          "lbs11",
+          "lbs12",
+          "lbs13",
+          "lbs14",
+          "lbs15",
+          "lbs16",
+          "lbs17",
+          "lbs18",
+          "lbs19",
+          "lbs20",
+          "lbs21",
+          "lbs22",
+          "lbs_choice_two",
+          "lbs_boot",
+          "lbs_read",
+          "lbs_trade",
+          "lbs_end_boot",
+          "lbs_end_read",
+          "lbs_end_trade"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 34,
+            "expected": 34
+          },
+          "storyboard_cells": {
+            "reported": 34,
+            "expected": 34
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/last-blue-spine-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

@@ -145,6 +145,23 @@ class StubBackend final : public SwanEngineBackend {
     return SWAN_RESULT_UNSUPPORTED;
   }
 
+  swan_result_t begin_data_producer_probe(
+      const swan_data_producer_probe_options_t&,
+      std::string& error) override {
+    error = "data-producer provenance requires the live ares backend";
+    return SWAN_RESULT_UNSUPPORTED;
+  }
+
+  swan_result_t data_producer_probe(
+      const swan_data_producer_probe_options_t&,
+      std::span<swan_data_producer_trace_t>,
+      size_t& count,
+      std::string& error) const override {
+    count = 0;
+    error = "data-producer provenance requires the live ares backend";
+    return SWAN_RESULT_UNSUPPORTED;
+  }
+
  private:
   swan_result_t unavailable(std::string& error) const {
     if (rom_.empty()) return SWAN_RESULT_NOT_LOADED;

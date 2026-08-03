@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "approval_type": "wscvn_sprite_audition_approval",
+  "approved_at": "2026-07-17T02:40:35+00:00",
+  "reviewer": "codex",
+  "notes": "Runtime-ready neutral/talk/blink families visually inspected.",
+  "character": "generic",
+  "sheet_kind": "animation",
+  "runtime_ready": true,
+  "labels": [
+    "neutral",
+    "talk",
+    "blink"
+  ],
+  "tool_provenance": [
+    {
+      "path": "scripts/audition_wscvn_sprite_sheet.py",
+      "sha256": "3c3ff7d0eff71df59c58e51d6d1f7990516778f64749e3dad207ab05b2069338"
+    },
+    {
+      "path": "scripts/make_signal_before_dawn_slice.py",
+      "sha256": "c48f872b41a2bbe0310229ffd35ed4786096e7d886595f950605efcf622afc90"
+    },
+    {
+      "path": "scripts/wscvn_sprite_family.py",
+      "sha256": "3ebf274e1f493bd10bc06be29936eda8c43d6e85e0d7cd5d4ddcd980d1bbc1aa"
+    }
+  ],
+  "quality": {
+    "status": "pass",
+    "error_count": 0,
+    "warning_count": 0,
+    "info_count": 0,
+    "thresholds": {
+      "max_visible_colors": 15,
+      "min_talk_face_delta": 18,
+      "min_blink_face_delta": 0,
+      "min_alpha_coverage": 0.2,
+      "max_alpha_coverage": 0.75,
+      "max_animation_alpha_changed": 0,
+      "min_visible_above_textbox": 0.52,
+      "max_visible_above_textbox": 0.92,
+      "max_animation_bbox_area": 1200,
+      "max_source_center_drift": 0.09,
+      "max_source_scale_drift": 0.18,
+      "max_sprite_center_drift": 0.04,
+      "max_sprite_scale_drift": 0.08,
+      "max_tiny_color_pixels": 10,
+      "max_green_fringe_pixels": 0,
+      "max_alpha_components": 8,
+      "min_largest_alpha_component_share": 0.96
+    }
+  },
+  "audition_report": {
+    "path": "games/catalog-after-midnight/assets/auditions/catalog-after-midnight-runtime-audition.json",
+    "sha256": "91b2540b7c9199a3ac6d32c37b5f6042184f5efd4a953e28cb4ca26a3443e119"
+  },
+  "audition_png": {
+    "path": "games/catalog-after-midnight/assets/auditions/catalog-after-midnight-runtime-audition.png",
+    "sha256": "aa55fe6f7850950ad2ee724aa62b62d38641df7162f67173b67f6102f8ba1647"
+  },
+  "sources": [
+    {
+      "label": "miki",
+      "path": "games/catalog-after-midnight/assets/auditions/miki-runtime-animation.png",
+      "sha256": "fc314b876b443f10cb2420f7e616fe04f17466bf7b815e9f441a414aa885d0cd"
+    },
+    {
+      "label": "nao",
+      "path": "games/catalog-after-midnight/assets/auditions/nao-runtime-animation.png",
+      "sha256": "2fb8e74e3bad5cbf583ccc00305b1bd73cba0d8f5b8807541963c23bf2642d0f"
+    }
+  ],
+  "covered_outputs": [
+    {
+      "path": "games/catalog-after-midnight/assets/characters/miki_neutral.png",
+      "sha256": "1b8752004bc388a3142b33c3371b62bc90913b82346f87bd6b4845a9f3f44bc6"
+    },
+    {
+      "path": "games/catalog-after-midnight/assets/characters/miki_talk.png",
+      "sha256": "89763909d902c3f3729968aed2367644e0a415809becad59f30d650185f94c9f"
+    },
+    {
+      "path": "games/catalog-after-midnight/assets/characters/miki_blink.png",
+      "sha256": "37cb33fb68bf342a44a07f534ebe451b4df03c14d48ce8e53f90ffe8e8b8e8ed"
+    },
+    {
+      "path": "games/catalog-after-midnight/assets/characters/nao_neutral.png",
+      "sha256": "7b95aef2bbed6547601b6170c94fef9d2761705cb07ab9725e7a730cbf97db26"
+    },
+    {
+      "path": "games/catalog-after-midnight/assets/characters/nao_talk.png",
+      "sha256": "f804853c88807d27431f6c1a11334097fd8975f316f3120c8c0c36b6f2d3c024"
+    },
+    {
+      "path": "games/catalog-after-midnight/assets/characters/nao_blink.png",
+      "sha256": "17510e044e05f73438d01a868c86a533205cbb3a75cefa310969004e310a21d4"
+    }
+  ]
+}

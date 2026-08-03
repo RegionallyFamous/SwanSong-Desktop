@@ -152,10 +152,11 @@ inside the chosen project and use the suffix declared by their public schema.
 
 Opt-in local MCP automation exposes two Studio contracts. One returns only the
 single already-open project slot, readiness, counts, and tool versions without
-its name or path. The other requires `confirmProjectWrites: true` and invokes
-only the fixed path-free action set documented in [[Local MCP and Automation]].
-It cannot select a path, mutate a reviewed asset, apply a migration, create or
-edit a project directly, run Release, or execute an arbitrary command.
+its name or path. The other has persistent project-write access and invokes only
+the fixed path-free action set documented in [[Local MCP and Automation]],
+without a repeated confirmation argument. It cannot select a path, mutate a
+reviewed asset, apply a migration, create or edit a project directly, run
+Release, or execute an arbitrary command.
 
 In **Settings → Display & Player**, you can ask for a local notification when
 a Studio task finishes while SwanSong is in the background. The notification

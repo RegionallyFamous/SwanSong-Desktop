@@ -1,0 +1,628 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:36:10.256506+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "zgok-wraps-a-present",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json",
+      "bytes": 171156,
+      "sha256": "f1a6999c32e90ec6b8e7a26383afea025c04ec52dde9a3525c126059f37f8f86"
+    },
+    "project_counts": {
+      "name": "Z'Gok Wraps a Present",
+      "nodes": 44,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 44,
+      "scene_nodes": 40,
+      "staged_scenes": 36,
+      "animated_staged_scenes": 36,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Blue Z'Gok",
+        "Narrator",
+        "Red Z'Gok"
+      ],
+      "backgrounds_used": [
+        "bg_end_a",
+        "bg_end_b",
+        "bg_main",
+        "bg_title"
+      ],
+      "ending_scenes": [
+        "zgok_a4",
+        "zgok_b4"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 44,
+      "start_node": "zgok_title"
+    },
+    "routes": {
+      "initial_flags": {},
+      "states_explored": 44,
+      "truncated": false,
+      "route_reachable_nodes": 44,
+      "route_reachable_ending_scenes": [
+        "zgok_a4",
+        "zgok_b4"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "zgok_a1",
+        "zgok_b1",
+        "zgok_guide_1",
+        "zgok_practice_1"
+      ],
+      "selectable_choice_targets": [
+        "zgok_a1",
+        "zgok_b1",
+        "zgok_guide_1",
+        "zgok_practice_1"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": []
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Fold scrap paper first / Use oven mitts",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1933,
+          "estimated_minutes_at_140_wpm": 13.81
+        },
+        {
+          "route_id": "route-2",
+          "label": "Fold scrap paper first / Spin the ribbon",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1944,
+          "estimated_minutes_at_140_wpm": 13.89
+        },
+        {
+          "route_id": "route-3",
+          "label": "Build a claw guide / Use oven mitts",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1935,
+          "estimated_minutes_at_140_wpm": 13.82
+        },
+        {
+          "route_id": "route-4",
+          "label": "Build a claw guide / Spin the ribbon",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1946,
+          "estimated_minutes_at_140_wpm": 13.9
+        }
+      ]
+    },
+    "text": {
+      "blocks": 171,
+      "max_pause_block_chars": 98,
+      "choice_labels": 4,
+      "max_choice_label_chars": 22,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 14,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 23,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_title",
+        "orig_name": "bg_title.png",
+        "embedded_sha256": "bfc8d5677005800c3ff167491eb3a931e545da9112c042fbe0b749418ef9f4dc",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/backgrounds/bg_title.png",
+        "local_sha256": "bfc8d5677005800c3ff167491eb3a931e545da9112c042fbe0b749418ef9f4dc"
+      },
+      {
+        "id": "bg_main",
+        "orig_name": "bg_main.png",
+        "embedded_sha256": "cc909a1e30e44e94161e7c0a872ec2befce45d2d9ae119a1db674da952135585",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 14,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/backgrounds/bg_main.png",
+        "local_sha256": "cc909a1e30e44e94161e7c0a872ec2befce45d2d9ae119a1db674da952135585"
+      },
+      {
+        "id": "bg_end_a",
+        "orig_name": "bg_end_a.png",
+        "embedded_sha256": "86daf18a1e54daf3685247227d524efb5700f349387cac4c8df18dafd8337a21",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/backgrounds/bg_end_a.png",
+        "local_sha256": "86daf18a1e54daf3685247227d524efb5700f349387cac4c8df18dafd8337a21"
+      },
+      {
+        "id": "bg_end_b",
+        "orig_name": "bg_end_b.png",
+        "embedded_sha256": "e17ce6e635ce295cf63dfa021d4613a1845a689b9694df780dab7910e6b73e5f",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/backgrounds/bg_end_b.png",
+        "local_sha256": "e17ce6e635ce295cf63dfa021d4613a1845a689b9694df780dab7910e6b73e5f"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_zgok_neutral",
+        "orig_name": "zgok_neutral.png",
+        "embedded_sha256": "c81afdd158d7b00369811c2a9569ecb2c00daeee5148ff28b2b2b4d0a165c2a6",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6175,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/characters/zgok_neutral.png",
+        "local_sha256": "c81afdd158d7b00369811c2a9569ecb2c00daeee5148ff28b2b2b4d0a165c2a6"
+      },
+      {
+        "id": "char_zgok_talk",
+        "orig_name": "zgok_talk.png",
+        "embedded_sha256": "00479ee1e79919cc1e8f1b8ced7280f5ebbd9ffcdef51ba6636aa61d72cca769",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6175,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/characters/zgok_talk.png",
+        "local_sha256": "00479ee1e79919cc1e8f1b8ced7280f5ebbd9ffcdef51ba6636aa61d72cca769"
+      },
+      {
+        "id": "char_zgok_blink",
+        "orig_name": "zgok_blink.png",
+        "embedded_sha256": "2cb7cea23c621236cc31ac7855909b079429d591f0533e739a6aef5874b4d626",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.6175,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/characters/zgok_blink.png",
+        "local_sha256": "2cb7cea23c621236cc31ac7855909b079429d591f0533e739a6aef5874b4d626"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_title",
+          "textbox_mean_luma": 86.806,
+          "textbox_luma_stddev": 31.179,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_main",
+          "textbox_mean_luma": 22.12,
+          "textbox_luma_stddev": 3.843,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_a",
+          "textbox_mean_luma": 79.128,
+          "textbox_luma_stddev": 15.35,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_b",
+          "textbox_mean_luma": 65.645,
+          "textbox_luma_stddev": 22.811,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 36,
+      "families": [
+        {
+          "neutral": "char_zgok_neutral",
+          "talk": "char_zgok_talk",
+          "blink": "char_zgok_blink",
+          "talk_face_delta": 1.824,
+          "blink_face_delta": 2.613,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 36,
+            "changed_bbox": [
+              43,
+              34,
+              50,
+              41
+            ],
+            "changed_bbox_area": 49,
+            "changed_region_share": 0.003988,
+            "global_changed_share": 0.00293,
+            "face_changed_pixels": 36,
+            "face_changed_share": 0.017045,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 31,
+            "changed_bbox": [
+              43,
+              34,
+              50,
+              41
+            ],
+            "changed_bbox_area": 49,
+            "changed_region_share": 0.003988,
+            "global_changed_share": 0.002523,
+            "face_changed_pixels": 31,
+            "face_changed_share": 0.014678,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources",
+      "count": 6,
+      "packaged_file_count": 8,
+      "background_source_count": 4,
+      "character_source_count": 2,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/background_ending_a_imagegen_v1.png",
+          "bytes": 2276782,
+          "sha256": "f02294c8933b956cba0ec01ea4547ff48e64cb786bedc5a517c24c2d6d89602a",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/background_ending_b_imagegen_v1.png",
+          "bytes": 2101588,
+          "sha256": "faa26ba3a451b61e6abb5c468b6614c4a4269dd1c0b4575c555f19e38e94c420",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/background_main_imagegen_v1.png",
+          "bytes": 1844113,
+          "sha256": "d0d07cdcfe5dbf61f648624b6253c48c2cb1f064ed00a56ba7b18fe91c105a9d",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/background_title_imagegen_v1.png",
+          "bytes": 2086659,
+          "sha256": "2ebce1bcbb665c58a1ee8c38a2fc08dcc7429de4ba25aaf217d1066826068e0a",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/character_master_cutout_imagegen_v1.png",
+          "bytes": 1066816,
+          "sha256": "c2ec3cdc742de3ca2a8636b0934fca93f9a2c2198cd6c8fb905ae1e64c5f089f",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1086,
+            1448
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/character_master_imagegen_v1.png",
+          "bytes": 1548877,
+          "sha256": "6671d8aa4cd1810887ca8070197103d1cea30b6373f644b6e4340bca5f1388a3",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1086,
+            1448
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/game_spec.json",
+          "bytes": 21110,
+          "sha256": "f8a7b62e43defeab77bb8d29be69b786799918302cd84f9264663a7f97fba210",
+          "categories": []
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/imagegen-prompts-v1.md",
+          "bytes": 10439,
+          "sha256": "8a227f64ed9fc67d72673bffb617204c27268e9df0787e01590e9350b7ba6bb3",
+          "categories": []
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 57905,
+      "sha256": "c9351513d6edf3dcbc776e7adf048da0dcd15b426786ad49fadd1f8cac42c48d",
+      "size": [
+        478,
+        510
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 280479,
+        "sha256": "c3a64630a66c5469fff51f11f406977742d92c7e90f6f9b474573a1bca51f8b2",
+        "size": [
+          712,
+          2560
+        ],
+        "mode": "RGB",
+        "unique_colors": 285,
+        "luma_stddev": 64.52
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 94352,
+        "sha256": "6adcb0b547d8475aea10ead316d95a55c3003b79f3a2c434e8b3443da9d6d948",
+        "size": [
+          488,
+          1064
+        ],
+        "mode": "RGB",
+        "unique_colors": 285,
+        "luma_stddev": 61.483
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 23852,
+        "sha256": "21c90a5c0a058c8e4f7b33356c73ef492d86ad129c4263a664e851520e4d3b2b",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json",
+          "exists": true,
+          "bytes": 171156,
+          "sha256": "f1a6999c32e90ec6b8e7a26383afea025c04ec52dde9a3525c126059f37f8f86"
+        },
+        "nodes_rendered": 43,
+        "preview_node_ids": [
+          "zgok_title",
+          "zgok_01",
+          "zgok_02",
+          "zgok_03",
+          "zgok_04",
+          "zgok_05",
+          "zgok_06",
+          "zgok_07",
+          "zgok_08",
+          "zgok_09",
+          "zgok_10",
+          "zgok_method",
+          "zgok_practice_1",
+          "zgok_practice_2",
+          "zgok_guide_1",
+          "zgok_guide_2",
+          "zgok_11",
+          "zgok_12",
+          "zgok_13",
+          "zgok_14",
+          "zgok_15",
+          "zgok_16",
+          "zgok_17",
+          "zgok_18",
+          "zgok_19",
+          "zgok_20",
+          "zgok_21",
+          "zgok_22",
+          "zgok_23",
+          "zgok_24",
+          "zgok_25",
+          "zgok_26",
+          "zgok_27",
+          "zgok_28",
+          "zgok_choice",
+          "zgok_a1",
+          "zgok_a2",
+          "zgok_a3",
+          "zgok_a4",
+          "zgok_b1",
+          "zgok_b2",
+          "zgok_b3",
+          "zgok_b4"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 43,
+            "expected": 43
+          },
+          "storyboard_cells": {
+            "reported": 43,
+            "expected": 43
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/reports/zgok-wraps-a-present-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

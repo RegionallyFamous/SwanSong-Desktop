@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "tool": "forge-next",
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/novels/mobile-suit-gundam-summary/novel.json",
+    "sha256": "0641681e9a0eceeb7d17ccc084abd5b33d2b817504fadf0c1c85888e8add8c85"
+  },
+  "manuscript_sha256": "cbc8c5ab6befbf04a0af1faae763b5de5faa67db732e8575b7d01375b2e20afc",
+  "slug": "mobile-suit-gundam-summary",
+  "workbench_schema_version": 1,
+  "generated_at": "2026-07-23T21:57:22.209901+00:00",
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "stage": "draft",
+    "drafted_scenes": 6,
+    "actions": [
+      {
+        "id": "art",
+        "why": "14 ImageGen moments remain unapproved.",
+        "command": "forge art-room /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/novels/mobile-suit-gundam-summary/novel.json"
+      },
+      {
+        "id": "check",
+        "why": "Validate the declared draft stage after meaningful changes.",
+        "command": "forge check /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/novels/mobile-suit-gundam-summary/novel.json --stage draft"
+      }
+    ]
+  }
+}

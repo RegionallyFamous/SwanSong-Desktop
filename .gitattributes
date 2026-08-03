@@ -3,3 +3,13 @@
 Engine/*.patch -whitespace
 testroms/** -whitespace
 Dependencies/SPARKLE_LICENSE -whitespace
+
+# Story Forge is developed in this monorepo, while the signed desktop app ships
+# only its reusable framework. Keep the large game/art/reference library in Git
+# and out of SwanSong's corresponding-source release archive.
+StoryForge/assets/ export-ignore
+StoryForge/audio/ export-ignore
+StoryForge/games/ export-ignore
+StoryForge/novels/ export-ignore
+StoryForge/projects/ export-ignore
+StoryForge/release-materials/ export-ignore

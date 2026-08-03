@@ -1,0 +1,215 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "art_policy": "Every pictorial source master was generated with built-in ImageGen; scripts only post-process accepted masters.",
+  "outputs": {
+    "backgrounds/bg_title.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/background_title_imagegen_v1.png",
+      "source_sha256": "2ebce1bcbb665c58a1ee8c38a2fc08dcc7429de4ba25aaf217d1066826068e0a",
+      "output_sha256": "bfc8d5677005800c3ff167491eb3a931e545da9112c042fbe0b749418ef9f4dc",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 84.91
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_main.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/background_main_imagegen_v1.png",
+      "source_sha256": "d0d07cdcfe5dbf61f648624b6253c48c2cb1f064ed00a56ba7b18fe91c105a9d",
+      "output_sha256": "cc909a1e30e44e94161e7c0a872ec2befce45d2d9ae119a1db674da952135585",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 35.69
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_a.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/background_ending_a_imagegen_v1.png",
+      "source_sha256": "f02294c8933b956cba0ec01ea4547ff48e64cb786bedc5a517c24c2d6d89602a",
+      "output_sha256": "86daf18a1e54daf3685247227d524efb5700f349387cac4c8df18dafd8337a21",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 76.78
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_b.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/background_ending_b_imagegen_v1.png",
+      "source_sha256": "faa26ba3a451b61e6abb5c468b6614c4a4269dd1c0b4575c555f19e38e94c420",
+      "output_sha256": "e17ce6e635ce295cf63dfa021d4613a1845a689b9694df780dab7910e6b73e5f",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 62.6
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "characters/zgok_neutral.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "c2ec3cdc742de3ca2a8636b0934fca93f9a2c2198cd6c8fb905ae1e64c5f089f",
+      "output_sha256": "c81afdd158d7b00369811c2a9569ecb2c00daeee5148ff28b2b2b4d0a165c2a6",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          5,
+          3,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.6175,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7395,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 31.71,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 41.54
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7588,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/zgok_talk.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "c2ec3cdc742de3ca2a8636b0934fca93f9a2c2198cd6c8fb905ae1e64c5f089f",
+      "output_sha256": "00479ee1e79919cc1e8f1b8ced7280f5ebbd9ffcdef51ba6636aa61d72cca769",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          5,
+          3,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.6175,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7395,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 30.68,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 38.19
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7588,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/zgok_blink.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "c2ec3cdc742de3ca2a8636b0934fca93f9a2c2198cd6c8fb905ae1e64c5f089f",
+      "output_sha256": "2cb7cea23c621236cc31ac7855909b079429d591f0533e739a6aef5874b4d626",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          5,
+          3,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.6175,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7395,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 31.05,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 39.64
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7588,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    }
+  }
+}

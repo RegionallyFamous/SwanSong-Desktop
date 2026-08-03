@@ -1,0 +1,215 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "art_policy": "Every pictorial source master was generated with built-in ImageGen; scripts only post-process accepted masters.",
+  "outputs": {
+    "backgrounds/bg_title.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/assets/sources/background_title_imagegen_v1.png",
+      "source_sha256": "ef9afcb5b8534cde06a91ab9a6c377e72702cf59165bf926f1bf19a33d101968",
+      "output_sha256": "55d2ab228b8e6fe89e5489b1e66e40516206b272c987411004c992fbdd5ff269",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 88.37
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_main.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/assets/sources/background_main_imagegen_v1.png",
+      "source_sha256": "9d50167b728d5b8435f0c8bc187ddf5db3f4beb06f3254da96663e9467b42d52",
+      "output_sha256": "24d203553850628e4f29a77e628d67376de5112d70b5404c85cd73af8ef016ee",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 187.92
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_a.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/assets/sources/background_ending_a_imagegen_v1.png",
+      "source_sha256": "09ae69a99efa099feba87b0720122d0edf1dc65f7fb07ef29180ba1e4337f56c",
+      "output_sha256": "0fd425e846a6b720d4a5d8a2cb005141149c4754eca07942827e461fa1571aba",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 66.35
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_b.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/assets/sources/background_ending_b_imagegen_v1.png",
+      "source_sha256": "2de68d84c793fa785d5c218515ae884d1a12f4c62d32664eef91b9c023f2d9c1",
+      "output_sha256": "f54ef65172007a84278f3c2096ab8af59fe9b4a4fbc5f46618171d6316543120",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 188.4
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "characters/impulse_neutral.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "0771b4be11967c39f2d03f00f9fbf8740ec9945960f48942cdf6a34610bf5a19",
+      "output_sha256": "6a9d488fb64a10fb66fd92b4008d815d3c6b198f5dc51836180e141b8ce3fbb6",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          7,
+          3,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4224,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7778,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 73.58,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 64.58
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 3,
+          "largest_component_pixels": 5188,
+          "largest_component_share": 0.9996,
+          "tiny_component_count": 2
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/impulse_talk.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "0771b4be11967c39f2d03f00f9fbf8740ec9945960f48942cdf6a34610bf5a19",
+      "output_sha256": "11596768f8647e7ece2a3a6fcde899c50ec3371a82b0dcd3e440467ec066b546",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          7,
+          3,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4224,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7778,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 74.02,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 67.91
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 3,
+          "largest_component_pixels": 5188,
+          "largest_component_share": 0.9996,
+          "tiny_component_count": 2
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/impulse_blink.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "0771b4be11967c39f2d03f00f9fbf8740ec9945960f48942cdf6a34610bf5a19",
+      "output_sha256": "edbedf5cba2ac86d6cde4f207cdd2662fd69177363da024454ac71ce2718fca1",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          7,
+          3,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4224,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7778,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 73.7,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 64.58
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 3,
+          "largest_component_pixels": 5188,
+          "largest_component_share": 0.9996,
+          "tiny_component_count": 2
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    }
+  }
+}

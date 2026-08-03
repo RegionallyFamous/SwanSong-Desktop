@@ -1,0 +1,789 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mode": "normal",
+    "zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/releases/20260727T033740Z-4c7c92b8b0e7.zip",
+      "bytes": 12302756,
+      "sha256": "bedc08fbae5b4e58ea0cbfecda17ef64fb24211ce98b759df8c0206e7b514d9a"
+    },
+    "entries": 45,
+    "members": 45,
+    "duplicate_members": [],
+    "unsafe_members": [],
+    "manifest": {
+      "schema_version": 1,
+      "slug": "zgok-wraps-a-present",
+      "title": "Z'Gok Wraps a Present",
+      "files": 44,
+      "runtime_inputs": 6,
+      "emulator_screenshot": false
+    },
+    "package_sources": {
+      "readme": {
+        "member": "docs/README.md",
+        "exists": true,
+        "bytes": 1416,
+        "sha256": "ba4279db297f81d291dff22017d7769244016cf00812197f7816210a823f9d56"
+      },
+      "asset_builder": {
+        "member": "source/build_zgok_wraps_a_present.py",
+        "exists": true,
+        "bytes": 23181,
+        "sha256": "8ac9a961f7a8bf3090f9d184bf59e7de6b203b654e0dc2962b1fb8e84c328d67"
+      },
+      "qa_report": {
+        "member": "reports/zgok-wraps-a-present-qa-report.json",
+        "exists": true,
+        "bytes": 1599,
+        "sha256": "a1327c0724a607f6d5d4bc1178cac6433af71dbacd2b207fac14d1f8f9e8fb67"
+      }
+    },
+    "runtime_inputs": {
+      "present": true,
+      "expected_count": 6,
+      "files": [
+        {
+          "member": "runtime/src/main.c",
+          "exists": true,
+          "bytes": 105606,
+          "sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a",
+          "manifest_bytes": 105606,
+          "manifest_sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a"
+        },
+        {
+          "member": "runtime/src/game_types.h",
+          "exists": true,
+          "bytes": 6650,
+          "sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec",
+          "manifest_bytes": 6650,
+          "manifest_sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec"
+        },
+        {
+          "member": "runtime/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+          "manifest_bytes": 5470,
+          "manifest_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        {
+          "member": "runtime/tools/convert_json.py",
+          "exists": true,
+          "bytes": 88977,
+          "sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387",
+          "manifest_bytes": 88977,
+          "manifest_sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387"
+        },
+        {
+          "member": "runtime/Makefile",
+          "exists": true,
+          "bytes": 3590,
+          "sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd",
+          "manifest_bytes": 3590,
+          "manifest_sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd"
+        },
+        {
+          "member": "runtime/wfconfig.toml",
+          "exists": true,
+          "bytes": 169,
+          "sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78",
+          "manifest_bytes": 169,
+          "manifest_sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78"
+        }
+      ],
+      "count": 6,
+      "missing": [],
+      "extra": [],
+      "duplicates": []
+    },
+    "current_workspace": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present",
+      "checked": 44,
+      "missing": [],
+      "mismatches": [],
+      "stable_report_diffs": [],
+      "unmapped": [],
+      "extra_current": []
+    },
+    "reports": {
+      "build": true,
+      "smoke": true,
+      "readiness": true,
+      "audit": true,
+      "swansong_playthrough": true,
+      "review_sheets": true
+    },
+    "smoke_verification": {
+      "result_scope": "boot-and-checksum",
+      "boot": {
+        "performed": true,
+        "passed": true,
+        "method": "headless-mednafen-startup-metadata",
+        "pixels_observed": false
+      },
+      "checksum": {
+        "performed": true,
+        "passed": true,
+        "method": "mednafen-recorded-vs-real-checksum"
+      },
+      "visual": {
+        "performed": false,
+        "passed": null,
+        "status": "not-performed",
+        "pixels_observed": false,
+        "proof_bound": false,
+        "screenshot": null
+      },
+      "proof_bound": false
+    },
+    "swansong_playthrough": {
+      "schema": "wscvn-swansong-playthrough-v2",
+      "app": {
+        "path": "/Applications/SwanSong.app",
+        "version": "0.9.0",
+        "build": "18",
+        "bundle_identifier": "com.regionallyfamous.swansong"
+      },
+      "route_count": 4,
+      "routes": [
+        {
+          "route_index": 0,
+          "member": "evidence/swansong-playthrough/route-1-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "zgok_title",
+            "zgok_01",
+            "zgok_02",
+            "zgok_03",
+            "zgok_04",
+            "zgok_05",
+            "zgok_06",
+            "zgok_07",
+            "zgok_08",
+            "zgok_09",
+            "zgok_10",
+            "zgok_method",
+            "zgok_practice_1",
+            "zgok_practice_2",
+            "zgok_11",
+            "zgok_12",
+            "zgok_13",
+            "zgok_14",
+            "zgok_15",
+            "zgok_16",
+            "zgok_17",
+            "zgok_18",
+            "zgok_19",
+            "zgok_20",
+            "zgok_21",
+            "zgok_22",
+            "zgok_23",
+            "zgok_24",
+            "zgok_25",
+            "zgok_26",
+            "zgok_27",
+            "zgok_28",
+            "zgok_choice",
+            "zgok_a1",
+            "zgok_a2",
+            "zgok_a3",
+            "zgok_a4",
+            "end"
+          ],
+          "observed_nodes": [
+            "zgok_title",
+            "zgok_01",
+            "zgok_02",
+            "zgok_03",
+            "zgok_04",
+            "zgok_05",
+            "zgok_06",
+            "zgok_07",
+            "zgok_08",
+            "zgok_09",
+            "zgok_10",
+            "zgok_method",
+            "zgok_practice_1",
+            "zgok_practice_2",
+            "zgok_11",
+            "zgok_12",
+            "zgok_13",
+            "zgok_14",
+            "zgok_15",
+            "zgok_16",
+            "zgok_17",
+            "zgok_18",
+            "zgok_19",
+            "zgok_20",
+            "zgok_21",
+            "zgok_22",
+            "zgok_23",
+            "zgok_24",
+            "zgok_25",
+            "zgok_26",
+            "zgok_27",
+            "zgok_28",
+            "zgok_choice",
+            "zgok_a1",
+            "zgok_a2",
+            "zgok_a3",
+            "zgok_a4",
+            "end"
+          ],
+          "bytes": 17821,
+          "sha256": "6a8b6d523bc9c83a6a60ada989ca67d8a52bd0f44614d79edea1d002ba439a60",
+          "node_id": "zgok_a4",
+          "audio_member": "evidence/swansong-playthrough/route-1-audio.wav"
+        },
+        {
+          "route_index": 1,
+          "member": "evidence/swansong-playthrough/route-2-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "zgok_title",
+            "zgok_01",
+            "zgok_02",
+            "zgok_03",
+            "zgok_04",
+            "zgok_05",
+            "zgok_06",
+            "zgok_07",
+            "zgok_08",
+            "zgok_09",
+            "zgok_10",
+            "zgok_method",
+            "zgok_practice_1",
+            "zgok_practice_2",
+            "zgok_11",
+            "zgok_12",
+            "zgok_13",
+            "zgok_14",
+            "zgok_15",
+            "zgok_16",
+            "zgok_17",
+            "zgok_18",
+            "zgok_19",
+            "zgok_20",
+            "zgok_21",
+            "zgok_22",
+            "zgok_23",
+            "zgok_24",
+            "zgok_25",
+            "zgok_26",
+            "zgok_27",
+            "zgok_28",
+            "zgok_choice",
+            "zgok_b1",
+            "zgok_b2",
+            "zgok_b3",
+            "zgok_b4",
+            "end"
+          ],
+          "observed_nodes": [
+            "zgok_title",
+            "zgok_01",
+            "zgok_02",
+            "zgok_03",
+            "zgok_04",
+            "zgok_05",
+            "zgok_06",
+            "zgok_07",
+            "zgok_08",
+            "zgok_09",
+            "zgok_10",
+            "zgok_method",
+            "zgok_practice_1",
+            "zgok_practice_2",
+            "zgok_11",
+            "zgok_12",
+            "zgok_13",
+            "zgok_14",
+            "zgok_15",
+            "zgok_16",
+            "zgok_17",
+            "zgok_18",
+            "zgok_19",
+            "zgok_20",
+            "zgok_21",
+            "zgok_22",
+            "zgok_23",
+            "zgok_24",
+            "zgok_25",
+            "zgok_26",
+            "zgok_27",
+            "zgok_28",
+            "zgok_choice",
+            "zgok_b1",
+            "zgok_b2",
+            "zgok_b3",
+            "zgok_b4",
+            "end"
+          ],
+          "bytes": 16672,
+          "sha256": "068e4ddbea94912d95adb253d9769a91ec8e1ff2815376804db6c9d8b2662a2d",
+          "node_id": "zgok_b4",
+          "audio_member": "evidence/swansong-playthrough/route-2-audio.wav"
+        },
+        {
+          "route_index": 2,
+          "member": "evidence/swansong-playthrough/route-3-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "zgok_title",
+            "zgok_01",
+            "zgok_02",
+            "zgok_03",
+            "zgok_04",
+            "zgok_05",
+            "zgok_06",
+            "zgok_07",
+            "zgok_08",
+            "zgok_09",
+            "zgok_10",
+            "zgok_method",
+            "zgok_guide_1",
+            "zgok_guide_2",
+            "zgok_11",
+            "zgok_12",
+            "zgok_13",
+            "zgok_14",
+            "zgok_15",
+            "zgok_16",
+            "zgok_17",
+            "zgok_18",
+            "zgok_19",
+            "zgok_20",
+            "zgok_21",
+            "zgok_22",
+            "zgok_23",
+            "zgok_24",
+            "zgok_25",
+            "zgok_26",
+            "zgok_27",
+            "zgok_28",
+            "zgok_choice",
+            "zgok_a1",
+            "zgok_a2",
+            "zgok_a3",
+            "zgok_a4",
+            "end"
+          ],
+          "observed_nodes": [
+            "zgok_title",
+            "zgok_01",
+            "zgok_02",
+            "zgok_03",
+            "zgok_04",
+            "zgok_05",
+            "zgok_06",
+            "zgok_07",
+            "zgok_08",
+            "zgok_09",
+            "zgok_10",
+            "zgok_method",
+            "zgok_guide_1",
+            "zgok_guide_2",
+            "zgok_11",
+            "zgok_12",
+            "zgok_13",
+            "zgok_14",
+            "zgok_15",
+            "zgok_16",
+            "zgok_17",
+            "zgok_18",
+            "zgok_19",
+            "zgok_20",
+            "zgok_21",
+            "zgok_22",
+            "zgok_23",
+            "zgok_24",
+            "zgok_25",
+            "zgok_26",
+            "zgok_27",
+            "zgok_28",
+            "zgok_choice",
+            "zgok_a1",
+            "zgok_a2",
+            "zgok_a3",
+            "zgok_a4",
+            "end"
+          ],
+          "bytes": 17821,
+          "sha256": "6a8b6d523bc9c83a6a60ada989ca67d8a52bd0f44614d79edea1d002ba439a60",
+          "node_id": "zgok_a4",
+          "audio_member": "evidence/swansong-playthrough/route-3-audio.wav"
+        },
+        {
+          "route_index": 3,
+          "member": "evidence/swansong-playthrough/route-4-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "zgok_title",
+            "zgok_01",
+            "zgok_02",
+            "zgok_03",
+            "zgok_04",
+            "zgok_05",
+            "zgok_06",
+            "zgok_07",
+            "zgok_08",
+            "zgok_09",
+            "zgok_10",
+            "zgok_method",
+            "zgok_guide_1",
+            "zgok_guide_2",
+            "zgok_11",
+            "zgok_12",
+            "zgok_13",
+            "zgok_14",
+            "zgok_15",
+            "zgok_16",
+            "zgok_17",
+            "zgok_18",
+            "zgok_19",
+            "zgok_20",
+            "zgok_21",
+            "zgok_22",
+            "zgok_23",
+            "zgok_24",
+            "zgok_25",
+            "zgok_26",
+            "zgok_27",
+            "zgok_28",
+            "zgok_choice",
+            "zgok_b1",
+            "zgok_b2",
+            "zgok_b3",
+            "zgok_b4",
+            "end"
+          ],
+          "observed_nodes": [
+            "zgok_title",
+            "zgok_01",
+            "zgok_02",
+            "zgok_03",
+            "zgok_04",
+            "zgok_05",
+            "zgok_06",
+            "zgok_07",
+            "zgok_08",
+            "zgok_09",
+            "zgok_10",
+            "zgok_method",
+            "zgok_guide_1",
+            "zgok_guide_2",
+            "zgok_11",
+            "zgok_12",
+            "zgok_13",
+            "zgok_14",
+            "zgok_15",
+            "zgok_16",
+            "zgok_17",
+            "zgok_18",
+            "zgok_19",
+            "zgok_20",
+            "zgok_21",
+            "zgok_22",
+            "zgok_23",
+            "zgok_24",
+            "zgok_25",
+            "zgok_26",
+            "zgok_27",
+            "zgok_28",
+            "zgok_choice",
+            "zgok_b1",
+            "zgok_b2",
+            "zgok_b3",
+            "zgok_b4",
+            "end"
+          ],
+          "bytes": 16672,
+          "sha256": "068e4ddbea94912d95adb253d9769a91ec8e1ff2815376804db6c9d8b2662a2d",
+          "node_id": "zgok_b4",
+          "audio_member": "evidence/swansong-playthrough/route-4-audio.wav"
+        }
+      ]
+    },
+    "readiness_assets": {
+      "contact_sheet": {
+        "member": "preview/contact_sheet.png",
+        "expected_sha256": "c9351513d6edf3dcbc776e7adf048da0dcd15b426786ad49fadd1f8cac42c48d",
+        "exists": true,
+        "sha256": "c9351513d6edf3dcbc776e7adf048da0dcd15b426786ad49fadd1f8cac42c48d"
+      },
+      "review_sheets": {
+        "scene_preview_sheet": {
+          "member": "preview/scene_preview_sheet.png",
+          "expected_sha256": "c3a64630a66c5469fff51f11f406977742d92c7e90f6f9b474573a1bca51f8b2",
+          "exists": true,
+          "sha256": "c3a64630a66c5469fff51f11f406977742d92c7e90f6f9b474573a1bca51f8b2"
+        },
+        "storyboard_sheet": {
+          "member": "preview/storyboard_sheet.png",
+          "expected_sha256": "6adcb0b547d8475aea10ead316d95a55c3003b79f3a2c434e8b3443da9d6d948",
+          "exists": true,
+          "sha256": "6adcb0b547d8475aea10ead316d95a55c3003b79f3a2c434e8b3443da9d6d948"
+        }
+      },
+      "sources": [
+        {
+          "member": "assets/sources/background_ending_a_imagegen_v1.png",
+          "expected_sha256": "f02294c8933b956cba0ec01ea4547ff48e64cb786bedc5a517c24c2d6d89602a",
+          "exists": true,
+          "sha256": "f02294c8933b956cba0ec01ea4547ff48e64cb786bedc5a517c24c2d6d89602a"
+        },
+        {
+          "member": "assets/sources/background_ending_b_imagegen_v1.png",
+          "expected_sha256": "faa26ba3a451b61e6abb5c468b6614c4a4269dd1c0b4575c555f19e38e94c420",
+          "exists": true,
+          "sha256": "faa26ba3a451b61e6abb5c468b6614c4a4269dd1c0b4575c555f19e38e94c420"
+        },
+        {
+          "member": "assets/sources/background_main_imagegen_v1.png",
+          "expected_sha256": "d0d07cdcfe5dbf61f648624b6253c48c2cb1f064ed00a56ba7b18fe91c105a9d",
+          "exists": true,
+          "sha256": "d0d07cdcfe5dbf61f648624b6253c48c2cb1f064ed00a56ba7b18fe91c105a9d"
+        },
+        {
+          "member": "assets/sources/background_title_imagegen_v1.png",
+          "expected_sha256": "2ebce1bcbb665c58a1ee8c38a2fc08dcc7429de4ba25aaf217d1066826068e0a",
+          "exists": true,
+          "sha256": "2ebce1bcbb665c58a1ee8c38a2fc08dcc7429de4ba25aaf217d1066826068e0a"
+        },
+        {
+          "member": "assets/sources/character_master_cutout_imagegen_v1.png",
+          "expected_sha256": "c2ec3cdc742de3ca2a8636b0934fca93f9a2c2198cd6c8fb905ae1e64c5f089f",
+          "exists": true,
+          "sha256": "c2ec3cdc742de3ca2a8636b0934fca93f9a2c2198cd6c8fb905ae1e64c5f089f"
+        },
+        {
+          "member": "assets/sources/character_master_imagegen_v1.png",
+          "expected_sha256": "6671d8aa4cd1810887ca8070197103d1cea30b6373f644b6e4340bca5f1388a3",
+          "exists": true,
+          "sha256": "6671d8aa4cd1810887ca8070197103d1cea30b6373f644b6e4340bca5f1388a3"
+        },
+        {
+          "member": "assets/sources/game_spec.json",
+          "expected_sha256": "f8a7b62e43defeab77bb8d29be69b786799918302cd84f9264663a7f97fba210",
+          "exists": true,
+          "sha256": "f8a7b62e43defeab77bb8d29be69b786799918302cd84f9264663a7f97fba210"
+        },
+        {
+          "member": "assets/sources/imagegen-prompts-v1.md",
+          "expected_sha256": "8a227f64ed9fc67d72673bffb617204c27268e9df0787e01590e9350b7ba6bb3",
+          "exists": true,
+          "sha256": "8a227f64ed9fc67d72673bffb617204c27268e9df0787e01590e9350b7ba6bb3"
+        }
+      ],
+      "extra_sources": [],
+      "review_sheets_report": {
+        "member": "reports/review-sheets-report.json",
+        "expected_sha256": "21c90a5c0a058c8e4f7b33356c73ef492d86ad129c4263a664e851520e4d3b2b",
+        "exists": true,
+        "sha256": "21c90a5c0a058c8e4f7b33356c73ef492d86ad129c4263a664e851520e4d3b2b"
+      },
+      "packaged_source_count": 8,
+      "backgrounds": {
+        "count": 4,
+        "files": [
+          {
+            "member": "assets/backgrounds/bg_title.png",
+            "expected_sha256": "bfc8d5677005800c3ff167491eb3a931e545da9112c042fbe0b749418ef9f4dc",
+            "exists": true,
+            "sha256": "bfc8d5677005800c3ff167491eb3a931e545da9112c042fbe0b749418ef9f4dc"
+          },
+          {
+            "member": "assets/backgrounds/bg_main.png",
+            "expected_sha256": "cc909a1e30e44e94161e7c0a872ec2befce45d2d9ae119a1db674da952135585",
+            "exists": true,
+            "sha256": "cc909a1e30e44e94161e7c0a872ec2befce45d2d9ae119a1db674da952135585"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_a.png",
+            "expected_sha256": "86daf18a1e54daf3685247227d524efb5700f349387cac4c8df18dafd8337a21",
+            "exists": true,
+            "sha256": "86daf18a1e54daf3685247227d524efb5700f349387cac4c8df18dafd8337a21"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_b.png",
+            "expected_sha256": "e17ce6e635ce295cf63dfa021d4613a1845a689b9694df780dab7910e6b73e5f",
+            "exists": true,
+            "sha256": "e17ce6e635ce295cf63dfa021d4613a1845a689b9694df780dab7910e6b73e5f"
+          }
+        ],
+        "packaged_count": 4,
+        "extra_members": []
+      },
+      "characters": {
+        "count": 3,
+        "files": [
+          {
+            "member": "assets/characters/zgok_neutral.png",
+            "expected_sha256": "c81afdd158d7b00369811c2a9569ecb2c00daeee5148ff28b2b2b4d0a165c2a6",
+            "exists": true,
+            "sha256": "c81afdd158d7b00369811c2a9569ecb2c00daeee5148ff28b2b2b4d0a165c2a6"
+          },
+          {
+            "member": "assets/characters/zgok_talk.png",
+            "expected_sha256": "00479ee1e79919cc1e8f1b8ced7280f5ebbd9ffcdef51ba6636aa61d72cca769",
+            "exists": true,
+            "sha256": "00479ee1e79919cc1e8f1b8ced7280f5ebbd9ffcdef51ba6636aa61d72cca769"
+          },
+          {
+            "member": "assets/characters/zgok_blink.png",
+            "expected_sha256": "2cb7cea23c621236cc31ac7855909b079429d591f0533e739a6aef5874b4d626",
+            "exists": true,
+            "sha256": "2cb7cea23c621236cc31ac7855909b079429d591f0533e739a6aef5874b4d626"
+          }
+        ],
+        "packaged_count": 3,
+        "extra_members": []
+      },
+      "sfx": {
+        "count": 0,
+        "files": [],
+        "packaged_count": 0,
+        "extra_members": []
+      }
+    },
+    "project": {
+      "member": "project/zgok-wraps-a-present.wscvn.json",
+      "bytes": 171156,
+      "sha256": "f1a6999c32e90ec6b8e7a26383afea025c04ec52dde9a3525c126059f37f8f86"
+    },
+    "rom": {
+      "member": "rom/zgok-wraps-a-present.wsc",
+      "bytes": 8388608,
+      "sha256": "4c7c92b8b0e73d6a78351b240cc15d88f7e9bb68c2ac2b7b04b91d6ecfac4fd8",
+      "md5": "0xf41fb03470772c36b446b220bfb9ecdc"
+    },
+    "review_sheets_report": {
+      "present": true,
+      "member": "reports/review-sheets-report.json",
+      "project_file": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json",
+        "bytes": 171156,
+        "sha256": "f1a6999c32e90ec6b8e7a26383afea025c04ec52dde9a3525c126059f37f8f86"
+      },
+      "nodes_rendered": 43,
+      "preview_node_ids": [
+        "zgok_title",
+        "zgok_01",
+        "zgok_02",
+        "zgok_03",
+        "zgok_04",
+        "zgok_05",
+        "zgok_06",
+        "zgok_07",
+        "zgok_08",
+        "zgok_09",
+        "zgok_10",
+        "zgok_method",
+        "zgok_practice_1",
+        "zgok_practice_2",
+        "zgok_guide_1",
+        "zgok_guide_2",
+        "zgok_11",
+        "zgok_12",
+        "zgok_13",
+        "zgok_14",
+        "zgok_15",
+        "zgok_16",
+        "zgok_17",
+        "zgok_18",
+        "zgok_19",
+        "zgok_20",
+        "zgok_21",
+        "zgok_22",
+        "zgok_23",
+        "zgok_24",
+        "zgok_25",
+        "zgok_26",
+        "zgok_27",
+        "zgok_28",
+        "zgok_choice",
+        "zgok_a1",
+        "zgok_a2",
+        "zgok_a3",
+        "zgok_a4",
+        "zgok_b1",
+        "zgok_b2",
+        "zgok_b3",
+        "zgok_b4"
+      ],
+      "font": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+        "bytes": 5470,
+        "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+        "member": "runtime/src/font.h",
+        "packaged_bytes": 5470,
+        "packaged_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+      },
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/scene_preview_sheet.png",
+        "bytes": 280479,
+        "sha256": "c3a64630a66c5469fff51f11f406977742d92c7e90f6f9b474573a1bca51f8b2",
+        "member": "preview/scene_preview_sheet.png",
+        "packaged_bytes": 280479,
+        "packaged_sha256": "c3a64630a66c5469fff51f11f406977742d92c7e90f6f9b474573a1bca51f8b2"
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/storyboard_sheet.png",
+        "bytes": 94352,
+        "sha256": "6adcb0b547d8475aea10ead316d95a55c3003b79f3a2c434e8b3443da9d6d948",
+        "member": "preview/storyboard_sheet.png",
+        "packaged_bytes": 94352,
+        "packaged_sha256": "6adcb0b547d8475aea10ead316d95a55c3003b79f3a2c434e8b3443da9d6d948"
+      }
+    },
+    "project_report_bindings": {
+      "readiness": {
+        "present": true,
+        "member": "project/zgok-wraps-a-present.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json",
+        "bytes": 171156,
+        "sha256": "f1a6999c32e90ec6b8e7a26383afea025c04ec52dde9a3525c126059f37f8f86"
+      },
+      "audit": {
+        "present": true,
+        "member": "project/zgok-wraps-a-present.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json",
+        "bytes": 171156,
+        "sha256": "f1a6999c32e90ec6b8e7a26383afea025c04ec52dde9a3525c126059f37f8f86"
+      }
+    },
+    "audit_rom_binding": {
+      "present": true,
+      "member": "rom/zgok-wraps-a-present.wsc",
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/runtime-local/zgok-wraps-a-present.wsc",
+      "bytes": 8388608,
+      "sha256": "4c7c92b8b0e73d6a78351b240cc15d88f7e9bb68c2ac2b7b04b91d6ecfac4fd8"
+    },
+    "manifest_artifacts": {
+      "project": {
+        "present": true,
+        "member": "project/zgok-wraps-a-present.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json",
+        "bytes": 171156,
+        "sha256": "f1a6999c32e90ec6b8e7a26383afea025c04ec52dde9a3525c126059f37f8f86"
+      },
+      "rom": {
+        "present": true,
+        "member": "rom/zgok-wraps-a-present.wsc",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/runtime-local/zgok-wraps-a-present.wsc",
+        "sha256": "4c7c92b8b0e73d6a78351b240cc15d88f7e9bb68c2ac2b7b04b91d6ecfac4fd8",
+        "md5": "0xf41fb03470772c36b446b220bfb9ecdc",
+        "checksum": "0xcf8f"
+      }
+    },
+    "release_summary": {
+      "lines": 46,
+      "expected_lines": 34,
+      "visual_evidence_lines": 8,
+      "has_visual_evidence": true,
+      "missing_expected_lines": []
+    }
+  }
+}

@@ -1,0 +1,613 @@
+{
+  "ok": true,
+  "generated_at": "2026-07-26T22:39:31.291816",
+  "research_constraints": {
+    "screen": [
+      224,
+      144
+    ],
+    "color_channel_step": 17,
+    "background_visible_colors_max": 16,
+    "character_visible_colors_max": 15,
+    "runtime_textbox_px": [
+      0,
+      104,
+      224,
+      40
+    ],
+    "runtime_speaker_y_px": 96,
+    "sprite_outline": [
+      0,
+      0,
+      17
+    ]
+  },
+  "errors": [],
+  "warnings": [],
+  "backgrounds": {
+    "beacon_lens.png": {
+      "size": [
+        224,
+        144
+      ],
+      "visible_colors": 14,
+      "textbox_zone_luma": 8.52,
+      "wsc_12bit_snapped": true
+    },
+    "cabin_radio.png": {
+      "size": [
+        224,
+        144
+      ],
+      "visible_colors": 12,
+      "textbox_zone_luma": 18.61,
+      "wsc_12bit_snapped": true
+    },
+    "deck_night.png": {
+      "size": [
+        224,
+        144
+      ],
+      "visible_colors": 15,
+      "textbox_zone_luma": 34.45,
+      "wsc_12bit_snapped": true
+    },
+    "hatch_key.png": {
+      "size": [
+        224,
+        144
+      ],
+      "visible_colors": 15,
+      "textbox_zone_luma": 34.14,
+      "wsc_12bit_snapped": true
+    },
+    "lighthouse_dawn.png": {
+      "size": [
+        224,
+        144
+      ],
+      "visible_colors": 15,
+      "textbox_zone_luma": 33.67,
+      "wsc_12bit_snapped": true
+    },
+    "radio_closeup.png": {
+      "size": [
+        224,
+        144
+      ],
+      "visible_colors": 15,
+      "textbox_zone_luma": 17.81,
+      "wsc_12bit_snapped": true
+    },
+    "sunrise_deck.png": {
+      "size": [
+        224,
+        144
+      ],
+      "visible_colors": 16,
+      "textbox_zone_luma": 35.47,
+      "wsc_12bit_snapped": true
+    },
+    "title_night.png": {
+      "size": [
+        224,
+        144
+      ],
+      "visible_colors": 13,
+      "textbox_zone_luma": 23.37,
+      "wsc_12bit_snapped": true
+    }
+  },
+  "characters": {
+    "lune_alert_blink.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        15,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4194,
+      "visible_above_runtime_textbox": 0.8077,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "lune_alert_neutral.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        15,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4194,
+      "visible_above_runtime_textbox": 0.8077,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "lune_alert_talk.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        15,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4194,
+      "visible_above_runtime_textbox": 0.8077,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "lune_blink.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        14,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4325,
+      "visible_above_runtime_textbox": 0.8101,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "lune_neutral.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        14,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4325,
+      "visible_above_runtime_textbox": 0.8101,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "lune_radio_blink.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        12,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4272,
+      "visible_above_runtime_textbox": 0.8072,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "lune_radio_neutral.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        12,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4272,
+      "visible_above_runtime_textbox": 0.8072,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "lune_radio_talk.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        12,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4272,
+      "visible_above_runtime_textbox": 0.8072,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "lune_resolved_blink.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        14,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4301,
+      "visible_above_runtime_textbox": 0.8108,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "lune_resolved_neutral.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        14,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4301,
+      "visible_above_runtime_textbox": 0.8108,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "lune_resolved_talk.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        14,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4301,
+      "visible_above_runtime_textbox": 0.8108,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "lune_talk.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        14,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4325,
+      "visible_above_runtime_textbox": 0.8101,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "lune_warm_blink.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        15,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.42,
+      "visible_above_runtime_textbox": 0.8084,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "lune_warm_neutral.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        15,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.42,
+      "visible_above_runtime_textbox": 0.8084,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "lune_warm_talk.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        15,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.42,
+      "visible_above_runtime_textbox": 0.8084,
+      "darkest_visible_luma": 0.0,
+      "wsc_12bit_snapped": true
+    },
+    "mira_action_blink.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        14,
+        13,
+        93,
+        111
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4282,
+      "visible_above_runtime_textbox": 0.729,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    },
+    "mira_action_neutral.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        14,
+        13,
+        93,
+        111
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4282,
+      "visible_above_runtime_textbox": 0.729,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    },
+    "mira_action_talk.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        14,
+        13,
+        93,
+        111
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4282,
+      "visible_above_runtime_textbox": 0.729,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    },
+    "mira_blink.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        13,
+        86,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4318,
+      "visible_above_runtime_textbox": 0.827,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    },
+    "mira_neutral.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        13,
+        86,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4318,
+      "visible_above_runtime_textbox": 0.827,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    },
+    "mira_resolved_blink.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        8,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.462,
+      "visible_above_runtime_textbox": 0.8325,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    },
+    "mira_resolved_neutral.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        8,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.462,
+      "visible_above_runtime_textbox": 0.8325,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    },
+    "mira_resolved_talk.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        8,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.462,
+      "visible_above_runtime_textbox": 0.8325,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    },
+    "mira_smile_blink.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        8,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4612,
+      "visible_above_runtime_textbox": 0.8324,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    },
+    "mira_smile_neutral.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        8,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4612,
+      "visible_above_runtime_textbox": 0.8324,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    },
+    "mira_smile_talk.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        8,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4612,
+      "visible_above_runtime_textbox": 0.8324,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    },
+    "mira_talk.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        13,
+        86,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4318,
+      "visible_above_runtime_textbox": 0.827,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    },
+    "mira_worried_blink.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        7,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4674,
+      "visible_above_runtime_textbox": 0.8343,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    },
+    "mira_worried_neutral.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        7,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4674,
+      "visible_above_runtime_textbox": 0.8343,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    },
+    "mira_worried_talk.png": {
+      "size": [
+        96,
+        128
+      ],
+      "bbox": [
+        8,
+        7,
+        87,
+        101
+      ],
+      "visible_colors": 14,
+      "alpha_coverage": 0.4674,
+      "visible_above_runtime_textbox": 0.8343,
+      "darkest_visible_luma": 1.23,
+      "wsc_12bit_snapped": true
+    }
+  }
+}

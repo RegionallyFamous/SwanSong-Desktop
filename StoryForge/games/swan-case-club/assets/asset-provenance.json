@@ -1,0 +1,332 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-17T01:55:00+00:00",
+  "art_policy": "Pictorial masters are built-in ImageGen outputs; runtime frames are deterministic local derivatives.",
+  "outputs": {
+    "backgrounds/market_stall.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets/sources/backgrounds_source.png",
+      "source_sha256": "8618cf6a70c0fe2a330e66b16ee0ab4c16a5d14d87e55a87f25dcf915eb86852",
+      "output_sha256": "ef03ae2001b8a059abe7f5857d5ef1a47ccb87785bd79a8498328e5ec714b66c",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 15.31
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/rooftop_swap.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets/sources/backgrounds_source.png",
+      "source_sha256": "8618cf6a70c0fe2a330e66b16ee0ab4c16a5d14d87e55a87f25dcf915eb86852",
+      "output_sha256": "b916eb8c8891619c5bdd892cc1980561f3db2052fb757cc7d2a305d106994b94",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 12.74
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/tram_shelf.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets/sources/backgrounds_source.png",
+      "source_sha256": "8618cf6a70c0fe2a330e66b16ee0ab4c16a5d14d87e55a87f25dcf915eb86852",
+      "output_sha256": "95622ce2751389c2d6b4c76219952a320cd6a262f6f5776b69028997e782a08d",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 11.09
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/mina_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets/sources/characters_source.png",
+      "source_sha256": "4e0a10e5debbbb742601f6004c0b63dfe33df34eafb89597f2e9ddf9ad029957",
+      "output_sha256": "7d8db07c9d9a4c0f535ccb6b057caab506710b929ede457f542bb02a65b1d743",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          5,
+          9,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.5884,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5809,
+        "darkest_visible_luma": 18.23,
+        "visible_luma_stddev": 76.52,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 6,
+          "luma_stddev": 61.98
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7230,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/mina_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets/sources/characters_source.png",
+      "source_sha256": "4e0a10e5debbbb742601f6004c0b63dfe33df34eafb89597f2e9ddf9ad029957",
+      "output_sha256": "99d4ea98c57b1d400d23c885b5eaef94e7dcfa79019c1f5486405a01d461f849",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          5,
+          9,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.5884,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5809,
+        "darkest_visible_luma": 18.23,
+        "visible_luma_stddev": 78.01,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 6,
+          "luma_stddev": 71.06
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7230,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/mina_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets/sources/characters_source.png",
+      "source_sha256": "4e0a10e5debbbb742601f6004c0b63dfe33df34eafb89597f2e9ddf9ad029957",
+      "output_sha256": "326f89c16834040e41741022a79e43a018203daad99dbbbaadd320d231bcc4e2",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          5,
+          9,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.5884,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5809,
+        "darkest_visible_luma": 18.23,
+        "visible_luma_stddev": 78.01,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 6,
+          "luma_stddev": 77.34
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7230,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/ren_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets/sources/characters_source.png",
+      "source_sha256": "4e0a10e5debbbb742601f6004c0b63dfe33df34eafb89597f2e9ddf9ad029957",
+      "output_sha256": "316a75dca97318b3eb944b4e2c2590c01de024bb0f06024d675b6a61512493ec",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          6,
+          12,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.5754,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5711,
+        "darkest_visible_luma": 14.61,
+        "visible_luma_stddev": 64.62,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 5,
+          "luma_stddev": 71.53
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7071,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/ren_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets/sources/characters_source.png",
+      "source_sha256": "4e0a10e5debbbb742601f6004c0b63dfe33df34eafb89597f2e9ddf9ad029957",
+      "output_sha256": "59916d7778fc52565a693737fcbc76937dff5977306f3a4d414b991a03f85299",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          6,
+          12,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.5754,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5711,
+        "darkest_visible_luma": 14.61,
+        "visible_luma_stddev": 66.37,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 5,
+          "luma_stddev": 79.98
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7071,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/ren_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets/sources/characters_source.png",
+      "source_sha256": "4e0a10e5debbbb742601f6004c0b63dfe33df34eafb89597f2e9ddf9ad029957",
+      "output_sha256": "b0c39f97cace55e947f8ea502ecd1c0eb6a0c967efaa0f37884e5577bcbb3a2d",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          6,
+          12,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.5754,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5711,
+        "darkest_visible_luma": 14.61,
+        "visible_luma_stddev": 65.86,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 5,
+          "luma_stddev": 84.34
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7071,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    }
+  }
+}

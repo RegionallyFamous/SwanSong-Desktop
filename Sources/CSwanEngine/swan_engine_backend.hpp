@@ -68,6 +68,14 @@ class SwanEngineBackend {
       std::span<swan_instruction_fetch_byte_t> bytes,
       size_t& byte_count,
       std::string& error) const = 0;
+  virtual swan_result_t begin_data_producer_probe(
+      const swan_data_producer_probe_options_t& options,
+      std::string& error) = 0;
+  virtual swan_result_t data_producer_probe(
+      const swan_data_producer_probe_options_t& options,
+      std::span<swan_data_producer_trace_t> traces,
+      size_t& count,
+      std::string& error) const = 0;
 };
 
 std::unique_ptr<SwanEngineBackend> create_swan_engine_backend(

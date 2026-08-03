@@ -1,0 +1,111 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:34:06.279641+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/contact_sheet.png",
+    "nodes": 47,
+    "flags": 6,
+    "backgrounds": {
+      "bg_back_shelf": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 12,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_last_train": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 11,
+        "has_alpha": false,
+        "binary_alpha": true
+      },
+      "bg_repair_counter": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 10,
+        "has_alpha": false,
+        "binary_alpha": true
+      }
+    },
+    "characters": {
+      "char_miki_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_miki_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_miki_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_nao_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 10,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_nao_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 10,
+        "has_alpha": true,
+        "binary_alpha": true
+      },
+      "char_nao_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 10,
+        "has_alpha": true,
+        "binary_alpha": true
+      }
+    },
+    "text": {
+      "blocks": 204,
+      "max_pause_block_chars": 95
+    },
+    "source_art": [
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/sources/backgrounds_imagegen_source.png",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/sources/characters_imagegen_source.png"
+    ],
+    "art_direction": [
+      "Original homebrew story about rescuing a closing repair shop's WonderSwan collection.",
+      "Final backgrounds are 224x144, 16-color, RGB444-snapped, with dark quiet textbox lanes.",
+      "Final character frames are 96x128, transparent, stable-silhouette neutral/talk/blink families.",
+      "Pixel details favor readable carts, labels, shelves, and handheld screens over noisy realism."
+    ]
+  }
+}

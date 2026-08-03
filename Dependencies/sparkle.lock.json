@@ -1,6 +1,6 @@
 {
   "repository": "https://github.com/sparkle-project/Sparkle.git",
-  "version": "2.9.4",
-  "commit": "b6496a74a087257ef5e6da1c5b29a447a60f5bd7",
-  "swiftPackageArtifactSHA256": "cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"
+  "version": "2.9.5",
+  "commit": "79bc9e872948e47877e76f194cb0c8e0412b0b90",
+  "swiftPackageArtifactSHA256": "34b9b2071f3de0012eca3faa3a9290bb94e62131e9a74f6dc91514a000097a6c"
 }

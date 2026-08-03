@@ -1,0 +1,789 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mode": "normal",
+    "zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/releases/20260727T033438Z-3208c3cc513b.zip",
+      "bytes": 12574583,
+      "sha256": "9fe5bacf5e7f21bedfbf6c51919089ec98aa704767447e70a56fb6b36cef43fe"
+    },
+    "entries": 45,
+    "members": 45,
+    "duplicate_members": [],
+    "unsafe_members": [],
+    "manifest": {
+      "schema_version": 1,
+      "slug": "three-coats-of-white",
+      "title": "Three Coats of White",
+      "files": 44,
+      "runtime_inputs": 6,
+      "emulator_screenshot": false
+    },
+    "package_sources": {
+      "readme": {
+        "member": "docs/README.md",
+        "exists": true,
+        "bytes": 1416,
+        "sha256": "8e7cf1533cde7c1e58f6455e41ddd4a6af9a1cfecabf96496308bf80ae3aa6e3"
+      },
+      "asset_builder": {
+        "member": "source/build_three_coats_of_white.py",
+        "exists": true,
+        "bytes": 23181,
+        "sha256": "8ac9a961f7a8bf3090f9d184bf59e7de6b203b654e0dc2962b1fb8e84c328d67"
+      },
+      "qa_report": {
+        "member": "reports/three-coats-of-white-qa-report.json",
+        "exists": true,
+        "bytes": 1614,
+        "sha256": "f20a8a73a7f329ab3b60511051485329367d2c8007c871165b1b69e2ca0abdac"
+      }
+    },
+    "runtime_inputs": {
+      "present": true,
+      "expected_count": 6,
+      "files": [
+        {
+          "member": "runtime/src/main.c",
+          "exists": true,
+          "bytes": 105606,
+          "sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a",
+          "manifest_bytes": 105606,
+          "manifest_sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a"
+        },
+        {
+          "member": "runtime/src/game_types.h",
+          "exists": true,
+          "bytes": 6650,
+          "sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec",
+          "manifest_bytes": 6650,
+          "manifest_sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec"
+        },
+        {
+          "member": "runtime/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+          "manifest_bytes": 5470,
+          "manifest_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        {
+          "member": "runtime/tools/convert_json.py",
+          "exists": true,
+          "bytes": 88977,
+          "sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387",
+          "manifest_bytes": 88977,
+          "manifest_sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387"
+        },
+        {
+          "member": "runtime/Makefile",
+          "exists": true,
+          "bytes": 3590,
+          "sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd",
+          "manifest_bytes": 3590,
+          "manifest_sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd"
+        },
+        {
+          "member": "runtime/wfconfig.toml",
+          "exists": true,
+          "bytes": 169,
+          "sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78",
+          "manifest_bytes": 169,
+          "manifest_sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78"
+        }
+      ],
+      "count": 6,
+      "missing": [],
+      "extra": [],
+      "duplicates": []
+    },
+    "current_workspace": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white",
+      "checked": 44,
+      "missing": [],
+      "mismatches": [],
+      "stable_report_diffs": [],
+      "unmapped": [],
+      "extra_current": []
+    },
+    "reports": {
+      "build": true,
+      "smoke": true,
+      "readiness": true,
+      "audit": true,
+      "swansong_playthrough": true,
+      "review_sheets": true
+    },
+    "smoke_verification": {
+      "result_scope": "boot-and-checksum",
+      "boot": {
+        "performed": true,
+        "passed": true,
+        "method": "headless-mednafen-startup-metadata",
+        "pixels_observed": false
+      },
+      "checksum": {
+        "performed": true,
+        "passed": true,
+        "method": "mednafen-recorded-vs-real-checksum"
+      },
+      "visual": {
+        "performed": false,
+        "passed": null,
+        "status": "not-performed",
+        "pixels_observed": false,
+        "proof_bound": false,
+        "screenshot": null
+      },
+      "proof_bound": false
+    },
+    "swansong_playthrough": {
+      "schema": "wscvn-swansong-playthrough-v2",
+      "app": {
+        "path": "/Applications/SwanSong.app",
+        "version": "0.9.0",
+        "build": "18",
+        "bundle_identifier": "com.regionallyfamous.swansong"
+      },
+      "route_count": 4,
+      "routes": [
+        {
+          "route_index": 0,
+          "member": "evidence/swansong-playthrough/route-1-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "coat_title",
+            "coat_01",
+            "coat_02",
+            "coat_03",
+            "coat_04",
+            "coat_05",
+            "coat_06",
+            "coat_07",
+            "coat_08",
+            "coat_09",
+            "coat_10",
+            "coat_method",
+            "coat_grid_1",
+            "coat_grid_2",
+            "coat_11",
+            "coat_12",
+            "coat_13",
+            "coat_14",
+            "coat_15",
+            "coat_16",
+            "coat_17",
+            "coat_18",
+            "coat_19",
+            "coat_20",
+            "coat_21",
+            "coat_22",
+            "coat_23",
+            "coat_24",
+            "coat_25",
+            "coat_26",
+            "coat_27",
+            "coat_28",
+            "coat_choice",
+            "coat_a1",
+            "coat_a2",
+            "coat_a3",
+            "coat_a4",
+            "end"
+          ],
+          "observed_nodes": [
+            "coat_title",
+            "coat_01",
+            "coat_02",
+            "coat_03",
+            "coat_04",
+            "coat_05",
+            "coat_06",
+            "coat_07",
+            "coat_08",
+            "coat_09",
+            "coat_10",
+            "coat_method",
+            "coat_grid_1",
+            "coat_grid_2",
+            "coat_11",
+            "coat_12",
+            "coat_13",
+            "coat_14",
+            "coat_15",
+            "coat_16",
+            "coat_17",
+            "coat_18",
+            "coat_19",
+            "coat_20",
+            "coat_21",
+            "coat_22",
+            "coat_23",
+            "coat_24",
+            "coat_25",
+            "coat_26",
+            "coat_27",
+            "coat_28",
+            "coat_choice",
+            "coat_a1",
+            "coat_a2",
+            "coat_a3",
+            "coat_a4",
+            "end"
+          ],
+          "bytes": 8403,
+          "sha256": "4a9eadc652fa669fb50d418dd3d40877dfeff3d7815316dbf23aa5228fb49aa7",
+          "node_id": "coat_a4",
+          "audio_member": "evidence/swansong-playthrough/route-1-audio.wav"
+        },
+        {
+          "route_index": 1,
+          "member": "evidence/swansong-playthrough/route-2-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "coat_title",
+            "coat_01",
+            "coat_02",
+            "coat_03",
+            "coat_04",
+            "coat_05",
+            "coat_06",
+            "coat_07",
+            "coat_08",
+            "coat_09",
+            "coat_10",
+            "coat_method",
+            "coat_grid_1",
+            "coat_grid_2",
+            "coat_11",
+            "coat_12",
+            "coat_13",
+            "coat_14",
+            "coat_15",
+            "coat_16",
+            "coat_17",
+            "coat_18",
+            "coat_19",
+            "coat_20",
+            "coat_21",
+            "coat_22",
+            "coat_23",
+            "coat_24",
+            "coat_25",
+            "coat_26",
+            "coat_27",
+            "coat_28",
+            "coat_choice",
+            "coat_b1",
+            "coat_b2",
+            "coat_b3",
+            "coat_b4",
+            "end"
+          ],
+          "observed_nodes": [
+            "coat_title",
+            "coat_01",
+            "coat_02",
+            "coat_03",
+            "coat_04",
+            "coat_05",
+            "coat_06",
+            "coat_07",
+            "coat_08",
+            "coat_09",
+            "coat_10",
+            "coat_method",
+            "coat_grid_1",
+            "coat_grid_2",
+            "coat_11",
+            "coat_12",
+            "coat_13",
+            "coat_14",
+            "coat_15",
+            "coat_16",
+            "coat_17",
+            "coat_18",
+            "coat_19",
+            "coat_20",
+            "coat_21",
+            "coat_22",
+            "coat_23",
+            "coat_24",
+            "coat_25",
+            "coat_26",
+            "coat_27",
+            "coat_28",
+            "coat_choice",
+            "coat_b1",
+            "coat_b2",
+            "coat_b3",
+            "coat_b4",
+            "end"
+          ],
+          "bytes": 14273,
+          "sha256": "487204e06cc780a13175e983480f34cf2dc7a576314b2c11a8e55488dd446d91",
+          "node_id": "coat_b4",
+          "audio_member": "evidence/swansong-playthrough/route-2-audio.wav"
+        },
+        {
+          "route_index": 2,
+          "member": "evidence/swansong-playthrough/route-3-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "coat_title",
+            "coat_01",
+            "coat_02",
+            "coat_03",
+            "coat_04",
+            "coat_05",
+            "coat_06",
+            "coat_07",
+            "coat_08",
+            "coat_09",
+            "coat_10",
+            "coat_method",
+            "coat_pair_1",
+            "coat_pair_2",
+            "coat_11",
+            "coat_12",
+            "coat_13",
+            "coat_14",
+            "coat_15",
+            "coat_16",
+            "coat_17",
+            "coat_18",
+            "coat_19",
+            "coat_20",
+            "coat_21",
+            "coat_22",
+            "coat_23",
+            "coat_24",
+            "coat_25",
+            "coat_26",
+            "coat_27",
+            "coat_28",
+            "coat_choice",
+            "coat_a1",
+            "coat_a2",
+            "coat_a3",
+            "coat_a4",
+            "end"
+          ],
+          "observed_nodes": [
+            "coat_title",
+            "coat_01",
+            "coat_02",
+            "coat_03",
+            "coat_04",
+            "coat_05",
+            "coat_06",
+            "coat_07",
+            "coat_08",
+            "coat_09",
+            "coat_10",
+            "coat_method",
+            "coat_pair_1",
+            "coat_pair_2",
+            "coat_11",
+            "coat_12",
+            "coat_13",
+            "coat_14",
+            "coat_15",
+            "coat_16",
+            "coat_17",
+            "coat_18",
+            "coat_19",
+            "coat_20",
+            "coat_21",
+            "coat_22",
+            "coat_23",
+            "coat_24",
+            "coat_25",
+            "coat_26",
+            "coat_27",
+            "coat_28",
+            "coat_choice",
+            "coat_a1",
+            "coat_a2",
+            "coat_a3",
+            "coat_a4",
+            "end"
+          ],
+          "bytes": 8403,
+          "sha256": "4a9eadc652fa669fb50d418dd3d40877dfeff3d7815316dbf23aa5228fb49aa7",
+          "node_id": "coat_a4",
+          "audio_member": "evidence/swansong-playthrough/route-3-audio.wav"
+        },
+        {
+          "route_index": 3,
+          "member": "evidence/swansong-playthrough/route-4-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "coat_title",
+            "coat_01",
+            "coat_02",
+            "coat_03",
+            "coat_04",
+            "coat_05",
+            "coat_06",
+            "coat_07",
+            "coat_08",
+            "coat_09",
+            "coat_10",
+            "coat_method",
+            "coat_pair_1",
+            "coat_pair_2",
+            "coat_11",
+            "coat_12",
+            "coat_13",
+            "coat_14",
+            "coat_15",
+            "coat_16",
+            "coat_17",
+            "coat_18",
+            "coat_19",
+            "coat_20",
+            "coat_21",
+            "coat_22",
+            "coat_23",
+            "coat_24",
+            "coat_25",
+            "coat_26",
+            "coat_27",
+            "coat_28",
+            "coat_choice",
+            "coat_b1",
+            "coat_b2",
+            "coat_b3",
+            "coat_b4",
+            "end"
+          ],
+          "observed_nodes": [
+            "coat_title",
+            "coat_01",
+            "coat_02",
+            "coat_03",
+            "coat_04",
+            "coat_05",
+            "coat_06",
+            "coat_07",
+            "coat_08",
+            "coat_09",
+            "coat_10",
+            "coat_method",
+            "coat_pair_1",
+            "coat_pair_2",
+            "coat_11",
+            "coat_12",
+            "coat_13",
+            "coat_14",
+            "coat_15",
+            "coat_16",
+            "coat_17",
+            "coat_18",
+            "coat_19",
+            "coat_20",
+            "coat_21",
+            "coat_22",
+            "coat_23",
+            "coat_24",
+            "coat_25",
+            "coat_26",
+            "coat_27",
+            "coat_28",
+            "coat_choice",
+            "coat_b1",
+            "coat_b2",
+            "coat_b3",
+            "coat_b4",
+            "end"
+          ],
+          "bytes": 14273,
+          "sha256": "487204e06cc780a13175e983480f34cf2dc7a576314b2c11a8e55488dd446d91",
+          "node_id": "coat_b4",
+          "audio_member": "evidence/swansong-playthrough/route-4-audio.wav"
+        }
+      ]
+    },
+    "readiness_assets": {
+      "contact_sheet": {
+        "member": "preview/contact_sheet.png",
+        "expected_sha256": "19da16ee08b5375ccbd81dca1536a933b6465c1714fc25311a06c90dc795515f",
+        "exists": true,
+        "sha256": "19da16ee08b5375ccbd81dca1536a933b6465c1714fc25311a06c90dc795515f"
+      },
+      "review_sheets": {
+        "scene_preview_sheet": {
+          "member": "preview/scene_preview_sheet.png",
+          "expected_sha256": "84827ed4935382b14b4bfc8a277948d778d514b218073d91851b20d720f356ee",
+          "exists": true,
+          "sha256": "84827ed4935382b14b4bfc8a277948d778d514b218073d91851b20d720f356ee"
+        },
+        "storyboard_sheet": {
+          "member": "preview/storyboard_sheet.png",
+          "expected_sha256": "73e721ae13ea6b3f525f4ccba5542e4c3971ec0c92d4e5673e5089d3f8787fd8",
+          "exists": true,
+          "sha256": "73e721ae13ea6b3f525f4ccba5542e4c3971ec0c92d4e5673e5089d3f8787fd8"
+        }
+      },
+      "sources": [
+        {
+          "member": "assets/sources/background_ending_a_imagegen_v1.png",
+          "expected_sha256": "8aa0c6930c0937586312530800a329e5099e3e502594d29b4be601cbfdef4cc7",
+          "exists": true,
+          "sha256": "8aa0c6930c0937586312530800a329e5099e3e502594d29b4be601cbfdef4cc7"
+        },
+        {
+          "member": "assets/sources/background_ending_b_imagegen_v1.png",
+          "expected_sha256": "b062d91395a0fd65945d11090d0e422e6719d3c2c7b028d0f11c5b4961575d57",
+          "exists": true,
+          "sha256": "b062d91395a0fd65945d11090d0e422e6719d3c2c7b028d0f11c5b4961575d57"
+        },
+        {
+          "member": "assets/sources/background_main_imagegen_v1.png",
+          "expected_sha256": "4b6d941ac7617250f1ab17808e5c377e310816045fd278ead60a2e95797fbc9a",
+          "exists": true,
+          "sha256": "4b6d941ac7617250f1ab17808e5c377e310816045fd278ead60a2e95797fbc9a"
+        },
+        {
+          "member": "assets/sources/background_title_imagegen_v1.png",
+          "expected_sha256": "9c5f85e931787407bb1843622774770b192d2b03640b7e89911360884825b884",
+          "exists": true,
+          "sha256": "9c5f85e931787407bb1843622774770b192d2b03640b7e89911360884825b884"
+        },
+        {
+          "member": "assets/sources/character_master_cutout_imagegen_v1.png",
+          "expected_sha256": "41a8e0083f788e771bf1a44036d97bc83b2938f0309da32595574c35997aa7bb",
+          "exists": true,
+          "sha256": "41a8e0083f788e771bf1a44036d97bc83b2938f0309da32595574c35997aa7bb"
+        },
+        {
+          "member": "assets/sources/character_master_imagegen_v1.png",
+          "expected_sha256": "8d068dfe24dae137c19e837a91500c67c49845dabd40039793b454863d614353",
+          "exists": true,
+          "sha256": "8d068dfe24dae137c19e837a91500c67c49845dabd40039793b454863d614353"
+        },
+        {
+          "member": "assets/sources/game_spec.json",
+          "expected_sha256": "f984f7a6295f79b780dbcc0cdc31db4769bb0a2b90a9b437af6138bd55fe08fc",
+          "exists": true,
+          "sha256": "f984f7a6295f79b780dbcc0cdc31db4769bb0a2b90a9b437af6138bd55fe08fc"
+        },
+        {
+          "member": "assets/sources/imagegen-prompts-v1.md",
+          "expected_sha256": "447eb072ebb9a8bee8264b24986bda8d700818d8334b8dbc5ab833ab30b10430",
+          "exists": true,
+          "sha256": "447eb072ebb9a8bee8264b24986bda8d700818d8334b8dbc5ab833ab30b10430"
+        }
+      ],
+      "extra_sources": [],
+      "review_sheets_report": {
+        "member": "reports/review-sheets-report.json",
+        "expected_sha256": "16c013e7fc68114adc44d0b58fec0e3fc2d9fe2fc783ebbed216bcf5f6a293c2",
+        "exists": true,
+        "sha256": "16c013e7fc68114adc44d0b58fec0e3fc2d9fe2fc783ebbed216bcf5f6a293c2"
+      },
+      "packaged_source_count": 8,
+      "backgrounds": {
+        "count": 4,
+        "files": [
+          {
+            "member": "assets/backgrounds/bg_title.png",
+            "expected_sha256": "fa8721b270c275ea55cdc0195808db3ff0fa9f503dd0f2db0c942dc68d80a01f",
+            "exists": true,
+            "sha256": "fa8721b270c275ea55cdc0195808db3ff0fa9f503dd0f2db0c942dc68d80a01f"
+          },
+          {
+            "member": "assets/backgrounds/bg_main.png",
+            "expected_sha256": "51388ccb86a98c2223d6e48e6ed2f6173dc7e8de5b8bb0c9f1a5b07c1fed1f60",
+            "exists": true,
+            "sha256": "51388ccb86a98c2223d6e48e6ed2f6173dc7e8de5b8bb0c9f1a5b07c1fed1f60"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_a.png",
+            "expected_sha256": "72a18e2cb4e5aec2c534aead0a034c5af51658c92e60c0b9ea45ec291c4f5b84",
+            "exists": true,
+            "sha256": "72a18e2cb4e5aec2c534aead0a034c5af51658c92e60c0b9ea45ec291c4f5b84"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_b.png",
+            "expected_sha256": "5386e1624ff2b41fe44b97e07ebcf860f1787417caf71ed897b58f90aac6b9a8",
+            "exists": true,
+            "sha256": "5386e1624ff2b41fe44b97e07ebcf860f1787417caf71ed897b58f90aac6b9a8"
+          }
+        ],
+        "packaged_count": 4,
+        "extra_members": []
+      },
+      "characters": {
+        "count": 3,
+        "files": [
+          {
+            "member": "assets/characters/mkii_neutral.png",
+            "expected_sha256": "09de3423ab9b7487b0193c3a08201c0d39e2dda54878bff3514008b1ac8518ba",
+            "exists": true,
+            "sha256": "09de3423ab9b7487b0193c3a08201c0d39e2dda54878bff3514008b1ac8518ba"
+          },
+          {
+            "member": "assets/characters/mkii_talk.png",
+            "expected_sha256": "cff08f9f0b7da15f7a6bf57d55772a1415fa2c6ec110bb46034db942b6c30bac",
+            "exists": true,
+            "sha256": "cff08f9f0b7da15f7a6bf57d55772a1415fa2c6ec110bb46034db942b6c30bac"
+          },
+          {
+            "member": "assets/characters/mkii_blink.png",
+            "expected_sha256": "fec781460e847af89e27266f8f871b1bc793a02ae3a79ec01ed93e9a10d5ea62",
+            "exists": true,
+            "sha256": "fec781460e847af89e27266f8f871b1bc793a02ae3a79ec01ed93e9a10d5ea62"
+          }
+        ],
+        "packaged_count": 3,
+        "extra_members": []
+      },
+      "sfx": {
+        "count": 0,
+        "files": [],
+        "packaged_count": 0,
+        "extra_members": []
+      }
+    },
+    "project": {
+      "member": "project/three-coats-of-white.wscvn.json",
+      "bytes": 163302,
+      "sha256": "f48f51cfb115d271167aa23629b4a801ccd16c638c4ac4a59e8b4ea4dcc550d5"
+    },
+    "rom": {
+      "member": "rom/three-coats-of-white.wsc",
+      "bytes": 8388608,
+      "sha256": "3208c3cc513ba9453483ee99d9db36f1198c2660d9bbc0b57c3fcac2e9a94109",
+      "md5": "0x91d4dfc8755988047433a453090f141d"
+    },
+    "review_sheets_report": {
+      "present": true,
+      "member": "reports/review-sheets-report.json",
+      "project_file": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+        "bytes": 163302,
+        "sha256": "f48f51cfb115d271167aa23629b4a801ccd16c638c4ac4a59e8b4ea4dcc550d5"
+      },
+      "nodes_rendered": 43,
+      "preview_node_ids": [
+        "coat_title",
+        "coat_01",
+        "coat_02",
+        "coat_03",
+        "coat_04",
+        "coat_05",
+        "coat_06",
+        "coat_07",
+        "coat_08",
+        "coat_09",
+        "coat_10",
+        "coat_method",
+        "coat_grid_1",
+        "coat_grid_2",
+        "coat_pair_1",
+        "coat_pair_2",
+        "coat_11",
+        "coat_12",
+        "coat_13",
+        "coat_14",
+        "coat_15",
+        "coat_16",
+        "coat_17",
+        "coat_18",
+        "coat_19",
+        "coat_20",
+        "coat_21",
+        "coat_22",
+        "coat_23",
+        "coat_24",
+        "coat_25",
+        "coat_26",
+        "coat_27",
+        "coat_28",
+        "coat_choice",
+        "coat_a1",
+        "coat_a2",
+        "coat_a3",
+        "coat_a4",
+        "coat_b1",
+        "coat_b2",
+        "coat_b3",
+        "coat_b4"
+      ],
+      "font": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+        "bytes": 5470,
+        "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+        "member": "runtime/src/font.h",
+        "packaged_bytes": 5470,
+        "packaged_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+      },
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/scene_preview_sheet.png",
+        "bytes": 272071,
+        "sha256": "84827ed4935382b14b4bfc8a277948d778d514b218073d91851b20d720f356ee",
+        "member": "preview/scene_preview_sheet.png",
+        "packaged_bytes": 272071,
+        "packaged_sha256": "84827ed4935382b14b4bfc8a277948d778d514b218073d91851b20d720f356ee"
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/assets/storyboard_sheet.png",
+        "bytes": 90180,
+        "sha256": "73e721ae13ea6b3f525f4ccba5542e4c3971ec0c92d4e5673e5089d3f8787fd8",
+        "member": "preview/storyboard_sheet.png",
+        "packaged_bytes": 90180,
+        "packaged_sha256": "73e721ae13ea6b3f525f4ccba5542e4c3971ec0c92d4e5673e5089d3f8787fd8"
+      }
+    },
+    "project_report_bindings": {
+      "readiness": {
+        "present": true,
+        "member": "project/three-coats-of-white.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+        "bytes": 163302,
+        "sha256": "f48f51cfb115d271167aa23629b4a801ccd16c638c4ac4a59e8b4ea4dcc550d5"
+      },
+      "audit": {
+        "present": true,
+        "member": "project/three-coats-of-white.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+        "bytes": 163302,
+        "sha256": "f48f51cfb115d271167aa23629b4a801ccd16c638c4ac4a59e8b4ea4dcc550d5"
+      }
+    },
+    "audit_rom_binding": {
+      "present": true,
+      "member": "rom/three-coats-of-white.wsc",
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local/three-coats-of-white.wsc",
+      "bytes": 8388608,
+      "sha256": "3208c3cc513ba9453483ee99d9db36f1198c2660d9bbc0b57c3fcac2e9a94109"
+    },
+    "manifest_artifacts": {
+      "project": {
+        "present": true,
+        "member": "project/three-coats-of-white.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/projects/three-coats-of-white.wscvn.json",
+        "bytes": 163302,
+        "sha256": "f48f51cfb115d271167aa23629b4a801ccd16c638c4ac4a59e8b4ea4dcc550d5"
+      },
+      "rom": {
+        "present": true,
+        "member": "rom/three-coats-of-white.wsc",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/runtime-local/three-coats-of-white.wsc",
+        "sha256": "3208c3cc513ba9453483ee99d9db36f1198c2660d9bbc0b57c3fcac2e9a94109",
+        "md5": "0x91d4dfc8755988047433a453090f141d",
+        "checksum": "0x6d37"
+      }
+    },
+    "release_summary": {
+      "lines": 46,
+      "expected_lines": 34,
+      "visual_evidence_lines": 8,
+      "has_visual_evidence": true,
+      "missing_expected_lines": []
+    }
+  }
+}

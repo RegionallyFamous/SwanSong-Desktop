@@ -73,7 +73,7 @@ cat >"$REPOSITORY/Dependencies/ares.lock.json" <<EOF
 {"commit":"$ARES_COMMIT","repository":"https://example.invalid/ares.git"}
 EOF
 cat >"$REPOSITORY/Dependencies/sparkle.lock.json" <<EOF
-{"commit":"$SPARKLE_COMMIT","repository":"https://example.invalid/Sparkle.git","version":"2.9.4","swiftPackageArtifactSHA256":"cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"}
+{"commit":"$SPARKLE_COMMIT","repository":"https://example.invalid/Sparkle.git","version":"2.9.5","swiftPackageArtifactSHA256":"34b9b2071f3de0012eca3faa3a9290bb94e62131e9a74f6dc91514a000097a6c"}
 EOF
 cat >"$REPOSITORY/Dependencies/swansong-sdk.lock.json" <<'EOF'
 {"commit":"5555555555555555555555555555555555555555","repository":"https://example.invalid/swansong-sdk.git","version":"0.5.0","payloadRevision":"sha256:905d1b7683ea55aebb90703bc4dc708ae7a436c98dae1474e67c9df89601a35c"}
@@ -225,7 +225,7 @@ cat >"$SPARKLE_ROOT/Resources/Info.plist" <<'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
-<key>CFBundleShortVersionString</key><string>2.9.4</string>
+<key>CFBundleShortVersionString</key><string>2.9.5</string>
 </dict></plist>
 EOF
 printf 'sparkle framework\n' >"$SPARKLE_ROOT/Sparkle"

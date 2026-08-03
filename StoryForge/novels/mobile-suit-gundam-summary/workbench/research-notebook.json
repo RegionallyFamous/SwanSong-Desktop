@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "project_slug": "mobile-suit-gundam-summary",
+  "created_at": "2026-07-23T02:25:56.959887+00:00",
+  "sources": [
+    {
+      "id": "source-sunrise-series",
+      "title": "Mobile Suit Gundam — SUNRISE international work record",
+      "url": "https://www.sunrise-inc.co.jp/international/work/detail.php?cid=20",
+      "type": "official-series-record",
+      "notes": "Primary source for the 43-episode format, April 7 1979 start, staff, and opening-war synopsis."
+    },
+    {
+      "id": "source-official-episodes",
+      "title": "Mobile Suit Gundam official episode guide",
+      "url": "https://en.gundam-official.com/series/mobile-suit-gundam/story/zxx7fu98b3j2d2913b6v3niu",
+      "type": "official-episode-guide",
+      "notes": "Primary episode-order and event cross-check through Escape."
+    },
+    {
+      "id": "source-secondary-index",
+      "title": "List of Mobile Suit Gundam episodes",
+      "url": "https://en.wikipedia.org/wiki/List_of_Mobile_Suit_Gundam_episodes",
+      "type": "secondary-order-crosscheck",
+      "notes": "Used only to cross-check titles/order; official sources win conflicts."
+    },
+    {
+      "id": "source-local-canon-packet",
+      "title": "Story Forge canon research packet",
+      "path": "games/mobile-suit-gundam-summary/assets/sources/canon-research.md",
+      "type": "derived-research-ledger",
+      "notes": "Source-mapped causal spine, edition traps, and every-episode coverage ledger."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-01",
+      "question": "Which facts belong only to the 43-episode television continuity?",
+      "claim": "The adaptation is limited to the original 43-episode 1979 television continuity; compilation-film restructuring, The Origin, novels, games, and later retcons are excluded unless separately labeled.",
+      "source_ids": ["source-sunrise-series", "source-official-episodes", "source-local-canon-packet"],
+      "scene_ids": ["scene-01", "scene-02", "scene-03", "scene-04", "scene-05", "scene-06"],
+      "confidence": "verified",
+      "sensitivity": "normal",
+      "notes": "The 43-episode official series record establishes the edition boundary used by the coverage ledger."
+    },
+    {
+      "id": "claim-02",
+      "question": "What must remain distinct between Solar System and Solar Ray?",
+      "claim": "Solar System is the Federation mirror weapon used at Solomon; Solar Ray is Zeon's colony laser used before A Baoa Qu. They are separate weapons, factions, and story functions.",
+      "source_ids": ["source-official-episodes", "source-local-canon-packet"],
+      "scene_ids": ["scene-05", "scene-06"],
+      "confidence": "verified",
+      "sensitivity": "normal",
+      "notes": "The script and power lens use the full distinct names at their first relevant appearances."
+    },
+    {
+      "id": "claim-03",
+      "question": "Which episode events can merge without breaking the causal chain?",
+      "claim": "Episodes may merge when chronology, responsible actor, changed state, and the cause of the next essential event remain explicit. Character deaths, command transfers, identity reveals, Newtype tragedy, Solar Ray, and Escape cannot be reduced to unlabeled montage.",
+      "source_ids": ["source-official-episodes", "source-secondary-index", "source-local-canon-packet"],
+      "scene_ids": ["scene-01", "scene-02", "scene-03", "scene-04", "scene-05", "scene-06"],
+      "confidence": "high",
+      "sensitivity": "normal",
+      "notes": "The local packet records KEEP/MERGE decisions for all episode ranges and maps them to runtime nodes."
+    },
+    {
+      "id": "claim-04",
+      "question": "How can choices alter emphasis without altering canon?",
+      "claim": "Choices may select crew-versus-strategy and people-versus-power language while both branches preserve the same event order, deaths, identity reveals, command collapse, and ending. A choice must not save a canon casualty, change a battle result, or move an event between continuities.",
+      "source_ids": ["source-official-episodes", "source-local-canon-packet"],
+      "scene_ids": ["scene-02", "scene-05", "scene-06"],
+      "confidence": "high",
+      "sensitivity": "normal",
+      "notes": "All four compiled routes are enumerated by SwanSong and bound to the same eight Story Proof checkpoints."
+    }
+  ],
+  "authenticity_reviews": []
+}

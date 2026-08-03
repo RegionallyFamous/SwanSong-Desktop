@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "approval_type": "wscvn_sprite_audition_approval",
+  "approved_at": "2026-07-17T02:40:35+00:00",
+  "reviewer": "codex",
+  "notes": "Runtime-ready neutral/talk/blink families visually inspected.",
+  "character": "generic",
+  "sheet_kind": "animation",
+  "runtime_ready": true,
+  "labels": [
+    "neutral",
+    "talk",
+    "blink"
+  ],
+  "tool_provenance": [
+    {
+      "path": "scripts/audition_wscvn_sprite_sheet.py",
+      "sha256": "3c3ff7d0eff71df59c58e51d6d1f7990516778f64749e3dad207ab05b2069338"
+    },
+    {
+      "path": "scripts/make_signal_before_dawn_slice.py",
+      "sha256": "c48f872b41a2bbe0310229ffd35ed4786096e7d886595f950605efcf622afc90"
+    },
+    {
+      "path": "scripts/wscvn_sprite_family.py",
+      "sha256": "3ebf274e1f493bd10bc06be29936eda8c43d6e85e0d7cd5d4ddcd980d1bbc1aa"
+    }
+  ],
+  "quality": {
+    "status": "pass",
+    "error_count": 0,
+    "warning_count": 0,
+    "info_count": 0,
+    "thresholds": {
+      "max_visible_colors": 15,
+      "min_talk_face_delta": 18,
+      "min_blink_face_delta": 0,
+      "min_alpha_coverage": 0.2,
+      "max_alpha_coverage": 0.75,
+      "max_animation_alpha_changed": 0,
+      "min_visible_above_textbox": 0.52,
+      "max_visible_above_textbox": 0.92,
+      "max_animation_bbox_area": 1200,
+      "max_source_center_drift": 0.09,
+      "max_source_scale_drift": 0.18,
+      "max_sprite_center_drift": 0.04,
+      "max_sprite_scale_drift": 0.08,
+      "max_tiny_color_pixels": 10,
+      "max_green_fringe_pixels": 0,
+      "max_alpha_components": 8,
+      "min_largest_alpha_component_share": 0.96
+    }
+  },
+  "audition_report": {
+    "path": "games/backlight-bazaar/assets/auditions/backlight-bazaar-runtime-audition.json",
+    "sha256": "3fcb0706e49a4e27b90e1c06799b7dd5f9e9a7b76608367ead9cdc09517b8465"
+  },
+  "audition_png": {
+    "path": "games/backlight-bazaar/assets/auditions/backlight-bazaar-runtime-audition.png",
+    "sha256": "2b4b5694a5352f3750590b148e94be07669399996802082d91bda63419286908"
+  },
+  "sources": [
+    {
+      "label": "mina",
+      "path": "games/backlight-bazaar/assets/auditions/mina-runtime-animation.png",
+      "sha256": "5de60503c2d851fac40e57d6c7842e44e5e42ad5199557ff4322ea9184afd1ba"
+    },
+    {
+      "label": "ren",
+      "path": "games/backlight-bazaar/assets/auditions/ren-runtime-animation.png",
+      "sha256": "836225528db009b818714e2829a7c3aaeb1fda9bb542ae4e9146cc8c8ebad677"
+    }
+  ],
+  "covered_outputs": [
+    {
+      "path": "games/backlight-bazaar/assets/characters/mina_neutral.png",
+      "sha256": "99d4ea98c57b1d400d23c885b5eaef94e7dcfa79019c1f5486405a01d461f849"
+    },
+    {
+      "path": "games/backlight-bazaar/assets/characters/mina_talk.png",
+      "sha256": "326f89c16834040e41741022a79e43a018203daad99dbbbaadd320d231bcc4e2"
+    },
+    {
+      "path": "games/backlight-bazaar/assets/characters/mina_blink.png",
+      "sha256": "7d8db07c9d9a4c0f535ccb6b057caab506710b929ede457f542bb02a65b1d743"
+    },
+    {
+      "path": "games/backlight-bazaar/assets/characters/ren_neutral.png",
+      "sha256": "59916d7778fc52565a693737fcbc76937dff5977306f3a4d414b991a03f85299"
+    },
+    {
+      "path": "games/backlight-bazaar/assets/characters/ren_talk.png",
+      "sha256": "b0c39f97cace55e947f8ea502ecd1c0eb6a0c967efaa0f37884e5577bcbb3a2d"
+    },
+    {
+      "path": "games/backlight-bazaar/assets/characters/ren_blink.png",
+      "sha256": "316a75dca97318b3eb944b4e2c2590c01de024bb0f06024d675b6a61512493ec"
+    }
+  ]
+}

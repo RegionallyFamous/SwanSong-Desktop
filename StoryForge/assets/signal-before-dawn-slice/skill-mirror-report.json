@@ -1,0 +1,103 @@
+{
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "generated_at_utc": "2026-07-27T03:54:35.090447+00:00",
+    "mirror": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/skills/build-wonderswan-vn",
+      "exists": true,
+      "files": {
+        "SKILL.md": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/skills/build-wonderswan-vn/SKILL.md",
+          "exists": true,
+          "bytes": 29865,
+          "sha256": "d58e02d7f63e8e5d04f31f57be5acc5cb5693a23df3a3229e3b3aec984d62eb7"
+        },
+        "agents/openai.yaml": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/skills/build-wonderswan-vn/agents/openai.yaml",
+          "exists": true,
+          "bytes": 930,
+          "sha256": "b9561e31ed67d5eac9a344188e57f98af62696ec6231b26dc33a2ad006a319f3"
+        },
+        "references/audio-quality.md": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/skills/build-wonderswan-vn/references/audio-quality.md",
+          "exists": true,
+          "bytes": 7587,
+          "sha256": "c40baf5113c3104e1751c9f0f6324b9538ebb65a842688a0a6284890a19832ad"
+        },
+        "references/graphics-quality.md": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/skills/build-wonderswan-vn/references/graphics-quality.md",
+          "exists": true,
+          "bytes": 16556,
+          "sha256": "5a5ab6cfe4306be93eca8a5b0b8bab5ae849db6bd7fad51e612970262fb59795"
+        },
+        "references/local-workflow.md": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/skills/build-wonderswan-vn/references/local-workflow.md",
+          "exists": true,
+          "bytes": 56545,
+          "sha256": "cf606f1abbe493f8919664fc1cbc3d14c94307c9475db68fab56e3a6cd81b608"
+        },
+        "references/visual-contract-template.json": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/skills/build-wonderswan-vn/references/visual-contract-template.json",
+          "exists": true,
+          "bytes": 1257,
+          "sha256": "c40b52e09311b77bcae1217d8ba6ffa98a6080a722b809eb3f11a41185c76fcc"
+        }
+      }
+    },
+    "skill_md": {
+      "frontmatter": {
+        "name": "build-wonderswan-vn",
+        "description": "Create, edit, convert, build, run, score, and visually polish WonderSwan Color visual novels using mandatory ImageGen-first production artwork, maskofsin/Visual-Novel-Creator-for-Wonderswan, .wscvn.json project files, Wonderful Toolchain, WSC-safe asset conversion, tracker music, installed SwanSong route testing, and complementary Mesen or Mednafen proof. Use when the user asks to make an original WonderSwan/WSC visual novel, generate or modify a .wscvn.json project, create or replace VN sprites/backgrounds/title art/inserts/covers, compose or integrate music, validate neutral/talk/blink character families, install or verify Wonderful Toolchain for VN builds, compile a .wsc ROM, or open a generated WonderSwan VN in an emulator."
+      },
+      "lines": 446
+    },
+    "openai_yaml": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/skills/build-wonderswan-vn/agents/openai.yaml"
+    },
+    "graphics_quality": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/skills/build-wonderswan-vn/references/graphics-quality.md",
+      "lines": 283
+    },
+    "local_workflow": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/skills/build-wonderswan-vn/references/local-workflow.md",
+      "lines": 1036
+    },
+    "audio_quality": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/skills/build-wonderswan-vn/references/audio-quality.md",
+      "lines": 169
+    },
+    "visual_contract_template": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/skills/build-wonderswan-vn/references/visual-contract-template.json",
+      "valid_json": true,
+      "schema_version": 1
+    },
+    "installed": {
+      "path": "/Users/nick/.codex/skills/build-wonderswan-vn",
+      "exists": true,
+      "matches": true,
+      "checked_files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/audio-quality.md",
+        "references/graphics-quality.md",
+        "references/local-workflow.md",
+        "references/visual-contract-template.json"
+      ],
+      "checked_file_count": 6,
+      "differences": [],
+      "install_command": "mkdir -p \"/Users/nick/.codex/skills/build-wonderswan-vn\" && cp -R \"/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/skills/build-wonderswan-vn/.\" \"/Users/nick/.codex/skills/build-wonderswan-vn/\" && python3 \"/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_build_wonderswan_vn_skill.py\" --require-installed-match",
+      "installed_files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/audio-quality.md",
+        "references/graphics-quality.md",
+        "references/local-workflow.md",
+        "references/visual-contract-template.json"
+      ],
+      "installed_file_count": 6,
+      "status": "matches"
+    }
+  }
+}

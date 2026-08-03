@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:30:17.067781+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "swanlight-ledger",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/runtime-local/swanlight-ledger.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/swanlight-ledger-qa-report.json",
+    "project_counts": {
+      "name": "Swanlight Ledger",
+      "nodes": 46,
+      "flags": 0,
+      "tracks": 7,
+      "backgrounds": 13,
+      "characters": 12,
+      "sfx": 0
+    },
+    "header_counts": {
+      "NUM_NODES": 46,
+      "NUM_FLAGS": 0,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 7,
+      "NUM_SFX": 0,
+      "NUM_BG_ASSETS": 13,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 12
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+      "bytes": 399756,
+      "sha256": "cad2417a61471855a397098cfdb700864a6d4dc75d39155d4bd33c2b08342875"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/runtime-local/swanlight-ledger.wsc",
+      "bytes": 8388608,
+      "sha256": "17441edfdcc5339543be3ed4ac7d78932a4b5fcc7a49c2b86aa0315043eeeec7"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/emulator-smoke-report.json",
+      "bytes": 1195,
+      "sha256": "2198746f090d83ce20a59529c8e0f592c900cd144d4c71ab56fde986ee6db4e6"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/game-readiness-report.json",
+      "bytes": 48014,
+      "sha256": "525579abf10a96e864f965379fd38ae0aebc6dd1305e2b5247831bb7508cb8e3"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/swanlight-ledger-qa-report.json",
+      "bytes": 7466,
+      "sha256": "25b53440bd64f20205086576c2b9ec4f777bc5a17fda584490ce2758c9c19825"
+    }
+  }
+}

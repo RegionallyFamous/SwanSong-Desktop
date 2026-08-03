@@ -51,10 +51,10 @@ Lead with the feeling, then earn the trust:
 
 ## Release honesty
 
-The stable public download is **0.9.3**. Its release story is translation proof
-that can keep moving: long Original and Patched captures retain their final
-audio during the same replay, and one authenticated Patched capture can feed
-separate private clean-power LOAD and CONTINUE checks.
+The stable public download is **0.9.4**. Its release story is that the Forge
+comes home: SwanSong carries a fixed, hash-verified writing framework, while
+the complete authored workshop has one inspectable source home. Translation
+Lab also gains stronger private Original-frame and data-producer proof.
 Translation Shelf remains the 0.9 series lead: it turns a trusted source-free
 IPS release and the exact player-supplied original into a separately managed,
 verified library game without changing that original. The complete SDK 0.5 Studio,
@@ -63,6 +63,6 @@ Translation Surface Suites, exact native review, Story Proof, the visual
 signed Homebrew shelf, isolated engine, signed local-automation boundary, Safe
 Mode, privacy-safe support, and inspectable release provenance remain shipped
 features. Excitement never gets to erase requirements or known limits:
-Story Forge needs its local framework, Studio needs its stated toolchain,
+Story Forge still needs Python and the stated local authoring toolchain, Studio needs its stated toolchain,
 Cartridge Lab needs authorized hardware, and every physical write keeps its
 confirmation gates.

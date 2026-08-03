@@ -155,7 +155,7 @@ def project_tree_receipt(root: Path) -> dict[str, Any]:
 
 
 def create_project(
-    repository: Path, root: Path, *, blocked: bool
+    repository: Path, root: Path, *, blocked: bool, monochrome: bool = False
 ) -> tuple[Path, Path, Path]:
     private_directory(root)
     toolkit = root / "toolkit"
@@ -179,19 +179,30 @@ def create_project(
         repository / "Tests/TranslationLabFixture/display-source-project.json",
         project / "project.json",
     )
+    if monochrome:
+        manifest = json.loads((project / "project.json").read_text())
+        manifest["game"]["platform"] = "WonderSwan"
+        manifest["rom"] = {
+            "original": "rom/original.ws",
+            "patched": "build/patched.ws",
+        }
+        replace_json(project / "project.json", manifest)
     plan = project / "automation/plan.json"
     copy_private(
         repository / "Tests/TranslationLabFixture/display-source-plan.json", plan
     )
     fixture = repository / (
-        "testroms/swan-song/display_provenance/source_lineage_blocked.wsc"
+        "testroms/swan-song/display_provenance/mono_palette_out_owner.ws"
+        if monochrome
+        else "testroms/swan-song/display_provenance/source_lineage_blocked.wsc"
         if blocked
         else "testroms/swan-song/display_provenance/"
         "display_provenance_horizontal.wsc"
     )
-    rom = project / "rom/original.wsc"
+    extension = "ws" if monochrome else "wsc"
+    rom = project / f"rom/original.{extension}"
     copy_private(fixture, rom)
-    copy_private(fixture, project / "build/patched.wsc")
+    copy_private(fixture, project / f"build/patched.{extension}")
     return project.resolve(), plan.resolve(), rom.resolve()
 
 
@@ -216,9 +227,36 @@ def runner_json(runner: Path, arguments: list[str]) -> dict[str, Any]:
 
 
 def native_fingerprint(
-    runner: Path, project: Path, plan: Path, *, blocked: bool
+    runner: Path,
+    project: Path,
+    plan: Path,
+    *,
+    blocked: bool,
+    monochrome: bool = False,
 ) -> str:
-    rectangle = "0,0,1,1" if blocked else "8,8,1,1"
+    if monochrome:
+        report = runner_json(
+            runner,
+            [
+                "record-route",
+                "--enable-debug-tools",
+                "--allow-project-writes",
+                "--project",
+                str(project),
+                "--plan",
+                str(plan),
+            ],
+        )
+        fingerprint = report.get("checkpointSHA256")
+        if (
+            report.get("schema") != "swan-song-record-route-report-v1"
+            or report.get("hardwareModel") != "wonderswan"
+            or not isinstance(fingerprint, str)
+            or len(fingerprint) != 64
+        ):
+            fail("monochrome calibration lost its exact clean-boot frame")
+        return fingerprint
+    rectangle = "0,0,1,1" if blocked or monochrome else "8,8,1,1"
     report = runner_json(
         runner,
         [
@@ -265,19 +303,36 @@ def create_common_receipts(
     backend = capability_report.get("engineBackend")
     build_id = capability_report.get("engineBuildID")
     runner_schema = capability_report.get("schema")
+    owner_method = capability_report.get("probeRectangle")
     source_method = capability_report.get("probeRectangleSource")
     if (
-        abi not in (9, 10)
+        abi != 10
         or backend != "ares"
         or not isinstance(build_id, str)
-        or runner_schema
-        not in (
-            "swan-song-route-runner-engine-capability-v1",
-            "swan-song-route-runner-engine-capability-v2",
-        )
+        or runner_schema != "swan-song-route-runner-engine-capability-v3"
+        or not isinstance(owner_method, dict)
         or not isinstance(source_method, dict)
     ):
         fail("the signed runner returned an unsupported source capability")
+    if (
+        owner_method.get("command") != "probe-rectangle"
+        or owner_method.get("reportSchema")
+            != "swan-song-display-owner-probe-report-v2"
+        or owner_method.get("privateDetailsSchema")
+            != "swan-song-display-owner-probe-v2"
+        or owner_method.get("requiresEngineABI") != 10
+        or owner_method.get("maximumRectanglePixels") != 16384
+        or owner_method.get("maximumPrivateDetailsBytes") != 16 * 1024 * 1024
+        or owner_method.get("cleanBootReplay") is not True
+        or owner_method.get("saveStateRestoreAllowed") is not False
+    ):
+        fail("the signed runner returned an unsafe display-owner capability")
+    if (
+        source_method.get("maximumRectanglePixels") != 4096
+        or source_method.get("maximumAtomicRegionCount") != 8
+        or source_method.get("maximumAtomicRegionPixels") != 8192
+    ):
+        fail("the signed runner changed the bounded source-probe capability")
 
     receipts = root / "receipts"
     private_directory(receipts)
@@ -297,7 +352,10 @@ def create_common_receipts(
             "capabilityReportSchema": runner_schema,
             "engineBuildID": build_id,
             "executable": artifact(runner, include_mode=True),
-            "methods": {"probeRectangleSource": source_method},
+            "methods": {
+                "probeRectangle": owner_method,
+                "probeRectangleSource": source_method,
+            },
         },
         "limits": {
             "downstreamEvidenceCapabilityBound": False,
@@ -376,8 +434,17 @@ def create_common_receipts(
     }
     write_json(m_path, m_value)
 
-    m2_path = receipts / "qualified-method-capability.json"
-    m2_value = {
+    return {"c": c_path, "marker": marker_path, "m": m_path}
+
+
+def create_case_qualified_method_capability(
+    path: Path,
+    capability_path: Path,
+    method_path: Path,
+    marker_path: Path,
+    seal_path: Path,
+) -> Path:
+    value = {
         "schema": "wstrans-swansong-source-probe-method-capability-v2",
         "method": METHOD,
         "captureBound": True,
@@ -385,14 +452,30 @@ def create_common_receipts(
         "commercialAuthorizationImplemented": True,
         "commercialExecutionAuthorizedByM2Alone": False,
         "promotionEligibleByM2Alone": False,
-        "baseCapabilityReceipt": artifact(c_path),
-        "methodCapabilityReceipt": artifact(m_path),
+        "baseCapabilityReceipt": artifact(capability_path),
+        "methodCapabilityReceipt": artifact(method_path),
         "methodNativeMarker": artifact(marker_path),
-        "publicCaptureFrameSeal": artifact(c_path),
-        "publicContractClosure": artifact(m_path),
+        "publicCaptureFrameSeal": artifact(seal_path),
+        "publicContractClosure": artifact(method_path),
     }
-    write_json(m2_path, m2_value)
-    return {"c": c_path, "marker": marker_path, "m": m_path, "m2": m2_path}
+    write_json(path, value)
+    return path.resolve()
+
+
+def assert_case_authority_bindings(
+    paths: dict[str, Path], authorization: dict[str, Any]
+) -> None:
+    m2 = json.loads(paths["m2"].read_text())
+    seal_artifact = artifact(paths["seal"])
+    if (
+        m2.get("publicCaptureFrameSeal") != seal_artifact
+        or authorization.get("qualifiedMethodCapabilityReceipt")
+            != artifact(paths["m2"])
+        or authorization.get("captureFrameSeal") != seal_artifact
+        or authorization.get("request", {}).get("captureFrameSeal")
+            != input_record(paths["seal"])
+    ):
+        fail("the case authority graph lost its exact M2/seal/A2 bindings")
 
 
 def output_graph(run: Path) -> dict[str, Any]:
@@ -461,6 +544,8 @@ def create_seal(
     rom: Path,
     fingerprint: str,
     rectangle: dict[str, int],
+    *,
+    monochrome: bool,
 ) -> None:
     plan_value = json.loads(plan.read_text())
     canonical_plan = canonical_bytes(plan_value)
@@ -470,6 +555,7 @@ def create_seal(
         "method": METHOD,
         "sourceFree": True,
         "role": "original",
+        "hardwareModel": "wonderswan" if monochrome else "wonderswan-color",
         "planFrameIndex": 2,
         "nativeFrameNumber": 3,
         "plan": {
@@ -483,8 +569,8 @@ def create_seal(
         },
         "rom": artifact(rom),
         "transportFrame": {
-            "width": 237,
-            "height": 144,
+            "width": 224 if monochrome else 237,
+            "height": 157 if monochrome else 144,
             "orientation": "horizontal",
             "artifact": artifact(rom),
         },
@@ -500,6 +586,27 @@ def create_seal(
                 "f" * 64 if fingerprint != "f" * 64 else "e" * 64
             ),
         },
+        **(
+            {
+                "excludedBottomTransportRegion": {
+                    "edge": "bottom",
+                    "x": 0,
+                    "y": 144,
+                    "width": 224,
+                    "height": 13,
+                }
+            }
+            if monochrome
+            else {
+                "excludedRightTransportRegion": {
+                    "edge": "right",
+                    "x": 224,
+                    "y": 0,
+                    "width": 13,
+                    "height": 144,
+                }
+            }
+        ),
         "nativeFrameSHA256": fingerprint,
         "probe": {
             "rectangle": rectangle,
@@ -524,9 +631,16 @@ def prepare_case(
     *,
     blocked: bool,
     rectangle: dict[str, int],
+    rectangles: list[dict[str, int]] | None = None,
+    monochrome: bool = False,
 ) -> dict[str, Any]:
     private_directory(root)
-    project, plan, rom = create_project(repository, root / "workspace", blocked=blocked)
+    project, plan, rom = create_project(
+        repository,
+        root / "workspace",
+        blocked=blocked,
+        monochrome=monochrome,
+    )
     authority = root / "authority"
     private_directory(authority)
     paths: dict[str, Path] = {}
@@ -535,8 +649,23 @@ def prepare_case(
         copy_private(source, destination)
         paths[key] = destination.resolve()
     seal = authority / "capture-frame-seal.json"
-    create_seal(seal, project, plan, rom, fingerprint, rectangle)
+    create_seal(
+        seal,
+        project,
+        plan,
+        rom,
+        fingerprint,
+        rectangle,
+        monochrome=monochrome,
+    )
     paths["seal"] = seal.resolve()
+    paths["m2"] = create_case_qualified_method_capability(
+        authority / "qualified-method-capability.json",
+        paths["c"],
+        paths["m"],
+        paths["marker"],
+        paths["seal"],
+    )
 
     run = root / "run"
     private_directory(run)
@@ -616,6 +745,7 @@ def prepare_case(
         },
         "allowedOutputGraph": output_graph(run),
     }
+    assert_case_authority_bindings(paths, authorization)
     authorization_path = run / "authorization.json"
     write_json(authorization_path, authorization)
     paths["authorization"] = authorization_path.resolve()
@@ -627,6 +757,7 @@ def prepare_case(
         "report": (run / "report.json").resolve(),
         "paths": paths,
         "rectangle": rectangle,
+        "rectangles": rectangles,
         "authorization": authorization,
     }
 
@@ -684,14 +815,12 @@ class MCPClient:
 
 def call_arguments(case: dict[str, Any], *, frame: int = 2) -> dict[str, Any]:
     paths = case["paths"]
-    return {
+    arguments = {
         "projectPath": str(case["project"]),
         "planPath": str(case["plan"]),
         "role": "original",
         "frameIndex": frame,
-        "rectangle": case["rectangle"],
         "components": ["raster"],
-        "confirmProjectWrites": True,
         "authorizationPath": str(paths["authorization"]),
         "capabilityReceiptPath": str(paths["c"]),
         "methodCapabilityReceiptPath": str(paths["m"]),
@@ -701,6 +830,11 @@ def call_arguments(case: dict[str, Any], *, frame: int = 2) -> dict[str, Any]:
         "runDirectoryPath": str(case["run"]),
         "reportPath": str(case["report"]),
     }
+    if case.get("rectangles") is not None:
+        arguments["rectangles"] = case["rectangles"]
+    else:
+        arguments["rectangle"] = case["rectangle"]
+    return arguments
 
 
 def tool_call(client: MCPClient, arguments: dict[str, Any]) -> dict[str, Any]:
@@ -790,6 +924,24 @@ def mutate_json(path: Path, mutation: Callable[[dict[str, Any]], None]) -> None:
     replace_json(path, value)
 
 
+def mutate_seal_and_rebind_authorization(
+    case: dict[str, Any],
+    mutation: Callable[[dict[str, Any]], None],
+) -> None:
+    paths = case["paths"]
+    seal = paths["seal"]
+    mutate_json(seal, mutation)
+    m2 = json.loads(paths["m2"].read_text())
+    m2["publicCaptureFrameSeal"] = artifact(seal)
+    replace_json(paths["m2"], m2)
+    authorization = json.loads(paths["authorization"].read_text())
+    authorization["qualifiedMethodCapabilityReceipt"] = artifact(paths["m2"])
+    authorization["captureFrameSeal"] = artifact(seal)
+    authorization["request"]["captureFrameSeal"] = input_record(seal)
+    assert_case_authority_bindings(paths, authorization)
+    replace_json(paths["authorization"], authorization)
+
+
 def main() -> None:
     if len(sys.argv) != 7:
         fail("usage: functional.py REPOSITORY MCP RUNNER ENGINE TEMP_ROOT APP")
@@ -836,12 +988,25 @@ def main() -> None:
     blocked_project, blocked_plan, _ = create_project(
         repository, calibration / "blocked", blocked=True
     )
+    monochrome_project, monochrome_plan, _ = create_project(
+        repository,
+        calibration / "monochrome",
+        blocked=False,
+        monochrome=True,
+    )
     fingerprints = {
         "success": native_fingerprint(
             runner, success_project, success_plan, blocked=False
         ),
         "blocked": native_fingerprint(
             runner, blocked_project, blocked_plan, blocked=True
+        ),
+        "monochrome": native_fingerprint(
+            runner,
+            monochrome_project,
+            monochrome_plan,
+            blocked=False,
+            monochrome=True,
         ),
     }
     common = create_common_receipts(root, mcp, runner, engine)
@@ -852,7 +1017,19 @@ def main() -> None:
         listed = client.request("tools/list", {})
         tools = listed.get("result", {}).get("tools", [])
         source = next((item for item in tools if item.get("name") == TOOL), None)
-        required = set(source.get("inputSchema", {}).get("required", [])) if source else set()
+        schema = source.get("inputSchema", {}) if source else {}
+        properties = schema.get("properties")
+        if not isinstance(properties, dict):
+            fail("the installed source tool lost its property schema")
+        required = set(schema.get("required", []))
+        if (
+            "confirmProjectWrites" in properties
+            or "confirmProjectWrites" in required
+        ):
+            fail(
+                "the direct bundled source tool regained per-call "
+                "project-write confirmation"
+            )
         authority = {
             "authorizationPath",
             "capabilityReceiptPath",
@@ -865,6 +1042,15 @@ def main() -> None:
         }
         if not authority.issubset(required):
             fail("the installed source tool lost its complete authority schema")
+        regions = properties.get("rectangles", {})
+        alternatives = schema.get("oneOf")
+        if (
+            regions.get("minItems") != 1
+            or regions.get("maxItems") != 8
+            or alternatives
+            != [{"required": ["rectangle"]}, {"required": ["rectangles"]}]
+        ):
+            fail("the installed source tool lost its bounded atomic-region schema")
 
         success = prepare_case(
             cases_root / "success",
@@ -901,9 +1087,86 @@ def main() -> None:
             engine,
             fingerprints["success"],
             blocked=False,
-            rectangle={"x": 0, "y": 0, "width": 128, "height": 32},
+            rectangle={"x": 0, "y": 0, "width": 224, "height": 36},
+            rectangles=[
+                {"x": 0, "y": 0, "width": 224, "height": 18},
+                {"x": 0, "y": 18, "width": 224, "height": 18},
+            ],
         )
         assert_completed(maximum, tool_call(client, call_arguments(maximum)), "complete")
+
+        episode_one_wordmark = prepare_case(
+            cases_root / "episode1-wordmark",
+            repository,
+            common,
+            mcp,
+            runner,
+            engine,
+            fingerprints["success"],
+            blocked=False,
+            rectangle={"x": 20, "y": 28, "width": 184, "height": 36},
+            rectangles=[
+                {"x": 20, "y": 28, "width": 184, "height": 18},
+                {"x": 20, "y": 46, "width": 184, "height": 18},
+            ],
+        )
+        assert_completed(
+            episode_one_wordmark,
+            tool_call(client, call_arguments(episode_one_wordmark)),
+            "complete",
+        )
+
+        monochrome = prepare_case(
+            cases_root / "monochrome",
+            repository,
+            common,
+            mcp,
+            runner,
+            engine,
+            fingerprints["monochrome"],
+            blocked=False,
+            monochrome=True,
+            rectangle={"x": 0, "y": 0, "width": 1, "height": 1},
+        )
+        assert_completed(
+            monochrome,
+            tool_call(client, call_arguments(monochrome)),
+            "complete",
+        )
+
+        for label, mutation in (
+            (
+                "cross-model",
+                lambda value: value.__setitem__(
+                    "hardwareModel", "wonderswan-color"
+                ),
+            ),
+            (
+                "cropped-mono",
+                lambda value: value["transportFrame"].__setitem__("height", 156),
+            ),
+            (
+                "alternate-mono",
+                lambda value: value["transportFrame"].__setitem__("width", 225),
+            ),
+        ):
+            case = prepare_case(
+                cases_root / label,
+                repository,
+                common,
+                mcp,
+                runner,
+                engine,
+                fingerprints["monochrome"],
+                blocked=False,
+                monochrome=True,
+                rectangle={"x": 0, "y": 0, "width": 1, "height": 1},
+            )
+            mutate_seal_and_rebind_authorization(case, mutation)
+            assert_rejected_without_k(
+                case,
+                tool_call(client, call_arguments(case)),
+            )
 
         wrong_frame = prepare_case(
             cases_root / "wrong-frame",
@@ -929,7 +1192,12 @@ def main() -> None:
             "plan": overbound_plan,
             "run": absent_run,
             "report": cases_root / "overbound-report-must-not-exist.json",
-            "rectangle": {"x": 0, "y": 0, "width": 4097, "height": 1},
+            "rectangle": {"x": 0, "y": 0, "width": 224, "height": 37},
+            "rectangles": [
+                {"x": 0, "y": 0, "width": 224, "height": 18},
+                {"x": 0, "y": 18, "width": 224, "height": 18},
+                {"x": 0, "y": 36, "width": 224, "height": 1},
+            ],
             "paths": {
                 "authorization": cases_root / "missing-a2.json",
                 "c": cases_root / "missing-c.json",
@@ -941,10 +1209,10 @@ def main() -> None:
         }
         overbound_result = tool_call(client, call_arguments(overbound))
         if overbound_result.get("isError") is not True:
-            fail("the installed helper accepted exactly 4,097 pixels")
+            fail("the installed helper accepted an 8,288-pixel atomic request")
         assert_no_private_fields(overbound_result)
         if absent_run.exists() or overbound["report"].exists():
-            fail("the 4,097-pixel rejection created run state")
+            fail("the 8,288-pixel rejection created run state")
 
         mutations: dict[str, tuple[str, Callable[[dict[str, Any]], None]]] = {
             "authorization": (
@@ -1017,8 +1285,9 @@ def main() -> None:
         client.close()
 
     print(
-        "PASS actual bundled SwanSongMCP completed public success, blocked, and "
-        "4,096-pixel authenticated probes; rejected wrong-frame, 4,097-pixel, "
+        "PASS actual bundled SwanSongMCP completed public success, blocked, monochrome, and "
+        "8,064-pixel maximum plus 6,624-pixel Episode 1 atomic-region probes; "
+        "rejected cross-model/cropped/alternate monochrome geometry, wrong-frame, 8,288-pixel, "
         "and tampered A/C/M/M2/seal/plan/ROM/runner/engine cases without K; "
         "rejected missing CPU/DMA executed-read context in its fixed source-free control; "
         "and closed each accepted run with reread K bound to the signed helper"

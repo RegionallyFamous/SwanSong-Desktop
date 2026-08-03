@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "errors": [],
+  "generated_at_utc": "2026-07-16T00:15:18.026313+00:00",
+  "project": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/projects/one-sock-offensive.wscvn.json",
+    "bytes": 128702,
+    "sha256": "3df74e3a0c7e23384ad9d003748c1352f44a08c217fc9577e505bc2b21ab708b"
+  },
+  "renderer": {
+    "backend": "legacy-tracker-wavetable-audition",
+    "sample_rate": 22050,
+    "loops": 2,
+    "channels": 1,
+    "sample_width_bits": 16,
+    "note": "Offline audition mirrors the runtime's 32-sample wave shapes; hardware output and emulator mixing may differ."
+  },
+  "tracks": [
+    {
+      "id": "sock_title",
+      "name": "Sock Roll Call",
+      "bpm": 108,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/audio/01-sock_title.wav",
+      "bytes": 392044,
+      "sha256": "07d64ffc9f4234b7cefa31e8b2a271107d8244f94674401c941ea3b5374a1ba3",
+      "duration_seconds": 8.889,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.185,
+        "near_silent_sample_share": 0.00877,
+        "max_loop_jump_linear": 0.050813
+      }
+    },
+    {
+      "id": "sock_main",
+      "name": "Washer Shuffle",
+      "bpm": 116,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/audio/02-sock_main.wav",
+      "bytes": 365010,
+      "sha256": "0a8d6a00cc20b85108ffdf4f8983ca4d0047b27677bd58a19633388437470c6a",
+      "duration_seconds": 8.276,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.246,
+        "near_silent_sample_share": 0.01107,
+        "max_loop_jump_linear": 0.017762
+      }
+    },
+    {
+      "id": "sock_end_a",
+      "name": "Headwear Recovery",
+      "bpm": 92,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/audio/03-sock_end_a.wav",
+      "bytes": 460218,
+      "sha256": "8490cdfc43e6dc65a8a9feeaa7b3aac265bab8f6c23874bb27746805ecf30dd7",
+      "duration_seconds": 10.435,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.183,
+        "near_silent_sample_share": 0.0109,
+        "max_loop_jump_linear": 0.05417
+      }
+    },
+    {
+      "id": "sock_end_b",
+      "name": "Crimson Cycle",
+      "bpm": 152,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/audio/04-sock_end_b.wav",
+      "bytes": 278570,
+      "sha256": "2aea99f6d9808bb891141929cc3a43223eefcca4119279a26e4f6bb7f38e6797",
+      "duration_seconds": 6.316,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.229,
+        "near_silent_sample_share": 0.011116,
+        "max_loop_jump_linear": 0.079562
+      }
+    }
+  ],
+  "cues": [
+    {
+      "node": "sock_title",
+      "node_name": "Sock Title",
+      "track": "sock_title"
+    },
+    {
+      "node": "sock_01",
+      "node_name": "Sock 01",
+      "track": "sock_main"
+    },
+    {
+      "node": "sock_a1",
+      "node_name": "Sock A1",
+      "track": "sock_end_a"
+    },
+    {
+      "node": "sock_b1",
+      "node_name": "Sock B1",
+      "track": "sock_end_b"
+    }
+  ]
+}

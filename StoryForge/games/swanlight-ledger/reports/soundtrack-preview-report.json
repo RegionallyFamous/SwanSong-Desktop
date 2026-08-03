@@ -1,0 +1,126 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-10T20:19:30.963947+00:00",
+  "project": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+    "bytes": 352004,
+    "sha256": "1b1ff31bdf658ec4a173da1d96d02f3d3b415a7197a544fe8001144b25ec385f"
+  },
+  "renderer": {
+    "backend": "legacy-tracker-wavetable-audition",
+    "sample_rate": 22050,
+    "loops": 2,
+    "channels": 1,
+    "sample_width_bits": 16,
+    "note": "Offline audition mirrors the runtime's 32-sample wave shapes; hardware output and emulator mixing may differ."
+  },
+  "tracks": [
+    {
+      "id": "track_rain_on_glass",
+      "name": "Rain on Glass",
+      "bpm": 78,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/audio/01-rain_on_glass.wav",
+      "bytes": 542814,
+      "sha256": "0a315847afdd5408769deda11f79f85d4306d060643059335c8e336367a9b0e1",
+      "duration_seconds": 12.308
+    },
+    {
+      "id": "track_silver_index",
+      "name": "Silver Index",
+      "bpm": 102,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/audio/02-silver_index.wav",
+      "bytes": 415102,
+      "sha256": "950a11493fb2b73fc568e9694645f35f3eb1f0b72112fed2ceba2b38df30dcc2",
+      "duration_seconds": 9.412
+    },
+    {
+      "id": "track_blue_wake",
+      "name": "Blue Wake",
+      "bpm": 92,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/audio/03-blue_wake.wav",
+      "bytes": 460218,
+      "sha256": "18ca8a833bc833a512b98f5548edebd21f8750ff67b14ff9a9b1a1fe91b96800",
+      "duration_seconds": 10.435
+    },
+    {
+      "id": "track_lamp_at_home",
+      "name": "Lamp at Home",
+      "bpm": 84,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/audio/04-lamp_at_home.wav",
+      "bytes": 504044,
+      "sha256": "6246e6ed83c4c8ef8d749bd3cb669d1f5042654c3d638d7e3754d8ac8f1547bd",
+      "duration_seconds": 11.429
+    },
+    {
+      "id": "track_blue_sleeve",
+      "name": "Blue Sleeve",
+      "bpm": 70,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/audio/05-blue_sleeve.wav",
+      "bytes": 604844,
+      "sha256": "10461523e0756ea19de74705937312223f87018c661178417029d03a0470c375",
+      "duration_seconds": 13.714
+    },
+    {
+      "id": "track_tiny_tide",
+      "name": "Tiny Tide",
+      "bpm": 116,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/audio/06-tiny_tide.wav",
+      "bytes": 365010,
+      "sha256": "f0126b3bd057f5e935d2e8a7b76604631600b278c86906c590889a7cfad61c08",
+      "duration_seconds": 8.276
+    },
+    {
+      "id": "track_open_shelf",
+      "name": "Open Shelf",
+      "bpm": 88,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/audio/07-open_shelf.wav",
+      "bytes": 481134,
+      "sha256": "41f7fac4e83bd35439a8168d6ec0220e98c08544a93c8412c8ba4308febfa420",
+      "duration_seconds": 10.909
+    }
+  ],
+  "cues": [
+    {
+      "node": "title",
+      "node_name": "Title Screen",
+      "track": "track_rain_on_glass"
+    },
+    {
+      "node": "sale_opens",
+      "node_name": "Library Sale",
+      "track": "track_silver_index"
+    },
+    {
+      "node": "test_table",
+      "node_name": "Test Table",
+      "track": "track_blue_wake"
+    },
+    {
+      "node": "home_arrival",
+      "node_name": "Home Shelf",
+      "track": "track_lamp_at_home"
+    },
+    {
+      "node": "preserve_page",
+      "node_name": "Archive Sleeve",
+      "track": "track_blue_sleeve"
+    },
+    {
+      "node": "play_first",
+      "node_name": "Warm Speaker",
+      "track": "track_tiny_tide"
+    },
+    {
+      "node": "share_note",
+      "node_name": "Shared Ledger",
+      "track": "track_open_shelf"
+    }
+  ]
+}

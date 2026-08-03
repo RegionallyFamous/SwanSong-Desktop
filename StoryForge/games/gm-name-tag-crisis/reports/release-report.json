@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:43:54.608950+00:00",
+  "errors": [],
+  "release_id": "20260727T024354Z-9c4a427a6d6a",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/releases/20260727T024354Z-9c4a427a6d6a",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/releases/20260727T024354Z-9c4a427a6d6a.zip",
+    "bytes": 12355740,
+    "sha256": "c0fc6990c2340f9fb9ce346f3c4a0d2f9e42234af883c64c26d2ac0e366ad98e"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/releases/20260727T024354Z-9c4a427a6d6a/manifest.json",
+    "sha256": "c0ee657d8e1b6367cf30e68290cedf6966c16e3f39552a89ee03b129afc96aa0",
+    "files": 44
+  },
+  "rom_sha256": "9c4a427a6d6a77f9a5b3de6e185155dd26dfb47fd1f7ccf695323664b5407358",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "gm-name-tag-crisis",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/game-audit-report.json\nGame audit passed"
+  }
+}

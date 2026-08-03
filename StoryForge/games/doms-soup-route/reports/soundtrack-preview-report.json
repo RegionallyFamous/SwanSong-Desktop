@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "errors": [],
+  "generated_at_utc": "2026-07-16T00:15:20.471975+00:00",
+  "project": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/projects/doms-soup-route.wscvn.json",
+    "bytes": 127105,
+    "sha256": "3e15d5794aed0fe866aff4ce77f8e3aab62074b1878cf3e0f7adc79c29ca9b34"
+  },
+  "renderer": {
+    "backend": "legacy-tracker-wavetable-audition",
+    "sample_rate": 22050,
+    "loops": 2,
+    "channels": 1,
+    "sample_width_bits": 16,
+    "note": "Offline audition mirrors the runtime's 32-sample wave shapes; hardware output and emulator mixing may differ."
+  },
+  "tracks": [
+    {
+      "id": "dom_title",
+      "name": "Hover Dispatch",
+      "bpm": 118,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/audio/01-dom_title.wav",
+      "bytes": 358824,
+      "sha256": "068ce2211cb66cf499b3f8cb88361e1220c97edcee92d71435f5bb3742d2c9cf",
+      "duration_seconds": 8.136,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.197,
+        "near_silent_sample_share": 0.011612,
+        "max_loop_jump_linear": 0.033418
+      }
+    },
+    {
+      "id": "dom_main",
+      "name": "Soup Slosh",
+      "bpm": 124,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/audio/02-dom_main.wav",
+      "bytes": 341464,
+      "sha256": "a54abc645621a92931822ea44acce30b70218274900ae064c68a3309a55a10b2",
+      "duration_seconds": 7.742,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.204,
+        "near_silent_sample_share": 0.01311,
+        "max_loop_jump_linear": 0.03357
+      }
+    },
+    {
+      "id": "dom_end_a",
+      "name": "Wrong Room Fanfare",
+      "bpm": 104,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/audio/03-dom_end_a.wav",
+      "bytes": 407120,
+      "sha256": "41db488f2d030feff7ad221feebe79dc060750cf9ecc73b48e0aae119d96018d",
+      "duration_seconds": 9.231,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.191,
+        "near_silent_sample_share": 0.009983,
+        "max_loop_jump_linear": 0.010285
+      }
+    },
+    {
+      "id": "dom_end_b",
+      "name": "Essence of Tomato",
+      "bpm": 78,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/audio/04-dom_end_b.wav",
+      "bytes": 542814,
+      "sha256": "bd118a9387b91fb27b1fe5ebe994bdd9c852f3a0800167c7f1378a85ef5db6d9",
+      "duration_seconds": 12.308,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.2,
+        "near_silent_sample_share": 0.010262,
+        "max_loop_jump_linear": 0.051485
+      }
+    }
+  ],
+  "cues": [
+    {
+      "node": "dom_title",
+      "node_name": "Dom Title",
+      "track": "dom_title"
+    },
+    {
+      "node": "dom_01",
+      "node_name": "Dom 01",
+      "track": "dom_main"
+    },
+    {
+      "node": "dom_a1",
+      "node_name": "Dom A1",
+      "track": "dom_end_a"
+    },
+    {
+      "node": "dom_b1",
+      "node_name": "Dom B1",
+      "track": "dom_end_b"
+    }
+  ]
+}

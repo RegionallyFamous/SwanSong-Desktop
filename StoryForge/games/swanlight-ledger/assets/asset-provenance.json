@@ -1,0 +1,782 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-17T01:55:00+00:00",
+  "art_policy": "Pictorial masters are built-in ImageGen outputs; runtime frames are deterministic local derivatives.",
+  "outputs": {
+    "backgrounds/book_cart.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/backgrounds_concept_v1.png",
+      "source_sha256": "6e984d9328ae24d829909d08727c8e75f181009bcfbf7de9db0b18ce3b2d84df",
+      "output_sha256": "8b2f8c224cfb96f5e86932b9acd288d6ad964149b4221abc9d5851997c51c7ce",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 38.42
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/end_archive.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/backgrounds_source.png",
+      "source_sha256": "073549064ebfd0642cb0379310f7cc84f8ad99bb2baf49bfbbd0e1ef81678937",
+      "output_sha256": "2012b856f7a2b1d73827ed473494c14a2074b8f016a89ea01b01b7b7dce8c9c3",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 62.04
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/end_play.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_book_cart_source_v3.png",
+      "source_sha256": "3edf55523bf06a845cfd4ab3143316b24c3dda45c6733ceb1ee62a4150ef137a",
+      "output_sha256": "a2c49713613787ee1738e05e427e7336b8f4f301f2ee851a2f4b425fb1c6d668",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 64.1
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/end_share.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_end_archive_source_v2.png",
+      "source_sha256": "7534be2a4797061964bd8425342216ad36fc0fa31ee0f3a673c6b29479fe9a34",
+      "output_sha256": "00900bb0cd052f8a11b712add1c914cecc99a37fe6276922019c429c65580149",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 69.83
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/found_map.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_end_archive_source_v3.png",
+      "source_sha256": "d92fa5919a06bc01aa25229a810523f6a96a8a21d1d914fef63afb69a52cb760",
+      "output_sha256": "83eaba95ac6f6ac13b08c8ffe1ac119a547899e09fde5f9e028cf6523f3bda19",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 111.29
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/home_shelf.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_end_play_source_v2.png",
+      "source_sha256": "0870b69191666dd0841fa579ceff790b6183ec2f2157b661d2c6ff9f00b6435f",
+      "output_sha256": "7bf129dad9086738530f621c8063561693bcd8df00137ce6357a9012f8fb9e4f",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 89.97
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/library_sale.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_end_play_source_v3.png",
+      "source_sha256": "d57571ea1ac16375a1cab806296ed455db6bf26bb8369715549dcd4cdb81930d",
+      "output_sha256": "84162c0fe9c08850fc08f6d077448c00fea7bdcb7da2dd60b4fd7a6f4192ef99",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 61.96
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/library_sort.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_end_share_source_v2.png",
+      "source_sha256": "4979ff4409ef2110206d82c0e85f5445e1c44c1f411389431fc892a5aea99252",
+      "output_sha256": "ff4567b6e2f1d21945c3314154a0771b8012b286849306b447d6361eb606ccc4",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 52.43
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/lost_box.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_end_share_source_v3.png",
+      "source_sha256": "e54a689d763d9b4f416a4dd513354a20d9eede3ed6cb86860775fd990258a039",
+      "output_sha256": "5e48a16b305114344bca75e0ff058deace601a5c1fe5fae6263d07505efc0019",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 62.46
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/staff_desk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_found_map_source_v2.png",
+      "source_sha256": "08df9136d2d0152a81edfaaca522a35b2f84891129b817e2b326d21814126f17",
+      "output_sha256": "85e36b86d0e3aa79d1322650ef073385f8f40eaa579f30a5e07f9691491ff3f5",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 42.25
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/test_blue.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_home_shelf_source_v2.png",
+      "source_sha256": "1418cbd8c27f6b063c28617aed609940acee73ccbf310e33ed76bc93b6340447",
+      "output_sha256": "af773ebf24f682840b3255d1d4ec62aeb509dfb003f2d5e01e19884ed9486787",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 105.58
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/test_table.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_library_sale_source_v2.png",
+      "source_sha256": "82c1a171ef002299c7022f10e878fb6e6c0f87da71f17611594af2e6f29c4209",
+      "output_sha256": "274d31fb48f2c60f8bcb8af3dea528b0f2e1092f593185a33160cd8855a3f489",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 104.72
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/title.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/bg_library_sort_source_v3.png",
+      "source_sha256": "530349855e9b0127b5fb9ffbdb38bf5cb3a452f9748f51d7f790892a1bf3cb6b",
+      "output_sha256": "4ed714b9dfbb0ded38eb1b30ca6e1abe1dd032ad185e7214c05c2f0ec50bb284",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 8,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 32.1
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/emi_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/characters_concept_v1.png",
+      "source_sha256": "1e77b54f8943607d3aea20f31eb43fc1be0f2068fcc9aba76886cab65047dcc4",
+      "output_sha256": "c8fb533b72914ac257d71f465de380763ad84bcd643e8b90ad97a83147c13045",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          2,
+          0,
+          94,
+          128
+        ],
+        "alpha_coverage": 0.6845,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6817,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 74.3,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 81.95
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 5,
+          "largest_component_pixels": 8336,
+          "largest_component_share": 0.9911,
+          "tiny_component_count": 2
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/emi_hope_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/characters_source.png",
+      "source_sha256": "e42456a3de6d8e369fb31fe0cf9168366879c94364fa4f5e23a247cb18a76606",
+      "output_sha256": "6cb680fc6d1e2e421d561c257b7fde2a8963aedebc31e01d84be8470d6cac1ab",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          0,
+          89,
+          128
+        ],
+        "alpha_coverage": 0.6712,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6249,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 71.47,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 85.28
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 2,
+          "largest_component_pixels": 8247,
+          "largest_component_share": 0.9999,
+          "tiny_component_count": 1
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/emi_hope_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/characters_source.png",
+      "source_sha256": "e42456a3de6d8e369fb31fe0cf9168366879c94364fa4f5e23a247cb18a76606",
+      "output_sha256": "c56a945bc9c6472f41b74cbfbaa57d96b9807c5f0beb9c8ff5ec09ba06604798",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          0,
+          89,
+          128
+        ],
+        "alpha_coverage": 0.6712,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6249,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 71.02,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 86.77
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 2,
+          "largest_component_pixels": 8247,
+          "largest_component_share": 0.9999,
+          "tiny_component_count": 1
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/emi_hope_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/characters_source.png",
+      "source_sha256": "e42456a3de6d8e369fb31fe0cf9168366879c94364fa4f5e23a247cb18a76606",
+      "output_sha256": "76129975973acf4e60a92101028657c5dd6eb49705560e2953af981df9ae46b4",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          0,
+          89,
+          128
+        ],
+        "alpha_coverage": 0.6712,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6249,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 70.8,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 85.85
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 2,
+          "largest_component_pixels": 8247,
+          "largest_component_share": 0.9999,
+          "tiny_component_count": 1
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/emi_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/characters_source.png",
+      "source_sha256": "e42456a3de6d8e369fb31fe0cf9168366879c94364fa4f5e23a247cb18a76606",
+      "output_sha256": "3b7a0e2f50dac7c0d1fbfc7ea1eb5aff990e278b59f73f67f66b8a8cea487750",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          2,
+          0,
+          94,
+          128
+        ],
+        "alpha_coverage": 0.6845,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6817,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 73.82,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 84.82
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 5,
+          "largest_component_pixels": 8336,
+          "largest_component_share": 0.9911,
+          "tiny_component_count": 2
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/emi_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/characters_source.png",
+      "source_sha256": "e42456a3de6d8e369fb31fe0cf9168366879c94364fa4f5e23a247cb18a76606",
+      "output_sha256": "f741c4f28fdea2899552b86824bce7ea47bba79f3392034df76c6f5288037f79",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          2,
+          0,
+          94,
+          128
+        ],
+        "alpha_coverage": 0.6845,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6817,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 73.64,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 88.29
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 5,
+          "largest_component_pixels": 8336,
+          "largest_component_share": 0.9911,
+          "tiny_component_count": 2
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/kai_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/characters_source.png",
+      "source_sha256": "e42456a3de6d8e369fb31fe0cf9168366879c94364fa4f5e23a247cb18a76606",
+      "output_sha256": "5477a96b50a04eb418d35322cf7c7eb484dac6fbf4d39b11f8930c6a0ef227af",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          0,
+          6,
+          96,
+          128
+        ],
+        "alpha_coverage": 0.6982,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5633,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 61.15,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 79.88
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 8580,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/kai_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/characters_source.png",
+      "source_sha256": "e42456a3de6d8e369fb31fe0cf9168366879c94364fa4f5e23a247cb18a76606",
+      "output_sha256": "1219a11df059c41492c4a681586207af32526e947637e2c13bf85aa89cd4e252",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          0,
+          6,
+          96,
+          128
+        ],
+        "alpha_coverage": 0.6982,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5633,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 60.31,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 80.27
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 8580,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/kai_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/characters_source.png",
+      "source_sha256": "e42456a3de6d8e369fb31fe0cf9168366879c94364fa4f5e23a247cb18a76606",
+      "output_sha256": "542fe04bba8bcc98ebf087ec7b0983b806608bf5553135f859331a89db91fbf4",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          0,
+          6,
+          96,
+          128
+        ],
+        "alpha_coverage": 0.6982,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5633,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 60.03,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 83.17
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 8580,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/kai_warm_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/characters_source.png",
+      "source_sha256": "e42456a3de6d8e369fb31fe0cf9168366879c94364fa4f5e23a247cb18a76606",
+      "output_sha256": "647184f486b872f1829473718760e9bc87fc7c31cdc77058957840b3d9578536",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          2,
+          0,
+          94,
+          128
+        ],
+        "alpha_coverage": 0.6593,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5629,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 39.49,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 51.06
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 8102,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/kai_warm_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/characters_source.png",
+      "source_sha256": "e42456a3de6d8e369fb31fe0cf9168366879c94364fa4f5e23a247cb18a76606",
+      "output_sha256": "10f8336f437590279c8921e9ee5f760ef771a2d88e248482f893bbf11534037f",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          2,
+          0,
+          94,
+          128
+        ],
+        "alpha_coverage": 0.6593,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5629,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 38.38,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 50.78
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 8102,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/kai_warm_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/sources/characters_source.png",
+      "source_sha256": "e42456a3de6d8e369fb31fe0cf9168366879c94364fa4f5e23a247cb18a76606",
+      "output_sha256": "c07a9cd5dafdd30177a7ee6187c63a76a96e2ac373ad64f7b5dbbab2b3cff371",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          2,
+          0,
+          94,
+          128
+        ],
+        "alpha_coverage": 0.6593,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5629,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 37.85,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 49.43
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 8102,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    }
+  }
+}

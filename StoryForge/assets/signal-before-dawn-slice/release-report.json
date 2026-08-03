@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "errors": [],
+  "release_id": "20260727T034713Z-a5210df80536",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/releases/signal-before-dawn-slice/20260727T034713Z-a5210df80536",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/releases/signal-before-dawn-slice/20260727T034713Z-a5210df80536.zip",
+    "bytes": 52831120,
+    "sha256": "4d6a7db4edaac451c4119b5f094ba4041cfeb1434d1f19a00c82e55d770f3820"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/releases/signal-before-dawn-slice/20260727T034713Z-a5210df80536/manifest.json",
+    "sha256": "898aecac8327f5a00380188985b7a4fd145de69c298168ebe5cfa307fc2546df",
+    "files": 200
+  },
+  "rom_sha256": "a5210df80536d70c1fc5c51af161eb697beccd9fa32623d17b32a223aea3d524",
+  "doctor": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/doctor_signal_before_dawn_slice.py",
+      "--skip-release"
+    ],
+    "returncode": 0,
+    "output": "Doctor report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/doctor-report.json\nWarnings: 1\n  [!] Release checks skipped\nDoctor passed",
+    "deep": false
+  }
+}

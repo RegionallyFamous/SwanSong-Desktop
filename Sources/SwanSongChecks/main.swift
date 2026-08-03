@@ -1267,6 +1267,30 @@ private struct SwanSongChecks {
                     "display-owner probe returned an invalid CPU writer"
                 )
             }
+            let maximumOwner = try engine.displayOwnerProbe(
+                rectangle: EngineDisplayRectangle(
+                    x: 0, y: 0, width: 128, height: 128
+                )
+            )
+            try expect(
+                maximumOwner.count == 16_384,
+                "display-owner probe rejected its 16,384-pixel boundary"
+            )
+            do {
+                _ = try engine.displayOwnerProbe(
+                    rectangle: EngineDisplayRectangle(
+                        x: 0, y: 0, width: 1, height: 16_385
+                    )
+                )
+                throw CheckFailure(
+                    message: "display-owner probe accepted 16,385 pixels"
+                )
+            } catch let error as SwanEngineError {
+                try expect(
+                    error.code == Int32(SWAN_RESULT_INVALID_ARGUMENT.rawValue),
+                    "display-owner overflow returned the wrong error"
+                )
+            }
             let ram = try engine.captureMemory(.internalRAM)
             try expect(ram.count == 16 * 1024, "mono internal RAM capture size mismatch")
             let persistence = try engine.capturePersistence()

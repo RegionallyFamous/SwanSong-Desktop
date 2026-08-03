@@ -1,0 +1,1042 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:34:40.215091+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "virtue-at-the-coat-check",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/projects/virtue-at-the-coat-check.wscvn.json",
+      "exists": true,
+      "bytes": 172513,
+      "sha256": "f340b0307c3c34057a4db790a5a0e5a8dbd671d00f402a6d6c87ded19564e938"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 43,
+    "preview_node_ids": [
+      "virtue_title",
+      "virtue_01",
+      "virtue_02",
+      "virtue_03",
+      "virtue_04",
+      "virtue_05",
+      "virtue_06",
+      "virtue_07",
+      "virtue_08",
+      "virtue_09",
+      "virtue_10",
+      "virtue_method",
+      "virtue_ticket_1",
+      "virtue_ticket_2",
+      "virtue_map_1",
+      "virtue_map_2",
+      "virtue_11",
+      "virtue_12",
+      "virtue_13",
+      "virtue_14",
+      "virtue_15",
+      "virtue_16",
+      "virtue_17",
+      "virtue_18",
+      "virtue_19",
+      "virtue_20",
+      "virtue_21",
+      "virtue_22",
+      "virtue_23",
+      "virtue_24",
+      "virtue_25",
+      "virtue_26",
+      "virtue_27",
+      "virtue_28",
+      "virtue_choice",
+      "virtue_a1",
+      "virtue_a2",
+      "virtue_a3",
+      "virtue_a4",
+      "virtue_b1",
+      "virtue_b2",
+      "virtue_b3",
+      "virtue_b4"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 293563,
+      "sha256": "50941d647f21c80aa6c4b6d0815698b0724b1d955cd3570f91d39ff5afe788b5",
+      "size": [
+        712,
+        2560
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 96403,
+      "sha256": "454d7ce4f845ca932406880fd41ec6aaa84322eec0165e63cc18ed1522ba847f",
+      "size": [
+        488,
+        1064
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "virtue_title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "d4e07eed0cc7a6bd80c63a6991a652cde9929d23efa77c158cadf34f86f98f63"
+      },
+      {
+        "index": 1,
+        "node_id": "virtue_01",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "08a9e925d94c48d4a9d4d96599d5dc64efd2669105452b8d7af8e911aa140180"
+      },
+      {
+        "index": 2,
+        "node_id": "virtue_02",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "68b75fefc5e2bc0f43ce6e1d04fc2bcc7e4d5b35f701c38e6614e9c736be1c23"
+      },
+      {
+        "index": 3,
+        "node_id": "virtue_03",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "e7fdaff468fb41400201ef3d57eb91c13dc08e08d7f78bc7825e99c3dd658e0c"
+      },
+      {
+        "index": 4,
+        "node_id": "virtue_04",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "263f4636872724c88406c0aef2bb6c7f2268b3bf5d830f7cb11ee9e4eef2deb4"
+      },
+      {
+        "index": 5,
+        "node_id": "virtue_05",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "3f1560d5a871df7c6732b944d6dc408d99d94b9f044abf75cf078d0a65a9e1a9"
+      },
+      {
+        "index": 6,
+        "node_id": "virtue_06",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "1b7e9a0105d7b6714e5b6545c8b199a6fe66eb837ad0c921d244991c72e807e1"
+      },
+      {
+        "index": 7,
+        "node_id": "virtue_07",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "be7023340185a0ed16c2eb6a2aeaa072fffa532950423e311fa1e82362ea4416"
+      },
+      {
+        "index": 8,
+        "node_id": "virtue_08",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "10c24693701158899a121e74726b860992cf666c1cc7e3ef090a2fafcc886421"
+      },
+      {
+        "index": 9,
+        "node_id": "virtue_09",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "26fad174a1aafcaac58e862b5a5f12cea6d865b147e5f318f4008a02b8eacf36"
+      },
+      {
+        "index": 10,
+        "node_id": "virtue_10",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "4b48a9cb2d1ce69ba8434dc4cd0f93dcc3f9fa482a083b11def1602a8dbf367a"
+      },
+      {
+        "index": 11,
+        "node_id": "virtue_method",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "183f34dd2e842cd541ab3cc1a3578f5d954875d24519dc7dc89fc20f5024405a"
+      },
+      {
+        "index": 12,
+        "node_id": "virtue_ticket_1",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "72e3a06e1a3a3ce604e6e2f30c05db5175f176fd7b6a3c4e6ede753f3e9b5a30"
+      },
+      {
+        "index": 13,
+        "node_id": "virtue_ticket_2",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "c467fea5ed4c6f38ac39cfc93f175891b13391e2110890823b716e91c4bf18c6"
+      },
+      {
+        "index": 14,
+        "node_id": "virtue_map_1",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "a964b1703966205ec69e08adc30e8eda25fba8642254b7aa467ac20babe6fe5f"
+      },
+      {
+        "index": 15,
+        "node_id": "virtue_map_2",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "ce8ded657b0ba10df4d0fb0f2c1293fe7fe8e2ba781d36f8af89d41f2425c1b9"
+      },
+      {
+        "index": 16,
+        "node_id": "virtue_11",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "dc201458cbbbfdaabfec9452804b21a1dd018186063de317fa1008d2e182b1dc"
+      },
+      {
+        "index": 17,
+        "node_id": "virtue_12",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "c32cd9be7ebab3c5ec0c1175a94b2cf507fc09f46fbfaa15be8bc15281e2df20"
+      },
+      {
+        "index": 18,
+        "node_id": "virtue_13",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "5c2397eb3c17b30f161d42f9714086a79033eff872b3d8838cedbbc0d154a456"
+      },
+      {
+        "index": 19,
+        "node_id": "virtue_14",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "673125438526d8ed7d607e7ed876de2bc96d8eac3249d191a6a878402cbbd064"
+      },
+      {
+        "index": 20,
+        "node_id": "virtue_15",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "218b3328d03e6299fcbd680e122ab273d4aae5263f77580b26d04349c958f3f8"
+      },
+      {
+        "index": 21,
+        "node_id": "virtue_16",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "d4583f1c1f5ff6ce1fc819753fe01b687b7e1dc71d28d73aad9753ee6190203a"
+      },
+      {
+        "index": 22,
+        "node_id": "virtue_17",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "027de72fde91b83644a4933b11c7796cfe1edb68e06b2e2816a5d5b1911356da"
+      },
+      {
+        "index": 23,
+        "node_id": "virtue_18",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "00d6f8b656633d5e79afdb60f1615955d42466ce4bcb34463efb34aa34c62148"
+      },
+      {
+        "index": 24,
+        "node_id": "virtue_19",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "dafed4a2cbda0f26d9c5f2c8561ad8bd90fb8e58d9677b3f91c823b04210219a"
+      },
+      {
+        "index": 25,
+        "node_id": "virtue_20",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "1e6ed6a73ccb4d4504b0cd241443d9685ecf44e292e05a9a40ee74b9b20806f5"
+      },
+      {
+        "index": 26,
+        "node_id": "virtue_21",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "fff975161b9877562c25a50346053ce6b33b0e09157727ab7ead81f4e35ce593"
+      },
+      {
+        "index": 27,
+        "node_id": "virtue_22",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "6ee6c23e64d7e5a6cf4be7d6fd32c71e01904348814aa1384608be69fc49c4e2"
+      },
+      {
+        "index": 28,
+        "node_id": "virtue_23",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "237e1cceae0d8de17f5379d29a783558a0c35c6b10f9b650ed7d03f3debd3578"
+      },
+      {
+        "index": 29,
+        "node_id": "virtue_24",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "f78a341c5608d8ec524d619f2c3afc79f6b93ad8e71d2bd0a720dba9d48a8305"
+      },
+      {
+        "index": 30,
+        "node_id": "virtue_25",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "052955a0672ca070026c7354974c7178e1a0e51124538afbbc58719a464e4a99"
+      },
+      {
+        "index": 31,
+        "node_id": "virtue_26",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "a9d43086fcf2f28fcbdf45ca2e082bdb1008b17951db81d6fdeae52eee01f2e3"
+      },
+      {
+        "index": 32,
+        "node_id": "virtue_27",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "3fb961533b662c049b9d6a5e90e50a61a1eb4d283f653ab6f5aa9d776c1edb2e"
+      },
+      {
+        "index": 33,
+        "node_id": "virtue_28",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "8d296d072b61c1e0aa89820c63e19079aae150b630b41ec2edc60de9f295ba40"
+      },
+      {
+        "index": 34,
+        "node_id": "virtue_choice",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "afb83590b3e8928fc2d8ae7a47177236ce337a92de58dd9fa8dbd361285f0c13"
+      },
+      {
+        "index": 35,
+        "node_id": "virtue_a1",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "dfaec7882e75a441e945fd612bedd90748fc440e957812df89e27820874804e5"
+      },
+      {
+        "index": 36,
+        "node_id": "virtue_a2",
+        "rect": [
+          10,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "690aeaad0f35ce651e883b127887c1b5c8d6afbe5dcaf270f5d4efd6d8c35a7a"
+      },
+      {
+        "index": 37,
+        "node_id": "virtue_a3",
+        "rect": [
+          244,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "8c90d913316788c20f07aabc5c324968f642645c1495a2f1d1a4d9dc2a2a57f3"
+      },
+      {
+        "index": 38,
+        "node_id": "virtue_a4",
+        "rect": [
+          478,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "4b384c91f24f9c3e08241ee496d9bae3c94d71e5950fddccc038e161969afda2"
+      },
+      {
+        "index": 39,
+        "node_id": "virtue_b1",
+        "rect": [
+          10,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "40862399f98c6cc62ae3cb37d441ab253f7861e1a27aa58f19562646bb035b20"
+      },
+      {
+        "index": 40,
+        "node_id": "virtue_b2",
+        "rect": [
+          244,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "d56122cc4c5a62e2c51670c86ceac438503b000c2c05114674371b2babc2640a"
+      },
+      {
+        "index": 41,
+        "node_id": "virtue_b3",
+        "rect": [
+          478,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "2e2fdf6e08c90c4f23b7dddc9988d68a6fd359e26790a0654f1a238aff396a21"
+      },
+      {
+        "index": 42,
+        "node_id": "virtue_b4",
+        "rect": [
+          10,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "81d566999666592fd2b6e1ae6e52f5933558e08548ba156def5fa1fdac058a49"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "virtue_title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "8adeaede97f99063b8650a67364bf596c36b7bf92e441cf8c202c801d49e20e6"
+      },
+      {
+        "index": 1,
+        "node_id": "virtue_01",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "cbdc686f4df4a0863b9328922c3c533319394af41d889ca38e5c5ef0adf28a11"
+      },
+      {
+        "index": 2,
+        "node_id": "virtue_02",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "c64b15dcd5879231d724153faf2530475cb3a5d7ea2228cb15008063f6630d79"
+      },
+      {
+        "index": 3,
+        "node_id": "virtue_03",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "c27e1be3967ee88d02f44f2d0957a10d95850fcf92f033c23f0ed642d259c801"
+      },
+      {
+        "index": 4,
+        "node_id": "virtue_04",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "134b179f9278c3765c0d2a504ae2b95c3ca8e4463ace1ebd3b590e98c9d4f3fa"
+      },
+      {
+        "index": 5,
+        "node_id": "virtue_05",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "51f8ebd17da09e454af74b0dbe56ddbed7530071cdf6c191141819c3a6e23428"
+      },
+      {
+        "index": 6,
+        "node_id": "virtue_06",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "0af348f3b3b130347645173f64efa9d87c938b09cc8ba98272f86976c6d700c9"
+      },
+      {
+        "index": 7,
+        "node_id": "virtue_07",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "b40d90b02758b2bd7f28a977027d5c1cadd0379eb28f9edfe9176427f8e7bc91"
+      },
+      {
+        "index": 8,
+        "node_id": "virtue_08",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "862fae01e3cc31acbca2d38b8566e5ec22a28e06928c8d5893a9ce1c43f2e606"
+      },
+      {
+        "index": 9,
+        "node_id": "virtue_09",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "037e3b3655ee52692dc71c197441e24b6494c2fc7ba3304a197729aaf0baa3cb"
+      },
+      {
+        "index": 10,
+        "node_id": "virtue_10",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "fb9608047bc9442b831abf212a63e2a8c31ce512969031fdb40068845a82edfd"
+      },
+      {
+        "index": 11,
+        "node_id": "virtue_method",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "ccedca0683cb33ecaba87e65e81d7a0bc8c90ba610dcaa977730abea9ecdd425"
+      },
+      {
+        "index": 12,
+        "node_id": "virtue_ticket_1",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "2f5f4abf12a3eb2233890949fac87ee5ce4a77786f8de1a1437a238e8b523174"
+      },
+      {
+        "index": 13,
+        "node_id": "virtue_ticket_2",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "4e2af7ffcc92576c1eb29483c4182f5313b2bb4052102c8d4a1d68d295f3ae91"
+      },
+      {
+        "index": 14,
+        "node_id": "virtue_map_1",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "e53077301c9fa467d29eb608da13f2e64e8212703d5bc5bfb375a98476c812d7"
+      },
+      {
+        "index": 15,
+        "node_id": "virtue_map_2",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "7b77d26b277babd8d2faaf61f60af6136f9f7f321f78793fb0ab07b1be779912"
+      },
+      {
+        "index": 16,
+        "node_id": "virtue_11",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "648e3d3d0a424791e7efaa21dfb340e018b7f88c7eb4faac4b01fe672c68f901"
+      },
+      {
+        "index": 17,
+        "node_id": "virtue_12",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "983763a95ddde9af303f0e735604df42d2fe059728afc262cce4975ec44f9f52"
+      },
+      {
+        "index": 18,
+        "node_id": "virtue_13",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "3bb525265801e44073a8dd4bda7a3aba40a1ddeb155321956c1ce9b35ffc7cbf"
+      },
+      {
+        "index": 19,
+        "node_id": "virtue_14",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "3a395e59cbf0afe74ad1d8e2bed50bce8e182dcbeee177edfcd5362400014882"
+      },
+      {
+        "index": 20,
+        "node_id": "virtue_15",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "fdfe24f043267c54b04a2474d9173f9d77409cb4369de16908b87252b4d90abb"
+      },
+      {
+        "index": 21,
+        "node_id": "virtue_16",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "d461592fbcf4630561ee933937a8ee4472d5351a12ccea89dc1914f076795701"
+      },
+      {
+        "index": 22,
+        "node_id": "virtue_17",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "3592eaa3fd1b63e355c6a0c4f7009e0573d383774317aeb689a45038ef5c8205"
+      },
+      {
+        "index": 23,
+        "node_id": "virtue_18",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "73e5285c68bbadbb42032b51a76277a551b228632a39556602404951587dcd5a"
+      },
+      {
+        "index": 24,
+        "node_id": "virtue_19",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "360315aaec20c621e59086beab5897172822826a33aeff3b5007e83835db3bb9"
+      },
+      {
+        "index": 25,
+        "node_id": "virtue_20",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "d2e5425eb4447179162cc6125e36caa4e22712632fc11afd0c63c93d776b1fe0"
+      },
+      {
+        "index": 26,
+        "node_id": "virtue_21",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "4a97a6fec29dc2e2dcf4f140c2cbce6b0c2a2798049020aed7b601c5171ec630"
+      },
+      {
+        "index": 27,
+        "node_id": "virtue_22",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "ecd358e31f53a06049b0499dfcc60a23703820b378f6eda47e15234aaee272b9"
+      },
+      {
+        "index": 28,
+        "node_id": "virtue_23",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "3f69b286fb192523f05e0e93bbb9ed04532f29f1ebffb55410ca02216a158cfd"
+      },
+      {
+        "index": 29,
+        "node_id": "virtue_24",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "0a032d8536b136f0b6260ce03b2d52576ad7a6aff6a3dce51e0b8cc8a573cb69"
+      },
+      {
+        "index": 30,
+        "node_id": "virtue_25",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "e5280990576016172443c27c6d046f7324280799eb2f7e20b91895b159648432"
+      },
+      {
+        "index": 31,
+        "node_id": "virtue_26",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "a606167bc65d775e023b1f061d13aeb8bee101302d4760af1c3cc289a0b30f73"
+      },
+      {
+        "index": 32,
+        "node_id": "virtue_27",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "ff9e0750a1d72626d39b8b4803494eaddeabe830b7fdb65402a9673a364cd5cf"
+      },
+      {
+        "index": 33,
+        "node_id": "virtue_28",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "40412038b91bce105f9ebf493e6cad9c83521ef64308722fdff7813a302edbb6"
+      },
+      {
+        "index": 34,
+        "node_id": "virtue_choice",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "b3bd2c14a85e2c35891067f648a3832d3520648b1c24c3fab4f5d52731c12599"
+      },
+      {
+        "index": 35,
+        "node_id": "virtue_a1",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "3d00d42b4dfc6ddb59abf6d34cd9045561b526a9399f7ca158a6cf8c0fa206f3"
+      },
+      {
+        "index": 36,
+        "node_id": "virtue_a2",
+        "rect": [
+          8,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "91087eba7b239a2cdb0d59854da14e17ab2fd40770030dadbd2e86c929350f22"
+      },
+      {
+        "index": 37,
+        "node_id": "virtue_a3",
+        "rect": [
+          128,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "0c1a2a55b74d23366a93dbdc9e220386e289462dcd54655d355d23e2348d225a"
+      },
+      {
+        "index": 38,
+        "node_id": "virtue_a4",
+        "rect": [
+          248,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "c0d81150f4c0170100b7778bda3157059ade4a7a50f72c5be2ec0693be8a583e"
+      },
+      {
+        "index": 39,
+        "node_id": "virtue_b1",
+        "rect": [
+          368,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "c1991a43bb8a70555557c1cbb7e64b0538c333efd0dbefdf40e15d76d7f9e2e5"
+      },
+      {
+        "index": 40,
+        "node_id": "virtue_b2",
+        "rect": [
+          8,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "f6cd88baccee927687404b970f39b08449c4549890d23729851d6c7fcbe4bc7a"
+      },
+      {
+        "index": 41,
+        "node_id": "virtue_b3",
+        "rect": [
+          128,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "127bc2c4d8e7df793f0d6f8f13592612662305a19498bd2e1d07edb227d7cb06"
+      },
+      {
+        "index": 42,
+        "node_id": "virtue_b4",
+        "rect": [
+          248,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "619725a3cfdc78b42ee86499f42eaa905a36f46b690586e1e650a174461e2758"
+      }
+    ]
+  }
+}

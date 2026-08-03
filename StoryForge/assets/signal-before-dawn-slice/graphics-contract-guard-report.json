@@ -1,0 +1,187 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:52.379726+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "current-assets",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_text": "",
+      "returncode": 0,
+      "output_tail": "Graphics contract report: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/graphics-contract-report.json\nGraphics contract passed"
+    },
+    {
+      "name": "missing-provenance",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "Missing asset provenance",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/no-provenance/graphics-contract-report.json\n[x] Missing asset provenance: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/no-provenance/asset-provenance.json\n[x] backgrounds/bg.png: missing asset provenance output record\n[x] characters/hero.png: missing asset provenance output record\n[x] Missing sprite audition approvals directory: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/no-provenance/auditions\n[x] No sprite audition approval JSON files found under /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/no-provenance/auditions\n[x] characters/hero.png: missing sprite audition approval coverage"
+    },
+    {
+      "name": "noisy-character",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "visible colors",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/noisy-character/graphics-contract-report.json\n[x] characters/noisy.png: has 20 visible colors, max 15\n[x] characters/noisy.png: colors are not snapped to WSC 12-bit channel steps\n[x] characters/noisy.png: has 560 green fringe pixels"
+    },
+    {
+      "name": "flat-character-detail",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "face detail",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/flat-character/graphics-contract-report.json\n[x] characters/flat.png: has 1 visible colors, min 6\n[x] characters/flat.png: visible luma detail is 0.00, min 24.00\n[x] characters/flat.png: face detail box has 1 visible colors, min 4\n[x] characters/flat.png: face detail luma is 0.00, min 18.00"
+    },
+    {
+      "name": "missing-animation-triplet",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "missing animation frames",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/missing-animation-triplet/graphics-contract-report.json\n[x] characters/hero: missing animation frames: blink, talk"
+    },
+    {
+      "name": "shifted-animation-frame",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "alpha center drift",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/shifted-animation-frame/graphics-contract-report.json\n[x] characters/hero_talk.png: changes alpha on 1408 pixels, max 0\n[x] characters/hero_talk.png: animation change bbox area is 7568, max 1200\n[x] characters/hero_talk.png: alpha center drift is 0.0833, max 0.0400"
+    },
+    {
+      "name": "nonface-animation-delta",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "face-band changes",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/nonface-animation-delta/graphics-contract-report.json\n[x] characters/hero_talk.png: face-band changes 0 pixels from neutral, min 18"
+    },
+    {
+      "name": "missing-sprite-approvals",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "missing sprite audition approval coverage",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/missing-sprite-approvals/graphics-contract-report.json\n[x] Missing asset provenance: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/missing-sprite-approvals/asset-provenance.json\n[x] backgrounds/bg.png: missing asset provenance output record\n[x] characters/hero_blink.png: missing asset provenance output record\n[x] characters/hero_neutral.png: missing asset provenance output record\n[x] characters/hero_talk.png: missing asset provenance output record\n[x] Missing sprite audition approvals directory: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/missing-sprite-approvals/auditions\n[x] No sprite audition approval JSON files found under /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/missing-sprite-approvals/auditions\n[x] characters/hero_blink.png: missing sprite audition approval coverage\n[x] characters/hero_neutral.png: missing sprite audition approval coverage\n[x] characters/hero_talk.png: missing sprite audition approval coverage"
+    },
+    {
+      "name": "stale-sprite-approval-output",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "covered output hash is stale",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/stale-sprite-approval-output/graphics-contract-report.json\n[x] /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/stale-sprite-approval-output/auditions/hero_approval.json: covered output hash is stale for /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/stale-sprite-approval-output/characters/hero_blink.png"
+    },
+    {
+      "name": "stale-provenance-metrics",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "provenance output metrics",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/stale-provenance/graphics-contract-report.json\n[x] backgrounds/bg.png: missing asset provenance output record\n[x] characters/hero.png: provenance output metrics are stale or missing\n[x] Missing sprite audition approvals directory: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/stale-provenance/auditions\n[x] No sprite audition approval JSON files found under /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/stale-provenance/auditions\n[x] characters/hero.png: missing sprite audition approval coverage"
+    },
+    {
+      "name": "valid-project-wiring",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_text": "",
+      "returncode": 0,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/valid-project-wiring/graphics-contract-report.json\nGraphics contract passed"
+    },
+    {
+      "name": "low-scene-contrast",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "sprite/background contrast",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/low-scene-contrast/graphics-contract-report.json\n[x] fixture_scene: sprite/background contrast is 39.51, min 50.00"
+    },
+    {
+      "name": "busy-scene-lane",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "background detail under sprite",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/busy-scene-lane/graphics-contract-report.json\n[x] fixture_scene: background detail under sprite is 95.31, max 62.00"
+    },
+    {
+      "name": "missing-project-charpos",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "charPos is 'none'",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/missing-project-charpos/graphics-contract-report.json\n[x] fixture_scene: charPos is 'none' while charId is set"
+    },
+    {
+      "name": "bad-project-char2-wiring",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "expected 'char_hero_talk'",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/bad-project-char2-wiring/graphics-contract-report.json\n[x] fixture_scene: char2Id is 'char_hero_blink', expected 'char_hero_talk'"
+    },
+    {
+      "name": "bad-project-charanim",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "expected one of",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/bad-project-charanim/graphics-contract-report.json\n[x] fixture_scene: has alternate frame references but charAnim is 'none'; expected one of blink, talking, talk-blink\n[x] fixture_scene: char3Id is only valid with charAnim 'talk-blink'"
+    },
+    {
+      "name": "bad-project-char2pos",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "expected 'none'",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/bad-project-char2pos/graphics-contract-report.json\n[x] fixture_scene: char2Pos is 'right', expected 'none' for hardware animation"
+    },
+    {
+      "name": "valid-project-talking-wiring",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_text": "",
+      "returncode": 0,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/valid-project-talking-wiring/graphics-contract-report.json\nGraphics contract passed"
+    },
+    {
+      "name": "valid-project-blink-wiring",
+      "expected_ok": true,
+      "actual_ok": true,
+      "passed": true,
+      "expected_text": "",
+      "returncode": 0,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/valid-project-blink-wiring/graphics-contract-report.json\nGraphics contract passed"
+    },
+    {
+      "name": "missing-project-character-asset",
+      "expected_ok": false,
+      "actual_ok": false,
+      "passed": true,
+      "expected_text": "expected blink asset",
+      "returncode": 1,
+      "output_tail": "Graphics contract report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-graphics-contract-6oekr7rd/missing-project-character-asset/graphics-contract-report.json\n[x] characters/hero: missing animation frames: blink\n[x] fixture_scene: char3Id references missing character asset 'char_hero_blink'\n[x] fixture_scene: expected blink asset is missing from project assets: char_hero_blink"
+    }
+  ]
+}

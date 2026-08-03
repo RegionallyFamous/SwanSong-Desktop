@@ -1,0 +1,1709 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:20:18.822059+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "soft-click-sunday",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/projects/soft-click-sunday.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/projects/soft-click-sunday.wscvn.json",
+      "exists": true,
+      "bytes": 239808,
+      "sha256": "8d47b8fb33d15cce1d0031d6397c5030127cd0e0677b7b27477b9882a9b112ce"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 72,
+    "preview_node_ids": [
+      "title",
+      "shop_open",
+      "shop_open__beat2",
+      "shop_open__beat3",
+      "shop_open__beat4",
+      "first_choice",
+      "loose_bin",
+      "loose_bin__beat2",
+      "loose_bin__beat3",
+      "loose_bin__beat4",
+      "paper_list",
+      "paper_list__beat2",
+      "paper_list__beat3",
+      "paper_list__beat4",
+      "glass_case",
+      "glass_case__beat2",
+      "glass_case__beat3",
+      "glass_case__beat4",
+      "pick_or_test",
+      "buy_moonmilk",
+      "buy_moonmilk__beat2",
+      "buy_moonmilk__beat3",
+      "buy_moonmilk__beat4",
+      "buy_petal",
+      "buy_petal__beat2",
+      "buy_petal__beat3",
+      "buy_petal__beat4",
+      "test_starpantry",
+      "test_starpantry__beat2",
+      "test_starpantry__beat3",
+      "test_starpantry__beat4",
+      "rain_walk",
+      "rain_walk__beat2",
+      "rain_walk__beat3",
+      "rain_walk__beat4",
+      "after_counter_choice",
+      "play_cart",
+      "play_cart__beat2",
+      "play_cart__beat3",
+      "play_cart__beat4",
+      "clean_cart",
+      "clean_cart__beat2",
+      "clean_cart__beat3",
+      "clean_cart__beat4",
+      "note_story",
+      "note_story__beat2",
+      "note_story__beat3",
+      "note_story__beat4",
+      "shelf_home",
+      "shelf_home__beat2",
+      "shelf_home__beat3",
+      "shelf_home__beat4",
+      "end_archive",
+      "end_archive__beat2",
+      "end_archive__beat3",
+      "end_archive__beat4",
+      "end_shelf_song",
+      "end_shelf_song__beat2",
+      "end_shelf_song__beat3",
+      "end_shelf_song__beat4",
+      "end_caretaker",
+      "end_caretaker__beat2",
+      "end_caretaker__beat3",
+      "end_caretaker__beat4",
+      "end_next_rain",
+      "end_next_rain__beat2",
+      "end_next_rain__beat3",
+      "end_next_rain__beat4",
+      "take_breath",
+      "take_breath__beat2",
+      "take_breath__beat3",
+      "take_breath__beat4"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 577921,
+      "sha256": "841c536697aa90c6bdc302cd4a2b6fcbc68821b5b8a145ab01818cc254ab3353",
+      "size": [
+        712,
+        4090
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 174350,
+      "sha256": "33e8e47cec7ffcec4aee2ddd65f3209789bc11da3c13a6aa662c239ddd1d3fd1",
+      "size": [
+        488,
+        1736
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "01baca8783bbaeb603579b4058285312e027119bf135e9c59147c6d912d9dd9d"
+      },
+      {
+        "index": 1,
+        "node_id": "shop_open",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "51b5ddaf03359c34780f7f37ae627b3210cb3dc680b5e91df6d6239fed55ded8"
+      },
+      {
+        "index": 2,
+        "node_id": "shop_open__beat2",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "06e640595253dcd992dd03fcca53ffc97358d6d3a902a8ab6d7aa4c62523dc26"
+      },
+      {
+        "index": 3,
+        "node_id": "shop_open__beat3",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "3bd4d0dd9f4a9ea3b6ea02f913aa1b01f079e68f1fbacc232b63a028fbe80b95"
+      },
+      {
+        "index": 4,
+        "node_id": "shop_open__beat4",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "c1e9cc40ec6bb4e2a0368b8d2390bf2541cc79dfc1b79d966db5166f1485976b"
+      },
+      {
+        "index": 5,
+        "node_id": "first_choice",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "2f78ac8f5619d6ffcd55a0b8985832e946be29b8c7f86c81506c28dd61af4555"
+      },
+      {
+        "index": 6,
+        "node_id": "loose_bin",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "32ab18a872359e9ebe08244728445f41d1c529d2c483ab87022bbae63cef84de"
+      },
+      {
+        "index": 7,
+        "node_id": "loose_bin__beat2",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "6e29d74fe461aaf8a44befd823b7f3f81ba49c7bffe457b61702166f1b5c3a48"
+      },
+      {
+        "index": 8,
+        "node_id": "loose_bin__beat3",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "d2f9c2340e941a31f92051915671b8ab603b5c9fc551b3060ac3b1780ee39954"
+      },
+      {
+        "index": 9,
+        "node_id": "loose_bin__beat4",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "6a839199f56b6476c505297e9a16de3943cb25943a91b52caf5ceae34aec4e42"
+      },
+      {
+        "index": 10,
+        "node_id": "paper_list",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "9a926c78d8ed82b5b7ab1955f38c38a171eb7bd1910dfb0ff181af404e341b98"
+      },
+      {
+        "index": 11,
+        "node_id": "paper_list__beat2",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "9703f16552c8f7f9e20f3daef35b00fa09d4d8c33a06c664f1c4cf579f63a54a"
+      },
+      {
+        "index": 12,
+        "node_id": "paper_list__beat3",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "3bd4d0dd9f4a9ea3b6ea02f913aa1b01f079e68f1fbacc232b63a028fbe80b95"
+      },
+      {
+        "index": 13,
+        "node_id": "paper_list__beat4",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "c1e9cc40ec6bb4e2a0368b8d2390bf2541cc79dfc1b79d966db5166f1485976b"
+      },
+      {
+        "index": 14,
+        "node_id": "glass_case",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "d5d62d0ca857173f5e59361c62f72775ac20e24b953ea8b221010360f52eaba9"
+      },
+      {
+        "index": 15,
+        "node_id": "glass_case__beat2",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "a16a996057e9ae2220333ea07a7541ce2dac003d3b8d8156f23db8ce0edfc1f2"
+      },
+      {
+        "index": 16,
+        "node_id": "glass_case__beat3",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "d2f9c2340e941a31f92051915671b8ab603b5c9fc551b3060ac3b1780ee39954"
+      },
+      {
+        "index": 17,
+        "node_id": "glass_case__beat4",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "6a839199f56b6476c505297e9a16de3943cb25943a91b52caf5ceae34aec4e42"
+      },
+      {
+        "index": 18,
+        "node_id": "pick_or_test",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "80804be9a46f2093d4d80ffd56679e4cf22f08d4bc43142b0f4b197586441d6d"
+      },
+      {
+        "index": 19,
+        "node_id": "buy_moonmilk",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "56ba4ce24d80bd537341a41e2637259741a282833fc2e26ca3c8519e24a16792"
+      },
+      {
+        "index": 20,
+        "node_id": "buy_moonmilk__beat2",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "c473acf6ffb819d51ab47ec55a0e5235c06edcc054618487e30c6bb79223cbf2"
+      },
+      {
+        "index": 21,
+        "node_id": "buy_moonmilk__beat3",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "d2f9c2340e941a31f92051915671b8ab603b5c9fc551b3060ac3b1780ee39954"
+      },
+      {
+        "index": 22,
+        "node_id": "buy_moonmilk__beat4",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "6a839199f56b6476c505297e9a16de3943cb25943a91b52caf5ceae34aec4e42"
+      },
+      {
+        "index": 23,
+        "node_id": "buy_petal",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "db5c0067e59463ecf03f8864293e978fd5495d87725cf974c693a9238e3578f4"
+      },
+      {
+        "index": 24,
+        "node_id": "buy_petal__beat2",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "70cedf1b298984da2a8ea3f2a96448e9e9285bb44ff37b33a36fac40a3b595cd"
+      },
+      {
+        "index": 25,
+        "node_id": "buy_petal__beat3",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "3bd4d0dd9f4a9ea3b6ea02f913aa1b01f079e68f1fbacc232b63a028fbe80b95"
+      },
+      {
+        "index": 26,
+        "node_id": "buy_petal__beat4",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "c1e9cc40ec6bb4e2a0368b8d2390bf2541cc79dfc1b79d966db5166f1485976b"
+      },
+      {
+        "index": 27,
+        "node_id": "test_starpantry",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "946e5683e9226b5580206907803bae62e967ffcd537866a90d75e18a27fa4d95"
+      },
+      {
+        "index": 28,
+        "node_id": "test_starpantry__beat2",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "5740ae8aa77b11dc5ad30f470d3a83c3d9faba8e85c34055c1657384211552e9"
+      },
+      {
+        "index": 29,
+        "node_id": "test_starpantry__beat3",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "d2f9c2340e941a31f92051915671b8ab603b5c9fc551b3060ac3b1780ee39954"
+      },
+      {
+        "index": 30,
+        "node_id": "test_starpantry__beat4",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "6a839199f56b6476c505297e9a16de3943cb25943a91b52caf5ceae34aec4e42"
+      },
+      {
+        "index": 31,
+        "node_id": "rain_walk",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "ab7747cfed918758e2971926d087a02d795e8f89c2eacbd8ed5ea1a689b7f1af"
+      },
+      {
+        "index": 32,
+        "node_id": "rain_walk__beat2",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "2b70a64310a19c9d073a4c09690c3f6efbd791891ec39f8cd86998114de7e704"
+      },
+      {
+        "index": 33,
+        "node_id": "rain_walk__beat3",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "13d60ded66c2e70e680a7bdd09b995dd05cc6532224ee6f29ee8e818f8478b98"
+      },
+      {
+        "index": 34,
+        "node_id": "rain_walk__beat4",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "9b18733777f2bc9e8c287e618dae6b609bf57fa6ecaa8277ad10a549f6111e0a"
+      },
+      {
+        "index": 35,
+        "node_id": "after_counter_choice",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "dde683b80a84be49aeb1a5f9a1eab2e23368fd5e233fa7870a4f887fe8e94a82"
+      },
+      {
+        "index": 36,
+        "node_id": "play_cart",
+        "rect": [
+          10,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "a45ed94c0d31e80215ac048fb6498eb7d1c6294065a13c03a3b8e939a4727d26"
+      },
+      {
+        "index": 37,
+        "node_id": "play_cart__beat2",
+        "rect": [
+          244,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "bc3f47bccd88b66d4f45ac5d0f3970e4f6cd0a499e627d7ea59fe31203e9cb96"
+      },
+      {
+        "index": 38,
+        "node_id": "play_cart__beat3",
+        "rect": [
+          478,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "76a3a8acfb321852b06f9a9224dc36150cefed1fb1e0b73aff596c25d4eb68d4"
+      },
+      {
+        "index": 39,
+        "node_id": "play_cart__beat4",
+        "rect": [
+          10,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "47c47ba1c2ff9da28c08ef7997c1f8c34224d26dee9463763fca42f3fe93d0d3"
+      },
+      {
+        "index": 40,
+        "node_id": "clean_cart",
+        "rect": [
+          244,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "2b76fa3e03df94c8f2f26ed040e7a83ac6cbb1eff7db8f5098b46ea783aa93f9"
+      },
+      {
+        "index": 41,
+        "node_id": "clean_cart__beat2",
+        "rect": [
+          478,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "8ad8c6d5a011c652bc7a8d9496cc3dbdbe2b810b979040d4953decd0bb780ece"
+      },
+      {
+        "index": 42,
+        "node_id": "clean_cart__beat3",
+        "rect": [
+          10,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "13d60ded66c2e70e680a7bdd09b995dd05cc6532224ee6f29ee8e818f8478b98"
+      },
+      {
+        "index": 43,
+        "node_id": "clean_cart__beat4",
+        "rect": [
+          244,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "9b18733777f2bc9e8c287e618dae6b609bf57fa6ecaa8277ad10a549f6111e0a"
+      },
+      {
+        "index": 44,
+        "node_id": "note_story",
+        "rect": [
+          478,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "075f17bf95fd7ab6ccd22983d955ea24beef772d0bc5d2fd641cd7a79ec28475"
+      },
+      {
+        "index": 45,
+        "node_id": "note_story__beat2",
+        "rect": [
+          10,
+          2576,
+          224,
+          144
+        ],
+        "image_sha256": "173e3ffd32fd32671e52872ef7335b10d570237484f6e44ede3105ded143cc11"
+      },
+      {
+        "index": 46,
+        "node_id": "note_story__beat3",
+        "rect": [
+          244,
+          2576,
+          224,
+          144
+        ],
+        "image_sha256": "76a3a8acfb321852b06f9a9224dc36150cefed1fb1e0b73aff596c25d4eb68d4"
+      },
+      {
+        "index": 47,
+        "node_id": "note_story__beat4",
+        "rect": [
+          478,
+          2576,
+          224,
+          144
+        ],
+        "image_sha256": "47c47ba1c2ff9da28c08ef7997c1f8c34224d26dee9463763fca42f3fe93d0d3"
+      },
+      {
+        "index": 48,
+        "node_id": "shelf_home",
+        "rect": [
+          10,
+          2746,
+          224,
+          144
+        ],
+        "image_sha256": "82a19a95ad0e8edac9951900cef25a0c83b9897bbda384e2fafae63563281471"
+      },
+      {
+        "index": 49,
+        "node_id": "shelf_home__beat2",
+        "rect": [
+          244,
+          2746,
+          224,
+          144
+        ],
+        "image_sha256": "2334ef7f7acdcd0bff6cb255e53b89761a602a87dd76f97e53801062b76be9c9"
+      },
+      {
+        "index": 50,
+        "node_id": "shelf_home__beat3",
+        "rect": [
+          478,
+          2746,
+          224,
+          144
+        ],
+        "image_sha256": "a8090bc3168d892bcd948db86aadb34c98d2c3c66eb2d2b642273436ef47ec68"
+      },
+      {
+        "index": 51,
+        "node_id": "shelf_home__beat4",
+        "rect": [
+          10,
+          2916,
+          224,
+          144
+        ],
+        "image_sha256": "427caa580917cb8818d513f607bc07f845c4f281f1f700325611fe1a299018dd"
+      },
+      {
+        "index": 52,
+        "node_id": "end_archive",
+        "rect": [
+          244,
+          2916,
+          224,
+          144
+        ],
+        "image_sha256": "f437dd837cbd05bac8d638027e29426adabcf2deaca320013695ff5637c51195"
+      },
+      {
+        "index": 53,
+        "node_id": "end_archive__beat2",
+        "rect": [
+          478,
+          2916,
+          224,
+          144
+        ],
+        "image_sha256": "dd8ef85b2984f1b48547016723cb1fd8a2d8c211570661267b44e9518fc4e587"
+      },
+      {
+        "index": 54,
+        "node_id": "end_archive__beat3",
+        "rect": [
+          10,
+          3086,
+          224,
+          144
+        ],
+        "image_sha256": "a8090bc3168d892bcd948db86aadb34c98d2c3c66eb2d2b642273436ef47ec68"
+      },
+      {
+        "index": 55,
+        "node_id": "end_archive__beat4",
+        "rect": [
+          244,
+          3086,
+          224,
+          144
+        ],
+        "image_sha256": "583b0830b2880fd3c76f62d854c8e1c4b5220e0a1c6001a2e6447171ab81e2f5"
+      },
+      {
+        "index": 56,
+        "node_id": "end_shelf_song",
+        "rect": [
+          478,
+          3086,
+          224,
+          144
+        ],
+        "image_sha256": "93255a6a672d82d72dff91d0e32a0b36c88a6961e5e6508b85e94f4dde283d7b"
+      },
+      {
+        "index": 57,
+        "node_id": "end_shelf_song__beat2",
+        "rect": [
+          10,
+          3256,
+          224,
+          144
+        ],
+        "image_sha256": "28ebc91194b6461a086fd643bfecc531b78288d464e647cc0150bc5f6754fe0d"
+      },
+      {
+        "index": 58,
+        "node_id": "end_shelf_song__beat3",
+        "rect": [
+          244,
+          3256,
+          224,
+          144
+        ],
+        "image_sha256": "5d1f1fdfa2b2c1acc70b18117602b7f260512c0043a92f8ae1c06eaec60e4510"
+      },
+      {
+        "index": 59,
+        "node_id": "end_shelf_song__beat4",
+        "rect": [
+          478,
+          3256,
+          224,
+          144
+        ],
+        "image_sha256": "3a83898aa933e176887227751383225d2e4c93c596ec062839d67f1e0835dd47"
+      },
+      {
+        "index": 60,
+        "node_id": "end_caretaker",
+        "rect": [
+          10,
+          3426,
+          224,
+          144
+        ],
+        "image_sha256": "843e1ae5b3418327db6ee6fda96817cabec0bf6d45e137429639e6d84c6e5e4a"
+      },
+      {
+        "index": 61,
+        "node_id": "end_caretaker__beat2",
+        "rect": [
+          244,
+          3426,
+          224,
+          144
+        ],
+        "image_sha256": "4ac85292d444a82944fd6aba2be25c48211811a8855783562abef4d09941ffd4"
+      },
+      {
+        "index": 62,
+        "node_id": "end_caretaker__beat3",
+        "rect": [
+          478,
+          3426,
+          224,
+          144
+        ],
+        "image_sha256": "5d1f1fdfa2b2c1acc70b18117602b7f260512c0043a92f8ae1c06eaec60e4510"
+      },
+      {
+        "index": 63,
+        "node_id": "end_caretaker__beat4",
+        "rect": [
+          10,
+          3596,
+          224,
+          144
+        ],
+        "image_sha256": "2514a618f5cab3208041bad207dbd1e4e296503d933274cc93d87c4c8315ad99"
+      },
+      {
+        "index": 64,
+        "node_id": "end_next_rain",
+        "rect": [
+          244,
+          3596,
+          224,
+          144
+        ],
+        "image_sha256": "74cbe799b3c8c09ba8c0de3e6e9465d83b9dd85d5b3cd88f3597f9569c1134c9"
+      },
+      {
+        "index": 65,
+        "node_id": "end_next_rain__beat2",
+        "rect": [
+          478,
+          3596,
+          224,
+          144
+        ],
+        "image_sha256": "6a062e946beefd4a80b0403bd1a1abfc260025493e274613296614c76379babf"
+      },
+      {
+        "index": 66,
+        "node_id": "end_next_rain__beat3",
+        "rect": [
+          10,
+          3766,
+          224,
+          144
+        ],
+        "image_sha256": "5d1f1fdfa2b2c1acc70b18117602b7f260512c0043a92f8ae1c06eaec60e4510"
+      },
+      {
+        "index": 67,
+        "node_id": "end_next_rain__beat4",
+        "rect": [
+          244,
+          3766,
+          224,
+          144
+        ],
+        "image_sha256": "c30045098edb4a108fe0c160abd5c4db2a5ceecc9e3ca65afb49ef7e41093c6a"
+      },
+      {
+        "index": 68,
+        "node_id": "take_breath",
+        "rect": [
+          478,
+          3766,
+          224,
+          144
+        ],
+        "image_sha256": "644c5ebaea7cd6935160c7c1d9f6f4eb1f47b8adfe3f90fa7923524cff40eb2d"
+      },
+      {
+        "index": 69,
+        "node_id": "take_breath__beat2",
+        "rect": [
+          10,
+          3936,
+          224,
+          144
+        ],
+        "image_sha256": "b350d6ad0cdbd279bf81a03c8a3186d157c1fc0e665ebe6ea7d15a78d5dc8c75"
+      },
+      {
+        "index": 70,
+        "node_id": "take_breath__beat3",
+        "rect": [
+          244,
+          3936,
+          224,
+          144
+        ],
+        "image_sha256": "d2f9c2340e941a31f92051915671b8ab603b5c9fc551b3060ac3b1780ee39954"
+      },
+      {
+        "index": 71,
+        "node_id": "take_breath__beat4",
+        "rect": [
+          478,
+          3936,
+          224,
+          144
+        ],
+        "image_sha256": "6a839199f56b6476c505297e9a16de3943cb25943a91b52caf5ceae34aec4e42"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "b22520d92cd991b0c8842fc3ea1a1bb4a02c478eaf75d57542ba119eb57eb7c7"
+      },
+      {
+        "index": 1,
+        "node_id": "shop_open",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "ead1acf4a199c63c18ca1693c675e974b6afee754c7ed1054f35abe8413976a0"
+      },
+      {
+        "index": 2,
+        "node_id": "shop_open__beat2",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "c2086ebb19eacf70ef910d3725316b791983270ef2107b11cc6ccbcacb261081"
+      },
+      {
+        "index": 3,
+        "node_id": "shop_open__beat3",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "c0bbc24dc177b7ae78f6a188baf9cd072cb0fe88269dec79a8ef04f2d66585fb"
+      },
+      {
+        "index": 4,
+        "node_id": "shop_open__beat4",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "6b6e24b913fe485517c6335d2fc56b624df3a151fd7170d7ec9f010bc124c46a"
+      },
+      {
+        "index": 5,
+        "node_id": "first_choice",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "3821887b225fe14be4759d41e036364a55967170898d8e498e1dac52e02a9607"
+      },
+      {
+        "index": 6,
+        "node_id": "loose_bin",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "15d12084150d5d692250ebf791c3bb382f316858ba00f4436944d533293eab12"
+      },
+      {
+        "index": 7,
+        "node_id": "loose_bin__beat2",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "af3c30991418bc87d75e1d71ce720047168a97a7c009664621fe0dc9815e0e2f"
+      },
+      {
+        "index": 8,
+        "node_id": "loose_bin__beat3",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "b660e5d02345018d16f71bce68778073ed4b9b086e1ab4b6f73bab2cfc06db10"
+      },
+      {
+        "index": 9,
+        "node_id": "loose_bin__beat4",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "df82553ab6fa5bf795083755f6d50f10dbfc105be54a758b52559081df9a5c5c"
+      },
+      {
+        "index": 10,
+        "node_id": "paper_list",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "40728adb9bbf78dff248c3c5caeb263404f14420e23b79e452ffea4edc847d7c"
+      },
+      {
+        "index": 11,
+        "node_id": "paper_list__beat2",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "d6aa45a4de735d46e152db3bdd80b4ad16992686ad60ad3d227f8f3710712ec4"
+      },
+      {
+        "index": 12,
+        "node_id": "paper_list__beat3",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "c0bbc24dc177b7ae78f6a188baf9cd072cb0fe88269dec79a8ef04f2d66585fb"
+      },
+      {
+        "index": 13,
+        "node_id": "paper_list__beat4",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "6b6e24b913fe485517c6335d2fc56b624df3a151fd7170d7ec9f010bc124c46a"
+      },
+      {
+        "index": 14,
+        "node_id": "glass_case",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "978d7ead3080a8f31deda637fa572f39876d8a74eba344046818bd0e8a6520be"
+      },
+      {
+        "index": 15,
+        "node_id": "glass_case__beat2",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "c1320b10dacc03ee46d4dec5505af5c9123d2ecf0ef056417267173ed95b2eba"
+      },
+      {
+        "index": 16,
+        "node_id": "glass_case__beat3",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "b660e5d02345018d16f71bce68778073ed4b9b086e1ab4b6f73bab2cfc06db10"
+      },
+      {
+        "index": 17,
+        "node_id": "glass_case__beat4",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "df82553ab6fa5bf795083755f6d50f10dbfc105be54a758b52559081df9a5c5c"
+      },
+      {
+        "index": 18,
+        "node_id": "pick_or_test",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "9169589d87c6b10c639911c9daafeaba45ff5dec52ed1debe003ef8b2c7de2fb"
+      },
+      {
+        "index": 19,
+        "node_id": "buy_moonmilk",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "1d9cb443d54cacf952317b12b406060fa0d5134885ff2e4f1c4f2e6d2dccbb31"
+      },
+      {
+        "index": 20,
+        "node_id": "buy_moonmilk__beat2",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "a773978309632a350d823c20eb5cfc20b769658000513b751e69907b598d2eb1"
+      },
+      {
+        "index": 21,
+        "node_id": "buy_moonmilk__beat3",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "b660e5d02345018d16f71bce68778073ed4b9b086e1ab4b6f73bab2cfc06db10"
+      },
+      {
+        "index": 22,
+        "node_id": "buy_moonmilk__beat4",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "df82553ab6fa5bf795083755f6d50f10dbfc105be54a758b52559081df9a5c5c"
+      },
+      {
+        "index": 23,
+        "node_id": "buy_petal",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "609a546a613deb485ad74462a7bc97140c8b522f149973d80d4be864c13a1ebd"
+      },
+      {
+        "index": 24,
+        "node_id": "buy_petal__beat2",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "422dc1ad5ca4db207713b8d4619c9b41ef74cff5cadd46e5abd88de34a438566"
+      },
+      {
+        "index": 25,
+        "node_id": "buy_petal__beat3",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "c0bbc24dc177b7ae78f6a188baf9cd072cb0fe88269dec79a8ef04f2d66585fb"
+      },
+      {
+        "index": 26,
+        "node_id": "buy_petal__beat4",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "6b6e24b913fe485517c6335d2fc56b624df3a151fd7170d7ec9f010bc124c46a"
+      },
+      {
+        "index": 27,
+        "node_id": "test_starpantry",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "4e45f02cf41d6a7cd0f5eda952ee48feef79114fe03dee3547995958f5b58e48"
+      },
+      {
+        "index": 28,
+        "node_id": "test_starpantry__beat2",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "f0852b2ac174034ec76176ff776b7beadaa3a3ca7821edffb57bced1436b0bdb"
+      },
+      {
+        "index": 29,
+        "node_id": "test_starpantry__beat3",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "b660e5d02345018d16f71bce68778073ed4b9b086e1ab4b6f73bab2cfc06db10"
+      },
+      {
+        "index": 30,
+        "node_id": "test_starpantry__beat4",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "df82553ab6fa5bf795083755f6d50f10dbfc105be54a758b52559081df9a5c5c"
+      },
+      {
+        "index": 31,
+        "node_id": "rain_walk",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "12da82b5af46a63493cd621e46c636beb081435c8c4167d3927cd64e07773f12"
+      },
+      {
+        "index": 32,
+        "node_id": "rain_walk__beat2",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "310b303acb829a7332d4c96346812d76fe33121df999aad2acae204eb877e996"
+      },
+      {
+        "index": 33,
+        "node_id": "rain_walk__beat3",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "405929587395b0e8e71f7108ffa0fbd1956da148f25d544509607996e779345f"
+      },
+      {
+        "index": 34,
+        "node_id": "rain_walk__beat4",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "b21c21aa5d386e04ec8ebd4244050c22884ee5576aeff562f452423fa2c0ff36"
+      },
+      {
+        "index": 35,
+        "node_id": "after_counter_choice",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "9711fe1eeed9f6ce05fa1f1500c6c6a8922b35f48258024916898a08c0cc5f6e"
+      },
+      {
+        "index": 36,
+        "node_id": "play_cart",
+        "rect": [
+          8,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "a72abb40f3941fb8016e7d5f56cbf664a741ef84e431953db3cafec86906e05d"
+      },
+      {
+        "index": 37,
+        "node_id": "play_cart__beat2",
+        "rect": [
+          128,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "6b95abfedf74378e6ba4115c29c97b449270100f98033581bf5723dfd780b6a3"
+      },
+      {
+        "index": 38,
+        "node_id": "play_cart__beat3",
+        "rect": [
+          248,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "9c255d9b9e06997749b65da4b3cb836144bfb332aec8a4ac2bed5173d020c60a"
+      },
+      {
+        "index": 39,
+        "node_id": "play_cart__beat4",
+        "rect": [
+          368,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "7dfd527f024e58fd30e0574493adec2a0fa3c161a5060f62a85ccdbcbaa59f0d"
+      },
+      {
+        "index": 40,
+        "node_id": "clean_cart",
+        "rect": [
+          8,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "83e3264069bad61e3155935e2e14e527a626649615f3bf87be3e7b2518187bc2"
+      },
+      {
+        "index": 41,
+        "node_id": "clean_cart__beat2",
+        "rect": [
+          128,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "8ea4a68f62b45f04ee2cad2b3797acd85a363b39c9964248b468eda3b1b8a6da"
+      },
+      {
+        "index": 42,
+        "node_id": "clean_cart__beat3",
+        "rect": [
+          248,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "405929587395b0e8e71f7108ffa0fbd1956da148f25d544509607996e779345f"
+      },
+      {
+        "index": 43,
+        "node_id": "clean_cart__beat4",
+        "rect": [
+          368,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "b21c21aa5d386e04ec8ebd4244050c22884ee5576aeff562f452423fa2c0ff36"
+      },
+      {
+        "index": 44,
+        "node_id": "note_story",
+        "rect": [
+          8,
+          1064,
+          112,
+          72
+        ],
+        "image_sha256": "f20b66b8e0d74904055d8b2cbc3022c978be0f3e28be03142e58649421008f5f"
+      },
+      {
+        "index": 45,
+        "node_id": "note_story__beat2",
+        "rect": [
+          128,
+          1064,
+          112,
+          72
+        ],
+        "image_sha256": "5a39ba377a5be9461aa01c6e50a5d9b7ea729c02fc4872661c9165cacc11089e"
+      },
+      {
+        "index": 46,
+        "node_id": "note_story__beat3",
+        "rect": [
+          248,
+          1064,
+          112,
+          72
+        ],
+        "image_sha256": "9c255d9b9e06997749b65da4b3cb836144bfb332aec8a4ac2bed5173d020c60a"
+      },
+      {
+        "index": 47,
+        "node_id": "note_story__beat4",
+        "rect": [
+          368,
+          1064,
+          112,
+          72
+        ],
+        "image_sha256": "7dfd527f024e58fd30e0574493adec2a0fa3c161a5060f62a85ccdbcbaa59f0d"
+      },
+      {
+        "index": 48,
+        "node_id": "shelf_home",
+        "rect": [
+          8,
+          1160,
+          112,
+          72
+        ],
+        "image_sha256": "ec4d0f7c44668a62301039e0b73c416ae403d5e4a103adaf9ab15304d95e7722"
+      },
+      {
+        "index": 49,
+        "node_id": "shelf_home__beat2",
+        "rect": [
+          128,
+          1160,
+          112,
+          72
+        ],
+        "image_sha256": "f90700ebedeaf2f0de5d713965b7e51c535fa020c9185f66245a1d87b31ecd42"
+      },
+      {
+        "index": 50,
+        "node_id": "shelf_home__beat3",
+        "rect": [
+          248,
+          1160,
+          112,
+          72
+        ],
+        "image_sha256": "6610e0121c6f05c7b2962ae33d4c064a144c0b15c45eb9988f89f4fc4b5663ca"
+      },
+      {
+        "index": 51,
+        "node_id": "shelf_home__beat4",
+        "rect": [
+          368,
+          1160,
+          112,
+          72
+        ],
+        "image_sha256": "802839cc70026fe1622dd76fcfe82d92ab94cc32e0e7f61dfd3eb5bf25a0f657"
+      },
+      {
+        "index": 52,
+        "node_id": "end_archive",
+        "rect": [
+          8,
+          1256,
+          112,
+          72
+        ],
+        "image_sha256": "16790cf383354ede10f49dd588080b93784db97becef197c51da397b05890842"
+      },
+      {
+        "index": 53,
+        "node_id": "end_archive__beat2",
+        "rect": [
+          128,
+          1256,
+          112,
+          72
+        ],
+        "image_sha256": "3b4760d1a247011914711ddd2ce5da065fc8ce3865ece886bd3600933e38ef85"
+      },
+      {
+        "index": 54,
+        "node_id": "end_archive__beat3",
+        "rect": [
+          248,
+          1256,
+          112,
+          72
+        ],
+        "image_sha256": "6610e0121c6f05c7b2962ae33d4c064a144c0b15c45eb9988f89f4fc4b5663ca"
+      },
+      {
+        "index": 55,
+        "node_id": "end_archive__beat4",
+        "rect": [
+          368,
+          1256,
+          112,
+          72
+        ],
+        "image_sha256": "9623cf5ecb264425041a712df42e02796851f6fab4aa6ea66b919397d6c467f7"
+      },
+      {
+        "index": 56,
+        "node_id": "end_shelf_song",
+        "rect": [
+          8,
+          1352,
+          112,
+          72
+        ],
+        "image_sha256": "fefe5ef6b00eb5d640dafdea582b003041e9355f0c85ed92265d0a3bb8ee8823"
+      },
+      {
+        "index": 57,
+        "node_id": "end_shelf_song__beat2",
+        "rect": [
+          128,
+          1352,
+          112,
+          72
+        ],
+        "image_sha256": "9e9fcca1aa03b85635970b6ccac17da3972435151a75d87933d2c7f78c7b2184"
+      },
+      {
+        "index": 58,
+        "node_id": "end_shelf_song__beat3",
+        "rect": [
+          248,
+          1352,
+          112,
+          72
+        ],
+        "image_sha256": "5f61273a0b19763aec1bdea39522992886f737744de7bcfc0820b82493c9c8b5"
+      },
+      {
+        "index": 59,
+        "node_id": "end_shelf_song__beat4",
+        "rect": [
+          368,
+          1352,
+          112,
+          72
+        ],
+        "image_sha256": "597a4db5e201de3e53e58777f2e31207fff8c9707f8f81d46dcf979302062e68"
+      },
+      {
+        "index": 60,
+        "node_id": "end_caretaker",
+        "rect": [
+          8,
+          1448,
+          112,
+          72
+        ],
+        "image_sha256": "978c3b6efc7bd0c86d158f84bdd0556983574863bae28b348d1f1176a74068c9"
+      },
+      {
+        "index": 61,
+        "node_id": "end_caretaker__beat2",
+        "rect": [
+          128,
+          1448,
+          112,
+          72
+        ],
+        "image_sha256": "107427dd2716cac0b9eed60657898b7042b914bbe73b08e8ad82b4fa40f5420d"
+      },
+      {
+        "index": 62,
+        "node_id": "end_caretaker__beat3",
+        "rect": [
+          248,
+          1448,
+          112,
+          72
+        ],
+        "image_sha256": "5f61273a0b19763aec1bdea39522992886f737744de7bcfc0820b82493c9c8b5"
+      },
+      {
+        "index": 63,
+        "node_id": "end_caretaker__beat4",
+        "rect": [
+          368,
+          1448,
+          112,
+          72
+        ],
+        "image_sha256": "4151aaec955b8e7038efb9177ceae12a821ddce787e4a221d1e31f2009568256"
+      },
+      {
+        "index": 64,
+        "node_id": "end_next_rain",
+        "rect": [
+          8,
+          1544,
+          112,
+          72
+        ],
+        "image_sha256": "ba9de9874322a266bcd469dd3988dc77dc639a255446d36fb1bdf57b8b9ceab3"
+      },
+      {
+        "index": 65,
+        "node_id": "end_next_rain__beat2",
+        "rect": [
+          128,
+          1544,
+          112,
+          72
+        ],
+        "image_sha256": "7ed67a7da6436cea488bcdbdde258eee507385112891a4895bccc520637fd42e"
+      },
+      {
+        "index": 66,
+        "node_id": "end_next_rain__beat3",
+        "rect": [
+          248,
+          1544,
+          112,
+          72
+        ],
+        "image_sha256": "5f61273a0b19763aec1bdea39522992886f737744de7bcfc0820b82493c9c8b5"
+      },
+      {
+        "index": 67,
+        "node_id": "end_next_rain__beat4",
+        "rect": [
+          368,
+          1544,
+          112,
+          72
+        ],
+        "image_sha256": "ffe8021432102a131b4214cd2031621958dfe98d2787a7f8b2f59b15d9a0c91c"
+      },
+      {
+        "index": 68,
+        "node_id": "take_breath",
+        "rect": [
+          8,
+          1640,
+          112,
+          72
+        ],
+        "image_sha256": "4b87274484bb597db24ae9e8634cdafec7314fb209a264fc3d4d3d0ce4eaad0a"
+      },
+      {
+        "index": 69,
+        "node_id": "take_breath__beat2",
+        "rect": [
+          128,
+          1640,
+          112,
+          72
+        ],
+        "image_sha256": "49316d0d8a991c6dfbe0125825d73bd81c0f2e57026639c57af18544e8c5a116"
+      },
+      {
+        "index": 70,
+        "node_id": "take_breath__beat3",
+        "rect": [
+          248,
+          1640,
+          112,
+          72
+        ],
+        "image_sha256": "b660e5d02345018d16f71bce68778073ed4b9b086e1ab4b6f73bab2cfc06db10"
+      },
+      {
+        "index": 71,
+        "node_id": "take_breath__beat4",
+        "rect": [
+          368,
+          1640,
+          112,
+          72
+        ],
+        "image_sha256": "df82553ab6fa5bf795083755f6d50f10dbfc105be54a758b52559081df9a5c5c"
+      }
+    ]
+  }
+}

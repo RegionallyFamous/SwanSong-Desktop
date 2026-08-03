@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:33:11.250665+00:00",
+  "errors": [],
+  "release_id": "20260727T033310Z-17441edfdcc5",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/releases/20260727T033310Z-17441edfdcc5",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/releases/20260727T033310Z-17441edfdcc5.zip",
+    "bytes": 44099622,
+    "sha256": "337c0464b0f5669c70f1838bbe6ca286bca0ec38a4ce30fc925eb1ce95807fb8"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/releases/20260727T033310Z-17441edfdcc5/manifest.json",
+    "sha256": "d4c6faa2ade864074af10eb44e0412697a7bd7ecef64fcf9c36771fe940af1c1",
+    "files": 91
+  },
+  "rom_sha256": "17441edfdcc5339543be3ed4ac7d78932a4b5fcc7a49c2b86aa0315043eeeec7",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "swanlight-ledger",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/reports/game-audit-report.json\nGame audit passed"
+  }
+}

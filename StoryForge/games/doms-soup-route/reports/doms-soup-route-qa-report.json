@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/projects/doms-soup-route.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/contact_sheet.png",
+    "nodes": 37,
+    "flags": 0,
+    "tracks": [
+      {
+        "id": "dom_title",
+        "name": "Hover Dispatch",
+        "bpm": 118
+      },
+      {
+        "id": "dom_main",
+        "name": "Soup Slosh",
+        "bpm": 124
+      },
+      {
+        "id": "dom_end_a",
+        "name": "Wrong Room Fanfare",
+        "bpm": 104
+      },
+      {
+        "id": "dom_end_b",
+        "name": "Essence of Tomato",
+        "bpm": 78
+      }
+    ],
+    "imagegen_source_sha256": {
+      "background_title_imagegen_v1.png": "c8e828f22e3c9ab46db893a4d01dc69cbbda67925c1356d6877ccba6e19fc3e6",
+      "background_main_imagegen_v1.png": "0082f372112c2ae33ff235629b332ebadb65ea18071bd69cf3f16956b76f5613",
+      "background_ending_a_imagegen_v1.png": "5222dca3d43e19bf10b2ede495222fdfbf822c56d21f0aba2c88e0390436049d",
+      "background_ending_b_imagegen_v1.png": "57b0add8577d17a789d8d62d38c65b2469025d59ef8c17e939416af41072bafa",
+      "character_master_cutout_imagegen_v1.png": "7a614532f45ca1435c71a39336e89e769b9bfa869c369bafe56bb2748d5d67b6"
+    },
+    "source_master_count": 5,
+    "background_count": 4,
+    "character_frame_count": 3,
+    "art_policy": "ImageGen-first; no procedural pictorial fallback"
+  }
+}

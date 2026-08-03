@@ -5,7 +5,7 @@ SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 MACOS_DIR=$(CDPATH='' cd -- "$SCRIPT_DIR/.." && pwd)
 EXPECTED_BUNDLE_ID=com.regionallyfamous.swansong
 EXPECTED_TEAM_ID=3J8H48TP7P
-EXPECTED_SPARKLE_VERSION=2.9.4
+EXPECTED_SPARKLE_VERSION=2.9.5
 MAXIMUM_ARCHIVE_BYTE_COUNT=$((64 * 1024 * 1024))
 MAXIMUM_SOURCE_ARCHIVE_BYTE_COUNT=$((64 * 1024 * 1024))
 # A stapled universal app currently produces roughly 424 ZIP records because
@@ -526,6 +526,7 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents/Resources/SPARKLE_LICENSE" \
     ! -path "$APP/Contents/Resources/ares.lock.json" \
     ! -path "$APP/Contents/Resources/sparkle.lock.json" \
+    ! -path "$APP/Contents/Resources/StoryForge/*" \
     ! -path "$APP/Contents/Resources/SwanSongSDK/*" \
     ! -path "$APP/Contents/Resources/YokoiHardware/*" \
     ! -path "$APP/Contents/_CodeSignature/CodeResources" \
@@ -546,6 +547,8 @@ if [ -n "$APP" ]; then
     ! -path "$APP/Contents/Frameworks/Sparkle.framework/*" \
     ! -path "$APP/Contents/Resources" \
     ! -path "$APP/Contents/Resources/HomebrewTitleScreens" \
+    ! -path "$APP/Contents/Resources/StoryForge" \
+    ! -path "$APP/Contents/Resources/StoryForge/*" \
     ! -path "$APP/Contents/Resources/SwanSongSDK" \
     ! -path "$APP/Contents/Resources/SwanSongSDK/*" \
     ! -path "$APP/Contents/Resources/YokoiHardware" \
@@ -565,6 +568,9 @@ if [ -n "$APP" ]; then
   "$SCRIPT_DIR/check-swansong-sdk-payload.sh" \
     "$APP/Contents/Resources/SwanSongSDK" >/dev/null \
     || fail "embedded SwanSong SDK validation failed"
+  python3 "$SCRIPT_DIR/check-story-forge-framework.py" \
+    "$APP/Contents/Resources/StoryForge" >/dev/null \
+    || fail "embedded Story Forge framework validation failed"
   python3 "$SCRIPT_DIR/check-yokoi-hardware-payload.py" \
     "$APP/Contents/Resources/YokoiHardware" >/dev/null \
     || fail "embedded Yokoi hardware payload validation failed"

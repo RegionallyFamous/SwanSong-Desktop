@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:31:13.198298+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "backlight-bazaar",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/projects/backlight-bazaar.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/runtime-local/backlight-bazaar.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/backlight-bazaar-qa-report.json",
+    "project_counts": {
+      "name": "Backlight Bazaar",
+      "nodes": 44,
+      "flags": 6,
+      "tracks": 1,
+      "backgrounds": 3,
+      "characters": 6,
+      "sfx": 0
+    },
+    "header_counts": {
+      "NUM_NODES": 44,
+      "NUM_FLAGS": 6,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 1,
+      "NUM_SFX": 0,
+      "NUM_BG_ASSETS": 3,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 6
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/projects/backlight-bazaar.wscvn.json",
+      "bytes": 99576,
+      "sha256": "0fc9b3c3018a9aeb3fbc2bc5bf474e2019e633efc032d2b47ca44d548d921c89"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/runtime-local/backlight-bazaar.wsc",
+      "bytes": 8388608,
+      "sha256": "2841bf41eaf404521ddc2f75dca131110c98cfbd8cc6d6eda007d376a8d0466e"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/emulator-smoke-report.json",
+      "bytes": 1195,
+      "sha256": "e929253a62bbf0a70eb51e35b86e4d158ac399f139cf8f289003a345a372fb10"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/game-readiness-report.json",
+      "bytes": 22701,
+      "sha256": "84ef46beeb5ef40260843615d3c67be2d2064d7407cdbdccbae2b34b6be07a18"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/backlight-bazaar-qa-report.json",
+      "bytes": 2498,
+      "sha256": "cd1e18b3b894637004cf6e930f20a14c2e74807e727f6ac5b9481218ff157a51"
+    }
+  }
+}

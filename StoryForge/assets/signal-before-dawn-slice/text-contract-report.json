@@ -1,0 +1,306 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:49.201205+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/projects/signal-before-dawn-slice.wscvn.json",
+      "bytes": 474460,
+      "sha256": "12e91e46f011e49043a3e43bfc58674c37b7c66c6a6af76bb1baf653bf1d2480"
+    },
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+      "char_start": 32,
+      "char_count": 96,
+      "font_slot_range": [
+        32,
+        127
+      ],
+      "printable_text_range": [
+        32,
+        126
+      ],
+      "cell_px": [
+        8,
+        8
+      ],
+      "source_1bpp_bytes": 768,
+      "runtime_tile_bytes": 3072,
+      "tile_range": [
+        0,
+        95
+      ],
+      "ink_pixels": {
+        "min": 0,
+        "max": 37,
+        "space": 0
+      }
+    },
+    "runtime": {
+      "main_c": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/main.c",
+      "main_c_bytes": 105606,
+      "main_c_sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a"
+    },
+    "wonder_swan_text_surface": {
+      "visible_screen_tiles": [
+        28,
+        18
+      ],
+      "visible_screen_px": [
+        224,
+        144
+      ],
+      "backing_tilemap_tiles": [
+        32,
+        32
+      ],
+      "textbox_tiles": [
+        0,
+        13,
+        28,
+        5
+      ],
+      "textbox_px": [
+        0,
+        104,
+        224,
+        40
+      ],
+      "text_cols": 26,
+      "quality_dialogue_lines": 3,
+      "choice_prompt_chars": 26,
+      "choice_label_chars": 22
+    },
+    "counts": {
+      "dialogue_blocks": 35,
+      "choice_nodes": 5,
+      "title_nodes": 1
+    },
+    "maxima": {
+      "dialogue_lines": 3,
+      "dialogue_block_chars": 74,
+      "dialogue_word_chars": 11,
+      "choice_prompt_chars": 24,
+      "choice_label_chars": 21
+    },
+    "highest_pressure": [
+      {
+        "kind": "dialogue",
+        "node_id": "wake_lune",
+        "block": 1,
+        "speaker": "Lune",
+        "tbStyle": "royal",
+        "visible_chars": 65,
+        "line_count": 3,
+        "max_word": 7,
+        "lines": [
+          "Mira waits for Lune to",
+          "hear it too. The third",
+          "note changes pitch."
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "under_hatch",
+        "block": 1,
+        "speaker": "Lune",
+        "tbStyle": "royal",
+        "visible_chars": 59,
+        "line_count": 3,
+        "max_word": 7,
+        "lines": [
+          "Below the deck, a warm",
+          "lamp blinks in a room",
+          "nobody mapped."
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "choice",
+        "node_id": "true_final_choice",
+        "tbStyle": "ocean",
+        "prompt": "Use the whole signal?",
+        "prompt_chars": 21,
+        "choices": [
+          "Answer together",
+          "Follow the light",
+          "Unlock the hatch",
+          "Let Lune answer"
+        ],
+        "max_choice_chars": 16,
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "together_coda",
+        "block": 1,
+        "speaker": "Lune",
+        "tbStyle": "royal",
+        "visible_chars": 65,
+        "line_count": 3,
+        "max_word": 9,
+        "lines": [
+          "By sunrise, the ship has a",
+          "new course and the sea",
+          "remembers them."
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "together_answer",
+        "block": 1,
+        "speaker": "Lune",
+        "tbStyle": "royal",
+        "visible_chars": 66,
+        "line_count": 3,
+        "max_word": 10,
+        "lines": [
+          "They answer at once. The",
+          "lighthouse opens, not",
+          "upward, but inward."
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "choice",
+        "node_id": "third_choice",
+        "tbStyle": "ocean",
+        "prompt": "One final risk remains.",
+        "prompt_chars": 23,
+        "choices": [
+          "Tune the receiver",
+          "Try the brass key",
+          "Trust Lune",
+          "Answer now"
+        ],
+        "max_choice_chars": 17,
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "sunrise_wait",
+        "block": 1,
+        "speaker": "Mira",
+        "tbStyle": "ocean",
+        "visible_chars": 74,
+        "line_count": 3,
+        "max_word": 9,
+        "lines": [
+          "Mira lowers the receiver.",
+          "Dawn spills across the",
+          "rail, and one gull calls."
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "sunrise_coda",
+        "block": 1,
+        "speaker": "Mira",
+        "tbStyle": "ocean",
+        "visible_chars": 66,
+        "line_count": 3,
+        "max_word": 6,
+        "lines": [
+          "They leave the radio on.",
+          "By noon, it will be quiet",
+          "enough to miss."
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "signal_lune_clue",
+        "block": 1,
+        "speaker": "Lune",
+        "tbStyle": "royal",
+        "visible_chars": 70,
+        "line_count": 3,
+        "max_word": 8,
+        "lines": [
+          "Lune matches the signal's",
+          "rhythm. The reply is meant",
+          "for both of them."
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "signal_coda",
+        "block": 1,
+        "speaker": "Mira",
+        "tbStyle": "ocean",
+        "visible_chars": 61,
+        "line_count": 3,
+        "max_word": 9,
+        "lines": [
+          "Mira pockets the last",
+          "flash. Somewhere below, a",
+          "door unlocks."
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "dialogue",
+        "node_id": "shared_clue",
+        "block": 1,
+        "speaker": "Lune",
+        "tbStyle": "royal",
+        "visible_chars": 64,
+        "line_count": 3,
+        "max_word": 8,
+        "lines": [
+          "That pitch means reply,",
+          "not warning. Someone wants",
+          "us to answer."
+        ],
+        "pressure": 1.0
+      },
+      {
+        "kind": "choice",
+        "node_id": "second_choice",
+        "tbStyle": "ocean",
+        "prompt": "Next risk before dawn?",
+        "prompt_chars": 22,
+        "choices": [
+          "Tune the receiver",
+          "Try the brass key",
+          "Trust Lune",
+          "Go with this"
+        ],
+        "max_choice_chars": 17,
+        "pressure": 1.0
+      }
+    ],
+    "titles": [
+      {
+        "node_id": "title",
+        "titleMain": "SIGNAL BEFORE DAWN",
+        "titleSub": "one-hour mystery",
+        "titleMenu": [
+          "Begin",
+          "Load"
+        ]
+      }
+    ],
+    "images": {
+      "font_proof_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/font-proof-sheet.png",
+        "width": 732,
+        "height": 304,
+        "sha256": "bc5f9b6ca90acc63cb66977ec6fb0c4af519a6e7459a7e56fbe737a1882c0c30"
+      },
+      "text_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/text-preview-sheet.png",
+        "width": 930,
+        "height": 1910,
+        "sha256": "7aaa59d5378886beabc32d56e4a8813229acef0264dd9d06a0a4d16cc2ed4c31"
+      }
+    }
+  }
+}

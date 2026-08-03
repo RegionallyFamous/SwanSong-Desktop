@@ -1,0 +1,2230 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:46.374691+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "contract": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/visual-contract.json",
+      "sha256": "ad6cd0e54887d1f12ee431f913c4ef970d90f80e22fed8f08ef666e9a80c3eea",
+      "schema_version": 1
+    },
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/projects/signal-before-dawn-slice.wscvn.json",
+      "sha256": "12e91e46f011e49043a3e43bfc58674c37b7c66c6a6af76bb1baf653bf1d2480"
+    },
+    "thresholds": {
+      "max_choice_label_chars": 22,
+      "min_sprite_bg_luma_delta": 50.0,
+      "max_background_detail_under_sprite": 62.0,
+      "min_mood_base_face_delta": 50,
+      "min_mood_pair_face_delta": 28,
+      "min_side_position_share": 0.25,
+      "max_same_side_staging_run": 5,
+      "text_cols": 26,
+      "text_lines": 3,
+      "face_acting_box": [
+        28,
+        36,
+        68,
+        72
+      ]
+    },
+    "scene_count": 35,
+    "configured_characters": [
+      "lune",
+      "mira"
+    ],
+    "mood_usage": {
+      "lune": {
+        "radio": 6,
+        "alert": 2,
+        "resolved": 5,
+        "warm": 6
+      },
+      "mira": {
+        "action": 2,
+        "worried": 2,
+        "resolved": 7,
+        "smile": 5
+      }
+    },
+    "position_usage": {
+      "right": 19,
+      "left": 16
+    },
+    "position_balance": {
+      "staged_scene_count": 35,
+      "counts": {
+        "right": 19,
+        "left": 16
+      },
+      "shares": {
+        "left": 0.457,
+        "right": 0.543
+      },
+      "longest_staging_streak": {
+        "position": "right",
+        "count": 5,
+        "scene_ids": [
+          "lighthouse_signal",
+          "signal_key_clue",
+          "all_clues",
+          "together_answer",
+          "signal_lune_clue"
+        ]
+      },
+      "staging_streaks": [
+        {
+          "position": "right",
+          "count": 2,
+          "scene_ids": [
+            "opening_watch",
+            "deck_open"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 3,
+          "scene_ids": [
+            "lune_enters",
+            "radio_tune",
+            "locker"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 2,
+          "scene_ids": [
+            "wake_lune",
+            "quiet_deck"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 1,
+          "scene_ids": [
+            "radio_second"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 1,
+          "scene_ids": [
+            "locker_second"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 2,
+          "scene_ids": [
+            "lune_second",
+            "radio_third"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 1,
+          "scene_ids": [
+            "locker_third"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 1,
+          "scene_ids": [
+            "lune_third"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 5,
+          "scene_ids": [
+            "lighthouse_signal",
+            "signal_key_clue",
+            "all_clues",
+            "together_answer",
+            "signal_lune_clue"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 3,
+          "scene_ids": [
+            "under_hatch",
+            "key_lune_clue",
+            "shared_clue"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 1,
+          "scene_ids": [
+            "beacon_answer"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 2,
+          "scene_ids": [
+            "hatch_room_wakes",
+            "lune_reply"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 4,
+          "scene_ids": [
+            "sunrise_wait",
+            "ending_signal",
+            "signal_coda",
+            "ending_together"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 3,
+          "scene_ids": [
+            "together_coda",
+            "ending_hatch",
+            "hatch_coda"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 3,
+          "scene_ids": [
+            "ending_lune",
+            "lune_coda",
+            "ending_sunrise"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 1,
+          "scene_ids": [
+            "sunrise_coda"
+          ]
+        }
+      ]
+    },
+    "minimum_sprite_bg_luma_delta": 51.2,
+    "average_sprite_bg_luma_delta": 79.42,
+    "maximum_background_detail_under_sprite": 58.73,
+    "average_background_detail_under_sprite": 32.58,
+    "review_focus": {
+      "lowest_sprite_bg_contrast": [
+        {
+          "id": "lune_second",
+          "speaker": "Lune",
+          "background": "bg_deck_night",
+          "character": "char_lune_radio_neutral",
+          "position": "left",
+          "mood": "radio",
+          "sprite_bg_luma_delta": 51.2
+        },
+        {
+          "id": "lune_third",
+          "speaker": "Lune",
+          "background": "bg_deck_night",
+          "character": "char_lune_radio_neutral",
+          "position": "left",
+          "mood": "radio",
+          "sprite_bg_luma_delta": 51.2
+        },
+        {
+          "id": "lune_enters",
+          "speaker": "Lune",
+          "background": "bg_radio_closeup",
+          "character": "char_lune_radio_neutral",
+          "position": "left",
+          "mood": "radio",
+          "sprite_bg_luma_delta": 52.97
+        },
+        {
+          "id": "lune_reply",
+          "speaker": "Lune",
+          "background": "bg_radio_closeup",
+          "character": "char_lune_radio_neutral",
+          "position": "left",
+          "mood": "radio",
+          "sprite_bg_luma_delta": 52.97
+        },
+        {
+          "id": "shared_clue",
+          "speaker": "Lune",
+          "background": "bg_deck_night",
+          "character": "char_lune_warm_neutral",
+          "position": "left",
+          "mood": "warm",
+          "sprite_bg_luma_delta": 55.19
+        }
+      ],
+      "busiest_sprite_lanes": [
+        {
+          "id": "shared_clue",
+          "speaker": "Lune",
+          "background": "bg_deck_night",
+          "character": "char_lune_warm_neutral",
+          "position": "left",
+          "mood": "warm",
+          "background_detail_under_sprite": 58.73
+        },
+        {
+          "id": "lune_second",
+          "speaker": "Lune",
+          "background": "bg_deck_night",
+          "character": "char_lune_radio_neutral",
+          "position": "left",
+          "mood": "radio",
+          "background_detail_under_sprite": 57.33
+        },
+        {
+          "id": "lune_third",
+          "speaker": "Lune",
+          "background": "bg_deck_night",
+          "character": "char_lune_radio_neutral",
+          "position": "left",
+          "mood": "radio",
+          "background_detail_under_sprite": 57.33
+        },
+        {
+          "id": "together_coda",
+          "speaker": "Lune",
+          "background": "bg_sunrise_deck",
+          "character": "char_lune_warm_neutral",
+          "position": "left",
+          "mood": "warm",
+          "background_detail_under_sprite": 55.22
+        },
+        {
+          "id": "sunrise_coda",
+          "speaker": "Mira",
+          "background": "bg_sunrise_deck",
+          "character": "char_mira_smile_neutral",
+          "position": "left",
+          "mood": "smile",
+          "background_detail_under_sprite": 55.21
+        }
+      ],
+      "most_text_pressure": [
+        {
+          "id": "lighthouse_signal",
+          "speaker": "Mira",
+          "wrapped_lines": 3,
+          "longest_word": 11
+        },
+        {
+          "id": "ending_signal",
+          "speaker": "Mira",
+          "wrapped_lines": 3,
+          "longest_word": 10
+        },
+        {
+          "id": "key_lune_clue",
+          "speaker": "Lune",
+          "wrapped_lines": 3,
+          "longest_word": 10
+        },
+        {
+          "id": "locker_second",
+          "speaker": "Lune",
+          "wrapped_lines": 3,
+          "longest_word": 10
+        },
+        {
+          "id": "radio_second",
+          "speaker": "Mira",
+          "wrapped_lines": 3,
+          "longest_word": 10
+        }
+      ]
+    },
+    "expression_deltas": [
+      {
+        "character": "lune",
+        "comparison": "base_to_mood",
+        "mood": "alert",
+        "base_id": "char_lune_neutral",
+        "mood_id": "char_lune_alert_neutral",
+        "face_pixels_changed": 841,
+        "minimum": 50
+      },
+      {
+        "character": "lune",
+        "comparison": "base_to_mood",
+        "mood": "radio",
+        "base_id": "char_lune_neutral",
+        "mood_id": "char_lune_radio_neutral",
+        "face_pixels_changed": 1074,
+        "minimum": 50
+      },
+      {
+        "character": "lune",
+        "comparison": "base_to_mood",
+        "mood": "resolved",
+        "base_id": "char_lune_neutral",
+        "mood_id": "char_lune_resolved_neutral",
+        "face_pixels_changed": 796,
+        "minimum": 50
+      },
+      {
+        "character": "lune",
+        "comparison": "base_to_mood",
+        "mood": "warm",
+        "base_id": "char_lune_neutral",
+        "mood_id": "char_lune_warm_neutral",
+        "face_pixels_changed": 861,
+        "minimum": 50
+      },
+      {
+        "character": "lune",
+        "comparison": "mood_to_mood",
+        "mood_a": "alert",
+        "mood_b": "radio",
+        "face_pixels_changed": 1044,
+        "minimum": 28
+      },
+      {
+        "character": "lune",
+        "comparison": "mood_to_mood",
+        "mood_a": "alert",
+        "mood_b": "resolved",
+        "face_pixels_changed": 489,
+        "minimum": 28
+      },
+      {
+        "character": "lune",
+        "comparison": "mood_to_mood",
+        "mood_a": "alert",
+        "mood_b": "warm",
+        "face_pixels_changed": 299,
+        "minimum": 28
+      },
+      {
+        "character": "lune",
+        "comparison": "mood_to_mood",
+        "mood_a": "radio",
+        "mood_b": "resolved",
+        "face_pixels_changed": 1040,
+        "minimum": 28
+      },
+      {
+        "character": "lune",
+        "comparison": "mood_to_mood",
+        "mood_a": "radio",
+        "mood_b": "warm",
+        "face_pixels_changed": 1053,
+        "minimum": 28
+      },
+      {
+        "character": "lune",
+        "comparison": "mood_to_mood",
+        "mood_a": "resolved",
+        "mood_b": "warm",
+        "face_pixels_changed": 515,
+        "minimum": 28
+      },
+      {
+        "character": "mira",
+        "comparison": "base_to_mood",
+        "mood": "action",
+        "base_id": "char_mira_neutral",
+        "mood_id": "char_mira_action_neutral",
+        "face_pixels_changed": 944,
+        "minimum": 50
+      },
+      {
+        "character": "mira",
+        "comparison": "base_to_mood",
+        "mood": "resolved",
+        "base_id": "char_mira_neutral",
+        "mood_id": "char_mira_resolved_neutral",
+        "face_pixels_changed": 703,
+        "minimum": 50
+      },
+      {
+        "character": "mira",
+        "comparison": "base_to_mood",
+        "mood": "smile",
+        "base_id": "char_mira_neutral",
+        "mood_id": "char_mira_smile_neutral",
+        "face_pixels_changed": 702,
+        "minimum": 50
+      },
+      {
+        "character": "mira",
+        "comparison": "base_to_mood",
+        "mood": "worried",
+        "base_id": "char_mira_neutral",
+        "mood_id": "char_mira_worried_neutral",
+        "face_pixels_changed": 754,
+        "minimum": 50
+      },
+      {
+        "character": "mira",
+        "comparison": "mood_to_mood",
+        "mood_a": "action",
+        "mood_b": "resolved",
+        "face_pixels_changed": 914,
+        "minimum": 28
+      },
+      {
+        "character": "mira",
+        "comparison": "mood_to_mood",
+        "mood_a": "action",
+        "mood_b": "smile",
+        "face_pixels_changed": 890,
+        "minimum": 28
+      },
+      {
+        "character": "mira",
+        "comparison": "mood_to_mood",
+        "mood_a": "action",
+        "mood_b": "worried",
+        "face_pixels_changed": 901,
+        "minimum": 28
+      },
+      {
+        "character": "mira",
+        "comparison": "mood_to_mood",
+        "mood_a": "resolved",
+        "mood_b": "smile",
+        "face_pixels_changed": 365,
+        "minimum": 28
+      },
+      {
+        "character": "mira",
+        "comparison": "mood_to_mood",
+        "mood_a": "resolved",
+        "mood_b": "worried",
+        "face_pixels_changed": 406,
+        "minimum": 28
+      },
+      {
+        "character": "mira",
+        "comparison": "mood_to_mood",
+        "mood_a": "smile",
+        "mood_b": "worried",
+        "face_pixels_changed": 456,
+        "minimum": 28
+      }
+    ],
+    "weakest_expression_deltas": [
+      {
+        "character": "lune",
+        "comparison": "mood_to_mood",
+        "mood": null,
+        "mood_a": "alert",
+        "mood_b": "warm",
+        "face_pixels_changed": 299,
+        "minimum": 28
+      },
+      {
+        "character": "mira",
+        "comparison": "mood_to_mood",
+        "mood": null,
+        "mood_a": "resolved",
+        "mood_b": "smile",
+        "face_pixels_changed": 365,
+        "minimum": 28
+      },
+      {
+        "character": "mira",
+        "comparison": "mood_to_mood",
+        "mood": null,
+        "mood_a": "resolved",
+        "mood_b": "worried",
+        "face_pixels_changed": 406,
+        "minimum": 28
+      },
+      {
+        "character": "mira",
+        "comparison": "mood_to_mood",
+        "mood": null,
+        "mood_a": "smile",
+        "mood_b": "worried",
+        "face_pixels_changed": 456,
+        "minimum": 28
+      },
+      {
+        "character": "lune",
+        "comparison": "mood_to_mood",
+        "mood": null,
+        "mood_a": "alert",
+        "mood_b": "resolved",
+        "face_pixels_changed": 489,
+        "minimum": 28
+      }
+    ],
+    "lane_matrix": [
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_lune_alert_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 54.32,
+        "background_detail_under_sprite": 53.68
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_lune_alert_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 59.41,
+        "background_detail_under_sprite": 5.18
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_lune_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 52.58,
+        "background_detail_under_sprite": 54.26
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_lune_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 58.55,
+        "background_detail_under_sprite": 5.1
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_lune_radio_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 55.69,
+        "background_detail_under_sprite": 54.36
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_lune_radio_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 58.7,
+        "background_detail_under_sprite": 5.28
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_lune_resolved_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 54.27,
+        "background_detail_under_sprite": 53.91
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_lune_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 59.33,
+        "background_detail_under_sprite": 5.1
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_lune_warm_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 54.2,
+        "background_detail_under_sprite": 53.77
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_lune_warm_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 59.48,
+        "background_detail_under_sprite": 5.18
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_mira_action_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 58.43,
+        "background_detail_under_sprite": 53.01
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_mira_action_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 65.1,
+        "background_detail_under_sprite": 4.68
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_mira_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 61.32,
+        "background_detail_under_sprite": 53.51
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_mira_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 71.54,
+        "background_detail_under_sprite": 5.12
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_mira_resolved_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 61.42,
+        "background_detail_under_sprite": 52.61
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_mira_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 70.65,
+        "background_detail_under_sprite": 5.77
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_mira_smile_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 61.39,
+        "background_detail_under_sprite": 52.65
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_mira_smile_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 70.19,
+        "background_detail_under_sprite": 5.77
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_mira_worried_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 60.97,
+        "background_detail_under_sprite": 52.22
+      },
+      {
+        "background": "bg_beacon_lens",
+        "background_file": "beacon_lens.png",
+        "character": "char_mira_worried_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 69.52,
+        "background_detail_under_sprite": 5.95
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_lune_alert_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 60.78,
+        "background_detail_under_sprite": 27.0
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_lune_alert_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 62.69,
+        "background_detail_under_sprite": 45.75
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_lune_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 60.28,
+        "background_detail_under_sprite": 26.67
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_lune_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 59.28,
+        "background_detail_under_sprite": 45.53
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_lune_radio_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 61.08,
+        "background_detail_under_sprite": 26.73
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_lune_radio_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 63.33,
+        "background_detail_under_sprite": 46.04
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_lune_resolved_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 60.75,
+        "background_detail_under_sprite": 26.98
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_lune_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 62.24,
+        "background_detail_under_sprite": 45.85
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_lune_warm_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 60.94,
+        "background_detail_under_sprite": 27.01
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_lune_warm_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 62.92,
+        "background_detail_under_sprite": 45.75
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_mira_action_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 67.09,
+        "background_detail_under_sprite": 27.17
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_mira_action_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 65.17,
+        "background_detail_under_sprite": 44.25
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_mira_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 74.73,
+        "background_detail_under_sprite": 28.0
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_mira_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 70.98,
+        "background_detail_under_sprite": 45.46
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_mira_resolved_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 74.44,
+        "background_detail_under_sprite": 28.39
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_mira_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 70.59,
+        "background_detail_under_sprite": 46.21
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_mira_smile_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 74.14,
+        "background_detail_under_sprite": 28.4
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_mira_smile_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 70.09,
+        "background_detail_under_sprite": 46.21
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_mira_worried_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 73.56,
+        "background_detail_under_sprite": 28.58
+      },
+      {
+        "background": "bg_cabin_radio",
+        "background_file": "cabin_radio.png",
+        "character": "char_mira_worried_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 69.49,
+        "background_detail_under_sprite": 46.4
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_lune_alert_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 54.43,
+        "background_detail_under_sprite": 58.72
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_lune_alert_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 70.79,
+        "background_detail_under_sprite": 56.84
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_lune_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 52.45,
+        "background_detail_under_sprite": 58.73
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_lune_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 70.82,
+        "background_detail_under_sprite": 56.68
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_lune_radio_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 51.2,
+        "background_detail_under_sprite": 57.33
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_lune_radio_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 62.93,
+        "background_detail_under_sprite": 55.09
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_lune_resolved_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 53.9,
+        "background_detail_under_sprite": 58.84
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_lune_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 70.27,
+        "background_detail_under_sprite": 56.26
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_lune_warm_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 55.19,
+        "background_detail_under_sprite": 58.73
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_lune_warm_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 71.03,
+        "background_detail_under_sprite": 56.57
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_mira_action_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 53.22,
+        "background_detail_under_sprite": 58.59
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_mira_action_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 64.5,
+        "background_detail_under_sprite": 53.17
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_mira_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 60.59,
+        "background_detail_under_sprite": 58.95
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_mira_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 79.29,
+        "background_detail_under_sprite": 55.88
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_mira_resolved_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 59.09,
+        "background_detail_under_sprite": 57.73
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_mira_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 76.28,
+        "background_detail_under_sprite": 54.72
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_mira_smile_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 58.21,
+        "background_detail_under_sprite": 57.73
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_mira_smile_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 75.59,
+        "background_detail_under_sprite": 54.61
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_mira_worried_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 58.02,
+        "background_detail_under_sprite": 57.24
+      },
+      {
+        "background": "bg_deck_night",
+        "background_file": "deck_night.png",
+        "character": "char_mira_worried_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 74.66,
+        "background_detail_under_sprite": 54.56
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_lune_alert_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 55.22,
+        "background_detail_under_sprite": 38.55
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_lune_alert_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 59.94,
+        "background_detail_under_sprite": 60.42
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_lune_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 53.83,
+        "background_detail_under_sprite": 39.49
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_lune_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 59.56,
+        "background_detail_under_sprite": 60.25
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_lune_radio_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 54.99,
+        "background_detail_under_sprite": 40.27
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_lune_radio_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 55.47,
+        "background_detail_under_sprite": 60.75
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_lune_resolved_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 55.47,
+        "background_detail_under_sprite": 39.03
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_lune_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 59.93,
+        "background_detail_under_sprite": 60.51
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_lune_warm_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 55.51,
+        "background_detail_under_sprite": 38.5
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_lune_warm_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 60.22,
+        "background_detail_under_sprite": 60.37
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_mira_action_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 61.82,
+        "background_detail_under_sprite": 43.12
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_mira_action_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 56.08,
+        "background_detail_under_sprite": 59.59
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_mira_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 66.27,
+        "background_detail_under_sprite": 40.4
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_mira_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 64.97,
+        "background_detail_under_sprite": 61.82
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_mira_resolved_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 65.22,
+        "background_detail_under_sprite": 40.49
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_mira_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 64.19,
+        "background_detail_under_sprite": 61.86
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_mira_smile_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 64.65,
+        "background_detail_under_sprite": 40.44
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_mira_smile_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 63.86,
+        "background_detail_under_sprite": 61.8
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_mira_worried_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 64.17,
+        "background_detail_under_sprite": 40.3
+      },
+      {
+        "background": "bg_hatch_key",
+        "background_file": "hatch_key.png",
+        "character": "char_mira_worried_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 64.33,
+        "background_detail_under_sprite": 61.73
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_lune_alert_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 101.16,
+        "background_detail_under_sprite": 43.99
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_lune_alert_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 159.2,
+        "background_detail_under_sprite": 20.89
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_lune_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 102.53,
+        "background_detail_under_sprite": 45.05
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_lune_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 160.05,
+        "background_detail_under_sprite": 20.8
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_lune_radio_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 91.74,
+        "background_detail_under_sprite": 46.51
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_lune_radio_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 158.21,
+        "background_detail_under_sprite": 22.94
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_lune_resolved_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 101.5,
+        "background_detail_under_sprite": 44.24
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_lune_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 158.79,
+        "background_detail_under_sprite": 20.76
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_lune_warm_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 101.59,
+        "background_detail_under_sprite": 43.95
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_lune_warm_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 158.43,
+        "background_detail_under_sprite": 20.86
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_mira_action_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 95.54,
+        "background_detail_under_sprite": 44.62
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_mira_action_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 168.25,
+        "background_detail_under_sprite": 22.98
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_mira_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 115.96,
+        "background_detail_under_sprite": 43.66
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_mira_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 168.64,
+        "background_detail_under_sprite": 19.74
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_mira_resolved_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 112.88,
+        "background_detail_under_sprite": 44.0
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_mira_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 168.02,
+        "background_detail_under_sprite": 20.42
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_mira_smile_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 112.72,
+        "background_detail_under_sprite": 43.95
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_mira_smile_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 168.55,
+        "background_detail_under_sprite": 20.45
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_mira_worried_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 111.27,
+        "background_detail_under_sprite": 43.94
+      },
+      {
+        "background": "bg_lighthouse_dawn",
+        "background_file": "lighthouse_dawn.png",
+        "character": "char_mira_worried_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 168.51,
+        "background_detail_under_sprite": 20.41
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_lune_alert_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 52.63,
+        "background_detail_under_sprite": 19.95
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_lune_alert_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 52.08,
+        "background_detail_under_sprite": 42.36
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_lune_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 51.74,
+        "background_detail_under_sprite": 20.51
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_lune_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 51.44,
+        "background_detail_under_sprite": 42.94
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_lune_radio_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 52.97,
+        "background_detail_under_sprite": 21.85
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_lune_radio_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 52.72,
+        "background_detail_under_sprite": 44.19
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_lune_resolved_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 52.86,
+        "background_detail_under_sprite": 20.42
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_lune_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 52.14,
+        "background_detail_under_sprite": 42.83
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_lune_warm_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 52.9,
+        "background_detail_under_sprite": 19.96
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_lune_warm_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 52.75,
+        "background_detail_under_sprite": 42.31
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_mira_action_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 59.03,
+        "background_detail_under_sprite": 20.35
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_mira_action_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 53.25,
+        "background_detail_under_sprite": 42.46
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_mira_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 66.54,
+        "background_detail_under_sprite": 20.51
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_mira_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 57.74,
+        "background_detail_under_sprite": 43.68
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_mira_resolved_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 67.05,
+        "background_detail_under_sprite": 22.22
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_mira_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 58.0,
+        "background_detail_under_sprite": 45.03
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_mira_smile_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 66.51,
+        "background_detail_under_sprite": 22.26
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_mira_smile_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 57.56,
+        "background_detail_under_sprite": 45.02
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_mira_worried_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 66.08,
+        "background_detail_under_sprite": 22.37
+      },
+      {
+        "background": "bg_radio_closeup",
+        "background_file": "radio_closeup.png",
+        "character": "char_mira_worried_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 57.15,
+        "background_detail_under_sprite": 45.22
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_lune_alert_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 74.33,
+        "background_detail_under_sprite": 55.25
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_lune_alert_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 111.67,
+        "background_detail_under_sprite": 39.1
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_lune_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 75.31,
+        "background_detail_under_sprite": 55.0
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_lune_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 112.31,
+        "background_detail_under_sprite": 39.68
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_lune_radio_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 78.42,
+        "background_detail_under_sprite": 54.56
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_lune_radio_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 110.8,
+        "background_detail_under_sprite": 40.0
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_lune_resolved_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 75.68,
+        "background_detail_under_sprite": 55.36
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_lune_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 111.53,
+        "background_detail_under_sprite": 39.11
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_lune_warm_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 74.48,
+        "background_detail_under_sprite": 55.22
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_lune_warm_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 111.01,
+        "background_detail_under_sprite": 39.08
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_mira_action_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 81.46,
+        "background_detail_under_sprite": 60.75
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_mira_action_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 112.66,
+        "background_detail_under_sprite": 36.09
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_mira_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 84.8,
+        "background_detail_under_sprite": 55.69
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_mira_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 123.35,
+        "background_detail_under_sprite": 35.99
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_mira_resolved_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 88.17,
+        "background_detail_under_sprite": 55.12
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_mira_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 121.75,
+        "background_detail_under_sprite": 34.69
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_mira_smile_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 88.07,
+        "background_detail_under_sprite": 55.21
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_mira_smile_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 121.77,
+        "background_detail_under_sprite": 34.71
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_mira_worried_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 88.61,
+        "background_detail_under_sprite": 54.87
+      },
+      {
+        "background": "bg_sunrise_deck",
+        "background_file": "sunrise_deck.png",
+        "character": "char_mira_worried_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 121.52,
+        "background_detail_under_sprite": 34.33
+      }
+    ],
+    "weakest_lane_matrix_contrast": [
+      {
+        "background": "bg_deck_night",
+        "character": "char_lune_radio_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 51.2
+      },
+      {
+        "background": "bg_radio_closeup",
+        "character": "char_lune_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 51.44
+      },
+      {
+        "background": "bg_radio_closeup",
+        "character": "char_lune_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 51.74
+      },
+      {
+        "background": "bg_radio_closeup",
+        "character": "char_lune_alert_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 52.08
+      },
+      {
+        "background": "bg_radio_closeup",
+        "character": "char_lune_resolved_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 52.14
+      }
+    ],
+    "busiest_lane_matrix": [
+      {
+        "background": "bg_hatch_key",
+        "character": "char_mira_resolved_neutral",
+        "position": "right",
+        "background_detail_under_sprite": 61.86
+      },
+      {
+        "background": "bg_hatch_key",
+        "character": "char_mira_neutral",
+        "position": "right",
+        "background_detail_under_sprite": 61.82
+      },
+      {
+        "background": "bg_hatch_key",
+        "character": "char_mira_smile_neutral",
+        "position": "right",
+        "background_detail_under_sprite": 61.8
+      },
+      {
+        "background": "bg_hatch_key",
+        "character": "char_mira_worried_neutral",
+        "position": "right",
+        "background_detail_under_sprite": 61.73
+      },
+      {
+        "background": "bg_hatch_key",
+        "character": "char_lune_radio_neutral",
+        "position": "right",
+        "background_detail_under_sprite": 60.75
+      }
+    ],
+    "scene_facts": [
+      {
+        "id": "opening_watch",
+        "speaker": "Mira",
+        "bg_image_id": "bg_deck_night",
+        "char_id": "char_mira_action_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 6,
+        "mood": "action",
+        "sprite_bg_luma_delta": 64.5,
+        "background_detail_under_sprite": 53.17
+      },
+      {
+        "id": "deck_open",
+        "speaker": "Mira",
+        "bg_image_id": "bg_deck_night",
+        "char_id": "char_mira_worried_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 7,
+        "mood": "worried",
+        "sprite_bg_luma_delta": 74.66,
+        "background_detail_under_sprite": 54.56
+      },
+      {
+        "id": "lune_enters",
+        "speaker": "Lune",
+        "bg_image_id": "bg_radio_closeup",
+        "char_id": "char_lune_radio_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 6,
+        "mood": "radio",
+        "sprite_bg_luma_delta": 52.97,
+        "background_detail_under_sprite": 21.85
+      },
+      {
+        "id": "radio_tune",
+        "speaker": "Mira",
+        "bg_image_id": "bg_radio_closeup",
+        "char_id": "char_mira_resolved_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 6,
+        "mood": "resolved",
+        "sprite_bg_luma_delta": 67.05,
+        "background_detail_under_sprite": 22.22
+      },
+      {
+        "id": "locker",
+        "speaker": "Lune",
+        "bg_image_id": "bg_cabin_radio",
+        "char_id": "char_lune_alert_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 7,
+        "mood": "alert",
+        "sprite_bg_luma_delta": 60.78,
+        "background_detail_under_sprite": 27.0
+      },
+      {
+        "id": "wake_lune",
+        "speaker": "Lune",
+        "bg_image_id": "bg_deck_night",
+        "char_id": "char_lune_radio_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 7,
+        "mood": "radio",
+        "sprite_bg_luma_delta": 62.93,
+        "background_detail_under_sprite": 55.09
+      },
+      {
+        "id": "quiet_deck",
+        "speaker": "Mira",
+        "bg_image_id": "bg_deck_night",
+        "char_id": "char_mira_worried_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 7,
+        "mood": "worried",
+        "sprite_bg_luma_delta": 74.66,
+        "background_detail_under_sprite": 54.56
+      },
+      {
+        "id": "radio_second",
+        "speaker": "Mira",
+        "bg_image_id": "bg_radio_closeup",
+        "char_id": "char_mira_resolved_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 10,
+        "mood": "resolved",
+        "sprite_bg_luma_delta": 67.05,
+        "background_detail_under_sprite": 22.22
+      },
+      {
+        "id": "locker_second",
+        "speaker": "Lune",
+        "bg_image_id": "bg_cabin_radio",
+        "char_id": "char_lune_resolved_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 10,
+        "mood": "resolved",
+        "sprite_bg_luma_delta": 62.24,
+        "background_detail_under_sprite": 45.85
+      },
+      {
+        "id": "lune_second",
+        "speaker": "Lune",
+        "bg_image_id": "bg_deck_night",
+        "char_id": "char_lune_radio_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 8,
+        "mood": "radio",
+        "sprite_bg_luma_delta": 51.2,
+        "background_detail_under_sprite": 57.33
+      },
+      {
+        "id": "radio_third",
+        "speaker": "Mira",
+        "bg_image_id": "bg_radio_closeup",
+        "char_id": "char_mira_resolved_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 8,
+        "mood": "resolved",
+        "sprite_bg_luma_delta": 67.05,
+        "background_detail_under_sprite": 22.22
+      },
+      {
+        "id": "locker_third",
+        "speaker": "Lune",
+        "bg_image_id": "bg_cabin_radio",
+        "char_id": "char_lune_resolved_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 9,
+        "mood": "resolved",
+        "sprite_bg_luma_delta": 62.24,
+        "background_detail_under_sprite": 45.85
+      },
+      {
+        "id": "lune_third",
+        "speaker": "Lune",
+        "bg_image_id": "bg_deck_night",
+        "char_id": "char_lune_radio_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 7,
+        "mood": "radio",
+        "sprite_bg_luma_delta": 51.2,
+        "background_detail_under_sprite": 57.33
+      },
+      {
+        "id": "lighthouse_signal",
+        "speaker": "Mira",
+        "bg_image_id": "bg_lighthouse_dawn",
+        "char_id": "char_mira_resolved_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 11,
+        "mood": "resolved",
+        "sprite_bg_luma_delta": 168.02,
+        "background_detail_under_sprite": 20.42
+      },
+      {
+        "id": "signal_key_clue",
+        "speaker": "Mira",
+        "bg_image_id": "bg_lighthouse_dawn",
+        "char_id": "char_mira_resolved_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 2,
+        "page_count": 1,
+        "longest_word": 10,
+        "mood": "resolved",
+        "sprite_bg_luma_delta": 168.02,
+        "background_detail_under_sprite": 20.42
+      },
+      {
+        "id": "all_clues",
+        "speaker": "Mira",
+        "bg_image_id": "bg_lighthouse_dawn",
+        "char_id": "char_mira_resolved_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 9,
+        "mood": "resolved",
+        "sprite_bg_luma_delta": 168.02,
+        "background_detail_under_sprite": 20.42
+      },
+      {
+        "id": "together_answer",
+        "speaker": "Lune",
+        "bg_image_id": "bg_beacon_lens",
+        "char_id": "char_lune_warm_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 10,
+        "mood": "warm",
+        "sprite_bg_luma_delta": 59.48,
+        "background_detail_under_sprite": 5.18
+      },
+      {
+        "id": "signal_lune_clue",
+        "speaker": "Lune",
+        "bg_image_id": "bg_lighthouse_dawn",
+        "char_id": "char_lune_radio_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 8,
+        "mood": "radio",
+        "sprite_bg_luma_delta": 158.21,
+        "background_detail_under_sprite": 22.94
+      },
+      {
+        "id": "under_hatch",
+        "speaker": "Lune",
+        "bg_image_id": "bg_hatch_key",
+        "char_id": "char_lune_alert_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 7,
+        "mood": "alert",
+        "sprite_bg_luma_delta": 55.22,
+        "background_detail_under_sprite": 38.55
+      },
+      {
+        "id": "key_lune_clue",
+        "speaker": "Lune",
+        "bg_image_id": "bg_cabin_radio",
+        "char_id": "char_lune_warm_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 10,
+        "mood": "warm",
+        "sprite_bg_luma_delta": 60.94,
+        "background_detail_under_sprite": 27.01
+      },
+      {
+        "id": "shared_clue",
+        "speaker": "Lune",
+        "bg_image_id": "bg_deck_night",
+        "char_id": "char_lune_warm_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 8,
+        "mood": "warm",
+        "sprite_bg_luma_delta": 55.19,
+        "background_detail_under_sprite": 58.73
+      },
+      {
+        "id": "beacon_answer",
+        "speaker": "Mira",
+        "bg_image_id": "bg_beacon_lens",
+        "char_id": "char_mira_resolved_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 8,
+        "mood": "resolved",
+        "sprite_bg_luma_delta": 70.65,
+        "background_detail_under_sprite": 5.77
+      },
+      {
+        "id": "hatch_room_wakes",
+        "speaker": "Lune",
+        "bg_image_id": "bg_hatch_key",
+        "char_id": "char_lune_resolved_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 6,
+        "mood": "resolved",
+        "sprite_bg_luma_delta": 55.47,
+        "background_detail_under_sprite": 39.03
+      },
+      {
+        "id": "lune_reply",
+        "speaker": "Lune",
+        "bg_image_id": "bg_radio_closeup",
+        "char_id": "char_lune_radio_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 8,
+        "mood": "radio",
+        "sprite_bg_luma_delta": 52.97,
+        "background_detail_under_sprite": 21.85
+      },
+      {
+        "id": "sunrise_wait",
+        "speaker": "Mira",
+        "bg_image_id": "bg_sunrise_deck",
+        "char_id": "char_mira_action_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 9,
+        "mood": "action",
+        "sprite_bg_luma_delta": 112.66,
+        "background_detail_under_sprite": 36.09
+      },
+      {
+        "id": "ending_signal",
+        "speaker": "Mira",
+        "bg_image_id": "bg_beacon_lens",
+        "char_id": "char_mira_smile_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 10,
+        "mood": "smile",
+        "sprite_bg_luma_delta": 70.19,
+        "background_detail_under_sprite": 5.77
+      },
+      {
+        "id": "signal_coda",
+        "speaker": "Mira",
+        "bg_image_id": "bg_beacon_lens",
+        "char_id": "char_mira_smile_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 9,
+        "mood": "smile",
+        "sprite_bg_luma_delta": 70.19,
+        "background_detail_under_sprite": 5.77
+      },
+      {
+        "id": "ending_together",
+        "speaker": "Mira",
+        "bg_image_id": "bg_beacon_lens",
+        "char_id": "char_mira_smile_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 6,
+        "mood": "smile",
+        "sprite_bg_luma_delta": 70.19,
+        "background_detail_under_sprite": 5.77
+      },
+      {
+        "id": "together_coda",
+        "speaker": "Lune",
+        "bg_image_id": "bg_sunrise_deck",
+        "char_id": "char_lune_warm_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 9,
+        "mood": "warm",
+        "sprite_bg_luma_delta": 74.48,
+        "background_detail_under_sprite": 55.22
+      },
+      {
+        "id": "ending_hatch",
+        "speaker": "Lune",
+        "bg_image_id": "bg_hatch_key",
+        "char_id": "char_lune_resolved_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 7,
+        "mood": "resolved",
+        "sprite_bg_luma_delta": 55.47,
+        "background_detail_under_sprite": 39.03
+      },
+      {
+        "id": "hatch_coda",
+        "speaker": "Lune",
+        "bg_image_id": "bg_hatch_key",
+        "char_id": "char_lune_resolved_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 8,
+        "mood": "resolved",
+        "sprite_bg_luma_delta": 55.47,
+        "background_detail_under_sprite": 39.03
+      },
+      {
+        "id": "ending_lune",
+        "speaker": "Lune",
+        "bg_image_id": "bg_beacon_lens",
+        "char_id": "char_lune_warm_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 7,
+        "mood": "warm",
+        "sprite_bg_luma_delta": 59.48,
+        "background_detail_under_sprite": 5.18
+      },
+      {
+        "id": "lune_coda",
+        "speaker": "Lune",
+        "bg_image_id": "bg_sunrise_deck",
+        "char_id": "char_lune_warm_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 7,
+        "mood": "warm",
+        "sprite_bg_luma_delta": 111.01,
+        "background_detail_under_sprite": 39.08
+      },
+      {
+        "id": "ending_sunrise",
+        "speaker": "Mira",
+        "bg_image_id": "bg_sunrise_deck",
+        "char_id": "char_mira_smile_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 7,
+        "mood": "smile",
+        "sprite_bg_luma_delta": 121.77,
+        "background_detail_under_sprite": 34.71
+      },
+      {
+        "id": "sunrise_coda",
+        "speaker": "Mira",
+        "bg_image_id": "bg_sunrise_deck",
+        "char_id": "char_mira_smile_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 1,
+        "longest_word": 6,
+        "mood": "smile",
+        "sprite_bg_luma_delta": 88.07,
+        "background_detail_under_sprite": 55.21
+      }
+    ],
+    "storyboard": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/storyboard_sheet.png",
+      "size": [
+        934,
+        5770
+      ],
+      "expected_size": [
+        934,
+        5770
+      ],
+      "bytes": 816983,
+      "sha256": "cf31b10e63419b7b08396674516139fa20c02c15f5681048bf9b304a78581752"
+    },
+    "expression_audition_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/expression_audition_sheet.png",
+      "size": [
+        900,
+        1748
+      ],
+      "expected_size": [
+        900,
+        1748
+      ],
+      "bytes": 110332,
+      "sha256": "f7c4da50fcdcb6c212061af36e2ca17875cd020a43d293af85ca77862a2bd344"
+    }
+  }
+}

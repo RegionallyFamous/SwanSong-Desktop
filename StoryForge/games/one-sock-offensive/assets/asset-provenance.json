@@ -1,0 +1,215 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "art_policy": "Every pictorial source master was generated with built-in ImageGen; scripts only post-process accepted masters.",
+  "outputs": {
+    "backgrounds/bg_title.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/background_title_imagegen_v1.png",
+      "source_sha256": "6ed92386fb36d7f20327de1304dca6ba4750aed2a1e16802a9e991e361b6f051",
+      "output_sha256": "4adf4020748d152d51953854c9ac4eec108bfec3b6f05d10b43319bc3042111a",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 116.15
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_main.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/background_main_imagegen_v1.png",
+      "source_sha256": "39b0fa4402ddfb72c8d12ad6ffc530b70518022736e053b3f25665b09c94efa8",
+      "output_sha256": "d3832381e0fe42e06c4c07b6e5db9087ebc017c1674536ceb4809b221aedd212",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 219.67
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_a.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/background_ending_a_imagegen_v1.png",
+      "source_sha256": "815a84618cfa0d599242c0877fad94a87bbe892cada866801fc6f6cafbfd2756",
+      "output_sha256": "c1ee8998c48869f4980e5f2cb0994dbb70a06cf8aeb0921401430ee29b445571",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 128.64
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_b.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/background_ending_b_imagegen_v1.png",
+      "source_sha256": "93fba732efee44554b5a8eb2c9e6f5d5d455b1d21b649d9b690a65506cfe01a0",
+      "output_sha256": "4b7fb98fa5bc50bcab280eb8e5c54a5e02fe0caea9ab6eec3d1a75b6905f093b",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 127.74
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "characters/zaku_neutral.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "0586a82fa724ef298adbdfb68c59eaa077ab4bc39956854b91edd9d9cb129105",
+      "output_sha256": "65817ad9838d018d8b89daeccce9891155fd8e1d9eba78109c61a9aed8fee0f9",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          5,
+          3,
+          90,
+          127
+        ],
+        "alpha_coverage": 0.5186,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6819,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 52.72,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 56.75
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6373,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/zaku_talk.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "0586a82fa724ef298adbdfb68c59eaa077ab4bc39956854b91edd9d9cb129105",
+      "output_sha256": "3a3453df532c14a34ba0558d7c9b592045c55a210007fc19ac46f67e4158b2f6",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          5,
+          3,
+          90,
+          127
+        ],
+        "alpha_coverage": 0.5186,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6819,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 52.29,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 54.68
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6373,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/zaku_blink.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/one-sock-offensive/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "0586a82fa724ef298adbdfb68c59eaa077ab4bc39956854b91edd9d9cb129105",
+      "output_sha256": "443789e3c22d277af14552295107cf23d54e2523a287b4fef64ae551e4803866",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          5,
+          3,
+          90,
+          127
+        ],
+        "alpha_coverage": 0.5186,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.6819,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 52.66,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 55.93
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6373,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    }
+  }
+}

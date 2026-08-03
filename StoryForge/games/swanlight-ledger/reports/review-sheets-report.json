@@ -1,0 +1,1088 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:30:10.016317+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "swanlight-ledger",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/projects/swanlight-ledger.wscvn.json",
+      "exists": true,
+      "bytes": 399756,
+      "sha256": "cad2417a61471855a397098cfdb700864a6d4dc75d39155d4bd33c2b08342875"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 45,
+    "preview_node_ids": [
+      "title",
+      "sale_opens",
+      "sale_opens__afterbeat",
+      "book_bin",
+      "book_bin__afterbeat",
+      "first_sort",
+      "first_sort__afterbeat",
+      "manual_shadow",
+      "manual_shadow__afterbeat",
+      "handwritten_list",
+      "handwritten_list__afterbeat",
+      "test_table",
+      "test_table__afterbeat",
+      "blue_boot",
+      "blue_boot__afterbeat",
+      "choice_search",
+      "search_book_cart",
+      "search_book_cart__afterbeat",
+      "found_page_books",
+      "found_page_books__afterbeat",
+      "search_lost_box",
+      "search_lost_box__afterbeat",
+      "found_page_lost",
+      "found_page_lost__afterbeat",
+      "search_staff_desk",
+      "search_staff_desk__afterbeat",
+      "found_page_clerk",
+      "found_page_clerk__afterbeat",
+      "paper_save",
+      "paper_save__afterbeat",
+      "home_arrival",
+      "home_arrival__afterbeat",
+      "choice_care",
+      "preserve_page",
+      "preserve_page__afterbeat",
+      "play_first",
+      "play_first__afterbeat",
+      "share_note",
+      "share_note__afterbeat",
+      "end_archive",
+      "end_archive__afterbeat",
+      "end_play",
+      "end_play__afterbeat",
+      "end_share",
+      "end_share__afterbeat"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 391022,
+      "sha256": "f7f6c593021f2956657fb66496d0cdc528e9a21fe512b7b54a5446bff7e113f6",
+      "size": [
+        712,
+        2560
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swanlight-ledger/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 146670,
+      "sha256": "467a540d5ef34f05566335808345933085db11052bca7e50324ca70212e844ad",
+      "size": [
+        488,
+        1160
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "f791073d679a45cf1eee11c1a8f94f0f8a6c78aac5b079163eecc7f4dd003058"
+      },
+      {
+        "index": 1,
+        "node_id": "sale_opens",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "ee6c4f7d615a980613523066d4fb5d00dc9ce4a2c721229f3879fc27c251e2e1"
+      },
+      {
+        "index": 2,
+        "node_id": "sale_opens__afterbeat",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "4c83ca4b2d1b1bf2d56ec6fc179c9ae7371a8b5526a0e3f78cd26995f6657b33"
+      },
+      {
+        "index": 3,
+        "node_id": "book_bin",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "9427e83590f35ef72c1931d1f96a04801abfa8c1552098b80397b9de7c45b3c1"
+      },
+      {
+        "index": 4,
+        "node_id": "book_bin__afterbeat",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "aa93386019514e055ebb51d141e48954dbc909520041b49305d2b07975bbe1f9"
+      },
+      {
+        "index": 5,
+        "node_id": "first_sort",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "6d92dd3ee78cc60fa93af32ad7e682a6dcee3f7821bdcbe6283927ba72913120"
+      },
+      {
+        "index": 6,
+        "node_id": "first_sort__afterbeat",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "f2652a0438eb5f9dd25d730bf24e3bb34bc41e1c557c7928d89eae4e935ec4cf"
+      },
+      {
+        "index": 7,
+        "node_id": "manual_shadow",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "65103957c5d454af4e8ef1b42bc2e7c3c52595d40dd8dbc5fd995367b1d591b8"
+      },
+      {
+        "index": 8,
+        "node_id": "manual_shadow__afterbeat",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "afff7044f8a73b5c175ecaaa09d7ed1c06f8eae812dce534301f6cf2910fe6b9"
+      },
+      {
+        "index": 9,
+        "node_id": "handwritten_list",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "3e90e00bececaab70d000a479f3ddeed0a095de7d21d662cefd4842be9ec41d4"
+      },
+      {
+        "index": 10,
+        "node_id": "handwritten_list__afterbeat",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "cab4ce1ea5c668952e83b1ee97f7aa24d845f3868dffd3633039c8f06831cac0"
+      },
+      {
+        "index": 11,
+        "node_id": "test_table",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "1ce3c16b67e90e99faaa633a24ea1f6ed45f99047c9f6e04f4669be439a99337"
+      },
+      {
+        "index": 12,
+        "node_id": "test_table__afterbeat",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "77f9a7c791a4e7bb1551ee3c9950e7732de1df6fd58517e6451ac115a5a02f99"
+      },
+      {
+        "index": 13,
+        "node_id": "blue_boot",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "95b797041418e0fa738ba8d16f573573de83e8a82232b1cecee04b3d2431e901"
+      },
+      {
+        "index": 14,
+        "node_id": "blue_boot__afterbeat",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "7d8d43df847d0653aa7643a1cf20af4e0312e01366e3ab0935b22956694a75c9"
+      },
+      {
+        "index": 15,
+        "node_id": "choice_search",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "455e1345ee177919ce7e1026c76d09f63b5bdd7b50d7ee735f8668f62bda95ac"
+      },
+      {
+        "index": 16,
+        "node_id": "search_book_cart",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "4dbd5d85efade0a427fd0968fefe7a2ea69608d02f9ead91e5bfab7eae66e2ec"
+      },
+      {
+        "index": 17,
+        "node_id": "search_book_cart__afterbeat",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "31a8b43867558415affefae82a26e0976b9509014e971cb74907cb6c37ac9f6a"
+      },
+      {
+        "index": 18,
+        "node_id": "found_page_books",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "def1efd88912f3b393ded4dbdd9ce0e0c1d9ea58a955bed838860970fffc29cb"
+      },
+      {
+        "index": 19,
+        "node_id": "found_page_books__afterbeat",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "faed0e17583321290b13a7ba6ccb3b48b3152c74b5f2e1f29d4fa8218fddf528"
+      },
+      {
+        "index": 20,
+        "node_id": "search_lost_box",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "cac0b1b11fd6c7d2f4efd317fa8016164cc683ca24ecdfffb4de487691f9c81b"
+      },
+      {
+        "index": 21,
+        "node_id": "search_lost_box__afterbeat",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "e064bb56b6a2f7bdb0ec79455656e405f66ab70788f1673210be4794fd852c77"
+      },
+      {
+        "index": 22,
+        "node_id": "found_page_lost",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "168d9c93dff59db52a86bbab58d4030bfa683962ec2c2b7e3a09802c43aac0ec"
+      },
+      {
+        "index": 23,
+        "node_id": "found_page_lost__afterbeat",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "dd032f7d829dbe9df903036d1f8dffedf7b5c2c1f782613566230cdbd565dc41"
+      },
+      {
+        "index": 24,
+        "node_id": "search_staff_desk",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "356f4afa1e297a55ec66787fb6d0de8b1fca521a0a33414e114cf70b7397f88e"
+      },
+      {
+        "index": 25,
+        "node_id": "search_staff_desk__afterbeat",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "c9766891d2779e5a8c73c862cf55ebe4e6831deec9f77514982299aa23531762"
+      },
+      {
+        "index": 26,
+        "node_id": "found_page_clerk",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "302c7a473e21bf8f062f63b7d35bf7ea3a02069cf1bef52c812b71d90974c70e"
+      },
+      {
+        "index": 27,
+        "node_id": "found_page_clerk__afterbeat",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "0b8ecd08f887ea2cd918f2b8e08745bb59863153d4c6c0e4177f1b7020dfc176"
+      },
+      {
+        "index": 28,
+        "node_id": "paper_save",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "e8ea5bfcea470e36bd18f68c3d13edc2689b2f1fd0a0691e75685fa6e14241e1"
+      },
+      {
+        "index": 29,
+        "node_id": "paper_save__afterbeat",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "ccd15f62f32637ae768249776620a4330d6d0f9949b08ddf8fb2938dbfb4ab3e"
+      },
+      {
+        "index": 30,
+        "node_id": "home_arrival",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "6121105f5be129b070fcd3114497985ed8a555c56e8904b4e57f370bd305fe44"
+      },
+      {
+        "index": 31,
+        "node_id": "home_arrival__afterbeat",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "bc76d042efd4f77819372a86e589b9f5eb2b129c2479847b54342e8567710485"
+      },
+      {
+        "index": 32,
+        "node_id": "choice_care",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "4cd9becabfa5f6a4f1e1e69f7adfaee432170e4fbed0128efea39132e261ccfa"
+      },
+      {
+        "index": 33,
+        "node_id": "preserve_page",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "fd6a4ae6fe94c566f3eef1506202c0896efeffe9ba9e49f5d80cd9a8cf9b2604"
+      },
+      {
+        "index": 34,
+        "node_id": "preserve_page__afterbeat",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "7caae10d9334395678fcc40e9acf514b715f8019a43a51d85a8df1c146f2fbfa"
+      },
+      {
+        "index": 35,
+        "node_id": "play_first",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "ada652cf959d1bd171b9596556dd51a41774d5bf132b9d37a9a0f9f2a9d4bf8e"
+      },
+      {
+        "index": 36,
+        "node_id": "play_first__afterbeat",
+        "rect": [
+          10,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "bc9fca1433e8e4853e89852b7040ebe97ff2c4044eb8c95756e5236ea6a12415"
+      },
+      {
+        "index": 37,
+        "node_id": "share_note",
+        "rect": [
+          244,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "98a28b0e2d8164de49013cfc2985dfb39439e6ea89aaf4af436b280c862b262a"
+      },
+      {
+        "index": 38,
+        "node_id": "share_note__afterbeat",
+        "rect": [
+          478,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "5e9f31a6ec7e87cfe57094b629ba0897a827a2b333437a83b89ea2e0ea6386c6"
+      },
+      {
+        "index": 39,
+        "node_id": "end_archive",
+        "rect": [
+          10,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "f14739063d1a6b1029eae6ed0bef4c7361e56de62c7f81936a56476f89c2f6f3"
+      },
+      {
+        "index": 40,
+        "node_id": "end_archive__afterbeat",
+        "rect": [
+          244,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "ce321ca99beee38c30a317102ed09317afacd7ecef59bc262b61934374a09960"
+      },
+      {
+        "index": 41,
+        "node_id": "end_play",
+        "rect": [
+          478,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "414b91e0ffd9737cbdb72f3b01bddc07a8777acbd238a7f17b19dfd6819c1c3c"
+      },
+      {
+        "index": 42,
+        "node_id": "end_play__afterbeat",
+        "rect": [
+          10,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "c8a71e930347f7d24d4704408e1e794452c08e6833a5e83ffac8d1c018628d2d"
+      },
+      {
+        "index": 43,
+        "node_id": "end_share",
+        "rect": [
+          244,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "3695877bc941a7531954c372dd8c4b0b884cd94356409c07fb264b78c50fa5ea"
+      },
+      {
+        "index": 44,
+        "node_id": "end_share__afterbeat",
+        "rect": [
+          478,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "7beaaaad0c7c219916a1f3eae58a51ea9fac203bb18c37db877a922bc2143d38"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "0b462b16abd5c991f9a13a949353bb180d42c19537451e4a5bc6fe818502d82f"
+      },
+      {
+        "index": 1,
+        "node_id": "sale_opens",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "cdd74b4cbb2abe6694f15763f7b037f65e47bd2991fbb4027e77d9223294b9d0"
+      },
+      {
+        "index": 2,
+        "node_id": "sale_opens__afterbeat",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "2279e522a96dd779019e101dc228ed4a3d34bfcd18170d327ecea7e8962895fd"
+      },
+      {
+        "index": 3,
+        "node_id": "book_bin",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "25075e2d54c8c86807cd074a7b27a7cce2d53e5eb3708941cd0ee59c009806c5"
+      },
+      {
+        "index": 4,
+        "node_id": "book_bin__afterbeat",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "8865e85962c0f400c4a1adb5f510213261d34836943305c1b9de66241ccf94a2"
+      },
+      {
+        "index": 5,
+        "node_id": "first_sort",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "4da0dc5a56c8f2ec104cdb4a2a009c467f4dcc60087ac7d1f6ef7e7619c9f63a"
+      },
+      {
+        "index": 6,
+        "node_id": "first_sort__afterbeat",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "c70fdd8734f6f2cc3dd01bc0c9e47708f9e1b463d1891527323c757a4a232bf3"
+      },
+      {
+        "index": 7,
+        "node_id": "manual_shadow",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "af8bc80c96bee921dd43601777dabd7b16c07a3d118400c76e0049451be90b0e"
+      },
+      {
+        "index": 8,
+        "node_id": "manual_shadow__afterbeat",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "0610c302b2da580703c4429b9618f4c018e9ccbf57efbccccc598da6b53e5d73"
+      },
+      {
+        "index": 9,
+        "node_id": "handwritten_list",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "2018729a3ca3920af3e1bb3e03b0233e2476a39b77da039a1451c97b66a0fd10"
+      },
+      {
+        "index": 10,
+        "node_id": "handwritten_list__afterbeat",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "619685d16f5b4c6e39f72b46ede02295253817b23b98d0c54cc157be94b7d8f4"
+      },
+      {
+        "index": 11,
+        "node_id": "test_table",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "f6a979b66165671a3957774eb8e8ac3529b7a4cbee288ac457c19234bc7f7464"
+      },
+      {
+        "index": 12,
+        "node_id": "test_table__afterbeat",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "618940b36b3662d58daac01bdf6e8827c11d07ce6011f2cd2aa0de2ac9d82120"
+      },
+      {
+        "index": 13,
+        "node_id": "blue_boot",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "65d3a3badf3f4c236733ecf7469bc66ef9567990400d7100878b8b052bee5e3a"
+      },
+      {
+        "index": 14,
+        "node_id": "blue_boot__afterbeat",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "042e908369a659bab1b853b2012df5b99a187607e8f9493a182ff8423fc64f36"
+      },
+      {
+        "index": 15,
+        "node_id": "choice_search",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "b51c376d8e3a288dff8b76672e831b697b47685f3cde8492346d972cf2fb628e"
+      },
+      {
+        "index": 16,
+        "node_id": "search_book_cart",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "cc90132523d48922b19f750cf0762a441146f26709d69d4578642695ec486023"
+      },
+      {
+        "index": 17,
+        "node_id": "search_book_cart__afterbeat",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "ea523328431158541402f939056813258f06fdb0cee590f28969e5fe96f3019f"
+      },
+      {
+        "index": 18,
+        "node_id": "found_page_books",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "b1a7ef8f962430976701a92974d61bd612abf2725c02a4ee70b9b311e853d962"
+      },
+      {
+        "index": 19,
+        "node_id": "found_page_books__afterbeat",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "043d6299745fcde8bb8b52a3f58b6a6be164d685d3c37b86f74ddbdd5ea4bd5c"
+      },
+      {
+        "index": 20,
+        "node_id": "search_lost_box",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "48050335b9bbf1cf4d1fad87ff37e092eea5ce14e722c37a9d8bc99af5c86774"
+      },
+      {
+        "index": 21,
+        "node_id": "search_lost_box__afterbeat",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "9f0c402da30646ebb009d7c4618e7e5d075126e82ed9af067f2d1bd3a7e1662b"
+      },
+      {
+        "index": 22,
+        "node_id": "found_page_lost",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "86d0f0e966bebe161e9dad717d9ba5fb4b8398f3ad8025801f7d64d9d4d05d91"
+      },
+      {
+        "index": 23,
+        "node_id": "found_page_lost__afterbeat",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "82ee095ff25d1626b796ccb8fa9d722940c20276fb04831cf2fa9e148b357a60"
+      },
+      {
+        "index": 24,
+        "node_id": "search_staff_desk",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "edf3542bb0998f6798857b58f53b691614bb139627462e9b601b2712e2a14f9a"
+      },
+      {
+        "index": 25,
+        "node_id": "search_staff_desk__afterbeat",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "70242bb941f195568ca52cb8bfda941e68b75ccde2507f110cc55e7af4a39dca"
+      },
+      {
+        "index": 26,
+        "node_id": "found_page_clerk",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "52405cfa397b7dc887b2674426d16da9bcd894c3c237abd029bf771e5c3778e7"
+      },
+      {
+        "index": 27,
+        "node_id": "found_page_clerk__afterbeat",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "bfde12a253cad28ba32d0b576697d69844354312db3334afe34c0e8003411b59"
+      },
+      {
+        "index": 28,
+        "node_id": "paper_save",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "51eae06bc50d77c8988c44ced9eebc9d421b17f6a5f0c28f2fc7890f1d62aa3d"
+      },
+      {
+        "index": 29,
+        "node_id": "paper_save__afterbeat",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "7f85bf12c50c671b98a04cb51e54f7ead8ae0e98ca56d5f850d146d2771f7642"
+      },
+      {
+        "index": 30,
+        "node_id": "home_arrival",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "cca1b9efed1e9587ceee849496ba984aa94497753bb08b3134f28e9366cfbf9f"
+      },
+      {
+        "index": 31,
+        "node_id": "home_arrival__afterbeat",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "41243e2f846b5cfcf5b68da510a737651f692dacba0404bfff62c9eed10244fd"
+      },
+      {
+        "index": 32,
+        "node_id": "choice_care",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "92d3a2721623c763c633ccb94da9cb4b2a49dd28a07762d632f9a0ad6a523a1f"
+      },
+      {
+        "index": 33,
+        "node_id": "preserve_page",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "824f5c058ed05372305e69184f91f564651150e99b63863f16cb07beac2a27bb"
+      },
+      {
+        "index": 34,
+        "node_id": "preserve_page__afterbeat",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "e9a91fe80e0bb85a73477364940bdf92d6dad4de8562fe33468de4384d9f991b"
+      },
+      {
+        "index": 35,
+        "node_id": "play_first",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "6a58dc34e782d17eec843c97e2c515707b823822db83b27a05c4a251ac3e1cbe"
+      },
+      {
+        "index": 36,
+        "node_id": "play_first__afterbeat",
+        "rect": [
+          8,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "9d680152c6bc8509c5eee6b9b19ac419f0cee805c93c65ecd93b46c5e2c6d8ab"
+      },
+      {
+        "index": 37,
+        "node_id": "share_note",
+        "rect": [
+          128,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "a23b1cacb7479239992568139d1a9396e15666fb9cd340bfe8af7f04c2ae6453"
+      },
+      {
+        "index": 38,
+        "node_id": "share_note__afterbeat",
+        "rect": [
+          248,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "a239a828b1859fb19d3eb372858c26889210129eebc4bc10a794ca1fce7fe51a"
+      },
+      {
+        "index": 39,
+        "node_id": "end_archive",
+        "rect": [
+          368,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "0a2b4dea3143b3cc9ace11fd8ce5f9e54159bcdedba9480908d5c4b551f3b511"
+      },
+      {
+        "index": 40,
+        "node_id": "end_archive__afterbeat",
+        "rect": [
+          8,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "94aadf9d8541bd83cac83ff01cc1dcc7dc807dc3e36b04dd74e02e4c867f850f"
+      },
+      {
+        "index": 41,
+        "node_id": "end_play",
+        "rect": [
+          128,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "4ab9d0c39314771e6689708d7a75c98b342b7493b795914926d37aac4676b208"
+      },
+      {
+        "index": 42,
+        "node_id": "end_play__afterbeat",
+        "rect": [
+          248,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "02ba8efa267e4f4c4cdce87a27b078497247e421ea9fb2f1b9bd30844d821440"
+      },
+      {
+        "index": 43,
+        "node_id": "end_share",
+        "rect": [
+          368,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "8a45a3a2677b36e6191cbd43b3512085a77a26c493196a3e988b7ed7c0afac3d"
+      },
+      {
+        "index": 44,
+        "node_id": "end_share__afterbeat",
+        "rect": [
+          8,
+          1064,
+          112,
+          72
+        ],
+        "image_sha256": "13011f5d60bbd7fd61dadefe181e99a626e854cf69155c5bd4f6bb1453022b6c"
+      }
+    ]
+  }
+}

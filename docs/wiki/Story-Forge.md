@@ -22,7 +22,7 @@ rules could drift from the repository that owns the framework.
 ## Why these tools exist
 
 The repository's maintained
-[light-novel quality standard](https://github.com/RegionallyFamous/swansong-story-forge/blob/main/skills/forge-light-novels/references/quality-standard.md)
+[light-novel quality standard](../../StoryForge/skills/forge-light-novels/references/quality-standard.md)
 records the product principles behind the workbench. The short version is:
 
 - connected causes help events remain available in memory, so Pulse shows
@@ -38,18 +38,18 @@ Those findings justify diagnostic questions, not a required emotional curve.
 Every automated report remains subordinate to editors, real readers, players,
 and named human approvals.
 
-## Connect the framework
+## Open Story Forge
 
 1. Open **Story Forge** under **Tools**.
-2. Choose the swansong-story-forge repository. SwanSong requires its complete
-   scripts folder, schema-v3 starter, and all current report tools.
-3. Choose the folder that contains your novel projects.
-4. Create a novel or open its dependency-free **novel.json**.
+2. Choose the folder that contains your novel projects.
+3. Create a novel or open its dependency-free **novel.json**.
 
-The selected framework, catalog, and manifest are remembered locally. SwanSong
-does not scan the Mac for manuscripts or upload them. An explicit
-**SWANSONG_STORY_FORGE_DIR** development override is available; the normal app
-uses the folder selected in the interface.
+The signed app uses its included, hash-verified Story Forge framework. The
+selected project catalog and manifest are remembered locally. SwanSong does not
+scan the Mac for manuscripts or upload them. An explicit
+**SWANSONG_STORY_FORGE_DIR** development override and **Choose Different Story
+Forge…** remain available for framework development; ordinary use needs no
+separate framework checkout.
 
 ## Nine workspaces
 

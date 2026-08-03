@@ -307,6 +307,18 @@ public struct StoryForgeCLIResolution: Equatable, Sendable {
     public let pythonPrefix: [String]
     public let scriptsDirectory: URL
 
+    public static func includedRoot(
+        resourceRoot: URL? = Bundle.main.resourceURL
+    ) -> URL? {
+        guard let candidate = resourceRoot?.appendingPathComponent(
+            "StoryForge",
+            isDirectory: true
+        ) else {
+            return nil
+        }
+        return (try? resolve(root: candidate))?.root
+    }
+
     public static func resolve(
         root: URL,
         environment: [String: String] = ProcessInfo.processInfo.environment
@@ -344,7 +356,7 @@ public struct StoryForgeCLIResolution: Equatable, Sendable {
                   )
               }) else {
             throw StoryForgeIntegrationError.invalidFramework(
-                "Choose the Story Forge repository containing the schema-v3 novel starter and complete scripts folder."
+                "Choose a Story Forge folder containing the schema-v3 novel starter and complete scripts folder."
             )
         }
         let data = try Data(contentsOf: starter)

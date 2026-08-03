@@ -1,0 +1,1447 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:34:07.014422+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets",
+    "thresholds": {
+      "screen": [
+        224,
+        144
+      ],
+      "character_max": [
+        96,
+        128
+      ],
+      "background_visible_colors_max": 16,
+      "character_visible_colors_max": 15,
+      "character_visible_colors_min": 6,
+      "character_tiles_max": 192,
+      "background_tiles_max": 511,
+      "alpha_coverage": [
+        0.2,
+        0.75
+      ],
+      "visible_above_textbox": [
+        0.52,
+        0.92
+      ],
+      "character_luma_stddev_min": 24.0,
+      "face_detail_box": [
+        28,
+        36,
+        68,
+        72
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "face_visible_colors_min": 4,
+      "face_luma_stddev_min": 18.0,
+      "animation_frames": [
+        "neutral",
+        "talk",
+        "blink"
+      ],
+      "hardware_char_anims": [
+        "blink",
+        "talking",
+        "talk-blink"
+      ],
+      "min_talk_frame_pixel_delta": 18,
+      "min_blink_frame_pixel_delta": 8,
+      "min_talk_face_pixel_delta": 18,
+      "min_blink_face_pixel_delta": 8,
+      "max_animation_alpha_changed": 0,
+      "max_animation_bbox_area": 1200,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_frame_center_drift": 0.04,
+      "max_frame_scale_drift": 0.08,
+      "min_scene_sprite_bg_luma_delta": 50.0,
+      "max_scene_bg_detail_under_sprite": 62.0
+    },
+    "backgrounds": {
+      "backgrounds/back_shelf.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 11.8,
+        "sha256": "f6b9a862150de0d9c6fe6693296b6ac56a39f537354c2dc5c47aba3e5f8caa61"
+      },
+      "backgrounds/last_train.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 11,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 15.59,
+        "sha256": "b5695de8a2edad1e566b1c0f61a3290b41a84b5af82a643801d956d44dd13a6d"
+      },
+      "backgrounds/repair_counter.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 17.81,
+        "sha256": "f1082d2fed6135e93813545f5139ae051b7c0dad1ce1d631a4e4682fe876a52b"
+      }
+    },
+    "characters": {
+      "characters/miki_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          9,
+          21,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4836,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.547,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 62.27,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 68.8
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5942,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "37cb33fb68bf342a44a07f534ebe451b4df03c14d48ce8e53f90ffe8e8b8e8ed"
+      },
+      "characters/miki_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          9,
+          21,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4836,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.547,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 61.73,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 70.79
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5942,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "1b8752004bc388a3142b33c3371b62bc90913b82346f87bd6b4845a9f3f44bc6"
+      },
+      "characters/miki_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          9,
+          21,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4836,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.547,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 61.07,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 70.01
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5942,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "89763909d902c3f3729968aed2367644e0a415809becad59f30d650185f94c9f"
+      },
+      "characters/nao_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          20,
+          86,
+          127
+        ],
+        "alpha_coverage": 0.4671,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5559,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 69.47,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 9,
+          "luma_stddev": 66.38
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5740,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "17510e044e05f73438d01a868c86a533205cbb3a75cefa310969004e310a21d4"
+      },
+      "characters/nao_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          20,
+          86,
+          127
+        ],
+        "alpha_coverage": 0.4671,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5559,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 69.63,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 10,
+          "luma_stddev": 69.48
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5740,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "7b95aef2bbed6547601b6170c94fef9d2761705cb07ab9725e7a730cbf97db26"
+      },
+      "characters/nao_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          20,
+          86,
+          127
+        ],
+        "alpha_coverage": 0.4671,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5559,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 69.44,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 10,
+          "luma_stddev": 69.82
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5740,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "f804853c88807d27431f6c1a11334097fd8975f316f3120c8c0c36b6f2d3c024"
+      }
+    },
+    "sprite_families": {
+      "miki": {
+        "body": "miki",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/characters/miki_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                9,
+                21,
+                88,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.5781
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.8281
+              ],
+              "bbox_area_ratio": 0.6815
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/characters/miki_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                9,
+                21,
+                88,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.5781
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.8281
+              ],
+              "bbox_area_ratio": 0.6815
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 97,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                42,
+                63,
+                55,
+                72
+              ],
+              "changed_bbox_area": 117
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 97,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                14,
+                27,
+                27,
+                36
+              ],
+              "changed_bbox_area": 117
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/characters/miki_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                9,
+                21,
+                88,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.5781
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.8281
+              ],
+              "bbox_area_ratio": 0.6815
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 204,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                30,
+                39,
+                66,
+                49
+              ],
+              "changed_bbox_area": 360
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 204,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                6,
+                19,
+                42,
+                29
+              ],
+              "changed_bbox_area": 360
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      },
+      "nao": {
+        "body": "nao",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/characters/nao_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                10,
+                20,
+                86,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5742
+              ],
+              "bbox_size_norm": [
+                0.7917,
+                0.8359
+              ],
+              "bbox_area_ratio": 0.6618
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/characters/nao_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                10,
+                20,
+                86,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5742
+              ],
+              "bbox_size_norm": [
+                0.7917,
+                0.8359
+              ],
+              "bbox_area_ratio": 0.6618
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 92,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                42,
+                56,
+                55,
+                72
+              ],
+              "changed_bbox_area": 208
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 92,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                14,
+                20,
+                27,
+                36
+              ],
+              "changed_bbox_area": 208
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/characters/nao_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                10,
+                20,
+                86,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5742
+              ],
+              "bbox_size_norm": [
+                0.7917,
+                0.8359
+              ],
+              "bbox_area_ratio": 0.6618
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 204,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                30,
+                39,
+                66,
+                49
+              ],
+              "changed_bbox_area": 360
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 204,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                6,
+                19,
+                42,
+                29
+              ],
+              "changed_bbox_area": 360
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      }
+    },
+    "sprite_approvals": {
+      "audition_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/auditions",
+      "approval_count": 1,
+      "covered_output_count": 6,
+      "covered_outputs": {
+        "characters/miki_blink.png": {
+          "approval": "games/catalog-after-midnight/assets/auditions/catalog-after-midnight-runtime_approval.json",
+          "sha256": "37cb33fb68bf342a44a07f534ebe451b4df03c14d48ce8e53f90ffe8e8b8e8ed"
+        },
+        "characters/miki_neutral.png": {
+          "approval": "games/catalog-after-midnight/assets/auditions/catalog-after-midnight-runtime_approval.json",
+          "sha256": "1b8752004bc388a3142b33c3371b62bc90913b82346f87bd6b4845a9f3f44bc6"
+        },
+        "characters/miki_talk.png": {
+          "approval": "games/catalog-after-midnight/assets/auditions/catalog-after-midnight-runtime_approval.json",
+          "sha256": "89763909d902c3f3729968aed2367644e0a415809becad59f30d650185f94c9f"
+        },
+        "characters/nao_blink.png": {
+          "approval": "games/catalog-after-midnight/assets/auditions/catalog-after-midnight-runtime_approval.json",
+          "sha256": "17510e044e05f73438d01a868c86a533205cbb3a75cefa310969004e310a21d4"
+        },
+        "characters/nao_neutral.png": {
+          "approval": "games/catalog-after-midnight/assets/auditions/catalog-after-midnight-runtime_approval.json",
+          "sha256": "7b95aef2bbed6547601b6170c94fef9d2761705cb07ab9725e7a730cbf97db26"
+        },
+        "characters/nao_talk.png": {
+          "approval": "games/catalog-after-midnight/assets/auditions/catalog-after-midnight-runtime_approval.json",
+          "sha256": "f804853c88807d27431f6c1a11334097fd8975f316f3120c8c0c36b6f2d3c024"
+        }
+      },
+      "missing_outputs": [],
+      "skipped": false
+    },
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/projects/catalog-after-midnight.wscvn.json",
+      "ok": true,
+      "assets": {
+        "background_asset_count": 3,
+        "character_asset_count": 6,
+        "backgrounds": {
+          "bg_back_shelf": {
+            "origName": "back_shelf.png",
+            "rel_path": "backgrounds/back_shelf.png",
+            "exists": true
+          },
+          "bg_last_train": {
+            "origName": "last_train.png",
+            "rel_path": "backgrounds/last_train.png",
+            "exists": true
+          },
+          "bg_repair_counter": {
+            "origName": "repair_counter.png",
+            "rel_path": "backgrounds/repair_counter.png",
+            "exists": true
+          }
+        },
+        "characters": {
+          "char_miki_blink": {
+            "origName": "miki_blink.png",
+            "rel_path": "characters/miki_blink.png",
+            "exists": true
+          },
+          "char_miki_neutral": {
+            "origName": "miki_neutral.png",
+            "rel_path": "characters/miki_neutral.png",
+            "exists": true
+          },
+          "char_miki_talk": {
+            "origName": "miki_talk.png",
+            "rel_path": "characters/miki_talk.png",
+            "exists": true
+          },
+          "char_nao_blink": {
+            "origName": "nao_blink.png",
+            "rel_path": "characters/nao_blink.png",
+            "exists": true
+          },
+          "char_nao_neutral": {
+            "origName": "nao_neutral.png",
+            "rel_path": "characters/nao_neutral.png",
+            "exists": true
+          },
+          "char_nao_talk": {
+            "origName": "nao_talk.png",
+            "rel_path": "characters/nao_talk.png",
+            "exists": true
+          }
+        }
+      },
+      "scene_wiring": {
+        "scene_count": 40,
+        "animated_scene_count": 40,
+        "character_reference_count": 120,
+        "background_reference_count": 40,
+        "scene_visual_count": 40,
+        "scenes": [
+          {
+            "id": "cam01",
+            "bgImageId": "bg_repair_counter",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 59.32,
+            "background_detail_under_sprite": 6.99
+          },
+          {
+            "id": "cam02",
+            "bgImageId": "bg_repair_counter",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 51.2,
+            "background_detail_under_sprite": 12.51
+          },
+          {
+            "id": "cam03",
+            "bgImageId": "bg_repair_counter",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 59.32,
+            "background_detail_under_sprite": 6.99
+          },
+          {
+            "id": "cam04",
+            "bgImageId": "bg_repair_counter",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 51.2,
+            "background_detail_under_sprite": 12.51
+          },
+          {
+            "id": "cam05",
+            "bgImageId": "bg_repair_counter",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 59.32,
+            "background_detail_under_sprite": 6.99
+          },
+          {
+            "id": "cam06",
+            "bgImageId": "bg_back_shelf",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 58.8,
+            "background_detail_under_sprite": 41.27
+          },
+          {
+            "id": "cam07",
+            "bgImageId": "bg_back_shelf",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 58.97,
+            "background_detail_under_sprite": 31.14
+          },
+          {
+            "id": "cam08",
+            "bgImageId": "bg_back_shelf",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 58.8,
+            "background_detail_under_sprite": 41.27
+          },
+          {
+            "id": "cam_method_labels",
+            "bgImageId": "bg_repair_counter",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 59.32,
+            "background_detail_under_sprite": 6.99
+          },
+          {
+            "id": "cam_method_boots",
+            "bgImageId": "bg_repair_counter",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 51.2,
+            "background_detail_under_sprite": 12.51
+          },
+          {
+            "id": "cam_method_names",
+            "bgImageId": "bg_repair_counter",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 59.32,
+            "background_detail_under_sprite": 6.99
+          },
+          {
+            "id": "cam09",
+            "bgImageId": "bg_repair_counter",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 51.2,
+            "background_detail_under_sprite": 12.51
+          },
+          {
+            "id": "cam10",
+            "bgImageId": "bg_repair_counter",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 59.32,
+            "background_detail_under_sprite": 6.99
+          },
+          {
+            "id": "cam11",
+            "bgImageId": "bg_back_shelf",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 58.8,
+            "background_detail_under_sprite": 41.27
+          },
+          {
+            "id": "cam12",
+            "bgImageId": "bg_back_shelf",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 58.97,
+            "background_detail_under_sprite": 31.14
+          },
+          {
+            "id": "cam13",
+            "bgImageId": "bg_back_shelf",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 58.8,
+            "background_detail_under_sprite": 41.27
+          },
+          {
+            "id": "cam14",
+            "bgImageId": "bg_back_shelf",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 58.97,
+            "background_detail_under_sprite": 31.14
+          },
+          {
+            "id": "cam15",
+            "bgImageId": "bg_back_shelf",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 58.8,
+            "background_detail_under_sprite": 41.27
+          },
+          {
+            "id": "cam16",
+            "bgImageId": "bg_back_shelf",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 58.97,
+            "background_detail_under_sprite": 31.14
+          },
+          {
+            "id": "cam17",
+            "bgImageId": "bg_last_train",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 51.41,
+            "background_detail_under_sprite": 29.48
+          },
+          {
+            "id": "cam18",
+            "bgImageId": "bg_last_train",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 53.17,
+            "background_detail_under_sprite": 28.83
+          },
+          {
+            "id": "cam19",
+            "bgImageId": "bg_last_train",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 51.41,
+            "background_detail_under_sprite": 29.48
+          },
+          {
+            "id": "cam20",
+            "bgImageId": "bg_last_train",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 53.17,
+            "background_detail_under_sprite": 28.83
+          },
+          {
+            "id": "cam21",
+            "bgImageId": "bg_last_train",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 51.41,
+            "background_detail_under_sprite": 29.48
+          },
+          {
+            "id": "cam22",
+            "bgImageId": "bg_last_train",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 53.17,
+            "background_detail_under_sprite": 28.83
+          },
+          {
+            "id": "cam23",
+            "bgImageId": "bg_last_train",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 51.41,
+            "background_detail_under_sprite": 29.48
+          },
+          {
+            "id": "cam24",
+            "bgImageId": "bg_last_train",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 53.17,
+            "background_detail_under_sprite": 28.83
+          },
+          {
+            "id": "cam25",
+            "bgImageId": "bg_last_train",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 51.41,
+            "background_detail_under_sprite": 29.48
+          },
+          {
+            "id": "cam_case_sealed",
+            "bgImageId": "bg_last_train",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 53.17,
+            "background_detail_under_sprite": 28.83
+          },
+          {
+            "id": "cam_case_open",
+            "bgImageId": "bg_last_train",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 51.41,
+            "background_detail_under_sprite": 29.48
+          },
+          {
+            "id": "cam_case_photo",
+            "bgImageId": "bg_last_train",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 53.17,
+            "background_detail_under_sprite": 28.83
+          },
+          {
+            "id": "cam_end_sealed_labels",
+            "bgImageId": "bg_last_train",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 53.17,
+            "background_detail_under_sprite": 28.83
+          },
+          {
+            "id": "cam_end_sealed_boots",
+            "bgImageId": "bg_last_train",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 51.41,
+            "background_detail_under_sprite": 29.48
+          },
+          {
+            "id": "cam_end_sealed_names",
+            "bgImageId": "bg_last_train",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 53.17,
+            "background_detail_under_sprite": 28.83
+          },
+          {
+            "id": "cam_end_open_labels",
+            "bgImageId": "bg_last_train",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 51.41,
+            "background_detail_under_sprite": 29.48
+          },
+          {
+            "id": "cam_end_open_boots",
+            "bgImageId": "bg_last_train",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 51.41,
+            "background_detail_under_sprite": 29.48
+          },
+          {
+            "id": "cam_end_open_names",
+            "bgImageId": "bg_last_train",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 53.17,
+            "background_detail_under_sprite": 28.83
+          },
+          {
+            "id": "cam_end_photo_labels",
+            "bgImageId": "bg_last_train",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 53.17,
+            "background_detail_under_sprite": 28.83
+          },
+          {
+            "id": "cam_end_photo_boots",
+            "bgImageId": "bg_last_train",
+            "charId": "char_miki_neutral",
+            "char2Id": "char_miki_talk",
+            "char3Id": "char_miki_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "miki",
+            "expected_char2Id": "char_miki_talk",
+            "expected_char3Id": "char_miki_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3250,
+            "sprite_bg_luma_delta": 51.41,
+            "background_detail_under_sprite": 29.48
+          },
+          {
+            "id": "cam_end_photo_names",
+            "bgImageId": "bg_last_train",
+            "charId": "char_nao_neutral",
+            "char2Id": "char_nao_talk",
+            "char3Id": "char_nao_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "nao",
+            "expected_char2Id": "char_nao_talk",
+            "expected_char3Id": "char_nao_blink",
+            "position": "left",
+            "sampled_visible_pixels": 3191,
+            "sprite_bg_luma_delta": 53.17,
+            "background_detail_under_sprite": 28.83
+          }
+        ],
+        "lowest_sprite_bg_contrast": [
+          {
+            "id": "cam02",
+            "background": "bg_repair_counter",
+            "character": "char_miki_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 51.2
+          },
+          {
+            "id": "cam04",
+            "background": "bg_repair_counter",
+            "character": "char_miki_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 51.2
+          },
+          {
+            "id": "cam09",
+            "background": "bg_repair_counter",
+            "character": "char_miki_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 51.2
+          },
+          {
+            "id": "cam_method_boots",
+            "background": "bg_repair_counter",
+            "character": "char_miki_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 51.2
+          },
+          {
+            "id": "cam17",
+            "background": "bg_last_train",
+            "character": "char_miki_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 51.41
+          }
+        ],
+        "busiest_sprite_lanes": [
+          {
+            "id": "cam06",
+            "background": "bg_back_shelf",
+            "character": "char_miki_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 41.27
+          },
+          {
+            "id": "cam08",
+            "background": "bg_back_shelf",
+            "character": "char_miki_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 41.27
+          },
+          {
+            "id": "cam11",
+            "background": "bg_back_shelf",
+            "character": "char_miki_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 41.27
+          },
+          {
+            "id": "cam13",
+            "background": "bg_back_shelf",
+            "character": "char_miki_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 41.27
+          },
+          {
+            "id": "cam15",
+            "background": "bg_back_shelf",
+            "character": "char_miki_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 41.27
+          }
+        ]
+      }
+    },
+    "counts": {
+      "backgrounds": 3,
+      "characters": 6,
+      "sprite_families": 2,
+      "sprite_approval_outputs": 6,
+      "provenance_outputs": 9
+    }
+  }
+}

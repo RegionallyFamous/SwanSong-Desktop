@@ -1,0 +1,716 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mode": "normal",
+    "zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/releases/20260727T024703Z-9fdb793814fa.zip",
+      "bytes": 12705738,
+      "sha256": "ca8b615387e25db1d7212bbe73d807defb14450a6963f9c07366368827eb5724"
+    },
+    "entries": 48,
+    "members": 48,
+    "duplicate_members": [],
+    "unsafe_members": [],
+    "manifest": {
+      "schema_version": 1,
+      "slug": "guntank-takes-the-stairs",
+      "title": "Guntank Takes the Stairs",
+      "files": 47,
+      "runtime_inputs": 6,
+      "emulator_screenshot": false
+    },
+    "package_sources": {
+      "readme": {
+        "member": "docs/README.md",
+        "exists": true,
+        "bytes": 2160,
+        "sha256": "e98d291faa1844a2850f79d519dd95955823cabb37b1f45f8a106278f416e353"
+      },
+      "asset_builder": {
+        "member": "source/build_guntank_takes_the_stairs.py",
+        "exists": true,
+        "bytes": 23762,
+        "sha256": "556a28ecc0aa0d491e32cd30f3c2b753051de6ff5fb07d528661f9f4ce68b5c6"
+      },
+      "qa_report": {
+        "member": "reports/guntank-takes-the-stairs-qa-report.json",
+        "exists": true,
+        "bytes": 1804,
+        "sha256": "1fd43770c22ba9d386cc854956a77a5f19fcd803550e178356213038cbb869d9"
+      }
+    },
+    "runtime_inputs": {
+      "present": true,
+      "expected_count": 6,
+      "files": [
+        {
+          "member": "runtime/src/main.c",
+          "exists": true,
+          "bytes": 105606,
+          "sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a",
+          "manifest_bytes": 105606,
+          "manifest_sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a"
+        },
+        {
+          "member": "runtime/src/game_types.h",
+          "exists": true,
+          "bytes": 6650,
+          "sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec",
+          "manifest_bytes": 6650,
+          "manifest_sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec"
+        },
+        {
+          "member": "runtime/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+          "manifest_bytes": 5470,
+          "manifest_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        {
+          "member": "runtime/tools/convert_json.py",
+          "exists": true,
+          "bytes": 88977,
+          "sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387",
+          "manifest_bytes": 88977,
+          "manifest_sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387"
+        },
+        {
+          "member": "runtime/Makefile",
+          "exists": true,
+          "bytes": 3590,
+          "sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd",
+          "manifest_bytes": 3590,
+          "manifest_sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd"
+        },
+        {
+          "member": "runtime/wfconfig.toml",
+          "exists": true,
+          "bytes": 169,
+          "sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78",
+          "manifest_bytes": 169,
+          "manifest_sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78"
+        }
+      ],
+      "count": 6,
+      "missing": [],
+      "extra": [],
+      "duplicates": []
+    },
+    "current_workspace": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs",
+      "checked": 47,
+      "missing": [],
+      "mismatches": [],
+      "stable_report_diffs": [],
+      "unmapped": [],
+      "extra_current": []
+    },
+    "reports": {
+      "build": true,
+      "smoke": true,
+      "readiness": true,
+      "audit": true,
+      "swansong_playthrough": true,
+      "review_sheets": true
+    },
+    "smoke_verification": {
+      "result_scope": "boot-and-checksum",
+      "boot": {
+        "performed": true,
+        "passed": true,
+        "method": "headless-mednafen-startup-metadata",
+        "pixels_observed": false
+      },
+      "checksum": {
+        "performed": true,
+        "passed": true,
+        "method": "mednafen-recorded-vs-real-checksum"
+      },
+      "visual": {
+        "performed": false,
+        "passed": null,
+        "status": "not-performed",
+        "pixels_observed": false,
+        "proof_bound": false,
+        "screenshot": null
+      },
+      "proof_bound": false
+    },
+    "swansong_playthrough": {
+      "schema": "wscvn-swansong-playthrough-v2",
+      "app": {
+        "path": "/Applications/SwanSong.app",
+        "version": "0.9.0",
+        "build": "18",
+        "bundle_identifier": "com.regionallyfamous.swansong"
+      },
+      "route_count": 4,
+      "routes": [
+        {
+          "route_index": 0,
+          "member": "evidence/swansong-playthrough/route-1-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "tank_title",
+            "tank_01",
+            "tank_02",
+            "tank_03",
+            "tank_04",
+            "tank_05",
+            "tank_06",
+            "tank_07",
+            "tank_08",
+            "tank_09",
+            "tank_10",
+            "tank_choice_1",
+            "tank_a1",
+            "tank_a2",
+            "tank_a3",
+            "tank_a4",
+            "tank_11",
+            "tank_12",
+            "tank_13",
+            "tank_14",
+            "tank_15",
+            "tank_16",
+            "tank_17",
+            "tank_choice_2",
+            "tank_c1",
+            "tank_c2",
+            "tank_c3",
+            "tank_c4",
+            "end"
+          ],
+          "observed_nodes": [
+            "tank_title",
+            "tank_01",
+            "tank_02",
+            "tank_03",
+            "tank_04",
+            "tank_05",
+            "tank_06",
+            "tank_07",
+            "tank_08",
+            "tank_09",
+            "tank_10",
+            "tank_choice_1",
+            "tank_a1",
+            "tank_a2",
+            "tank_a3",
+            "tank_a4",
+            "tank_11",
+            "tank_12",
+            "tank_13",
+            "tank_14",
+            "tank_15",
+            "tank_16",
+            "tank_17",
+            "tank_choice_2",
+            "tank_c1",
+            "tank_c2",
+            "tank_c3",
+            "tank_c4",
+            "end"
+          ],
+          "bytes": 12123,
+          "sha256": "a16eb1b32dcc478b6086aacc84dd70c84d539be65abf1f62a949397cda7019ec",
+          "node_id": "tank_c4",
+          "audio_member": "evidence/swansong-playthrough/route-1-audio.wav"
+        },
+        {
+          "route_index": 1,
+          "member": "evidence/swansong-playthrough/route-2-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "tank_title",
+            "tank_01",
+            "tank_02",
+            "tank_03",
+            "tank_04",
+            "tank_05",
+            "tank_06",
+            "tank_07",
+            "tank_08",
+            "tank_09",
+            "tank_10",
+            "tank_choice_1",
+            "tank_a1",
+            "tank_a2",
+            "tank_a3",
+            "tank_a4",
+            "tank_11",
+            "tank_12",
+            "tank_13",
+            "tank_14",
+            "tank_15",
+            "tank_16",
+            "tank_17",
+            "tank_choice_2",
+            "tank_d1",
+            "tank_d2",
+            "tank_d3",
+            "tank_d4",
+            "end"
+          ],
+          "observed_nodes": [
+            "tank_title",
+            "tank_01",
+            "tank_02",
+            "tank_03",
+            "tank_04",
+            "tank_05",
+            "tank_06",
+            "tank_07",
+            "tank_08",
+            "tank_09",
+            "tank_10",
+            "tank_choice_1",
+            "tank_a1",
+            "tank_a2",
+            "tank_a3",
+            "tank_a4",
+            "tank_11",
+            "tank_12",
+            "tank_13",
+            "tank_14",
+            "tank_15",
+            "tank_16",
+            "tank_17",
+            "tank_choice_2",
+            "tank_d1",
+            "tank_d2",
+            "tank_d3",
+            "tank_d4",
+            "end"
+          ],
+          "bytes": 18854,
+          "sha256": "d5f9951bc32195b3b6361a918b39da9bc195c250cc041e1b9e856f25982be963",
+          "node_id": "tank_d4",
+          "audio_member": "evidence/swansong-playthrough/route-2-audio.wav"
+        },
+        {
+          "route_index": 2,
+          "member": "evidence/swansong-playthrough/route-3-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "tank_title",
+            "tank_01",
+            "tank_02",
+            "tank_03",
+            "tank_04",
+            "tank_05",
+            "tank_06",
+            "tank_07",
+            "tank_08",
+            "tank_09",
+            "tank_10",
+            "tank_choice_1",
+            "tank_b1",
+            "tank_b2",
+            "tank_b3",
+            "tank_b4",
+            "tank_11",
+            "tank_12",
+            "tank_13",
+            "tank_14",
+            "tank_15",
+            "tank_16",
+            "tank_17",
+            "tank_choice_2",
+            "tank_c1",
+            "tank_c2",
+            "tank_c3",
+            "tank_c4",
+            "end"
+          ],
+          "observed_nodes": [
+            "tank_title",
+            "tank_01",
+            "tank_02",
+            "tank_03",
+            "tank_04",
+            "tank_05",
+            "tank_06",
+            "tank_07",
+            "tank_08",
+            "tank_09",
+            "tank_10",
+            "tank_choice_1",
+            "tank_b1",
+            "tank_b2",
+            "tank_b3",
+            "tank_b4",
+            "tank_11",
+            "tank_12",
+            "tank_13",
+            "tank_14",
+            "tank_15",
+            "tank_16",
+            "tank_17",
+            "tank_choice_2",
+            "tank_c1",
+            "tank_c2",
+            "tank_c3",
+            "tank_c4",
+            "end"
+          ],
+          "bytes": 12123,
+          "sha256": "a16eb1b32dcc478b6086aacc84dd70c84d539be65abf1f62a949397cda7019ec",
+          "node_id": "tank_c4",
+          "audio_member": "evidence/swansong-playthrough/route-3-audio.wav"
+        },
+        {
+          "route_index": 3,
+          "member": "evidence/swansong-playthrough/route-4-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "tank_title",
+            "tank_01",
+            "tank_02",
+            "tank_03",
+            "tank_04",
+            "tank_05",
+            "tank_06",
+            "tank_07",
+            "tank_08",
+            "tank_09",
+            "tank_10",
+            "tank_choice_1",
+            "tank_b1",
+            "tank_b2",
+            "tank_b3",
+            "tank_b4",
+            "tank_11",
+            "tank_12",
+            "tank_13",
+            "tank_14",
+            "tank_15",
+            "tank_16",
+            "tank_17",
+            "tank_choice_2",
+            "tank_d1",
+            "tank_d2",
+            "tank_d3",
+            "tank_d4",
+            "end"
+          ],
+          "observed_nodes": [
+            "tank_title",
+            "tank_01",
+            "tank_02",
+            "tank_03",
+            "tank_04",
+            "tank_05",
+            "tank_06",
+            "tank_07",
+            "tank_08",
+            "tank_09",
+            "tank_10",
+            "tank_choice_1",
+            "tank_b1",
+            "tank_b2",
+            "tank_b3",
+            "tank_b4",
+            "tank_11",
+            "tank_12",
+            "tank_13",
+            "tank_14",
+            "tank_15",
+            "tank_16",
+            "tank_17",
+            "tank_choice_2",
+            "tank_d1",
+            "tank_d2",
+            "tank_d3",
+            "tank_d4",
+            "end"
+          ],
+          "bytes": 18854,
+          "sha256": "d5f9951bc32195b3b6361a918b39da9bc195c250cc041e1b9e856f25982be963",
+          "node_id": "tank_d4",
+          "audio_member": "evidence/swansong-playthrough/route-4-audio.wav"
+        }
+      ]
+    },
+    "readiness_assets": {
+      "contact_sheet": {
+        "member": "preview/contact_sheet.png",
+        "expected_sha256": "0c30eb514f6ffa533dec274c6b8c3daf7ad890d9de2ffebc31a8bacb2f1c87cb",
+        "exists": true,
+        "sha256": "0c30eb514f6ffa533dec274c6b8c3daf7ad890d9de2ffebc31a8bacb2f1c87cb"
+      },
+      "review_sheets": {
+        "scene_preview_sheet": {
+          "member": "preview/scene_preview_sheet.png",
+          "expected_sha256": "7e135f73161a7872e888abeabc32eb00d3e493c8233487c78a7b6e7e90266a5c",
+          "exists": true,
+          "sha256": "7e135f73161a7872e888abeabc32eb00d3e493c8233487c78a7b6e7e90266a5c"
+        },
+        "storyboard_sheet": {
+          "member": "preview/storyboard_sheet.png",
+          "expected_sha256": "a63fd5b6bffead187bdfaff4738d8b79cda49af0710953e98c5c2881cdd7753c",
+          "exists": true,
+          "sha256": "a63fd5b6bffead187bdfaff4738d8b79cda49af0710953e98c5c2881cdd7753c"
+        }
+      },
+      "sources": [
+        {
+          "member": "assets/sources/background_ending_a_imagegen_v1.png",
+          "expected_sha256": "3a0c300be7f7d365ef50fdcfcc6a32ba283d905c49a992961c0c724f5fdd050c",
+          "exists": true,
+          "sha256": "3a0c300be7f7d365ef50fdcfcc6a32ba283d905c49a992961c0c724f5fdd050c"
+        },
+        {
+          "member": "assets/sources/background_ending_b_imagegen_v1.png",
+          "expected_sha256": "4c4702825ce8173d5aac4e9ab6b4c3620292eabc8969b0cf4f8b61f8eb93c17c",
+          "exists": true,
+          "sha256": "4c4702825ce8173d5aac4e9ab6b4c3620292eabc8969b0cf4f8b61f8eb93c17c"
+        },
+        {
+          "member": "assets/sources/background_main_imagegen_v1.png",
+          "expected_sha256": "2aab00db0566d18e2cd94a355515020c0b3f97b727f3c58bb497a8ce9594134b",
+          "exists": true,
+          "sha256": "2aab00db0566d18e2cd94a355515020c0b3f97b727f3c58bb497a8ce9594134b"
+        },
+        {
+          "member": "assets/sources/background_title_imagegen_v1.png",
+          "expected_sha256": "f6f2da1e73e8a743236e4024a2647d8a6dc589166ed1e4b18c8073c9a5df48f2",
+          "exists": true,
+          "sha256": "f6f2da1e73e8a743236e4024a2647d8a6dc589166ed1e4b18c8073c9a5df48f2"
+        },
+        {
+          "member": "assets/sources/character_master_cutout_imagegen_v1.png",
+          "expected_sha256": "12724cb42471a173e52bb7eb50fab3ef8fdce4339334b5f7e66a09d2b1eb06f8",
+          "exists": true,
+          "sha256": "12724cb42471a173e52bb7eb50fab3ef8fdce4339334b5f7e66a09d2b1eb06f8"
+        },
+        {
+          "member": "assets/sources/character_master_imagegen_v1.png",
+          "expected_sha256": "a5ce1f62923fc527b9241e13668988d664ac13ed768048c0ebb5b9c53f13039e",
+          "exists": true,
+          "sha256": "a5ce1f62923fc527b9241e13668988d664ac13ed768048c0ebb5b9c53f13039e"
+        },
+        {
+          "member": "assets/sources/game_spec.json",
+          "expected_sha256": "b4385c7ba62e0f96dff13bf41927822fdb9318eec8c0e595f6a7c6c8a1139d97",
+          "exists": true,
+          "sha256": "b4385c7ba62e0f96dff13bf41927822fdb9318eec8c0e595f6a7c6c8a1139d97"
+        },
+        {
+          "member": "assets/sources/imagegen-prompts-v1.md",
+          "expected_sha256": "6aca9ee21ea644a910c24e91d204bf025e32b95e183bc857761fa43ea03a9cce",
+          "exists": true,
+          "sha256": "6aca9ee21ea644a910c24e91d204bf025e32b95e183bc857761fa43ea03a9cce"
+        },
+        {
+          "member": "assets/sources/story-proof.json",
+          "expected_sha256": "b9dfe4d351893331c00434ad9ae9bcc1f0f7d4ae2123bbdae60be75262223a6e",
+          "exists": true,
+          "sha256": "b9dfe4d351893331c00434ad9ae9bcc1f0f7d4ae2123bbdae60be75262223a6e"
+        }
+      ],
+      "extra_sources": [],
+      "review_sheets_report": {
+        "member": "reports/review-sheets-report.json",
+        "expected_sha256": "41440ca7324e80d262bfda06de64480ec0294f9a0a30ef27fd8f75dee609e91a",
+        "exists": true,
+        "sha256": "41440ca7324e80d262bfda06de64480ec0294f9a0a30ef27fd8f75dee609e91a"
+      },
+      "packaged_source_count": 9,
+      "backgrounds": {
+        "count": 4,
+        "files": [
+          {
+            "member": "assets/backgrounds/bg_title.png",
+            "expected_sha256": "ae21e2581b550e5d07fe30bfbb55d32fb4de4bf96099c62970911612cdae2d54",
+            "exists": true,
+            "sha256": "ae21e2581b550e5d07fe30bfbb55d32fb4de4bf96099c62970911612cdae2d54"
+          },
+          {
+            "member": "assets/backgrounds/bg_main.png",
+            "expected_sha256": "90c282eb76e17ed2387d8ecbca3ad181354f9e68da427e5c986695562eabfe02",
+            "exists": true,
+            "sha256": "90c282eb76e17ed2387d8ecbca3ad181354f9e68da427e5c986695562eabfe02"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_a.png",
+            "expected_sha256": "84ebc339a05e722a2c279f960561de174e649b912f2f855afd960f0a4821b07c",
+            "exists": true,
+            "sha256": "84ebc339a05e722a2c279f960561de174e649b912f2f855afd960f0a4821b07c"
+          },
+          {
+            "member": "assets/backgrounds/bg_end_b.png",
+            "expected_sha256": "0d13dcffae682b96182af8c6b10671ef6ac8f1573ce752b1f6ffd649fd9336ec",
+            "exists": true,
+            "sha256": "0d13dcffae682b96182af8c6b10671ef6ac8f1573ce752b1f6ffd649fd9336ec"
+          }
+        ],
+        "packaged_count": 4,
+        "extra_members": []
+      },
+      "characters": {
+        "count": 3,
+        "files": [
+          {
+            "member": "assets/characters/guntank_neutral.png",
+            "expected_sha256": "f539327e7ff686e17af41f7b3cf872c03d1eb95b104bdcc51bdacc8b34e220e6",
+            "exists": true,
+            "sha256": "f539327e7ff686e17af41f7b3cf872c03d1eb95b104bdcc51bdacc8b34e220e6"
+          },
+          {
+            "member": "assets/characters/guntank_talk.png",
+            "expected_sha256": "5d1dbfac2e93ab4cfc19feeb059f36a256122a3453981bde6bc80fc856b711b2",
+            "exists": true,
+            "sha256": "5d1dbfac2e93ab4cfc19feeb059f36a256122a3453981bde6bc80fc856b711b2"
+          },
+          {
+            "member": "assets/characters/guntank_blink.png",
+            "expected_sha256": "abb4c6d5ae8a106724f04490d21db4953a117edd35c604f9b59cdfcdb566aebe",
+            "exists": true,
+            "sha256": "abb4c6d5ae8a106724f04490d21db4953a117edd35c604f9b59cdfcdb566aebe"
+          }
+        ],
+        "packaged_count": 3,
+        "extra_members": []
+      },
+      "sfx": {
+        "count": 0,
+        "files": [],
+        "packaged_count": 0,
+        "extra_members": []
+      }
+    },
+    "project": {
+      "member": "project/guntank-takes-the-stairs.wscvn.json",
+      "bytes": 158712,
+      "sha256": "cf98d9b50fc27ea4ec33e8827acf9df26a0a95acd29c4439d86311a3893178f2"
+    },
+    "rom": {
+      "member": "rom/guntank-takes-the-stairs.wsc",
+      "bytes": 8388608,
+      "sha256": "9fdb793814fa3e8e73d69df4faeed2e4a7db7649222f913d2f556f021729a68b",
+      "md5": "0x2175c5b358f081d69a5a5870046a8f01"
+    },
+    "review_sheets_report": {
+      "present": true,
+      "member": "reports/review-sheets-report.json",
+      "project_file": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+        "bytes": 158712,
+        "sha256": "cf98d9b50fc27ea4ec33e8827acf9df26a0a95acd29c4439d86311a3893178f2"
+      },
+      "nodes_rendered": 36,
+      "preview_node_ids": [
+        "tank_title",
+        "tank_01",
+        "tank_02",
+        "tank_03",
+        "tank_04",
+        "tank_05",
+        "tank_06",
+        "tank_07",
+        "tank_08",
+        "tank_09",
+        "tank_10",
+        "tank_choice_1",
+        "tank_a1",
+        "tank_a2",
+        "tank_a3",
+        "tank_a4",
+        "tank_b1",
+        "tank_b2",
+        "tank_b3",
+        "tank_b4",
+        "tank_11",
+        "tank_12",
+        "tank_13",
+        "tank_14",
+        "tank_15",
+        "tank_16",
+        "tank_17",
+        "tank_choice_2",
+        "tank_c1",
+        "tank_c2",
+        "tank_c3",
+        "tank_c4",
+        "tank_d1",
+        "tank_d2",
+        "tank_d3",
+        "tank_d4"
+      ],
+      "font": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+        "bytes": 5470,
+        "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+        "member": "runtime/src/font.h",
+        "packaged_bytes": 5470,
+        "packaged_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+      },
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/scene_preview_sheet.png",
+        "bytes": 216842,
+        "sha256": "7e135f73161a7872e888abeabc32eb00d3e493c8233487c78a7b6e7e90266a5c",
+        "member": "preview/scene_preview_sheet.png",
+        "packaged_bytes": 216842,
+        "packaged_sha256": "7e135f73161a7872e888abeabc32eb00d3e493c8233487c78a7b6e7e90266a5c"
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/storyboard_sheet.png",
+        "bytes": 75140,
+        "sha256": "a63fd5b6bffead187bdfaff4738d8b79cda49af0710953e98c5c2881cdd7753c",
+        "member": "preview/storyboard_sheet.png",
+        "packaged_bytes": 75140,
+        "packaged_sha256": "a63fd5b6bffead187bdfaff4738d8b79cda49af0710953e98c5c2881cdd7753c"
+      }
+    },
+    "project_report_bindings": {
+      "readiness": {
+        "present": true,
+        "member": "project/guntank-takes-the-stairs.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+        "bytes": 158712,
+        "sha256": "cf98d9b50fc27ea4ec33e8827acf9df26a0a95acd29c4439d86311a3893178f2"
+      },
+      "audit": {
+        "present": true,
+        "member": "project/guntank-takes-the-stairs.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+        "bytes": 158712,
+        "sha256": "cf98d9b50fc27ea4ec33e8827acf9df26a0a95acd29c4439d86311a3893178f2"
+      }
+    },
+    "audit_rom_binding": {
+      "present": true,
+      "member": "rom/guntank-takes-the-stairs.wsc",
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local/guntank-takes-the-stairs.wsc",
+      "bytes": 8388608,
+      "sha256": "9fdb793814fa3e8e73d69df4faeed2e4a7db7649222f913d2f556f021729a68b"
+    },
+    "manifest_artifacts": {
+      "project": {
+        "present": true,
+        "member": "project/guntank-takes-the-stairs.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+        "bytes": 158712,
+        "sha256": "cf98d9b50fc27ea4ec33e8827acf9df26a0a95acd29c4439d86311a3893178f2"
+      },
+      "rom": {
+        "present": true,
+        "member": "rom/guntank-takes-the-stairs.wsc",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local/guntank-takes-the-stairs.wsc",
+        "sha256": "9fdb793814fa3e8e73d69df4faeed2e4a7db7649222f913d2f556f021729a68b",
+        "md5": "0x2175c5b358f081d69a5a5870046a8f01",
+        "checksum": "0x75b7"
+      }
+    },
+    "release_summary": {
+      "lines": 46,
+      "expected_lines": 34,
+      "visual_evidence_lines": 8,
+      "has_visual_evidence": true,
+      "missing_expected_lines": []
+    }
+  }
+}

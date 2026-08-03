@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "approval_type": "wscvn_sprite_audition_approval",
+  "approved_at": "2026-07-23T13:09:18+00:00",
+  "reviewer": "codex",
+  "notes": "Inspected exact runtime neutral/talk/blink family at native and enlarged scale after shutter migration. Mechanical sensors compress to localized one-pixel shutter slits; bodies, sockets, palettes, alpha, and silhouettes stay locked.",
+  "character": "generic",
+  "sheet_kind": "animation",
+  "runtime_ready": true,
+  "labels": [
+    "neutral",
+    "talk",
+    "blink"
+  ],
+  "tool_provenance": [
+    {
+      "path": "scripts/audition_wscvn_sprite_sheet.py",
+      "sha256": "3c3ff7d0eff71df59c58e51d6d1f7990516778f64749e3dad207ab05b2069338"
+    },
+    {
+      "path": "scripts/make_signal_before_dawn_slice.py",
+      "sha256": "c48f872b41a2bbe0310229ffd35ed4786096e7d886595f950605efcf622afc90"
+    },
+    {
+      "path": "scripts/wscvn_sprite_family.py",
+      "sha256": "3ebf274e1f493bd10bc06be29936eda8c43d6e85e0d7cd5d4ddcd980d1bbc1aa"
+    }
+  ],
+  "quality": {
+    "status": "pass",
+    "error_count": 0,
+    "warning_count": 0,
+    "info_count": 0,
+    "thresholds": {
+      "max_visible_colors": 15,
+      "min_talk_face_delta": 18,
+      "min_blink_face_delta": 0,
+      "min_alpha_coverage": 0.2,
+      "max_alpha_coverage": 0.75,
+      "max_animation_alpha_changed": 0,
+      "min_visible_above_textbox": 0.52,
+      "max_visible_above_textbox": 0.92,
+      "max_animation_bbox_area": 1200,
+      "max_source_center_drift": 0.09,
+      "max_source_scale_drift": 0.18,
+      "max_sprite_center_drift": 0.04,
+      "max_sprite_scale_drift": 0.08,
+      "max_tiny_color_pixels": 10,
+      "max_green_fringe_pixels": 0,
+      "max_alpha_components": 8,
+      "min_largest_alpha_component_share": 0.96
+    }
+  },
+  "audition_report": {
+    "path": "games/eleven-bento-emergency/assets/auditions/eleven-bento-emergency-runtime-audition.json",
+    "sha256": "307d9a9af04ace9f517ab6cc3fc2f07bbfd48f094497d14f603645396e44e878"
+  },
+  "audition_png": {
+    "path": "games/eleven-bento-emergency/assets/auditions/eleven-bento-emergency-runtime-audition.png",
+    "sha256": "1506cafd21d1932d2ae014d91a71752fcb25b4b76f34f24879bf0e6350e9b2f7"
+  },
+  "sources": [
+    {
+      "label": "aerial",
+      "path": "games/eleven-bento-emergency/assets/auditions/aerial-runtime-animation.png",
+      "sha256": "24798ab6c312a548851df76966b477cc67ffadb5116026479ba05ef8dc55a580"
+    }
+  ],
+  "covered_outputs": [
+    {
+      "path": "games/eleven-bento-emergency/assets/characters/aerial_neutral.png",
+      "sha256": "4cf017b85b86c6ce59d95fec3b884a882da7394978bd7aac35d4f390f81db832"
+    },
+    {
+      "path": "games/eleven-bento-emergency/assets/characters/aerial_talk.png",
+      "sha256": "73654df0e874565409003f692b79d8174780f4b0f31b2f648fc8cd6a07e44f27"
+    },
+    {
+      "path": "games/eleven-bento-emergency/assets/characters/aerial_blink.png",
+      "sha256": "df1d28cfa92da556de93154db4d16725f75eda1a5275a69fa60e48561be673e5"
+    }
+  ]
+}

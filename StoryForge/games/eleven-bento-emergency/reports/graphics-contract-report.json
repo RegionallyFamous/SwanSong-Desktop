@@ -1,0 +1,1052 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:38:45.587818+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets",
+    "thresholds": {
+      "screen": [
+        224,
+        144
+      ],
+      "character_max": [
+        96,
+        128
+      ],
+      "background_visible_colors_max": 16,
+      "character_visible_colors_max": 15,
+      "character_visible_colors_min": 6,
+      "character_tiles_max": 192,
+      "background_tiles_max": 511,
+      "alpha_coverage": [
+        0.2,
+        0.75
+      ],
+      "visible_above_textbox": [
+        0.52,
+        0.92
+      ],
+      "character_luma_stddev_min": 24.0,
+      "face_detail_box": [
+        28,
+        36,
+        68,
+        72
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "face_visible_colors_min": 4,
+      "face_luma_stddev_min": 18.0,
+      "animation_frames": [
+        "neutral",
+        "talk",
+        "blink"
+      ],
+      "hardware_char_anims": [
+        "blink",
+        "talking",
+        "talk-blink"
+      ],
+      "min_talk_frame_pixel_delta": 18,
+      "min_blink_frame_pixel_delta": 8,
+      "min_talk_face_pixel_delta": 18,
+      "min_blink_face_pixel_delta": 8,
+      "max_animation_alpha_changed": 0,
+      "max_animation_bbox_area": 1200,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_frame_center_drift": 0.04,
+      "max_frame_scale_drift": 0.08,
+      "min_scene_sprite_bg_luma_delta": 50.0,
+      "max_scene_bg_detail_under_sprite": 62.0
+    },
+    "backgrounds": {
+      "backgrounds/bg_end_a.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 117.93,
+        "sha256": "18d2e3131233fb3bcb773573fce4d69a4010a3f10b995b576ad3ce53d668c474"
+      },
+      "backgrounds/bg_end_b.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 174.13,
+        "sha256": "b635f4d569eaa512ece1537541cb6070c0122b05e207150f9dd6c565cd2e8502"
+      },
+      "backgrounds/bg_main.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 177.11,
+        "sha256": "e31338e1216f8686e26d1f6dd9489b20c99966c371a152289c96b6d132645b7d"
+      },
+      "backgrounds/bg_title.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 162.17,
+        "sha256": "93e366ecd3373d6042a700476e0ba7ba43273347693819531c47e122ae30e405"
+      }
+    },
+    "characters": {
+      "characters/aerial_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          13,
+          4,
+          84,
+          127
+        ],
+        "alpha_coverage": 0.4441,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7317,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 76.57,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 75.5
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5457,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "df1d28cfa92da556de93154db4d16725f75eda1a5275a69fa60e48561be673e5"
+      },
+      "characters/aerial_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          13,
+          4,
+          84,
+          127
+        ],
+        "alpha_coverage": 0.4441,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7317,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 75.76,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 73.86
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5457,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "4cf017b85b86c6ce59d95fec3b884a882da7394978bd7aac35d4f390f81db832"
+      },
+      "characters/aerial_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          13,
+          4,
+          84,
+          127
+        ],
+        "alpha_coverage": 0.4441,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7317,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 75.93,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 15,
+          "luma_stddev": 73.88
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5457,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "73654df0e874565409003f692b79d8174780f4b0f31b2f648fc8cd6a07e44f27"
+      }
+    },
+    "sprite_families": {
+      "aerial": {
+        "body": "aerial",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/characters/aerial_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                13,
+                4,
+                84,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.5117
+              ],
+              "bbox_size_norm": [
+                0.7396,
+                0.9609
+              ],
+              "bbox_area_ratio": 0.7107
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/characters/aerial_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                13,
+                4,
+                84,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.5117
+              ],
+              "bbox_size_norm": [
+                0.7396,
+                0.9609
+              ],
+              "bbox_area_ratio": 0.7107
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 66,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                37,
+                37,
+                59,
+                46
+              ],
+              "changed_bbox_area": 198
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 66,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                9,
+                1,
+                31,
+                10
+              ],
+              "changed_bbox_area": 198
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/characters/aerial_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                13,
+                4,
+                84,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.5117
+              ],
+              "bbox_size_norm": [
+                0.7396,
+                0.9609
+              ],
+              "bbox_area_ratio": 0.7107
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 92,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                37,
+                37,
+                60,
+                46
+              ],
+              "changed_bbox_area": 207
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 92,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                13,
+                17,
+                36,
+                26
+              ],
+              "changed_bbox_area": 207
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      }
+    },
+    "sprite_approvals": {
+      "audition_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/auditions",
+      "approval_count": 1,
+      "covered_output_count": 3,
+      "covered_outputs": {
+        "characters/aerial_blink.png": {
+          "approval": "games/eleven-bento-emergency/assets/auditions/eleven-bento-emergency-runtime_approval.json",
+          "sha256": "df1d28cfa92da556de93154db4d16725f75eda1a5275a69fa60e48561be673e5"
+        },
+        "characters/aerial_neutral.png": {
+          "approval": "games/eleven-bento-emergency/assets/auditions/eleven-bento-emergency-runtime_approval.json",
+          "sha256": "4cf017b85b86c6ce59d95fec3b884a882da7394978bd7aac35d4f390f81db832"
+        },
+        "characters/aerial_talk.png": {
+          "approval": "games/eleven-bento-emergency/assets/auditions/eleven-bento-emergency-runtime_approval.json",
+          "sha256": "73654df0e874565409003f692b79d8174780f4b0f31b2f648fc8cd6a07e44f27"
+        }
+      },
+      "missing_outputs": [],
+      "skipped": false
+    },
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+      "ok": true,
+      "assets": {
+        "background_asset_count": 4,
+        "character_asset_count": 3,
+        "backgrounds": {
+          "bg_title": {
+            "origName": "bg_title.png",
+            "rel_path": "backgrounds/bg_title.png",
+            "exists": true
+          },
+          "bg_main": {
+            "origName": "bg_main.png",
+            "rel_path": "backgrounds/bg_main.png",
+            "exists": true
+          },
+          "bg_end_a": {
+            "origName": "bg_end_a.png",
+            "rel_path": "backgrounds/bg_end_a.png",
+            "exists": true
+          },
+          "bg_end_b": {
+            "origName": "bg_end_b.png",
+            "rel_path": "backgrounds/bg_end_b.png",
+            "exists": true
+          }
+        },
+        "characters": {
+          "char_aerial_neutral": {
+            "origName": "aerial_neutral.png",
+            "rel_path": "characters/aerial_neutral.png",
+            "exists": true
+          },
+          "char_aerial_talk": {
+            "origName": "aerial_talk.png",
+            "rel_path": "characters/aerial_talk.png",
+            "exists": true
+          },
+          "char_aerial_blink": {
+            "origName": "aerial_blink.png",
+            "rel_path": "characters/aerial_blink.png",
+            "exists": true
+          }
+        }
+      },
+      "scene_wiring": {
+        "scene_count": 33,
+        "animated_scene_count": 29,
+        "character_reference_count": 87,
+        "background_reference_count": 33,
+        "scene_visual_count": 29,
+        "scenes": [
+          {
+            "id": "bento_01",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_02",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_03",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_04",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_05",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_06",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_07",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_08",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_09",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_10",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_a1",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_a2",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_a3",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_a4",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_b1",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_b2",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_b3",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_b4",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_11",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_12",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_13",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_14",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_15",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_16",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_17",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_c1",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_c2",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_c3",
+            "bgImageId": "bg_end_a",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "bento_c4",
+            "bgImageId": "bg_end_a",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "bento_d1",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_d2",
+            "bgImageId": "bg_main",
+            "charId": "char_aerial_neutral",
+            "char2Id": "char_aerial_talk",
+            "char3Id": "char_aerial_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "aerial",
+            "expected_char2Id": "char_aerial_talk",
+            "expected_char3Id": "char_aerial_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3993,
+            "sprite_bg_luma_delta": 87.79,
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_d3",
+            "bgImageId": "bg_end_b",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "bento_d4",
+            "bgImageId": "bg_end_b",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          }
+        ],
+        "lowest_sprite_bg_contrast": [
+          {
+            "id": "bento_01",
+            "background": "bg_main",
+            "character": "char_aerial_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 87.79
+          },
+          {
+            "id": "bento_02",
+            "background": "bg_main",
+            "character": "char_aerial_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 87.79
+          },
+          {
+            "id": "bento_03",
+            "background": "bg_main",
+            "character": "char_aerial_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 87.79
+          },
+          {
+            "id": "bento_04",
+            "background": "bg_main",
+            "character": "char_aerial_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 87.79
+          },
+          {
+            "id": "bento_05",
+            "background": "bg_main",
+            "character": "char_aerial_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 87.79
+          }
+        ],
+        "busiest_sprite_lanes": [
+          {
+            "id": "bento_01",
+            "background": "bg_main",
+            "character": "char_aerial_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_02",
+            "background": "bg_main",
+            "character": "char_aerial_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_03",
+            "background": "bg_main",
+            "character": "char_aerial_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_04",
+            "background": "bg_main",
+            "character": "char_aerial_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 7.25
+          },
+          {
+            "id": "bento_05",
+            "background": "bg_main",
+            "character": "char_aerial_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 7.25
+          }
+        ]
+      }
+    },
+    "counts": {
+      "backgrounds": 4,
+      "characters": 3,
+      "sprite_families": 1,
+      "sprite_approval_outputs": 3,
+      "provenance_outputs": 7
+    }
+  }
+}

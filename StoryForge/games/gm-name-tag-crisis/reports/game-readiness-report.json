@@ -1,0 +1,627 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:42:18.515264+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "gm-name-tag-crisis",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+      "bytes": 169599,
+      "sha256": "d8f1dc4fe0853e08a1fc1439ee2324fed5e537055adb6e67f4885d054aea9bb1"
+    },
+    "project_counts": {
+      "name": "The GM Name-Tag Crisis",
+      "nodes": 37,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 4,
+      "characters": 3,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 37,
+      "scene_nodes": 33,
+      "staged_scenes": 29,
+      "animated_staged_scenes": 29,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Coordinator",
+        "GM A",
+        "GM B",
+        "GM C",
+        "GM D",
+        "Guest",
+        "Narrator",
+        "Photographer",
+        "SYSTEM"
+      ],
+      "backgrounds_used": [
+        "bg_end_a",
+        "bg_end_b",
+        "bg_main",
+        "bg_title"
+      ],
+      "ending_scenes": [
+        "gm_c4",
+        "gm_d4"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 37,
+      "start_node": "gm_title"
+    },
+    "routes": {
+      "initial_flags": {},
+      "states_explored": 37,
+      "truncated": false,
+      "route_reachable_nodes": 37,
+      "route_reachable_ending_scenes": [
+        "gm_c4",
+        "gm_d4"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "gm_a1",
+        "gm_b1",
+        "gm_c1",
+        "gm_d1"
+      ],
+      "selectable_choice_targets": [
+        "gm_a1",
+        "gm_b1",
+        "gm_c1",
+        "gm_d1"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": []
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Assign color gear / Use four role titles",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1926,
+          "estimated_minutes_at_140_wpm": 13.76
+        },
+        {
+          "route_id": "route-2",
+          "label": "Assign color gear / Everyone answers to GM",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1933,
+          "estimated_minutes_at_140_wpm": 13.81
+        },
+        {
+          "route_id": "route-3",
+          "label": "Run one perfect relay / Use four role titles",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1948,
+          "estimated_minutes_at_140_wpm": 13.91
+        },
+        {
+          "route_id": "route-4",
+          "label": "Run one perfect relay / Everyone answers to GM",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1955,
+          "estimated_minutes_at_140_wpm": 13.96
+        }
+      ]
+    },
+    "text": {
+      "blocks": 229,
+      "max_pause_block_chars": 99,
+      "choice_labels": 4,
+      "max_choice_label_chars": 22,
+      "max_choice_prompt_chars": 24,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 18,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 23,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_title",
+        "orig_name": "bg_title.png",
+        "embedded_sha256": "abd7809c7516b2dd3473fdf6033d9ce09d823aa4928dd81f7adfb1e1ded9e5c7",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 14,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/backgrounds/bg_title.png",
+        "local_sha256": "abd7809c7516b2dd3473fdf6033d9ce09d823aa4928dd81f7adfb1e1ded9e5c7"
+      },
+      {
+        "id": "bg_main",
+        "orig_name": "bg_main.png",
+        "embedded_sha256": "161732d9b4c5c92a351671c12c18f1d909ae89917b705a24c14d891730064a92",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 11,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/backgrounds/bg_main.png",
+        "local_sha256": "161732d9b4c5c92a351671c12c18f1d909ae89917b705a24c14d891730064a92"
+      },
+      {
+        "id": "bg_end_a",
+        "orig_name": "bg_end_a.png",
+        "embedded_sha256": "ae6d738232ad343bf36f6d975db56d58e6796c672d09f6bd376918b26f5c0a2c",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 14,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/backgrounds/bg_end_a.png",
+        "local_sha256": "ae6d738232ad343bf36f6d975db56d58e6796c672d09f6bd376918b26f5c0a2c"
+      },
+      {
+        "id": "bg_end_b",
+        "orig_name": "bg_end_b.png",
+        "embedded_sha256": "f3388132557ed0321f1e2943d1ec78c18a86f837aa4012cfed86f25388000404",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 14,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/backgrounds/bg_end_b.png",
+        "local_sha256": "f3388132557ed0321f1e2943d1ec78c18a86f837aa4012cfed86f25388000404"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_gm_neutral",
+        "orig_name": "gm_neutral.png",
+        "embedded_sha256": "36f82f0377b16eda55604180b5d8ea8e6b1690cb0a664a6e6ad658ff75dc495f",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4246,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/characters/gm_neutral.png",
+        "local_sha256": "36f82f0377b16eda55604180b5d8ea8e6b1690cb0a664a6e6ad658ff75dc495f"
+      },
+      {
+        "id": "char_gm_talk",
+        "orig_name": "gm_talk.png",
+        "embedded_sha256": "4ad12a5c67b26146a4413e7b84d5aafd9914bfe3a9c69d312924b709f35bfd45",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4246,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/characters/gm_talk.png",
+        "local_sha256": "4ad12a5c67b26146a4413e7b84d5aafd9914bfe3a9c69d312924b709f35bfd45"
+      },
+      {
+        "id": "char_gm_blink",
+        "orig_name": "gm_blink.png",
+        "embedded_sha256": "3c0f4da1154a60025c6f6941ad7027b116c4699f7bf2fc402510fc74b93c333e",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4246,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/characters/gm_blink.png",
+        "local_sha256": "3c0f4da1154a60025c6f6941ad7027b116c4699f7bf2fc402510fc74b93c333e"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_title",
+          "textbox_mean_luma": 151.089,
+          "textbox_luma_stddev": 46.448,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_main",
+          "textbox_mean_luma": 193.871,
+          "textbox_luma_stddev": 63.549,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_a",
+          "textbox_mean_luma": 195.191,
+          "textbox_luma_stddev": 62.265,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_end_b",
+          "textbox_mean_luma": 76.576,
+          "textbox_luma_stddev": 52.147,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 29,
+      "families": [
+        {
+          "neutral": "char_gm_neutral",
+          "talk": "char_gm_talk",
+          "blink": "char_gm_blink",
+          "talk_face_delta": 2.08,
+          "blink_face_delta": 2.854,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 35,
+            "changed_bbox": [
+              31,
+              31,
+              56,
+              45
+            ],
+            "changed_bbox_area": 350,
+            "changed_region_share": 0.028483,
+            "global_changed_share": 0.002848,
+            "face_changed_pixels": 32,
+            "face_changed_share": 0.015152,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 3,
+            "outside_face_changed_share": 0.000295
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 142,
+            "changed_bbox": [
+              33,
+              31,
+              53,
+              40
+            ],
+            "changed_bbox_area": 180,
+            "changed_region_share": 0.014648,
+            "global_changed_share": 0.011556,
+            "face_changed_pixels": 123,
+            "face_changed_share": 0.058239,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 19,
+            "outside_face_changed_share": 0.001867
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources",
+      "count": 6,
+      "packaged_file_count": 8,
+      "background_source_count": 4,
+      "character_source_count": 2,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/background_ending_a_imagegen_v1.png",
+          "bytes": 2280099,
+          "sha256": "b0647fe419bd741976f117702fc010a1156e551a62896a2f319488d1ca1955f7",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1672,
+            941
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/background_ending_b_imagegen_v1.png",
+          "bytes": 1986128,
+          "sha256": "d4556a83336659d90feaf290eb321faa7b54d749fabe4e25f8b28e4fbc65b3d9",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1567,
+            1004
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/background_main_imagegen_v1.png",
+          "bytes": 1492884,
+          "sha256": "70b4dd2b3b895b8949a9f3014b03f075d3abf4f4214ad17b5cc5689d9f182f77",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1564,
+            1006
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/background_title_imagegen_v1.png",
+          "bytes": 2222669,
+          "sha256": "b79d75ddfd15eafab1023f76faffd22f487686428bf5a68a6fafb0bc71199ef3",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1567,
+            1004
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/character_master_cutout_imagegen_v1.png",
+          "bytes": 1124453,
+          "sha256": "3f005fb58ce0e32c286a16737040ade063574c9ad66683d976803b533731acd1",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1086,
+            1448
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/character_master_imagegen_v1.png",
+          "bytes": 1683499,
+          "sha256": "aec9f685874d3c6f62ed74ea110d8a65762e2f3c42203edc5e5fb9481a492f45",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1086,
+            1448
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/game_spec.json",
+          "bytes": 21173,
+          "sha256": "368320c83a64b6ba44ecb6b8ab950745252d9ae35023a8acce4f8af889954a43",
+          "categories": []
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/sources/imagegen-prompts-v1.md",
+          "bytes": 10195,
+          "sha256": "fbb48094749d544408cea540d5dc45f1ce627116d609619ff8d987201f27dc71",
+          "categories": []
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 64060,
+      "sha256": "efcac4f12e89169955e137717569659ef5b720784861196ec2a2316d575113ea",
+      "size": [
+        478,
+        510
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 232288,
+        "sha256": "86e3bd9b5cad83f66d2198e4715b3acf54c554db5356c9343ee7923c2651e610",
+        "size": [
+          712,
+          2050
+        ],
+        "mode": "RGB",
+        "unique_colors": 270,
+        "luma_stddev": 84.893
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 78780,
+        "sha256": "fb771d79c12366b812d673355730d0478c4980ae187a3f9c8b2d937e769d7d97",
+        "size": [
+          488,
+          872
+        ],
+        "mode": "RGB",
+        "unique_colors": 270,
+        "luma_stddev": 82.654
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 19983,
+        "sha256": "a82cfe5e94ac3bd7be65b65e473eab914c21111976cfa5eda831846f8494d60a",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/projects/gm-name-tag-crisis.wscvn.json",
+          "exists": true,
+          "bytes": 169599,
+          "sha256": "d8f1dc4fe0853e08a1fc1439ee2324fed5e537055adb6e67f4885d054aea9bb1"
+        },
+        "nodes_rendered": 36,
+        "preview_node_ids": [
+          "gm_title",
+          "gm_01",
+          "gm_02",
+          "gm_03",
+          "gm_04",
+          "gm_05",
+          "gm_06",
+          "gm_07",
+          "gm_08",
+          "gm_09",
+          "gm_10",
+          "gm_choice_1",
+          "gm_a1",
+          "gm_a2",
+          "gm_a3",
+          "gm_a4",
+          "gm_b1",
+          "gm_b2",
+          "gm_b3",
+          "gm_b4",
+          "gm_11",
+          "gm_12",
+          "gm_13",
+          "gm_14",
+          "gm_15",
+          "gm_16",
+          "gm_17",
+          "gm_choice_2",
+          "gm_c1",
+          "gm_c2",
+          "gm_c3",
+          "gm_c4",
+          "gm_d1",
+          "gm_d2",
+          "gm_d3",
+          "gm_d4"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 36,
+            "expected": 36
+          },
+          "storyboard_cells": {
+            "reported": 36,
+            "expected": 36
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/gm-name-tag-crisis/reports/gm-name-tag-crisis-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

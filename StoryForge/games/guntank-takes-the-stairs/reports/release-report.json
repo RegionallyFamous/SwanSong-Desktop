@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:47:04.292120+00:00",
+  "errors": [],
+  "release_id": "20260727T024703Z-9fdb793814fa",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/releases/20260727T024703Z-9fdb793814fa",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/releases/20260727T024703Z-9fdb793814fa.zip",
+    "bytes": 12705738,
+    "sha256": "ca8b615387e25db1d7212bbe73d807defb14450a6963f9c07366368827eb5724"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/releases/20260727T024703Z-9fdb793814fa/manifest.json",
+    "sha256": "bda0ac0b3fe8ca163ad26a44439c02a9db6a87b82690b63ec1442e557a998246",
+    "files": 47
+  },
+  "rom_sha256": "9fdb793814fa3e8e73d69df4faeed2e4a7db7649222f913d2f556f021729a68b",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "guntank-takes-the-stairs",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/game-audit-report.json\nGame audit passed"
+  }
+}

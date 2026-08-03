@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/projects/eleven-bento-emergency.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/eleven-bento-emergency/assets/contact_sheet.png",
+    "nodes": 37,
+    "flags": 0,
+    "tracks": [
+      {
+        "id": "bento_title",
+        "name": "Lunch Achieved Orbit",
+        "bpm": 136
+      },
+      {
+        "id": "bento_main",
+        "name": "Eleven at Once",
+        "bpm": 160
+      },
+      {
+        "id": "bento_end_a",
+        "name": "Pudding Shield",
+        "bpm": 108
+      },
+      {
+        "id": "bento_end_b",
+        "name": "Pickle Roommate",
+        "bpm": 126
+      }
+    ],
+    "imagegen_source_sha256": {
+      "background_title_imagegen_v1.png": "9b40c009f84055c2aca55a87535766e9f064922d721b99285eaa540c0784dace",
+      "background_main_imagegen_v1.png": "7bad9fe04512463e68f957bf2da6b7e3007276dffe84e79d25745ad65f25cae5",
+      "background_ending_a_imagegen_v1.png": "37c8e617f8357a3141c07f99c3a34c27ad0e9a79340cb5ea21ffea9dbb32e204",
+      "background_ending_b_imagegen_v1.png": "10eeeead0f6e757ccebca93ac269f332649aad20fcfd5b8badb0fcd6781882a0",
+      "character_master_cutout_imagegen_v1.png": "2d5d1eba94a629a3a75e969d0571926210b6c5fe7f0fc79f06a50788b72b96f1"
+    },
+    "source_master_count": 5,
+    "background_count": 4,
+    "character_frame_count": 3,
+    "art_policy": "ImageGen-first; no procedural pictorial fallback"
+  }
+}

@@ -1,0 +1,1058 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-23T02:35:24.822756+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "contract": {
+      "path": "games/mobile-suit-gundam-summary/assets/sources/visual-contract.json",
+      "sha256": "692decf900d81694e4ddc5a13c966c51b8621fff0ab0ec0be40b12f5e194826c",
+      "schema_version": 1
+    },
+    "project": {
+      "path": "games/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json",
+      "sha256": "acd887a2e0af6946d5a96194e91cc7187be36e4b16978adf741b4bb0b50b4e8d"
+    },
+    "thresholds": {
+      "max_choice_label_chars": 22,
+      "min_sprite_bg_luma_delta": 22.0,
+      "max_background_detail_under_sprite": 70.0,
+      "min_mood_base_face_delta": 0,
+      "min_mood_pair_face_delta": 0,
+      "min_side_position_share": 0.25,
+      "max_same_side_staging_run": 5,
+      "text_cols": 26,
+      "text_lines": 3,
+      "face_acting_box": [
+        28,
+        36,
+        68,
+        72
+      ]
+    },
+    "scene_count": 38,
+    "configured_characters": [
+      "rx78",
+      "zaku"
+    ],
+    "mood_usage": {
+      "rx78": {
+        "base": 18
+      },
+      "zaku": {
+        "base": 16
+      }
+    },
+    "position_usage": {
+      "right": 18,
+      "left": 16,
+      "none": 4
+    },
+    "position_balance": {
+      "staged_scene_count": 34,
+      "counts": {
+        "right": 18,
+        "left": 16
+      },
+      "shares": {
+        "left": 0.471,
+        "right": 0.529
+      },
+      "longest_staging_streak": {
+        "position": "right",
+        "count": 3,
+        "scene_ids": [
+          "earth_07b",
+          "space_01",
+          "people_01"
+        ]
+      },
+      "staging_streaks": [
+        {
+          "position": "right",
+          "count": 1,
+          "scene_ids": [
+            "tour_01"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 2,
+          "scene_ids": [
+            "tour_02",
+            "tour_03"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 2,
+          "scene_ids": [
+            "tour_04",
+            "tour_05"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 1,
+          "scene_ids": [
+            "tour_06"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 1,
+          "scene_ids": [
+            "tour_07"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 2,
+          "scene_ids": [
+            "tour_07b",
+            "tour_08"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 2,
+          "scene_ids": [
+            "tour_09",
+            "whitebase_01"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 2,
+          "scene_ids": [
+            "whitebase_02",
+            "warmap_01"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 2,
+          "scene_ids": [
+            "warmap_02",
+            "earth_01"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 2,
+          "scene_ids": [
+            "earth_02",
+            "earth_03"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 1,
+          "scene_ids": [
+            "earth_04"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 1,
+          "scene_ids": [
+            "earth_05"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 2,
+          "scene_ids": [
+            "earth_05b",
+            "earth_06"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 1,
+          "scene_ids": [
+            "earth_07"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 3,
+          "scene_ids": [
+            "earth_07b",
+            "space_01",
+            "people_01"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 1,
+          "scene_ids": [
+            "people_02"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 1,
+          "scene_ids": [
+            "people_03"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 1,
+          "scene_ids": [
+            "people_04"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 1,
+          "scene_ids": [
+            "people_05"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 1,
+          "scene_ids": [
+            "power_01"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 1,
+          "scene_ids": [
+            "power_02"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 1,
+          "scene_ids": [
+            "power_03"
+          ]
+        },
+        {
+          "position": "right",
+          "count": 1,
+          "scene_ids": [
+            "power_04"
+          ]
+        },
+        {
+          "position": "left",
+          "count": 1,
+          "scene_ids": [
+            "power_05"
+          ]
+        }
+      ]
+    },
+    "minimum_sprite_bg_luma_delta": 68.56,
+    "average_sprite_bg_luma_delta": 95.6,
+    "maximum_background_detail_under_sprite": 35.66,
+    "average_background_detail_under_sprite": 27.95,
+    "review_focus": {
+      "lowest_sprite_bg_contrast": [
+        {
+          "id": "earth_02",
+          "speaker": "Docent Zaku",
+          "background": "bg_main",
+          "character": "char_zaku_neutral",
+          "position": "left",
+          "mood": "base",
+          "sprite_bg_luma_delta": 68.56
+        },
+        {
+          "id": "earth_05",
+          "speaker": "Docent Zaku",
+          "background": "bg_main",
+          "character": "char_zaku_neutral",
+          "position": "left",
+          "mood": "base",
+          "sprite_bg_luma_delta": 68.56
+        },
+        {
+          "id": "power_03",
+          "speaker": "Docent Zaku",
+          "background": "bg_main",
+          "character": "char_zaku_neutral",
+          "position": "left",
+          "mood": "base",
+          "sprite_bg_luma_delta": 68.56
+        },
+        {
+          "id": "tour_02",
+          "speaker": "Docent Zaku",
+          "background": "bg_main",
+          "character": "char_zaku_neutral",
+          "position": "left",
+          "mood": "base",
+          "sprite_bg_luma_delta": 68.56
+        },
+        {
+          "id": "tour_06",
+          "speaker": "Docent Zaku",
+          "background": "bg_main",
+          "character": "char_zaku_neutral",
+          "position": "left",
+          "mood": "base",
+          "sprite_bg_luma_delta": 68.56
+        }
+      ],
+      "busiest_sprite_lanes": [
+        {
+          "id": "people_05",
+          "speaker": "Docent RX",
+          "background": "bg_end_b",
+          "character": "char_rx78_neutral",
+          "position": "right",
+          "mood": "base",
+          "background_detail_under_sprite": 35.66
+        },
+        {
+          "id": "earth_03",
+          "speaker": "Docent Zaku",
+          "background": "bg_end_a",
+          "character": "char_zaku_neutral",
+          "position": "left",
+          "mood": "base",
+          "background_detail_under_sprite": 33.67
+        },
+        {
+          "id": "earth_07",
+          "speaker": "Docent Zaku",
+          "background": "bg_end_a",
+          "character": "char_zaku_neutral",
+          "position": "left",
+          "mood": "base",
+          "background_detail_under_sprite": 33.67
+        },
+        {
+          "id": "people_02",
+          "speaker": "Docent Zaku",
+          "background": "bg_end_a",
+          "character": "char_zaku_neutral",
+          "position": "left",
+          "mood": "base",
+          "background_detail_under_sprite": 33.67
+        },
+        {
+          "id": "people_04",
+          "speaker": "Docent Zaku",
+          "background": "bg_end_a",
+          "character": "char_zaku_neutral",
+          "position": "left",
+          "mood": "base",
+          "background_detail_under_sprite": 33.67
+        }
+      ],
+      "most_text_pressure": [
+        {
+          "id": "tour_04",
+          "speaker": "Docent RX",
+          "wrapped_lines": 3,
+          "longest_word": 16
+        },
+        {
+          "id": "tour_08",
+          "speaker": "Docent Zaku",
+          "wrapped_lines": 3,
+          "longest_word": 15
+        },
+        {
+          "id": "power_05",
+          "speaker": "Docent Zaku",
+          "wrapped_lines": 3,
+          "longest_word": 14
+        },
+        {
+          "id": "earth_05",
+          "speaker": "Docent Zaku",
+          "wrapped_lines": 3,
+          "longest_word": 13
+        },
+        {
+          "id": "earth_06",
+          "speaker": "Docent RX",
+          "wrapped_lines": 3,
+          "longest_word": 13
+        }
+      ]
+    },
+    "expression_deltas": [],
+    "weakest_expression_deltas": [],
+    "lane_matrix": [
+      {
+        "background": "bg_end_a",
+        "background_file": "bg_end_a.png",
+        "character": "char_rx78_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 106.44,
+        "background_detail_under_sprite": 37.2
+      },
+      {
+        "background": "bg_end_a",
+        "background_file": "bg_end_a.png",
+        "character": "char_rx78_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 107.76,
+        "background_detail_under_sprite": 30.75
+      },
+      {
+        "background": "bg_end_a",
+        "background_file": "bg_end_a.png",
+        "character": "char_zaku_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 68.85,
+        "background_detail_under_sprite": 33.67
+      },
+      {
+        "background": "bg_end_a",
+        "background_file": "bg_end_a.png",
+        "character": "char_zaku_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 71.17,
+        "background_detail_under_sprite": 28.2
+      },
+      {
+        "background": "bg_end_b",
+        "background_file": "bg_end_b.png",
+        "character": "char_rx78_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 118.06,
+        "background_detail_under_sprite": 27.03
+      },
+      {
+        "background": "bg_end_b",
+        "background_file": "bg_end_b.png",
+        "character": "char_rx78_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 85.15,
+        "background_detail_under_sprite": 35.66
+      },
+      {
+        "background": "bg_end_b",
+        "background_file": "bg_end_b.png",
+        "character": "char_zaku_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 78.54,
+        "background_detail_under_sprite": 27.88
+      },
+      {
+        "background": "bg_end_b",
+        "background_file": "bg_end_b.png",
+        "character": "char_zaku_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 90.81,
+        "background_detail_under_sprite": 37.08
+      },
+      {
+        "background": "bg_main",
+        "background_file": "bg_main.png",
+        "character": "char_rx78_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 107.95,
+        "background_detail_under_sprite": 33.56
+      },
+      {
+        "background": "bg_main",
+        "background_file": "bg_main.png",
+        "character": "char_rx78_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 139.71,
+        "background_detail_under_sprite": 10.68
+      },
+      {
+        "background": "bg_main",
+        "background_file": "bg_main.png",
+        "character": "char_zaku_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 68.56,
+        "background_detail_under_sprite": 33.59
+      },
+      {
+        "background": "bg_main",
+        "background_file": "bg_main.png",
+        "character": "char_zaku_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 97.66,
+        "background_detail_under_sprite": 8.38
+      }
+    ],
+    "weakest_lane_matrix_contrast": [
+      {
+        "background": "bg_main",
+        "character": "char_zaku_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 68.56
+      },
+      {
+        "background": "bg_end_a",
+        "character": "char_zaku_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 68.85
+      },
+      {
+        "background": "bg_end_a",
+        "character": "char_zaku_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 71.17
+      },
+      {
+        "background": "bg_end_b",
+        "character": "char_zaku_neutral",
+        "position": "left",
+        "sprite_bg_luma_delta": 78.54
+      },
+      {
+        "background": "bg_end_b",
+        "character": "char_rx78_neutral",
+        "position": "right",
+        "sprite_bg_luma_delta": 85.15
+      }
+    ],
+    "busiest_lane_matrix": [
+      {
+        "background": "bg_end_a",
+        "character": "char_rx78_neutral",
+        "position": "left",
+        "background_detail_under_sprite": 37.2
+      },
+      {
+        "background": "bg_end_b",
+        "character": "char_zaku_neutral",
+        "position": "right",
+        "background_detail_under_sprite": 37.08
+      },
+      {
+        "background": "bg_end_b",
+        "character": "char_rx78_neutral",
+        "position": "right",
+        "background_detail_under_sprite": 35.66
+      },
+      {
+        "background": "bg_end_a",
+        "character": "char_zaku_neutral",
+        "position": "left",
+        "background_detail_under_sprite": 33.67
+      },
+      {
+        "background": "bg_main",
+        "character": "char_zaku_neutral",
+        "position": "left",
+        "background_detail_under_sprite": 33.59
+      }
+    ],
+    "scene_facts": [
+      {
+        "id": "tour_01",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_main",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 7,
+        "longest_word": 12,
+        "mood": "base",
+        "sprite_bg_luma_delta": 139.71,
+        "background_detail_under_sprite": 10.68
+      },
+      {
+        "id": "tour_02",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_main",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 5,
+        "longest_word": 13,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.56,
+        "background_detail_under_sprite": 33.59
+      },
+      {
+        "id": "tour_03",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 7,
+        "longest_word": 13,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.85,
+        "background_detail_under_sprite": 33.67
+      },
+      {
+        "id": "tour_04",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 16,
+        "mood": "base",
+        "sprite_bg_luma_delta": 107.76,
+        "background_detail_under_sprite": 30.75
+      },
+      {
+        "id": "tour_05",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 12,
+        "mood": "base",
+        "sprite_bg_luma_delta": 107.76,
+        "background_detail_under_sprite": 30.75
+      },
+      {
+        "id": "tour_06",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_main",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 10,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.56,
+        "background_detail_under_sprite": 33.59
+      },
+      {
+        "id": "tour_07",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_main",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 12,
+        "mood": "base",
+        "sprite_bg_luma_delta": 139.71,
+        "background_detail_under_sprite": 10.68
+      },
+      {
+        "id": "tour_07b",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_main",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 10,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.56,
+        "background_detail_under_sprite": 33.59
+      },
+      {
+        "id": "tour_08",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 15,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.85,
+        "background_detail_under_sprite": 33.67
+      },
+      {
+        "id": "tour_09",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_main",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 6,
+        "longest_word": 9,
+        "mood": "base",
+        "sprite_bg_luma_delta": 139.71,
+        "background_detail_under_sprite": 10.68
+      },
+      {
+        "id": "whitebase_01",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_main",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 11,
+        "mood": "base",
+        "sprite_bg_luma_delta": 139.71,
+        "background_detail_under_sprite": 10.68
+      },
+      {
+        "id": "whitebase_02",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 12,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.85,
+        "background_detail_under_sprite": 33.67
+      },
+      {
+        "id": "warmap_01",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 7,
+        "longest_word": 13,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.85,
+        "background_detail_under_sprite": 33.67
+      },
+      {
+        "id": "warmap_02",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 11,
+        "mood": "base",
+        "sprite_bg_luma_delta": 107.76,
+        "background_detail_under_sprite": 30.75
+      },
+      {
+        "id": "earth_01",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 11,
+        "mood": "base",
+        "sprite_bg_luma_delta": 107.76,
+        "background_detail_under_sprite": 30.75
+      },
+      {
+        "id": "earth_02",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_main",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 11,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.56,
+        "background_detail_under_sprite": 33.59
+      },
+      {
+        "id": "earth_03",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 11,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.85,
+        "background_detail_under_sprite": 33.67
+      },
+      {
+        "id": "earth_04",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 11,
+        "mood": "base",
+        "sprite_bg_luma_delta": 107.76,
+        "background_detail_under_sprite": 30.75
+      },
+      {
+        "id": "earth_05",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_main",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 13,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.56,
+        "background_detail_under_sprite": 33.59
+      },
+      {
+        "id": "earth_05b",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_main",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 10,
+        "mood": "base",
+        "sprite_bg_luma_delta": 139.71,
+        "background_detail_under_sprite": 10.68
+      },
+      {
+        "id": "earth_06",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 13,
+        "mood": "base",
+        "sprite_bg_luma_delta": 107.76,
+        "background_detail_under_sprite": 30.75
+      },
+      {
+        "id": "earth_07",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 12,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.85,
+        "background_detail_under_sprite": 33.67
+      },
+      {
+        "id": "earth_07b",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 10,
+        "mood": "base",
+        "sprite_bg_luma_delta": 107.76,
+        "background_detail_under_sprite": 30.75
+      },
+      {
+        "id": "space_01",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_main",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 12,
+        "mood": "base",
+        "sprite_bg_luma_delta": 139.71,
+        "background_detail_under_sprite": 10.68
+      },
+      {
+        "id": "people_01",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 12,
+        "mood": "base",
+        "sprite_bg_luma_delta": 107.76,
+        "background_detail_under_sprite": 30.75
+      },
+      {
+        "id": "people_02",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 9,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.85,
+        "background_detail_under_sprite": 33.67
+      },
+      {
+        "id": "people_03",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_main",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 12,
+        "mood": "base",
+        "sprite_bg_luma_delta": 139.71,
+        "background_detail_under_sprite": 10.68
+      },
+      {
+        "id": "people_04",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 12,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.85,
+        "background_detail_under_sprite": 33.67
+      },
+      {
+        "id": "people_05",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_end_b",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 10,
+        "mood": "base",
+        "sprite_bg_luma_delta": 85.15,
+        "background_detail_under_sprite": 35.66
+      },
+      {
+        "id": "people_06",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_end_b",
+        "char_id": null,
+        "char_pos": "none",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 9
+      },
+      {
+        "id": "people_07",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_end_b",
+        "char_id": null,
+        "char_pos": "none",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 10
+      },
+      {
+        "id": "power_01",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 12,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.85,
+        "background_detail_under_sprite": 33.67
+      },
+      {
+        "id": "power_02",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 12,
+        "mood": "base",
+        "sprite_bg_luma_delta": 107.76,
+        "background_detail_under_sprite": 30.75
+      },
+      {
+        "id": "power_03",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_main",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 11,
+        "mood": "base",
+        "sprite_bg_luma_delta": 68.56,
+        "background_detail_under_sprite": 33.59
+      },
+      {
+        "id": "power_04",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_end_a",
+        "char_id": "char_rx78_neutral",
+        "char_pos": "right",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 13,
+        "mood": "base",
+        "sprite_bg_luma_delta": 107.76,
+        "background_detail_under_sprite": 30.75
+      },
+      {
+        "id": "power_05",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_end_b",
+        "char_id": "char_zaku_neutral",
+        "char_pos": "left",
+        "wrapped_lines": 3,
+        "page_count": 8,
+        "longest_word": 14,
+        "mood": "base",
+        "sprite_bg_luma_delta": 78.54,
+        "background_detail_under_sprite": 27.88
+      },
+      {
+        "id": "power_06",
+        "speaker": "Docent RX",
+        "bg_image_id": "bg_end_b",
+        "char_id": null,
+        "char_pos": "none",
+        "wrapped_lines": 3,
+        "page_count": 6,
+        "longest_word": 11
+      },
+      {
+        "id": "power_07",
+        "speaker": "Docent Zaku",
+        "bg_image_id": "bg_end_b",
+        "char_id": null,
+        "char_pos": "none",
+        "wrapped_lines": 3,
+        "page_count": 9,
+        "longest_word": 11
+      }
+    ],
+    "storyboard": {
+      "path": "games/mobile-suit-gundam-summary/assets/storyboard_sheet.png",
+      "size": [
+        488,
+        1064
+      ],
+      "expected_size": [
+        488,
+        1064
+      ],
+      "bytes": 147320,
+      "sha256": "3ecd5b939dff6e1d548de1cf82ef2b028f4a81651640d2d9f524a7dcf6003d4a"
+    },
+    "expression_audition_sheet": {
+      "path": "games/mobile-suit-gundam-summary/assets/auditions/mobile-suit-gundam-summary-runtime-audition.png",
+      "size": [
+        1976,
+        1198
+      ],
+      "expected_size": [
+        1976,
+        1198
+      ],
+      "bytes": 65620,
+      "sha256": "577e70ec7de6d755b7fa2de8c3905541910f47faaeb0d01dc6638c9c0e35a3cf"
+    }
+  }
+}

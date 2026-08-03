@@ -1,0 +1,789 @@
+{
+  "ok": true,
+  "errors": [],
+  "facts": {
+    "mode": "normal",
+    "zip": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/releases/20260727T031040Z-a14776ca911c.zip",
+      "bytes": 11811158,
+      "sha256": "3e17d682fb27e15c5411e3dd9e97021b6fbb2a2951806ee6fc73d63b57de1727"
+    },
+    "entries": 45,
+    "members": 45,
+    "duplicate_members": [],
+    "unsafe_members": [],
+    "manifest": {
+      "schema_version": 1,
+      "slug": "operation-potluck",
+      "title": "Operation Potluck",
+      "files": 44,
+      "runtime_inputs": 6,
+      "emulator_screenshot": false
+    },
+    "package_sources": {
+      "readme": {
+        "member": "docs/README.md",
+        "exists": true,
+        "bytes": 1244,
+        "sha256": "4ce4641ea75f4af0493012c59a71c065b4a5501188d744ce5653774304273614"
+      },
+      "asset_builder": {
+        "member": "source/build_operation_potluck.py",
+        "exists": true,
+        "bytes": 56622,
+        "sha256": "cfaf4c4360017c2c15f6bbf95764ca32a8533b2f0ca264ad61f672dbc5134401"
+      },
+      "qa_report": {
+        "member": "reports/operation-potluck-qa-report.json",
+        "exists": true,
+        "bytes": 5272,
+        "sha256": "226c146754865f61200930bfbec3a28025dfdbcbf767cf23ea34f2fa2a8beaf2"
+      }
+    },
+    "runtime_inputs": {
+      "present": true,
+      "expected_count": 6,
+      "files": [
+        {
+          "member": "runtime/src/main.c",
+          "exists": true,
+          "bytes": 105606,
+          "sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a",
+          "manifest_bytes": 105606,
+          "manifest_sha256": "263d439c2dbbaa25860d2b0206f5359b301fde8c435ce0f035090c3b30f1d20a"
+        },
+        {
+          "member": "runtime/src/game_types.h",
+          "exists": true,
+          "bytes": 6650,
+          "sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec",
+          "manifest_bytes": 6650,
+          "manifest_sha256": "7d25b82870150b777fd8de22d2cdd4bea917c64950ffa6d23234619745260cec"
+        },
+        {
+          "member": "runtime/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+          "manifest_bytes": 5470,
+          "manifest_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        {
+          "member": "runtime/tools/convert_json.py",
+          "exists": true,
+          "bytes": 88977,
+          "sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387",
+          "manifest_bytes": 88977,
+          "manifest_sha256": "43f8e44dc8d85ad9057b4d0f8cdd1a63ae7303cb48d6a50b3794b27a61bfc387"
+        },
+        {
+          "member": "runtime/Makefile",
+          "exists": true,
+          "bytes": 3590,
+          "sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd",
+          "manifest_bytes": 3590,
+          "manifest_sha256": "e0f41fd8922c00e79ef5ba123fb44cb423060cb80f0bed1c0d11c72068ee6fcd"
+        },
+        {
+          "member": "runtime/wfconfig.toml",
+          "exists": true,
+          "bytes": 169,
+          "sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78",
+          "manifest_bytes": 169,
+          "manifest_sha256": "c0aaecc791cee419c8141f203f50a712fc3021bc869f77fa818218b78a175c78"
+        }
+      ],
+      "count": 6,
+      "missing": [],
+      "extra": [],
+      "duplicates": []
+    },
+    "current_workspace": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck",
+      "checked": 44,
+      "missing": [],
+      "mismatches": [],
+      "stable_report_diffs": [],
+      "unmapped": [],
+      "extra_current": []
+    },
+    "reports": {
+      "build": true,
+      "smoke": true,
+      "readiness": true,
+      "audit": true,
+      "swansong_playthrough": true,
+      "review_sheets": true
+    },
+    "smoke_verification": {
+      "result_scope": "boot-and-checksum",
+      "boot": {
+        "performed": true,
+        "passed": true,
+        "method": "headless-mednafen-startup-metadata",
+        "pixels_observed": false
+      },
+      "checksum": {
+        "performed": true,
+        "passed": true,
+        "method": "mednafen-recorded-vs-real-checksum"
+      },
+      "visual": {
+        "performed": false,
+        "passed": null,
+        "status": "not-performed",
+        "pixels_observed": false,
+        "proof_bound": false,
+        "screenshot": null
+      },
+      "proof_bound": false
+    },
+    "swansong_playthrough": {
+      "schema": "wscvn-swansong-playthrough-v2",
+      "app": {
+        "path": "/Applications/SwanSong.app",
+        "version": "0.9.0",
+        "build": "18",
+        "bundle_identifier": "com.regionallyfamous.swansong"
+      },
+      "route_count": 4,
+      "routes": [
+        {
+          "route_index": 0,
+          "member": "evidence/swansong-playthrough/route-1-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "title",
+            "op01",
+            "op02",
+            "op03",
+            "op04",
+            "op05",
+            "op06",
+            "op07",
+            "op08",
+            "op09",
+            "op10",
+            "op_method",
+            "op_plan_1",
+            "op_plan_2",
+            "op11",
+            "op12",
+            "op13",
+            "op14",
+            "op15",
+            "op16",
+            "op17",
+            "op18",
+            "op19",
+            "op20",
+            "op21",
+            "op22",
+            "op23",
+            "op24",
+            "op25",
+            "op26",
+            "op27",
+            "op28",
+            "op_final",
+            "op_e1_1",
+            "op_e1_2",
+            "op_e1_3",
+            "op_e1_4",
+            "end"
+          ],
+          "observed_nodes": [
+            "title",
+            "op01",
+            "op02",
+            "op03",
+            "op04",
+            "op05",
+            "op06",
+            "op07",
+            "op08",
+            "op09",
+            "op10",
+            "op_method",
+            "op_plan_1",
+            "op_plan_2",
+            "op11",
+            "op12",
+            "op13",
+            "op14",
+            "op15",
+            "op16",
+            "op17",
+            "op18",
+            "op19",
+            "op20",
+            "op21",
+            "op22",
+            "op23",
+            "op24",
+            "op25",
+            "op26",
+            "op27",
+            "op28",
+            "op_final",
+            "op_e1_1",
+            "op_e1_2",
+            "op_e1_3",
+            "op_e1_4",
+            "end"
+          ],
+          "bytes": 13727,
+          "sha256": "b29e04f416ff4f979f96b71574eab34474943cf07354bd82a30c7915fd01b440",
+          "node_id": "op_e1_4",
+          "audio_member": "evidence/swansong-playthrough/route-1-audio.wav"
+        },
+        {
+          "route_index": 1,
+          "member": "evidence/swansong-playthrough/route-2-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "title",
+            "op01",
+            "op02",
+            "op03",
+            "op04",
+            "op05",
+            "op06",
+            "op07",
+            "op08",
+            "op09",
+            "op10",
+            "op_method",
+            "op_plan_1",
+            "op_plan_2",
+            "op11",
+            "op12",
+            "op13",
+            "op14",
+            "op15",
+            "op16",
+            "op17",
+            "op18",
+            "op19",
+            "op20",
+            "op21",
+            "op22",
+            "op23",
+            "op24",
+            "op25",
+            "op26",
+            "op27",
+            "op28",
+            "op_final",
+            "op_e2_1",
+            "op_e2_2",
+            "op_e2_3",
+            "op_e2_4",
+            "end"
+          ],
+          "observed_nodes": [
+            "title",
+            "op01",
+            "op02",
+            "op03",
+            "op04",
+            "op05",
+            "op06",
+            "op07",
+            "op08",
+            "op09",
+            "op10",
+            "op_method",
+            "op_plan_1",
+            "op_plan_2",
+            "op11",
+            "op12",
+            "op13",
+            "op14",
+            "op15",
+            "op16",
+            "op17",
+            "op18",
+            "op19",
+            "op20",
+            "op21",
+            "op22",
+            "op23",
+            "op24",
+            "op25",
+            "op26",
+            "op27",
+            "op28",
+            "op_final",
+            "op_e2_1",
+            "op_e2_2",
+            "op_e2_3",
+            "op_e2_4",
+            "end"
+          ],
+          "bytes": 14842,
+          "sha256": "2fd0ecc436bcabd06eee80ddc4c74c01e5c8b6a7b386baedc901c7a94ed27581",
+          "node_id": "op_e2_4",
+          "audio_member": "evidence/swansong-playthrough/route-2-audio.wav"
+        },
+        {
+          "route_index": 2,
+          "member": "evidence/swansong-playthrough/route-3-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "title",
+            "op01",
+            "op02",
+            "op03",
+            "op04",
+            "op05",
+            "op06",
+            "op07",
+            "op08",
+            "op09",
+            "op10",
+            "op_method",
+            "op_call_1",
+            "op_call_2",
+            "op11",
+            "op12",
+            "op13",
+            "op14",
+            "op15",
+            "op16",
+            "op17",
+            "op18",
+            "op19",
+            "op20",
+            "op21",
+            "op22",
+            "op23",
+            "op24",
+            "op25",
+            "op26",
+            "op27",
+            "op28",
+            "op_final",
+            "op_e1_1",
+            "op_e1_2",
+            "op_e1_3",
+            "op_e1_4",
+            "end"
+          ],
+          "observed_nodes": [
+            "title",
+            "op01",
+            "op02",
+            "op03",
+            "op04",
+            "op05",
+            "op06",
+            "op07",
+            "op08",
+            "op09",
+            "op10",
+            "op_method",
+            "op_call_1",
+            "op_call_2",
+            "op11",
+            "op12",
+            "op13",
+            "op14",
+            "op15",
+            "op16",
+            "op17",
+            "op18",
+            "op19",
+            "op20",
+            "op21",
+            "op22",
+            "op23",
+            "op24",
+            "op25",
+            "op26",
+            "op27",
+            "op28",
+            "op_final",
+            "op_e1_1",
+            "op_e1_2",
+            "op_e1_3",
+            "op_e1_4",
+            "end"
+          ],
+          "bytes": 13727,
+          "sha256": "b29e04f416ff4f979f96b71574eab34474943cf07354bd82a30c7915fd01b440",
+          "node_id": "op_e1_4",
+          "audio_member": "evidence/swansong-playthrough/route-3-audio.wav"
+        },
+        {
+          "route_index": 3,
+          "member": "evidence/swansong-playthrough/route-4-ending.png",
+          "ok": true,
+          "expected_nodes": [
+            "title",
+            "op01",
+            "op02",
+            "op03",
+            "op04",
+            "op05",
+            "op06",
+            "op07",
+            "op08",
+            "op09",
+            "op10",
+            "op_method",
+            "op_call_1",
+            "op_call_2",
+            "op11",
+            "op12",
+            "op13",
+            "op14",
+            "op15",
+            "op16",
+            "op17",
+            "op18",
+            "op19",
+            "op20",
+            "op21",
+            "op22",
+            "op23",
+            "op24",
+            "op25",
+            "op26",
+            "op27",
+            "op28",
+            "op_final",
+            "op_e2_1",
+            "op_e2_2",
+            "op_e2_3",
+            "op_e2_4",
+            "end"
+          ],
+          "observed_nodes": [
+            "title",
+            "op01",
+            "op02",
+            "op03",
+            "op04",
+            "op05",
+            "op06",
+            "op07",
+            "op08",
+            "op09",
+            "op10",
+            "op_method",
+            "op_call_1",
+            "op_call_2",
+            "op11",
+            "op12",
+            "op13",
+            "op14",
+            "op15",
+            "op16",
+            "op17",
+            "op18",
+            "op19",
+            "op20",
+            "op21",
+            "op22",
+            "op23",
+            "op24",
+            "op25",
+            "op26",
+            "op27",
+            "op28",
+            "op_final",
+            "op_e2_1",
+            "op_e2_2",
+            "op_e2_3",
+            "op_e2_4",
+            "end"
+          ],
+          "bytes": 14842,
+          "sha256": "2fd0ecc436bcabd06eee80ddc4c74c01e5c8b6a7b386baedc901c7a94ed27581",
+          "node_id": "op_e2_4",
+          "audio_member": "evidence/swansong-playthrough/route-4-audio.wav"
+        }
+      ]
+    },
+    "readiness_assets": {
+      "contact_sheet": {
+        "member": "preview/contact_sheet.png",
+        "expected_sha256": "9da7388425551713f75e35017334344b04ff7acdfaa67fcab0c23c10e9fe5a7c",
+        "exists": true,
+        "sha256": "9da7388425551713f75e35017334344b04ff7acdfaa67fcab0c23c10e9fe5a7c"
+      },
+      "review_sheets": {
+        "scene_preview_sheet": {
+          "member": "preview/scene_preview_sheet.png",
+          "expected_sha256": "33484e5520fbae89f80009caaec031f58577da48e0860cbaff50770b11fd682c",
+          "exists": true,
+          "sha256": "33484e5520fbae89f80009caaec031f58577da48e0860cbaff50770b11fd682c"
+        },
+        "storyboard_sheet": {
+          "member": "preview/storyboard_sheet.png",
+          "expected_sha256": "27fda97e14b0779790cb12c7daa597f663eda476aa8145cc6548c3e70fd0edb5",
+          "exists": true,
+          "sha256": "27fda97e14b0779790cb12c7daa597f663eda476aa8145cc6548c3e70fd0edb5"
+        }
+      },
+      "sources": [
+        {
+          "member": "assets/sources/background_checklist_imagegen_v2.png",
+          "expected_sha256": "3a9e80dcf0a1a527ae09f3c40b878d4c5989c2ba87628298f3657970bf9b7128",
+          "exists": true,
+          "sha256": "3a9e80dcf0a1a527ae09f3c40b878d4c5989c2ba87628298f3657970bf9b7128"
+        },
+        {
+          "member": "assets/sources/background_clock_imagegen_v2.png",
+          "expected_sha256": "b7724b0fc105ae9497cb87f7ee85571d411a404dd413f3b902e06f00c67390e5",
+          "exists": true,
+          "sha256": "b7724b0fc105ae9497cb87f7ee85571d411a404dd413f3b902e06f00c67390e5"
+        },
+        {
+          "member": "assets/sources/background_kitchen_imagegen_v2.png",
+          "expected_sha256": "22b94038a45389b146868d921ee507cdf23473205316454fe5a9fa9ab55f83c6",
+          "exists": true,
+          "sha256": "22b94038a45389b146868d921ee507cdf23473205316454fe5a9fa9ab55f83c6"
+        },
+        {
+          "member": "assets/sources/background_title_imagegen_v2.png",
+          "expected_sha256": "e077102fd8ea03b907fb901b04a2052b346aad0f0242d7e3aaf3a5a5fe6b4949",
+          "exists": true,
+          "sha256": "e077102fd8ea03b907fb901b04a2052b346aad0f0242d7e3aaf3a5a5fe6b4949"
+        },
+        {
+          "member": "assets/sources/background_zaku_call_imagegen_v2.png",
+          "expected_sha256": "282c7d281598e8e558ceb41449a853557013ce25862e9f24da92a59fa5b0c4e6",
+          "exists": true,
+          "sha256": "282c7d281598e8e558ceb41449a853557013ce25862e9f24da92a59fa5b0c4e6"
+        },
+        {
+          "member": "assets/sources/character_rx78_checklist_master_cutout_imagegen_v2.png",
+          "expected_sha256": "3d8a8a28de6f7bc4707d76ff546c44d93eb9b5bfa18459714297c8254196c333",
+          "exists": true,
+          "sha256": "3d8a8a28de6f7bc4707d76ff546c44d93eb9b5bfa18459714297c8254196c333"
+        },
+        {
+          "member": "assets/sources/character_rx78_checklist_master_imagegen_v2.png",
+          "expected_sha256": "5d2f0f63f541b1966c1be08be2d9374e29e515d3164e263317276133eb3a57ca",
+          "exists": true,
+          "sha256": "5d2f0f63f541b1966c1be08be2d9374e29e515d3164e263317276133eb3a57ca"
+        }
+      ],
+      "extra_sources": [],
+      "review_sheets_report": {
+        "member": "reports/review-sheets-report.json",
+        "expected_sha256": "2aeec80be4ef036d80d9a708459adf72092bbdf5567e64177391f75e954c3809",
+        "exists": true,
+        "sha256": "2aeec80be4ef036d80d9a708459adf72092bbdf5567e64177391f75e954c3809"
+      },
+      "packaged_source_count": 7,
+      "backgrounds": {
+        "count": 5,
+        "files": [
+          {
+            "member": "assets/backgrounds/title.png",
+            "expected_sha256": "b2aea66197e083c271d0663472f190d8ce8a7ad7960748db5f3b11523773a0ef",
+            "exists": true,
+            "sha256": "b2aea66197e083c271d0663472f190d8ce8a7ad7960748db5f3b11523773a0ef"
+          },
+          {
+            "member": "assets/backgrounds/kitchen.png",
+            "expected_sha256": "c321770fdc069e7ee456714efd16e6e2e5f1ebf3e456eeb8572c670736fd660b",
+            "exists": true,
+            "sha256": "c321770fdc069e7ee456714efd16e6e2e5f1ebf3e456eeb8572c670736fd660b"
+          },
+          {
+            "member": "assets/backgrounds/clock.png",
+            "expected_sha256": "7235cc5c36b8e29a5d0ade40783adbea67d9ac660792eb2c57782a91dadbce0c",
+            "exists": true,
+            "sha256": "7235cc5c36b8e29a5d0ade40783adbea67d9ac660792eb2c57782a91dadbce0c"
+          },
+          {
+            "member": "assets/backgrounds/checklist.png",
+            "expected_sha256": "fa4b7dffe3ee5b7bcbd5a00c90a4bd1e1eb706958e5e985583aa76d3da0bb8fb",
+            "exists": true,
+            "sha256": "fa4b7dffe3ee5b7bcbd5a00c90a4bd1e1eb706958e5e985583aa76d3da0bb8fb"
+          },
+          {
+            "member": "assets/backgrounds/zaku_call.png",
+            "expected_sha256": "97a804f18327a0b13dd499a3aed713c355cf48df8923aee29b2eab4f0578b325",
+            "exists": true,
+            "sha256": "97a804f18327a0b13dd499a3aed713c355cf48df8923aee29b2eab4f0578b325"
+          }
+        ],
+        "packaged_count": 5,
+        "extra_members": []
+      },
+      "characters": {
+        "count": 3,
+        "files": [
+          {
+            "member": "assets/characters/rx78_neutral.png",
+            "expected_sha256": "1a96851aeebefed4965606fad772774e983b7ee3a29d4b14ece0181fbe572d06",
+            "exists": true,
+            "sha256": "1a96851aeebefed4965606fad772774e983b7ee3a29d4b14ece0181fbe572d06"
+          },
+          {
+            "member": "assets/characters/rx78_talk.png",
+            "expected_sha256": "8e4945e943be9238fa9dba71fe02e1efe64dca34ae87fb4ccfce39a1afa217de",
+            "exists": true,
+            "sha256": "8e4945e943be9238fa9dba71fe02e1efe64dca34ae87fb4ccfce39a1afa217de"
+          },
+          {
+            "member": "assets/characters/rx78_blink.png",
+            "expected_sha256": "90c88b61ebb8c9bb886aa4b989903cbac7738631945deda13093b1b127d426f7",
+            "exists": true,
+            "sha256": "90c88b61ebb8c9bb886aa4b989903cbac7738631945deda13093b1b127d426f7"
+          }
+        ],
+        "packaged_count": 3,
+        "extra_members": []
+      },
+      "sfx": {
+        "count": 0,
+        "files": [],
+        "packaged_count": 0,
+        "extra_members": []
+      }
+    },
+    "project": {
+      "member": "project/operation-potluck.wscvn.json",
+      "bytes": 165835,
+      "sha256": "183bd3832346d19820c2c3e51dd4ada09af3d036015015578f0662ab66806fe8"
+    },
+    "rom": {
+      "member": "rom/operation-potluck.wsc",
+      "bytes": 8388608,
+      "sha256": "a14776ca911c24bf5f427a01d376203a3b5354069447a351a9cde7ea050d4fd2",
+      "md5": "0xd4e8c47c4fd7efe9bb06b899199f270b"
+    },
+    "review_sheets_report": {
+      "present": true,
+      "member": "reports/review-sheets-report.json",
+      "project_file": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+        "bytes": 165835,
+        "sha256": "183bd3832346d19820c2c3e51dd4ada09af3d036015015578f0662ab66806fe8"
+      },
+      "nodes_rendered": 43,
+      "preview_node_ids": [
+        "title",
+        "op01",
+        "op02",
+        "op03",
+        "op04",
+        "op05",
+        "op06",
+        "op07",
+        "op08",
+        "op09",
+        "op10",
+        "op_method",
+        "op_plan_1",
+        "op_plan_2",
+        "op_call_1",
+        "op_call_2",
+        "op11",
+        "op12",
+        "op13",
+        "op14",
+        "op15",
+        "op16",
+        "op17",
+        "op18",
+        "op19",
+        "op20",
+        "op21",
+        "op22",
+        "op23",
+        "op24",
+        "op25",
+        "op26",
+        "op27",
+        "op28",
+        "op_final",
+        "op_e1_1",
+        "op_e1_2",
+        "op_e1_3",
+        "op_e1_4",
+        "op_e2_1",
+        "op_e2_2",
+        "op_e2_3",
+        "op_e2_4"
+      ],
+      "font": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+        "bytes": 5470,
+        "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade",
+        "member": "runtime/src/font.h",
+        "packaged_bytes": 5470,
+        "packaged_sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+      },
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/scene_preview_sheet.png",
+        "bytes": 360487,
+        "sha256": "33484e5520fbae89f80009caaec031f58577da48e0860cbaff50770b11fd682c",
+        "member": "preview/scene_preview_sheet.png",
+        "packaged_bytes": 360487,
+        "packaged_sha256": "33484e5520fbae89f80009caaec031f58577da48e0860cbaff50770b11fd682c"
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/storyboard_sheet.png",
+        "bytes": 134736,
+        "sha256": "27fda97e14b0779790cb12c7daa597f663eda476aa8145cc6548c3e70fd0edb5",
+        "member": "preview/storyboard_sheet.png",
+        "packaged_bytes": 134736,
+        "packaged_sha256": "27fda97e14b0779790cb12c7daa597f663eda476aa8145cc6548c3e70fd0edb5"
+      }
+    },
+    "project_report_bindings": {
+      "readiness": {
+        "present": true,
+        "member": "project/operation-potluck.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+        "bytes": 165835,
+        "sha256": "183bd3832346d19820c2c3e51dd4ada09af3d036015015578f0662ab66806fe8"
+      },
+      "audit": {
+        "present": true,
+        "member": "project/operation-potluck.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+        "bytes": 165835,
+        "sha256": "183bd3832346d19820c2c3e51dd4ada09af3d036015015578f0662ab66806fe8"
+      }
+    },
+    "audit_rom_binding": {
+      "present": true,
+      "member": "rom/operation-potluck.wsc",
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local/operation-potluck.wsc",
+      "bytes": 8388608,
+      "sha256": "a14776ca911c24bf5f427a01d376203a3b5354069447a351a9cde7ea050d4fd2"
+    },
+    "manifest_artifacts": {
+      "project": {
+        "present": true,
+        "member": "project/operation-potluck.wscvn.json",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+        "bytes": 165835,
+        "sha256": "183bd3832346d19820c2c3e51dd4ada09af3d036015015578f0662ab66806fe8"
+      },
+      "rom": {
+        "present": true,
+        "member": "rom/operation-potluck.wsc",
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/runtime-local/operation-potluck.wsc",
+        "sha256": "a14776ca911c24bf5f427a01d376203a3b5354069447a351a9cde7ea050d4fd2",
+        "md5": "0xd4e8c47c4fd7efe9bb06b899199f270b",
+        "checksum": "0xfd72"
+      }
+    },
+    "release_summary": {
+      "lines": 46,
+      "expected_lines": 34,
+      "visual_evidence_lines": 8,
+      "has_visual_evidence": true,
+      "missing_expected_lines": []
+    }
+  }
+}

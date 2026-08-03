@@ -1,0 +1,215 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "art_policy": "Every pictorial source master was generated with built-in ImageGen; scripts only post-process accepted masters.",
+  "outputs": {
+    "backgrounds/bg_title.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/background_title_imagegen_v1.png",
+      "source_sha256": "c8e828f22e3c9ab46db893a4d01dc69cbbda67925c1356d6877ccba6e19fc3e6",
+      "output_sha256": "976d27c3b3f1a392113626b82b1b3bec114d845380bb6c8eedfa82d64fd186ee",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 86.34
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_main.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/background_main_imagegen_v1.png",
+      "source_sha256": "0082f372112c2ae33ff235629b332ebadb65ea18071bd69cf3f16956b76f5613",
+      "output_sha256": "f6940ca70cc4c987f2d587edce3e8a24749290935a018ea52c3b171434e556bf",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 116.43
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_a.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/background_ending_a_imagegen_v1.png",
+      "source_sha256": "5222dca3d43e19bf10b2ede495222fdfbf822c56d21f0aba2c88e0390436049d",
+      "output_sha256": "7edc37520874a0954729b166f91d795648f870df0610c23e2f50699b7116c322",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 120.77
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_b.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/background_ending_b_imagegen_v1.png",
+      "source_sha256": "57b0add8577d17a789d8d62d38c65b2469025d59ef8c17e939416af41072bafa",
+      "output_sha256": "11da623deca8d8a10ff93d8f15060f0cd1d86fd8c61ee8d9f2ffd8966ce40e98",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 107.76
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "characters/dom_neutral.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "7a614532f45ca1435c71a39336e89e769b9bfa869c369bafe56bb2748d5d67b6",
+      "output_sha256": "dbad2a79f50719df2412bd1260431c4f61817800fe653cecf187515b0e984adc",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          3,
+          87,
+          127
+        ],
+        "alpha_coverage": 0.5439,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7172,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 28.38,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 24.81
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6683,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/dom_talk.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "7a614532f45ca1435c71a39336e89e769b9bfa869c369bafe56bb2748d5d67b6",
+      "output_sha256": "74f94fc6e9354f23483d2a65c553ab977793adfb0d2e911c3148ed02fe0fe674",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          3,
+          87,
+          127
+        ],
+        "alpha_coverage": 0.5439,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7172,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 28.33,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 26.71
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6683,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/dom_blink.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/doms-soup-route/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "7a614532f45ca1435c71a39336e89e769b9bfa869c369bafe56bb2748d5d67b6",
+      "output_sha256": "720acfa6a4c743fd93381130f49611c02ff73128caa7470d521734962a70046f",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          3,
+          87,
+          127
+        ],
+        "alpha_coverage": 0.5439,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7172,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 28.13,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 24.81
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 6683,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    }
+  }
+}

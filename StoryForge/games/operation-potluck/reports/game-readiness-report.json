@@ -1,0 +1,651 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:09:18.290339+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "operation-potluck",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+      "bytes": 165835,
+      "sha256": "183bd3832346d19820c2c3e51dd4ada09af3d036015015578f0662ab66806fe8"
+    },
+    "project_counts": {
+      "name": "Operation Potluck",
+      "nodes": 44,
+      "flags": 0,
+      "tracks": 4,
+      "backgrounds": 5,
+      "characters": 3,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 44,
+      "scene_nodes": 40,
+      "staged_scenes": 29,
+      "animated_staged_scenes": 29,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Gundam",
+        "Zaku"
+      ],
+      "backgrounds_used": [
+        "bg_checklist",
+        "bg_clock",
+        "bg_kitchen",
+        "bg_title",
+        "bg_zaku_call"
+      ],
+      "ending_scenes": [
+        "op_e1_4",
+        "op_e2_4"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 44,
+      "start_node": "title"
+    },
+    "routes": {
+      "initial_flags": {},
+      "states_explored": 44,
+      "truncated": false,
+      "route_reachable_nodes": 44,
+      "route_reachable_ending_scenes": [
+        "op_e1_4",
+        "op_e2_4"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "op_call_1",
+        "op_e1_1",
+        "op_e2_1",
+        "op_plan_1"
+      ],
+      "selectable_choice_targets": [
+        "op_call_1",
+        "op_e1_1",
+        "op_e2_1",
+        "op_plan_1"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": []
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Expand the checklist / Use perfect formation",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1920,
+          "estimated_minutes_at_140_wpm": 13.71
+        },
+        {
+          "route_id": "route-2",
+          "label": "Expand the checklist / Let Zaku call the crowd",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1921,
+          "estimated_minutes_at_140_wpm": 13.72
+        },
+        {
+          "route_id": "route-3",
+          "label": "Ask Zaku early / Use perfect formation",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1920,
+          "estimated_minutes_at_140_wpm": 13.71
+        },
+        {
+          "route_id": "route-4",
+          "label": "Ask Zaku early / Let Zaku call the crowd",
+          "ending_node": "end",
+          "scene_beats": 34,
+          "words": 1921,
+          "estimated_minutes_at_140_wpm": 13.72
+        }
+      ]
+    },
+    "text": {
+      "blocks": 173,
+      "max_pause_block_chars": 91,
+      "choice_labels": 4,
+      "max_choice_label_chars": 23,
+      "max_choice_prompt_chars": 23,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 14,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 24,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_title",
+        "orig_name": "title.png",
+        "embedded_sha256": "b2aea66197e083c271d0663472f190d8ce8a7ad7960748db5f3b11523773a0ef",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 12,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/backgrounds/title.png",
+        "local_sha256": "b2aea66197e083c271d0663472f190d8ce8a7ad7960748db5f3b11523773a0ef"
+      },
+      {
+        "id": "bg_kitchen",
+        "orig_name": "kitchen.png",
+        "embedded_sha256": "c321770fdc069e7ee456714efd16e6e2e5f1ebf3e456eeb8572c670736fd660b",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 12,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/backgrounds/kitchen.png",
+        "local_sha256": "c321770fdc069e7ee456714efd16e6e2e5f1ebf3e456eeb8572c670736fd660b"
+      },
+      {
+        "id": "bg_clock",
+        "orig_name": "clock.png",
+        "embedded_sha256": "7235cc5c36b8e29a5d0ade40783adbea67d9ac660792eb2c57782a91dadbce0c",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 11,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/backgrounds/clock.png",
+        "local_sha256": "7235cc5c36b8e29a5d0ade40783adbea67d9ac660792eb2c57782a91dadbce0c"
+      },
+      {
+        "id": "bg_checklist",
+        "orig_name": "checklist.png",
+        "embedded_sha256": "fa4b7dffe3ee5b7bcbd5a00c90a4bd1e1eb706958e5e985583aa76d3da0bb8fb",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 9,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/backgrounds/checklist.png",
+        "local_sha256": "fa4b7dffe3ee5b7bcbd5a00c90a4bd1e1eb706958e5e985583aa76d3da0bb8fb"
+      },
+      {
+        "id": "bg_zaku_call",
+        "orig_name": "zaku_call.png",
+        "embedded_sha256": "97a804f18327a0b13dd499a3aed713c355cf48df8923aee29b2eab4f0578b325",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 9,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/backgrounds/zaku_call.png",
+        "local_sha256": "97a804f18327a0b13dd499a3aed713c355cf48df8923aee29b2eab4f0578b325"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_rx78_neutral",
+        "orig_name": "rx78_neutral.png",
+        "embedded_sha256": "1a96851aeebefed4965606fad772774e983b7ee3a29d4b14ece0181fbe572d06",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4603,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/characters/rx78_neutral.png",
+        "local_sha256": "1a96851aeebefed4965606fad772774e983b7ee3a29d4b14ece0181fbe572d06"
+      },
+      {
+        "id": "char_rx78_talk",
+        "orig_name": "rx78_talk.png",
+        "embedded_sha256": "8e4945e943be9238fa9dba71fe02e1efe64dca34ae87fb4ccfce39a1afa217de",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4603,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/characters/rx78_talk.png",
+        "local_sha256": "8e4945e943be9238fa9dba71fe02e1efe64dca34ae87fb4ccfce39a1afa217de"
+      },
+      {
+        "id": "char_rx78_blink",
+        "orig_name": "rx78_blink.png",
+        "embedded_sha256": "90c88b61ebb8c9bb886aa4b989903cbac7738631945deda13093b1b127d426f7",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.4603,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/characters/rx78_blink.png",
+        "local_sha256": "90c88b61ebb8c9bb886aa4b989903cbac7738631945deda13093b1b127d426f7"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_title",
+          "textbox_mean_luma": 79.887,
+          "textbox_luma_stddev": 36.351,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_kitchen",
+          "textbox_mean_luma": 41.312,
+          "textbox_luma_stddev": 5.824,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_clock",
+          "textbox_mean_luma": 21.511,
+          "textbox_luma_stddev": 23.069,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_checklist",
+          "textbox_mean_luma": 49.14,
+          "textbox_luma_stddev": 27.415,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_zaku_call",
+          "textbox_mean_luma": 72.458,
+          "textbox_luma_stddev": 11.116,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 29,
+      "families": [
+        {
+          "neutral": "char_rx78_neutral",
+          "talk": "char_rx78_talk",
+          "blink": "char_rx78_blink",
+          "talk_face_delta": 2.623,
+          "blink_face_delta": 3.806,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 49,
+            "changed_bbox": [
+              38,
+              34,
+              58,
+              40
+            ],
+            "changed_bbox_area": 120,
+            "changed_region_share": 0.009766,
+            "global_changed_share": 0.003988,
+            "face_changed_pixels": 49,
+            "face_changed_share": 0.023201,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 43,
+            "changed_bbox": [
+              38,
+              34,
+              58,
+              40
+            ],
+            "changed_bbox_area": 120,
+            "changed_region_share": 0.009766,
+            "global_changed_share": 0.003499,
+            "face_changed_pixels": 43,
+            "face_changed_share": 0.02036,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources",
+      "count": 7,
+      "packaged_file_count": 7,
+      "background_source_count": 5,
+      "character_source_count": 2,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_checklist_imagegen_v2.png",
+          "bytes": 1779766,
+          "sha256": "3a9e80dcf0a1a527ae09f3c40b878d4c5989c2ba87628298f3657970bf9b7128",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_clock_imagegen_v2.png",
+          "bytes": 1348391,
+          "sha256": "b7724b0fc105ae9497cb87f7ee85571d411a404dd413f3b902e06f00c67390e5",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_kitchen_imagegen_v2.png",
+          "bytes": 1211946,
+          "sha256": "22b94038a45389b146868d921ee507cdf23473205316454fe5a9fa9ab55f83c6",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_title_imagegen_v2.png",
+          "bytes": 1874640,
+          "sha256": "e077102fd8ea03b907fb901b04a2052b346aad0f0242d7e3aaf3a5a5fe6b4949",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_zaku_call_imagegen_v2.png",
+          "bytes": 1370483,
+          "sha256": "282c7d281598e8e558ceb41449a853557013ce25862e9f24da92a59fa5b0c4e6",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            1562,
+            1007
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/character_rx78_checklist_master_cutout_imagegen_v2.png",
+          "bytes": 1017220,
+          "sha256": "3d8a8a28de6f7bc4707d76ff546c44d93eb9b5bfa18459714297c8254196c333",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1086,
+            1449
+          ],
+          "mode": "RGBA"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/character_rx78_checklist_master_imagegen_v2.png",
+          "bytes": 1549511,
+          "sha256": "5d2f0f63f541b1966c1be08be2d9374e29e515d3164e263317276133eb3a57ca",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1086,
+            1449
+          ],
+          "mode": "RGB"
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 54374,
+      "sha256": "9da7388425551713f75e35017334344b04ff7acdfaa67fcab0c23c10e9fe5a7c",
+      "size": [
+        478,
+        682
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 360487,
+        "sha256": "33484e5520fbae89f80009caaec031f58577da48e0860cbaff50770b11fd682c",
+        "size": [
+          712,
+          2560
+        ],
+        "mode": "RGB",
+        "unique_colors": 279,
+        "luma_stddev": 69.04
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 134736,
+        "sha256": "27fda97e14b0779790cb12c7daa597f663eda476aa8145cc6548c3e70fd0edb5",
+        "size": [
+          488,
+          1064
+        ],
+        "mode": "RGB",
+        "unique_colors": 279,
+        "luma_stddev": 65.69
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 23493,
+        "sha256": "2aeec80be4ef036d80d9a708459adf72092bbdf5567e64177391f75e954c3809",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+          "exists": true,
+          "bytes": 165835,
+          "sha256": "183bd3832346d19820c2c3e51dd4ada09af3d036015015578f0662ab66806fe8"
+        },
+        "nodes_rendered": 43,
+        "preview_node_ids": [
+          "title",
+          "op01",
+          "op02",
+          "op03",
+          "op04",
+          "op05",
+          "op06",
+          "op07",
+          "op08",
+          "op09",
+          "op10",
+          "op_method",
+          "op_plan_1",
+          "op_plan_2",
+          "op_call_1",
+          "op_call_2",
+          "op11",
+          "op12",
+          "op13",
+          "op14",
+          "op15",
+          "op16",
+          "op17",
+          "op18",
+          "op19",
+          "op20",
+          "op21",
+          "op22",
+          "op23",
+          "op24",
+          "op25",
+          "op26",
+          "op27",
+          "op28",
+          "op_final",
+          "op_e1_1",
+          "op_e1_2",
+          "op_e1_3",
+          "op_e1_4",
+          "op_e2_1",
+          "op_e2_2",
+          "op_e2_3",
+          "op_e2_4"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 43,
+            "expected": 43
+          },
+          "storyboard_cells": {
+            "reported": 43,
+            "expected": 43
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/reports/operation-potluck-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

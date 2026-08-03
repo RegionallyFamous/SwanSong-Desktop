@@ -1,0 +1,55 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-27T03:39:52.355234+00:00",
+  "errors": [],
+  "facts": {
+    "capture_method": "Mednafen -soundrecord from compiled WonderSwan ROM",
+    "track": {
+      "id": "track_dead_air",
+      "name": "Dead Air",
+      "bpm": 72,
+      "length_steps": 32,
+      "loop_seconds": 6.666667,
+      "expected_loops": 2,
+      "cue_nodes": [
+        "title"
+      ]
+    },
+    "audio": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/audio/signal-before-dawn-slice/00-dead_air-emulator-proof.wav",
+      "bytes": 2560078,
+      "sha256": "f8f5081fc546632f116dcec761f5227279d67d652fd135d067bf6ac5bd0b809f",
+      "channels": 2,
+      "sample_width_bytes": 2,
+      "sample_rate": 48000,
+      "frames": 640000,
+      "duration_seconds": 13.333333,
+      "peak_linear": 0.159154,
+      "peak_dbfs": -15.964,
+      "rms_linear": 0.03919,
+      "rms_dbfs": -28.137,
+      "dc_offset": 4.604e-05,
+      "near_silent_sample_share": 0.052122,
+      "loop_period": {
+        "method": "10ms_absolute_envelope_autocorrelation",
+        "expected_seconds": 6.666667,
+        "detected_seconds": 6.66,
+        "error_seconds": 0.006667,
+        "error_share": 0.001,
+        "correlation": 0.679391,
+        "window_seconds": 0.01
+      }
+    },
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/projects/signal-before-dawn-slice.wscvn.json",
+      "bytes": 474460,
+      "sha256": "12e91e46f011e49043a3e43bfc58674c37b7c66c6a6af76bb1baf653bf1d2480"
+    },
+    "rom": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/signal-before-dawn-slice.wsc",
+      "bytes": 8388608,
+      "sha256": "a5210df80536d70c1fc5c51af161eb697beccd9fa32623d17b32a223aea3d524"
+    }
+  }
+}

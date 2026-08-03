@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "tool": "genre-specialist",
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/novels/mobile-suit-gundam-summary/novel.json",
+    "sha256": "475f58a254e36a67858f94199c9caee2425683d23efa98fbe95127c6b54140db"
+  },
+  "manuscript_sha256": "9734b4fd229ad70951047015af6157b802081afa6cd6ca9522d9edd8dca22d0b",
+  "slug": "mobile-suit-gundam-summary",
+  "workbench_schema_version": 1,
+  "generated_at": "2026-07-23T02:28:00.779502+00:00",
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "module": "science-fiction",
+    "checks": [
+      {
+        "id": "speculative-constraint",
+        "status": "evidenced",
+        "recommendation": "Mobile suits change the balance and daily survival"
+      },
+      {
+        "id": "systemic-consequence",
+        "status": "evidenced",
+        "recommendation": "Institutions turn people and perception into military utility"
+      },
+      {
+        "id": "emotional-payoff",
+        "status": "evidenced",
+        "recommendation": "The speculative question resolves through a personal choice"
+      }
+    ],
+    "manuscript_scene_words": {
+      "scene-01": 328,
+      "scene-02": 466,
+      "scene-03": 291,
+      "scene-04": 366,
+      "scene-05": 277,
+      "scene-06": 282
+    },
+    "note": "Specialist checks expose missing evidence; they do not flatten taste or prove genre success."
+  }
+}

@@ -1,0 +1,2084 @@
+{
+  "schema": "wscvn-story-proof-report-v1",
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "bindings": {
+    "contract": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/sources/story-proof.json",
+      "sha256": "b9dfe4d351893331c00434ad9ae9bcc1f0f7d4ae2123bbdae60be75262223a6e"
+    },
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+      "sha256": "cf98d9b50fc27ea4ec33e8827acf9df26a0a95acd29c4439d86311a3893178f2"
+    },
+    "playthrough": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/reports/swansong-playthrough-report.json",
+      "sha256": "eb0a4845d979c7208b3011840f441b531d3c8012f08cf16e951daa09346a5570"
+    },
+    "rom": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/runtime-local/guntank-takes-the-stairs.wsc",
+      "bytes": 8388608,
+      "sha256": "9fdb793814fa3e8e73d69df4faeed2e4a7db7649222f913d2f556f021729a68b",
+      "stored_checksum": "0x75b7",
+      "computed_checksum": "0x75b7",
+      "checksum_valid": true,
+      "footer_valid": true
+    },
+    "swansong_engine": {
+      "dylib": "/Applications/SwanSong.app/Contents/Frameworks/libSwanAresEngine.dylib",
+      "dylib_bytes": 2685168,
+      "dylib_sha256": "8949c7cffc2044016eda7005a6d2d70a2ab1e65d9443cfa81af49dc9bbf2f33f",
+      "backend": "ares",
+      "build_id": "ares-752f747f816f725232ba462468d3d7f4ca6142e5-swan-abi10",
+      "abi_version": 10,
+      "abi_probe_attempts": [
+        7,
+        8,
+        6,
+        9,
+        5,
+        10
+      ],
+      "internal_ram_bytes": 65536
+    }
+  },
+  "coverage": {
+    "checkpoints_proven": 8,
+    "checkpoints_declared": 8,
+    "routes_proven": 4,
+    "routes_executed": 4,
+    "complete": true
+  },
+  "checkpoints": [
+    {
+      "id": "proof-arrival",
+      "label": "The ordinary problem becomes urgent",
+      "story": {
+        "turn": "The broken elevator makes an upstairs birthday inaccessible with guests already approaching.",
+        "consequence": "Guntank must become a planner before he can become a party guest.",
+        "setup_ids": [
+          "elevator-sign",
+          "red-balloon"
+        ],
+        "payoff_ids": []
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tank_01",
+          "routes": [
+            "route-1",
+            "route-2",
+            "route-3",
+            "route-4"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "tank_01",
+              "actual": "tank_01"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-2",
+                "route-3",
+                "route-4"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_main",
+              "actual": "bg_main"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_guntank_neutral",
+              "actual": "char_guntank_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "talk-blink",
+              "actual": "talk-blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "tank_02"
+              ],
+              "actual": [
+                "tank_02"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "tank_01",
+              "actual": "tank_01"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-1:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "tank_01",
+              "actual": "tank_01"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-2:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "tank_01",
+              "actual": "tank_01"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-3:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "tank_01",
+              "actual": "tank_01"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-4:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            }
+          ]
+        }
+      ],
+      "interaction_proof": null
+    },
+    {
+      "id": "proof-dignity",
+      "label": "The joke reveals the personal wound",
+      "story": {
+        "turn": "Guntank stops treating access as a geometry puzzle and admits that arriving late is not the same as being welcomed.",
+        "consequence": "The host must solve for belonging, not merely vertical movement.",
+        "relationship_change": "Guntank trusts the host with a hurt he previously hid.",
+        "setup_ids": [],
+        "payoff_ids": []
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tank_07",
+          "routes": [
+            "route-1",
+            "route-2",
+            "route-3",
+            "route-4"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "tank_07",
+              "actual": "tank_07"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-2",
+                "route-3",
+                "route-4"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_main",
+              "actual": "bg_main"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_guntank_neutral",
+              "actual": "char_guntank_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "talk-blink",
+              "actual": "talk-blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "tank_08"
+              ],
+              "actual": [
+                "tank_08"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "tank_07",
+              "actual": "tank_07"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-1:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "tank_07",
+              "actual": "tank_07"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-2:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "tank_07",
+              "actual": "tank_07"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-3:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "tank_07",
+              "actual": "tank_07"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-4:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            }
+          ]
+        }
+      ],
+      "interaction_proof": null
+    },
+    {
+      "id": "proof-breath",
+      "label": "The story takes one honest breath",
+      "story": {
+        "turn": "Everyone stops asking machinery to prove itself while the elevator continues its useless thinking gag.",
+        "consequence": "The next plan begins from care instead of spectacle.",
+        "setup_ids": [
+          "elevator-sign"
+        ],
+        "payoff_ids": []
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tank_08",
+          "routes": [
+            "route-1",
+            "route-2",
+            "route-3",
+            "route-4"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "tank_08",
+              "actual": "tank_08"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-2",
+                "route-3",
+                "route-4"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_main",
+              "actual": "bg_main"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_guntank_neutral",
+              "actual": "char_guntank_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "talk-blink",
+              "actual": "talk-blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "tank_09"
+              ],
+              "actual": [
+                "tank_09"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "tank_08",
+              "actual": "tank_08"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-1:music",
+              "ok": true,
+              "expected": "tank_title",
+              "actual": "tank_title"
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "tank_08",
+              "actual": "tank_08"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-2:music",
+              "ok": true,
+              "expected": "tank_title",
+              "actual": "tank_title"
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "tank_08",
+              "actual": "tank_08"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-3:music",
+              "ok": true,
+              "expected": "tank_title",
+              "actual": "tank_title"
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "tank_08",
+              "actual": "tank_08"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-4:music",
+              "ok": true,
+              "expected": "tank_title",
+              "actual": "tank_title"
+            }
+          ]
+        }
+      ],
+      "interaction_proof": null
+    },
+    {
+      "id": "proof-first-interlude",
+      "label": "A playable plan changes how the group climbs",
+      "story": {
+        "turn": "The player chooses furniture engineering or a tread-by-tread relay; neither answer is a dead failure.",
+        "consequence": "The chosen method changes jokes, choreography, and the first-flight memory while both routes progress.",
+        "interaction": {
+          "kind": "consequence-forward choice",
+          "failure_progresses": true
+        },
+        "setup_ids": [],
+        "payoff_ids": []
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tank_choice_1",
+          "routes": [
+            "route-1",
+            "route-2",
+            "route-3",
+            "route-4"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "tank_choice_1",
+              "actual": "tank_choice_1"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-2",
+                "route-3",
+                "route-4"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_main",
+              "actual": "bg_main"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_guntank_neutral",
+              "actual": "char_guntank_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "talk-blink",
+              "actual": "talk-blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "tank_a1",
+                "tank_b1"
+              ],
+              "actual": [
+                "tank_a1",
+                "tank_b1"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "tank_choice_1",
+              "actual": "tank_choice_1"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-1:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "tank_choice_1",
+              "actual": "tank_choice_1"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-2:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "tank_choice_1",
+              "actual": "tank_choice_1"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-3:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "tank_choice_1",
+              "actual": "tank_choice_1"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-4:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            }
+          ]
+        }
+      ],
+      "interaction_proof": {
+        "kind": "consequence-forward choice",
+        "failure_progresses_declared": true,
+        "choice_targets": [
+          "tank_a1",
+          "tank_b1"
+        ],
+        "targets_reaching_completed_routes": [
+          "tank_a1",
+          "tank_b1"
+        ],
+        "ok": true
+      }
+    },
+    {
+      "id": "proof-earned-landing",
+      "label": "The first choice earns a distinct shared memory",
+      "story": {
+        "turn": "Guntank reaches the landing through the method the player chose.",
+        "consequence": "The group gains practical knowledge and enough confidence to recognize the second flight as a new risk.",
+        "relationship_change": "Help becomes something Guntank directs rather than something done to him.",
+        "setup_ids": [
+          "red-balloon"
+        ],
+        "payoff_ids": []
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "ramp-memory",
+          "node_id": "tank_a4",
+          "routes": [
+            "route-1",
+            "route-2"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "tank_a4",
+              "actual": "tank_a4"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-2"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_main",
+              "actual": "bg_main"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_guntank_neutral",
+              "actual": "char_guntank_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "talk-blink",
+              "actual": "talk-blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "tank_11"
+              ],
+              "actual": [
+                "tank_11"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "tank_a4",
+              "actual": "tank_a4"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-1:music",
+              "ok": true,
+              "expected": "tank_end_a",
+              "actual": "tank_end_a"
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "tank_a4",
+              "actual": "tank_a4"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-2:music",
+              "ok": true,
+              "expected": "tank_end_a",
+              "actual": "tank_end_a"
+            }
+          ]
+        },
+        {
+          "id": "relay-memory",
+          "node_id": "tank_b4",
+          "routes": [
+            "route-3",
+            "route-4"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "tank_b4",
+              "actual": "tank_b4"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-3",
+                "route-4"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_main",
+              "actual": "bg_main"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_guntank_neutral",
+              "actual": "char_guntank_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "talk-blink",
+              "actual": "talk-blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "tank_11"
+              ],
+              "actual": [
+                "tank_11"
+              ]
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "tank_b4",
+              "actual": "tank_b4"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-3:music",
+              "ok": true,
+              "expected": "tank_end_b",
+              "actual": "tank_end_b"
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "tank_b4",
+              "actual": "tank_b4"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-4:music",
+              "ok": true,
+              "expected": "tank_end_b",
+              "actual": "tank_end_b"
+            }
+          ]
+        }
+      ],
+      "interaction_proof": null
+    },
+    {
+      "id": "proof-reversal",
+      "label": "Success exposes the real problem",
+      "story": {
+        "turn": "The steeper second flight makes continuing much riskier just as the lobby naturally fills with friends.",
+        "consequence": "The goal changes from reaching a reserved room to choosing what the celebration should value.",
+        "setup_ids": [],
+        "payoff_ids": []
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tank_11",
+          "routes": [
+            "route-1",
+            "route-2",
+            "route-3",
+            "route-4"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "tank_11",
+              "actual": "tank_11"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-2",
+                "route-3",
+                "route-4"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_main",
+              "actual": "bg_main"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_guntank_neutral",
+              "actual": "char_guntank_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "talk-blink",
+              "actual": "talk-blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "tank_12"
+              ],
+              "actual": [
+                "tank_12"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "tank_11",
+              "actual": "tank_11"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-1:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "tank_11",
+              "actual": "tank_11"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-2:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "tank_11",
+              "actual": "tank_11"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-3:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "tank_11",
+              "actual": "tank_11"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-4:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            }
+          ]
+        }
+      ],
+      "interaction_proof": null
+    },
+    {
+      "id": "proof-final-decision",
+      "label": "The player chooses which lesson survives",
+      "story": {
+        "turn": "Continuing and stopping are reframed as two valid forms of welcome rather than victory and defeat.",
+        "consequence": "The final choice determines both the party space and the meaning of the first climb.",
+        "interaction": {
+          "kind": "theme-bearing choice",
+          "failure_progresses": true
+        },
+        "setup_ids": [],
+        "payoff_ids": []
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tank_choice_2",
+          "routes": [
+            "route-1",
+            "route-2",
+            "route-3",
+            "route-4"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "tank_choice_2",
+              "actual": "tank_choice_2"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-2",
+                "route-3",
+                "route-4"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_main",
+              "actual": "bg_main"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": "char_guntank_neutral",
+              "actual": "char_guntank_neutral"
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "talk-blink",
+              "actual": "talk-blink"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "tank_c1",
+                "tank_d1"
+              ],
+              "actual": [
+                "tank_c1",
+                "tank_d1"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "tank_choice_2",
+              "actual": "tank_choice_2"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-1:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "tank_choice_2",
+              "actual": "tank_choice_2"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-2:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "tank_choice_2",
+              "actual": "tank_choice_2"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-3:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "tank_choice_2",
+              "actual": "tank_choice_2"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-4:music",
+              "ok": true,
+              "expected": "tank_main",
+              "actual": "tank_main"
+            }
+          ]
+        }
+      ],
+      "interaction_proof": {
+        "kind": "theme-bearing choice",
+        "failure_progresses_declared": true,
+        "choice_targets": [
+          "tank_c1",
+          "tank_d1"
+        ],
+        "targets_reaching_completed_routes": [
+          "tank_c1",
+          "tank_d1"
+        ],
+        "ok": true
+      }
+    },
+    {
+      "id": "proof-ending-residue",
+      "label": "Both endings leave a concrete change behind",
+      "story": {
+        "turn": "The party succeeds either upstairs through collective care or downstairs through redesigning the room around everyone.",
+        "consequence": "Future invitations include access checks, turning a birthday improvisation into lasting practice.",
+        "setup_ids": [
+          "elevator-sign",
+          "red-balloon"
+        ],
+        "payoff_ids": [
+          "elevator-sign",
+          "red-balloon"
+        ]
+      },
+      "ok": true,
+      "errors": [],
+      "variants": [
+        {
+          "id": "ascent-ending",
+          "node_id": "tank_c4",
+          "routes": [
+            "route-1",
+            "route-3"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "tank_c4",
+              "actual": "tank_c4"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-1",
+                "route-3"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_end_a",
+              "actual": "bg_end_a"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": null,
+              "actual": null
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "none",
+              "actual": "none"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "end"
+              ],
+              "actual": [
+                "end"
+              ]
+            },
+            {
+              "name": "route-1:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:runtime-node",
+              "ok": true,
+              "expected": "tank_c4",
+              "actual": "tank_c4"
+            },
+            {
+              "name": "route-1:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-1:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-1:ending-capture",
+              "ok": true,
+              "expected": "tank_c4",
+              "actual": "tank_c4"
+            },
+            {
+              "name": "route-1:music",
+              "ok": true,
+              "expected": "tank_end_a",
+              "actual": "tank_end_a"
+            },
+            {
+              "name": "route-3:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:runtime-node",
+              "ok": true,
+              "expected": "tank_c4",
+              "actual": "tank_c4"
+            },
+            {
+              "name": "route-3:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-3:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-3:ending-capture",
+              "ok": true,
+              "expected": "tank_c4",
+              "actual": "tank_c4"
+            },
+            {
+              "name": "route-3:music",
+              "ok": true,
+              "expected": "tank_end_a",
+              "actual": "tank_end_a"
+            }
+          ]
+        },
+        {
+          "id": "lobby-ending",
+          "node_id": "tank_d4",
+          "routes": [
+            "route-2",
+            "route-4"
+          ],
+          "ok": true,
+          "errors": [],
+          "checks": [
+            {
+              "name": "project-node",
+              "ok": true,
+              "expected": "tank_d4",
+              "actual": "tank_d4"
+            },
+            {
+              "name": "route-selection",
+              "ok": true,
+              "expected": "one or more executed routes",
+              "actual": [
+                "route-2",
+                "route-4"
+              ]
+            },
+            {
+              "name": "background",
+              "ok": true,
+              "expected": "bg_end_b",
+              "actual": "bg_end_b"
+            },
+            {
+              "name": "character",
+              "ok": true,
+              "expected": null,
+              "actual": null
+            },
+            {
+              "name": "animation",
+              "ok": true,
+              "expected": "none",
+              "actual": "none"
+            },
+            {
+              "name": "transition",
+              "ok": true,
+              "expected": "fade",
+              "actual": "fade"
+            },
+            {
+              "name": "reachable-next",
+              "ok": true,
+              "expected": [
+                "end"
+              ],
+              "actual": [
+                "end"
+              ]
+            },
+            {
+              "name": "route-2:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:runtime-node",
+              "ok": true,
+              "expected": "tank_d4",
+              "actual": "tank_d4"
+            },
+            {
+              "name": "route-2:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-2:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-2:ending-capture",
+              "ok": true,
+              "expected": "tank_d4",
+              "actual": "tank_d4"
+            },
+            {
+              "name": "route-2:music",
+              "ok": true,
+              "expected": "tank_end_b",
+              "actual": "tank_end_b"
+            },
+            {
+              "name": "route-4:executed",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:runtime-node",
+              "ok": true,
+              "expected": "tank_d4",
+              "actual": "tank_d4"
+            },
+            {
+              "name": "route-4:accepted-input",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:fade-continuity",
+              "ok": true,
+              "expected": true,
+              "actual": true
+            },
+            {
+              "name": "route-4:native-audio",
+              "ok": true,
+              "expected": "audible native stream",
+              "actual": {
+                "node_active": true,
+                "peak": 0.163799
+              }
+            },
+            {
+              "name": "route-4:ending-capture",
+              "ok": true,
+              "expected": "tank_d4",
+              "actual": "tank_d4"
+            },
+            {
+              "name": "route-4:music",
+              "ok": true,
+              "expected": "tank_end_b",
+              "actual": "tank_end_b"
+            }
+          ]
+        }
+      ],
+      "interaction_proof": null
+    }
+  ]
+}

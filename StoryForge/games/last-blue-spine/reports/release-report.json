@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:50:03.108070+00:00",
+  "errors": [],
+  "release_id": "20260727T025002Z-c0e909da86e2",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/releases/20260727T025002Z-c0e909da86e2",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/releases/20260727T025002Z-c0e909da86e2.zip",
+    "bytes": 5788481,
+    "sha256": "d11db3ece73890e0187f65f700e03b427f11a3812b80fdf13895d9e1379ec50f"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/releases/20260727T025002Z-c0e909da86e2/manifest.json",
+    "sha256": "c86d1c174c306dca05f5be3339c50670ad15af90ac254e6ae961c8c250eba9f1",
+    "files": 50
+  },
+  "rom_sha256": "c0e909da86e295f6180b34e5d12edc720a7cda646bb76e54c040b2557a39c14d",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "last-blue-spine",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/last-blue-spine/reports/game-audit-report.json\nGame audit passed"
+  }
+}

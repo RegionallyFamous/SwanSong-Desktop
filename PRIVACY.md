@@ -1,8 +1,8 @@
 # SwanSong privacy policy
 
-Effective July 29, 2026
+Effective August 3, 2026
 
-This policy describes SwanSong 0.9.3. Versioned release notes document the
+This policy describes SwanSong 0.9.4. Versioned release notes document the
 exact behavior of earlier published builds.
 
 <!-- homebrew-catalog-status: published -->
@@ -183,8 +183,9 @@ only while the app is in the background, and includes only the task name and
 result. Project paths, ROM names, diagnostics, frames, audio, and evidence are
 excluded.
 
-Story Forge reads and writes only the framework repository, catalog, and novel
-folders you explicitly select. Its fixed local command
+Story Forge reads its hash-verified framework from the signed app and reads and
+writes only catalog and novel folders you explicitly select. A development
+override may use another explicitly selected framework folder. Its fixed local command
 allowlist can create a project; validate stages; prepare proposal-only Story
 Room packets; build maps and live scene context; explicitly save manuscripts;
 create immutable revisions and decisions; exchange consented reader packets;

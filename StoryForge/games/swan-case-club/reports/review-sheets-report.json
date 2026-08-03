@@ -1,0 +1,1226 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:26:50.762805+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "swan-case-club",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/projects/swan-case-club.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/projects/swan-case-club.wscvn.json",
+      "exists": true,
+      "bytes": 112197,
+      "sha256": "30aeec060d81d43a848cba255cc1cae9bf96a7d4f9e51f296dc120dfff64016e"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 51,
+    "preview_node_ids": [
+      "title",
+      "case_opens",
+      "case_opens__beat2",
+      "case_opens__beat3",
+      "club_rule",
+      "club_rule__beat2",
+      "club_rule__beat3",
+      "grail_card",
+      "grail_card__beat2",
+      "grail_card__beat3",
+      "grail_price",
+      "grail_price__beat2",
+      "grail_price__beat3",
+      "choice_inspect",
+      "inspect_contacts",
+      "inspect_contacts__beat2",
+      "inspect_contacts__beat3",
+      "check_price",
+      "check_price__beat2",
+      "check_price__beat3",
+      "ask_story",
+      "ask_story__beat2",
+      "ask_story__beat3",
+      "catalog_card",
+      "catalog_card__beat2",
+      "catalog_card__beat3",
+      "tram_test",
+      "tram_test__beat2",
+      "tram_test__beat3",
+      "save_file",
+      "save_file__beat2",
+      "save_file__beat3",
+      "choice_save",
+      "preserve_save",
+      "preserve_save__beat2",
+      "preserve_save__beat3",
+      "trade_double",
+      "trade_double__beat2",
+      "trade_double__beat3",
+      "copy_notes",
+      "copy_notes__beat2",
+      "copy_notes__beat3",
+      "rooftop_archive",
+      "rooftop_archive__beat2",
+      "rooftop_archive__beat3",
+      "rooftop_trade",
+      "rooftop_trade__beat2",
+      "rooftop_trade__beat3",
+      "rooftop_notes",
+      "rooftop_notes__beat2",
+      "rooftop_notes__beat3"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 130513,
+      "sha256": "79bf92885d49568372d3cc03d97eea82b67c28143e24bdbf6c8b15597837acff",
+      "size": [
+        712,
+        2900
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/swan-case-club/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 60070,
+      "sha256": "93398cf54f393797b57defe07ce2c53fadb25bc00f666b9fb52ce3e8db632d00",
+      "size": [
+        488,
+        1256
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "870180eb1e2f713cafe3cd296237e5b68dc61ce449e02f7453ecae06e969c761"
+      },
+      {
+        "index": 1,
+        "node_id": "case_opens",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "8f388766ef3c601bb33295dfd5617b7fa34cfe311e8bf86808b1c9433cb8238f"
+      },
+      {
+        "index": 2,
+        "node_id": "case_opens__beat2",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "0921e936b9cd945b62ee2d429bf6b3d210eb1053225b9f7a328f60d7a2245faf"
+      },
+      {
+        "index": 3,
+        "node_id": "case_opens__beat3",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "f302e9c654db631739d9a1b67c9bcf5e688a2fbcf73b5a3b698c0fd9c63ecbc1"
+      },
+      {
+        "index": 4,
+        "node_id": "club_rule",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "40333f2dd1bfdb2c97a4356d41b887a8fc98ac4d948c5d76ad6254d8bcdf236e"
+      },
+      {
+        "index": 5,
+        "node_id": "club_rule__beat2",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "5abecd13dcae85c4b8d4fc6eebcc8729a256cfedd300f6f733ed4b12bcccddfc"
+      },
+      {
+        "index": 6,
+        "node_id": "club_rule__beat3",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "9e4136483d79fa212c26469bbb37921179cdc62680cfbe3d5607d2424e80c897"
+      },
+      {
+        "index": 7,
+        "node_id": "grail_card",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "94ad707ffd270b6675f885094ac3c1c724ea1259ee73f0b1110e6fc0297b13ad"
+      },
+      {
+        "index": 8,
+        "node_id": "grail_card__beat2",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "775cca023df6448c6a38e306f086c4f6c080e9a719e576bea748c460ad865c8a"
+      },
+      {
+        "index": 9,
+        "node_id": "grail_card__beat3",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "f302e9c654db631739d9a1b67c9bcf5e688a2fbcf73b5a3b698c0fd9c63ecbc1"
+      },
+      {
+        "index": 10,
+        "node_id": "grail_price",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "d428770d92a13a6695ada449e3738591930b2863bbec450e27855dd69272530a"
+      },
+      {
+        "index": 11,
+        "node_id": "grail_price__beat2",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "76326e54a96c9ed5fdaed75338bc022ccf7298aeaeba6278ba44d48d533a66e0"
+      },
+      {
+        "index": 12,
+        "node_id": "grail_price__beat3",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "9e4136483d79fa212c26469bbb37921179cdc62680cfbe3d5607d2424e80c897"
+      },
+      {
+        "index": 13,
+        "node_id": "choice_inspect",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "c594f60bef8623d79566f8b96bb5803081282f9860c7c81898959f2bd67813d5"
+      },
+      {
+        "index": 14,
+        "node_id": "inspect_contacts",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "4db2c49ab35a870d4634a3ea8885b13dcc272c0d8f88821c85c54c4c7f072787"
+      },
+      {
+        "index": 15,
+        "node_id": "inspect_contacts__beat2",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "833d3bbbbe7c28ccd842a2be470e1f6d1ee6f85a9f741a010f24f9f4d4bec48f"
+      },
+      {
+        "index": 16,
+        "node_id": "inspect_contacts__beat3",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "9e4136483d79fa212c26469bbb37921179cdc62680cfbe3d5607d2424e80c897"
+      },
+      {
+        "index": 17,
+        "node_id": "check_price",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "7dbba38a1ee25bc08b2058cb89cd1cb2c0183f8870ed441ca209ef9c5840ed64"
+      },
+      {
+        "index": 18,
+        "node_id": "check_price__beat2",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "b49f1fdb46da09c89bddc176ec85c5e94e1ac2f4c4e8463fb2fcc0130a82cf05"
+      },
+      {
+        "index": 19,
+        "node_id": "check_price__beat3",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "f302e9c654db631739d9a1b67c9bcf5e688a2fbcf73b5a3b698c0fd9c63ecbc1"
+      },
+      {
+        "index": 20,
+        "node_id": "ask_story",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "87c6afa5087e75bd3a5efe9eb5f601e3990cb1469e876fab5e1d234e8a329537"
+      },
+      {
+        "index": 21,
+        "node_id": "ask_story__beat2",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "d898175e6c43e8e6b04ef1266e8c825600b600b202b789ef6159ada7bd384905"
+      },
+      {
+        "index": 22,
+        "node_id": "ask_story__beat3",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "9e4136483d79fa212c26469bbb37921179cdc62680cfbe3d5607d2424e80c897"
+      },
+      {
+        "index": 23,
+        "node_id": "catalog_card",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "fcdd7b9f4fdc1f703c76818c59c4bf9049f15306bfe974bbc34238fece6c14e3"
+      },
+      {
+        "index": 24,
+        "node_id": "catalog_card__beat2",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "32ed6caf6163f6684ab134412234ff9c0992bfb82db4c2a7b96a5b8e0e9a5f27"
+      },
+      {
+        "index": 25,
+        "node_id": "catalog_card__beat3",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "f302e9c654db631739d9a1b67c9bcf5e688a2fbcf73b5a3b698c0fd9c63ecbc1"
+      },
+      {
+        "index": 26,
+        "node_id": "tram_test",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "1c4471f323615f6b7cc70137106931b424f8b17132425d59f115137b6ddce4c9"
+      },
+      {
+        "index": 27,
+        "node_id": "tram_test__beat2",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "505f70c47175afbd3872835e0276408213163941f1b0a8d4f8f8c0cd77bce3db"
+      },
+      {
+        "index": 28,
+        "node_id": "tram_test__beat3",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "2a17c2232c0a761cc04a84dfcdd1dc859e4cd905cb3e63db852e0b40bc4ec3a6"
+      },
+      {
+        "index": 29,
+        "node_id": "save_file",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "baaf282b0fd6c9078a89a34621ac8049150db157a93fd252326359280f1ed5ac"
+      },
+      {
+        "index": 30,
+        "node_id": "save_file__beat2",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "04c5cc7be92c3c7552cc5753e0d2a4cfdacc2b1d9f028cd2d1bbb3b4e847e820"
+      },
+      {
+        "index": 31,
+        "node_id": "save_file__beat3",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "ed07ff3fe227dd18ed9044f492867b0ab9d19bffa9b6f4e31579c328a5d980fe"
+      },
+      {
+        "index": 32,
+        "node_id": "choice_save",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "5270c5fbd63e7d5a8c35624f25108d352907710534b0e7859e0747e89b5d157b"
+      },
+      {
+        "index": 33,
+        "node_id": "preserve_save",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "1042a78968100590929d419e2d5887d6bc498504786e6ab31361b54894ce1927"
+      },
+      {
+        "index": 34,
+        "node_id": "preserve_save__beat2",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "88f1c59fdbc85e6334e817f78ae45bc101e4e953d6d6e0fb8ffec72f281d15c5"
+      },
+      {
+        "index": 35,
+        "node_id": "preserve_save__beat3",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "2a17c2232c0a761cc04a84dfcdd1dc859e4cd905cb3e63db852e0b40bc4ec3a6"
+      },
+      {
+        "index": 36,
+        "node_id": "trade_double",
+        "rect": [
+          10,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "8902235b42512b1b209153ddc86239c611346a7032ed2a124211c4c468be1308"
+      },
+      {
+        "index": 37,
+        "node_id": "trade_double__beat2",
+        "rect": [
+          244,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "c7ed5e6789644a6872f108d3e52abc4bacdd0f6c8f06c034052e26e1e3e9fa1b"
+      },
+      {
+        "index": 38,
+        "node_id": "trade_double__beat3",
+        "rect": [
+          478,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "ed07ff3fe227dd18ed9044f492867b0ab9d19bffa9b6f4e31579c328a5d980fe"
+      },
+      {
+        "index": 39,
+        "node_id": "copy_notes",
+        "rect": [
+          10,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "5349d822a3605762336be3e32a441cd4e8075af124bcb63d0e4b19ebd83fbc1c"
+      },
+      {
+        "index": 40,
+        "node_id": "copy_notes__beat2",
+        "rect": [
+          244,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "b6b065e2b77831b70f4f8eb0adaf838b376b2f8a4095e9b99793932f3b9b3b35"
+      },
+      {
+        "index": 41,
+        "node_id": "copy_notes__beat3",
+        "rect": [
+          478,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "ed07ff3fe227dd18ed9044f492867b0ab9d19bffa9b6f4e31579c328a5d980fe"
+      },
+      {
+        "index": 42,
+        "node_id": "rooftop_archive",
+        "rect": [
+          10,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "07947602643883fa57ace1201ab93f30220dd64f2b8e1ea1a058c648918c8290"
+      },
+      {
+        "index": 43,
+        "node_id": "rooftop_archive__beat2",
+        "rect": [
+          244,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "f32e4abbbbdbdd7640217f1d5b76beb607821ee4a36e2260b86ec48027de8c02"
+      },
+      {
+        "index": 44,
+        "node_id": "rooftop_archive__beat3",
+        "rect": [
+          478,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "d636c2caea081a1eac6cdf6cb892cadf3831ca3b0593a13f725ab1e35393208b"
+      },
+      {
+        "index": 45,
+        "node_id": "rooftop_trade",
+        "rect": [
+          10,
+          2576,
+          224,
+          144
+        ],
+        "image_sha256": "6c38e0b2ebc7d2399aae4a2ab787171fdf3d1c8f2c75915c0c4cc336e95de5cc"
+      },
+      {
+        "index": 46,
+        "node_id": "rooftop_trade__beat2",
+        "rect": [
+          244,
+          2576,
+          224,
+          144
+        ],
+        "image_sha256": "d8070d1d7799f9ad94489841c4eb79066dba6ce29a4ad9fb9aa726ce0dafcb05"
+      },
+      {
+        "index": 47,
+        "node_id": "rooftop_trade__beat3",
+        "rect": [
+          478,
+          2576,
+          224,
+          144
+        ],
+        "image_sha256": "cfa02813dfcf65d31bf340cc069eedd00cbabc6aeed8948fb55db3302d802f53"
+      },
+      {
+        "index": 48,
+        "node_id": "rooftop_notes",
+        "rect": [
+          10,
+          2746,
+          224,
+          144
+        ],
+        "image_sha256": "b4991ff69f35ba0203ba5e878ff023b2b1bcb17802605bf016f2d948d9055d3e"
+      },
+      {
+        "index": 49,
+        "node_id": "rooftop_notes__beat2",
+        "rect": [
+          244,
+          2746,
+          224,
+          144
+        ],
+        "image_sha256": "39fb43237f84652202801b91add144fb6017e566581da15437f5b4db4e723f65"
+      },
+      {
+        "index": 50,
+        "node_id": "rooftop_notes__beat3",
+        "rect": [
+          478,
+          2746,
+          224,
+          144
+        ],
+        "image_sha256": "6e5897a49352c9c5ad4c0d04782a03f739de2bc017c65b9da4e764f754cacc2e"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "ea4b4dab6c775d0252253bcda05fbe890c76833b2931dfee877c8b66074dcc4f"
+      },
+      {
+        "index": 1,
+        "node_id": "case_opens",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "133cb961331a85c676bb4e99debfe26b5beb7352823688ccafab2539f122145f"
+      },
+      {
+        "index": 2,
+        "node_id": "case_opens__beat2",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "ef1851dd1ebaa6e38916e6beb0a8205ecd226c0dbaba481c5f0926ff6b27744e"
+      },
+      {
+        "index": 3,
+        "node_id": "case_opens__beat3",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "c2ef67a5bdbe68fdc349a96786d7aa58b017fa4dec6606352f8a54bf4399e868"
+      },
+      {
+        "index": 4,
+        "node_id": "club_rule",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "0066de98c2cd7034d222a84dc1e5659545dd9a2606bf266efd1cb79c501c6f6a"
+      },
+      {
+        "index": 5,
+        "node_id": "club_rule__beat2",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "86302917fe54b4352be3828c2401d760b3c3219b282b5dafd5f736d157bece30"
+      },
+      {
+        "index": 6,
+        "node_id": "club_rule__beat3",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "1c8c3116d429944254e0c0ebfa04cd8864f53a1c8066110d3c6ddabd8402f443"
+      },
+      {
+        "index": 7,
+        "node_id": "grail_card",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "0bef9fa43712db43a1da17ad66ecf67194568ce560e4f04d5be71e1b82d3fe2c"
+      },
+      {
+        "index": 8,
+        "node_id": "grail_card__beat2",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "3031e083515215713c7c90a15240bc03db98018583255e5f24b07474c530ad80"
+      },
+      {
+        "index": 9,
+        "node_id": "grail_card__beat3",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "c2ef67a5bdbe68fdc349a96786d7aa58b017fa4dec6606352f8a54bf4399e868"
+      },
+      {
+        "index": 10,
+        "node_id": "grail_price",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "dee9eb785678631ce5ed07eca8ff573ac921956cfecf29f293f2746cb347affb"
+      },
+      {
+        "index": 11,
+        "node_id": "grail_price__beat2",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "b4330ccca8253b1b1ae66d664dd8734027798d22c687d82200a3b8a2ea95a060"
+      },
+      {
+        "index": 12,
+        "node_id": "grail_price__beat3",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "1c8c3116d429944254e0c0ebfa04cd8864f53a1c8066110d3c6ddabd8402f443"
+      },
+      {
+        "index": 13,
+        "node_id": "choice_inspect",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "8cdbe4000f9ce280f20000a492055178796bab2158c2a24fce7f8736fc785dd9"
+      },
+      {
+        "index": 14,
+        "node_id": "inspect_contacts",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "ec9158b6431e1a64e051311cdaf2e65341ec280078d09e2a89ab07d6b0a3ad6f"
+      },
+      {
+        "index": 15,
+        "node_id": "inspect_contacts__beat2",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "f2336ad14eab8b4b8a7a861de7366f70ef2929012a684429ffd962471e95d395"
+      },
+      {
+        "index": 16,
+        "node_id": "inspect_contacts__beat3",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "1c8c3116d429944254e0c0ebfa04cd8864f53a1c8066110d3c6ddabd8402f443"
+      },
+      {
+        "index": 17,
+        "node_id": "check_price",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "cd640c4937558393cbf7e2081a27e883e68b6de639c1923305b71e9355275260"
+      },
+      {
+        "index": 18,
+        "node_id": "check_price__beat2",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "e1cef48e1eac6605ef1cb492783a211389c668ee7c23a3bf394ac7d14bcca03b"
+      },
+      {
+        "index": 19,
+        "node_id": "check_price__beat3",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "c2ef67a5bdbe68fdc349a96786d7aa58b017fa4dec6606352f8a54bf4399e868"
+      },
+      {
+        "index": 20,
+        "node_id": "ask_story",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "b3c90a29a6cb30d142304a1ff91df217cd669a9d15f0f6cbd370eef217f85aaf"
+      },
+      {
+        "index": 21,
+        "node_id": "ask_story__beat2",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "4ae2c3fc69344571af4d6ab5696d52275c2eef058737f298de8c789a2500cf36"
+      },
+      {
+        "index": 22,
+        "node_id": "ask_story__beat3",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "1c8c3116d429944254e0c0ebfa04cd8864f53a1c8066110d3c6ddabd8402f443"
+      },
+      {
+        "index": 23,
+        "node_id": "catalog_card",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "364685005b098d7be9b6b74254b4d4ce42d3cce21c65d081dae40b3c7acf531b"
+      },
+      {
+        "index": 24,
+        "node_id": "catalog_card__beat2",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "60556539a70705ad59d691d72cd67d127359a81a279e7fff2407b875232f0467"
+      },
+      {
+        "index": 25,
+        "node_id": "catalog_card__beat3",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "c2ef67a5bdbe68fdc349a96786d7aa58b017fa4dec6606352f8a54bf4399e868"
+      },
+      {
+        "index": 26,
+        "node_id": "tram_test",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "6ec9fb509dc8a493124293e1873e4e43cdf0b79150e359a03820482d40e661eb"
+      },
+      {
+        "index": 27,
+        "node_id": "tram_test__beat2",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "0f26a95de9b0581f7e2374b0f510590d200d7568862e63202842e20e577bfe39"
+      },
+      {
+        "index": 28,
+        "node_id": "tram_test__beat3",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "fb1fd0078da66f8cc8d49704a73b0ca02f5c00349f324f49b5d3f292282605ae"
+      },
+      {
+        "index": 29,
+        "node_id": "save_file",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "de69217cfea7fea0a4a9f59f5ebbc4752a41698fe7ad2a7c6b48b4f638a40b72"
+      },
+      {
+        "index": 30,
+        "node_id": "save_file__beat2",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "b96fc8a6bba3fc651ed700648336c360d3d9a8927d69d8d95cb9bbcaf856b2df"
+      },
+      {
+        "index": 31,
+        "node_id": "save_file__beat3",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "5726ce0721e2c5b4308e4f1b071574eb08c609ec0917ccea2a48555c842ff0d9"
+      },
+      {
+        "index": 32,
+        "node_id": "choice_save",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "a5ddb892488158b5e9d790294850ff1ffcdafff27c50b657dcd6367c39766d36"
+      },
+      {
+        "index": 33,
+        "node_id": "preserve_save",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "d2fc2dbdba2013f3a06da48e13883fccf620b9bfa1dccdffabfc988914fb83a1"
+      },
+      {
+        "index": 34,
+        "node_id": "preserve_save__beat2",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "561b280f3ff915ceab31a6ba4624277e0d0e69683e9d0c3831b5efe542e5305c"
+      },
+      {
+        "index": 35,
+        "node_id": "preserve_save__beat3",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "fb1fd0078da66f8cc8d49704a73b0ca02f5c00349f324f49b5d3f292282605ae"
+      },
+      {
+        "index": 36,
+        "node_id": "trade_double",
+        "rect": [
+          8,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "cbaa094b287a5470b3178bf823d4c3ac1449e60f4c79f79f347c6319409547c3"
+      },
+      {
+        "index": 37,
+        "node_id": "trade_double__beat2",
+        "rect": [
+          128,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "6d25c7f11dd9616d4b4049be86b400c88c793bcb5b48b09a91783d6071b34e41"
+      },
+      {
+        "index": 38,
+        "node_id": "trade_double__beat3",
+        "rect": [
+          248,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "5726ce0721e2c5b4308e4f1b071574eb08c609ec0917ccea2a48555c842ff0d9"
+      },
+      {
+        "index": 39,
+        "node_id": "copy_notes",
+        "rect": [
+          368,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "0b383cc6f92fcb710d026b871b7e9374ea51273fb3ceaaf195f79f312fdcf67c"
+      },
+      {
+        "index": 40,
+        "node_id": "copy_notes__beat2",
+        "rect": [
+          8,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "861c8c96df9f4ae69915a77df9f1dd0aa273a0c809db0d6d6bb4502fcd70469a"
+      },
+      {
+        "index": 41,
+        "node_id": "copy_notes__beat3",
+        "rect": [
+          128,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "5726ce0721e2c5b4308e4f1b071574eb08c609ec0917ccea2a48555c842ff0d9"
+      },
+      {
+        "index": 42,
+        "node_id": "rooftop_archive",
+        "rect": [
+          248,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "aa28fa0dd10c8a3760406cffb2cf1c6378581d9fba836aa4a8955d89e9243cc4"
+      },
+      {
+        "index": 43,
+        "node_id": "rooftop_archive__beat2",
+        "rect": [
+          368,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "19906d57ef6cee6ddc37662a7f285ac785036ce778f2b02a37092a7f1e33847c"
+      },
+      {
+        "index": 44,
+        "node_id": "rooftop_archive__beat3",
+        "rect": [
+          8,
+          1064,
+          112,
+          72
+        ],
+        "image_sha256": "ec89858982ca1bc5be555c3dbcda20216c87c5899be9c7b91112a584ecefce42"
+      },
+      {
+        "index": 45,
+        "node_id": "rooftop_trade",
+        "rect": [
+          128,
+          1064,
+          112,
+          72
+        ],
+        "image_sha256": "39e702c2489b80d6b049a04381f8de11b94ff05b8cbe959c0135b22fdbacd94d"
+      },
+      {
+        "index": 46,
+        "node_id": "rooftop_trade__beat2",
+        "rect": [
+          248,
+          1064,
+          112,
+          72
+        ],
+        "image_sha256": "eddb6e20d0c206eba3e23c386aa12527498233673d56c49fd494872a3de49b50"
+      },
+      {
+        "index": 47,
+        "node_id": "rooftop_trade__beat3",
+        "rect": [
+          368,
+          1064,
+          112,
+          72
+        ],
+        "image_sha256": "1d82809f8faa7fbd06a90d00a396300753d659343fc878f8914dcfa624d47d3e"
+      },
+      {
+        "index": 48,
+        "node_id": "rooftop_notes",
+        "rect": [
+          8,
+          1160,
+          112,
+          72
+        ],
+        "image_sha256": "351de3ab1564c2e14f028d8f3b469dfdac49e7f8f64ddfeaa583100163cc425f"
+      },
+      {
+        "index": 49,
+        "node_id": "rooftop_notes__beat2",
+        "rect": [
+          128,
+          1160,
+          112,
+          72
+        ],
+        "image_sha256": "661a0917570852fdffbb729771741d9bf200ad8bccd6630ea572faeb35ee5a58"
+      },
+      {
+        "index": 50,
+        "node_id": "rooftop_notes__beat3",
+        "rect": [
+          248,
+          1160,
+          112,
+          72
+        ],
+        "image_sha256": "8035b1ec94cdf46473382bf74acc1ad57dba50a4e14a671bf4ce2902912bb435"
+      }
+    ]
+  }
+}

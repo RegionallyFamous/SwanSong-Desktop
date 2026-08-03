@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:26:49.852826+00:00",
+  "errors": [],
+  "release_id": "20260727T032649Z-4548d98341c7",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/releases/20260727T032649Z-4548d98341c7",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/releases/20260727T032649Z-4548d98341c7.zip",
+    "bytes": 8443594,
+    "sha256": "136cc685cef875de9b832660d2788689daa4d8889edc0e5853e11e1294776be3"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/releases/20260727T032649Z-4548d98341c7/manifest.json",
+    "sha256": "bde3539e24f8e9a572ac1fbc0a002292327d9f09215abf0dee4b316a3cbbeb06",
+    "files": 68
+  },
+  "rom_sha256": "4548d98341c78b101212c06d4915a71460bf4ec24f1f008cb8914c7c2309a002",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "soft-click-sunday",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/game-audit-report.json\nGame audit passed"
+  }
+}

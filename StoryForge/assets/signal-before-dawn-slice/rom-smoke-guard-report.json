@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:05.522988+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "parse-mednafen-metadata",
+      "passed": true,
+      "facts": {
+        "mednafen_version": "1.32.1",
+        "module": "wswan(WonderSwan)",
+        "rom_size_reported": "8192KiB",
+        "rom_md5": "0xabcdef0123456789",
+        "recorded_checksum": "0x1234",
+        "real_checksum": "0x1234"
+      },
+      "excerpt": "Starting Mednafen 1.32.1\n  Using module: wswan(WonderSwan)\n   ROM:       8192KiB\n   ROM MD5:   0xabcdef0123456789\n   Recorded Checksum:  0x1234\n   Real Checksum:      0x1234"
+    },
+    {
+      "name": "default-report-near-rom",
+      "passed": true,
+      "report": "/tmp/game-emulator-smoke-report.json"
+    },
+    {
+      "name": "missing-rom-writes-failure-report",
+      "passed": true,
+      "returncode": 1,
+      "payload": {
+        "ok": false,
+        "errors": [
+          "Mednafen not found: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-rom-smoke-tv3kpb4a/fake-mednafen",
+          "ROM not found: /var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-rom-smoke-tv3kpb4a/missing.wsc"
+        ],
+        "facts": {},
+        "verification": {
+          "boot": {
+            "performed": false,
+            "passed": false,
+            "method": "headless-mednafen-startup-metadata",
+            "pixels_observed": false
+          },
+          "checksum": {
+            "performed": false,
+            "passed": false,
+            "method": "mednafen-recorded-vs-real-checksum"
+          },
+          "visual": {
+            "performed": false,
+            "passed": null,
+            "status": "not-performed",
+            "pixels_observed": false,
+            "proof_bound": false,
+            "screenshot": null
+          }
+        },
+        "result_scope": "boot-and-checksum",
+        "rom": "/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-rom-smoke-tv3kpb4a/missing.wsc",
+        "output_excerpt": ""
+      }
+    },
+    {
+      "name": "boot-checksum-does-not-claim-visual-verification",
+      "passed": true,
+      "returncode": 0,
+      "verification": {
+        "boot": {
+          "performed": true,
+          "passed": true,
+          "method": "headless-mednafen-startup-metadata",
+          "pixels_observed": false
+        },
+        "checksum": {
+          "performed": true,
+          "passed": true,
+          "method": "mednafen-recorded-vs-real-checksum"
+        },
+        "visual": {
+          "performed": false,
+          "passed": null,
+          "status": "not-performed",
+          "pixels_observed": false,
+          "proof_bound": false,
+          "screenshot": null
+        }
+      }
+    },
+    {
+      "name": "existing-screenshot-proof-is-hash-bound-but-unreviewed",
+      "passed": true,
+      "returncode": 0,
+      "visual": {
+        "performed": false,
+        "passed": null,
+        "status": "screenshot-proof-bound",
+        "pixels_observed": false,
+        "proof_bound": true,
+        "screenshot": {
+          "path": "/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wsc-vn-rom-smoke-tv3kpb4a/real-emulator.png",
+          "bytes": 28,
+          "sha256": "8530bb8639bc36ddde38d94985679a146d72be5bd7d66fbffb5ce30d51aaa745",
+          "media_type": "image/png"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:20:25.292868+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "soft-click-sunday",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/projects/soft-click-sunday.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/runtime-local/soft-click-sunday.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/soft-click-sunday-qa-report.json",
+    "project_counts": {
+      "name": "Soft Click Sunday",
+      "nodes": 74,
+      "flags": 10,
+      "tracks": 1,
+      "backgrounds": 3,
+      "characters": 6,
+      "sfx": 0
+    },
+    "header_counts": {
+      "NUM_NODES": 74,
+      "NUM_FLAGS": 10,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 1,
+      "NUM_SFX": 0,
+      "NUM_BG_ASSETS": 3,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 6
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/projects/soft-click-sunday.wscvn.json",
+      "bytes": 239808,
+      "sha256": "8d47b8fb33d15cce1d0031d6397c5030127cd0e0677b7b27477b9882a9b112ce"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/runtime-local/soft-click-sunday.wsc",
+      "bytes": 8388608,
+      "sha256": "4548d98341c78b101212c06d4915a71460bf4ec24f1f008cb8914c7c2309a002"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/emulator-smoke-report.json",
+      "bytes": 1197,
+      "sha256": "b39bf0430175fef6ef16f2b3f74425e28b9501966b3f55dbb861fbbb1b35de72"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/game-readiness-report.json",
+      "bytes": 26184,
+      "sha256": "ebc8d1608ea4fecea304dc04dfbad155b41d2845ac587e77029bac47f988c0d6"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/reports/soft-click-sunday-qa-report.json",
+      "bytes": 2195,
+      "sha256": "caaaa63a26c67c83705ab39a21fea4105df9729f0e6477c0de94761b503966a5"
+    }
+  }
+}

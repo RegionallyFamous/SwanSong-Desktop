@@ -1,0 +1,881 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:40:32.778556+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "four-part-errand-run",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/projects/four-part-errand-run.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/projects/four-part-errand-run.wscvn.json",
+      "exists": true,
+      "bytes": 180149,
+      "sha256": "009d553892424951f5929ddb5f76bb705c7d79a0706504b8331eac48515c7913"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 36,
+    "preview_node_ids": [
+      "errand_title",
+      "errand_01",
+      "errand_02",
+      "errand_03",
+      "errand_04",
+      "errand_05",
+      "errand_06",
+      "errand_07",
+      "errand_08",
+      "errand_09",
+      "errand_10",
+      "errand_choice_1",
+      "errand_a1",
+      "errand_a2",
+      "errand_a3",
+      "errand_a4",
+      "errand_b1",
+      "errand_b2",
+      "errand_b3",
+      "errand_b4",
+      "errand_11",
+      "errand_12",
+      "errand_13",
+      "errand_14",
+      "errand_15",
+      "errand_16",
+      "errand_17",
+      "errand_choice_2",
+      "errand_c1",
+      "errand_c2",
+      "errand_c3",
+      "errand_c4",
+      "errand_d1",
+      "errand_d2",
+      "errand_d3",
+      "errand_d4"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 248319,
+      "sha256": "238dc462061b16586e3bf8aa8ed5376ee88b11f68f150fe96fc0b4662d4986ca",
+      "size": [
+        712,
+        2050
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/four-part-errand-run/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 85254,
+      "sha256": "328e98483685b2ad05892d75017b39637f8664a8260f55c6b754c83bceaf3a22",
+      "size": [
+        488,
+        872
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "errand_title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "9fdf6e98769db67708508314b5579dd550376139eefbd5b439961b8c292a6e28"
+      },
+      {
+        "index": 1,
+        "node_id": "errand_01",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "60a889d196f7568dd91b678e633b2052a67123fcefdfa290aa4b74e171f67a36"
+      },
+      {
+        "index": 2,
+        "node_id": "errand_02",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "ca44b1b2ae62ff55110258c975e04083e88a60ece68fdf0a2e38cfcd86fea30d"
+      },
+      {
+        "index": 3,
+        "node_id": "errand_03",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "beda1794bf4fe9228be5b586cd1d2fcbb7585963e51d02765b4c7fed693ad20f"
+      },
+      {
+        "index": 4,
+        "node_id": "errand_04",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "27375f778dc0253aab6470927f0044a31ddf1fe572745b2b454c3c890532cf1c"
+      },
+      {
+        "index": 5,
+        "node_id": "errand_05",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "2fa8df58a3d66af1240e320a07ca8c0f5ec7ae287f8a28695dc70067548056ae"
+      },
+      {
+        "index": 6,
+        "node_id": "errand_06",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "9e95a436d66d0f3f63c64ff904f450088800652988e74be7487857babb021401"
+      },
+      {
+        "index": 7,
+        "node_id": "errand_07",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "a56a4d341ab750b2bd5c24ca7ec4f1e0601e0df49b8900bddbecadda4a674850"
+      },
+      {
+        "index": 8,
+        "node_id": "errand_08",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "4d1e96a0d7ee05131b7b73d9dabd4777bbc778d5eccca6211cab9441e1c1c20f"
+      },
+      {
+        "index": 9,
+        "node_id": "errand_09",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "f845a23bfddb4b0f3639acf71235be845db6c918b97447cf0dacccc03298d83a"
+      },
+      {
+        "index": 10,
+        "node_id": "errand_10",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "b584520b15502d9861bc93937493c0fddef7e46dbafeebf2f628a0ab8c804b45"
+      },
+      {
+        "index": 11,
+        "node_id": "errand_choice_1",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "30a04cc4c33460a34f75f8136665d2f28066dc4c6a8d140bd774a2d883f0a46e"
+      },
+      {
+        "index": 12,
+        "node_id": "errand_a1",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "bebe8f555d330eb3521477c0a3fc62fb3aba75f5f195c4bdd4805216678dd2d6"
+      },
+      {
+        "index": 13,
+        "node_id": "errand_a2",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "47372b0ee7827104969c717b5a43feed2912da2da452701a47ba63f61909a4ee"
+      },
+      {
+        "index": 14,
+        "node_id": "errand_a3",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "f7d3c3dc551c3812a3df15045f08372e603113f9a004ccee9376b19b7a1c10e6"
+      },
+      {
+        "index": 15,
+        "node_id": "errand_a4",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "ef114069aa5a15d547bebec50a9ed7fe59c6f2614054691e5fde95c0d44514f5"
+      },
+      {
+        "index": 16,
+        "node_id": "errand_b1",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "2bf62e789bc8b5fd5b0b1dc33b60072ffdfd20d4e26533c0d52208717ca627a3"
+      },
+      {
+        "index": 17,
+        "node_id": "errand_b2",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "c3a6e79b8562f555cc6364e3c36c0bfdddb928550e45c06665ad06fbc668abaf"
+      },
+      {
+        "index": 18,
+        "node_id": "errand_b3",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "622f0b27bdc90cd6cdf77acd501c9f2d43776a7a54ccdf5f537cb6e45b594015"
+      },
+      {
+        "index": 19,
+        "node_id": "errand_b4",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "e0e59a8b1552f7fa89dbd96c2a1bc4d0dddc562a2e8a903af48db53fd3c19486"
+      },
+      {
+        "index": 20,
+        "node_id": "errand_11",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "06f7e4509a46ed88ae8c3158b19c426ab4f666f159b697e70af229fc00b7c7c0"
+      },
+      {
+        "index": 21,
+        "node_id": "errand_12",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "c2b6a0ddc027c351c8b6924e326512219e10eacce5982e41446ca6d7b355b051"
+      },
+      {
+        "index": 22,
+        "node_id": "errand_13",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "a00eaef95ec3d83558bcc8c807afd5e630d5376e0ff90ddd0a17b21e9242a0c3"
+      },
+      {
+        "index": 23,
+        "node_id": "errand_14",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "281c2cfc10562fca712995e3c3af3b891e08a63d1783995c316fe06b5850b10a"
+      },
+      {
+        "index": 24,
+        "node_id": "errand_15",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "548f95b23a15014350383e3cd2e9d2544c6cb052e8896a896d496575fed5ea88"
+      },
+      {
+        "index": 25,
+        "node_id": "errand_16",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "b7dc86558aa139cb742e805675cd4ac560f04bc465b55f2642482e2cb9ed6b43"
+      },
+      {
+        "index": 26,
+        "node_id": "errand_17",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "8e32bf42c455c88c7a63f8bc8148c1645e0b484189b5ee2dc880ef1f6afc26b6"
+      },
+      {
+        "index": 27,
+        "node_id": "errand_choice_2",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "26f8fbf7e3ebc6b5101b2b654340955fcd682a0c2457246dd05697824b46f03e"
+      },
+      {
+        "index": 28,
+        "node_id": "errand_c1",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "040ca8ff231e41e69accdfab56b1bec29558b4ee6ccca035654e6ad0fad3508f"
+      },
+      {
+        "index": 29,
+        "node_id": "errand_c2",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "73ffa6de9049ba8a29eb7a8f810ed07d3eb6c383401098ea6a882a35c2883219"
+      },
+      {
+        "index": 30,
+        "node_id": "errand_c3",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "86c654be66d22ce397aef7d9c1803161301e9577785ec992aba3577588143803"
+      },
+      {
+        "index": 31,
+        "node_id": "errand_c4",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "07aaec01de82d2937a7d076ffab5ad19dcb02a0af613d4f45257a65ec7b6679e"
+      },
+      {
+        "index": 32,
+        "node_id": "errand_d1",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "f309363c813c506a9e644d5a7a816874e4de8872b975752e5dd9722d0bd90b37"
+      },
+      {
+        "index": 33,
+        "node_id": "errand_d2",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "4d5ed6f7f1f8727288ef55d7d118400f84215e38c0c20946cbbf6a4da55e58e5"
+      },
+      {
+        "index": 34,
+        "node_id": "errand_d3",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "522ff8d4af760c03a1f2f3114911ca3e13e62f88eaf4747ce7c297cdb2cc2240"
+      },
+      {
+        "index": 35,
+        "node_id": "errand_d4",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "1b938c0bbb13a2bd8dd8eaf2607ae813d8795bdd9edb447d22277a342bf8074f"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "errand_title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "48cb75f55b05e5dcbbb26cc327194c5867f65881427ca1901b962911704de402"
+      },
+      {
+        "index": 1,
+        "node_id": "errand_01",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "86eb25b1f6b066e7ecd0e6b24901bf97a51c55dab38dfbbc2723df5bcdf8cb44"
+      },
+      {
+        "index": 2,
+        "node_id": "errand_02",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "df3e0c4dcd6bc834a434d71f98a493a23ba022e275f1773dea13a63d23eb7cdb"
+      },
+      {
+        "index": 3,
+        "node_id": "errand_03",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "db178eade0bc64ce61e654355afe1efb103abd25b183ff4787d7435c0b9be54d"
+      },
+      {
+        "index": 4,
+        "node_id": "errand_04",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "7cf9bd118c1486584997c5de0b09d7613932014fb0f4b91b0d7a1f2280ac1041"
+      },
+      {
+        "index": 5,
+        "node_id": "errand_05",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "bf9e71fce20a1b1e97590376c7995074ae11a09fa36fcea020b4add0b16918b1"
+      },
+      {
+        "index": 6,
+        "node_id": "errand_06",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "20181d5a7af0fbebbe82851dec6745a688be85464ed8f58ebbf9b7b7ca2cdae2"
+      },
+      {
+        "index": 7,
+        "node_id": "errand_07",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "aed43f9b7ea3037113ca0bf5d885f2419eeeab44cf2ef846aeb07a70079a8515"
+      },
+      {
+        "index": 8,
+        "node_id": "errand_08",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "257482c1d132c97355e32674091258c64dd8ed25b08c29a4178183750302af66"
+      },
+      {
+        "index": 9,
+        "node_id": "errand_09",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "6e73c980ec98df0dc553e921aee1779f47bf2f622fb94075812f14d12b186a9a"
+      },
+      {
+        "index": 10,
+        "node_id": "errand_10",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "03084f911c6ca2feca5d879d1a46c6f412a7b05795110033bf18ffcfbf62eb50"
+      },
+      {
+        "index": 11,
+        "node_id": "errand_choice_1",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "aa9b5e9345a10a6ad4f82fbf2e3651b19b9e5627ad39572709b27368f3974899"
+      },
+      {
+        "index": 12,
+        "node_id": "errand_a1",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "0b22b7755c991eb309d8237c3275e8498130cf3a57294afa7010424e4a1820d3"
+      },
+      {
+        "index": 13,
+        "node_id": "errand_a2",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "396ce122e9c6418f60c02e11124313b29314f7cd954aac9d4fbd3102eaaf001c"
+      },
+      {
+        "index": 14,
+        "node_id": "errand_a3",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "cb3e5dfe6aabfff295cfc480019008f031d4b7dd012ff7c29316f1635590924a"
+      },
+      {
+        "index": 15,
+        "node_id": "errand_a4",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "f768b9c0090aac10826178375ff968858c15d9ee7e1107c459c00c1d493a7ced"
+      },
+      {
+        "index": 16,
+        "node_id": "errand_b1",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "45dab509584be3e2fe5c2730fad9f7d7f35ada144f6a18d25bf1772a83c591bb"
+      },
+      {
+        "index": 17,
+        "node_id": "errand_b2",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "cc11bc71aaa406abb4fbe4db31371059e99158be45c55d0553bbf5463a1b2bbe"
+      },
+      {
+        "index": 18,
+        "node_id": "errand_b3",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "ca9ca467a5aa2b6cfd8794de328e4504ea290bb9b5cc95aa3f22a21d19dba1f6"
+      },
+      {
+        "index": 19,
+        "node_id": "errand_b4",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "a1960c7ec8a346c4cf3a9d351bf6a7583ab8b7a63e6140732c86ea85c6c82827"
+      },
+      {
+        "index": 20,
+        "node_id": "errand_11",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "4a6ca015f04d755643f54f6ca813874d86d6a371b391021bb751461c7164ea3c"
+      },
+      {
+        "index": 21,
+        "node_id": "errand_12",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "c3d53647f2872188e5533e96ddddc98d748e52f788912569e630a1f0416279a2"
+      },
+      {
+        "index": 22,
+        "node_id": "errand_13",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "e5f437487f405e61ec5e85655ee442d54bd0cfe793b917d0b4a7e728d44ea3fc"
+      },
+      {
+        "index": 23,
+        "node_id": "errand_14",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "bbc8ec38a9f8ccead327d58ee2f67402f43a492bdfbb012e08b07155186757b4"
+      },
+      {
+        "index": 24,
+        "node_id": "errand_15",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "bb019866a1301455cff24b8524dafd5df795a43502223f7777e2c2c9dc20d030"
+      },
+      {
+        "index": 25,
+        "node_id": "errand_16",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "a955734014c2a5fc9777f0a156e02cd014e90240ac4940ccf8760f2ccc7a1681"
+      },
+      {
+        "index": 26,
+        "node_id": "errand_17",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "2aefa3e000a51edeab29ad0665aa947638c2c6756421681811ff27eedce19c4b"
+      },
+      {
+        "index": 27,
+        "node_id": "errand_choice_2",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "169b0717ee17747495df93c066c16b3706df72a537ad6037b66ec3623bcc61db"
+      },
+      {
+        "index": 28,
+        "node_id": "errand_c1",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "debf318ca3ac04dc18b61b9622ddceec0923341922fdb54691dae08793990e45"
+      },
+      {
+        "index": 29,
+        "node_id": "errand_c2",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "a0a426866ffbfc30a4a1042d5f75f288914762201453db4f36a16acfa1876053"
+      },
+      {
+        "index": 30,
+        "node_id": "errand_c3",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "0b359541c61dc19a2e06aeb46f0e6c949e15f239d98a05b3846a9a75ac4b15e4"
+      },
+      {
+        "index": 31,
+        "node_id": "errand_c4",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "fdd432675c65ffbe03240ada0895a344853fafbacb6da937fadc5beeef422730"
+      },
+      {
+        "index": 32,
+        "node_id": "errand_d1",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "780464f2e5345b53b7b79240680129f7e4ecfa29c946500d8d5550efbad70e1e"
+      },
+      {
+        "index": 33,
+        "node_id": "errand_d2",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "1cadf1da9836064a86693d9766fc7958d1903623ee8724564ef781ee35bc04b3"
+      },
+      {
+        "index": 34,
+        "node_id": "errand_d3",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "28cbcb77a4b5481995787eefd584f6885c27e7d7a66b486879d4b18c10e8c582"
+      },
+      {
+        "index": 35,
+        "node_id": "errand_d4",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "872f31a1926d3c15cc5c667a8a203ec6038dee5b4a69cbbc957b456a34137a08"
+      }
+    ]
+  }
+}

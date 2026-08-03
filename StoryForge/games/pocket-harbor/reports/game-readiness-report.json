@@ -1,0 +1,868 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:10:41.667333+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "pocket-harbor",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json",
+      "bytes": 214428,
+      "sha256": "051e898b5102afd680bea490da2d5950cbc93e5fb948e1520baf580367338755"
+    },
+    "project_counts": {
+      "name": "Pocket Harbor",
+      "nodes": 63,
+      "flags": 9,
+      "tracks": 1,
+      "backgrounds": 3,
+      "characters": 6,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 63,
+      "scene_nodes": 57,
+      "staged_scenes": 57,
+      "animated_staged_scenes": 57,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Mina",
+        "Ren"
+      ],
+      "backgrounds_used": [
+        "bg_rain_counter",
+        "bg_shelf_room",
+        "bg_swap_table"
+      ],
+      "ending_scenes": [
+        "end_first_cart__beat3",
+        "end_archive__beat3",
+        "end_market_runner__beat3"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 63,
+      "start_node": "title"
+    },
+    "routes": {
+      "initial_flags": {
+        "archived": 0,
+        "bold": 0,
+        "booted": 0,
+        "careful": 0,
+        "kept": 0,
+        "kind": 0,
+        "shelved": 0,
+        "story": 0,
+        "traded": 0
+      },
+      "states_explored": 401,
+      "truncated": false,
+      "route_reachable_nodes": 63,
+      "route_reachable_ending_scenes": [
+        "end_archive__beat3",
+        "end_first_cart__beat3",
+        "end_market_runner__beat3"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "ask_price",
+        "boot_now",
+        "help_buyer",
+        "inspect_pins",
+        "keep_cart",
+        "note_card",
+        "read_manual",
+        "sleeve_home",
+        "trade_cart"
+      ],
+      "selectable_choice_targets": [
+        "ask_price",
+        "boot_now",
+        "help_buyer",
+        "inspect_pins",
+        "keep_cart",
+        "note_card",
+        "read_manual",
+        "sleeve_home",
+        "trade_cart"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": [
+        "end_archive",
+        "end_first_cart",
+        "end_market_runner"
+      ]
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Inspect pins / Trade duplicate / Boot it now",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2237,
+          "estimated_minutes_at_140_wpm": 15.98
+        },
+        {
+          "route_id": "route-2",
+          "label": "Inspect pins / Trade duplicate / Write its card",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2237,
+          "estimated_minutes_at_140_wpm": 15.98
+        },
+        {
+          "route_id": "route-3",
+          "label": "Inspect pins / Trade duplicate / Sleeve at home",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2239,
+          "estimated_minutes_at_140_wpm": 15.99
+        },
+        {
+          "route_id": "route-4",
+          "label": "Inspect pins / Keep first cart / Boot it now",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2247,
+          "estimated_minutes_at_140_wpm": 16.05
+        },
+        {
+          "route_id": "route-5",
+          "label": "Inspect pins / Keep first cart / Write its card",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2245,
+          "estimated_minutes_at_140_wpm": 16.04
+        },
+        {
+          "route_id": "route-6",
+          "label": "Inspect pins / Keep first cart / Sleeve at home",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2247,
+          "estimated_minutes_at_140_wpm": 16.05
+        },
+        {
+          "route_id": "route-7",
+          "label": "Inspect pins / Help another buyer / Boot it now",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2239,
+          "estimated_minutes_at_140_wpm": 15.99
+        },
+        {
+          "route_id": "route-8",
+          "label": "Inspect pins / Help another buyer / Write its card",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2239,
+          "estimated_minutes_at_140_wpm": 15.99
+        },
+        {
+          "route_id": "route-9",
+          "label": "Inspect pins / Help another buyer / Sleeve at home",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2241,
+          "estimated_minutes_at_140_wpm": 16.01
+        },
+        {
+          "route_id": "route-10",
+          "label": "Ask price / Trade duplicate / Boot it now",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2245,
+          "estimated_minutes_at_140_wpm": 16.04
+        },
+        {
+          "route_id": "route-11",
+          "label": "Ask price / Trade duplicate / Write its card",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2245,
+          "estimated_minutes_at_140_wpm": 16.04
+        },
+        {
+          "route_id": "route-12",
+          "label": "Ask price / Trade duplicate / Sleeve at home",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2247,
+          "estimated_minutes_at_140_wpm": 16.05
+        },
+        {
+          "route_id": "route-13",
+          "label": "Ask price / Keep first cart / Boot it now",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2255,
+          "estimated_minutes_at_140_wpm": 16.11
+        },
+        {
+          "route_id": "route-14",
+          "label": "Ask price / Keep first cart / Write its card",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2253,
+          "estimated_minutes_at_140_wpm": 16.09
+        },
+        {
+          "route_id": "route-15",
+          "label": "Ask price / Keep first cart / Sleeve at home",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2255,
+          "estimated_minutes_at_140_wpm": 16.11
+        },
+        {
+          "route_id": "route-16",
+          "label": "Ask price / Help another buyer / Boot it now",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2247,
+          "estimated_minutes_at_140_wpm": 16.05
+        },
+        {
+          "route_id": "route-17",
+          "label": "Ask price / Help another buyer / Write its card",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2247,
+          "estimated_minutes_at_140_wpm": 16.05
+        },
+        {
+          "route_id": "route-18",
+          "label": "Ask price / Help another buyer / Sleeve at home",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2249,
+          "estimated_minutes_at_140_wpm": 16.06
+        },
+        {
+          "route_id": "route-19",
+          "label": "Read manual / Trade duplicate / Boot it now",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2241,
+          "estimated_minutes_at_140_wpm": 16.01
+        },
+        {
+          "route_id": "route-20",
+          "label": "Read manual / Trade duplicate / Write its card",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2241,
+          "estimated_minutes_at_140_wpm": 16.01
+        },
+        {
+          "route_id": "route-21",
+          "label": "Read manual / Trade duplicate / Sleeve at home",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2243,
+          "estimated_minutes_at_140_wpm": 16.02
+        },
+        {
+          "route_id": "route-22",
+          "label": "Read manual / Keep first cart / Boot it now",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2251,
+          "estimated_minutes_at_140_wpm": 16.08
+        },
+        {
+          "route_id": "route-23",
+          "label": "Read manual / Keep first cart / Write its card",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2249,
+          "estimated_minutes_at_140_wpm": 16.06
+        },
+        {
+          "route_id": "route-24",
+          "label": "Read manual / Keep first cart / Sleeve at home",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2251,
+          "estimated_minutes_at_140_wpm": 16.08
+        },
+        {
+          "route_id": "route-25",
+          "label": "Read manual / Help another buyer / Boot it now",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2243,
+          "estimated_minutes_at_140_wpm": 16.02
+        },
+        {
+          "route_id": "route-26",
+          "label": "Read manual / Help another buyer / Write its card",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2243,
+          "estimated_minutes_at_140_wpm": 16.02
+        },
+        {
+          "route_id": "route-27",
+          "label": "Read manual / Help another buyer / Sleeve at home",
+          "ending_node": "end",
+          "scene_beats": 33,
+          "words": 2245,
+          "estimated_minutes_at_140_wpm": 16.04
+        }
+      ]
+    },
+    "text": {
+      "blocks": 297,
+      "max_pause_block_chars": 95,
+      "choice_labels": 9,
+      "max_choice_label_chars": 18,
+      "max_choice_prompt_chars": 22,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 12,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 21,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_rain_counter",
+        "orig_name": "rain_counter.png",
+        "embedded_sha256": "c6365aeabe325126f517d2b68ed60ada2fb0e85c5222c067bec021ab1fdd753e",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 14,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/backgrounds/rain_counter.png",
+        "local_sha256": "c6365aeabe325126f517d2b68ed60ada2fb0e85c5222c067bec021ab1fdd753e"
+      },
+      {
+        "id": "bg_shelf_room",
+        "orig_name": "shelf_room.png",
+        "embedded_sha256": "aa137feea6b056d8652e149cd70bb947290d4fa245459de6aadead8035d259d4",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/backgrounds/shelf_room.png",
+        "local_sha256": "aa137feea6b056d8652e149cd70bb947290d4fa245459de6aadead8035d259d4"
+      },
+      {
+        "id": "bg_swap_table",
+        "orig_name": "swap_table.png",
+        "embedded_sha256": "c8024a42763d81d9fabf003b4397b0c3a836ecbd50bdc233f3d7bbcb9dbcf54b",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/backgrounds/swap_table.png",
+        "local_sha256": "c8024a42763d81d9fabf003b4397b0c3a836ecbd50bdc233f3d7bbcb9dbcf54b"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_mina_blink",
+        "orig_name": "mina_blink.png",
+        "embedded_sha256": "652f27ad5a91b742275a59606bab75b5dd236c4930dc3178021091cfc0fe8cc5",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5506,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/characters/mina_blink.png",
+        "local_sha256": "652f27ad5a91b742275a59606bab75b5dd236c4930dc3178021091cfc0fe8cc5"
+      },
+      {
+        "id": "char_mina_neutral",
+        "orig_name": "mina_neutral.png",
+        "embedded_sha256": "dfca0f7a742e9e718bc435e263167d731d7964634aad733659ae360e4209f5e1",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5506,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/characters/mina_neutral.png",
+        "local_sha256": "dfca0f7a742e9e718bc435e263167d731d7964634aad733659ae360e4209f5e1"
+      },
+      {
+        "id": "char_mina_talk",
+        "orig_name": "mina_talk.png",
+        "embedded_sha256": "2a067219297652288d2a0efba00d96bddaa0bb285bc3f5ac48034134e9591638",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5506,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/characters/mina_talk.png",
+        "local_sha256": "2a067219297652288d2a0efba00d96bddaa0bb285bc3f5ac48034134e9591638"
+      },
+      {
+        "id": "char_ren_blink",
+        "orig_name": "ren_blink.png",
+        "embedded_sha256": "bec91f13a2d81b1a6b3e2ce05eb9fb49e3f3423a810850f256edab4d32012e86",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5413,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/characters/ren_blink.png",
+        "local_sha256": "bec91f13a2d81b1a6b3e2ce05eb9fb49e3f3423a810850f256edab4d32012e86"
+      },
+      {
+        "id": "char_ren_neutral",
+        "orig_name": "ren_neutral.png",
+        "embedded_sha256": "4bdb5053c0a0aa6bf137c3b26fce0337bf1caa22b0af40c644413c26ac06b783",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5413,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/characters/ren_neutral.png",
+        "local_sha256": "4bdb5053c0a0aa6bf137c3b26fce0337bf1caa22b0af40c644413c26ac06b783"
+      },
+      {
+        "id": "char_ren_talk",
+        "orig_name": "ren_talk.png",
+        "embedded_sha256": "d6015da912bce9606139d4789c3386ecacb058ba2682dd9637cf5289886346f7",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5413,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/characters/ren_talk.png",
+        "local_sha256": "d6015da912bce9606139d4789c3386ecacb058ba2682dd9637cf5289886346f7"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_rain_counter",
+          "textbox_mean_luma": 34.866,
+          "textbox_luma_stddev": 23.715,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_shelf_room",
+          "textbox_mean_luma": 27.0,
+          "textbox_luma_stddev": 14.731,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_swap_table",
+          "textbox_mean_luma": 47.154,
+          "textbox_luma_stddev": 25.578,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 57,
+      "families": [
+        {
+          "neutral": "char_mina_neutral",
+          "talk": "char_mina_talk",
+          "blink": "char_mina_blink",
+          "talk_face_delta": 13.561,
+          "blink_face_delta": 8.584,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 272,
+            "changed_bbox": [
+              38,
+              56,
+              59,
+              72
+            ],
+            "changed_bbox_area": 336,
+            "changed_region_share": 0.027344,
+            "global_changed_share": 0.022135,
+            "face_changed_pixels": 272,
+            "face_changed_share": 0.128788,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 169,
+            "changed_bbox": [
+              27,
+              31,
+              62,
+              42
+            ],
+            "changed_bbox_area": 385,
+            "changed_region_share": 0.031331,
+            "global_changed_share": 0.013753,
+            "face_changed_pixels": 165,
+            "face_changed_share": 0.078125,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 4,
+            "outside_face_changed_share": 0.000393
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        },
+        {
+          "neutral": "char_ren_neutral",
+          "talk": "char_ren_talk",
+          "blink": "char_ren_blink",
+          "talk_face_delta": 13.138,
+          "blink_face_delta": 8.743,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 306,
+            "changed_bbox": [
+              38,
+              56,
+              59,
+              72
+            ],
+            "changed_bbox_area": 336,
+            "changed_region_share": 0.027344,
+            "global_changed_share": 0.024902,
+            "face_changed_pixels": 306,
+            "face_changed_share": 0.144886,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 132,
+            "changed_bbox": [
+              36,
+              33,
+              67,
+              44
+            ],
+            "changed_bbox_area": 341,
+            "changed_region_share": 0.027751,
+            "global_changed_share": 0.010742,
+            "face_changed_pixels": 132,
+            "face_changed_share": 0.0625,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/sources",
+      "count": 2,
+      "packaged_file_count": 2,
+      "background_source_count": 1,
+      "character_source_count": 1,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/sources/backgrounds_imagegen_source.png",
+          "bytes": 1697619,
+          "sha256": "ff9e97d2d37e456a3aca2f3826f36cdb9a0d66ac01dc0a18bdf646508cc45c51",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            2172,
+            724
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/sources/characters_imagegen_source.png",
+          "bytes": 1770293,
+          "sha256": "02260a9f6aabde1c91d99e1c9a4c8ebb04c0dae94bb0527c3362e2f0a60a2779",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1536,
+            1024
+          ],
+          "mode": "RGB"
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 66790,
+      "sha256": "bf0ea65a8bf37f47d57aa6509fd8e5c877bd2fcaea56571edc4dd1e9039c64e8",
+      "size": [
+        712,
+        486
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 479783,
+        "sha256": "e69737e0957016c25b5da27801c51414c74f22cbdb99e454ac1081590c49641f",
+        "size": [
+          712,
+          3580
+        ],
+        "mode": "RGB",
+        "unique_colors": 283,
+        "luma_stddev": 53.648
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 153687,
+        "sha256": "beb278bdfb9e839d54a65d23edfbad6abd7a64ec327a566dc2f615c05f0faf17",
+        "size": [
+          488,
+          1544
+        ],
+        "mode": "RGB",
+        "unique_colors": 281,
+        "luma_stddev": 50.204
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 34385,
+        "sha256": "eb69e1106c0996abb468f6e9c720a70c749fde71849032dcbfa3a7c09d018946",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/projects/pocket-harbor.wscvn.json",
+          "exists": true,
+          "bytes": 214428,
+          "sha256": "051e898b5102afd680bea490da2d5950cbc93e5fb948e1520baf580367338755"
+        },
+        "nodes_rendered": 61,
+        "preview_node_ids": [
+          "title",
+          "market_open",
+          "market_open__beat2",
+          "market_open__beat3",
+          "mina_rule",
+          "mina_rule__beat2",
+          "mina_rule__beat3",
+          "booth_glass",
+          "booth_glass__beat2",
+          "booth_glass__beat3",
+          "first_choice",
+          "inspect_pins",
+          "inspect_pins__beat2",
+          "inspect_pins__beat3",
+          "ask_price",
+          "ask_price__beat2",
+          "ask_price__beat3",
+          "read_manual",
+          "read_manual__beat2",
+          "read_manual__beat3",
+          "seller_trade",
+          "seller_trade__beat2",
+          "seller_trade__beat3",
+          "duplicate_cart",
+          "duplicate_cart__beat2",
+          "duplicate_cart__beat3",
+          "trade_choice",
+          "trade_cart",
+          "trade_cart__beat2",
+          "trade_cart__beat3",
+          "keep_cart",
+          "keep_cart__beat2",
+          "keep_cart__beat3",
+          "help_buyer",
+          "help_buyer__beat2",
+          "help_buyer__beat3",
+          "last_call",
+          "last_call__beat2",
+          "last_call__beat3",
+          "care_choice",
+          "boot_now",
+          "boot_now__beat2",
+          "boot_now__beat3",
+          "note_card",
+          "note_card__beat2",
+          "note_card__beat3",
+          "sleeve_home",
+          "sleeve_home__beat2",
+          "sleeve_home__beat3",
+          "shelf_home",
+          "shelf_home__beat2",
+          "shelf_home__beat3",
+          "end_first_cart",
+          "end_first_cart__beat2",
+          "end_first_cart__beat3",
+          "end_archive",
+          "end_archive__beat2",
+          "end_archive__beat3",
+          "end_market_runner",
+          "end_market_runner__beat2",
+          "end_market_runner__beat3"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 61,
+            "expected": 61
+          },
+          "storyboard_cells": {
+            "reported": 61,
+            "expected": 61
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/pocket-harbor/reports/pocket-harbor-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

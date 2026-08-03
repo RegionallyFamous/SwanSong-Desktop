@@ -1,0 +1,437 @@
+{
+  "schema_version": 3,
+  "stage": "concept",
+  "framework": {
+    "profile": "forge-light-novels",
+    "profile_version": "3.0.0",
+    "lockfile": "novel.lock.json",
+    "workbench_evidence": []
+  },
+  "workbench": {
+    "schema_version": 1,
+    "lead_writer": "human",
+    "merge_policy": "proposal-only",
+    "reader_privacy": "local",
+    "image_policy": "imagegen-only",
+    "story_room": {
+      "enabled": true,
+      "roles": [
+        "premise-scout",
+        "architect",
+        "character-editor",
+        "continuity-editor",
+        "prose-editor",
+        "art-director",
+        "music-director",
+        "release-editor"
+      ]
+    },
+    "research_notebook": "workbench/research-notebook.json",
+    "music_workspace": "workbench/music-room/scores.json",
+    "adaptation": {
+      "target": "wonderswan-color",
+      "status": "not-started"
+    }
+  },
+  "rights_release": {
+    "mode": "original",
+    "release_scope": "private",
+    "rights_holder": "TODO: author or rights holder",
+    "source_franchises": [],
+    "attribution": "TODO: credit and ownership statement",
+    "restrictions": ["TODO: release boundary or clearance requirement"],
+    "commercial_clearance": "not-applicable",
+    "reviewer": "TODO: accountable rights reviewer",
+    "release_statement": "TODO: why this release lane is appropriate"
+  },
+  "identity": {
+    "slug": "__SLUG__",
+    "title": "__TITLE__",
+    "format": "__FORMAT__",
+    "audience": "TODO: name the intended reader and reading context",
+    "genres": ["TODO: primary genre"],
+    "point_of_view": "TODO: e.g. close-third single POV",
+    "tense": "TODO: past or present",
+    "target_words": 12000,
+    "one_sentence_promise": "TODO: promise a specific reading experience"
+  },
+  "development": {
+    "premise_candidates": [
+      {"id": "candidate-01", "hook": "TODO", "relationship_engine": "TODO", "story_engine": "TODO", "ending_pressure": "TODO", "derivative_risk": "TODO"},
+      {"id": "candidate-02", "hook": "TODO", "relationship_engine": "TODO", "story_engine": "TODO", "ending_pressure": "TODO", "derivative_risk": "TODO"},
+      {"id": "candidate-03", "hook": "TODO", "relationship_engine": "TODO", "story_engine": "TODO", "ending_pressure": "TODO", "derivative_risk": "TODO"},
+      {"id": "candidate-04", "hook": "TODO", "relationship_engine": "TODO", "story_engine": "TODO", "ending_pressure": "TODO", "derivative_risk": "TODO"},
+      {"id": "candidate-05", "hook": "TODO", "relationship_engine": "TODO", "story_engine": "TODO", "ending_pressure": "TODO", "derivative_risk": "TODO"}
+    ],
+    "selected_premise_id": "candidate-01",
+    "selection_reason": "TODO: explain why this candidate can sustain a full novel",
+    "research_questions": ["TODO: identify a factual or experiential question that could change the outline"]
+  },
+  "creative_contract": {
+    "hook": "TODO: concrete situation with pressure",
+    "emotional_question": "TODO: relationship or self-belief question",
+    "thematic_argument": "TODO: a contestable idea dramatized by choices",
+    "comic_or_dramatic_engine": "TODO: repeatable engine that escalates",
+    "ending_aftertaste": "TODO: the feeling and final image to leave",
+    "signature_question": "TODO: what will a reader excitedly tell someone else about this book?",
+    "originality_boundaries": ["TODO: what this story must not imitate"],
+    "non_goals": ["TODO: tempting material this volume will deliberately omit"]
+  },
+  "genre_profile": {
+    "module": "custom",
+    "primary_pleasure": "TODO: the main genre pleasure",
+    "secondary_pleasures": ["TODO: a supporting pleasure"],
+    "reader_expectations": [
+      "TODO: expectation one",
+      "TODO: expectation two",
+      "TODO: expectation three"
+    ],
+    "freshness_move": "TODO: how this book satisfies the genre without feeling interchangeable",
+    "forbidden_shortcuts": ["TODO: a genre shortcut this story will refuse"],
+    "module_checks": [
+      {"id": "custom-pleasure-01", "expectation": "TODO", "planned_delivery": "TODO", "payoff_scene": "scene-01"},
+      {"id": "custom-pleasure-02", "expectation": "TODO", "planned_delivery": "TODO", "payoff_scene": "scene-01"},
+      {"id": "custom-pleasure-03", "expectation": "TODO", "planned_delivery": "TODO", "payoff_scene": "scene-01"}
+    ]
+  },
+  "series": {
+    "mode": "standalone",
+    "series_id": "__SLUG__",
+    "volume_number": 1,
+    "series_promise": "TODO: the enduring promise, or state that this is deliberately standalone",
+    "volume_promise": "TODO: what this volume resolves completely",
+    "character_arc_position": "TODO: starting and ending arc position",
+    "continuity_in": [],
+    "continuity_out": [],
+    "canon": [],
+    "protected_mysteries": [],
+    "future_hooks": []
+  },
+  "continuity_ledger": {
+    "initial_states": [
+      {"id": "story-time", "type": "time", "state": "TODO: exact opening time anchor"},
+      {"id": "primary-location", "type": "location", "state": "TODO: opening location state"},
+      {"id": "core-relationship", "type": "relationship", "state": "TODO: opening permission, trust, or status state"}
+    ],
+    "events": [
+      {"id": "continuity-event-01", "scene_id": "scene-01", "entity_id": "core-relationship", "before": "TODO: must match initial state", "after": "TODO: changed state", "evidence": "TODO: scene-specific cause of the change"}
+    ],
+    "final_states": [
+      {"entity_id": "story-time", "state": "TODO: final time state"},
+      {"entity_id": "primary-location", "state": "TODO: final location state"},
+      {"entity_id": "core-relationship", "state": "TODO: final relationship state"}
+    ]
+  },
+  "soundtrack_bible": {
+    "enabled": false,
+    "release_mode": "none",
+    "master_motif": {},
+    "motifs": [],
+    "cues": []
+  },
+  "cast": [
+    {
+      "id": "protagonist",
+      "name": "TODO",
+      "role": "protagonist",
+      "external_want": "TODO",
+      "internal_need": "TODO",
+      "false_belief": "TODO",
+      "vulnerability": "TODO",
+      "contradiction": "TODO",
+      "behavioral_tell": "TODO",
+      "voice": {
+        "sentence_shape": "TODO",
+        "diction": "TODO",
+        "avoids": "TODO",
+        "metaphor_source": "TODO",
+        "sample_required": true
+      }
+    },
+    {
+      "id": "foil",
+      "name": "TODO",
+      "role": "foil",
+      "external_want": "TODO",
+      "internal_need": "TODO",
+      "false_belief": "TODO",
+      "vulnerability": "TODO",
+      "contradiction": "TODO",
+      "behavioral_tell": "TODO",
+      "voice": {
+        "sentence_shape": "TODO",
+        "diction": "TODO",
+        "avoids": "TODO",
+        "metaphor_source": "TODO",
+        "sample_required": true
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "characters": ["protagonist", "foil"],
+      "surface_dynamic": "TODO",
+      "buried_need": "TODO",
+      "pressure_point": "TODO",
+      "visible_change": "TODO",
+      "status_game": "TODO: who appears to hold power and how it can flip",
+      "friction": "TODO: recurring incompatibility",
+      "shared_joke": "TODO: evolving comic pattern",
+      "secret_tenderness": "TODO: care shown before it is spoken",
+      "conversation_game": "TODO: each character's dialogue tactics",
+      "status_flips": [
+        {"scene_id": "scene-01", "change": "TODO: visible change in permission or power"}
+      ]
+    }
+  ],
+  "chapters": [
+    {
+      "id": "chapter-01",
+      "title": "TODO",
+      "dramatic_job": "TODO",
+      "entering_state": "TODO",
+      "exit_change": "TODO",
+      "opening_hook": "TODO: immediate reader-facing pull",
+      "closing_pull": "TODO: question, image, or consequence that creates momentum",
+      "scene_ids": ["scene-01"]
+    }
+  ],
+  "scenes": [
+    {
+      "id": "scene-01",
+      "chapter_id": "chapter-01",
+      "pov": "protagonist",
+      "participants": ["protagonist", "foil"],
+      "location": "TODO",
+      "time": "TODO",
+      "goal": "TODO",
+      "pressure": "TODO",
+      "turn": "TODO",
+      "decision": "TODO",
+      "consequence": "TODO",
+      "entering_state": "TODO",
+      "exit_state": "TODO: must differ meaningfully from entering state",
+      "because_of": "opening",
+      "setup_ids": [],
+      "payoff_ids": [],
+      "sensory_anchor": "TODO",
+      "specific_image": "TODO",
+      "comic_or_tonal_move": "TODO",
+      "chemistry_move": "TODO: how interaction changes status, permission, or intimacy",
+      "reader_question": "TODO: what the reader wants answered after this scene",
+      "word_target": 900
+    }
+  ],
+  "setups": [],
+  "motifs": [],
+  "delight": {
+    "signature_moments": [
+      {
+        "id": "delight-01",
+        "chapter_id": "chapter-01",
+        "scene_id": "scene-01",
+        "type": "TODO: humor, surprise, tenderness, wonder, competence, recognition, or catharsis",
+        "setup": "TODO",
+        "delivery": "TODO",
+        "reader_effect": "TODO",
+        "only_here_reason": "TODO: why this moment belongs only to this book"
+      }
+    ],
+    "rhythm": [
+      {
+        "scene_id": "scene-01",
+        "tension": 2,
+        "warmth": 2,
+        "humor": 2,
+        "wonder": 2,
+        "dominant_beat": "TODO",
+        "reader_effect": "TODO",
+        "entry_hook": "TODO",
+        "exit_pull": "TODO"
+      }
+    ]
+  },
+  "illustration_bible": {
+    "visual_contract": {
+      "style": "TODO: consistent production style",
+      "palette": "TODO: palette logic",
+      "lighting": "TODO: lighting logic",
+      "character_consistency": "TODO: silhouette, scale, face, and costume continuity",
+      "forbidden_shortcuts": ["No generic standing portrait when the scene turn can be shown"]
+    },
+    "character_designs": [
+      {"character_id": "protagonist", "silhouette": "TODO", "face_hair": "TODO", "wardrobe": "TODO", "acting_range": "TODO"},
+      {"character_id": "foil", "silhouette": "TODO", "face_hair": "TODO", "wardrobe": "TODO", "acting_range": "TODO"}
+    ],
+    "locations": [
+      {"id": "location-01", "name": "TODO", "anchors": ["TODO"], "mood_range": "TODO"}
+    ],
+    "recurring_props": [
+      {"id": "prop-01", "name": "TODO", "continuity_rule": "TODO"}
+    ],
+    "moments": [
+      {
+        "id": "cover-01",
+        "scene_id": "scene-01",
+        "role": "cover",
+        "narrative_purpose": "TODO",
+        "emotional_beat": "TODO",
+        "composition": "TODO",
+        "must_show": ["TODO"],
+        "must_avoid": ["TODO"],
+        "continuity_refs": ["protagonist", "foil", "location-01"],
+        "source_method": "imagegen",
+        "prompt_status": "draft",
+        "asset_path": "",
+        "asset_sha256": "",
+        "approval_status": "pending",
+        "reviewer": "",
+        "art_review": {"verdict": "pending", "reviewer": "", "reviewed_asset_sha256": "", "checklist": {}, "issues": [], "resolution": ""}
+      },
+      {
+        "id": "interior-01",
+        "scene_id": "scene-01",
+        "role": "interior",
+        "narrative_purpose": "TODO",
+        "emotional_beat": "TODO",
+        "composition": "TODO",
+        "must_show": ["TODO"],
+        "must_avoid": ["TODO"],
+        "continuity_refs": ["protagonist", "foil", "prop-01"],
+        "source_method": "imagegen",
+        "prompt_status": "draft",
+        "asset_path": "",
+        "asset_sha256": "",
+        "approval_status": "pending",
+        "reviewer": "",
+        "art_review": {"verdict": "pending", "reviewer": "", "reviewed_asset_sha256": "", "checklist": {}, "issues": [], "resolution": ""}
+      }
+    ],
+    "set_review": {
+      "status": "pending",
+      "reviewer": "",
+      "asset_set_sha256": "",
+      "report_path": "reports/illustration-set-review.json",
+      "report_sha256": "",
+      "contact_sheet_path": "reports/illustration-review/contact-sheet.png",
+      "consistency_finding": "",
+      "composition_finding": "",
+      "artifact_finding": "",
+      "resolution": ""
+    }
+  },
+  "manuscript": {
+    "directory": "manuscript",
+    "scene_marker": "<!-- scene: {id} -->",
+    "voice_marker": "<!-- voice: {character-id} -->"
+  },
+  "publication": {
+    "language": "en",
+    "author": "TODO: author or pen name",
+    "subtitle": "",
+    "edition": "First edition",
+    "rights": "TODO: rights statement",
+    "identifier": "__SLUG__-edition-1",
+    "cover_copy": "TODO: concise promise-driven cover or catalog copy",
+    "scene_break_glyph": "* * *",
+    "chapter_title_style": "number-and-title",
+    "typography": {
+      "trim_profile": "trade-5x8",
+      "body_font": "Vera Serif",
+      "heading_font": "Vera Serif Bold",
+      "body_size": 10.5,
+      "leading": 15,
+      "margin_inches": 0.65
+    },
+    "accessibility": {
+      "summary": "TODO: describe accessible reading order, navigation, and image descriptions",
+      "features": ["tableOfContents", "alternativeText", "readingOrder"],
+      "hazards": ["none"],
+      "alt_text_reviewed": false,
+      "reading_order_reviewed": false
+    },
+    "print": {"enabled": false, "trim_profile": "trade-5x8", "bleed_inches": 0.0},
+    "require_external_epubcheck": false,
+    "front_matter": ["TODO: copyright, dedication, or content note"],
+    "back_matter": ["TODO: acknowledgments, series note, or author note"],
+    "cover": {"illustration_id": "cover-01", "asset_path": "", "asset_sha256": "", "alt_text": "TODO"},
+    "illustration_placements": []
+  },
+  "quality": {
+    "minimum_premise_candidates": 5,
+    "minimum_scenes": 12,
+    "minimum_setups": 2,
+    "minimum_motifs": 1,
+    "minimum_scene_words": 350,
+    "maximum_scene_words": 1800,
+    "minimum_draft_completion_ratio": 0.85,
+    "repeated_ngram_words": 8,
+    "maximum_repeated_ngram_uses": 2,
+    "maximum_repeated_sentence_uses": 1,
+    "minimum_scorecard_score": 4,
+    "minimum_reader_tests": 2,
+    "minimum_general_reader_tests": 1,
+    "minimum_target_reader_tests": 1,
+    "minimum_genre_reader_tests": 0,
+    "minimum_revision_ledger_entries": 3,
+    "minimum_signature_moments_per_chapter": 1,
+    "maximum_flat_rhythm_run": 2,
+    "minimum_voice_samples_per_character": 2,
+    "minimum_illustration_moments": 2,
+    "banned_phrases": [],
+    "waivers": []
+  },
+  "editorial": {
+    "reviewed_manuscript_sha256": "",
+    "passes": [
+      {"id": "developmental", "status": "pending", "reviewer": "", "evidence": [], "changes": []},
+      {"id": "scene-causality", "status": "pending", "reviewer": "", "evidence": [], "changes": []},
+      {"id": "character-voice", "status": "pending", "reviewer": "", "evidence": [], "changes": []},
+      {"id": "comedy-tone", "status": "pending", "reviewer": "", "evidence": [], "changes": []},
+      {"id": "chemistry-delight", "status": "pending", "reviewer": "", "evidence": [], "changes": []},
+      {"id": "continuity-payoff", "status": "pending", "reviewer": "", "evidence": [], "changes": []},
+      {"id": "line-prose", "status": "pending", "reviewer": "", "evidence": [], "changes": []},
+      {"id": "read-aloud", "status": "pending", "reviewer": "", "evidence": [], "changes": []},
+      {"id": "publication-polish", "status": "pending", "reviewer": "", "evidence": [], "changes": []}
+    ],
+    "analysis_reports": [
+      {"tool": "character-voice", "path": "reports/character-voice-report.json", "sha256": "", "manuscript_sha256": "", "reviewer_response": ""},
+      {"tool": "prose-polish", "path": "reports/prose-polish-report.json", "sha256": "", "manuscript_sha256": "", "reviewer_response": ""},
+      {"tool": "chapter-momentum", "path": "reports/chapter-momentum-report.json", "sha256": "", "manuscript_sha256": "", "reviewer_response": ""},
+      {"tool": "scene-delivery", "path": "reports/scene-delivery-report.json", "sha256": "", "manuscript_sha256": "", "reviewer_response": ""},
+      {"tool": "continuity", "path": "reports/continuity-report.json", "sha256": "", "manuscript_sha256": "", "reviewer_response": ""},
+      {"tool": "reader-synthesis", "path": "reports/reader-synthesis-report.json", "sha256": "", "manuscript_sha256": "", "reviewer_response": ""},
+      {"tool": "rights-release", "path": "reports/rights-release-report.json", "sha256": "", "manuscript_sha256": "", "reviewer_response": ""}
+    ],
+    "scene_delivery_reviews": [],
+    "revision_ledger": [],
+    "scorecard": [],
+    "reader_tests": [],
+    "reader_feedback_synthesis": {
+      "reviewer": "",
+      "manuscript_sha256": "",
+      "consensus": [],
+      "meaningful_disagreements": [],
+      "genre_expectations": [],
+      "confusion_patterns": [],
+      "delight_patterns": [],
+      "revision_decisions": [],
+      "intentionally_not_changed": []
+    },
+    "catalog_originality_review": {
+      "status": "pending",
+      "reviewer": "",
+      "manuscript_sha256": "",
+      "report_path": "reports/catalog-originality-report.json",
+      "report_sha256": "",
+      "findings": [],
+      "decision": ""
+    },
+    "release_approval": {
+      "status": "pending",
+      "reviewer": "",
+      "manuscript_sha256": "",
+      "statement": ""
+    }
+  }
+}

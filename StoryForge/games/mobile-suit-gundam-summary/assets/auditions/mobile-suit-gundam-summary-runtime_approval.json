@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "approval_type": "wscvn_sprite_audition_approval",
+  "approved_at": "2026-07-23T19:47:38+00:00",
+  "reviewer": "Codex visual QA",
+  "notes": "Approved at native scale: both RX poses keep two green camera-eye slits inside the black apertures; both Zaku poses keep the pink mono-eye and close it into a short one-pixel pink shutter slit without moving or recoloring the helmet. Neutral/talk remain body-locked, and all four poses preserve silhouette, alignment, and RGB444 sensor anchors.",
+  "character": "generic",
+  "sheet_kind": "animation",
+  "runtime_ready": true,
+  "labels": [
+    "neutral",
+    "talk",
+    "blink"
+  ],
+  "tool_provenance": [
+    {
+      "path": "scripts/audition_wscvn_sprite_sheet.py",
+      "sha256": "3c3ff7d0eff71df59c58e51d6d1f7990516778f64749e3dad207ab05b2069338"
+    },
+    {
+      "path": "scripts/make_signal_before_dawn_slice.py",
+      "sha256": "c48f872b41a2bbe0310229ffd35ed4786096e7d886595f950605efcf622afc90"
+    },
+    {
+      "path": "scripts/wscvn_sprite_family.py",
+      "sha256": "3ebf274e1f493bd10bc06be29936eda8c43d6e85e0d7cd5d4ddcd980d1bbc1aa"
+    }
+  ],
+  "quality": {
+    "status": "pass",
+    "error_count": 0,
+    "warning_count": 0,
+    "info_count": 0,
+    "thresholds": {
+      "max_visible_colors": 15,
+      "min_talk_face_delta": 0,
+      "min_blink_face_delta": 0,
+      "min_alpha_coverage": 0.2,
+      "max_alpha_coverage": 0.75,
+      "max_animation_alpha_changed": 0,
+      "min_visible_above_textbox": 0.52,
+      "max_visible_above_textbox": 0.92,
+      "max_animation_bbox_area": 1200,
+      "max_source_center_drift": 0.09,
+      "max_source_scale_drift": 0.18,
+      "max_sprite_center_drift": 0.04,
+      "max_sprite_scale_drift": 0.08,
+      "max_tiny_color_pixels": 10,
+      "max_green_fringe_pixels": 0,
+      "max_alpha_components": 8,
+      "min_largest_alpha_component_share": 0.96
+    }
+  },
+  "audition_report": {
+    "path": "games/mobile-suit-gundam-summary/assets/auditions/mobile-suit-gundam-summary-runtime-audition.json",
+    "sha256": "364349e609ba72a102c3a8a83e5b168f829043ed25f2cc77f5e7b5b5d23a809e"
+  },
+  "audition_png": {
+    "path": "games/mobile-suit-gundam-summary/assets/auditions/mobile-suit-gundam-summary-runtime-audition.png",
+    "sha256": "4de87b9d5ea157bb569f007d99678e70400d89eb10f3833b1cbc4191518b6eba"
+  },
+  "sources": [
+    {
+      "label": "rx78",
+      "path": "games/mobile-suit-gundam-summary/assets/auditions/rx78-runtime-animation.png",
+      "sha256": "e568e1583eba6abc742f5796c59caef9288198bcd5cf7c64ac6739602bb139b2"
+    },
+    {
+      "label": "rx78_ticket",
+      "path": "games/mobile-suit-gundam-summary/assets/auditions/rx78_ticket-runtime-animation.png",
+      "sha256": "4f58f274f2fe3d3ef613f11830d594c0c82e6a2a48dd00c48e93f0f5bc0f98a4"
+    },
+    {
+      "label": "zaku",
+      "path": "games/mobile-suit-gundam-summary/assets/auditions/zaku-runtime-animation.png",
+      "sha256": "1464595b005805948d01f0f14a5fc1f972a355d7ea2ba9b8a3ea9e243b0870eb"
+    },
+    {
+      "label": "zaku_pointer",
+      "path": "games/mobile-suit-gundam-summary/assets/auditions/zaku_pointer-runtime-animation.png",
+      "sha256": "2bb4d1a091a435c1c81c262bf6387971426d33e29dd0cb883781b428014a0f9e"
+    }
+  ],
+  "covered_outputs": [
+    {
+      "path": "games/mobile-suit-gundam-summary/assets/characters/rx78_neutral.png",
+      "sha256": "9be8df30379d94635b52a8db39bf4ff62d1e23c01cf0e6d6fe6acd71f4f2ab01"
+    },
+    {
+      "path": "games/mobile-suit-gundam-summary/assets/characters/rx78_blink.png",
+      "sha256": "1ea6d24a598325c3f18fefbb07fab8bc9ade586b94564a2c7b69977c9469c4d6"
+    },
+    {
+      "path": "games/mobile-suit-gundam-summary/assets/characters/rx78_ticket_neutral.png",
+      "sha256": "38328c1ebfe00224deefe98a3a68436a01847603ceced3deaa261e78e329b10f"
+    },
+    {
+      "path": "games/mobile-suit-gundam-summary/assets/characters/rx78_ticket_blink.png",
+      "sha256": "4d171df6229eacb6c7ffda335e3d6de991527a31c5d9eab98bd55c33ecd5e6fa"
+    },
+    {
+      "path": "games/mobile-suit-gundam-summary/assets/characters/zaku_neutral.png",
+      "sha256": "8484ea882c90e55ed09f8db11b0d96193805b462f5e3faaf561d5dd28356dc68"
+    },
+    {
+      "path": "games/mobile-suit-gundam-summary/assets/characters/zaku_blink.png",
+      "sha256": "db356b85e688502cfcf587c28c3363d7f23f40e715b26070b40ae4c655f77938"
+    },
+    {
+      "path": "games/mobile-suit-gundam-summary/assets/characters/zaku_pointer_neutral.png",
+      "sha256": "e4afecea404a2f2cdecd54d2c5a89d866cf2a3ecc282a2035c8b0d1ddd92ffa2"
+    },
+    {
+      "path": "games/mobile-suit-gundam-summary/assets/characters/zaku_pointer_blink.png",
+      "sha256": "51f5184aaebb93516f8a4790843e9387c4a0183f91f94830198bea1f2582c052"
+    }
+  ]
+}

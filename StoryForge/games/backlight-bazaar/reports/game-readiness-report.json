@@ -1,0 +1,712 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:31:07.042203+00:00",
+  "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality.",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "slug": "backlight-bazaar",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/projects/backlight-bazaar.wscvn.json",
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets",
+    "thresholds": {
+      "min_nodes": 8,
+      "min_scene_nodes": 5,
+      "min_route_scene_beats": 25,
+      "min_route_words": 1800,
+      "min_staged_scenes": 4,
+      "min_backgrounds_used": 1,
+      "min_speakers": 1,
+      "min_sources": 1,
+      "require_source_categories": true,
+      "min_background_source_width": 224,
+      "min_background_source_height": 144,
+      "min_character_source_width": 288,
+      "min_character_source_height": 128,
+      "min_contact_sheet_width": 448,
+      "min_contact_sheet_height": 288,
+      "min_scene_preview_sheet_width": 448,
+      "min_scene_preview_sheet_height": 288,
+      "min_storyboard_sheet_width": 448,
+      "min_storyboard_sheet_height": 144,
+      "min_review_sheet_colors": 16,
+      "min_review_sheet_luma_stddev": 8.0,
+      "min_animated_staged_share": 0.5,
+      "max_pause_block_chars": 100,
+      "max_choices": 4,
+      "max_choice_label_chars": 24,
+      "max_choice_prompt_chars": 26,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 26,
+      "max_title_chars": 26,
+      "max_title_menu_label_chars": 18,
+      "min_talk_face_delta": 1.5,
+      "min_blink_face_delta": 0.0,
+      "min_blink_changed_pixels": 8,
+      "max_family_alpha_delta": 0.16,
+      "max_animation_changed_region_share": 0.1,
+      "max_animation_global_changed_share": 0.08,
+      "max_animation_outside_face_changed_share": 0.01,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_blink_outside_eye_band_pixels": 0,
+      "max_route_states": 5000
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/projects/backlight-bazaar.wscvn.json",
+      "bytes": 99576,
+      "sha256": "0fc9b3c3018a9aeb3fbc2bc5bf474e2019e633efc032d2b47ca44d548d921c89"
+    },
+    "project_counts": {
+      "name": "Backlight Bazaar",
+      "nodes": 44,
+      "flags": 6,
+      "tracks": 1,
+      "backgrounds": 3,
+      "characters": 6,
+      "sfx": 0
+    },
+    "story": {
+      "nodes": 44,
+      "scene_nodes": 37,
+      "staged_scenes": 37,
+      "animated_staged_scenes": 37,
+      "animated_staged_share": 1.0,
+      "speakers": [
+        "Mina",
+        "Ren"
+      ],
+      "backgrounds_used": [
+        "bg_market_stall",
+        "bg_rooftop_swap",
+        "bg_tram_shelf"
+      ],
+      "ending_scenes": [
+        "bb_end_preserve_contacts",
+        "bb_end_preserve_memory",
+        "bb_end_preserve_paper",
+        "bb_end_begin_contacts",
+        "bb_end_begin_memory",
+        "bb_end_begin_paper",
+        "bb_end_copy_contacts",
+        "bb_end_copy_memory",
+        "bb_end_copy_paper"
+      ],
+      "duplicate_ending_capture_groups": [],
+      "reachable_nodes": 44,
+      "start_node": "title"
+    },
+    "routes": {
+      "initial_flags": {
+        "method_contacts": 0,
+        "method_memory": 0,
+        "method_paper": 0,
+        "save_begin": 0,
+        "save_copy": 0,
+        "save_preserve": 0
+      },
+      "states_explored": 76,
+      "truncated": false,
+      "route_reachable_nodes": 44,
+      "route_reachable_ending_scenes": [
+        "bb_end_begin_contacts",
+        "bb_end_begin_memory",
+        "bb_end_begin_paper",
+        "bb_end_copy_contacts",
+        "bb_end_copy_memory",
+        "bb_end_copy_paper",
+        "bb_end_preserve_contacts",
+        "bb_end_preserve_memory",
+        "bb_end_preserve_paper"
+      ],
+      "route_unreachable_ending_scenes": [],
+      "choice_targets": [
+        "bb_first_contacts",
+        "bb_first_memory",
+        "bb_first_paper",
+        "bb_save_begin",
+        "bb_save_copy",
+        "bb_save_preserve"
+      ],
+      "selectable_choice_targets": [
+        "bb_first_contacts",
+        "bb_first_memory",
+        "bb_first_paper",
+        "bb_save_begin",
+        "bb_save_copy",
+        "bb_save_preserve"
+      ],
+      "unselectable_choice_targets": [],
+      "branch_targets_taken": [
+        "bb_end_begin_contacts",
+        "bb_end_begin_memory",
+        "bb_end_begin_paper",
+        "bb_end_copy_contacts",
+        "bb_end_copy_memory",
+        "bb_end_copy_paper",
+        "bb_end_preserve_contacts",
+        "bb_end_preserve_memory",
+        "bb_end_preserve_paper"
+      ]
+    },
+    "route_pacing": {
+      "minimum_scene_beats": 25,
+      "minimum_words": 1800,
+      "estimated_reading_wpm": 140,
+      "routes": [
+        {
+          "route_id": "route-1",
+          "label": "Study contacts / Preserve the route",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1999,
+          "estimated_minutes_at_140_wpm": 14.28
+        },
+        {
+          "route_id": "route-2",
+          "label": "Study contacts / Begin together",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 2002,
+          "estimated_minutes_at_140_wpm": 14.3
+        },
+        {
+          "route_id": "route-3",
+          "label": "Study contacts / Copy the map",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1994,
+          "estimated_minutes_at_140_wpm": 14.24
+        },
+        {
+          "route_id": "route-4",
+          "label": "Ask the vendor / Preserve the route",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 2000,
+          "estimated_minutes_at_140_wpm": 14.29
+        },
+        {
+          "route_id": "route-5",
+          "label": "Ask the vendor / Begin together",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 2006,
+          "estimated_minutes_at_140_wpm": 14.33
+        },
+        {
+          "route_id": "route-6",
+          "label": "Ask the vendor / Copy the map",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 2000,
+          "estimated_minutes_at_140_wpm": 14.29
+        },
+        {
+          "route_id": "route-7",
+          "label": "Follow the papers / Preserve the route",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1998,
+          "estimated_minutes_at_140_wpm": 14.27
+        },
+        {
+          "route_id": "route-8",
+          "label": "Follow the papers / Begin together",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 1999,
+          "estimated_minutes_at_140_wpm": 14.28
+        },
+        {
+          "route_id": "route-9",
+          "label": "Follow the papers / Copy the map",
+          "ending_node": "end",
+          "scene_beats": 25,
+          "words": 2006,
+          "estimated_minutes_at_140_wpm": 14.33
+        }
+      ]
+    },
+    "text": {
+      "blocks": 224,
+      "max_pause_block_chars": 87,
+      "choice_labels": 6,
+      "max_choice_label_chars": 18,
+      "max_choice_prompt_chars": 25,
+      "max_dialogue_page_lines": 4,
+      "max_dialogue_word_chars": 12,
+      "title_nodes": 1,
+      "title_menu_items": 2,
+      "max_title_chars": 23,
+      "max_title_menu_label_chars": 5,
+      "text_issue_count": 0,
+      "supported_char_range": [
+        32,
+        126
+      ]
+    },
+    "backgrounds": [
+      {
+        "id": "bg_market_stall",
+        "orig_name": "market_stall.png",
+        "embedded_sha256": "ef03ae2001b8a059abe7f5857d5ef1a47ccb87785bd79a8498328e5ec714b66c",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 13,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/backgrounds/market_stall.png",
+        "local_sha256": "ef03ae2001b8a059abe7f5857d5ef1a47ccb87785bd79a8498328e5ec714b66c"
+      },
+      {
+        "id": "bg_rooftop_swap",
+        "orig_name": "rooftop_swap.png",
+        "embedded_sha256": "b916eb8c8891619c5bdd892cc1980561f3db2052fb757cc7d2a305d106994b94",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 12,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/backgrounds/rooftop_swap.png",
+        "local_sha256": "b916eb8c8891619c5bdd892cc1980561f3db2052fb757cc7d2a305d106994b94"
+      },
+      {
+        "id": "bg_tram_shelf",
+        "orig_name": "tram_shelf.png",
+        "embedded_sha256": "95622ce2751389c2d6b4c76219952a320cd6a262f6f5776b69028997e782a08d",
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 12,
+        "has_alpha": false,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 1.0,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/backgrounds/tram_shelf.png",
+        "local_sha256": "95622ce2751389c2d6b4c76219952a320cd6a262f6f5776b69028997e782a08d"
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_mina_blink",
+        "orig_name": "mina_blink.png",
+        "embedded_sha256": "7d8db07c9d9a4c0f535ccb6b057caab506710b929ede457f542bb02a65b1d743",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5884,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/characters/mina_blink.png",
+        "local_sha256": "7d8db07c9d9a4c0f535ccb6b057caab506710b929ede457f542bb02a65b1d743"
+      },
+      {
+        "id": "char_mina_neutral",
+        "orig_name": "mina_neutral.png",
+        "embedded_sha256": "99d4ea98c57b1d400d23c885b5eaef94e7dcfa79019c1f5486405a01d461f849",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5884,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/characters/mina_neutral.png",
+        "local_sha256": "99d4ea98c57b1d400d23c885b5eaef94e7dcfa79019c1f5486405a01d461f849"
+      },
+      {
+        "id": "char_mina_talk",
+        "orig_name": "mina_talk.png",
+        "embedded_sha256": "326f89c16834040e41741022a79e43a018203daad99dbbbaadd320d231bcc4e2",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 12,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5884,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/characters/mina_talk.png",
+        "local_sha256": "326f89c16834040e41741022a79e43a018203daad99dbbbaadd320d231bcc4e2"
+      },
+      {
+        "id": "char_ren_blink",
+        "orig_name": "ren_blink.png",
+        "embedded_sha256": "316a75dca97318b3eb944b4e2c2590c01de024bb0f06024d675b6a61512493ec",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5754,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/characters/ren_blink.png",
+        "local_sha256": "316a75dca97318b3eb944b4e2c2590c01de024bb0f06024d675b6a61512493ec"
+      },
+      {
+        "id": "char_ren_neutral",
+        "orig_name": "ren_neutral.png",
+        "embedded_sha256": "59916d7778fc52565a693737fcbc76937dff5977306f3a4d414b991a03f85299",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5754,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/characters/ren_neutral.png",
+        "local_sha256": "59916d7778fc52565a693737fcbc76937dff5977306f3a4d414b991a03f85299"
+      },
+      {
+        "id": "char_ren_talk",
+        "orig_name": "ren_talk.png",
+        "embedded_sha256": "b0c39f97cace55e947f8ea502ecd1c0eb6a0c967efaa0f37884e5577bcbb3a2d",
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true,
+        "binary_alpha": true,
+        "rgb444_snapped": true,
+        "alpha_coverage": 0.5754,
+        "local_path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/characters/ren_talk.png",
+        "local_sha256": "b0c39f97cace55e947f8ea502ecd1c0eb6a0c967efaa0f37884e5577bcbb3a2d"
+      }
+    ],
+    "sfx": [],
+    "background_readability": {
+      "textbox_zone": [
+        0,
+        104,
+        224,
+        144
+      ],
+      "speaker_row": [
+        0,
+        96,
+        224,
+        104
+      ],
+      "runtime_textbox_opaque": true,
+      "luma_limits_enforced": false,
+      "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+      "backgrounds": [
+        {
+          "id": "bg_market_stall",
+          "textbox_mean_luma": 16.168,
+          "textbox_luma_stddev": 24.919,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_rooftop_swap",
+          "textbox_mean_luma": 12.898,
+          "textbox_luma_stddev": 24.02,
+          "luma_limits_enforced": false
+        },
+        {
+          "id": "bg_tram_shelf",
+          "textbox_mean_luma": 10.537,
+          "textbox_luma_stddev": 16.494,
+          "luma_limits_enforced": false
+        }
+      ]
+    },
+    "sprite_families": {
+      "face_box": [
+        24,
+        32,
+        72,
+        76
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "animated_nodes_checked": 37,
+      "families": [
+        {
+          "neutral": "char_mina_neutral",
+          "talk": "char_mina_talk",
+          "blink": "char_mina_blink",
+          "talk_face_delta": 9.244,
+          "blink_face_delta": 8.616,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 142,
+            "changed_bbox": [
+              41,
+              58,
+              56,
+              70
+            ],
+            "changed_bbox_area": 180,
+            "changed_region_share": 0.014648,
+            "global_changed_share": 0.011556,
+            "face_changed_pixels": 142,
+            "face_changed_share": 0.067235,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 186,
+            "changed_bbox": [
+              30,
+              39,
+              66,
+              49
+            ],
+            "changed_bbox_area": 360,
+            "changed_region_share": 0.029297,
+            "global_changed_share": 0.015137,
+            "face_changed_pixels": 186,
+            "face_changed_share": 0.088068,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        },
+        {
+          "neutral": "char_ren_neutral",
+          "talk": "char_ren_talk",
+          "blink": "char_ren_blink",
+          "talk_face_delta": 9.244,
+          "blink_face_delta": 9.23,
+          "talk_alpha_delta": 0.0,
+          "blink_alpha_delta": 0.0,
+          "talk_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 142,
+            "changed_bbox": [
+              41,
+              58,
+              56,
+              70
+            ],
+            "changed_bbox_area": 180,
+            "changed_region_share": 0.014648,
+            "global_changed_share": 0.011556,
+            "face_changed_pixels": 142,
+            "face_changed_share": 0.067235,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_animation_change": {
+            "size": [
+              96,
+              128
+            ],
+            "changed_pixels": 194,
+            "changed_bbox": [
+              30,
+              39,
+              66,
+              49
+            ],
+            "changed_bbox_area": 360,
+            "changed_region_share": 0.029297,
+            "global_changed_share": 0.015788,
+            "face_changed_pixels": 194,
+            "face_changed_share": 0.091856,
+            "outside_face_pixels": 10176,
+            "outside_face_changed_pixels": 0,
+            "outside_face_changed_share": 0.0
+          },
+          "blink_outside_eye_band_changed_pixels": 0
+        }
+      ]
+    },
+    "sources": {
+      "root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/sources",
+      "count": 2,
+      "packaged_file_count": 2,
+      "background_source_count": 1,
+      "character_source_count": 1,
+      "files": [
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/sources/backgrounds_source.png",
+          "bytes": 5182,
+          "sha256": "8618cf6a70c0fe2a330e66b16ee0ab4c16a5d14d87e55a87f25dcf915eb86852",
+          "categories": [
+            "background"
+          ],
+          "size": [
+            672,
+            144
+          ],
+          "mode": "RGB"
+        },
+        {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/sources/characters_source.png",
+          "bytes": 19582,
+          "sha256": "4e0a10e5debbbb742601f6004c0b63dfe33df34eafb89597f2e9ddf9ad029957",
+          "categories": [
+            "character"
+          ],
+          "size": [
+            1152,
+            1024
+          ],
+          "mode": "RGB"
+        }
+      ]
+    },
+    "contact_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/contact_sheet.png",
+      "exists": true,
+      "bytes": 14090,
+      "sha256": "6ffb21c4e5d9fc0fad83fd2eb8177558804b6ca8c2d04d3653a6ed4a6f92ba69",
+      "size": [
+        712,
+        486
+      ],
+      "mode": "RGB"
+    },
+    "review_sheets": {
+      "scene_preview_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/scene_preview_sheet.png",
+        "exists": true,
+        "bytes": 122728,
+        "sha256": "2a083fcadc37978df1682046a32c920d3384d8cda13f5a8c6e733e2502b19dc3",
+        "size": [
+          712,
+          2390
+        ],
+        "mode": "RGB",
+        "unique_colors": 265,
+        "luma_stddev": 55.607
+      },
+      "storyboard_sheet": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/storyboard_sheet.png",
+        "exists": true,
+        "bytes": 58001,
+        "sha256": "eae316098e4d52cc7cd63b28069d6b78a8a0118e28b8322c85017b4f01e396b5",
+        "size": [
+          488,
+          968
+        ],
+        "mode": "RGB",
+        "unique_colors": 265,
+        "luma_stddev": 52.648
+      },
+      "report": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/review-sheets-report.json",
+        "exists": true,
+        "bytes": 22495,
+        "sha256": "c2e03a4c6bfbc8e96a71598dd245e50cfd8b25b88e99db5bcf38b192eb2e43db",
+        "ok": true,
+        "review_sheet_schema_version": 2,
+        "font": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+          "exists": true,
+          "bytes": 5470,
+          "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+        },
+        "project_file": {
+          "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/projects/backlight-bazaar.wscvn.json",
+          "exists": true,
+          "bytes": 99576,
+          "sha256": "0fc9b3c3018a9aeb3fbc2bc5bf474e2019e633efc032d2b47ca44d548d921c89"
+        },
+        "nodes_rendered": 40,
+        "preview_node_ids": [
+          "title",
+          "bb01",
+          "bb02",
+          "bb03",
+          "bb04",
+          "bb05",
+          "bb06",
+          "bb07",
+          "bb08",
+          "bb09",
+          "bb10",
+          "bb11",
+          "bb12",
+          "bb13",
+          "bb14",
+          "bb15",
+          "bb16",
+          "bb17",
+          "bb_choice_one",
+          "bb_first_contacts",
+          "bb_first_memory",
+          "bb_first_paper",
+          "bb18",
+          "bb19",
+          "bb20",
+          "bb21",
+          "bb22",
+          "bb_choice_two",
+          "bb_save_preserve",
+          "bb_save_begin",
+          "bb_save_copy",
+          "bb_end_preserve_contacts",
+          "bb_end_preserve_memory",
+          "bb_end_preserve_paper",
+          "bb_end_begin_contacts",
+          "bb_end_begin_memory",
+          "bb_end_begin_paper",
+          "bb_end_copy_contacts",
+          "bb_end_copy_memory",
+          "bb_end_copy_paper"
+        ],
+        "rendered_cells": {
+          "schema_version": 2,
+          "scene_preview_cells": {
+            "reported": 40,
+            "expected": 40
+          },
+          "storyboard_cells": {
+            "reported": 40,
+            "expected": 40
+          }
+        }
+      }
+    },
+    "qa_report": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/reports/backlight-bazaar-qa-report.json",
+      "exists": true,
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

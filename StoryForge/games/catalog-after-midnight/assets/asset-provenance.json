@@ -1,0 +1,332 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-17T01:55:00+00:00",
+  "art_policy": "Pictorial masters are built-in ImageGen outputs; runtime frames are deterministic local derivatives.",
+  "outputs": {
+    "backgrounds/back_shelf.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/sources/backgrounds_imagegen_source.png",
+      "source_sha256": "4e5f62c84e51e2601d3e87c582ae13c7e40bc5e0d32432309f6173559db5193f",
+      "output_sha256": "f6b9a862150de0d9c6fe6693296b6ac56a39f537354c2dc5c47aba3e5f8caa61",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 11.8
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/last_train.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/sources/backgrounds_imagegen_source.png",
+      "source_sha256": "4e5f62c84e51e2601d3e87c582ae13c7e40bc5e0d32432309f6173559db5193f",
+      "output_sha256": "b5695de8a2edad1e566b1c0f61a3290b41a84b5af82a643801d956d44dd13a6d",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 11,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 15.59
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "backgrounds/repair_counter.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/sources/backgrounds_imagegen_source.png",
+      "source_sha256": "4e5f62c84e51e2601d3e87c582ae13c7e40bc5e0d32432309f6173559db5193f",
+      "output_sha256": "f1082d2fed6135e93813545f5139ae051b7c0dad1ce1d631a4e4682fe876a52b",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 17.81
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/miki_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "7e78037b339de8a342c1632a4f433520fefba0e482c32b2d6bcfbe320787c4b6",
+      "output_sha256": "37cb33fb68bf342a44a07f534ebe451b4df03c14d48ce8e53f90ffe8e8b8e8ed",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          9,
+          21,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4836,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.547,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 62.27,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 68.8
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5942,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/miki_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "7e78037b339de8a342c1632a4f433520fefba0e482c32b2d6bcfbe320787c4b6",
+      "output_sha256": "1b8752004bc388a3142b33c3371b62bc90913b82346f87bd6b4845a9f3f44bc6",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          9,
+          21,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4836,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.547,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 61.73,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 70.79
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5942,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/miki_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "7e78037b339de8a342c1632a4f433520fefba0e482c32b2d6bcfbe320787c4b6",
+      "output_sha256": "89763909d902c3f3729968aed2367644e0a415809becad59f30d650185f94c9f",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          9,
+          21,
+          88,
+          127
+        ],
+        "alpha_coverage": 0.4836,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.547,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 61.07,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 70.01
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5942,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/nao_blink.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "7e78037b339de8a342c1632a4f433520fefba0e482c32b2d6bcfbe320787c4b6",
+      "output_sha256": "17510e044e05f73438d01a868c86a533205cbb3a75cefa310969004e310a21d4",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          20,
+          86,
+          127
+        ],
+        "alpha_coverage": 0.4671,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5559,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 69.47,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 9,
+          "luma_stddev": 66.38
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5740,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/nao_neutral.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "7e78037b339de8a342c1632a4f433520fefba0e482c32b2d6bcfbe320787c4b6",
+      "output_sha256": "7b95aef2bbed6547601b6170c94fef9d2761705cb07ab9725e7a730cbf97db26",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          20,
+          86,
+          127
+        ],
+        "alpha_coverage": 0.4671,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5559,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 69.63,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 10,
+          "luma_stddev": 69.48
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5740,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    },
+    "characters/nao_talk.png": {
+      "tool": "image_gen.imagegen + deterministic local conversion",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/catalog-after-midnight/assets/sources/characters_imagegen_source.png",
+      "source_sha256": "7e78037b339de8a342c1632a4f433520fefba0e482c32b2d6bcfbe320787c4b6",
+      "output_sha256": "f804853c88807d27431f6c1a11334097fd8975f316f3120c8c0c36b6f2d3c024",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 10,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          10,
+          20,
+          86,
+          127
+        ],
+        "alpha_coverage": 0.4671,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5559,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 69.44,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 10,
+          "luma_stddev": 69.82
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5740,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "checked-in builder conversion to WonderSwan runtime constraints"
+    }
+  }
+}

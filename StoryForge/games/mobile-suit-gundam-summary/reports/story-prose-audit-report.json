@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "ok": true,
+  "advisory": true,
+  "generated_at_utc": "2026-07-23T19:01:40.654141+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mobile-suit-gundam-summary/projects/mobile-suit-gundam-summary.wscvn.json",
+      "sha256": "9f918c5e15458b50ea9d8f969e1d45f24ac4405e25a69a9a1b305b9725ea4261"
+    },
+    "scene_count": 38,
+    "settings": {
+      "repeated_ngram_words": 8,
+      "maximum_repeated_ngram_uses": 2,
+      "maximum_repeated_sentence_uses": 1,
+      "banned_phrases": [],
+      "validated_waiver_keys": []
+    },
+    "repetition": {
+      "repeated_sentences": [],
+      "repeated_sentence_count": 0,
+      "repeated_paragraphs": [],
+      "repeated_paragraph_count": 0,
+      "repeated_ngrams": [],
+      "repeated_ngram_count": 0,
+      "stock_filler_uses": {}
+    },
+    "migration_note": "This audit measures prose repetition only. Migrate the story into novel.json for causal, editorial, and release gates."
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "approval_type": "wscvn_sprite_audition_approval",
+  "approved_at": "2026-07-23T14:01:42+00:00",
+  "reviewer": "codex",
+  "notes": "All three expression families visually inspected; blink eyelids remain registered to the eyes and poses remain stable.",
+  "character": "mira",
+  "sheet_kind": "expression",
+  "runtime_ready": false,
+  "labels": [
+    "worried",
+    "resolved",
+    "smile"
+  ],
+  "tool_provenance": [
+    {
+      "path": "scripts/audition_wscvn_sprite_sheet.py",
+      "sha256": "3c3ff7d0eff71df59c58e51d6d1f7990516778f64749e3dad207ab05b2069338"
+    },
+    {
+      "path": "scripts/make_signal_before_dawn_slice.py",
+      "sha256": "c48f872b41a2bbe0310229ffd35ed4786096e7d886595f950605efcf622afc90"
+    },
+    {
+      "path": "scripts/wscvn_sprite_family.py",
+      "sha256": "3ebf274e1f493bd10bc06be29936eda8c43d6e85e0d7cd5d4ddcd980d1bbc1aa"
+    }
+  ],
+  "quality": {
+    "status": "pass",
+    "error_count": 0,
+    "warning_count": 0,
+    "info_count": 1,
+    "thresholds": {
+      "max_visible_colors": 15,
+      "min_talk_face_delta": 18,
+      "min_blink_face_delta": 18,
+      "min_alpha_coverage": 0.2,
+      "max_alpha_coverage": 0.75,
+      "max_animation_alpha_changed": 0,
+      "min_visible_above_textbox": 0.52,
+      "max_visible_above_textbox": 0.92,
+      "max_animation_bbox_area": 1200,
+      "max_source_center_drift": 0.09,
+      "max_source_scale_drift": 0.18,
+      "max_sprite_center_drift": 0.04,
+      "max_sprite_scale_drift": 0.08,
+      "max_tiny_color_pixels": 10,
+      "max_green_fringe_pixels": 0,
+      "max_alpha_components": 8,
+      "min_largest_alpha_component_share": 0.96
+    }
+  },
+  "audition_report": {
+    "path": "assets/signal-before-dawn-slice/auditions/mira_expression_audition.json",
+    "sha256": "fbe89d338858da47fde66b96eec2e4497655a022c50fde8e3962eb96e640e1c5"
+  },
+  "audition_png": {
+    "path": "assets/signal-before-dawn-slice/auditions/mira_expression_audition.png",
+    "sha256": "b68c113c156ee943c776f4f94685d9b6b81f0e37138a82d16f9805bbf8916672"
+  },
+  "sources": [
+    {
+      "label": "expression",
+      "path": "assets/signal-before-dawn-slice/sources/mira_expression_sheet_source_v6.png",
+      "sha256": "9d8a0fcc410de30f570a60a12b4163dd22f5a404854ff52acb4d41385026e570"
+    }
+  ],
+  "covered_outputs": [
+    {
+      "path": "assets/signal-before-dawn-slice/characters/mira_worried_neutral.png",
+      "sha256": "5f34ff83a3da73e7a74bd59760f0c0f2ed2131d6a79d5d67f377bb303e0b1ede"
+    },
+    {
+      "path": "assets/signal-before-dawn-slice/characters/mira_worried_talk.png",
+      "sha256": "e96fbf98f6fda4955d4b06f7938d9eb3b5c5845201c0c20bc8023f7af402bc04"
+    },
+    {
+      "path": "assets/signal-before-dawn-slice/characters/mira_worried_blink.png",
+      "sha256": "6bb816b5f4a2bee6c2cce0cb0808fe7b9be8104b09738752d70e0e8dceb16c2b"
+    },
+    {
+      "path": "assets/signal-before-dawn-slice/characters/mira_resolved_neutral.png",
+      "sha256": "926845e15c8d02d826dbbc3d79afd50a2fefbbfe0b278eac541db71605140103"
+    },
+    {
+      "path": "assets/signal-before-dawn-slice/characters/mira_resolved_talk.png",
+      "sha256": "f05bbe62aeefd1c082cd9e744e6d8a3e3a94eda011d450c2651ce7ac46c566e6"
+    },
+    {
+      "path": "assets/signal-before-dawn-slice/characters/mira_resolved_blink.png",
+      "sha256": "91d2c01824f94d15e4f1d01d493c47f9b7a5e96e51a7c14660a0178f4a0d0a35"
+    },
+    {
+      "path": "assets/signal-before-dawn-slice/characters/mira_smile_neutral.png",
+      "sha256": "f8a90ab0dfb9ddebc58a95ff3833d1c59562d9808c32e10b123ce573f580a1b2"
+    },
+    {
+      "path": "assets/signal-before-dawn-slice/characters/mira_smile_talk.png",
+      "sha256": "d7d5ce9eb94a91eee691b47d04419a7862191fcf0b8693d7e52f5bccf303023f"
+    },
+    {
+      "path": "assets/signal-before-dawn-slice/characters/mira_smile_blink.png",
+      "sha256": "d887a748a020ecb8fbbb44598d8d8617cd1979bffc926df20d40959ba1084b14"
+    }
+  ]
+}

@@ -1,0 +1,1042 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:36:09.966845+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "zgok-wraps-a-present",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/projects/zgok-wraps-a-present.wscvn.json",
+      "exists": true,
+      "bytes": 171156,
+      "sha256": "f1a6999c32e90ec6b8e7a26383afea025c04ec52dde9a3525c126059f37f8f86"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 43,
+    "preview_node_ids": [
+      "zgok_title",
+      "zgok_01",
+      "zgok_02",
+      "zgok_03",
+      "zgok_04",
+      "zgok_05",
+      "zgok_06",
+      "zgok_07",
+      "zgok_08",
+      "zgok_09",
+      "zgok_10",
+      "zgok_method",
+      "zgok_practice_1",
+      "zgok_practice_2",
+      "zgok_guide_1",
+      "zgok_guide_2",
+      "zgok_11",
+      "zgok_12",
+      "zgok_13",
+      "zgok_14",
+      "zgok_15",
+      "zgok_16",
+      "zgok_17",
+      "zgok_18",
+      "zgok_19",
+      "zgok_20",
+      "zgok_21",
+      "zgok_22",
+      "zgok_23",
+      "zgok_24",
+      "zgok_25",
+      "zgok_26",
+      "zgok_27",
+      "zgok_28",
+      "zgok_choice",
+      "zgok_a1",
+      "zgok_a2",
+      "zgok_a3",
+      "zgok_a4",
+      "zgok_b1",
+      "zgok_b2",
+      "zgok_b3",
+      "zgok_b4"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 280479,
+      "sha256": "c3a64630a66c5469fff51f11f406977742d92c7e90f6f9b474573a1bca51f8b2",
+      "size": [
+        712,
+        2560
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/zgok-wraps-a-present/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 94352,
+      "sha256": "6adcb0b547d8475aea10ead316d95a55c3003b79f3a2c434e8b3443da9d6d948",
+      "size": [
+        488,
+        1064
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "zgok_title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "c830fc539ca65a5e453a0d43a6443dbb8efbfbe9f1cf40aa231aed5a7dfa1b08"
+      },
+      {
+        "index": 1,
+        "node_id": "zgok_01",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "31e89dec108ccb8bd13debd6cec95f34ad7ec4f553e5afaad5edb2244d88d48e"
+      },
+      {
+        "index": 2,
+        "node_id": "zgok_02",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "9321d77db7ebef845cc16f3d37dbb5f8ed971c2daf06f20db85634c6f2410992"
+      },
+      {
+        "index": 3,
+        "node_id": "zgok_03",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "5187cccf243be7f8ca15ecc598ba0277e5c7b84baa22a8e114834bd9841af63e"
+      },
+      {
+        "index": 4,
+        "node_id": "zgok_04",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "42db63ace82ba9f09fa4afc14713ec9eb3f8495c049437aad21cf56e7523e5df"
+      },
+      {
+        "index": 5,
+        "node_id": "zgok_05",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "ffe38c08a70d7fa1c8fa31cc7fc87e0b90cfd49401301689d89745bf9a1c86c4"
+      },
+      {
+        "index": 6,
+        "node_id": "zgok_06",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "139bbf2faa629ef8fc94180436a1a0f96b6646b1fc77cb99def9f4f7c758b5aa"
+      },
+      {
+        "index": 7,
+        "node_id": "zgok_07",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "941e74bb4db2c53d877ed6197415cf4af5eee5ef804212c671c8bab136911e36"
+      },
+      {
+        "index": 8,
+        "node_id": "zgok_08",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "472a38c275d5030ec2ba0a134f014eedc353203cb93f76b5be571e3c918195c9"
+      },
+      {
+        "index": 9,
+        "node_id": "zgok_09",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "06c2fc32dd38b237f44d0f433ee30f8527ba8dbc0962c5af2e2272d68160bfc2"
+      },
+      {
+        "index": 10,
+        "node_id": "zgok_10",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "66e78df656d24b3be99a550bbcca087cab648171c442bbea60b3ad131ecf9049"
+      },
+      {
+        "index": 11,
+        "node_id": "zgok_method",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "6263d961384ec64a00a2b62e614c43b4d96c6e11f2122c36c04e8de15b27fd78"
+      },
+      {
+        "index": 12,
+        "node_id": "zgok_practice_1",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "d4becc0254d7019d5821b6498542ea2e89e497fce635bddcc4e15ce336803ade"
+      },
+      {
+        "index": 13,
+        "node_id": "zgok_practice_2",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "5fba958e49469bd64f3f11935253c65d622a0bc5faf2409b6f6073e910baa448"
+      },
+      {
+        "index": 14,
+        "node_id": "zgok_guide_1",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "04825c7f89dc930e858bac98d051dc3f9fc615fa7474a676fe6714416043ccf1"
+      },
+      {
+        "index": 15,
+        "node_id": "zgok_guide_2",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "f1424b3a300c5a6e2fd8ad14d3f2a6fdf0446f2b3388e33eaf19b59699b0a93e"
+      },
+      {
+        "index": 16,
+        "node_id": "zgok_11",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "55cbc63a742824c95d806192eca1a371a0be5926a3e49980473777683c590daa"
+      },
+      {
+        "index": 17,
+        "node_id": "zgok_12",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "60b32d787ebe2f1f06e0c58969c2a22250847f394824f41188c949fc0277f90b"
+      },
+      {
+        "index": 18,
+        "node_id": "zgok_13",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "13acf829f2e3949c3b4c6e89158d27d733e5f79b749a8e7cebdec2edc954b853"
+      },
+      {
+        "index": 19,
+        "node_id": "zgok_14",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "86c7dcf787c530176aa03f0caec1341f91e592d7c13fd8e4567dcbf3e30698fa"
+      },
+      {
+        "index": 20,
+        "node_id": "zgok_15",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "d9e9dd1992027c7c51f5cf2a5f60ce5d444ad45745af519a8476ca33b0a23455"
+      },
+      {
+        "index": 21,
+        "node_id": "zgok_16",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "3b13b6bb5aa5cbc5bc93e80fe83758ffd77a5705c429993296d3633a44d73978"
+      },
+      {
+        "index": 22,
+        "node_id": "zgok_17",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "2e9dbc38a642bf1df78a45d7bd1843d38789a8f41ee3b2b676dfca1134555e03"
+      },
+      {
+        "index": 23,
+        "node_id": "zgok_18",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "3dab5f653519e5f5758d8fa1ac84591fee5e4a7e046211e08abd4111a5fdeade"
+      },
+      {
+        "index": 24,
+        "node_id": "zgok_19",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "cfbfa18483a6859b87a0fe11e1676eb43c74f1cf6b2543b4e0d90f6e14eafc5b"
+      },
+      {
+        "index": 25,
+        "node_id": "zgok_20",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "4149ff2f866e2038a3a42afe14ff5cae93f8b587a8bb188cbb948ba2ad796d4c"
+      },
+      {
+        "index": 26,
+        "node_id": "zgok_21",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "e9a29f555ed41f88c72a244656206386333ff1272e0c6f70fe2151bb77eb720e"
+      },
+      {
+        "index": 27,
+        "node_id": "zgok_22",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "8a3b91837c5747cf8263821a5f6705b98df4f025765bf0cd812cd47bebddf2bc"
+      },
+      {
+        "index": 28,
+        "node_id": "zgok_23",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "4f1234237d89c20efdfad2a30bfe1c3b3cf0f47ae1b8ae1720a74436d9543ff5"
+      },
+      {
+        "index": 29,
+        "node_id": "zgok_24",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "79864ebaa6c0dcbd5048f403300bf62c45a7276c7e55b062a6cadbb5ba115a20"
+      },
+      {
+        "index": 30,
+        "node_id": "zgok_25",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "97f70a951b9240c4e3747db2ac8d9bfed45d6ff642241fad721e7aedb065b3a6"
+      },
+      {
+        "index": 31,
+        "node_id": "zgok_26",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "cf69df7b23bc21883dec2832619c4bf92967c8ab1af108c56333c0f8b3280301"
+      },
+      {
+        "index": 32,
+        "node_id": "zgok_27",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "e5831c56f31a8faaa6aa40ba0dfb747122c8b562ec44847a9312f57238561314"
+      },
+      {
+        "index": 33,
+        "node_id": "zgok_28",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "eb40dda26e7e1da032aee4cb7fea49f16d3751250f8800b284b39197f259e2ca"
+      },
+      {
+        "index": 34,
+        "node_id": "zgok_choice",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "aa84277bdf46507f316f7634fa48071d76131e5c77da39fb60d94c6c4b2e63be"
+      },
+      {
+        "index": 35,
+        "node_id": "zgok_a1",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "a3ee15733a9a12e10c3f765a303eaad8a26b2c7aa2061d75552408b417a6d6f0"
+      },
+      {
+        "index": 36,
+        "node_id": "zgok_a2",
+        "rect": [
+          10,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "635dde50f9d2952e70c6f0ea40de84cc741a13db1ed26a8cc0bfd03aa5e8fa17"
+      },
+      {
+        "index": 37,
+        "node_id": "zgok_a3",
+        "rect": [
+          244,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "66ab84333cbf96444e28402e225b448061550e57c95cfddda55d065b41d2fb0e"
+      },
+      {
+        "index": 38,
+        "node_id": "zgok_a4",
+        "rect": [
+          478,
+          2066,
+          224,
+          144
+        ],
+        "image_sha256": "9b48fbf94f42a3d91d930af72889d202fe0f8c8021ad3a1fc4db52ab9485d221"
+      },
+      {
+        "index": 39,
+        "node_id": "zgok_b1",
+        "rect": [
+          10,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "71e9ab8f1376b53258251daa58fed3897568a93981e93ef5eaef0a2bbe2a1f38"
+      },
+      {
+        "index": 40,
+        "node_id": "zgok_b2",
+        "rect": [
+          244,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "02b9b4735aa9d072a8aded3a4746ccbef5b2c66faf03102e0e48cee873fe170b"
+      },
+      {
+        "index": 41,
+        "node_id": "zgok_b3",
+        "rect": [
+          478,
+          2236,
+          224,
+          144
+        ],
+        "image_sha256": "59b280be771ee18bf0b74cf448e317c61c3aa54bff88097b529492895283cfb3"
+      },
+      {
+        "index": 42,
+        "node_id": "zgok_b4",
+        "rect": [
+          10,
+          2406,
+          224,
+          144
+        ],
+        "image_sha256": "c661fd58e7140e7e368401a42ef8967e20e09d1eb09d1340e7c301de7ee421a1"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "zgok_title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "66b64ed51c47063e32b6b2d8692c852ea1fd74fb0a79a957770bc8cc79502513"
+      },
+      {
+        "index": 1,
+        "node_id": "zgok_01",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "95431f37027d00c784fd4e03c62580e5ee5770b726e2bb22cb3456abcd8dead2"
+      },
+      {
+        "index": 2,
+        "node_id": "zgok_02",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "459fcd72d561125f60ee78205d9267e360bd1110e1ef27a1dc9bd6bc428a32a2"
+      },
+      {
+        "index": 3,
+        "node_id": "zgok_03",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "e1fc567dd022af63fd333b246be824dc628f4b3cd2d6e83cecbb8125e0eb214d"
+      },
+      {
+        "index": 4,
+        "node_id": "zgok_04",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "9425356500b6d6e2efb427b1d7fc475aea5a1fa38a1dff7a3004a4caa46a8cbf"
+      },
+      {
+        "index": 5,
+        "node_id": "zgok_05",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "a0fe09ac467bf84b1b4a5c206e9517e9b0602ee0c844e2e42d16a342bea2afad"
+      },
+      {
+        "index": 6,
+        "node_id": "zgok_06",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "25279e265f18b5d5eab75f4f2632336723dd9156bdcd1410f7f89ef768f68b22"
+      },
+      {
+        "index": 7,
+        "node_id": "zgok_07",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "8283d91b90369b5f7cee5491ff733b4ddcd9188a55041ea3c2cf46252da3a113"
+      },
+      {
+        "index": 8,
+        "node_id": "zgok_08",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "8ca6f073022e1b511dc39277de1f3425c81eed11dc244c8680b15095c7d6102d"
+      },
+      {
+        "index": 9,
+        "node_id": "zgok_09",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "8d921bd6a89666213072a50017def0879f794f94871aae3f8893b0f982966eeb"
+      },
+      {
+        "index": 10,
+        "node_id": "zgok_10",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "a3ac42544f8e3b7da2b7cf5156bc4c90d98255f8ee45f1e9ce5a872ecaf80907"
+      },
+      {
+        "index": 11,
+        "node_id": "zgok_method",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "c8e97b974b04fdd993cef632de601d428f201e8e264dbd8d22bed30b0478753d"
+      },
+      {
+        "index": 12,
+        "node_id": "zgok_practice_1",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "cda74b1cb755f4dac8d315e811385135a58554252a7e276395d77ee9cb136e1d"
+      },
+      {
+        "index": 13,
+        "node_id": "zgok_practice_2",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "3f8b20fa57a20921ccea2f8a3af940e62f47bd50ef8146c7233b94ba6404eeb1"
+      },
+      {
+        "index": 14,
+        "node_id": "zgok_guide_1",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "e945a08ecbaa8889d2be6a1c8f2b3b361f79b2c94c4f0b5e1e5c8d53bfa6e7cc"
+      },
+      {
+        "index": 15,
+        "node_id": "zgok_guide_2",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "6f2e60f286a70e915ff13dfb9486c7183f9f8125c1916d7aa1233d84914f4aee"
+      },
+      {
+        "index": 16,
+        "node_id": "zgok_11",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "0b0d6311f59680eab5888a882b78a3aa9f2e4c420fca61479411d0e606ebbfcb"
+      },
+      {
+        "index": 17,
+        "node_id": "zgok_12",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "acd3f19def71a456ae83cea0d020850882c453d297143e2d79331926e6d54251"
+      },
+      {
+        "index": 18,
+        "node_id": "zgok_13",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "5dbcfe34a47554ea932e20133d53e77eec6d8fc8e97c5505a31de551fead7f32"
+      },
+      {
+        "index": 19,
+        "node_id": "zgok_14",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "c597da1005097ac1045509d9c345413dd81021bb0e7bab946f6d010f2dd5e3ec"
+      },
+      {
+        "index": 20,
+        "node_id": "zgok_15",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "37da2d9c1cd885fc6f11badab3e6b285908122a67a0c081600a366c2bb6367f7"
+      },
+      {
+        "index": 21,
+        "node_id": "zgok_16",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "e542952890e8e4567e221613b401f28d6c14647eeb045ce2b783b62018dabd15"
+      },
+      {
+        "index": 22,
+        "node_id": "zgok_17",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "33f1a2cb0e9b37232850ded906f54799ef57ff388803837868b590ffeb1487b6"
+      },
+      {
+        "index": 23,
+        "node_id": "zgok_18",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "355e355699773258459caad149de94b8beed7dd690aab353d027d595dc32674a"
+      },
+      {
+        "index": 24,
+        "node_id": "zgok_19",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "399b173a3a49cf0834cc94d1da55765be5f34f6b6a5daba1b92b28bc7fa10606"
+      },
+      {
+        "index": 25,
+        "node_id": "zgok_20",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "67246c4c9f0dd15716384467f3cd487942f261d0b9f76773a89c7ec6a6a2b012"
+      },
+      {
+        "index": 26,
+        "node_id": "zgok_21",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "cd19c851a3aaf9d17a665b60d653d688b763f7c6eb9917500201b2815f312de9"
+      },
+      {
+        "index": 27,
+        "node_id": "zgok_22",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "2a9e91fe10093c1babd17a9227734d8d13e2ac32c11df10c405555066e9ac714"
+      },
+      {
+        "index": 28,
+        "node_id": "zgok_23",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "daa771e5c56a130a7598aa77d7c87189861d2db33607b5e9cca3a4b43f655f00"
+      },
+      {
+        "index": 29,
+        "node_id": "zgok_24",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "f9becb86b8d85793701a77853fbb1d0a3242f0d713fa59ef8f8943cc3d61eeb3"
+      },
+      {
+        "index": 30,
+        "node_id": "zgok_25",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "aa993b65b2eb6a25d91e0f88e8b1a41b13e614b06e787e97a6aaef53f8db0e81"
+      },
+      {
+        "index": 31,
+        "node_id": "zgok_26",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "22038caa4bbe514886400063f0471abbdf6d6e3322f637769f1d4c449a986050"
+      },
+      {
+        "index": 32,
+        "node_id": "zgok_27",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "133d0805d3f0e86c8eff6af936b00ce830f63e83b2559e11708c3dccb1957459"
+      },
+      {
+        "index": 33,
+        "node_id": "zgok_28",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "d8aee834fedaa1fc0ad9713a718379e2f9983369a50930b1ca1b96ce7235130c"
+      },
+      {
+        "index": 34,
+        "node_id": "zgok_choice",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "0e75d9ab7728ab3b5d36fc4255cfc1ab65bbcee2537ae805b0097d220edb8a0a"
+      },
+      {
+        "index": 35,
+        "node_id": "zgok_a1",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "2a57898b08e2684d56b9a6f20d860708f28212254f2a7744f68619a503365f65"
+      },
+      {
+        "index": 36,
+        "node_id": "zgok_a2",
+        "rect": [
+          8,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "08b6b82473a6cfcca3d6bf1bb1b7c03acb5181836fde310873fefc6c607cd9aa"
+      },
+      {
+        "index": 37,
+        "node_id": "zgok_a3",
+        "rect": [
+          128,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "1fcc1f096d98b85d925729f823b72f253e02bf23b4c7d5233e068853cfc89226"
+      },
+      {
+        "index": 38,
+        "node_id": "zgok_a4",
+        "rect": [
+          248,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "a1d11209aa091d5d3add09aee399399b5e391f4d2b5c8c7d2511102b5975d5b1"
+      },
+      {
+        "index": 39,
+        "node_id": "zgok_b1",
+        "rect": [
+          368,
+          872,
+          112,
+          72
+        ],
+        "image_sha256": "740903e1abe0f3fcf27dac59fa4335d0636ef095809fdad96dc4379ce898580d"
+      },
+      {
+        "index": 40,
+        "node_id": "zgok_b2",
+        "rect": [
+          8,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "1041f47816210cdc0293c6e25697fcb9881cb476023b2f70f3a898f2e101dc2f"
+      },
+      {
+        "index": 41,
+        "node_id": "zgok_b3",
+        "rect": [
+          128,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "0dea0777914aad4e5ca77429ad50917c145b2b15c7fdc72911e7356507cbd47b"
+      },
+      {
+        "index": 42,
+        "node_id": "zgok_b4",
+        "rect": [
+          248,
+          968,
+          112,
+          72
+        ],
+        "image_sha256": "9ba202677592bfc2184d41f73cfb649e1e5d754ab2c8bd8e380a4c229288923b"
+      }
+    ]
+  }
+}

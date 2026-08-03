@@ -6,6 +6,41 @@ records those user-visible changes. Published releases use semantic versioning.
 
 ## [Unreleased]
 
+## [0.9.4] - 2026-08-03
+
+**The Forge Comes Home.** SwanSong 0.9.4 gives Story Forge one inspectable
+source home and carries its fixed writing framework inside the signed app.
+
+### Added
+
+- Bundles a minimal, hash-manifested Story Forge schema-v3 framework, including
+  its typed writing commands and complete `forge-light-novels` skill, so normal
+  use no longer depends on a separate framework checkout.
+- Adds an authenticated Original-frame seal before private source-provenance
+  work and a bounded data-producer trace that can prove one exact cartridge
+  source without returning SRAM bytes or private producer coordinates.
+- Adds bounded multi-rectangle source contexts for layouts that cannot be
+  represented honestly by one rectangle.
+
+### Changed
+
+- Makes `StoryForge/` the canonical source home for the framework, authored
+  workshop, approved art, games, and current evidence while keeping games,
+  manuscripts, ROMs, and release archives out of the signed Mac app.
+- Gives the explicitly enabled, owner-only local automation server persistent
+  access to its fixed project-writing allowlist without repeated per-call
+  prompts; path, schema, size, identity, and privacy checks remain enforced.
+- Expands the live engine provenance contract and clean-room fixtures for the
+  exact Original-frame, General DMA, atomic-region, and data-producer lanes.
+
+### Fixed
+
+- Verifies the included Story Forge payload during build, packaging, archive
+  validation, signature checks, and public artifact verification so missing,
+  changed, linked, extra, or wrongly identified framework files fail closed.
+- Updates the bundled Sparkle framework to 2.9.5, including its complete
+  destination-symlink hardening for delta updates.
+
 ## [0.9.3] - 2026-07-31
 
 **Keep the Proof Moving.** SwanSong 0.9.3 removes two runtime dead ends from
@@ -821,7 +856,8 @@ silicon and Intel Macs, with the first local Translation workflow built in.
 - Private translation artifacts are bounded, owner-only, link-checked, and
   validated again at write boundaries.
 
-[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.3...HEAD
+[Unreleased]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.4...HEAD
+[0.9.4]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.3...v0.9.4
 [0.9.3]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.2...v0.9.3
 [0.9.2]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.1...v0.9.2
 [0.9.1]: https://github.com/RegionallyFamous/SwanSong-Desktop/compare/v0.9.0...v0.9.1

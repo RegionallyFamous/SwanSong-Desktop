@@ -1,0 +1,358 @@
+{
+  "schema_version": 1,
+  "character": "generic",
+  "sheet_kind": "animation",
+  "runtime_ready": true,
+  "sprite_offset": [
+    0,
+    0
+  ],
+  "labels": [
+    "neutral",
+    "talk",
+    "blink"
+  ],
+  "scale": 4,
+  "out": "games/soft-click-sunday/assets/auditions/soft-click-sunday-runtime-audition.png",
+  "tool_provenance": [
+    {
+      "path": "scripts/audition_wscvn_sprite_sheet.py",
+      "sha256": "3c3ff7d0eff71df59c58e51d6d1f7990516778f64749e3dad207ab05b2069338"
+    },
+    {
+      "path": "scripts/make_signal_before_dawn_slice.py",
+      "sha256": "c48f872b41a2bbe0310229ffd35ed4786096e7d886595f950605efcf622afc90"
+    },
+    {
+      "path": "scripts/wscvn_sprite_family.py",
+      "sha256": "3ebf274e1f493bd10bc06be29936eda8c43d6e85e0d7cd5d4ddcd980d1bbc1aa"
+    }
+  ],
+  "quality": {
+    "status": "pass",
+    "error_count": 0,
+    "warning_count": 0,
+    "info_count": 0,
+    "thresholds": {
+      "max_visible_colors": 15,
+      "min_talk_face_delta": 18,
+      "min_blink_face_delta": 0,
+      "min_alpha_coverage": 0.2,
+      "max_alpha_coverage": 0.75,
+      "max_animation_alpha_changed": 0,
+      "min_visible_above_textbox": 0.52,
+      "max_visible_above_textbox": 0.92,
+      "max_animation_bbox_area": 1200,
+      "max_source_center_drift": 0.09,
+      "max_source_scale_drift": 0.18,
+      "max_sprite_center_drift": 0.04,
+      "max_sprite_scale_drift": 0.08,
+      "max_tiny_color_pixels": 10,
+      "max_green_fringe_pixels": 0,
+      "max_alpha_components": 8,
+      "min_largest_alpha_component_share": 0.96
+    }
+  },
+  "sources": [
+    {
+      "label": "mina",
+      "path": "games/soft-click-sunday/assets/auditions/mina-runtime-animation.png",
+      "sha256": "26d4984920bd41b861c23ca5372b150ab3d9bf0489f90741c8c50a34ac5e7836"
+    },
+    {
+      "label": "niko",
+      "path": "games/soft-click-sunday/assets/auditions/niko-runtime-animation.png",
+      "sha256": "d18303f79d534f31e702c3e9eb4cbd63191231662cefed004f197438c2b11356"
+    }
+  ],
+  "frames": [
+    {
+      "source_label": "mina",
+      "source_path": "games/soft-click-sunday/assets/auditions/mina-runtime-animation.png",
+      "source_sha256": "26d4984920bd41b861c23ca5372b150ab3d9bf0489f90741c8c50a34ac5e7836",
+      "source_size": [
+        288,
+        128
+      ],
+      "source_cell_box": [
+        0,
+        0,
+        288,
+        128
+      ],
+      "source_cell": {
+        "size": [
+          96,
+          128
+        ],
+        "non_key_ratio": 0.5096028645833334,
+        "bbox": [
+          11,
+          6,
+          85,
+          125
+        ],
+        "bbox_center_norm": [
+          0.5,
+          0.5117
+        ],
+        "bbox_size_norm": [
+          0.7708,
+          0.9297
+        ],
+        "bbox_area_ratio": 0.7166
+      },
+      "frame_label": "neutral/talk/blink",
+      "frame_index": 0,
+      "sprite_size": [
+        96,
+        128
+      ],
+      "sprite_alpha_bbox": {
+        "bbox": [
+          11,
+          6,
+          85,
+          125
+        ],
+        "bbox_center_norm": [
+          0.5,
+          0.5117
+        ],
+        "bbox_size_norm": [
+          0.7708,
+          0.9297
+        ],
+        "bbox_area_ratio": 0.7166
+      },
+      "visible_colors": 15,
+      "alpha_coverage": 0.5096028645833334,
+      "visible_above_textbox": 0.6204088150750559,
+      "occupied_tiles": 124,
+      "wsc_12bit_snapped": true,
+      "binary_alpha": true,
+      "tiny_color_pixels": 0,
+      "green_fringe_pixels": 0,
+      "alpha_components": {
+        "component_count": 1,
+        "largest_component_pixels": 6262,
+        "largest_component_share": 1.0,
+        "tiny_component_count": 0
+      },
+      "delta": {
+        "talk": {
+          "full": {
+            "changed_pixels": 292,
+            "changed_pixel_ratio": 0.023763020833333332,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 292,
+            "changed_visible_ratio": 0.04663046949856276,
+            "changed_bbox": [
+              38,
+              56,
+              59,
+              72
+            ],
+            "changed_bbox_area": 336,
+            "mean_abs_rgba_delta": 1.3855387369791667
+          },
+          "face": {
+            "changed_pixels": 292,
+            "changed_pixel_ratio": 0.20277777777777778,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 292,
+            "changed_visible_ratio": 0.21052631578947367,
+            "changed_bbox": [
+              10,
+              20,
+              31,
+              36
+            ],
+            "changed_bbox_area": 336,
+            "mean_abs_rgba_delta": 11.823263888888889
+          }
+        },
+        "blink": {
+          "full": {
+            "changed_pixels": 165,
+            "changed_pixel_ratio": 0.013427734375,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 165,
+            "changed_visible_ratio": 0.026349409134461835,
+            "changed_bbox": [
+              29,
+              32,
+              62,
+              44
+            ],
+            "changed_bbox_area": 396,
+            "mean_abs_rgba_delta": 1.18389892578125
+          },
+          "face": {
+            "changed_pixels": 113,
+            "changed_pixel_ratio": 0.07847222222222222,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 113,
+            "changed_visible_ratio": 0.08147080028839221,
+            "changed_bbox": [
+              1,
+              0,
+              34,
+              8
+            ],
+            "changed_bbox_area": 264,
+            "mean_abs_rgba_delta": 6.7321180555555555
+          }
+        }
+      },
+      "quality": {
+        "status": "pass",
+        "issues": []
+      }
+    },
+    {
+      "source_label": "niko",
+      "source_path": "games/soft-click-sunday/assets/auditions/niko-runtime-animation.png",
+      "source_sha256": "d18303f79d534f31e702c3e9eb4cbd63191231662cefed004f197438c2b11356",
+      "source_size": [
+        288,
+        128
+      ],
+      "source_cell_box": [
+        0,
+        0,
+        288,
+        128
+      ],
+      "source_cell": {
+        "size": [
+          96,
+          128
+        ],
+        "non_key_ratio": 0.5494791666666666,
+        "bbox": [
+          7,
+          10,
+          89,
+          126
+        ],
+        "bbox_center_norm": [
+          0.5,
+          0.5312
+        ],
+        "bbox_size_norm": [
+          0.8542,
+          0.9062
+        ],
+        "bbox_area_ratio": 0.7741
+      },
+      "frame_label": "neutral/talk/blink",
+      "frame_index": 0,
+      "sprite_size": [
+        96,
+        128
+      ],
+      "sprite_alpha_bbox": {
+        "bbox": [
+          7,
+          10,
+          89,
+          126
+        ],
+        "bbox_center_norm": [
+          0.5,
+          0.5312
+        ],
+        "bbox_size_norm": [
+          0.8542,
+          0.9062
+        ],
+        "bbox_area_ratio": 0.7741
+      },
+      "visible_colors": 14,
+      "alpha_coverage": 0.5494791666666666,
+      "visible_above_textbox": 0.5810130331753555,
+      "occupied_tiles": 132,
+      "wsc_12bit_snapped": true,
+      "binary_alpha": true,
+      "tiny_color_pixels": 0,
+      "green_fringe_pixels": 0,
+      "alpha_components": {
+        "component_count": 1,
+        "largest_component_pixels": 6752,
+        "largest_component_share": 1.0,
+        "tiny_component_count": 0
+      },
+      "delta": {
+        "talk": {
+          "full": {
+            "changed_pixels": 281,
+            "changed_pixel_ratio": 0.022867838541666668,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 281,
+            "changed_visible_ratio": 0.041617298578199055,
+            "changed_bbox": [
+              38,
+              56,
+              59,
+              72
+            ],
+            "changed_bbox_area": 336,
+            "mean_abs_rgba_delta": 1.1890869140625
+          },
+          "face": {
+            "changed_pixels": 281,
+            "changed_pixel_ratio": 0.1951388888888889,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 281,
+            "changed_visible_ratio": 0.21833721833721834,
+            "changed_bbox": [
+              10,
+              20,
+              31,
+              36
+            ],
+            "changed_bbox_area": 336,
+            "mean_abs_rgba_delta": 10.146875
+          }
+        },
+        "blink": {
+          "full": {
+            "changed_pixels": 158,
+            "changed_pixel_ratio": 0.012858072916666666,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 158,
+            "changed_visible_ratio": 0.023400473933649288,
+            "changed_bbox": [
+              32,
+              35,
+              65,
+              46
+            ],
+            "changed_bbox_area": 363,
+            "mean_abs_rgba_delta": 1.26171875
+          },
+          "face": {
+            "changed_pixels": 148,
+            "changed_pixel_ratio": 0.10277777777777777,
+            "alpha_changed_pixels": 0,
+            "changed_visible_pixels": 148,
+            "changed_visible_ratio": 0.11499611499611499,
+            "changed_bbox": [
+              4,
+              0,
+              37,
+              10
+            ],
+            "changed_bbox_area": 330,
+            "mean_abs_rgba_delta": 9.966840277777777
+          }
+        }
+      },
+      "quality": {
+        "status": "pass",
+        "issues": []
+      }
+    }
+  ]
+}

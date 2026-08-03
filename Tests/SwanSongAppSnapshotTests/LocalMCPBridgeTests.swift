@@ -73,15 +73,15 @@ final class LocalMCPBridgeTests: XCTestCase {
         XCTAssertThrowsError(
             try bridge.response(
                 method: "studio-action",
-                argumentsJSON: #"{"action":"build"}"#
+                argumentsJSON: #"{}"#
             )
         ) { error in
-            XCTAssertTrue(error.localizedDescription.contains("confirmProjectWrites"))
+            XCTAssertTrue(error.localizedDescription.contains("action is required"))
         }
         XCTAssertThrowsError(
             try bridge.response(
                 method: "studio-action",
-                argumentsJSON: #"{"action":"shell","confirmProjectWrites":true}"#
+                argumentsJSON: #"{"action":"shell"}"#
             )
         ) { error in
             XCTAssertTrue(error.localizedDescription.contains("fixed SDK 0.5 allowlist"))
@@ -89,7 +89,7 @@ final class LocalMCPBridgeTests: XCTestCase {
         XCTAssertThrowsError(
             try bridge.response(
                 method: "studio-action",
-                argumentsJSON: #"{"action":"migrate-preview","confirmProjectWrites":true}"#
+                argumentsJSON: #"{"action":"migrate-preview"}"#
             )
         ) { error in
             XCTAssertTrue(error.localizedDescription.contains("Resolve the SwanSong SDK"))
@@ -142,6 +142,125 @@ final class LocalMCPBridgeTests: XCTestCase {
             )
         )
         XCTAssertThrowsError(try oversized.validateFreshness())
+    }
+
+    func testCodeSignatureTrustAllowsOnlyTheBundledAdHocHelperOrSameTeam() {
+        let expected = URL(
+            fileURLWithPath:
+                "/Applications/SwanSong.app/Contents/Helpers/SwanSongMCP"
+        )
+        let other = URL(fileURLWithPath: "/tmp/SwanSongMCP")
+        let app = SwanSongMCPCodeSignature.Identity(
+            identifier: "com.regionallyfamous.swansong",
+            teamIdentifier: nil,
+            valid: true,
+            executableURL: URL(
+                fileURLWithPath:
+                    "/Applications/SwanSong.app/Contents/MacOS/SwanSong"
+            )
+        )
+        let bundledAdHoc = SwanSongMCPCodeSignature.Identity(
+            identifier: SwanSongLocalMCPAccess.officialClientIdentifier,
+            teamIdentifier: nil,
+            valid: true,
+            executableURL: expected
+        )
+        XCTAssertTrue(
+            SwanSongMCPCodeSignature.trusts(
+                peer: bundledAdHoc, own: app, expectedPeerURL: expected
+            )
+        )
+        XCTAssertFalse(
+            SwanSongMCPCodeSignature.trusts(
+                peer: .init(
+                    identifier: SwanSongLocalMCPAccess.officialClientIdentifier,
+                    teamIdentifier: nil,
+                    valid: true,
+                    executableURL: other
+                ),
+                own: app,
+                expectedPeerURL: expected
+            )
+        )
+        XCTAssertFalse(
+            SwanSongMCPCodeSignature.trusts(
+                peer: .init(
+                    identifier: "com.example.untrusted",
+                    teamIdentifier: nil,
+                    valid: true,
+                    executableURL: expected
+                ),
+                own: app,
+                expectedPeerURL: expected
+            )
+        )
+
+        let releaseApp = SwanSongMCPCodeSignature.Identity(
+            identifier: "com.regionallyfamous.swansong",
+            teamIdentifier: "TEAM123",
+            valid: true,
+            executableURL: app.executableURL
+        )
+        XCTAssertTrue(
+            SwanSongMCPCodeSignature.trusts(
+                peer: .init(
+                    identifier: SwanSongLocalMCPAccess.officialClientIdentifier,
+                    teamIdentifier: "TEAM123",
+                    valid: true,
+                    executableURL: other
+                ),
+                own: releaseApp,
+                expectedPeerURL: expected
+            )
+        )
+        XCTAssertFalse(
+            SwanSongMCPCodeSignature.trusts(
+                peer: .init(
+                    identifier: SwanSongLocalMCPAccess.officialClientIdentifier,
+                    teamIdentifier: "OTHERTEAM",
+                    valid: true,
+                    executableURL: expected
+                ),
+                own: releaseApp,
+                expectedPeerURL: expected
+            )
+        )
+        XCTAssertFalse(
+            SwanSongMCPCodeSignature.trusts(
+                peer: .init(
+                    identifier: SwanSongLocalMCPAccess.officialClientIdentifier,
+                    teamIdentifier: nil,
+                    valid: false,
+                    executableURL: expected
+                ),
+                own: app,
+                expectedPeerURL: expected
+            )
+        )
+        XCTAssertFalse(
+            SwanSongMCPCodeSignature.trusts(
+                peer: bundledAdHoc,
+                own: .init(
+                    identifier: app.identifier,
+                    teamIdentifier: nil,
+                    valid: false,
+                    executableURL: app.executableURL
+                ),
+                expectedPeerURL: expected
+            )
+        )
+        XCTAssertFalse(
+            SwanSongMCPCodeSignature.trusts(
+                peer: .init(
+                    identifier: SwanSongLocalMCPAccess.officialClientIdentifier,
+                    teamIdentifier: "TEAM123",
+                    valid: true,
+                    executableURL: expected
+                ),
+                own: app,
+                expectedPeerURL: expected
+            )
+        )
     }
 
     private func makeModel(root: URL) -> AppModel {

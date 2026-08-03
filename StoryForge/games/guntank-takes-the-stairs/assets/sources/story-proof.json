@@ -1,0 +1,341 @@
+{
+  "schema": "wscvn-story-proof-v1",
+  "title": "Guntank Takes the Stairs — Story Ribbon",
+  "checkpoints": [
+    {
+      "id": "proof-arrival",
+      "label": "The ordinary problem becomes urgent",
+      "story": {
+        "turn": "The broken elevator makes an upstairs birthday inaccessible with guests already approaching.",
+        "consequence": "Guntank must become a planner before he can become a party guest.",
+        "setup_ids": [
+          "elevator-sign",
+          "red-balloon"
+        ],
+        "payoff_ids": []
+      },
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tank_01",
+          "routes": [
+            "*"
+          ],
+          "background": "bg_main",
+          "character": "char_guntank_neutral",
+          "animation": "talk-blink",
+          "transition": "fade",
+          "music": "tank_main",
+          "next": [
+            "tank_02"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proof-dignity",
+      "label": "The joke reveals the personal wound",
+      "story": {
+        "turn": "Guntank stops treating access as a geometry puzzle and admits that arriving late is not the same as being welcomed.",
+        "consequence": "The host must solve for belonging, not merely vertical movement.",
+        "relationship_change": "Guntank trusts the host with a hurt he previously hid.",
+        "setup_ids": [],
+        "payoff_ids": []
+      },
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tank_07",
+          "routes": [
+            "*"
+          ],
+          "background": "bg_main",
+          "character": "char_guntank_neutral",
+          "animation": "talk-blink",
+          "transition": "fade",
+          "music": "tank_main",
+          "next": [
+            "tank_08"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proof-breath",
+      "label": "The story takes one honest breath",
+      "story": {
+        "turn": "Everyone stops asking machinery to prove itself while the elevator continues its useless thinking gag.",
+        "consequence": "The next plan begins from care instead of spectacle.",
+        "setup_ids": [
+          "elevator-sign"
+        ],
+        "payoff_ids": []
+      },
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tank_08",
+          "routes": [
+            "*"
+          ],
+          "background": "bg_main",
+          "character": "char_guntank_neutral",
+          "animation": "talk-blink",
+          "transition": "fade",
+          "music": "tank_title",
+          "next": [
+            "tank_09"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proof-first-interlude",
+      "label": "A playable plan changes how the group climbs",
+      "story": {
+        "turn": "The player chooses furniture engineering or a tread-by-tread relay; neither answer is a dead failure.",
+        "consequence": "The chosen method changes jokes, choreography, and the first-flight memory while both routes progress.",
+        "interaction": {
+          "kind": "consequence-forward choice",
+          "failure_progresses": true
+        },
+        "setup_ids": [],
+        "payoff_ids": []
+      },
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tank_choice_1",
+          "routes": [
+            "*"
+          ],
+          "background": "bg_main",
+          "character": "char_guntank_neutral",
+          "animation": "talk-blink",
+          "transition": "fade",
+          "music": "tank_main",
+          "next": [
+            "tank_a1",
+            "tank_b1"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "native-audio"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proof-earned-landing",
+      "label": "The first choice earns a distinct shared memory",
+      "story": {
+        "turn": "Guntank reaches the landing through the method the player chose.",
+        "consequence": "The group gains practical knowledge and enough confidence to recognize the second flight as a new risk.",
+        "relationship_change": "Help becomes something Guntank directs rather than something done to him.",
+        "setup_ids": [
+          "red-balloon"
+        ],
+        "payoff_ids": []
+      },
+      "variants": [
+        {
+          "id": "ramp-memory",
+          "node_id": "tank_a4",
+          "routes": [
+            "route-1",
+            "route-2"
+          ],
+          "background": "bg_main",
+          "character": "char_guntank_neutral",
+          "animation": "talk-blink",
+          "transition": "fade",
+          "music": "tank_end_a",
+          "next": [
+            "tank_11"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio"
+          ]
+        },
+        {
+          "id": "relay-memory",
+          "node_id": "tank_b4",
+          "routes": [
+            "route-3",
+            "route-4"
+          ],
+          "background": "bg_main",
+          "character": "char_guntank_neutral",
+          "animation": "talk-blink",
+          "transition": "fade",
+          "music": "tank_end_b",
+          "next": [
+            "tank_11"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proof-reversal",
+      "label": "Success exposes the real problem",
+      "story": {
+        "turn": "The steeper second flight makes continuing much riskier just as the lobby naturally fills with friends.",
+        "consequence": "The goal changes from reaching a reserved room to choosing what the celebration should value.",
+        "setup_ids": [],
+        "payoff_ids": []
+      },
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tank_11",
+          "routes": [
+            "*"
+          ],
+          "background": "bg_main",
+          "character": "char_guntank_neutral",
+          "animation": "talk-blink",
+          "transition": "fade",
+          "music": "tank_main",
+          "next": [
+            "tank_12"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proof-final-decision",
+      "label": "The player chooses which lesson survives",
+      "story": {
+        "turn": "Continuing and stopping are reframed as two valid forms of welcome rather than victory and defeat.",
+        "consequence": "The final choice determines both the party space and the meaning of the first climb.",
+        "interaction": {
+          "kind": "theme-bearing choice",
+          "failure_progresses": true
+        },
+        "setup_ids": [],
+        "payoff_ids": []
+      },
+      "variants": [
+        {
+          "id": "all-routes",
+          "node_id": "tank_choice_2",
+          "routes": [
+            "*"
+          ],
+          "background": "bg_main",
+          "character": "char_guntank_neutral",
+          "animation": "talk-blink",
+          "transition": "fade",
+          "music": "tank_main",
+          "next": [
+            "tank_c1",
+            "tank_d1"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "native-audio"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proof-ending-residue",
+      "label": "Both endings leave a concrete change behind",
+      "story": {
+        "turn": "The party succeeds either upstairs through collective care or downstairs through redesigning the room around everyone.",
+        "consequence": "Future invitations include access checks, turning a birthday improvisation into lasting practice.",
+        "setup_ids": [
+          "elevator-sign",
+          "red-balloon"
+        ],
+        "payoff_ids": [
+          "elevator-sign",
+          "red-balloon"
+        ]
+      },
+      "variants": [
+        {
+          "id": "ascent-ending",
+          "node_id": "tank_c4",
+          "routes": [
+            "route-1",
+            "route-3"
+          ],
+          "background": "bg_end_a",
+          "character": null,
+          "animation": "none",
+          "transition": "fade",
+          "music": "tank_end_a",
+          "next": [
+            "end"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio",
+            "ending-capture"
+          ]
+        },
+        {
+          "id": "lobby-ending",
+          "node_id": "tank_d4",
+          "routes": [
+            "route-2",
+            "route-4"
+          ],
+          "background": "bg_end_b",
+          "character": null,
+          "animation": "none",
+          "transition": "fade",
+          "music": "tank_end_b",
+          "next": [
+            "end"
+          ],
+          "evidence": [
+            "runtime-node",
+            "accepted-input",
+            "fade-continuity",
+            "native-audio",
+            "ending-capture"
+          ]
+        }
+      ]
+    }
+  ]
+}

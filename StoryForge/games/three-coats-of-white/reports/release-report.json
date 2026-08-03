@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:34:39.057663+00:00",
+  "errors": [],
+  "release_id": "20260727T033438Z-3208c3cc513b",
+  "release_dir": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/releases/20260727T033438Z-3208c3cc513b",
+  "zip": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/releases/20260727T033438Z-3208c3cc513b.zip",
+    "bytes": 12574583,
+    "sha256": "9fe5bacf5e7f21bedfbf6c51919089ec98aa704767447e70a56fb6b36cef43fe"
+  },
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/releases/20260727T033438Z-3208c3cc513b/manifest.json",
+    "sha256": "b2f1af2e2379e4003973b1a12e776ec0eaa4f9ee6db800f118147b563d8a77e1",
+    "files": 44
+  },
+  "rom_sha256": "3208c3cc513ba9453483ee99d9db36f1198c2660d9bbc0b57c3fcac2e9a94109",
+  "audit": {
+    "cmd": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/scripts/check_wscvn_game_project.py",
+      "three-coats-of-white",
+      "--no-write"
+    ],
+    "returncode": 0,
+    "output": "Game audit check: /Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/three-coats-of-white/reports/game-audit-report.json\nGame audit passed"
+  }
+}

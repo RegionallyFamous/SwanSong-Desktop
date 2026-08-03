@@ -58,6 +58,12 @@ Evidence/
 *.swsdiag
 *.ram.bin
 
+# Story Forge now lives in this repository. Its own nested .gitignore keeps
+# ROMs, release archives, runtime mirrors, and stale evidence out of Git.
+!StoryForge/
+!StoryForge/games/
+!StoryForge/games/**
+
 # The repository's small, open-source fixtures are intentional exceptions.
 !testroms/**/*.ws
 !testroms/**/*.wsc

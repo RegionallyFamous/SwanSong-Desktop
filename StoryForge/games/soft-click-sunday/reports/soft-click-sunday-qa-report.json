@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:20:18.381374+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/projects/soft-click-sunday.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/soft-click-sunday/assets/contact_sheet.png",
+    "nodes": 74,
+    "flags": 10,
+    "backgrounds": {
+      "bg_game_room": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false
+      },
+      "bg_shop_counter": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 16,
+        "has_alpha": false
+      },
+      "bg_swap_platform": {
+        "size": [
+          224,
+          144
+        ],
+        "visible_colors": 15,
+        "has_alpha": false
+      }
+    },
+    "characters": {
+      "char_mina_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true
+      },
+      "char_mina_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true
+      },
+      "char_mina_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 15,
+        "has_alpha": true
+      },
+      "char_niko_blink": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true
+      },
+      "char_niko_neutral": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true
+      },
+      "char_niko_talk": {
+        "size": [
+          96,
+          128
+        ],
+        "visible_colors": 14,
+        "has_alpha": true
+      }
+    },
+    "text": {
+      "blocks": 423,
+      "max_pause_block_chars": 99
+    },
+    "art_direction": [
+      "Final backgrounds are 224x144, 16-color, bottom-darkened for textbox readability.",
+      "Final character frames are 96x128 with alpha and 15 visible colors.",
+      "All cart/game names are fictional; no real ROM content or commercial assets are used."
+    ]
+  }
+}

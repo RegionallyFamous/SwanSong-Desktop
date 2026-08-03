@@ -25,9 +25,9 @@ VERSIONED_ARCHIVE = re.compile(
 )
 COMMIT = re.compile(r"^[0-9a-f]{40}$")
 SPARKLE_REPOSITORY = "https://github.com/sparkle-project/Sparkle.git"
-SPARKLE_VERSION = "2.9.4"
+SPARKLE_VERSION = "2.9.5"
 SPARKLE_ARTIFACT_SHA256 = (
-    "cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"
+    "34b9b2071f3de0012eca3faa3a9290bb94e62131e9a74f6dc91514a000097a6c"
 )
 SOURCE_PROVENANCE = "SOURCE_ARCHIVE_PROVENANCE.json"
 REQUIRED_FILES = (
@@ -45,6 +45,11 @@ REQUIRED_FILES = (
     "Dependencies/sparkle-source/LICENSE",
     "Dependencies/sparkle-source/Package.swift",
     "Dependencies/sparkle-source/Sparkle/Sparkle.h",
+    "StoryForge/README.md",
+    "StoryForge/scripts/forge.py",
+    "StoryForge/scripts/forge_create_novel.py",
+    "StoryForge/skills/forge-light-novels/SKILL.md",
+    "StoryForge/skills/forge-light-novels/assets/starter/novel.json",
 )
 
 

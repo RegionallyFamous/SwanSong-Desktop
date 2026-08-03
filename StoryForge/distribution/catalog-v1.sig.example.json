@@ -1,0 +1,12 @@
+{
+  "algorithm": "Ed25519",
+  "catalogByteCount": 1234,
+  "catalogSHA256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "schemaVersion": 1,
+  "signatures": [
+    {
+      "keyID": "ed25519-example-not-trusted",
+      "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+    }
+  ]
+}

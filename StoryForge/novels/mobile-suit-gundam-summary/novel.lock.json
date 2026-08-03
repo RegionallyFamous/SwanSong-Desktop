@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "tool": "novel-project-lock",
+  "generated_at_utc": "2026-07-23T02:32:09.384730+00:00",
+  "framework": {
+    "profile": "forge-light-novels",
+    "profile_version": "3.0.0",
+    "tree_sha256": "ee085815ef4a577db7a99fb3fa24e5687dcc2439c188a2f8464fd9e3cce2fd67"
+  },
+  "manifest": {
+    "path": "novel.json",
+    "sha256": "475f58a254e36a67858f94199c9caee2425683d23efa98fbe95127c6b54140db",
+    "schema_version": 3
+  },
+  "manuscript": {
+    "sha256": "9734b4fd229ad70951047015af6157b802081afa6cd6ca9522d9edd8dca22d0b",
+    "files": [
+      {
+        "path": "manuscript/chapter-01.md",
+        "sha256": "9f36f3aaed85b893cce2b0d326ad29d2ad8c82aba2bcb3d507f92248555897d5"
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "path": "games/mobile-suit-gundam-summary/audio/01-tour_title.wav",
+      "exists": false,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "path": "games/mobile-suit-gundam-summary/audio/02-under_gravity.wav",
+      "exists": false,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "path": "games/mobile-suit-gundam-summary/audio/03-names_on_glass.wav",
+      "exists": false,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "path": "games/mobile-suit-gundam-summary/audio/04-voices_home.wav",
+      "exists": false,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "path": "reports/catalog-originality-report.json",
+      "exists": false,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "path": "reports/illustration-review/contact-sheet.png",
+      "exists": false,
+      "sha256": null,
+      "bytes": null
+    },
+    {
+      "path": "reports/illustration-set-review.json",
+      "exists": false,
+      "sha256": null,
+      "bytes": null
+    }
+  ],
+  "runtime": {
+    "python": "3.14.6",
+    "external_tools": {
+      "epubcheck": null,
+      "pdfinfo": "/opt/homebrew/bin/pdfinfo",
+      "pdftoppm": "/opt/homebrew/bin/pdftoppm",
+      "pdftotext": "/opt/homebrew/bin/pdftotext",
+      "pdffonts": "/opt/homebrew/bin/pdffonts"
+    }
+  }
+}

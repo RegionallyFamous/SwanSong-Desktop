@@ -20,16 +20,17 @@ tour. Everything else can wait until curiosity wins.
 - **Trust but verify:** inspect the privacy, source, build, signing,
   notarization, and release contracts behind the public app.
 
-The stable public download is **SwanSong 0.9.3**. It includes the private
+The stable public download is **SwanSong 0.9.4**. It includes the private
 library and player, Time Ribbon rewind, visual save states, the signed Homebrew
-Catalog, Translation Shelf, native updates, Safe Mode, and privacy-safe support
-tools. Versioned release notes remain authoritative for each build.
+Catalog, Translation Shelf, the included Story Forge writing framework, native
+updates, Safe Mode, and privacy-safe support tools. Versioned release notes
+remain authoritative for each build.
 
 ## How the pieces fit
 
 | Surface | Source owner | Relationship |
 | --- | --- | --- |
-| Story Forge novel framework | [RegionallyFamous/swansong-story-forge](https://github.com/RegionallyFamous/swansong-story-forge) | Separate schema-v3 narrative policy and tool source. Desktop invokes only its typed local allowlist against explicitly selected projects. |
+| Story Forge novel framework | [`StoryForge/`](../StoryForge) in this repository | Canonical schema-v3 narrative policy, tools, novels, visual-novel projects, and evidence. The signed app embeds a minimal hash-verified framework payload and invokes only its typed local allowlist against selected projects. |
 | SwanSong Desktop for macOS | [`RegionallyFamous/SwanSong-Desktop`](https://github.com/RegionallyFamous/SwanSong-Desktop) | This repository: SwiftUI app, library, translation workbench, C ABI, release tooling, and tests. |
 | SwanSong for Analogue Pocket | [`RegionallyFamous/swansong-core`](https://github.com/RegionallyFamous/swansong-core) | Separate FPGA project, artifacts, hardware qualification, and release lane. Desktop can merge only an immutable, authorized stable Core release onto a user-selected card; it does not build or publish the FPGA product. |
 | Yokoi hardware utilities | Yokoi Boot and Yokoi Cart Service at the immutable source revision recorded in [`SOURCE_PROVENANCE.md`](../SOURCE_PROVENANCE.md) | Separately executable GPLv3 WonderSwan programs used by Cartridge Tools. Desktop verifies their payload, license, notice, and corresponding-source location without linking them into the GPLv2 Mac executable. |
@@ -201,6 +202,7 @@ previous-version update tests. The complete operator procedure is in the
 - [Privacy](../PRIVACY.md)
 - [Support](../SUPPORT.md)
 - [Source and fixture provenance](../SOURCE_PROVENANCE.md)
+- [0.9.4 release notes](releases/0.9.4.md)
 - [0.9.3 release notes](releases/0.9.3.md)
 - [0.9.2 release notes](releases/0.9.2.md)
 - [0.9.1 release notes](releases/0.9.1.md)

@@ -1,0 +1,3567 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:50.781773+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice",
+    "thresholds": {
+      "screen": [
+        224,
+        144
+      ],
+      "character_max": [
+        96,
+        128
+      ],
+      "background_visible_colors_max": 16,
+      "character_visible_colors_max": 15,
+      "character_visible_colors_min": 6,
+      "character_tiles_max": 192,
+      "background_tiles_max": 511,
+      "alpha_coverage": [
+        0.2,
+        0.75
+      ],
+      "visible_above_textbox": [
+        0.52,
+        0.92
+      ],
+      "character_luma_stddev_min": 24.0,
+      "face_detail_box": [
+        28,
+        36,
+        68,
+        72
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "face_visible_colors_min": 4,
+      "face_luma_stddev_min": 18.0,
+      "animation_frames": [
+        "neutral",
+        "talk",
+        "blink"
+      ],
+      "hardware_char_anims": [
+        "blink",
+        "talking",
+        "talk-blink"
+      ],
+      "min_talk_frame_pixel_delta": 18,
+      "min_blink_frame_pixel_delta": 8,
+      "min_talk_face_pixel_delta": 18,
+      "min_blink_face_pixel_delta": 8,
+      "max_animation_alpha_changed": 0,
+      "max_animation_bbox_area": 1200,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_frame_center_drift": 0.04,
+      "max_frame_scale_drift": 0.08,
+      "min_scene_sprite_bg_luma_delta": 50.0,
+      "max_scene_bg_detail_under_sprite": 62.0
+    },
+    "backgrounds": {
+      "backgrounds/beacon_lens.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 8.52,
+        "sha256": "2194669d61c0235f274ba009d2b6d8b33335153998873a1080a00844a2b9f88c"
+      },
+      "backgrounds/cabin_radio.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 18.61,
+        "sha256": "afe51325e327624fbdd2843509a4a827ec78e88cd55672b659e7993b2ee93ef9"
+      },
+      "backgrounds/deck_night.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 34.45,
+        "sha256": "008130ec1ef022d47416f91cab7b77b1a1b23c50db8c1232d7a69ff42e6bd316"
+      },
+      "backgrounds/hatch_key.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 34.14,
+        "sha256": "803976b2eaddcfbada1b265106263349d2e0a96fb4d58582fba27e5d31158014"
+      },
+      "backgrounds/lighthouse_dawn.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 33.67,
+        "sha256": "11bf7f890965f407936ae4ab0ebb948e9014116112c98bc41c23f92046ecb54c"
+      },
+      "backgrounds/radio_closeup.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 17.81,
+        "sha256": "de59feeb66280259fc0405503d1064e97ad3ddcb9e9e903d4399fe7da0da608a"
+      },
+      "backgrounds/sunrise_deck.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 35.47,
+        "sha256": "3837f05bcd7fc7ba2262c5fff6ee86e0ac09d12b7f54216e0db95c0c6189c00e"
+      },
+      "backgrounds/title_night.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 23.37,
+        "sha256": "5a87520acb0017328aded07ae89d1ffb53b7fa317f0784a6222d8122acbebe3f"
+      }
+    },
+    "characters": {
+      "characters/lune_alert_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          15,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4194,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8077,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 57.12,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 81.92
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5153,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "1184747db1d996aa20e835e108ccdc4cbd7aee90020501425bbf11188c23c7a8"
+      },
+      "characters/lune_alert_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          15,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4194,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8077,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 55.27,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 79.64
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5153,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "622644adedf6dd50eeaec5cf9b2f1f5ae3e88ec73c3acf7010d0ce744b769aa3"
+      },
+      "characters/lune_alert_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          15,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4194,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8077,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 54.87,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 79.07
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5153,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "239c5945051316290e9daee7ccf0b6826339db5bb64ce6ec6151fd654085abcc"
+      },
+      "characters/lune_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          14,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4325,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8101,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 55.39,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 80.38
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5314,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "a235e5d3824a7cc8e330536fa8efa3a9b42b3af3db2a0255f23905f2dd8089c2"
+      },
+      "characters/lune_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          14,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4325,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8101,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 53.41,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 77.58
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5314,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "8b8bc6bc1d4383da379a01bf5a7d6007f589e2f5ec7dd47008f294ff82ad06aa"
+      },
+      "characters/lune_radio_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          12,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4272,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8072,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 55.4,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 81.86
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5250,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "5e51f708700e5762f6a4ffa975fe1262bb1de5f6581b974e06bfa9912be1eb20"
+      },
+      "characters/lune_radio_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          12,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4272,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8072,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 53.53,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 79.43
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5250,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "c017146d77cc7ce7e293434829bbc4dd90b420ffdbeef8df3452a1f603ac7982"
+      },
+      "characters/lune_radio_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          12,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4272,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8072,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 53.58,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 79.67
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5250,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "e3bd1f6141c1ce54f07f43f16e98aba763349b1141938ad779a3b434f4681ef1"
+      },
+      "characters/lune_resolved_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          14,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4301,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8108,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 57.07,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 82.92
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5285,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "38c3556ee5eec67ba65fb4f1fc75f0cd1bdde343873ccfa4e0124f13db89bae3"
+      },
+      "characters/lune_resolved_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          14,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4301,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8108,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 55.21,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 80.49
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5285,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "2a971ae5c8bf012b00bed383afdf959eb53cb53e528aeb1003140af63211fbec"
+      },
+      "characters/lune_resolved_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          14,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4301,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8108,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 54.75,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 79.92
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5285,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "4dedd6bf1d05ba1cabf4b83239ba4b5334b2475b869846beff680d4052eaeb36"
+      },
+      "characters/lune_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          14,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4325,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8101,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 52.99,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 77.0
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5314,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "af4337d299954138ef55025a1039104bd46c4e4d9c3b65b4fec71226999fad1c"
+      },
+      "characters/lune_warm_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          15,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.42,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8084,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 57.72,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 81.85
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5161,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "515973125c581ed8a8ca3a1f7bc74fdc5fe2f057ac45fc20aaab28bb42b8d661"
+      },
+      "characters/lune_warm_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          15,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.42,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8084,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 55.85,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 79.62
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5161,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "61dffc4f8cadc549d625350abfe00a43c79d4f911efd38f3fff0a8d43de53319"
+      },
+      "characters/lune_warm_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          15,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.42,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8084,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 55.46,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 79.18
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5161,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "e1b4a94e4a41f241b1bbbc53e1f6e78a0c9d94c0f1ee9fc772f5e9235f4b7093"
+      },
+      "characters/mira_action_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          14,
+          13,
+          93,
+          111
+        ],
+        "alpha_coverage": 0.4282,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.729,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 54.42,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 74.73
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5262,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "ac424da267704f6fc40cf5f28ede0f75d4d08b793afa41231829f10db16054d5"
+      },
+      "characters/mira_action_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          14,
+          13,
+          93,
+          111
+        ],
+        "alpha_coverage": 0.4282,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.729,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 53.71,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 73.38
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5262,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "9e65911aa8a771b64885244b6edc1dbaae6c9a72ac39c7acd4c783f7b8750a66"
+      },
+      "characters/mira_action_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          14,
+          13,
+          93,
+          111
+        ],
+        "alpha_coverage": 0.4282,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.729,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 53.24,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 72.69
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5262,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "c3435ffe8aee3ade0ad5ded510b20fb4dc6e648bfcb9ef78999b36c0ff9cbd52"
+      },
+      "characters/mira_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          13,
+          86,
+          101
+        ],
+        "alpha_coverage": 0.4318,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.827,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 62.52,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 87.38
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5306,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "094c4afade39d2d55d58aa93aac41c182cc6615abd1f76ad7d1c67e5d34f777b"
+      },
+      "characters/mira_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          13,
+          86,
+          101
+        ],
+        "alpha_coverage": 0.4318,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.827,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 61.16,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 86.2
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5306,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "72c0d4efee5fb56a006cd5d1cbdec17105a9a582586f0987a5f58136a3ff27c2"
+      },
+      "characters/mira_resolved_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          8,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.462,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8325,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 62.9,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 87.75
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5677,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "91d2c01824f94d15e4f1d01d493c47f9b7a5e96e51a7c14660a0178f4a0d0a35"
+      },
+      "characters/mira_resolved_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          8,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.462,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8325,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 61.71,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 86.76
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5677,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "926845e15c8d02d826dbbc3d79afd50a2fefbbfe0b278eac541db71605140103"
+      },
+      "characters/mira_resolved_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          8,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.462,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8325,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 61.41,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 13,
+          "luma_stddev": 86.37
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5677,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "f05bbe62aeefd1c082cd9e744e6d8a3e3a94eda011d450c2651ce7ac46c566e6"
+      },
+      "characters/mira_smile_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          8,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4612,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8324,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 61.96,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 87.04
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5667,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "d887a748a020ecb8fbbb44598d8d8617cd1979bffc926df20d40959ba1084b14"
+      },
+      "characters/mira_smile_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          8,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4612,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8324,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 60.78,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 85.97
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5667,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "f8a90ab0dfb9ddebc58a95ff3833d1c59562d9808c32e10b123ce573f580a1b2"
+      },
+      "characters/mira_smile_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          8,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4612,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8324,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 60.52,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 85.65
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5667,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "d7d5ce9eb94a91eee691b47d04419a7862191fcf0b8693d7e52f5bccf303023f"
+      },
+      "characters/mira_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          13,
+          86,
+          101
+        ],
+        "alpha_coverage": 0.4318,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.827,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 60.78,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 85.69
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5306,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "b19662ede5f591d637e10cff01c476dcd4d637de154b435e4d706b644eb8063e"
+      },
+      "characters/mira_worried_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          7,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4674,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8343,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 61.81,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 86.47
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5744,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "6bb816b5f4a2bee6c2cce0cb0808fe7b9be8104b09738752d70e0e8dceb16c2b"
+      },
+      "characters/mira_worried_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          7,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4674,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8343,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 60.69,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 85.4
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5744,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "5f34ff83a3da73e7a74bd59760f0c0f2ed2131d6a79d5d67f377bb303e0b1ede"
+      },
+      "characters/mira_worried_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          8,
+          7,
+          87,
+          101
+        ],
+        "alpha_coverage": 0.4674,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.8343,
+        "darkest_visible_luma": 1.23,
+        "visible_luma_stddev": 60.82,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 85.53
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5744,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "e96fbf98f6fda4955d4b06f7938d9eb3b5c5845201c0c20bc8023f7af402bc04"
+      }
+    },
+    "sprite_families": {
+      "lune": {
+        "body": "lune",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                14,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4492
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6797
+              ],
+              "bbox_area_ratio": 0.5593
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                14,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4492
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6797
+              ],
+              "bbox_area_ratio": 0.5593
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 21,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                40,
+                62,
+                48,
+                67
+              ],
+              "changed_bbox_area": 40
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 21,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                12,
+                26,
+                20,
+                31
+              ],
+              "changed_bbox_area": 40
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                14,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4492
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6797
+              ],
+              "bbox_area_ratio": 0.5593
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 72,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                36,
+                45,
+                64,
+                51
+              ],
+              "changed_bbox_area": 168
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 72,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                12,
+                25,
+                40,
+                31
+              ],
+              "changed_bbox_area": 168
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      },
+      "lune_alert": {
+        "body": "lune_alert",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_alert_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                15,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4531
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6719
+              ],
+              "bbox_area_ratio": 0.5529
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_alert_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                15,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4531
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6719
+              ],
+              "bbox_area_ratio": 0.5529
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 20,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                40,
+                62,
+                49,
+                67
+              ],
+              "changed_bbox_area": 45
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 20,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                12,
+                26,
+                21,
+                31
+              ],
+              "changed_bbox_area": 45
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_alert_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                15,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4531
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6719
+              ],
+              "bbox_area_ratio": 0.5529
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 67,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                36,
+                45,
+                64,
+                51
+              ],
+              "changed_bbox_area": 168
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 67,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                12,
+                25,
+                40,
+                31
+              ],
+              "changed_bbox_area": 168
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      },
+      "lune_radio": {
+        "body": "lune_radio",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_radio_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                12,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4414
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6953
+              ],
+              "bbox_area_ratio": 0.5722
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_radio_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                12,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4414
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6953
+              ],
+              "bbox_area_ratio": 0.5722
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 24,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                34,
+                56,
+                41,
+                61
+              ],
+              "changed_bbox_area": 35
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 24,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                6,
+                20,
+                13,
+                25
+              ],
+              "changed_bbox_area": 35
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_radio_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                12,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4414
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6953
+              ],
+              "bbox_area_ratio": 0.5722
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 67,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                30,
+                43,
+                50,
+                50
+              ],
+              "changed_bbox_area": 140
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 67,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                6,
+                23,
+                26,
+                30
+              ],
+              "changed_bbox_area": 140
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      },
+      "lune_resolved": {
+        "body": "lune_resolved",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_resolved_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                14,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4492
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6797
+              ],
+              "bbox_area_ratio": 0.5593
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_resolved_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                14,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4492
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6797
+              ],
+              "bbox_area_ratio": 0.5593
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 19,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                40,
+                62,
+                49,
+                67
+              ],
+              "changed_bbox_area": 45
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 19,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                12,
+                26,
+                21,
+                31
+              ],
+              "changed_bbox_area": 45
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_resolved_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                14,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4492
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6797
+              ],
+              "bbox_area_ratio": 0.5593
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 68,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                36,
+                45,
+                64,
+                51
+              ],
+              "changed_bbox_area": 168
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 68,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                12,
+                25,
+                40,
+                31
+              ],
+              "changed_bbox_area": 168
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      },
+      "lune_warm": {
+        "body": "lune_warm",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_warm_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                15,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4531
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6719
+              ],
+              "bbox_area_ratio": 0.5529
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_warm_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                15,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4531
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6719
+              ],
+              "bbox_area_ratio": 0.5529
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 23,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                40,
+                62,
+                49,
+                67
+              ],
+              "changed_bbox_area": 45
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 23,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                12,
+                26,
+                21,
+                31
+              ],
+              "changed_bbox_area": 45
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/lune_warm_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                15,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4531
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.6719
+              ],
+              "bbox_area_ratio": 0.5529
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 70,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                36,
+                45,
+                64,
+                51
+              ],
+              "changed_bbox_area": 168
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 70,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                12,
+                25,
+                40,
+                31
+              ],
+              "changed_bbox_area": 168
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      },
+      "mira": {
+        "body": "mira",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                13,
+                86,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4896,
+                0.4453
+              ],
+              "bbox_size_norm": [
+                0.8125,
+                0.6875
+              ],
+              "bbox_area_ratio": 0.5586
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                13,
+                86,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4896,
+                0.4453
+              ],
+              "bbox_size_norm": [
+                0.8125,
+                0.6875
+              ],
+              "bbox_area_ratio": 0.5586
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 20,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                42,
+                62,
+                50,
+                67
+              ],
+              "changed_bbox_area": 40
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 20,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                14,
+                26,
+                22,
+                31
+              ],
+              "changed_bbox_area": 40
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                13,
+                86,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4896,
+                0.4453
+              ],
+              "bbox_size_norm": [
+                0.8125,
+                0.6875
+              ],
+              "bbox_area_ratio": 0.5586
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 57,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                37,
+                45,
+                64,
+                51
+              ],
+              "changed_bbox_area": 162
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 57,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                13,
+                25,
+                40,
+                31
+              ],
+              "changed_bbox_area": 162
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      },
+      "mira_action": {
+        "body": "mira_action",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_action_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                14,
+                13,
+                93,
+                111
+              ],
+              "bbox_center_norm": [
+                0.5573,
+                0.4844
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.7656
+              ],
+              "bbox_area_ratio": 0.63
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_action_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                14,
+                13,
+                93,
+                111
+              ],
+              "bbox_center_norm": [
+                0.5573,
+                0.4844
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.7656
+              ],
+              "bbox_area_ratio": 0.63
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 18,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                35,
+                53,
+                42,
+                57
+              ],
+              "changed_bbox_area": 28
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 18,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                7,
+                17,
+                14,
+                21
+              ],
+              "changed_bbox_area": 28
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_action_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                14,
+                13,
+                93,
+                111
+              ],
+              "bbox_center_norm": [
+                0.5573,
+                0.4844
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.7656
+              ],
+              "bbox_area_ratio": 0.63
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 36,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                30,
+                43,
+                47,
+                50
+              ],
+              "changed_bbox_area": 119
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 36,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                6,
+                23,
+                23,
+                30
+              ],
+              "changed_bbox_area": 119
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      },
+      "mira_resolved": {
+        "body": "mira_resolved",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_resolved_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                8,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4258
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.7266
+              ],
+              "bbox_area_ratio": 0.5979
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_resolved_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                8,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4258
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.7266
+              ],
+              "bbox_area_ratio": 0.5979
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 19,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                37,
+                58,
+                44,
+                63
+              ],
+              "changed_bbox_area": 35
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 19,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                9,
+                22,
+                16,
+                27
+              ],
+              "changed_bbox_area": 35
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_resolved_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                8,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4258
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.7266
+              ],
+              "bbox_area_ratio": 0.5979
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 53,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                37,
+                45,
+                64,
+                51
+              ],
+              "changed_bbox_area": 162
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 53,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                13,
+                25,
+                40,
+                31
+              ],
+              "changed_bbox_area": 162
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      },
+      "mira_smile": {
+        "body": "mira_smile",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_smile_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                8,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4258
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.7266
+              ],
+              "bbox_area_ratio": 0.5979
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_smile_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                8,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4258
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.7266
+              ],
+              "bbox_area_ratio": 0.5979
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 19,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                37,
+                58,
+                44,
+                63
+              ],
+              "changed_bbox_area": 35
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 19,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                9,
+                22,
+                16,
+                27
+              ],
+              "changed_bbox_area": 35
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_smile_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                8,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4258
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.7266
+              ],
+              "bbox_area_ratio": 0.5979
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 52,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                37,
+                45,
+                64,
+                51
+              ],
+              "changed_bbox_area": 162
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 52,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                13,
+                25,
+                40,
+                31
+              ],
+              "changed_bbox_area": 162
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      },
+      "mira_worried": {
+        "body": "mira_worried",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_worried_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                7,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4219
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.7344
+              ],
+              "bbox_area_ratio": 0.6043
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_worried_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                7,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4219
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.7344
+              ],
+              "bbox_area_ratio": 0.6043
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 23,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                37,
+                58,
+                44,
+                63
+              ],
+              "changed_bbox_area": 35
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 23,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                9,
+                22,
+                16,
+                27
+              ],
+              "changed_bbox_area": 35
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/characters/mira_worried_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                8,
+                7,
+                87,
+                101
+              ],
+              "bbox_center_norm": [
+                0.4948,
+                0.4219
+              ],
+              "bbox_size_norm": [
+                0.8229,
+                0.7344
+              ],
+              "bbox_area_ratio": 0.6043
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 52,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                37,
+                45,
+                64,
+                51
+              ],
+              "changed_bbox_area": 162
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 52,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                13,
+                25,
+                40,
+                31
+              ],
+              "changed_bbox_area": 162
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      }
+    },
+    "sprite_approvals": {
+      "audition_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/assets/signal-before-dawn-slice/auditions",
+      "approval_count": 6,
+      "covered_output_count": 30,
+      "covered_outputs": {
+        "characters/lune_alert_blink.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_expression_approval.json",
+          "sha256": "1184747db1d996aa20e835e108ccdc4cbd7aee90020501425bbf11188c23c7a8"
+        },
+        "characters/lune_alert_neutral.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_expression_approval.json",
+          "sha256": "622644adedf6dd50eeaec5cf9b2f1f5ae3e88ec73c3acf7010d0ce744b769aa3"
+        },
+        "characters/lune_alert_talk.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_expression_approval.json",
+          "sha256": "239c5945051316290e9daee7ccf0b6826339db5bb64ce6ec6151fd654085abcc"
+        },
+        "characters/lune_blink.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_base_approval.json",
+          "sha256": "a235e5d3824a7cc8e330536fa8efa3a9b42b3af3db2a0255f23905f2dd8089c2"
+        },
+        "characters/lune_neutral.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_base_approval.json",
+          "sha256": "8b8bc6bc1d4383da379a01bf5a7d6007f589e2f5ec7dd47008f294ff82ad06aa"
+        },
+        "characters/lune_radio_blink.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_radio_pose_approval.json",
+          "sha256": "5e51f708700e5762f6a4ffa975fe1262bb1de5f6581b974e06bfa9912be1eb20"
+        },
+        "characters/lune_radio_neutral.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_radio_pose_approval.json",
+          "sha256": "c017146d77cc7ce7e293434829bbc4dd90b420ffdbeef8df3452a1f603ac7982"
+        },
+        "characters/lune_radio_talk.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_radio_pose_approval.json",
+          "sha256": "e3bd1f6141c1ce54f07f43f16e98aba763349b1141938ad779a3b434f4681ef1"
+        },
+        "characters/lune_resolved_blink.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_expression_approval.json",
+          "sha256": "38c3556ee5eec67ba65fb4f1fc75f0cd1bdde343873ccfa4e0124f13db89bae3"
+        },
+        "characters/lune_resolved_neutral.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_expression_approval.json",
+          "sha256": "2a971ae5c8bf012b00bed383afdf959eb53cb53e528aeb1003140af63211fbec"
+        },
+        "characters/lune_resolved_talk.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_expression_approval.json",
+          "sha256": "4dedd6bf1d05ba1cabf4b83239ba4b5334b2475b869846beff680d4052eaeb36"
+        },
+        "characters/lune_talk.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_base_approval.json",
+          "sha256": "af4337d299954138ef55025a1039104bd46c4e4d9c3b65b4fec71226999fad1c"
+        },
+        "characters/lune_warm_blink.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_expression_approval.json",
+          "sha256": "515973125c581ed8a8ca3a1f7bc74fdc5fe2f057ac45fc20aaab28bb42b8d661"
+        },
+        "characters/lune_warm_neutral.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_expression_approval.json",
+          "sha256": "61dffc4f8cadc549d625350abfe00a43c79d4f911efd38f3fff0a8d43de53319"
+        },
+        "characters/lune_warm_talk.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/lune_expression_approval.json",
+          "sha256": "e1b4a94e4a41f241b1bbbc53e1f6e78a0c9d94c0f1ee9fc772f5e9235f4b7093"
+        },
+        "characters/mira_action_blink.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_action_pose_approval.json",
+          "sha256": "ac424da267704f6fc40cf5f28ede0f75d4d08b793afa41231829f10db16054d5"
+        },
+        "characters/mira_action_neutral.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_action_pose_approval.json",
+          "sha256": "9e65911aa8a771b64885244b6edc1dbaae6c9a72ac39c7acd4c783f7b8750a66"
+        },
+        "characters/mira_action_talk.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_action_pose_approval.json",
+          "sha256": "c3435ffe8aee3ade0ad5ded510b20fb4dc6e648bfcb9ef78999b36c0ff9cbd52"
+        },
+        "characters/mira_blink.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_base_approval.json",
+          "sha256": "094c4afade39d2d55d58aa93aac41c182cc6615abd1f76ad7d1c67e5d34f777b"
+        },
+        "characters/mira_neutral.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_base_approval.json",
+          "sha256": "72c0d4efee5fb56a006cd5d1cbdec17105a9a582586f0987a5f58136a3ff27c2"
+        },
+        "characters/mira_resolved_blink.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_expression_approval.json",
+          "sha256": "91d2c01824f94d15e4f1d01d493c47f9b7a5e96e51a7c14660a0178f4a0d0a35"
+        },
+        "characters/mira_resolved_neutral.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_expression_approval.json",
+          "sha256": "926845e15c8d02d826dbbc3d79afd50a2fefbbfe0b278eac541db71605140103"
+        },
+        "characters/mira_resolved_talk.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_expression_approval.json",
+          "sha256": "f05bbe62aeefd1c082cd9e744e6d8a3e3a94eda011d450c2651ce7ac46c566e6"
+        },
+        "characters/mira_smile_blink.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_expression_approval.json",
+          "sha256": "d887a748a020ecb8fbbb44598d8d8617cd1979bffc926df20d40959ba1084b14"
+        },
+        "characters/mira_smile_neutral.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_expression_approval.json",
+          "sha256": "f8a90ab0dfb9ddebc58a95ff3833d1c59562d9808c32e10b123ce573f580a1b2"
+        },
+        "characters/mira_smile_talk.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_expression_approval.json",
+          "sha256": "d7d5ce9eb94a91eee691b47d04419a7862191fcf0b8693d7e52f5bccf303023f"
+        },
+        "characters/mira_talk.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_base_approval.json",
+          "sha256": "b19662ede5f591d637e10cff01c476dcd4d637de154b435e4d706b644eb8063e"
+        },
+        "characters/mira_worried_blink.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_expression_approval.json",
+          "sha256": "6bb816b5f4a2bee6c2cce0cb0808fe7b9be8104b09738752d70e0e8dceb16c2b"
+        },
+        "characters/mira_worried_neutral.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_expression_approval.json",
+          "sha256": "5f34ff83a3da73e7a74bd59760f0c0f2ed2131d6a79d5d67f377bb303e0b1ede"
+        },
+        "characters/mira_worried_talk.png": {
+          "approval": "assets/signal-before-dawn-slice/auditions/mira_expression_approval.json",
+          "sha256": "e96fbf98f6fda4955d4b06f7938d9eb3b5c5845201c0c20bc8023f7af402bc04"
+        }
+      },
+      "missing_outputs": [],
+      "skipped": false
+    },
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/projects/signal-before-dawn-slice.wscvn.json",
+      "ok": true,
+      "assets": {
+        "background_asset_count": 8,
+        "character_asset_count": 30,
+        "backgrounds": {
+          "bg_title_night": {
+            "origName": "title_night.png",
+            "rel_path": "backgrounds/title_night.png",
+            "exists": true
+          },
+          "bg_deck_night": {
+            "origName": "deck_night.png",
+            "rel_path": "backgrounds/deck_night.png",
+            "exists": true
+          },
+          "bg_cabin_radio": {
+            "origName": "cabin_radio.png",
+            "rel_path": "backgrounds/cabin_radio.png",
+            "exists": true
+          },
+          "bg_lighthouse_dawn": {
+            "origName": "lighthouse_dawn.png",
+            "rel_path": "backgrounds/lighthouse_dawn.png",
+            "exists": true
+          },
+          "bg_radio_closeup": {
+            "origName": "radio_closeup.png",
+            "rel_path": "backgrounds/radio_closeup.png",
+            "exists": true
+          },
+          "bg_hatch_key": {
+            "origName": "hatch_key.png",
+            "rel_path": "backgrounds/hatch_key.png",
+            "exists": true
+          },
+          "bg_beacon_lens": {
+            "origName": "beacon_lens.png",
+            "rel_path": "backgrounds/beacon_lens.png",
+            "exists": true
+          },
+          "bg_sunrise_deck": {
+            "origName": "sunrise_deck.png",
+            "rel_path": "backgrounds/sunrise_deck.png",
+            "exists": true
+          }
+        },
+        "characters": {
+          "char_mira_neutral": {
+            "origName": "mira_neutral.png",
+            "rel_path": "characters/mira_neutral.png",
+            "exists": true
+          },
+          "char_mira_talk": {
+            "origName": "mira_talk.png",
+            "rel_path": "characters/mira_talk.png",
+            "exists": true
+          },
+          "char_mira_blink": {
+            "origName": "mira_blink.png",
+            "rel_path": "characters/mira_blink.png",
+            "exists": true
+          },
+          "char_lune_neutral": {
+            "origName": "lune_neutral.png",
+            "rel_path": "characters/lune_neutral.png",
+            "exists": true
+          },
+          "char_lune_talk": {
+            "origName": "lune_talk.png",
+            "rel_path": "characters/lune_talk.png",
+            "exists": true
+          },
+          "char_lune_blink": {
+            "origName": "lune_blink.png",
+            "rel_path": "characters/lune_blink.png",
+            "exists": true
+          },
+          "char_mira_worried_neutral": {
+            "origName": "mira_worried_neutral.png",
+            "rel_path": "characters/mira_worried_neutral.png",
+            "exists": true
+          },
+          "char_mira_worried_talk": {
+            "origName": "mira_worried_talk.png",
+            "rel_path": "characters/mira_worried_talk.png",
+            "exists": true
+          },
+          "char_mira_worried_blink": {
+            "origName": "mira_worried_blink.png",
+            "rel_path": "characters/mira_worried_blink.png",
+            "exists": true
+          },
+          "char_mira_resolved_neutral": {
+            "origName": "mira_resolved_neutral.png",
+            "rel_path": "characters/mira_resolved_neutral.png",
+            "exists": true
+          },
+          "char_mira_resolved_talk": {
+            "origName": "mira_resolved_talk.png",
+            "rel_path": "characters/mira_resolved_talk.png",
+            "exists": true
+          },
+          "char_mira_resolved_blink": {
+            "origName": "mira_resolved_blink.png",
+            "rel_path": "characters/mira_resolved_blink.png",
+            "exists": true
+          },
+          "char_mira_smile_neutral": {
+            "origName": "mira_smile_neutral.png",
+            "rel_path": "characters/mira_smile_neutral.png",
+            "exists": true
+          },
+          "char_mira_smile_talk": {
+            "origName": "mira_smile_talk.png",
+            "rel_path": "characters/mira_smile_talk.png",
+            "exists": true
+          },
+          "char_mira_smile_blink": {
+            "origName": "mira_smile_blink.png",
+            "rel_path": "characters/mira_smile_blink.png",
+            "exists": true
+          },
+          "char_lune_alert_neutral": {
+            "origName": "lune_alert_neutral.png",
+            "rel_path": "characters/lune_alert_neutral.png",
+            "exists": true
+          },
+          "char_lune_alert_talk": {
+            "origName": "lune_alert_talk.png",
+            "rel_path": "characters/lune_alert_talk.png",
+            "exists": true
+          },
+          "char_lune_alert_blink": {
+            "origName": "lune_alert_blink.png",
+            "rel_path": "characters/lune_alert_blink.png",
+            "exists": true
+          },
+          "char_lune_warm_neutral": {
+            "origName": "lune_warm_neutral.png",
+            "rel_path": "characters/lune_warm_neutral.png",
+            "exists": true
+          },
+          "char_lune_warm_talk": {
+            "origName": "lune_warm_talk.png",
+            "rel_path": "characters/lune_warm_talk.png",
+            "exists": true
+          },
+          "char_lune_warm_blink": {
+            "origName": "lune_warm_blink.png",
+            "rel_path": "characters/lune_warm_blink.png",
+            "exists": true
+          },
+          "char_lune_resolved_neutral": {
+            "origName": "lune_resolved_neutral.png",
+            "rel_path": "characters/lune_resolved_neutral.png",
+            "exists": true
+          },
+          "char_lune_resolved_talk": {
+            "origName": "lune_resolved_talk.png",
+            "rel_path": "characters/lune_resolved_talk.png",
+            "exists": true
+          },
+          "char_lune_resolved_blink": {
+            "origName": "lune_resolved_blink.png",
+            "rel_path": "characters/lune_resolved_blink.png",
+            "exists": true
+          },
+          "char_mira_action_neutral": {
+            "origName": "mira_action_neutral.png",
+            "rel_path": "characters/mira_action_neutral.png",
+            "exists": true
+          },
+          "char_mira_action_talk": {
+            "origName": "mira_action_talk.png",
+            "rel_path": "characters/mira_action_talk.png",
+            "exists": true
+          },
+          "char_mira_action_blink": {
+            "origName": "mira_action_blink.png",
+            "rel_path": "characters/mira_action_blink.png",
+            "exists": true
+          },
+          "char_lune_radio_neutral": {
+            "origName": "lune_radio_neutral.png",
+            "rel_path": "characters/lune_radio_neutral.png",
+            "exists": true
+          },
+          "char_lune_radio_talk": {
+            "origName": "lune_radio_talk.png",
+            "rel_path": "characters/lune_radio_talk.png",
+            "exists": true
+          },
+          "char_lune_radio_blink": {
+            "origName": "lune_radio_blink.png",
+            "rel_path": "characters/lune_radio_blink.png",
+            "exists": true
+          }
+        }
+      },
+      "scene_wiring": {
+        "scene_count": 35,
+        "animated_scene_count": 35,
+        "character_reference_count": 105,
+        "background_reference_count": 35,
+        "scene_visual_count": 35,
+        "scenes": [
+          {
+            "id": "opening_watch",
+            "bgImageId": "bg_deck_night",
+            "charId": "char_mira_action_neutral",
+            "char2Id": "char_mira_action_talk",
+            "char3Id": "char_mira_action_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_action",
+            "expected_char2Id": "char_mira_action_talk",
+            "expected_char3Id": "char_mira_action_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3836,
+            "sprite_bg_luma_delta": 64.5,
+            "background_detail_under_sprite": 53.17
+          },
+          {
+            "id": "deck_open",
+            "bgImageId": "bg_deck_night",
+            "charId": "char_mira_worried_neutral",
+            "char2Id": "char_mira_worried_talk",
+            "char3Id": "char_mira_worried_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_worried",
+            "expected_char2Id": "char_mira_worried_talk",
+            "expected_char3Id": "char_mira_worried_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4792,
+            "sprite_bg_luma_delta": 74.66,
+            "background_detail_under_sprite": 54.56
+          },
+          {
+            "id": "lune_enters",
+            "bgImageId": "bg_radio_closeup",
+            "charId": "char_lune_radio_neutral",
+            "char2Id": "char_lune_radio_talk",
+            "char3Id": "char_lune_radio_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_radio",
+            "expected_char2Id": "char_lune_radio_talk",
+            "expected_char3Id": "char_lune_radio_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4238,
+            "sprite_bg_luma_delta": 52.97,
+            "background_detail_under_sprite": 21.85
+          },
+          {
+            "id": "radio_tune",
+            "bgImageId": "bg_radio_closeup",
+            "charId": "char_mira_resolved_neutral",
+            "char2Id": "char_mira_resolved_talk",
+            "char3Id": "char_mira_resolved_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_resolved",
+            "expected_char2Id": "char_mira_resolved_talk",
+            "expected_char3Id": "char_mira_resolved_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4726,
+            "sprite_bg_luma_delta": 67.05,
+            "background_detail_under_sprite": 22.22
+          },
+          {
+            "id": "locker",
+            "bgImageId": "bg_cabin_radio",
+            "charId": "char_lune_alert_neutral",
+            "char2Id": "char_lune_alert_talk",
+            "char3Id": "char_lune_alert_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_alert",
+            "expected_char2Id": "char_lune_alert_talk",
+            "expected_char3Id": "char_lune_alert_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4162,
+            "sprite_bg_luma_delta": 60.78,
+            "background_detail_under_sprite": 27.0
+          },
+          {
+            "id": "wake_lune",
+            "bgImageId": "bg_deck_night",
+            "charId": "char_lune_radio_neutral",
+            "char2Id": "char_lune_radio_talk",
+            "char3Id": "char_lune_radio_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_radio",
+            "expected_char2Id": "char_lune_radio_talk",
+            "expected_char3Id": "char_lune_radio_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4238,
+            "sprite_bg_luma_delta": 62.93,
+            "background_detail_under_sprite": 55.09
+          },
+          {
+            "id": "quiet_deck",
+            "bgImageId": "bg_deck_night",
+            "charId": "char_mira_worried_neutral",
+            "char2Id": "char_mira_worried_talk",
+            "char3Id": "char_mira_worried_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_worried",
+            "expected_char2Id": "char_mira_worried_talk",
+            "expected_char3Id": "char_mira_worried_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4792,
+            "sprite_bg_luma_delta": 74.66,
+            "background_detail_under_sprite": 54.56
+          },
+          {
+            "id": "radio_second",
+            "bgImageId": "bg_radio_closeup",
+            "charId": "char_mira_resolved_neutral",
+            "char2Id": "char_mira_resolved_talk",
+            "char3Id": "char_mira_resolved_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_resolved",
+            "expected_char2Id": "char_mira_resolved_talk",
+            "expected_char3Id": "char_mira_resolved_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4726,
+            "sprite_bg_luma_delta": 67.05,
+            "background_detail_under_sprite": 22.22
+          },
+          {
+            "id": "locker_second",
+            "bgImageId": "bg_cabin_radio",
+            "charId": "char_lune_resolved_neutral",
+            "char2Id": "char_lune_resolved_talk",
+            "char3Id": "char_lune_resolved_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_resolved",
+            "expected_char2Id": "char_lune_resolved_talk",
+            "expected_char3Id": "char_lune_resolved_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4285,
+            "sprite_bg_luma_delta": 62.24,
+            "background_detail_under_sprite": 45.85
+          },
+          {
+            "id": "lune_second",
+            "bgImageId": "bg_deck_night",
+            "charId": "char_lune_radio_neutral",
+            "char2Id": "char_lune_radio_talk",
+            "char3Id": "char_lune_radio_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_radio",
+            "expected_char2Id": "char_lune_radio_talk",
+            "expected_char3Id": "char_lune_radio_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4238,
+            "sprite_bg_luma_delta": 51.2,
+            "background_detail_under_sprite": 57.33
+          },
+          {
+            "id": "radio_third",
+            "bgImageId": "bg_radio_closeup",
+            "charId": "char_mira_resolved_neutral",
+            "char2Id": "char_mira_resolved_talk",
+            "char3Id": "char_mira_resolved_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_resolved",
+            "expected_char2Id": "char_mira_resolved_talk",
+            "expected_char3Id": "char_mira_resolved_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4726,
+            "sprite_bg_luma_delta": 67.05,
+            "background_detail_under_sprite": 22.22
+          },
+          {
+            "id": "locker_third",
+            "bgImageId": "bg_cabin_radio",
+            "charId": "char_lune_resolved_neutral",
+            "char2Id": "char_lune_resolved_talk",
+            "char3Id": "char_lune_resolved_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_resolved",
+            "expected_char2Id": "char_lune_resolved_talk",
+            "expected_char3Id": "char_lune_resolved_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4285,
+            "sprite_bg_luma_delta": 62.24,
+            "background_detail_under_sprite": 45.85
+          },
+          {
+            "id": "lune_third",
+            "bgImageId": "bg_deck_night",
+            "charId": "char_lune_radio_neutral",
+            "char2Id": "char_lune_radio_talk",
+            "char3Id": "char_lune_radio_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_radio",
+            "expected_char2Id": "char_lune_radio_talk",
+            "expected_char3Id": "char_lune_radio_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4238,
+            "sprite_bg_luma_delta": 51.2,
+            "background_detail_under_sprite": 57.33
+          },
+          {
+            "id": "lighthouse_signal",
+            "bgImageId": "bg_lighthouse_dawn",
+            "charId": "char_mira_resolved_neutral",
+            "char2Id": "char_mira_resolved_talk",
+            "char3Id": "char_mira_resolved_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_resolved",
+            "expected_char2Id": "char_mira_resolved_talk",
+            "expected_char3Id": "char_mira_resolved_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4726,
+            "sprite_bg_luma_delta": 168.02,
+            "background_detail_under_sprite": 20.42
+          },
+          {
+            "id": "signal_key_clue",
+            "bgImageId": "bg_lighthouse_dawn",
+            "charId": "char_mira_resolved_neutral",
+            "char2Id": "char_mira_resolved_talk",
+            "char3Id": "char_mira_resolved_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_resolved",
+            "expected_char2Id": "char_mira_resolved_talk",
+            "expected_char3Id": "char_mira_resolved_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4726,
+            "sprite_bg_luma_delta": 168.02,
+            "background_detail_under_sprite": 20.42
+          },
+          {
+            "id": "all_clues",
+            "bgImageId": "bg_lighthouse_dawn",
+            "charId": "char_mira_resolved_neutral",
+            "char2Id": "char_mira_resolved_talk",
+            "char3Id": "char_mira_resolved_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_resolved",
+            "expected_char2Id": "char_mira_resolved_talk",
+            "expected_char3Id": "char_mira_resolved_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4726,
+            "sprite_bg_luma_delta": 168.02,
+            "background_detail_under_sprite": 20.42
+          },
+          {
+            "id": "together_answer",
+            "bgImageId": "bg_beacon_lens",
+            "charId": "char_lune_warm_neutral",
+            "char2Id": "char_lune_warm_talk",
+            "char3Id": "char_lune_warm_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_warm",
+            "expected_char2Id": "char_lune_warm_talk",
+            "expected_char3Id": "char_lune_warm_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 59.48,
+            "background_detail_under_sprite": 5.18
+          },
+          {
+            "id": "signal_lune_clue",
+            "bgImageId": "bg_lighthouse_dawn",
+            "charId": "char_lune_radio_neutral",
+            "char2Id": "char_lune_radio_talk",
+            "char3Id": "char_lune_radio_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_radio",
+            "expected_char2Id": "char_lune_radio_talk",
+            "expected_char3Id": "char_lune_radio_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4238,
+            "sprite_bg_luma_delta": 158.21,
+            "background_detail_under_sprite": 22.94
+          },
+          {
+            "id": "under_hatch",
+            "bgImageId": "bg_hatch_key",
+            "charId": "char_lune_alert_neutral",
+            "char2Id": "char_lune_alert_talk",
+            "char3Id": "char_lune_alert_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_alert",
+            "expected_char2Id": "char_lune_alert_talk",
+            "expected_char3Id": "char_lune_alert_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4162,
+            "sprite_bg_luma_delta": 55.22,
+            "background_detail_under_sprite": 38.55
+          },
+          {
+            "id": "key_lune_clue",
+            "bgImageId": "bg_cabin_radio",
+            "charId": "char_lune_warm_neutral",
+            "char2Id": "char_lune_warm_talk",
+            "char3Id": "char_lune_warm_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_warm",
+            "expected_char2Id": "char_lune_warm_talk",
+            "expected_char3Id": "char_lune_warm_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 60.94,
+            "background_detail_under_sprite": 27.01
+          },
+          {
+            "id": "shared_clue",
+            "bgImageId": "bg_deck_night",
+            "charId": "char_lune_warm_neutral",
+            "char2Id": "char_lune_warm_talk",
+            "char3Id": "char_lune_warm_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_warm",
+            "expected_char2Id": "char_lune_warm_talk",
+            "expected_char3Id": "char_lune_warm_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 55.19,
+            "background_detail_under_sprite": 58.73
+          },
+          {
+            "id": "beacon_answer",
+            "bgImageId": "bg_beacon_lens",
+            "charId": "char_mira_resolved_neutral",
+            "char2Id": "char_mira_resolved_talk",
+            "char3Id": "char_mira_resolved_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_resolved",
+            "expected_char2Id": "char_mira_resolved_talk",
+            "expected_char3Id": "char_mira_resolved_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4726,
+            "sprite_bg_luma_delta": 70.65,
+            "background_detail_under_sprite": 5.77
+          },
+          {
+            "id": "hatch_room_wakes",
+            "bgImageId": "bg_hatch_key",
+            "charId": "char_lune_resolved_neutral",
+            "char2Id": "char_lune_resolved_talk",
+            "char3Id": "char_lune_resolved_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_resolved",
+            "expected_char2Id": "char_lune_resolved_talk",
+            "expected_char3Id": "char_lune_resolved_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4285,
+            "sprite_bg_luma_delta": 55.47,
+            "background_detail_under_sprite": 39.03
+          },
+          {
+            "id": "lune_reply",
+            "bgImageId": "bg_radio_closeup",
+            "charId": "char_lune_radio_neutral",
+            "char2Id": "char_lune_radio_talk",
+            "char3Id": "char_lune_radio_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_radio",
+            "expected_char2Id": "char_lune_radio_talk",
+            "expected_char3Id": "char_lune_radio_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4238,
+            "sprite_bg_luma_delta": 52.97,
+            "background_detail_under_sprite": 21.85
+          },
+          {
+            "id": "sunrise_wait",
+            "bgImageId": "bg_sunrise_deck",
+            "charId": "char_mira_action_neutral",
+            "char2Id": "char_mira_action_talk",
+            "char3Id": "char_mira_action_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_action",
+            "expected_char2Id": "char_mira_action_talk",
+            "expected_char3Id": "char_mira_action_blink",
+            "position": "right",
+            "sampled_visible_pixels": 3836,
+            "sprite_bg_luma_delta": 112.66,
+            "background_detail_under_sprite": 36.09
+          },
+          {
+            "id": "ending_signal",
+            "bgImageId": "bg_beacon_lens",
+            "charId": "char_mira_smile_neutral",
+            "char2Id": "char_mira_smile_talk",
+            "char3Id": "char_mira_smile_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_smile",
+            "expected_char2Id": "char_mira_smile_talk",
+            "expected_char3Id": "char_mira_smile_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4717,
+            "sprite_bg_luma_delta": 70.19,
+            "background_detail_under_sprite": 5.77
+          },
+          {
+            "id": "signal_coda",
+            "bgImageId": "bg_beacon_lens",
+            "charId": "char_mira_smile_neutral",
+            "char2Id": "char_mira_smile_talk",
+            "char3Id": "char_mira_smile_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_smile",
+            "expected_char2Id": "char_mira_smile_talk",
+            "expected_char3Id": "char_mira_smile_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4717,
+            "sprite_bg_luma_delta": 70.19,
+            "background_detail_under_sprite": 5.77
+          },
+          {
+            "id": "ending_together",
+            "bgImageId": "bg_beacon_lens",
+            "charId": "char_mira_smile_neutral",
+            "char2Id": "char_mira_smile_talk",
+            "char3Id": "char_mira_smile_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_smile",
+            "expected_char2Id": "char_mira_smile_talk",
+            "expected_char3Id": "char_mira_smile_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4717,
+            "sprite_bg_luma_delta": 70.19,
+            "background_detail_under_sprite": 5.77
+          },
+          {
+            "id": "together_coda",
+            "bgImageId": "bg_sunrise_deck",
+            "charId": "char_lune_warm_neutral",
+            "char2Id": "char_lune_warm_talk",
+            "char3Id": "char_lune_warm_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_warm",
+            "expected_char2Id": "char_lune_warm_talk",
+            "expected_char3Id": "char_lune_warm_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 74.48,
+            "background_detail_under_sprite": 55.22
+          },
+          {
+            "id": "ending_hatch",
+            "bgImageId": "bg_hatch_key",
+            "charId": "char_lune_resolved_neutral",
+            "char2Id": "char_lune_resolved_talk",
+            "char3Id": "char_lune_resolved_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_resolved",
+            "expected_char2Id": "char_lune_resolved_talk",
+            "expected_char3Id": "char_lune_resolved_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4285,
+            "sprite_bg_luma_delta": 55.47,
+            "background_detail_under_sprite": 39.03
+          },
+          {
+            "id": "hatch_coda",
+            "bgImageId": "bg_hatch_key",
+            "charId": "char_lune_resolved_neutral",
+            "char2Id": "char_lune_resolved_talk",
+            "char3Id": "char_lune_resolved_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_resolved",
+            "expected_char2Id": "char_lune_resolved_talk",
+            "expected_char3Id": "char_lune_resolved_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4285,
+            "sprite_bg_luma_delta": 55.47,
+            "background_detail_under_sprite": 39.03
+          },
+          {
+            "id": "ending_lune",
+            "bgImageId": "bg_beacon_lens",
+            "charId": "char_lune_warm_neutral",
+            "char2Id": "char_lune_warm_talk",
+            "char3Id": "char_lune_warm_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_warm",
+            "expected_char2Id": "char_lune_warm_talk",
+            "expected_char3Id": "char_lune_warm_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 59.48,
+            "background_detail_under_sprite": 5.18
+          },
+          {
+            "id": "lune_coda",
+            "bgImageId": "bg_sunrise_deck",
+            "charId": "char_lune_warm_neutral",
+            "char2Id": "char_lune_warm_talk",
+            "char3Id": "char_lune_warm_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "lune_warm",
+            "expected_char2Id": "char_lune_warm_talk",
+            "expected_char3Id": "char_lune_warm_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4172,
+            "sprite_bg_luma_delta": 111.01,
+            "background_detail_under_sprite": 39.08
+          },
+          {
+            "id": "ending_sunrise",
+            "bgImageId": "bg_sunrise_deck",
+            "charId": "char_mira_smile_neutral",
+            "char2Id": "char_mira_smile_talk",
+            "char3Id": "char_mira_smile_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_smile",
+            "expected_char2Id": "char_mira_smile_talk",
+            "expected_char3Id": "char_mira_smile_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4717,
+            "sprite_bg_luma_delta": 121.77,
+            "background_detail_under_sprite": 34.71
+          },
+          {
+            "id": "sunrise_coda",
+            "bgImageId": "bg_sunrise_deck",
+            "charId": "char_mira_smile_neutral",
+            "char2Id": "char_mira_smile_talk",
+            "char3Id": "char_mira_smile_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mira_smile",
+            "expected_char2Id": "char_mira_smile_talk",
+            "expected_char3Id": "char_mira_smile_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4717,
+            "sprite_bg_luma_delta": 88.07,
+            "background_detail_under_sprite": 55.21
+          }
+        ],
+        "lowest_sprite_bg_contrast": [
+          {
+            "id": "lune_second",
+            "background": "bg_deck_night",
+            "character": "char_lune_radio_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 51.2
+          },
+          {
+            "id": "lune_third",
+            "background": "bg_deck_night",
+            "character": "char_lune_radio_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 51.2
+          },
+          {
+            "id": "lune_enters",
+            "background": "bg_radio_closeup",
+            "character": "char_lune_radio_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 52.97
+          },
+          {
+            "id": "lune_reply",
+            "background": "bg_radio_closeup",
+            "character": "char_lune_radio_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 52.97
+          },
+          {
+            "id": "shared_clue",
+            "background": "bg_deck_night",
+            "character": "char_lune_warm_neutral",
+            "position": "left",
+            "sprite_bg_luma_delta": 55.19
+          }
+        ],
+        "busiest_sprite_lanes": [
+          {
+            "id": "shared_clue",
+            "background": "bg_deck_night",
+            "character": "char_lune_warm_neutral",
+            "position": "left",
+            "background_detail_under_sprite": 58.73
+          },
+          {
+            "id": "lune_second",
+            "background": "bg_deck_night",
+            "character": "char_lune_radio_neutral",
+            "position": "left",
+            "background_detail_under_sprite": 57.33
+          },
+          {
+            "id": "lune_third",
+            "background": "bg_deck_night",
+            "character": "char_lune_radio_neutral",
+            "position": "left",
+            "background_detail_under_sprite": 57.33
+          },
+          {
+            "id": "together_coda",
+            "background": "bg_sunrise_deck",
+            "character": "char_lune_warm_neutral",
+            "position": "left",
+            "background_detail_under_sprite": 55.22
+          },
+          {
+            "id": "sunrise_coda",
+            "background": "bg_sunrise_deck",
+            "character": "char_mira_smile_neutral",
+            "position": "left",
+            "background_detail_under_sprite": 55.21
+          }
+        ]
+      }
+    },
+    "counts": {
+      "backgrounds": 8,
+      "characters": 30,
+      "sprite_families": 10,
+      "sprite_approval_outputs": 30,
+      "provenance_outputs": 38
+    }
+  }
+}

@@ -22,9 +22,10 @@ or ranges through MCP, in addition to the original live-app,
 one-shot playtest, and route/evidence operations.
 
 The two Studio tools report only the single already-open project slot without
-its name or path, and invoke only Doctor, Assets, Build, Test, Play, or Profile
-after explicit project-write confirmation. They cannot accept paths, create or
-edit projects directly, run Release, or execute arbitrary commands.
+its name or path, and invoke only the fixed SDK action allowlist. The trusted
+local MCP has persistent project-write access, so these calls do not require a
+repeated confirmation argument. They cannot accept paths, create or edit
+projects directly, run Release, or execute arbitrary commands.
 
 From the SwanSong Desktop repository root:
 

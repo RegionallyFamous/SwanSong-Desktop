@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "errors": [],
+  "generated_at_utc": "2026-07-16T00:12:21.574109+00:00",
+  "project": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+    "bytes": 110738,
+    "sha256": "e4dcc63b3e1e05f601873c00f0157a9c88d0435b2793b1679219c8d4e9017634"
+  },
+  "renderer": {
+    "backend": "legacy-tracker-wavetable-audition",
+    "sample_rate": 22050,
+    "loops": 2,
+    "channels": 1,
+    "sample_width_bits": 16,
+    "note": "Offline audition mirrors the runtime's 32-sample wave shapes; hardware output and emulator mixing may differ."
+  },
+  "tracks": [
+    {
+      "id": "tank_title",
+      "name": "Lobby Logistics",
+      "bpm": 104,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/audio/01-tank_title.wav",
+      "bytes": 407120,
+      "sha256": "654a4eeeaddffcf7f5c971fb5a1463335060f1a1e3714257f06ea0e0937acc56",
+      "duration_seconds": 9.231,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.182,
+        "near_silent_sample_share": 0.01045,
+        "max_loop_jump_linear": 0.0
+      }
+    },
+    {
+      "id": "tank_main",
+      "name": "Tread and Tiptoe",
+      "bpm": 112,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/audio/02-tank_main.wav",
+      "bytes": 378044,
+      "sha256": "14f6110154a24d2ae3adcb6f80b8f2dca2a5a4626aafb51c12e27dff1b2aeca1",
+      "duration_seconds": 8.571,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.21,
+        "near_silent_sample_share": 0.010667,
+        "max_loop_jump_linear": 0.043764
+      }
+    },
+    {
+      "id": "tank_end_a",
+      "name": "Folding Table Ascent",
+      "bpm": 120,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/audio/03-tank_end_a.wav",
+      "bytes": 352844,
+      "sha256": "4da6d66c8ce38f8498ee7183c08a86ee79d9c3bd08ae3151f3d25e3327ad384a",
+      "duration_seconds": 8.0,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.202,
+        "near_silent_sample_share": 0.009427,
+        "max_loop_jump_linear": 0.050783
+      }
+    },
+    {
+      "id": "tank_end_b",
+      "name": "Lobby Encore",
+      "bpm": 128,
+      "channels": 4,
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/audio/04-tank_end_b.wav",
+      "bytes": 330794,
+      "sha256": "c8eff66908665d210fcad6a6caf11b800082ef1042c5d14c42e2530bd944c207",
+      "duration_seconds": 7.5,
+      "metrics": {
+        "peak_dbfs": -11.135,
+        "rms_dbfs": -17.214,
+        "near_silent_sample_share": 0.010751,
+        "max_loop_jump_linear": 0.048616
+      }
+    }
+  ],
+  "cues": [
+    {
+      "node": "tank_title",
+      "node_name": "Tank Title",
+      "track": "tank_title"
+    },
+    {
+      "node": "tank_01",
+      "node_name": "Tank 01",
+      "track": "tank_main"
+    },
+    {
+      "node": "tank_a1",
+      "node_name": "Tank A1",
+      "track": "tank_end_a"
+    },
+    {
+      "node": "tank_b1",
+      "node_name": "Tank B1",
+      "track": "tank_end_b"
+    }
+  ]
+}

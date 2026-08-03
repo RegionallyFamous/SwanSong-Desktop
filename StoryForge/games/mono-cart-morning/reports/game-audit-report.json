@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:56:41.542568+00:00",
+  "errors": [],
+  "facts": {
+    "slug": "mono-cart-morning",
+    "game_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/projects/mono-cart-morning.wscvn.json",
+    "runtime": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/runtime-local",
+    "rom": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/runtime-local/mono-cart-morning.wsc",
+    "header": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/runtime-local/src/game_data.h",
+    "build_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/build-report.json",
+    "smoke_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/emulator-smoke-report.json",
+    "readiness_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/game-readiness-report.json",
+    "qa_report": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/mono-cart-morning-qa-report.json",
+    "project_counts": {
+      "name": "Mono Cart Morning",
+      "nodes": 63,
+      "flags": 9,
+      "tracks": 1,
+      "backgrounds": 3,
+      "characters": 6,
+      "sfx": 0
+    },
+    "header_counts": {
+      "NUM_NODES": 63,
+      "NUM_FLAGS": 9,
+      "NUM_CYG_SONGS": 0,
+      "NUM_CYG_SFX": 0,
+      "NUM_TRACKS": 1,
+      "NUM_SFX": 0,
+      "NUM_BG_ASSETS": 3,
+      "NUM_FG_ASSETS": 0,
+      "NUM_FG_ANIM_PATCHES": 1,
+      "NUM_CHAR_ASSETS": 6
+    },
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/projects/mono-cart-morning.wscvn.json",
+      "bytes": 136956,
+      "sha256": "45410392d41d516e946ff9d476b23adbb156e57c155dba5ebfdd0c5d117f225c"
+    },
+    "rom_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/runtime-local/mono-cart-morning.wsc",
+      "bytes": 8388608,
+      "sha256": "a0144833608f68b670c7b328b3932e7da4fdd4998077ba98b67129b2274697ba"
+    },
+    "smoke_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/emulator-smoke-report.json",
+      "bytes": 1197,
+      "sha256": "5a9d4742f027843437ae613d9286b7dc7fbaf71bb8069fc5e8eaf09a2eeefcdc"
+    },
+    "readiness_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/game-readiness-report.json",
+      "bytes": 27667,
+      "sha256": "c5fddd021bf4575e58b97bd410b7295928e140576025ca3243955827ee4f6e76"
+    },
+    "qa_report_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/mono-cart-morning/reports/mono-cart-morning-qa-report.json",
+      "bytes": 2852,
+      "sha256": "badedda179dd249aaec58021a6931ffef1b18dc0722e9c9b1adb4b635d41abcd"
+    }
+  }
+}

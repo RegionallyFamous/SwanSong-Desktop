@@ -1,0 +1,1139 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:09:18.525992+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets",
+    "thresholds": {
+      "screen": [
+        224,
+        144
+      ],
+      "character_max": [
+        96,
+        128
+      ],
+      "background_visible_colors_max": 16,
+      "character_visible_colors_max": 15,
+      "character_visible_colors_min": 6,
+      "character_tiles_max": 192,
+      "background_tiles_max": 511,
+      "alpha_coverage": [
+        0.2,
+        0.75
+      ],
+      "visible_above_textbox": [
+        0.52,
+        0.92
+      ],
+      "character_luma_stddev_min": 24.0,
+      "face_detail_box": [
+        28,
+        36,
+        68,
+        72
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "face_visible_colors_min": 4,
+      "face_luma_stddev_min": 18.0,
+      "animation_frames": [
+        "neutral",
+        "talk",
+        "blink"
+      ],
+      "hardware_char_anims": [
+        "blink",
+        "talking",
+        "talk-blink"
+      ],
+      "min_talk_frame_pixel_delta": 18,
+      "min_blink_frame_pixel_delta": 8,
+      "min_talk_face_pixel_delta": 18,
+      "min_blink_face_pixel_delta": 8,
+      "max_animation_alpha_changed": 0,
+      "max_animation_bbox_area": 1200,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_frame_center_drift": 0.04,
+      "max_frame_scale_drift": 0.08,
+      "min_scene_sprite_bg_luma_delta": 50.0,
+      "max_scene_bg_detail_under_sprite": 62.0
+    },
+    "backgrounds": {
+      "backgrounds/checklist.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 9,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 51.93,
+        "sha256": "fa4b7dffe3ee5b7bcbd5a00c90a4bd1e1eb706958e5e985583aa76d3da0bb8fb"
+      },
+      "backgrounds/clock.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 11,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 30.52,
+        "sha256": "7235cc5c36b8e29a5d0ade40783adbea67d9ac660792eb2c57782a91dadbce0c"
+      },
+      "backgrounds/kitchen.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 43.27,
+        "sha256": "c321770fdc069e7ee456714efd16e6e2e5f1ebf3e456eeb8572c670736fd660b"
+      },
+      "backgrounds/title.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 76.94,
+        "sha256": "b2aea66197e083c271d0663472f190d8ce8a7ad7960748db5f3b11523773a0ef"
+      },
+      "backgrounds/zaku_call.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 9,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 72.5,
+        "sha256": "97a804f18327a0b13dd499a3aed713c355cf48df8923aee29b2eab4f0578b325"
+      }
+    },
+    "characters": {
+      "characters/rx78_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          11,
+          6,
+          85,
+          126
+        ],
+        "alpha_coverage": 0.4603,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7595,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 83.52,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 82.89
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5656,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "90c88b61ebb8c9bb886aa4b989903cbac7738631945deda13093b1b127d426f7"
+      },
+      "characters/rx78_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          11,
+          6,
+          85,
+          126
+        ],
+        "alpha_coverage": 0.4603,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7595,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 82.77,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 81.43
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5656,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "1a96851aeebefed4965606fad772774e983b7ee3a29d4b14ece0181fbe572d06"
+      },
+      "characters/rx78_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          11,
+          6,
+          85,
+          126
+        ],
+        "alpha_coverage": 0.4603,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7595,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 82.82,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 14,
+          "luma_stddev": 80.82
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5656,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "8e4945e943be9238fa9dba71fe02e1efe64dca34ae87fb4ccfce39a1afa217de"
+      }
+    },
+    "sprite_families": {
+      "rx78": {
+        "body": "rx78",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/characters/rx78_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                11,
+                6,
+                85,
+                126
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5156
+              ],
+              "bbox_size_norm": [
+                0.7708,
+                0.9375
+              ],
+              "bbox_area_ratio": 0.7227
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/characters/rx78_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                11,
+                6,
+                85,
+                126
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5156
+              ],
+              "bbox_size_norm": [
+                0.7708,
+                0.9375
+              ],
+              "bbox_area_ratio": 0.7227
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 49,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                38,
+                34,
+                58,
+                40
+              ],
+              "changed_bbox_area": 120
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 41,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                10,
+                0,
+                30,
+                4
+              ],
+              "changed_bbox_area": 80
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/characters/rx78_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                11,
+                6,
+                85,
+                126
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5156
+              ],
+              "bbox_size_norm": [
+                0.7708,
+                0.9375
+              ],
+              "bbox_area_ratio": 0.7227
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 43,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                38,
+                34,
+                58,
+                40
+              ],
+              "changed_bbox_area": 120
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 43,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                14,
+                14,
+                34,
+                20
+              ],
+              "changed_bbox_area": 120
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      }
+    },
+    "sprite_approvals": {
+      "audition_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/auditions",
+      "approval_count": 1,
+      "covered_output_count": 3,
+      "covered_outputs": {
+        "characters/rx78_blink.png": {
+          "approval": "games/operation-potluck/assets/auditions/operation-potluck-runtime_approval.json",
+          "sha256": "90c88b61ebb8c9bb886aa4b989903cbac7738631945deda13093b1b127d426f7"
+        },
+        "characters/rx78_neutral.png": {
+          "approval": "games/operation-potluck/assets/auditions/operation-potluck-runtime_approval.json",
+          "sha256": "1a96851aeebefed4965606fad772774e983b7ee3a29d4b14ece0181fbe572d06"
+        },
+        "characters/rx78_talk.png": {
+          "approval": "games/operation-potluck/assets/auditions/operation-potluck-runtime_approval.json",
+          "sha256": "8e4945e943be9238fa9dba71fe02e1efe64dca34ae87fb4ccfce39a1afa217de"
+        }
+      },
+      "missing_outputs": [],
+      "skipped": false
+    },
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+      "ok": true,
+      "assets": {
+        "background_asset_count": 5,
+        "character_asset_count": 3,
+        "backgrounds": {
+          "bg_title": {
+            "origName": "title.png",
+            "rel_path": "backgrounds/title.png",
+            "exists": true
+          },
+          "bg_kitchen": {
+            "origName": "kitchen.png",
+            "rel_path": "backgrounds/kitchen.png",
+            "exists": true
+          },
+          "bg_clock": {
+            "origName": "clock.png",
+            "rel_path": "backgrounds/clock.png",
+            "exists": true
+          },
+          "bg_checklist": {
+            "origName": "checklist.png",
+            "rel_path": "backgrounds/checklist.png",
+            "exists": true
+          },
+          "bg_zaku_call": {
+            "origName": "zaku_call.png",
+            "rel_path": "backgrounds/zaku_call.png",
+            "exists": true
+          }
+        },
+        "characters": {
+          "char_rx78_neutral": {
+            "origName": "rx78_neutral.png",
+            "rel_path": "characters/rx78_neutral.png",
+            "exists": true
+          },
+          "char_rx78_talk": {
+            "origName": "rx78_talk.png",
+            "rel_path": "characters/rx78_talk.png",
+            "exists": true
+          },
+          "char_rx78_blink": {
+            "origName": "rx78_blink.png",
+            "rel_path": "characters/rx78_blink.png",
+            "exists": true
+          }
+        }
+      },
+      "scene_wiring": {
+        "scene_count": 40,
+        "animated_scene_count": 29,
+        "character_reference_count": 87,
+        "background_reference_count": 40,
+        "scene_visual_count": 29,
+        "scenes": [
+          {
+            "id": "op01",
+            "bgImageId": "bg_kitchen",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 128.42,
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op02",
+            "bgImageId": "bg_kitchen",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 128.42,
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op03",
+            "bgImageId": "bg_clock",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "op04",
+            "bgImageId": "bg_kitchen",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 128.42,
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op05",
+            "bgImageId": "bg_kitchen",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 128.42,
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op06",
+            "bgImageId": "bg_kitchen",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "op07",
+            "bgImageId": "bg_kitchen",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 128.42,
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op08",
+            "bgImageId": "bg_kitchen",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 128.42,
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op09",
+            "bgImageId": "bg_clock",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "op10",
+            "bgImageId": "bg_kitchen",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 128.42,
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op_plan_1",
+            "bgImageId": "bg_checklist",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 113.95,
+            "background_detail_under_sprite": 3.09
+          },
+          {
+            "id": "op_plan_2",
+            "bgImageId": "bg_checklist",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 113.95,
+            "background_detail_under_sprite": 3.09
+          },
+          {
+            "id": "op_call_1",
+            "bgImageId": "bg_zaku_call",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 125.28,
+            "background_detail_under_sprite": 1.39
+          },
+          {
+            "id": "op_call_2",
+            "bgImageId": "bg_zaku_call",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 125.28,
+            "background_detail_under_sprite": 1.39
+          },
+          {
+            "id": "op11",
+            "bgImageId": "bg_kitchen",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 128.42,
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op12",
+            "bgImageId": "bg_checklist",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "op13",
+            "bgImageId": "bg_checklist",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 113.95,
+            "background_detail_under_sprite": 3.09
+          },
+          {
+            "id": "op14",
+            "bgImageId": "bg_checklist",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 113.95,
+            "background_detail_under_sprite": 3.09
+          },
+          {
+            "id": "op15",
+            "bgImageId": "bg_clock",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "op16",
+            "bgImageId": "bg_checklist",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 113.95,
+            "background_detail_under_sprite": 3.09
+          },
+          {
+            "id": "op17",
+            "bgImageId": "bg_checklist",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 113.95,
+            "background_detail_under_sprite": 3.09
+          },
+          {
+            "id": "op18",
+            "bgImageId": "bg_zaku_call",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "op19",
+            "bgImageId": "bg_checklist",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 113.95,
+            "background_detail_under_sprite": 3.09
+          },
+          {
+            "id": "op20",
+            "bgImageId": "bg_kitchen",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "op21",
+            "bgImageId": "bg_kitchen",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 128.42,
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op22",
+            "bgImageId": "bg_kitchen",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 128.42,
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op23",
+            "bgImageId": "bg_kitchen",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "op24",
+            "bgImageId": "bg_kitchen",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 128.42,
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op25",
+            "bgImageId": "bg_clock",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 98.73,
+            "background_detail_under_sprite": 40.46
+          },
+          {
+            "id": "op26",
+            "bgImageId": "bg_kitchen",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 128.42,
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op27",
+            "bgImageId": "bg_clock",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "op28",
+            "bgImageId": "bg_kitchen",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 128.42,
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op_e1_1",
+            "bgImageId": "bg_checklist",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 113.95,
+            "background_detail_under_sprite": 3.09
+          },
+          {
+            "id": "op_e1_2",
+            "bgImageId": "bg_kitchen",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 128.42,
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op_e1_3",
+            "bgImageId": "bg_checklist",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "op_e1_4",
+            "bgImageId": "bg_checklist",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 113.95,
+            "background_detail_under_sprite": 3.09
+          },
+          {
+            "id": "op_e2_1",
+            "bgImageId": "bg_zaku_call",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 125.28,
+            "background_detail_under_sprite": 1.39
+          },
+          {
+            "id": "op_e2_2",
+            "bgImageId": "bg_zaku_call",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 125.28,
+            "background_detail_under_sprite": 1.39
+          },
+          {
+            "id": "op_e2_3",
+            "bgImageId": "bg_zaku_call",
+            "charId": null,
+            "char2Id": null,
+            "char3Id": null,
+            "charPos": "none",
+            "char2Pos": "none",
+            "charAnim": "none"
+          },
+          {
+            "id": "op_e2_4",
+            "bgImageId": "bg_zaku_call",
+            "charId": "char_rx78_neutral",
+            "char2Id": "char_rx78_talk",
+            "char3Id": "char_rx78_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "rx78",
+            "expected_char2Id": "char_rx78_talk",
+            "expected_char3Id": "char_rx78_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4296,
+            "sprite_bg_luma_delta": 125.28,
+            "background_detail_under_sprite": 1.39
+          }
+        ],
+        "lowest_sprite_bg_contrast": [
+          {
+            "id": "op25",
+            "background": "bg_clock",
+            "character": "char_rx78_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 98.73
+          },
+          {
+            "id": "op13",
+            "background": "bg_checklist",
+            "character": "char_rx78_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 113.95
+          },
+          {
+            "id": "op14",
+            "background": "bg_checklist",
+            "character": "char_rx78_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 113.95
+          },
+          {
+            "id": "op16",
+            "background": "bg_checklist",
+            "character": "char_rx78_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 113.95
+          },
+          {
+            "id": "op17",
+            "background": "bg_checklist",
+            "character": "char_rx78_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 113.95
+          }
+        ],
+        "busiest_sprite_lanes": [
+          {
+            "id": "op25",
+            "background": "bg_clock",
+            "character": "char_rx78_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 40.46
+          },
+          {
+            "id": "op01",
+            "background": "bg_kitchen",
+            "character": "char_rx78_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op02",
+            "background": "bg_kitchen",
+            "character": "char_rx78_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op04",
+            "background": "bg_kitchen",
+            "character": "char_rx78_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 8.76
+          },
+          {
+            "id": "op05",
+            "background": "bg_kitchen",
+            "character": "char_rx78_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 8.76
+          }
+        ]
+      }
+    },
+    "counts": {
+      "backgrounds": 5,
+      "characters": 3,
+      "sprite_families": 1,
+      "sprite_approval_outputs": 3,
+      "provenance_outputs": 8
+    }
+  }
+}

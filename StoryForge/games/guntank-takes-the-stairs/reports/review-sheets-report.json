@@ -1,0 +1,881 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:45:30.956902+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "review_sheet_schema_version": 2,
+    "slug": "guntank-takes-the-stairs",
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+    "project_file": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/projects/guntank-takes-the-stairs.wscvn.json",
+      "exists": true,
+      "bytes": 158712,
+      "sha256": "cf98d9b50fc27ea4ec33e8827acf9df26a0a95acd29c4439d86311a3893178f2"
+    },
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets",
+    "font": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/runtime-local/src/font.h",
+      "exists": true,
+      "bytes": 5470,
+      "sha256": "a097f12dc046bcf4de3ec96b2c9b502eea287e2e9fa9c81bd953d2efce18eade"
+    },
+    "nodes_rendered": 36,
+    "preview_node_ids": [
+      "tank_title",
+      "tank_01",
+      "tank_02",
+      "tank_03",
+      "tank_04",
+      "tank_05",
+      "tank_06",
+      "tank_07",
+      "tank_08",
+      "tank_09",
+      "tank_10",
+      "tank_choice_1",
+      "tank_a1",
+      "tank_a2",
+      "tank_a3",
+      "tank_a4",
+      "tank_b1",
+      "tank_b2",
+      "tank_b3",
+      "tank_b4",
+      "tank_11",
+      "tank_12",
+      "tank_13",
+      "tank_14",
+      "tank_15",
+      "tank_16",
+      "tank_17",
+      "tank_choice_2",
+      "tank_c1",
+      "tank_c2",
+      "tank_c3",
+      "tank_c4",
+      "tank_d1",
+      "tank_d2",
+      "tank_d3",
+      "tank_d4"
+    ],
+    "scene_preview_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/scene_preview_sheet.png",
+      "exists": true,
+      "bytes": 216842,
+      "sha256": "7e135f73161a7872e888abeabc32eb00d3e493c8233487c78a7b6e7e90266a5c",
+      "size": [
+        712,
+        2050
+      ],
+      "mode": "RGB"
+    },
+    "storyboard_sheet": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/guntank-takes-the-stairs/assets/storyboard_sheet.png",
+      "exists": true,
+      "bytes": 75140,
+      "sha256": "a63fd5b6bffead187bdfaff4738d8b79cda49af0710953e98c5c2881cdd7753c",
+      "size": [
+        488,
+        872
+      ],
+      "mode": "RGB"
+    },
+    "scene_preview_cells": [
+      {
+        "index": 0,
+        "node_id": "tank_title",
+        "rect": [
+          10,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "a8514c2305379f4bc298d0e6e3881756aa71977dde5ab33a76005c50c23913a0"
+      },
+      {
+        "index": 1,
+        "node_id": "tank_01",
+        "rect": [
+          244,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "57d7c7f2f33d52c32359ff2821eabd98d825036b363e1623fa294e7e54d30cee"
+      },
+      {
+        "index": 2,
+        "node_id": "tank_02",
+        "rect": [
+          478,
+          26,
+          224,
+          144
+        ],
+        "image_sha256": "2afa541ac4da7b476975980588bce68e85f52ddec109dc424a2aa42331d97e15"
+      },
+      {
+        "index": 3,
+        "node_id": "tank_03",
+        "rect": [
+          10,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "37e73e0d7e331fea7a6ae29420aa61771a63f5462422a448581bf099ad4bdf2e"
+      },
+      {
+        "index": 4,
+        "node_id": "tank_04",
+        "rect": [
+          244,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "77cf560d774bc803e09a1a3ff4414770238d65dd2df4b42acbe048a76fa1e186"
+      },
+      {
+        "index": 5,
+        "node_id": "tank_05",
+        "rect": [
+          478,
+          196,
+          224,
+          144
+        ],
+        "image_sha256": "0d215be4376c0a2040f891e8fe774f17fd574800603388912d6827b4df1ac3a4"
+      },
+      {
+        "index": 6,
+        "node_id": "tank_06",
+        "rect": [
+          10,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "396d27feeadd3bda12c37bc1bff7530f09bd873175650f106695ca654e1d962b"
+      },
+      {
+        "index": 7,
+        "node_id": "tank_07",
+        "rect": [
+          244,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "60b554806fcb95ae6999391c90abdd8716d47d78d0ca692032c9ac6844ebc030"
+      },
+      {
+        "index": 8,
+        "node_id": "tank_08",
+        "rect": [
+          478,
+          366,
+          224,
+          144
+        ],
+        "image_sha256": "dadca6e5eb93d1f9d18ecd316d53ce96bc27e579efadbd291e17aca53edea1e0"
+      },
+      {
+        "index": 9,
+        "node_id": "tank_09",
+        "rect": [
+          10,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "2d9b6870c4d5c838088bc992860f5775d393ac8f00147c6ea8379e7626b71a5d"
+      },
+      {
+        "index": 10,
+        "node_id": "tank_10",
+        "rect": [
+          244,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "85ae99980b8d780b095e0657d04d7547d700f1905893cee9944c4ada065b50c9"
+      },
+      {
+        "index": 11,
+        "node_id": "tank_choice_1",
+        "rect": [
+          478,
+          536,
+          224,
+          144
+        ],
+        "image_sha256": "8e2b746efc0af6ed80ade00a24488e585cfc228aa39273da9592d400692c429c"
+      },
+      {
+        "index": 12,
+        "node_id": "tank_a1",
+        "rect": [
+          10,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "ca4d82bd31bccbfe314d1fdb95c0d05f85a8ee5e98bfebb76a3d9e6ca74ce556"
+      },
+      {
+        "index": 13,
+        "node_id": "tank_a2",
+        "rect": [
+          244,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "3c0a24ad6e37d016fe629432167dc49a535b87b1791ae226ceb847bb051a7d97"
+      },
+      {
+        "index": 14,
+        "node_id": "tank_a3",
+        "rect": [
+          478,
+          706,
+          224,
+          144
+        ],
+        "image_sha256": "8ba85b5daf80222c134d810f025a1e0adbd832172769c246dd38cd1d20e5080c"
+      },
+      {
+        "index": 15,
+        "node_id": "tank_a4",
+        "rect": [
+          10,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "32e86c3bef4b89f1c23b6fd6d419b65a7c9296f8ce907758b404168bc87d4766"
+      },
+      {
+        "index": 16,
+        "node_id": "tank_b1",
+        "rect": [
+          244,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "3d22b3e75ad3d04d5bdb42ed271ec6a9cb9d8dc4804fe6eb91a41d4ba8600024"
+      },
+      {
+        "index": 17,
+        "node_id": "tank_b2",
+        "rect": [
+          478,
+          876,
+          224,
+          144
+        ],
+        "image_sha256": "fc97c557bf815ed0b9a595dace6d56913828d0a212f478b1d9b8d83d66be4f5d"
+      },
+      {
+        "index": 18,
+        "node_id": "tank_b3",
+        "rect": [
+          10,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "c92beffad6a017738b80b3dae2ddd89d4ca9e64b1981f1d0ca514a3ac10006b1"
+      },
+      {
+        "index": 19,
+        "node_id": "tank_b4",
+        "rect": [
+          244,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "5233e7a6ce569bc35b2a5d1a41602083288dfbeb9653d9e7dd74673391de43f0"
+      },
+      {
+        "index": 20,
+        "node_id": "tank_11",
+        "rect": [
+          478,
+          1046,
+          224,
+          144
+        ],
+        "image_sha256": "09e82037046522adece2320a390757fc87d109b8c27919f7a3922e40bd290f3f"
+      },
+      {
+        "index": 21,
+        "node_id": "tank_12",
+        "rect": [
+          10,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "c869c3d72021353a2facafbe275423da9a2b28e7996763a4bf3733bc54def3cf"
+      },
+      {
+        "index": 22,
+        "node_id": "tank_13",
+        "rect": [
+          244,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "a74aa77999b6c790b759135d4458d893da16a359798c7b4f913a2745563b3c24"
+      },
+      {
+        "index": 23,
+        "node_id": "tank_14",
+        "rect": [
+          478,
+          1216,
+          224,
+          144
+        ],
+        "image_sha256": "9010f73e734711e77cd8b0094ed38f587ebcb09f752d98b4cf965ead0b4f602a"
+      },
+      {
+        "index": 24,
+        "node_id": "tank_15",
+        "rect": [
+          10,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "60f7fc5a2ec416d798e8f0a8f1f233da5aa9c9e54783babb850f2c5b92ae4605"
+      },
+      {
+        "index": 25,
+        "node_id": "tank_16",
+        "rect": [
+          244,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "03b38a386b3a146c3b99baff52b0faafaad813dba1fac53c775f5acea53e517c"
+      },
+      {
+        "index": 26,
+        "node_id": "tank_17",
+        "rect": [
+          478,
+          1386,
+          224,
+          144
+        ],
+        "image_sha256": "d9b7b4c08c2e0a5adc4061bf1207853af85f0944c8c5cf75db7e79c384050ac0"
+      },
+      {
+        "index": 27,
+        "node_id": "tank_choice_2",
+        "rect": [
+          10,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "68e30bbcbaa5424f46f595631c8db6bcb02941caa82da1e032ad59166cc6997e"
+      },
+      {
+        "index": 28,
+        "node_id": "tank_c1",
+        "rect": [
+          244,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "95b60f9d4dc4aa0bca0a210096613d1556344de0628aaf321862d2ade9e88031"
+      },
+      {
+        "index": 29,
+        "node_id": "tank_c2",
+        "rect": [
+          478,
+          1556,
+          224,
+          144
+        ],
+        "image_sha256": "fe0a00503c615411c36e70ba7718f825fc932d8f27d23e13b0b9bbc9485ad591"
+      },
+      {
+        "index": 30,
+        "node_id": "tank_c3",
+        "rect": [
+          10,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "aa599da8a03bbd50e3fc95eeae5d74b6857195d85656ac0c51ec525bfbac7da1"
+      },
+      {
+        "index": 31,
+        "node_id": "tank_c4",
+        "rect": [
+          244,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "ebde7e34b9e1e6439d12ee302bcdab6ad82da3d87cdff24d1959ff28229a6035"
+      },
+      {
+        "index": 32,
+        "node_id": "tank_d1",
+        "rect": [
+          478,
+          1726,
+          224,
+          144
+        ],
+        "image_sha256": "f24510c7beb69229ab13ec3a47674032180d7c27f157757df87cb5d310f85a6c"
+      },
+      {
+        "index": 33,
+        "node_id": "tank_d2",
+        "rect": [
+          10,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "294c049215a4c70c00e3deaaa7ee0e6fdf2ca8ef2843d95e38276c5b38ffe7b6"
+      },
+      {
+        "index": 34,
+        "node_id": "tank_d3",
+        "rect": [
+          244,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "b53448f85015b74b6ce4077279b8d45bb51f77978ecd9e8cfa529720e2cdf15f"
+      },
+      {
+        "index": 35,
+        "node_id": "tank_d4",
+        "rect": [
+          478,
+          1896,
+          224,
+          144
+        ],
+        "image_sha256": "c0b58d7d4f7880f21d8aa7001c1dece58db1c8226b0f93f5535fc3cd61480e44"
+      }
+    ],
+    "storyboard_cells": [
+      {
+        "index": 0,
+        "node_id": "tank_title",
+        "rect": [
+          8,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "2004b33765b85f4c890816f2e561a6219b3221b3c91444dd3a8a8f12a12f5e04"
+      },
+      {
+        "index": 1,
+        "node_id": "tank_01",
+        "rect": [
+          128,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "1a2f5190dd932999e57e0b78f1be5123e34511d3c47d336fc82b95359c895e2f"
+      },
+      {
+        "index": 2,
+        "node_id": "tank_02",
+        "rect": [
+          248,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "48fe464633a9a4ef63851d7d0f8892ff24cff8b32b8d8264e8dce7a485aad547"
+      },
+      {
+        "index": 3,
+        "node_id": "tank_03",
+        "rect": [
+          368,
+          8,
+          112,
+          72
+        ],
+        "image_sha256": "bc46bbe76d038151c36b2945886aeccc6412a53df0c677ac964063adb2311d94"
+      },
+      {
+        "index": 4,
+        "node_id": "tank_04",
+        "rect": [
+          8,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "e501f58d8f65f56776feb45da25f8dece8cabf12e94b3a26508654ee044b29ef"
+      },
+      {
+        "index": 5,
+        "node_id": "tank_05",
+        "rect": [
+          128,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "387820a16fcfb447161baa9ea8af10f480babdfc8dea58c2ce8665d0762b8ea6"
+      },
+      {
+        "index": 6,
+        "node_id": "tank_06",
+        "rect": [
+          248,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "d2ffedf480f5ca9fdf08c758148bf5a5cc32fd6c08c8793be61ba7c99bc2f3ce"
+      },
+      {
+        "index": 7,
+        "node_id": "tank_07",
+        "rect": [
+          368,
+          104,
+          112,
+          72
+        ],
+        "image_sha256": "3bf63fffd397b5df11aaa00ac77213ea9ac84008a79e1f6d5fb5ef58e7d16460"
+      },
+      {
+        "index": 8,
+        "node_id": "tank_08",
+        "rect": [
+          8,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "104db1a41dca21241bd4ed08826f948aa76fe9bec763950d67bfe8d9f19f4024"
+      },
+      {
+        "index": 9,
+        "node_id": "tank_09",
+        "rect": [
+          128,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "099e862d5069188a0d5cf2ceba2463f7c4baccb6fbea20ef53e51372e2670da0"
+      },
+      {
+        "index": 10,
+        "node_id": "tank_10",
+        "rect": [
+          248,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "c65df35b32ae153b08da25e0ff2e445e100efa54cbddd85f3dca66a2292ac5b6"
+      },
+      {
+        "index": 11,
+        "node_id": "tank_choice_1",
+        "rect": [
+          368,
+          200,
+          112,
+          72
+        ],
+        "image_sha256": "910eb8c9ff8623679c1ef7b61ea04a99f6cd1e3bbebf64c4dd13d49ff47d1376"
+      },
+      {
+        "index": 12,
+        "node_id": "tank_a1",
+        "rect": [
+          8,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "016f9a2c0433ad0da39ad2334042844f17d757fdf6964c6eab6c7199b2a6f315"
+      },
+      {
+        "index": 13,
+        "node_id": "tank_a2",
+        "rect": [
+          128,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "ddf694f3a6f7c317c95fdb759465443889867f9142de0531e823d2dedaac0a24"
+      },
+      {
+        "index": 14,
+        "node_id": "tank_a3",
+        "rect": [
+          248,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "bcf84af18e922055c8d3ce84d91cd78a2a9b2db21b80b1c8f22047dd1947be07"
+      },
+      {
+        "index": 15,
+        "node_id": "tank_a4",
+        "rect": [
+          368,
+          296,
+          112,
+          72
+        ],
+        "image_sha256": "c0b2975141b40d91ab74f241ee5cb11cd98821d7d9fa8cb93bf9274ecf12336f"
+      },
+      {
+        "index": 16,
+        "node_id": "tank_b1",
+        "rect": [
+          8,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "4de5671b04417d76b6bd85d32527ffe689d4c14bba33b015b7bc0416357f8957"
+      },
+      {
+        "index": 17,
+        "node_id": "tank_b2",
+        "rect": [
+          128,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "74a0ec8a6282fd35eac165da1e30491f1d814a66e271a0cad895016ec6e41cb5"
+      },
+      {
+        "index": 18,
+        "node_id": "tank_b3",
+        "rect": [
+          248,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "b9075fa89970cb9ef4b494d6e44985362394d13c5c7153227e631a41a7874619"
+      },
+      {
+        "index": 19,
+        "node_id": "tank_b4",
+        "rect": [
+          368,
+          392,
+          112,
+          72
+        ],
+        "image_sha256": "c9ab708d0e193d8c397aaaaff472f26b72307af5fe3611702c79ed398229cad8"
+      },
+      {
+        "index": 20,
+        "node_id": "tank_11",
+        "rect": [
+          8,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "d6b874e3924aa8f9961097204f103679b910412278713d3e94acf34cd0b008c9"
+      },
+      {
+        "index": 21,
+        "node_id": "tank_12",
+        "rect": [
+          128,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "8d355581551e3935391c3f0d490aa6bf36075e86be1ec70e04baafb509267fad"
+      },
+      {
+        "index": 22,
+        "node_id": "tank_13",
+        "rect": [
+          248,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "f57b4b69bc7474126b89289164db7eaf7825521fc8bb3b5c535041d752d5f085"
+      },
+      {
+        "index": 23,
+        "node_id": "tank_14",
+        "rect": [
+          368,
+          488,
+          112,
+          72
+        ],
+        "image_sha256": "7421ac107fcd8f274139bfd49c6575e0614e4c63525bd261684e26452f3f4905"
+      },
+      {
+        "index": 24,
+        "node_id": "tank_15",
+        "rect": [
+          8,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "4f411b3f6f988d80f2ad48507524faee013bf383a833ee201c31ad43a41e29ae"
+      },
+      {
+        "index": 25,
+        "node_id": "tank_16",
+        "rect": [
+          128,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "cd32885c0e916183310bee9ed9983f36c28ea00817a0732e7d30016ceac6247c"
+      },
+      {
+        "index": 26,
+        "node_id": "tank_17",
+        "rect": [
+          248,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "5cfb8f5f5edcc1bb33c753a2dfc35e7b08a840f5befd5adba279d686c2e1bbf0"
+      },
+      {
+        "index": 27,
+        "node_id": "tank_choice_2",
+        "rect": [
+          368,
+          584,
+          112,
+          72
+        ],
+        "image_sha256": "e4eab2e3d13c5c0bcfb35aad19a4288d1a6925b33dddf4c196749c1d163e05f9"
+      },
+      {
+        "index": 28,
+        "node_id": "tank_c1",
+        "rect": [
+          8,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "53e5b50cef732ce9cd205d6f7cbc6a754bb7c041f9daee01a4c87c7344678860"
+      },
+      {
+        "index": 29,
+        "node_id": "tank_c2",
+        "rect": [
+          128,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "8afba99eb633e3d3a9cbf0f9ad4a837fb5d430a1ce685de0e75ad116044eb79e"
+      },
+      {
+        "index": 30,
+        "node_id": "tank_c3",
+        "rect": [
+          248,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "9a00d6fe696f710dddbb53baaa56a8f09b97b343973ee7ddf4fbd02e0d685403"
+      },
+      {
+        "index": 31,
+        "node_id": "tank_c4",
+        "rect": [
+          368,
+          680,
+          112,
+          72
+        ],
+        "image_sha256": "95b5dc81b46cb1fb30f83dbb8d90a1dd80fd528117c977e6fde315d0db9935f1"
+      },
+      {
+        "index": 32,
+        "node_id": "tank_d1",
+        "rect": [
+          8,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "bbfca0f703bd31d231081142e07f673fdd3290c948a6ac8c7947f879865d8427"
+      },
+      {
+        "index": 33,
+        "node_id": "tank_d2",
+        "rect": [
+          128,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "06c20884912cecacef931d59e2642e49b59bce54fe9cf8144eb6fd0557db53cc"
+      },
+      {
+        "index": 34,
+        "node_id": "tank_d3",
+        "rect": [
+          248,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "5a5dd18350de5beb7804c3b47ec54c9b5858f8edec64352ebf34baaebd1f8b70"
+      },
+      {
+        "index": 35,
+        "node_id": "tank_d4",
+        "rect": [
+          368,
+          776,
+          112,
+          72
+        ],
+        "image_sha256": "6d62bbe4cd1d298a1d1ad1e9d92fe33294ab30ac7c0301b90e25431b7539a885"
+      }
+    ]
+  }
+}

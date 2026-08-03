@@ -1,0 +1,215 @@
+{
+  "ok": true,
+  "schema_version": 1,
+  "generated_at_utc": "2026-07-15T00:00:00+00:00",
+  "art_policy": "Every pictorial source master was generated with built-in ImageGen; scripts only post-process accepted masters.",
+  "outputs": {
+    "backgrounds/bg_title.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/background_title_imagegen_v1.png",
+      "source_sha256": "b3114a2812cafac533e70557cba568251203e1af4aada4d543e7ae7085526a6d",
+      "output_sha256": "7f04e2685e997fec2aba43f31cd0d5a8d6adbcc6d6b5c8f725f3203d101993a7",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 119.43
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_main.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/background_main_imagegen_v1.png",
+      "source_sha256": "cdd5c0db676a24db42200e35a8dd326961118f3076f82e33862d43443a1e6162",
+      "output_sha256": "e4f18c722268fe0e1b4f6e7fb4f70a2fd17c37f200e603838690c09bd8fdb32d",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 15,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 111.23
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_a.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/background_ending_a_imagegen_v1.png",
+      "source_sha256": "55b921320c77ff476d21251ffdb98e668e78a6901d13f3db92f44578c51e8fa3",
+      "output_sha256": "a193831f10e84c190af22b33e88f2402539517b795b4c46197087fbbbc7ddb4c",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 29.8
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "backgrounds/bg_end_b.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/background_ending_b_imagegen_v1.png",
+      "source_sha256": "74aa61b6a8c49ee62fa61b7dbfd550366c9a788b1a2aedc89b0138fb37bf6700",
+      "output_sha256": "3f099d4959034e70a5c121f560bef9f6b10b44ca669ce057ba91337028144639",
+      "output_metrics": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 16,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 138.58
+      },
+      "conversion": "crop/resize, palette quantize, RGB444 snap"
+    },
+    "characters/virtue_neutral.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "99c37da247cc0cd512e55f96c57602defbe4772a220c3e13d62a5d9b02aed2cc",
+      "output_sha256": "b16564ddb94403482195f6ec5e34f7fbac854d571918e8b7d06e7128106204b9",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          3,
+          33,
+          93,
+          127
+        ],
+        "alpha_coverage": 0.4753,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7192,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 81.56,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 82.29
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5840,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/virtue_talk.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "99c37da247cc0cd512e55f96c57602defbe4772a220c3e13d62a5d9b02aed2cc",
+      "output_sha256": "ef05e56e68df978f4905253031350ef0a794f31ed6bb6ee72c16faaab259f8e0",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          3,
+          33,
+          93,
+          127
+        ],
+        "alpha_coverage": 0.4753,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7192,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 81.57,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 81.67
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5840,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    },
+    "characters/virtue_blink.png": {
+      "tool": "image_gen.imagegen",
+      "source": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/virtue-at-the-coat-check/assets/sources/character_master_cutout_imagegen_v1.png",
+      "source_sha256": "99c37da247cc0cd512e55f96c57602defbe4772a220c3e13d62a5d9b02aed2cc",
+      "output_sha256": "7ffd086e330fec2f6a87360a4c3618349c8237ffc175e95ec7d4a894d635ba5e",
+      "output_metrics": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          3,
+          33,
+          93,
+          127
+        ],
+        "alpha_coverage": 0.4753,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.7192,
+        "darkest_visible_luma": 0.0,
+        "visible_luma_stddev": 81.62,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 12,
+          "luma_stddev": 82.65
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 5840,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        }
+      },
+      "conversion": "chroma cutout, fit, locked palette, local mechanical talk/blink"
+    }
+  }
+}

@@ -1,0 +1,1396 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T02:31:07.340448+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "asset_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets",
+    "thresholds": {
+      "screen": [
+        224,
+        144
+      ],
+      "character_max": [
+        96,
+        128
+      ],
+      "background_visible_colors_max": 16,
+      "character_visible_colors_max": 15,
+      "character_visible_colors_min": 6,
+      "character_tiles_max": 192,
+      "background_tiles_max": 511,
+      "alpha_coverage": [
+        0.2,
+        0.75
+      ],
+      "visible_above_textbox": [
+        0.52,
+        0.92
+      ],
+      "character_luma_stddev_min": 24.0,
+      "face_detail_box": [
+        28,
+        36,
+        68,
+        72
+      ],
+      "blink_eye_band": [
+        24,
+        20,
+        72,
+        58
+      ],
+      "face_visible_colors_min": 4,
+      "face_luma_stddev_min": 18.0,
+      "animation_frames": [
+        "neutral",
+        "talk",
+        "blink"
+      ],
+      "hardware_char_anims": [
+        "blink",
+        "talking",
+        "talk-blink"
+      ],
+      "min_talk_frame_pixel_delta": 18,
+      "min_blink_frame_pixel_delta": 8,
+      "min_talk_face_pixel_delta": 18,
+      "min_blink_face_pixel_delta": 8,
+      "max_animation_alpha_changed": 0,
+      "max_animation_bbox_area": 1200,
+      "max_blink_changed_pixels": 240,
+      "max_blink_changed_bbox_height": 18,
+      "max_frame_center_drift": 0.04,
+      "max_frame_scale_drift": 0.08,
+      "min_scene_sprite_bg_luma_delta": 50.0,
+      "max_scene_bg_detail_under_sprite": 62.0
+    },
+    "backgrounds": {
+      "backgrounds/market_stall.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 13,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 15.31,
+        "sha256": "ef03ae2001b8a059abe7f5857d5ef1a47ccb87785bd79a8498328e5ec714b66c"
+      },
+      "backgrounds/rooftop_swap.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 12.74,
+        "sha256": "b916eb8c8891619c5bdd892cc1980561f3db2052fb757cc7d2a305d106994b94"
+      },
+      "backgrounds/tram_shelf.png": {
+        "kind": "background",
+        "size": [
+          224,
+          144
+        ],
+        "tiles": 504,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "textbox_zone_luma": 11.09,
+        "sha256": "95622ce2751389c2d6b4c76219952a320cd6a262f6f5776b69028997e782a08d"
+      }
+    },
+    "characters": {
+      "characters/mina_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          5,
+          9,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.5884,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5809,
+        "darkest_visible_luma": 18.23,
+        "visible_luma_stddev": 76.52,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 6,
+          "luma_stddev": 61.98
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7230,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "7d8db07c9d9a4c0f535ccb6b057caab506710b929ede457f542bb02a65b1d743"
+      },
+      "characters/mina_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          5,
+          9,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.5884,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5809,
+        "darkest_visible_luma": 18.23,
+        "visible_luma_stddev": 78.01,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 6,
+          "luma_stddev": 71.06
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7230,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "99d4ea98c57b1d400d23c885b5eaef94e7dcfa79019c1f5486405a01d461f849"
+      },
+      "characters/mina_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 12,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          5,
+          9,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.5884,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5809,
+        "darkest_visible_luma": 18.23,
+        "visible_luma_stddev": 78.01,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 6,
+          "luma_stddev": 77.34
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7230,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "326f89c16834040e41741022a79e43a018203daad99dbbbaadd320d231bcc4e2"
+      },
+      "characters/ren_blink.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          6,
+          12,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.5754,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5711,
+        "darkest_visible_luma": 14.61,
+        "visible_luma_stddev": 64.62,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 5,
+          "luma_stddev": 71.53
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7071,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "316a75dca97318b3eb944b4e2c2590c01de024bb0f06024d675b6a61512493ec"
+      },
+      "characters/ren_neutral.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          6,
+          12,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.5754,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5711,
+        "darkest_visible_luma": 14.61,
+        "visible_luma_stddev": 66.37,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 5,
+          "luma_stddev": 79.98
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7071,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "59916d7778fc52565a693737fcbc76937dff5977306f3a4d414b991a03f85299"
+      },
+      "characters/ren_talk.png": {
+        "kind": "character",
+        "size": [
+          96,
+          128
+        ],
+        "tiles": 192,
+        "visible_colors": 14,
+        "wsc_12bit_snapped": true,
+        "bbox": [
+          6,
+          12,
+          91,
+          127
+        ],
+        "alpha_coverage": 0.5754,
+        "binary_alpha": true,
+        "visible_above_runtime_textbox": 0.5711,
+        "darkest_visible_luma": 14.61,
+        "visible_luma_stddev": 65.86,
+        "face_detail": {
+          "box": [
+            28,
+            36,
+            68,
+            72
+          ],
+          "visible_colors": 5,
+          "luma_stddev": 84.34
+        },
+        "green_fringe_pixels": 0,
+        "alpha_components": {
+          "component_count": 1,
+          "largest_component_pixels": 7071,
+          "largest_component_share": 1.0,
+          "tiny_component_count": 0
+        },
+        "sha256": "b0c39f97cace55e947f8ea502ecd1c0eb6a0c967efaa0f37884e5577bcbb3a2d"
+      }
+    },
+    "sprite_families": {
+      "mina": {
+        "body": "mina",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/characters/mina_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                5,
+                9,
+                91,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5312
+              ],
+              "bbox_size_norm": [
+                0.8958,
+                0.9219
+              ],
+              "bbox_area_ratio": 0.8258
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/characters/mina_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                5,
+                9,
+                91,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5312
+              ],
+              "bbox_size_norm": [
+                0.8958,
+                0.9219
+              ],
+              "bbox_area_ratio": 0.8258
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 142,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                41,
+                58,
+                56,
+                70
+              ],
+              "changed_bbox_area": 180
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 142,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                13,
+                22,
+                28,
+                34
+              ],
+              "changed_bbox_area": 180
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/characters/mina_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                5,
+                9,
+                91,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5,
+                0.5312
+              ],
+              "bbox_size_norm": [
+                0.8958,
+                0.9219
+              ],
+              "bbox_area_ratio": 0.8258
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 186,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                30,
+                39,
+                66,
+                49
+              ],
+              "changed_bbox_area": 360
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 186,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                6,
+                19,
+                42,
+                29
+              ],
+              "changed_bbox_area": 360
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      },
+      "ren": {
+        "body": "ren",
+        "frames_present": [
+          "blink",
+          "neutral",
+          "talk"
+        ],
+        "missing_frames": [],
+        "unexpected_frames": [],
+        "frames": {
+          "neutral": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/characters/ren_neutral.png",
+            "alpha_bbox": {
+              "bbox": [
+                6,
+                12,
+                91,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.543
+              ],
+              "bbox_size_norm": [
+                0.8854,
+                0.8984
+              ],
+              "bbox_area_ratio": 0.7955
+            }
+          },
+          "talk": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/characters/ren_talk.png",
+            "alpha_bbox": {
+              "bbox": [
+                6,
+                12,
+                91,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.543
+              ],
+              "bbox_size_norm": [
+                0.8854,
+                0.8984
+              ],
+              "bbox_area_ratio": 0.7955
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 142,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                41,
+                58,
+                56,
+                70
+              ],
+              "changed_bbox_area": 180
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 142,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                13,
+                22,
+                28,
+                34
+              ],
+              "changed_bbox_area": 180
+            }
+          },
+          "blink": {
+            "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/characters/ren_blink.png",
+            "alpha_bbox": {
+              "bbox": [
+                6,
+                12,
+                91,
+                127
+              ],
+              "bbox_center_norm": [
+                0.5052,
+                0.543
+              ],
+              "bbox_size_norm": [
+                0.8854,
+                0.8984
+              ],
+              "bbox_area_ratio": 0.7955
+            },
+            "alpha_center_drift": 0.0,
+            "alpha_scale_drift": 0.0,
+            "delta_from_neutral": {
+              "changed_pixels": 194,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                30,
+                39,
+                66,
+                49
+              ],
+              "changed_bbox_area": 360
+            },
+            "face_delta_from_neutral": {
+              "changed_pixels": 194,
+              "alpha_changed_pixels": 0,
+              "changed_bbox": [
+                6,
+                19,
+                42,
+                29
+              ],
+              "changed_bbox_area": 360
+            },
+            "outside_eye_band_changed_pixels": 0
+          }
+        }
+      }
+    },
+    "sprite_approvals": {
+      "audition_root": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/assets/auditions",
+      "approval_count": 1,
+      "covered_output_count": 6,
+      "covered_outputs": {
+        "characters/mina_blink.png": {
+          "approval": "games/backlight-bazaar/assets/auditions/backlight-bazaar-runtime_approval.json",
+          "sha256": "7d8db07c9d9a4c0f535ccb6b057caab506710b929ede457f542bb02a65b1d743"
+        },
+        "characters/mina_neutral.png": {
+          "approval": "games/backlight-bazaar/assets/auditions/backlight-bazaar-runtime_approval.json",
+          "sha256": "99d4ea98c57b1d400d23c885b5eaef94e7dcfa79019c1f5486405a01d461f849"
+        },
+        "characters/mina_talk.png": {
+          "approval": "games/backlight-bazaar/assets/auditions/backlight-bazaar-runtime_approval.json",
+          "sha256": "326f89c16834040e41741022a79e43a018203daad99dbbbaadd320d231bcc4e2"
+        },
+        "characters/ren_blink.png": {
+          "approval": "games/backlight-bazaar/assets/auditions/backlight-bazaar-runtime_approval.json",
+          "sha256": "316a75dca97318b3eb944b4e2c2590c01de024bb0f06024d675b6a61512493ec"
+        },
+        "characters/ren_neutral.png": {
+          "approval": "games/backlight-bazaar/assets/auditions/backlight-bazaar-runtime_approval.json",
+          "sha256": "59916d7778fc52565a693737fcbc76937dff5977306f3a4d414b991a03f85299"
+        },
+        "characters/ren_talk.png": {
+          "approval": "games/backlight-bazaar/assets/auditions/backlight-bazaar-runtime_approval.json",
+          "sha256": "b0c39f97cace55e947f8ea502ecd1c0eb6a0c967efaa0f37884e5577bcbb3a2d"
+        }
+      },
+      "missing_outputs": [],
+      "skipped": false
+    },
+    "project": {
+      "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/backlight-bazaar/projects/backlight-bazaar.wscvn.json",
+      "ok": true,
+      "assets": {
+        "background_asset_count": 3,
+        "character_asset_count": 6,
+        "backgrounds": {
+          "bg_market_stall": {
+            "origName": "market_stall.png",
+            "rel_path": "backgrounds/market_stall.png",
+            "exists": true
+          },
+          "bg_rooftop_swap": {
+            "origName": "rooftop_swap.png",
+            "rel_path": "backgrounds/rooftop_swap.png",
+            "exists": true
+          },
+          "bg_tram_shelf": {
+            "origName": "tram_shelf.png",
+            "rel_path": "backgrounds/tram_shelf.png",
+            "exists": true
+          }
+        },
+        "characters": {
+          "char_mina_blink": {
+            "origName": "mina_blink.png",
+            "rel_path": "characters/mina_blink.png",
+            "exists": true
+          },
+          "char_mina_neutral": {
+            "origName": "mina_neutral.png",
+            "rel_path": "characters/mina_neutral.png",
+            "exists": true
+          },
+          "char_mina_talk": {
+            "origName": "mina_talk.png",
+            "rel_path": "characters/mina_talk.png",
+            "exists": true
+          },
+          "char_ren_blink": {
+            "origName": "ren_blink.png",
+            "rel_path": "characters/ren_blink.png",
+            "exists": true
+          },
+          "char_ren_neutral": {
+            "origName": "ren_neutral.png",
+            "rel_path": "characters/ren_neutral.png",
+            "exists": true
+          },
+          "char_ren_talk": {
+            "origName": "ren_talk.png",
+            "rel_path": "characters/ren_talk.png",
+            "exists": true
+          }
+        }
+      },
+      "scene_wiring": {
+        "scene_count": 37,
+        "animated_scene_count": 37,
+        "character_reference_count": 111,
+        "background_reference_count": 37,
+        "scene_visual_count": 37,
+        "scenes": [
+          {
+            "id": "bb01",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.8,
+            "background_detail_under_sprite": 37.08
+          },
+          {
+            "id": "bb02",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 72.62,
+            "background_detail_under_sprite": 46.09
+          },
+          {
+            "id": "bb03",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.8,
+            "background_detail_under_sprite": 37.08
+          },
+          {
+            "id": "bb04",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 72.62,
+            "background_detail_under_sprite": 46.09
+          },
+          {
+            "id": "bb05",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.8,
+            "background_detail_under_sprite": 37.08
+          },
+          {
+            "id": "bb06",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 72.62,
+            "background_detail_under_sprite": 46.09
+          },
+          {
+            "id": "bb07",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.8,
+            "background_detail_under_sprite": 37.08
+          },
+          {
+            "id": "bb08",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 72.62,
+            "background_detail_under_sprite": 46.09
+          },
+          {
+            "id": "bb09",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.8,
+            "background_detail_under_sprite": 37.08
+          },
+          {
+            "id": "bb10",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 72.62,
+            "background_detail_under_sprite": 46.09
+          },
+          {
+            "id": "bb11",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.8,
+            "background_detail_under_sprite": 37.08
+          },
+          {
+            "id": "bb12",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 72.62,
+            "background_detail_under_sprite": 46.09
+          },
+          {
+            "id": "bb13",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.8,
+            "background_detail_under_sprite": 37.08
+          },
+          {
+            "id": "bb14",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 72.62,
+            "background_detail_under_sprite": 46.09
+          },
+          {
+            "id": "bb15",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.8,
+            "background_detail_under_sprite": 37.08
+          },
+          {
+            "id": "bb16",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 72.62,
+            "background_detail_under_sprite": 46.09
+          },
+          {
+            "id": "bb17",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.8,
+            "background_detail_under_sprite": 37.08
+          },
+          {
+            "id": "bb_first_contacts",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 72.62,
+            "background_detail_under_sprite": 46.09
+          },
+          {
+            "id": "bb_first_memory",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.8,
+            "background_detail_under_sprite": 37.08
+          },
+          {
+            "id": "bb_first_paper",
+            "bgImageId": "bg_market_stall",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 72.62,
+            "background_detail_under_sprite": 46.09
+          },
+          {
+            "id": "bb18",
+            "bgImageId": "bg_tram_shelf",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 60.94,
+            "background_detail_under_sprite": 28.86
+          },
+          {
+            "id": "bb19",
+            "bgImageId": "bg_tram_shelf",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.63,
+            "background_detail_under_sprite": 29.12
+          },
+          {
+            "id": "bb20",
+            "bgImageId": "bg_tram_shelf",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 60.94,
+            "background_detail_under_sprite": 28.86
+          },
+          {
+            "id": "bb21",
+            "bgImageId": "bg_tram_shelf",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.63,
+            "background_detail_under_sprite": 29.12
+          },
+          {
+            "id": "bb22",
+            "bgImageId": "bg_tram_shelf",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 60.94,
+            "background_detail_under_sprite": 28.86
+          },
+          {
+            "id": "bb_save_preserve",
+            "bgImageId": "bg_rooftop_swap",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.67,
+            "background_detail_under_sprite": 33.39
+          },
+          {
+            "id": "bb_save_begin",
+            "bgImageId": "bg_rooftop_swap",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 61.75,
+            "background_detail_under_sprite": 35.37
+          },
+          {
+            "id": "bb_save_copy",
+            "bgImageId": "bg_rooftop_swap",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.67,
+            "background_detail_under_sprite": 33.39
+          },
+          {
+            "id": "bb_end_preserve_contacts",
+            "bgImageId": "bg_rooftop_swap",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 61.75,
+            "background_detail_under_sprite": 35.37
+          },
+          {
+            "id": "bb_end_preserve_memory",
+            "bgImageId": "bg_rooftop_swap",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.67,
+            "background_detail_under_sprite": 33.39
+          },
+          {
+            "id": "bb_end_preserve_paper",
+            "bgImageId": "bg_rooftop_swap",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 61.75,
+            "background_detail_under_sprite": 35.37
+          },
+          {
+            "id": "bb_end_begin_contacts",
+            "bgImageId": "bg_rooftop_swap",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.67,
+            "background_detail_under_sprite": 33.39
+          },
+          {
+            "id": "bb_end_begin_memory",
+            "bgImageId": "bg_rooftop_swap",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 61.75,
+            "background_detail_under_sprite": 35.37
+          },
+          {
+            "id": "bb_end_begin_paper",
+            "bgImageId": "bg_rooftop_swap",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.67,
+            "background_detail_under_sprite": 33.39
+          },
+          {
+            "id": "bb_end_copy_contacts",
+            "bgImageId": "bg_rooftop_swap",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 61.75,
+            "background_detail_under_sprite": 35.37
+          },
+          {
+            "id": "bb_end_copy_memory",
+            "bgImageId": "bg_rooftop_swap",
+            "charId": "char_mina_neutral",
+            "char2Id": "char_mina_talk",
+            "char3Id": "char_mina_blink",
+            "charPos": "left",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "mina",
+            "expected_char2Id": "char_mina_talk",
+            "expected_char3Id": "char_mina_blink",
+            "position": "left",
+            "sampled_visible_pixels": 4200,
+            "sprite_bg_luma_delta": 63.67,
+            "background_detail_under_sprite": 33.39
+          },
+          {
+            "id": "bb_end_copy_paper",
+            "bgImageId": "bg_rooftop_swap",
+            "charId": "char_ren_neutral",
+            "char2Id": "char_ren_talk",
+            "char3Id": "char_ren_blink",
+            "charPos": "right",
+            "char2Pos": "none",
+            "charAnim": "talk-blink",
+            "animation_body": "ren",
+            "expected_char2Id": "char_ren_talk",
+            "expected_char3Id": "char_ren_blink",
+            "position": "right",
+            "sampled_visible_pixels": 4038,
+            "sprite_bg_luma_delta": 61.75,
+            "background_detail_under_sprite": 35.37
+          }
+        ],
+        "lowest_sprite_bg_contrast": [
+          {
+            "id": "bb18",
+            "background": "bg_tram_shelf",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 60.94
+          },
+          {
+            "id": "bb20",
+            "background": "bg_tram_shelf",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 60.94
+          },
+          {
+            "id": "bb22",
+            "background": "bg_tram_shelf",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 60.94
+          },
+          {
+            "id": "bb_end_begin_memory",
+            "background": "bg_rooftop_swap",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 61.75
+          },
+          {
+            "id": "bb_end_copy_contacts",
+            "background": "bg_rooftop_swap",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "sprite_bg_luma_delta": 61.75
+          }
+        ],
+        "busiest_sprite_lanes": [
+          {
+            "id": "bb02",
+            "background": "bg_market_stall",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 46.09
+          },
+          {
+            "id": "bb04",
+            "background": "bg_market_stall",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 46.09
+          },
+          {
+            "id": "bb06",
+            "background": "bg_market_stall",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 46.09
+          },
+          {
+            "id": "bb08",
+            "background": "bg_market_stall",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 46.09
+          },
+          {
+            "id": "bb10",
+            "background": "bg_market_stall",
+            "character": "char_ren_neutral",
+            "position": "right",
+            "background_detail_under_sprite": 46.09
+          }
+        ]
+      }
+    },
+    "counts": {
+      "backgrounds": 3,
+      "characters": 6,
+      "sprite_families": 2,
+      "sprite_approval_outputs": 6,
+      "provenance_outputs": 9
+    }
+  }
+}

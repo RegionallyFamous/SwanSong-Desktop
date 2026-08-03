@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:28.966539+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "valid-game-audit",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "name": "header-count-drift",
+      "passed": true,
+      "errors": [
+        "NUM_NODES=3 does not match project count 2"
+      ]
+    },
+    {
+      "name": "smoke-rom-drift",
+      "passed": true,
+      "errors": [
+        "Smoke report ROM path does not match expected ROM"
+      ]
+    },
+    {
+      "name": "no-write-game-audit",
+      "passed": true,
+      "errors": []
+    }
+  ]
+}

@@ -1,0 +1,519 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:54:28.617561+00:00",
+  "errors": [],
+  "cases": [
+    {
+      "name": "valid-game-readiness",
+      "passed": true,
+      "errors": [],
+      "talk_animation_change": {
+        "size": [
+          96,
+          128
+        ],
+        "changed_pixels": 425,
+        "changed_bbox": [
+          36,
+          58,
+          61,
+          75
+        ],
+        "changed_bbox_area": 425,
+        "changed_region_share": 0.034587,
+        "global_changed_share": 0.034587,
+        "face_changed_pixels": 425,
+        "face_changed_share": 0.201231,
+        "outside_face_pixels": 10176,
+        "outside_face_changed_pixels": 0,
+        "outside_face_changed_share": 0.0
+      },
+      "readiness_scope": "Technical readiness only: this gate verifies build-facing project, asset, animation, text, and evidence constraints; passing does not assess aesthetic quality."
+    },
+    {
+      "name": "short-route-fails-finished-story-floor",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800"
+      ],
+      "route_pacing": [
+        {
+          "route_id": "route-1",
+          "label": "Left",
+          "ending_node": "end",
+          "scene_beats": 4,
+          "words": 20,
+          "estimated_minutes_at_140_wpm": 0.14
+        },
+        {
+          "route_id": "route-2",
+          "label": "Right",
+          "ending_node": "end",
+          "scene_beats": 4,
+          "words": 20,
+          "estimated_minutes_at_140_wpm": 0.14
+        }
+      ]
+    },
+    {
+      "name": "duplicate-ending-capture-signature-fails",
+      "passed": true,
+      "errors": [
+        "Ending scenes converge on the same terminal page and visual state: scene_4, scene_5",
+        "Review sheets report project sha256 does not match current project",
+        "Review sheets report scene preview sheet cell 6 image_sha256 does not match current render",
+        "scene preview sheet cell 6 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 6 image_sha256 does not match current render",
+        "storyboard sheet cell 6 pixels do not match current project/font render"
+      ]
+    },
+    {
+      "name": "long-text-fails",
+      "passed": true,
+      "errors": [
+        "scene_1 dialogue block is 101 chars",
+        "scene_1 dialogue word is 101 chars, expected <= 26",
+        "Review sheets report project sha256 does not match current project",
+        "Review sheets report scene preview sheet cell 1 image_sha256 does not match current render",
+        "scene preview sheet cell 1 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 1 image_sha256 does not match current render",
+        "storyboard sheet cell 1 pixels do not match current project/font render"
+      ]
+    },
+    {
+      "name": "unsupported-title-char-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "title titleMain: unsupported character '\u2665' U+2665",
+        "Review sheets report project sha256 does not match current project",
+        "Review sheets report scene preview sheet cell 0 image_sha256 does not match current render",
+        "scene preview sheet cell 0 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 0 image_sha256 does not match current render",
+        "storyboard sheet cell 0 pixels do not match current project/font render"
+      ]
+    },
+    {
+      "name": "choice-control-tag-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "choice_1 prompt: unsupported control tag '{pause}'",
+        "Review sheets report project sha256 does not match current project",
+        "Review sheets report scene preview sheet cell 4 image_sha256 does not match current render",
+        "scene preview sheet cell 4 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 4 image_sha256 does not match current render",
+        "storyboard sheet cell 4 pixels do not match current project/font render"
+      ]
+    },
+    {
+      "name": "choice-prompt-too-long-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "choice_1 prompt is 31 chars, expected <= 26",
+        "Review sheets report project sha256 does not match current project",
+        "Review sheets report scene preview sheet cell 4 image_sha256 does not match current render",
+        "scene preview sheet cell 4 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 4 image_sha256 does not match current render",
+        "storyboard sheet cell 4 pixels do not match current project/font render"
+      ]
+    },
+    {
+      "name": "dialogue-runtime-overflow-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 25 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 25 dialogue words, expected at least 1800",
+        "scene_1 dialogue block needs 5 wrapped lines, expected <= 4 before a pause",
+        "Review sheets report project sha256 does not match current project",
+        "Review sheets report scene preview sheet cell 1 image_sha256 does not match current render",
+        "scene preview sheet cell 1 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 1 image_sha256 does not match current render",
+        "storyboard sheet cell 1 pixels do not match current project/font render"
+      ]
+    },
+    {
+      "name": "route-unreachable-ending-fails",
+      "passed": true,
+      "errors": [
+        "Ending scene 'scene_6' is not reachable by route simulation",
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "Review sheets report project sha256 does not match current project",
+        "Review sheets report node count does not match current project",
+        "Review sheets report preview node IDs do not match current project",
+        "Review sheets report scene preview sheet cell count does not match current project",
+        "Review sheets report storyboard sheet cell count does not match current project"
+      ]
+    },
+    {
+      "name": "never-visible-choice-fails",
+      "passed": true,
+      "errors": [
+        "Ending scene 'scene_5' is not reachable by route simulation",
+        "Choice target 'scene_5' is never selectable by route simulation",
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "Review sheets report project sha256 does not match current project"
+      ]
+    },
+    {
+      "name": "stale-asset-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "char_hero_talk embedded dataUrl does not match local asset file"
+      ]
+    },
+    {
+      "name": "missing-background-source-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "No background source image found; add a source file named for background/scene/location art"
+      ]
+    },
+    {
+      "name": "corrupt-source-png-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "Source image could not be opened: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-readiness-0ib17_aw/corrupt-source-png/lab/games/sample-game/assets/sources/hero_source.png: cannot identify image file '/private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-readiness-0ib17_aw/corrupt-source-png/lab/games/sample-game/assets/sources/hero_source.png'"
+      ]
+    },
+    {
+      "name": "tiny-character-source-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "Character source image is too small: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-readiness-0ib17_aw/tiny-character-source/lab/games/sample-game/assets/sources/hero_source.png is 96x128, expected at least 288x128"
+      ]
+    },
+    {
+      "name": "identical-talk-frame-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "char_hero_talk face luma delta 0.00 is below the technical talk-frame minimum 1.50",
+        "Review sheets report project sha256 does not match current project"
+      ]
+    },
+    {
+      "name": "whole-portrait-morph-fails-locality-limits",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "char_hero_talk technical animation changed-region share is 0.4267, max 0.1000; talk/blink changes must remain localized to the face",
+        "char_hero_talk technical animation global changed-pixel share is 0.3560, max 0.0800; talk/blink changes must remain localized to the face",
+        "char_hero_talk technical animation outside-face changed-pixel share is 0.2353, max 0.0100; talk/blink changes must remain localized to the face",
+        "Review sheets report project sha256 does not match current project"
+      ],
+      "talk_face_delta": 33.629,
+      "talk_animation_change": {
+        "size": [
+          96,
+          128
+        ],
+        "changed_pixels": 4375,
+        "changed_bbox": [
+          24,
+          18,
+          73,
+          125
+        ],
+        "changed_bbox_area": 5243,
+        "changed_region_share": 0.426676,
+        "global_changed_share": 0.356038,
+        "face_changed_pixels": 1981,
+        "face_changed_share": 0.937973,
+        "outside_face_pixels": 10176,
+        "outside_face_changed_pixels": 2394,
+        "outside_face_changed_share": 0.235259
+      }
+    },
+    {
+      "name": "mismatched-sprite-family-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "scene_1 sprite frames do not share one neutral/talk/blink family",
+        "scene_2 sprite frames do not share one neutral/talk/blink family",
+        "scene_3 sprite frames do not share one neutral/talk/blink family",
+        "scene_4 sprite frames do not share one neutral/talk/blink family",
+        "scene_5 sprite frames do not share one neutral/talk/blink family",
+        "Review sheets report project sha256 does not match current project"
+      ]
+    },
+    {
+      "name": "soft-alpha-sprite-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "char_hero_talk character alpha must be binary 0/255 for WSC sprites",
+        "char_hero_talk technical animation changed-region share is 0.2890, max 0.1000; talk/blink changes must remain localized to the face",
+        "Review sheets report project sha256 does not match current project"
+      ]
+    },
+    {
+      "name": "unsnapped-background-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "bg_room colors must be RGB444-snapped for WonderSwan Color",
+        "Review sheets report project sha256 does not match current project",
+        "Review sheets report scene preview sheet cell 0 image_sha256 does not match current render",
+        "scene preview sheet cell 0 pixels do not match current project/font render",
+        "Review sheets report scene preview sheet cell 1 image_sha256 does not match current render",
+        "scene preview sheet cell 1 pixels do not match current project/font render",
+        "Review sheets report scene preview sheet cell 2 image_sha256 does not match current render",
+        "scene preview sheet cell 2 pixels do not match current project/font render",
+        "Review sheets report scene preview sheet cell 3 image_sha256 does not match current render",
+        "scene preview sheet cell 3 pixels do not match current project/font render",
+        "Review sheets report scene preview sheet cell 5 image_sha256 does not match current render",
+        "scene preview sheet cell 5 pixels do not match current project/font render",
+        "Review sheets report scene preview sheet cell 6 image_sha256 does not match current render",
+        "scene preview sheet cell 6 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 0 image_sha256 does not match current render",
+        "storyboard sheet cell 0 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 1 image_sha256 does not match current render",
+        "storyboard sheet cell 1 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 2 image_sha256 does not match current render",
+        "storyboard sheet cell 2 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 3 image_sha256 does not match current render",
+        "storyboard sheet cell 3 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 5 image_sha256 does not match current render",
+        "storyboard sheet cell 5 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 6 image_sha256 does not match current render",
+        "storyboard sheet cell 6 pixels do not match current project/font render"
+      ]
+    },
+    {
+      "name": "unsnapped-sprite-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "char_hero_talk colors must be RGB444-snapped for WonderSwan Color",
+        "char_hero_talk technical animation changed-region share is 0.3772, max 0.1000; talk/blink changes must remain localized to the face",
+        "char_hero_talk technical animation global changed-pixel share is 0.2841, max 0.0800; talk/blink changes must remain localized to the face",
+        "char_hero_talk technical animation outside-face changed-pixel share is 0.1909, max 0.0100; talk/blink changes must remain localized to the face",
+        "Review sheets report project sha256 does not match current project"
+      ]
+    },
+    {
+      "name": "bright-hidden-textbox-background-passes",
+      "passed": true,
+      "errors": [],
+      "background_readability": {
+        "textbox_zone": [
+          0,
+          104,
+          224,
+          144
+        ],
+        "speaker_row": [
+          0,
+          96,
+          224,
+          104
+        ],
+        "runtime_textbox_opaque": true,
+        "luma_limits_enforced": false,
+        "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+        "backgrounds": [
+          {
+            "id": "bg_room",
+            "textbox_mean_luma": 204.0,
+            "textbox_luma_stddev": 0.0,
+            "luma_limits_enforced": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "noisy-hidden-textbox-background-passes",
+      "passed": true,
+      "errors": [],
+      "background_readability": {
+        "textbox_zone": [
+          0,
+          104,
+          224,
+          144
+        ],
+        "speaker_row": [
+          0,
+          96,
+          224,
+          104
+        ],
+        "runtime_textbox_opaque": true,
+        "luma_limits_enforced": false,
+        "technical_note": "Textbox-zone background pixels are fully covered by the opaque runtime textbox; their luma is reported for evidence but is not a technical readiness requirement.",
+        "backgrounds": [
+          {
+            "id": "bg_room",
+            "textbox_mean_luma": 42.5,
+            "textbox_luma_stddev": 42.5,
+            "luma_limits_enforced": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "tiny-contact-sheet-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "Contact sheet is too small: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-readiness-0ib17_aw/tiny-contact-sheet/lab/games/sample-game/assets/contact_sheet.png is 224x144, expected at least 448x288"
+      ]
+    },
+    {
+      "name": "blank-review-sheets-fail",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "scene preview sheet has only 1 colors, expected at least 16 for a reviewable sheet",
+        "scene preview sheet luma stddev 0.00 is too low for a reviewable sheet",
+        "storyboard sheet has only 1 colors, expected at least 16 for a reviewable sheet",
+        "storyboard sheet luma stddev 0.00 is too low for a reviewable sheet",
+        "scene preview sheet cell 0 pixels do not match current project/font render",
+        "scene preview sheet cell 1 pixels do not match current project/font render",
+        "scene preview sheet cell 2 pixels do not match current project/font render",
+        "scene preview sheet cell 3 pixels do not match current project/font render",
+        "scene preview sheet cell 4 pixels do not match current project/font render",
+        "scene preview sheet cell 5 pixels do not match current project/font render",
+        "scene preview sheet cell 6 pixels do not match current project/font render",
+        "storyboard sheet cell 0 pixels do not match current project/font render",
+        "storyboard sheet cell 1 pixels do not match current project/font render",
+        "storyboard sheet cell 2 pixels do not match current project/font render",
+        "storyboard sheet cell 3 pixels do not match current project/font render",
+        "storyboard sheet cell 4 pixels do not match current project/font render",
+        "storyboard sheet cell 5 pixels do not match current project/font render",
+        "storyboard sheet cell 6 pixels do not match current project/font render"
+      ]
+    },
+    {
+      "name": "colorful-wrong-review-sheets-fail",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "Review sheets report scene preview sheet cell 0 image_sha256 does not match current render",
+        "scene preview sheet cell 0 pixels do not match current project/font render",
+        "Review sheets report scene preview sheet cell 1 image_sha256 does not match current render",
+        "scene preview sheet cell 1 pixels do not match current project/font render",
+        "Review sheets report scene preview sheet cell 2 image_sha256 does not match current render",
+        "scene preview sheet cell 2 pixels do not match current project/font render",
+        "Review sheets report scene preview sheet cell 3 image_sha256 does not match current render",
+        "scene preview sheet cell 3 pixels do not match current project/font render",
+        "Review sheets report scene preview sheet cell 4 image_sha256 does not match current render",
+        "scene preview sheet cell 4 pixels do not match current project/font render",
+        "Review sheets report scene preview sheet cell 5 image_sha256 does not match current render",
+        "scene preview sheet cell 5 pixels do not match current project/font render",
+        "Review sheets report scene preview sheet cell 6 image_sha256 does not match current render",
+        "scene preview sheet cell 6 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 0 image_sha256 does not match current render",
+        "storyboard sheet cell 0 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 1 image_sha256 does not match current render",
+        "storyboard sheet cell 1 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 2 image_sha256 does not match current render",
+        "storyboard sheet cell 2 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 3 image_sha256 does not match current render",
+        "storyboard sheet cell 3 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 4 image_sha256 does not match current render",
+        "storyboard sheet cell 4 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 5 image_sha256 does not match current render",
+        "storyboard sheet cell 5 pixels do not match current project/font render",
+        "Review sheets report storyboard sheet cell 6 image_sha256 does not match current render",
+        "storyboard sheet cell 6 pixels do not match current project/font render"
+      ]
+    },
+    {
+      "name": "missing-review-sheets-report-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "Missing review sheets report: /private/var/folders/0v/_lf7xdcn0753ytv7d33k152c0000gn/T/wscvn-game-readiness-0ib17_aw/missing-review-sheets-report/lab/games/sample-game/reports/review-sheets-report.json"
+      ]
+    },
+    {
+      "name": "stale-review-sheet-hash-fails",
+      "passed": true,
+      "errors": [
+        "route-1 (Left) has 4 scene beats, expected at least 25",
+        "route-1 (Left) has 20 dialogue words, expected at least 1800",
+        "route-2 (Right) has 4 scene beats, expected at least 25",
+        "route-2 (Right) has 20 dialogue words, expected at least 1800",
+        "scene preview sheet has only 1 colors, expected at least 16 for a reviewable sheet",
+        "scene preview sheet luma stddev 0.00 is too low for a reviewable sheet",
+        "Review sheets report scene preview sheet byte count does not match current file",
+        "Review sheets report scene preview sheet sha256 does not match current file",
+        "scene preview sheet cell 0 pixels do not match current project/font render",
+        "scene preview sheet cell 1 pixels do not match current project/font render",
+        "scene preview sheet cell 2 pixels do not match current project/font render",
+        "scene preview sheet cell 3 pixels do not match current project/font render",
+        "scene preview sheet cell 4 pixels do not match current project/font render",
+        "scene preview sheet cell 5 pixels do not match current project/font render",
+        "scene preview sheet cell 6 pixels do not match current project/font render"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "ok": true,
+  "generated_at_utc": "2026-07-27T03:09:17.696225+00:00",
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "project": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/projects/operation-potluck.wscvn.json",
+    "contact_sheet": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/contact_sheet.png",
+    "nodes": 44,
+    "flags": 0,
+    "tracks": [
+      {
+        "id": "op_title",
+        "name": "Potluck Roll Call",
+        "bpm": 112
+      },
+      {
+        "id": "op_main",
+        "name": "Checklist Boogie",
+        "bpm": 126
+      },
+      {
+        "id": "op_end_a",
+        "name": "Perfect Formation",
+        "bpm": 102
+      },
+      {
+        "id": "op_end_b",
+        "name": "Neighbor With Salad",
+        "bpm": 138
+      }
+    ],
+    "backgrounds": {
+      "bg_title": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/backgrounds/title.png",
+        "colors": 12
+      },
+      "bg_kitchen": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/backgrounds/kitchen.png",
+        "colors": 12
+      },
+      "bg_clock": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/backgrounds/clock.png",
+        "colors": 11
+      },
+      "bg_checklist": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/backgrounds/checklist.png",
+        "colors": 9
+      },
+      "bg_zaku_call": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/backgrounds/zaku_call.png",
+        "colors": 9
+      }
+    },
+    "characters": {
+      "char_rx78_neutral": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/characters/rx78_neutral.png",
+        "colors": 14
+      },
+      "char_rx78_talk": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/characters/rx78_talk.png",
+        "colors": 14
+      },
+      "char_rx78_blink": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/characters/rx78_blink.png",
+        "colors": 14
+      }
+    },
+    "imagegen_sources": {
+      "background_title_imagegen_v2.png": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_title_imagegen_v2.png",
+        "sha256": "e077102fd8ea03b907fb901b04a2052b346aad0f0242d7e3aaf3a5a5fe6b4949",
+        "tool": "image_gen.imagegen"
+      },
+      "background_kitchen_imagegen_v2.png": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_kitchen_imagegen_v2.png",
+        "sha256": "22b94038a45389b146868d921ee507cdf23473205316454fe5a9fa9ab55f83c6",
+        "tool": "image_gen.imagegen"
+      },
+      "background_clock_imagegen_v2.png": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_clock_imagegen_v2.png",
+        "sha256": "b7724b0fc105ae9497cb87f7ee85571d411a404dd413f3b902e06f00c67390e5",
+        "tool": "image_gen.imagegen"
+      },
+      "background_checklist_imagegen_v2.png": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_checklist_imagegen_v2.png",
+        "sha256": "3a9e80dcf0a1a527ae09f3c40b878d4c5989c2ba87628298f3657970bf9b7128",
+        "tool": "image_gen.imagegen"
+      },
+      "background_zaku_call_imagegen_v2.png": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/background_zaku_call_imagegen_v2.png",
+        "sha256": "282c7d281598e8e558ceb41449a853557013ce25862e9f24da92a59fa5b0c4e6",
+        "tool": "image_gen.imagegen"
+      },
+      "character_rx78_checklist_master_imagegen_v2.png": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/character_rx78_checklist_master_imagegen_v2.png",
+        "sha256": "5d2f0f63f541b1966c1be08be2d9374e29e515d3164e263317276133eb3a57ca",
+        "tool": "image_gen.imagegen"
+      },
+      "character_rx78_checklist_master_cutout_imagegen_v2.png": {
+        "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/games/operation-potluck/assets/sources/character_rx78_checklist_master_cutout_imagegen_v2.png",
+        "sha256": "3d8a8a28de6f7bc4707d76ff546c44d93eb9b5bfa18459714297c8254196c333",
+        "tool": "image_gen.imagegen"
+      }
+    },
+    "art_direction": [
+      "Recognizable RX-78-2 silhouette and canonical color blocking are preserved.",
+      "Domestic props are additive: checklist shield tablet and stylus pointer.",
+      "Every background is independently generated with ImageGen at 14:9 and then palette-converted.",
+      "Talk and blink frames modify only the mechanical camera/vent band of one locked ImageGen master.",
+      "This noncommercial fan slice contains no official artwork or commercial ROM data."
+    ]
+  }
+}

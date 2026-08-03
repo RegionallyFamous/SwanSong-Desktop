@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "tool": "story-pulse",
+  "manifest": {
+    "path": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/novels/mobile-suit-gundam-summary/novel.json",
+    "sha256": "0641681e9a0eceeb7d17ccc084abd5b33d2b817504fadf0c1c85888e8add8c85"
+  },
+  "manuscript_sha256": "cbc8c5ab6befbf04a0af1faae763b5de5faa67db732e8575b7d01375b2e20afc",
+  "slug": "mobile-suit-gundam-summary",
+  "workbench_schema_version": 1,
+  "generated_at": "2026-07-23T21:57:22.169017+00:00",
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "facts": {
+    "scenes": [
+      {
+        "scene_id": "scene-01",
+        "causal_load": 0.0,
+        "ancestors": 0,
+        "descendants": 5,
+        "reader_question": "Can a ship of unprepared survivors keep moving under Char's pursuit?",
+        "reader_question_status": null,
+        "linked_answer_scene": "scene-06",
+        "setups": [
+          "closing-clock",
+          "tour-ticket",
+          "witness-badges",
+          "names-on-glass"
+        ],
+        "payoffs": [],
+        "motifs": [
+          "exit-path"
+        ],
+        "drafted": true
+      },
+      {
+        "scene_id": "scene-02",
+        "causal_load": 0.16,
+        "ancestors": 1,
+        "descendants": 4,
+        "reader_question": "Will Amuro learn that technical talent cannot substitute for maturity?",
+        "reader_question_status": null,
+        "linked_answer_scene": "scene-06",
+        "setups": [
+          "zabi-board"
+        ],
+        "payoffs": [],
+        "motifs": [],
+        "drafted": true
+      },
+      {
+        "scene_id": "scene-03",
+        "causal_load": 0.24,
+        "ancestors": 2,
+        "descendants": 3,
+        "reader_question": "What kind of home can White Base become when its members can still choose to leave?",
+        "reader_question_status": null,
+        "linked_answer_scene": "scene-04",
+        "setups": [
+          "chosen-home"
+        ],
+        "payoffs": [
+          "names-on-glass"
+        ],
+        "motifs": [
+          "names-on-glass"
+        ],
+        "drafted": true
+      },
+      {
+        "scene_id": "scene-04",
+        "causal_load": 0.24,
+        "ancestors": 3,
+        "descendants": 2,
+        "reader_question": "Will Newtype perception become connection or merely faster targeting?",
+        "reader_question_status": null,
+        "linked_answer_scene": "scene-05",
+        "setups": [
+          "newtype-weaponization"
+        ],
+        "payoffs": [
+          "chosen-home"
+        ],
+        "motifs": [],
+        "drafted": true
+      },
+      {
+        "scene_id": "scene-05",
+        "causal_load": 0.16,
+        "ancestors": 4,
+        "descendants": 1,
+        "reader_question": "Can any command structure end the war before it consumes itself?",
+        "reader_question_status": null,
+        "linked_answer_scene": "scene-06",
+        "setups": [
+          "newtype-connection"
+        ],
+        "payoffs": [
+          "names-on-glass",
+          "newtype-weaponization"
+        ],
+        "motifs": [
+          "names-on-glass"
+        ],
+        "drafted": true
+      },
+      {
+        "scene_id": "scene-06",
+        "causal_load": 0.0,
+        "ancestors": 5,
+        "descendants": 0,
+        "reader_question": "What should the next museum tour notice that faction colors hide?",
+        "reader_question_status": "intentional-open",
+        "linked_answer_scene": null,
+        "setups": [],
+        "payoffs": [
+          "closing-clock",
+          "tour-ticket",
+          "witness-badges",
+          "zabi-board",
+          "newtype-connection",
+          "names-on-glass"
+        ],
+        "motifs": [
+          "exit-path",
+          "names-on-glass"
+        ],
+        "drafted": true
+      }
+    ],
+    "load_bearing_scenes": [
+      {
+        "scene_id": "scene-03",
+        "causal_load": 0.24,
+        "ancestors": 2,
+        "descendants": 3,
+        "reader_question": "What kind of home can White Base become when its members can still choose to leave?",
+        "reader_question_status": null,
+        "linked_answer_scene": "scene-04",
+        "setups": [
+          "chosen-home"
+        ],
+        "payoffs": [
+          "names-on-glass"
+        ],
+        "motifs": [
+          "names-on-glass"
+        ],
+        "drafted": true
+      },
+      {
+        "scene_id": "scene-04",
+        "causal_load": 0.24,
+        "ancestors": 3,
+        "descendants": 2,
+        "reader_question": "Will Newtype perception become connection or merely faster targeting?",
+        "reader_question_status": null,
+        "linked_answer_scene": "scene-05",
+        "setups": [
+          "newtype-weaponization"
+        ],
+        "payoffs": [
+          "chosen-home"
+        ],
+        "motifs": [],
+        "drafted": true
+      },
+      {
+        "scene_id": "scene-02",
+        "causal_load": 0.16,
+        "ancestors": 1,
+        "descendants": 4,
+        "reader_question": "Will Amuro learn that technical talent cannot substitute for maturity?",
+        "reader_question_status": null,
+        "linked_answer_scene": "scene-06",
+        "setups": [
+          "zabi-board"
+        ],
+        "payoffs": [],
+        "motifs": [],
+        "drafted": true
+      },
+      {
+        "scene_id": "scene-05",
+        "causal_load": 0.16,
+        "ancestors": 4,
+        "descendants": 1,
+        "reader_question": "Can any command structure end the war before it consumes itself?",
+        "reader_question_status": null,
+        "linked_answer_scene": "scene-06",
+        "setups": [
+          "newtype-connection"
+        ],
+        "payoffs": [
+          "names-on-glass",
+          "newtype-weaponization"
+        ],
+        "motifs": [
+          "names-on-glass"
+        ],
+        "drafted": true
+      },
+      {
+        "scene_id": "scene-01",
+        "causal_load": 0.0,
+        "ancestors": 0,
+        "descendants": 5,
+        "reader_question": "Can a ship of unprepared survivors keep moving under Char's pursuit?",
+        "reader_question_status": null,
+        "linked_answer_scene": "scene-06",
+        "setups": [
+          "closing-clock",
+          "tour-ticket",
+          "witness-badges",
+          "names-on-glass"
+        ],
+        "payoffs": [],
+        "motifs": [
+          "exit-path"
+        ],
+        "drafted": true
+      }
+    ],
+    "open_questions": [],
+    "flat_rhythm_runs": [],
+    "interpretation": "Causal load is a revision aid, not a story score; low-centrality texture may be essential."
+  },
+  "artifacts": {
+    "json": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/novels/mobile-suit-gundam-summary/workbench/story-pulse.json",
+    "html": "/Users/nick/Documents/GitHub/SwanSong-Desktop/StoryForge/novels/mobile-suit-gundam-summary/workbench/story-pulse.html"
+  }
+}

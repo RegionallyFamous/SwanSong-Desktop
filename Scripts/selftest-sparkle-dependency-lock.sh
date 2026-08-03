@@ -38,21 +38,21 @@ expect_failure() {
 }
 
 write_fixture
-sed 's/exact: "2.9.4"/from: "2.9.4"/' \
+sed 's/exact: "2.9.5"/from: "2.9.5"/' \
   "$FIXTURE/Package.swift" >"$TEMP_ROOT/Package.swift"
 mv "$TEMP_ROOT/Package.swift" "$FIXTURE/Package.swift"
 expect_failure "a non-exact manifest constraint" \
   python3 "$CHECKER" --repository "$FIXTURE"
 
 write_fixture
-sed 's/cb6fdbdc/00000000/' "$FIXTURE/Dependencies/sparkle.lock.json" \
+sed 's/34b9b207/00000000/' "$FIXTURE/Dependencies/sparkle.lock.json" \
   >"$TEMP_ROOT/sparkle.lock.json"
 mv "$TEMP_ROOT/sparkle.lock.json" "$FIXTURE/Dependencies/sparkle.lock.json"
 expect_failure "a changed artifact checksum" \
   python3 "$CHECKER" --repository "$FIXTURE"
 
 write_fixture
-sed 's/b6496a74/00000000/' "$FIXTURE/Package.resolved" \
+sed 's/79bc9e87/00000000/' "$FIXTURE/Package.resolved" \
   >"$TEMP_ROOT/Package.resolved"
 mv "$TEMP_ROOT/Package.resolved" "$FIXTURE/Package.resolved"
 expect_failure "a changed resolved revision" \

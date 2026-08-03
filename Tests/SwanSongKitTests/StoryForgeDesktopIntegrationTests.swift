@@ -127,6 +127,23 @@ final class StoryForgeDesktopIntegrationTests: XCTestCase {
         }
     }
 
+    func testIncludedRootResolvesTheFrameworkInsideAppResources() throws {
+        let resources = try temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: resources) }
+        let included = resources.appendingPathComponent("StoryForge", isDirectory: true)
+        try writeFrameworkFixture(at: included, schemaVersion: 3)
+
+        XCTAssertEqual(
+            StoryForgeCLIResolution.includedRoot(resourceRoot: resources),
+            included.standardizedFileURL.resolvingSymlinksInPath()
+        )
+        XCTAssertNil(
+            StoryForgeCLIResolution.includedRoot(
+                resourceRoot: resources.appendingPathComponent("missing")
+            )
+        )
+    }
+
     func testManifestSummaryKeepsRightsMusicAndEvidenceSeparate() throws {
         let root = try temporaryDirectory()
         defer { try? FileManager.default.removeItem(at: root) }
