@@ -24,8 +24,8 @@ Source revision: `449b93716fb162632de2fd43bf2eba2064fa43f2`.
 
 ## Sparkle 2
 
-SwanSong uses Sparkle for signed application updates. Sparkle 2.9.4 is pinned
-to source revision `b6496a74a087257ef5e6da1c5b29a447a60f5bd7`. Its complete license and
+SwanSong uses Sparkle for signed application updates. Sparkle 2.9.5 is pinned
+to source revision `79bc9e872948e47877e76f194cb0c8e0412b0b90`. Its complete license and
 bundled third-party notices are reproduced in `SPARKLE_LICENSE` and in the
 application's Resources directory. Exact source is included in every official
 corresponding-source archive under `Dependencies/sparkle-source`.

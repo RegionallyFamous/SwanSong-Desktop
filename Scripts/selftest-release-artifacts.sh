@@ -109,9 +109,9 @@ write_valid_fixture() {
   printf 'synthetic Sparkle license\n' \
     >"$SOURCE_ROOT/Dependencies/sparkle-source/LICENSE"
   cat >"$SOURCE_ROOT/Dependencies/sparkle-source/Package.swift" <<'EOF'
-let version = "2.9.4"
-let tag = "2.9.4"
-let checksum = "cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"
+let version = "2.9.5"
+let tag = "2.9.5"
+let checksum = "34b9b2071f3de0012eca3faa3a9290bb94e62131e9a74f6dc91514a000097a6c"
 let url = "Sparkle-for-Swift-Package-Manager.zip"
 EOF
   cat >"$SOURCE_ROOT/Package.resolved" <<EOF
@@ -120,7 +120,7 @@ EOF
     "identity": "sparkle",
     "kind": "remoteSourceControl",
     "location": "https://github.com/sparkle-project/Sparkle.git",
-    "state": {"revision": "$SPARKLE_COMMIT", "version": "2.9.4"}
+    "state": {"revision": "$SPARKLE_COMMIT", "version": "2.9.5"}
   }]
 }
 EOF
@@ -137,9 +137,9 @@ EOF
   cat >"$SOURCE_ROOT/Dependencies/sparkle.lock.json" <<EOF
 {
   "repository": "https://github.com/sparkle-project/Sparkle.git",
-  "version": "2.9.4",
+  "version": "2.9.5",
   "commit": "$SPARKLE_COMMIT",
-  "swiftPackageArtifactSHA256": "cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"
+  "swiftPackageArtifactSHA256": "34b9b2071f3de0012eca3faa3a9290bb94e62131e9a74f6dc91514a000097a6c"
 }
 EOF
   COPYFILE_DISABLE=1 tar -cJf "$SOURCE_ARCHIVE" \
@@ -184,7 +184,7 @@ EOF
   "engineServiceSHA256": "$ENGINE_SERVICE_HASH",
   "engineSHA256": "$ENGINE_HASH",
   "privacyManifestSHA256": "$PRIVACY_MANIFEST_HASH",
-  "sparkleVersion": "2.9.4",
+  "sparkleVersion": "2.9.5",
   "sparkleFrameworkExecutableSHA256": "$SPARKLE_FRAMEWORK_HASH",
   "sparkleAutoupdateSHA256": "$SPARKLE_AUTOUPDATE_HASH",
   "sparkleUpdaterSHA256": "$SPARKLE_UPDATER_HASH",

@@ -4,7 +4,7 @@ set -eu
 SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 MACOS_DIR=$(CDPATH='' cd -- "$SCRIPT_DIR/.." && pwd)
 APP=${1:-"$MACOS_DIR/.build/app/SwanSong.app"}
-EXPECTED_VERSION=${SWAN_EXPECTED_SPARKLE_VERSION:-2.9.4}
+EXPECTED_VERSION=${SWAN_EXPECTED_SPARKLE_VERSION:-2.9.5}
 FRAMEWORK="$APP/Contents/Frameworks/Sparkle.framework"
 VERSION_ROOT="$FRAMEWORK/Versions/B"
 

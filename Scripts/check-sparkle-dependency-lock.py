@@ -11,9 +11,9 @@ from pathlib import Path
 
 
 REPOSITORY = "https://github.com/sparkle-project/Sparkle.git"
-VERSION = "2.9.4"
-COMMIT = "b6496a74a087257ef5e6da1c5b29a447a60f5bd7"
-ARTIFACT_SHA256 = "cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"
+VERSION = "2.9.5"
+COMMIT = "79bc9e872948e47877e76f194cb0c8e0412b0b90"
+ARTIFACT_SHA256 = "34b9b2071f3de0012eca3faa3a9290bb94e62131e9a74f6dc91514a000097a6c"
 
 
 class LockError(Exception):
@@ -41,7 +41,7 @@ def validate_project_manifest(path: Path) -> None:
         re.DOTALL,
     )
     if len(dependency.findall(source)) != 1:
-        raise LockError("Package.swift must contain one exact Sparkle 2.9.4 dependency")
+        raise LockError("Package.swift must contain one exact Sparkle 2.9.5 dependency")
 
 
 def validate_lock(path: Path) -> None:

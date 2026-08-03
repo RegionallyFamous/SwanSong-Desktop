@@ -5,7 +5,7 @@ SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 MACOS_DIR=$(CDPATH='' cd -- "$SCRIPT_DIR/.." && pwd)
 EXPECTED_BUNDLE_ID=com.regionallyfamous.swansong
 EXPECTED_TEAM_ID=3J8H48TP7P
-EXPECTED_SPARKLE_VERSION=2.9.4
+EXPECTED_SPARKLE_VERSION=2.9.5
 MAXIMUM_ARCHIVE_BYTE_COUNT=$((64 * 1024 * 1024))
 MAXIMUM_SOURCE_ARCHIVE_BYTE_COUNT=$((64 * 1024 * 1024))
 # A stapled universal app currently produces roughly 424 ZIP records because

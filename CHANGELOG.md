@@ -38,6 +38,8 @@ source home and carries its fixed writing framework inside the signed app.
 - Verifies the included Story Forge payload during build, packaging, archive
   validation, signature checks, and public artifact verification so missing,
   changed, linked, extra, or wrongly identified framework files fail closed.
+- Updates the bundled Sparkle framework to 2.9.5, including its complete
+  destination-symlink hardening for delta updates.
 
 ## [0.9.3] - 2026-07-31
 

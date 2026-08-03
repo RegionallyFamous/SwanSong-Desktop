@@ -95,16 +95,16 @@ def valid_members() -> list[tuple[tarfile.TarInfo, io.BytesIO | None]]:
         elif relative_path == "Dependencies/sparkle.lock.json":
             payload = (
                 '{"repository":"https://github.com/sparkle-project/Sparkle.git",'
-                '"version":"2.9.4",'
+                '"version":"2.9.5",'
                 f'"commit":"{SPARKLE_COMMIT}",'
                 '"swiftPackageArtifactSHA256":'
-                '"cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"}\n'
+                '"34b9b2071f3de0012eca3faa3a9290bb94e62131e9a74f6dc91514a000097a6c"}\n'
             ).encode()
         elif relative_path == "Dependencies/sparkle-source/Package.swift":
             payload = (
-                'let version = "2.9.4"\n'
-                'let tag = "2.9.4"\n'
-                'let checksum = "cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"\n'
+                'let version = "2.9.5"\n'
+                'let tag = "2.9.5"\n'
+                'let checksum = "34b9b2071f3de0012eca3faa3a9290bb94e62131e9a74f6dc91514a000097a6c"\n'
                 'let url = "Sparkle-for-Swift-Package-Manager.zip"\n'
             ).encode()
         elif relative_path == "Package.resolved":
@@ -114,7 +114,7 @@ def valid_members() -> list[tuple[tarfile.TarInfo, io.BytesIO | None]]:
                 '"location":"https://github.com/sparkle-project/Sparkle.git",'
                 '"state":{'
                 f'"revision":"{SPARKLE_COMMIT}",'
-                '"version":"2.9.4"}}]}\n'
+                '"version":"2.9.5"}}]}\n'
             ).encode()
         else:
             payload = b"source\n"
@@ -250,10 +250,10 @@ def main() -> int:
                     "Dependencies/sparkle.lock.json",
                     (
                         '{"repository":"https://github.com/sparkle-project/Sparkle.git",'
-                        '"version":"2.9.4",'
+                        '"version":"2.9.5",'
                         f'"commit":"{"3" * 40}",'
                         '"swiftPackageArtifactSHA256":'
-                        '"cb6fdbdc8884f15d62a616e79face92b08322410fd2d425edc6596ccbf4ba3b0"}\n'
+                        '"34b9b2071f3de0012eca3faa3a9290bb94e62131e9a74f6dc91514a000097a6c"}\n'
                     ).encode(),
                 ),
             )
