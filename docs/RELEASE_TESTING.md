@@ -6,7 +6,7 @@ SDK projects, cartridges, and save data you own or are authorized to use. Never
 attach ROMs, saves, private screenshots or audio, manuscripts, cartridge-source
 evidence, or Translation Lab evidence to a public report.
 
-The signed public release is **SwanSong 0.9.3 (21)**.
+The signed public release is **SwanSong 0.9.4 (22)**.
 
 ## What this release is testing
 
@@ -204,7 +204,7 @@ hands-on attention.
 
 ## Before reporting a result
 
-1. Confirm **SwanSong 0.9.3 (21)** in **SwanSong > About SwanSong**.
+1. Confirm **SwanSong 0.9.4 (22)** in **SwanSong > About SwanSong**.
 2. Record the Mac model, macOS version, architecture, controller or cartridge
    hardware when relevant, SDK version, Python version, and Wonderful revision.
 3. For Story Forge, state the visible workspace and sanitized action/result;

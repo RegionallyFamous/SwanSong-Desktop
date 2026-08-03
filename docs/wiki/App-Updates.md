@@ -94,7 +94,7 @@ SwanSong 0.8.1 uses the ordinary seven-day staged rollout: the signed release
 and feed are public immediately, while automatic offers are intentionally
 distributed instead of appearing on every eligible Mac at once.
 
-SwanSong 0.9.3 is the current stable release and uses the ordinary seven-day
+SwanSong 0.9.4 is the current stable release and uses the ordinary seven-day
 staged rollout. The signed release and feed are public immediately, while
 automatic offers are distributed across the rollout groups.
 

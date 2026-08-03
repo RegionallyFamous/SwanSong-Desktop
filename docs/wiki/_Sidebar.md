@@ -4,7 +4,7 @@
 - [[Playing and Library]]
 - [[Gamepads]]
 - [[App Updates]]
-- [SwanSong 0.9.3 release notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.9.3.md)
+- [SwanSong 0.9.4 release notes](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/docs/releases/0.9.4.md)
 
 **Create and translate**
 
