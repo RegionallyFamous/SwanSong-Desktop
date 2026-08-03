@@ -8,11 +8,12 @@ EXPECTED_TEAM_ID=3J8H48TP7P
 EXPECTED_SPARKLE_VERSION=2.9.5
 MAXIMUM_ARCHIVE_BYTE_COUNT=$((64 * 1024 * 1024))
 MAXIMUM_SOURCE_ARCHIVE_BYTE_COUNT=$((64 * 1024 * 1024))
-# A stapled universal app currently produces roughly 424 ZIP records because
+# A stapled universal app can produce more than 1,100 ZIP records because
 # ditto's --sequesterRsrc preserves Apple provenance metadata as bounded
 # __MACOSX AppleDouble entries. Keep an explicit ceiling with enough room for
-# that notarization metadata and modest pinned-Sparkle growth.
-MAXIMUM_ARCHIVE_ENTRY_COUNT=1024
+# bundled story growth and pinned-Sparkle updates; the self-test verifies that
+# archives beyond this ceiling are still rejected.
+MAXIMUM_ARCHIVE_ENTRY_COUNT=2048
 MAXIMUM_ENTRY_UNCOMPRESSED_BYTE_COUNT=$((64 * 1024 * 1024))
 # The 0.9 universal app is roughly 128 MiB after ditto includes bounded
 # AppleDouble metadata. Leave measured room for ordinary binary growth while
