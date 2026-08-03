@@ -22,7 +22,7 @@ rules could drift from the repository that owns the framework.
 ## Why these tools exist
 
 The repository's maintained
-[light-novel quality standard](../../StoryForge/skills/forge-light-novels/references/quality-standard.md)
+[light-novel quality standard](https://github.com/RegionallyFamous/SwanSong-Desktop/blob/main/StoryForge/skills/forge-light-novels/references/quality-standard.md)
 records the product principles behind the workbench. The short version is:
 
 - connected causes help events remain available in memory, so Pulse shows
