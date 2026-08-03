@@ -97,7 +97,7 @@ write_valid_fixture() {
     Dependencies/sparkle-source/Sparkle/Sparkle.h \
     StoryForge/README.md \
     StoryForge/scripts/forge.py \
-    StoryForge/scripts/forge_create_novel.py \
+    StoryForge/scripts/create_light_novel_project.py \
     StoryForge/skills/forge-light-novels/SKILL.md \
     StoryForge/skills/forge-light-novels/assets/starter/novel.json; do
     mkdir -p "$(dirname -- "$SOURCE_ROOT/$source_path")"
